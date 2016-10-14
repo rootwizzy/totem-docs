@@ -1,0 +1,188 @@
+$font:       sans-serif;
+$small-font: .875em;
+$base-font:  1em;
+$large-font: 1.25em;
+$thin:       300;
+$regular:    400;
+$medium:     500;
+$bold:       600;
+$heavy:      700;
+
+$border-radius: 3px;
+$padding:       1em;
+
+$primay:       #82c2ee;
+$secondary:    #959595;
+$ownership:    #94cb8a;
+
+$black:        black;
+$white:        white;
+$gray:         #797979;
+$light-gray:   #eeeeee;
+$dark-gray:    #464646;
+
+$dark-green:   #49973b;
+$green:        #6dc05e;
+$medium-green: #afdda7;
+$light-green:  #ebf7e9;
+
+$dark-red:     #f92121;
+$red:          #fb6b6b;
+$medium-green: #fecece;
+$light:        #fff1f1;
+
+$purple:       #7261a3;
+$light-purple: lightpurple;
+$dark-purple:  darkpurple;
+
+$dark-blue:   #3194bb;
+$blue:        #63b4d6;
+$medium-blue: #b4dbeb;
+$light-blue:  #f0f8fb;
+
+/****
+Base
+****/
+$body_bg:          #e9e6e6;
+$body_color:       $black;
+$body_font:        $font;
+$body_font-size:   1em;
+
+/****
+Top Nav
+****/
+$top-nav_bg:            $light-gray;
+$top-nav_border-bottom: 1px solid $gray;
+$top-nav_spacing:       $padding;
+
+$top-nav_title-color:  $black;
+$top-nav_title-weight: $bold;
+$top-nav_title-size:   $large-font;
+
+$top-nav_sub-title-color:  $dark-gray;
+$top-nav_sub-title-weight: $thin;
+$top-nav_sub-title-size:   .75em;
+/****
+Side Nav
+****/
+$side-nav_spacing: 0 0 $padding 0;
+
+$side-nav_header-bg:             transparent;
+$side-nav_header-color:          $dark-gray;
+$side-nav_header-weight:         $bold;
+$side-nav_header-padding:        0;
+$side-nav_header-radius:         $border-radius;
+$side-nav_header-text-transform: uppercase;
+$side-nav_header-size:           $small-font;
+$side-nav_header-letter-spacing: 0;
+
+
+$side-nav_link-color:       $black;
+$side-nav_link-bg:          transparent;
+$side-nav_link-border:      none;
+$side-nav_link-border-left: none;
+$side-nav_link-spacing:     0;
+$side-nav_link_padding:     $padding/2 $padding;
+$side-nav_link-radius:      $border-radius;
+$side-nav_link-size:        $small-font;
+$side-nav_link-line-height: 1.6;
+
+$side-nav_link-bg-hover:          $light-blue;
+$side-nav_link-border-hover:      none;
+$side-nav_link-border-left-hover: none;
+$side-nav_link-color-hover:       $black;
+
+$side-nav_link-bg-active:     $blue;
+$side-nav_link-border-active: none;
+$side-nav_border-left-active: none;
+$side-nav_link-color-active:  $white;
+
+$side-nav_link-bg-active-hover:     $dark-blue;
+$side-nav_link-border-active-hover: none;
+$side-nav_border-left-active-hover: none;
+$side-nav_link-color-active-hover:  $white;
+
+/****
+Table of Contents
+****/
+$toc_list-height:    80vh; // 50% of viewport height
+$toc_list-overflowy: auto;
+
+$toc_header-bg:             transparent;
+$toc_header-color:          $dark-gray;
+$toc_header-weight:         $bold;
+$toc_header-padding:        0;
+$toc_header-radius:         $border-radius;
+$toc_header-text-transform: uppercase;
+$toc_header-size:           $small-font;
+$toc_header-letter-spacing: 0;
+
+$toc_list-link-bg:          transparent;
+$toc_list-link-indent-base: 1em; // multiplied by header level - 1 | ex: h3 = base*2
+$toc_list-link-padding:     $padding/2 $padding;
+$toc_list-link-color:       $dark-gray;
+$toc_list-link-weight:      $regular;
+$toc_list-link-line-height: 1.6;
+$toc_list-link-size:        $small-font;
+$toc_list-link-radius:      $border-radius;
+$toc_list-link-bg-hover:    $light-blue;
+
+$toc_list-link-before-content: "- ";
+
+/****
+Markdown
+****/
+/** Base **/
+$md_document-spacing: 4em;
+
+/** Paragraph **/
+$md-p_line-height: 1.75;
+$md-p_weight:      $thin;
+
+/** Headers **/
+$md-h_font:        $font;
+$md-h_weight:      $heavy;
+$md-h_font-style:  normal;
+$md-h_color:       $black;
+$md-h_line-height: 1.4;
+$md-h_spacing:     .875em;
+
+$md-h1_size: 2.15em;
+$md-h2_size: 1.75em;
+$md-h3_size: 1.5em;
+$md-h4_size: 1.15em;
+$md-h5_size: 1em;
+$md-h6_size: .875em;
+
+
+/** Block Quotes **/
+$md-blockquote_bg:          $purple;
+$md-blockquote_color:       white;
+$md-blockquote_radius:      $border-radius;
+$md-blockquote_padding:     $padding;
+$md-blockquote_border:      0;
+$md-blockquote_border-left: 5px solid darken($md-blockquote_bg, 10%);
+$md-blockquote_weight:      $regular;
+$md-blockquote_spacing:     1.5em;
+
+/** Code Blocks **/
+$md-codeblock_bg:      $light-gray;
+$md-codeblock_padding: $padding;
+$md-codeblock_margin:  0 0 $padding 0;
+$md-codeblock_radius:  $border-radius;
+
+/** Code Spans**/
+$md-codespan_color:     $black;
+$md-codespan_bg:        $light-gray;
+$md-codespan_font:      "Source Code Pro", "Bitstream Vera Sans Mono", "Consolas", "Courier", monospace;
+$md-codespan_font-size: 1rem;
+$md-codespan_padding:   .05em .5em;
+$md-codespan_radius:    $border-radius;
+
+/** Lists **/
+$md-ul_li-padding-left: .5em;
+$md-ul_li-spacing:      .875em;
+$md-ul_nested-spacing:  .5em;
+
+
+

@@ -1,0 +1,39 @@
+# PostgreSQL. Versions 9.1 and up are supported.
+#
+# Install the pg driver:
+#   gem install pg
+# On OS X with Homebrew:
+#   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
+# On OS X with MacPorts:
+#   gem install pg -- --with-pg-config=/opt/local/lib/postgresql84/bin/pg_config
+# On Windows:
+#   gem install pg
+#       Choose the win32 build.
+#       Install PostgreSQL and put its /bin directory on your path.
+#
+# Configure Using Gemfile
+# gem 'pg'
+default: &default
+  adapter:  postgresql
+  encoding: unicode
+  pool:     <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: totem_docs_development
+  username: postgres
+  password: password
+  host:     localhost
+
+test:
+  <<:       *default
+  database: totem_docs_test
+  username: postgres
+  password: password
+  host:     localhost
+
+production:
+  <<: *default
+  database: totem_docs_production
+  username: totem_docs
+  password: <%= ENV['TOTEM-LODESTAR_DATABASE_PASSWORD'] %>

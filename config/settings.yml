@@ -1,0 +1,5 @@
+text:
+  title:     Totem docs
+  sub-title: Add your subtitle in config/settings.yml!
+modules:
+  version_redirect: true

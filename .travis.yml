@@ -1,0 +1,28 @@
+language: ruby
+sudo: false
+rvm:
+- 2.2.3
+cache:
+  bundler: true
+env:
+- DB=pgsql
+services:
+- postgresql
+before_script:
+- cp config/database.yml.travis config/database.yml
+- psql -c 'create database totem_docs_test' -U postgres
+script:
+- RAILS_ENV=test bundle exec rake db:migrate
+- bundle exec rake db:test:prepare
+- bundle exec rake
+branches:
+  only:
+  - master
+deploy:
+  provider: heroku
+  api_key:
+    secure: $YOUR_SECURE_KEY
+  on: master
+  run:
+  - rails db:migrate
+  - rails totem:lodestar:generate
