@@ -1,0 +1,6 @@
+test:
+  adapter: postgresql
+  database: totem_docs_test
+  username: postgres
+  password: 
+
