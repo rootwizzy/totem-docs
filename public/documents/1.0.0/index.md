@@ -1,2 +1,2 @@
 # Totem Docs
-Initial Doc push!
+Initial Doc push
