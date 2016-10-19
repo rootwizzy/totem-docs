@@ -6,8 +6,6 @@ Behind the scenes, Totem provides developers with certain prepackaged functional
 The goal of Totem is simple:  to provide a stable and sustainable home for educational applications.  Totem accomplishes this by allowing developers to ‘bring in’ functionalities from other Totem-based applications with ease.  Totem is designed to be the glue that binds many pieces of functionality into one larger application.
 
 ## At a glance
-Here are the technologies we employ
-
 **[Server Side](#server-side)**
  - Rails 4.0 with ActiveModel::Serializers
  - PostgreSQL
@@ -38,7 +36,7 @@ The client side JavaScript (JS) of Totem is stored within each of the Rails' eng
 
 As with the server side, Totem's client side draws benefit from code that is separated appropriately into namespaces. Totem automatically configures Ember and Ember Data to map any given JSON root key into an Ember model. As an example, if the JSON payload was:
 
-    {'totem/authentication/user': 'user_id': '5', 'email': 'john.doe@fake.com'}
+`{'totem/authentication/user': 'user_id': '5', 'email': 'john.doe@fake.com'}`
 
 Due to Totem's configuration process, Ember will automatically know that the JSON is a representation of the `Totem.Authentication.User` Ember model and instantiate or update the appropriate object in the DOM.
 
