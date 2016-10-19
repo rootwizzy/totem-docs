@@ -53,3 +53,4 @@ As an example, Rails 4.0 provides the ability to stream server-side events to a 
 When initially evaluating scalability concerns, developers have many options to choose for the web server. Depending on whether an application's code is thread safe, developers have the option to choose multi-process and/or multi-threaded web servers. By default, Totem will use a multi-processed web server as to not make assumptions on thread safety.
 
 Additionally, developers can intelligently cache JSON payloads and respond to requests directly from in-memory caches and avoid any database communication and serialization efforts all together and improve performance drastically to support scaling efforts.
+
