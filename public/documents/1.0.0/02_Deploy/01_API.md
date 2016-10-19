@@ -7,12 +7,14 @@ Run `./repos/totem-api/totem-cli/bin/totem-deploy -o PATH_TO_PACKAGE_FILE --api`
 
 If the environment is new, the .env file will need to be established and the Heroku application created.  Follow these steps to initialize the Git repo for Heroku:
 Create a new Git repository
+
 ```bash
 $ cd my-project/
 $ git init
 $ heroku git:remote -a HEROKU-APP-NAME
 ````
 Deploy your application by Commiting your code to the repository and deploy it to Heroku using Git.
+
 ```bash
 $ git add .
 $ git commit -am "make it better"
