@@ -9,13 +9,13 @@ If you wish to use the default paths the following structure is recommended, all
 ```bash
 ├── projects
 │   ├── repos
-│   │   ├── thinkspace-api
-│   │   ├── thinkspace-client
+│   │   ├── your-app-api
+│   │   ├── your-app-client
 │   │   ├── totem-api
 │   │   ├── totem-client
-│   ├── thinkspace (Ember Application)
-│   ├── thinkspace-orchid (Rails Application)
-│   ├── totem-oauth (Rails Application)
+│   ├── your-app (Ember App)
+│   ├── your-app-server (Rails App)
+│   ├── totem-oauth
 ```
 
 
