@@ -17,5 +17,12 @@ If you wish to use the default paths the following structure is recommended, all
 │   ├── your-app-server (Rails App)
 │   ├── totem-oauth
 ```
+## Repositories
+There are 3 repositories that you will need for the full totem stack, as well as two separate repositores for your-app's API and Client applications.
 
+- `totem-client`
+- `totem-api`
+- `totem-oauth`
+- `your-app-api`
+- `your-app-client`
 
