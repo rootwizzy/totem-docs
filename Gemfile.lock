@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/sixthedge/totem-lodestar
-  revision: 8e120e8682a35fe0f6a108d23610c00d69e4e27b
+  revision: 9be1555bf3e3cd9cd3e809745f887a886769ea66
   specs:
-    totem-lodestar (0.3.5)
+    totem-lodestar (0.3.6)
       coderay
       config
       foundation-rails
