@@ -2,4 +2,14 @@ text:
   title:     Totem docs
   sub-title: Add your subtitle in config/settings.yml!
 modules:
-  version_redirect: true
+  versions:
+    index_redirect: true
+  side_bar:
+    collapse:
+      enabled: true
+  table_of_contents:
+    smooth_scroll:
+      enabled: true
+    highlight: 
+      enabled: false
+

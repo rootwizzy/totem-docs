@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/sixthedge/totem-lodestar
-  revision: a00d9800918b070e27b6fd7dbf6605693c110f1c
+  revision: 0c441706203012e6959d08439f12c9039e5ce410
   specs:
-    totem-lodestar (0.3.8)
+    totem-lodestar (0.4.0)
       coderay
       config
       font-awesome-rails
@@ -78,7 +78,7 @@ GEM
     erubis (2.7.0)
     execjs (2.7.0)
     ffi (1.9.14)
-    font-awesome-rails (4.6.3.1)
+    font-awesome-rails (4.7.0.0)
       railties (>= 3.2, < 5.1)
     foundation-rails (6.2.4.0)
       railties (>= 3.1.0)
