@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/sixthedge/totem-lodestar
-  revision: 0c441706203012e6959d08439f12c9039e5ce410
+  revision: 2256662333c84174007bb927cb2f5d3b1bf1635d
   specs:
-    totem-lodestar (0.4.0)
+    totem-lodestar (0.4.1)
       coderay
       config
       font-awesome-rails

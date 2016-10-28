@@ -1,21 +1,7 @@
 # Commit to Better Commits
-- [Purpose](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#purpose)
-- [Format](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#format)
-   - [Subject](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages/#subject)
-   - [Body](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages/#body)
-- [Example Commit](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#example-commit)
-- [Guidelines](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#guidelines)
-   - [Early and Often](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#commit-early-and-often)
-   - [Amend](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#amend)
-   - [Merge/Rebasing](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#merge-vs-rebase)
-- [Setup](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#setup)
-- [VIM Basics](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#vim-basics)
-- [Resources](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#git_commit_temp)
-  - [Commit Template](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#git_commit_temp)
-  - [Links](https://github.com/sixthedge/cnc-client/wiki/Commit-Messages#links)
 
 ## Purpose
-The objective of this is to standardize our git commits structure and format to convey our changes in a more      effective manner. This will also allow us to programmatically aggregate our commits for a changelog as well as define a standard environment for an open-source community moving forward.
+The objective of this is to standardize our git commits structure and format to convey our changes in a more effective manner. This will also allow us to programmatically aggregate our commits for a changelog as well as define a standard environment for an open-source community moving forward.
 
 ## Format
 Using the guidelines from [here](http://chris.beams.io/posts/git-commit/#intro) we will start to look at our format of commit messages.

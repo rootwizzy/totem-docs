@@ -1,15 +1,22 @@
 text:
   title:     Totem docs
-  sub-title: Add your subtitle in config/settings.yml!
+  sub-title: Building software one stack at a time
 modules:
+
   versions:
     index_redirect: true
+
   side_bar:
     collapse:
-      enabled: true
+      enabled:        true
+      expanded_icon:  'fa fa-minus-square right'
+      collapsed_icon: 'fa fa-plus-square right'
+
   table_of_contents:
     smooth_scroll:
       enabled: true
+      speed:   300 # Milliseconds
     highlight: 
       enabled: false
 
+ 
