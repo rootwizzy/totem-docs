@@ -117,17 +117,20 @@ $toc_header-text-transform: uppercase;
 $toc_header-size:           $small-font;
 $toc_header-letter-spacing: 0;
 
-$toc_list-link-bg:          transparent;
-$toc_list-link-indent-base: 1em; // multiplied by header level - 1 | ex: h3 = base*2
-$toc_list-link-padding:     $padding/2 $padding;
-$toc_list-link-color:       $dark-gray;
-$toc_list-link-weight:      $regular;
-$toc_list-link-line-height: 1.6;
-$toc_list-link-size:        $small-font;
-$toc_list-link-radius:      $border-radius;
-$toc_list-link-bg-hover:    $light-blue;
-
-$toc_list-link-before-content: "- ";
+$toc_list-link-bg:                 transparent;
+$toc_list-link-indent-base:        1em; // multiplied by header level - 1 | ex: h3 = base*2
+$toc_list-link-padding:            $padding/2 $padding;
+$toc_list-link-color:              $dark-gray;
+$toc_list-link-weight:             $regular;
+$toc_list-link-line-height:        1.6;
+$toc_list-link-size:               $small-font;
+$toc_list-link-radius:             $border-radius;
+$toc_list-link-bg-hover:           $light-blue;
+$toc_list-link-bg-active:          $blue;
+$toc_list-link-bg-active-hover:    $dark-blue;
+$toc_list-link-color-active:       white;
+$toc_list-link-color-active-hover: white;
+$toc_list-link-before-content:     "- ";
 
 /****
 Markdown

@@ -17,6 +17,6 @@ modules:
       enabled: true
       speed:   300 # Milliseconds
     highlight: 
-      enabled: false
+      enabled: true
 
  
