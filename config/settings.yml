@@ -2,6 +2,10 @@ text:
   title:     Totem docs
   sub-title: Building software one stack at a time
 modules:
+  layout:
+    full_width:
+      enabled: true
+      default: true
 
   versions:
     index_redirect: true
