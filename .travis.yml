@@ -25,4 +25,4 @@ deploy:
   on: master
   run:
   - rails db:migrate
-  - rails totem:lodestar:generate
+  - rails totem:lodestar:generate_guides

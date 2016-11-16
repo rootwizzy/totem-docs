@@ -2,6 +2,9 @@ text:
   title:     Totem docs
   sub-title: Building software one stack at a time
 modules:
+  api:
+    repos: ['thinkspace-api']
+
   layout:
     full_width:
       enabled: true
@@ -22,5 +25,7 @@ modules:
       speed:   300 # Milliseconds
     highlight: 
       enabled: true
+
+
 
  
