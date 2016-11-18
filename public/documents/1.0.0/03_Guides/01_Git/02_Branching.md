@@ -1,9 +1,9 @@
-# Git more agile
+# Git Branching
 
 ## Introduction
 Github is a tool we have become very familiar with over the course of development and have had a number of attempts to define workflows within Github. As we prepare to move in agile development we can look to Github workflows to help track our sprints without adding extra overhead.
 
-*See the sprint backlog section in the [Agile Methodology Overview](/t/agile-methodology-overview) for a brief rundown of what this solves for.*
+*See the sprint backlog section in the [Agile Methodology Overview](/1.0.0/git/branching) for a brief rundown of what this solves for.*
 
 ## Branching
 Branches are a key component to the Git workflow and the conventions and integration of branches will play an important role in conforming to an agile life cycle.

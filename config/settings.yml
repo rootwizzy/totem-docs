@@ -13,8 +13,8 @@ modules:
   side_bar:
     collapse:
       enabled:        true
-      expanded_icon:  'fa fa-minus-square right'
-      collapsed_icon: 'fa fa-plus-square right'
+      expanded_icon:  'fa fa-minus right'
+      collapsed_icon: 'fa fa-plus right'
 
   table_of_contents:
     smooth_scroll:

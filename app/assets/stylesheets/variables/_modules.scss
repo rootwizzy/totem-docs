@@ -51,7 +51,7 @@ $body_font-size:   1em;
 /****
 Top Nav
 ****/
-$top-nav_bg:            darken($primary, 5%);
+$top-nav_bg:            $primary;
 $top-nav_border-bottom: 1px solid $secondary;
 $top-nav_spacing:       $padding*2;
 
@@ -67,10 +67,10 @@ Side Nav
 ****/
 $side-nav_spacing: 0 0 $padding 0;
 
-$side-nav_header-bg:             transparent;
-$side-nav_header-color:          $secondary;
+$side-nav_header-bg:             $secondary;
+$side-nav_header-color:          $white;
 $side-nav_header-weight:         $bold;
-$side-nav_header-padding:        0;
+$side-nav_header-padding:        $padding/4 $padding/1.25;
 $side-nav_header-radius:         $border-radius;
 $side-nav_header-text-transform: uppercase;
 $side-nav_header-size:           $small-font;
@@ -81,25 +81,30 @@ $side-nav_link-bg:          transparent;
 $side-nav_link-border:      none;
 $side-nav_link-border-left: none;
 $side-nav_link-spacing:     0;
-$side-nav_link_padding:     $padding/2 $padding;
+$side-nav_link_padding:     $padding/4 $padding;
 $side-nav_link-radius:      $border-radius;
 $side-nav_link-size:        $small-font;
 $side-nav_link-line-height: 1.6;
+$side-nav_link-weight:      $regular;
 
 $side-nav_link-bg-hover:          transparent;
 $side-nav_link-border-hover:      none;
-$side-nav_link-border-left-hover: 4px solid darken($secondary, 10%);
-$side-nav_link-color-hover:       $white;
+$side-nav_link-border-left-hover: none;
+$side-nav_link-color-hover:       $ownership;
+$side-nav_link-weight-hover:      $regular;
+$side-nav_link-decoration-hover: underline;
 
-$side-nav_link-bg-active:          $secondary;
+$side-nav_link-bg-active:          transparent;
 $side-nav_link-border-active:      none;
-$side-nav_link-border-left-active: 4px solid darken($secondary, 10%);
-$side-nav_link-color-active:       $white;
+$side-nav_link-border-left-active: none;
+$side-nav_link-color-active:       $secondary;
+$side-nav_link-weight-active:      $bold;
 
-$side-nav_link-bg-active-hover:          darken($secondary, 10%);
+$side-nav_link-bg-active-hover:          transparent;
 $side-nav_link-border-active-hover:      none;
-$side-nav_link-border-left-active-hover: 4px solid darken($secondary, 10%);
+$side-nav_link-border-left-active-hover: none;
 $side-nav_link-color-active-hover:       $white;
+$side-nav_link-weight-active-hover:      $bold;
 
 /****
 Table of Contents
