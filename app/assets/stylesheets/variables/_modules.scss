@@ -1,4 +1,4 @@
-$font:       sans-serif;
+$font:       Roboto, sans-serif;
 $small-font: .875em;
 $base-font:  1em;
 $large-font: 1.25em;
@@ -148,7 +148,7 @@ Article
 $article_updated-color:      $ownership;
 $article_updated-font-style: italic;
 $article_updated-font-size:  $small-font;
-$article_updated-spacing:    $padding;
+$article_updated-spacing:    $padding 0;
 
 /****
 Markdown
@@ -198,12 +198,13 @@ $md-codeblock_padding:     $padding;
 $md-codeblock_margin:      0 0 $padding 0;
 $md-codeblock_radius:      $border-radius;
 $md-codeblock_border-left: 4px solid darken($primary, 10%);
+$md-codeblock_font:        "Roboto-Mono", monospace;
 
 /** Code Spans**/
 $md-codespan_color:       $secondary;
 $md-codespan_bg:          darken($primary, 5%);
 $md-codespan_border:      1px solid $ownership;
-$md-codespan_font:        "Source Code Pro", "Bitstream Vera Sans Mono", "Consolas", "Courier", monospace;
+$md-codespan_font:        "Roboto-Mono", monospace;
 $md-codespan_font-size:   $small-font;
 $md-codespan_font-weight: bold;
 $md-codespan_padding:     .15em .5em;
