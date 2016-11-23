@@ -360,8 +360,8 @@ To stop the socketio server enter **ctrl-C**
 * remember *casespace* service is now **thinkspace** e.g. ember.computed.reads 'thinkspace.current_phase'
 
 ## Add Dock Routeless Engine
-* each mounting engine
-  * `add_engine  'engine-name': {dock: {routes: ['someroute.show'], right_pocket: true}}`
+- each mounting engine
+  - `add_engine  'engine-name': {dock: {routes: ['someroute.show'], right_pocket: true}}`
 
 * `[platform]-common/app/templates/components/dock_engine_mount.emblem`
   * add *mount* of engine (under an if)
