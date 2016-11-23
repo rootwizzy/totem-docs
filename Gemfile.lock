@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/sixthedge/totem-lodestar
-  revision: ac90af4ab8812d65f963575d7af3c542d4cac28c
+  revision: 835d3745f4f1b65ef97f5968a8d6d354f9326c6c
   branch: master
   specs:
-    totem-lodestar (0.4.7)
+    totem-lodestar (0.4.8)
       coderay
       coffee-rails
       config
@@ -215,4 +215,4 @@ DEPENDENCIES
   web-console
 
 BUNDLED WITH
-   1.11.2
+   1.13.6
