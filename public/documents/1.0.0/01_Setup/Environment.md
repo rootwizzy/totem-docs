@@ -19,26 +19,41 @@ Instructions and compability are based off of Debian 9 (codename Stretch) system
 
 # Fresh Install
 ## Upgrade base packages
-Make sure all of your OS packages are up to date
-- `sudo apt-get upgrade` (may take awhile)
-- `sudo apt-get update`
+
+```
+  sudo apt-get upgrade
+  sudo apt-get update
+```
 
 ## Install Git
-- `sudo apt-get install git`
-- setup ssh-key for cloning (optional)
+
+```
+  sudo apt-get install git
+```
+
+- **(optional):** Setup ssh-key for git
   - `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`
-  - add ssh key from `~/.ssh/id_rsa.pub` to github via account settings. [Here](https://help.github.com/articles/generating-an-ssh-key/) for help.
+  - Once you have made your key go to github via account settings and add your `~/.ssh/id_rsa.pub`.
+  - See [Github Article](https://help.github.com/articles/generating-an-ssh-key/) for additional help.
 
 ## Install PostgreSQL
 Setup PostgreSQL for development databases
-- `sudo apt-get install postgresql postgresql-contrib`
-- `sudo apt-get install libpq-dev`
 
-Create Database Roles and Tables
-- `psql -U postgres -h localhost -W` when prompted password should be: `password`
-  - `create user oauth_user with password 'password';`
-  - `create user ts_user with password 'password';`
-  - `\q`
+```
+  sudo apt-get install postgresql postgresql-contrib
+  sudo apt-get install libpq-dev
+```
+
+### Create Database Roles and Tables
+
+Run `psql -U postgres -h localhost -W` then create the following roles
+
+```
+  create user oauth_user with password 'password';
+  create user ts_user with password 'password';
+```
+
+To quit the Postgres terminal use `\q` or `\help` for more info
 
 ## Login Shell
 Make sure your terminal is using a login shell.
