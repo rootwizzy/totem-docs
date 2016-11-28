@@ -211,8 +211,10 @@ After Install:
 
 ```
   cd ~/Desktop
-  ./ember20/repos/thinkspace-api/migrate/scripts/new-rails-app
+  ./ember20/repos/ethinkspace-api/migrate/scripts/new-rails-app.sh
+
   ...
+
   cd ~/Desktop/ember20/apps-rails/orchid
   bundle install
 ```
@@ -222,7 +224,7 @@ After Install:
 
 ```
   cd ~/Desktop
-  ./ember20/repos/thinkspace-api/migrate/scripts/new-ember-app
+  ./ember20/repos/ethinkspace-api/migrate/scripts/new-ember-app.sh
 ```
 
 ### Bundle Totem Oauth
