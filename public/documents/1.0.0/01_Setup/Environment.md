@@ -141,7 +141,7 @@ This portion is assuming you are using the `rails5` gemset (see [Gemset Setup](#
     * monitor  #=> shows connections, published messages, etc. as they happen
     * exit     #=> exit redis-cli; to exit monitor: ctrl-C
 
-## Directory Structure
+# Directory Structure
 Before Install: (required)
 
 ```
@@ -201,10 +201,10 @@ After Install:
   - `git clone git@github.com:sixthedge/totem-socketio-server.git`
   - `git clone git@github.com:sixthedge/thinkspace-socketio-server.git`
 
-## Build Scripts
+# Build Scripts
 > The scripts are only for convience. They can be run manually if wanted (e.g. not via a script).
 
-### New Rails App
+## New Rails App
 - Make sure the **rails5** gemset (installed above) is current in order to run the scripts.
 - Ensure the *scripts/env_variables* match your environment.
 
@@ -219,7 +219,7 @@ After Install:
   bundle install
 ```
 
-### New Ember App
+## New Ember App
 - Ensure the *scripts/env_variables* match your environment.
 
 ```
@@ -227,7 +227,7 @@ After Install:
   ./ember20/repos/ethinkspace-api/migrate/scripts/new-ember-app.sh
 ```
 
-### Bundle Totem Oauth
+## Bundle Totem Oauth
 - **open new terminal**
 - switch to your ruby and gemset for **totem-oauth**
 
@@ -238,9 +238,9 @@ After Install:
   bundle install
 ```
 
-## Seed Database
+# Seed Database
 
-### Rails App
+## Rails App
 > Note: Rails 5 now uses **rails** not *rake*
 
 - Ensure your *config/secrets.yml* totem_database name, username and password match your environment.
@@ -251,7 +251,7 @@ After Install:
   rails db:drop db:create totem:db:reset[staging] CONFIG=all AI=true
 ```
 
-### Oauth App
+## Oauth App
   * **open new terminal**
   * switch to your ruby and gemset for **totem-oauth**
 
@@ -286,7 +286,7 @@ After Install:
 - review (and update if needed) the **node** application copy of *node_env* to match your development environment
 - ensure the **ember** application environment matches the **node** application environment
 
-```
+```javascript
   #=> ember20/apps-node/app.js
 
   var server = require('totem-socketio-server').create_server();
@@ -299,7 +299,7 @@ After Install:
   });
 ```
 
-```
+```javascript
   #=> ember20/apps-ember/orchid/config/environment.js
 
   "pub_sub": {
@@ -321,122 +321,6 @@ node app.js
 ```
 
 To stop the socketio server enter **ctrl-C**
-
----
-
-# Enginize
-
-## Base Directory Structure
-
-```
-  my-package-name
-    |- addon
-       |- components
-          |- main.coffee
-       |- initializers
-          |- totem.coffee
-       |- locales         #=> [optional]
-       |- services        #=> [optional]
-       |- managers        #=> [optional]
-       |- mixins          #=> [optional]
-       |- templates
-          |- components
-             |- main.emblem
-          |- application.emblem
-    |- config
-       |- environment.js
-    |- _config.coffee     #=> package dependent values
-    |- engine.coffee      #=> static for all engines
-    |- routes.coffee      #=> only if a 'routeable' engines
-
-    #=> no 'app' directory
-``` 
-
-## Configuration
-* package name in 3 places:
-  1. index.js
-  1. package.json
-  1. config/environment.js
-
-* review addon/_config.coffee
-* remember *casespace* service is now **thinkspace** e.g. ember.computed.reads 'thinkspace.current_phase'
-
-## Add Dock Routeless Engine
-- each mounting engine
-  - `add_engine  'engine-name': {dock: {routes: ['someroute.show'], right_pocket: true}}`
-
-* `[platform]-common/app/templates/components/dock_engine_mount.emblem`
-  * add *mount* of engine (under an if)
-
-* make sure `addon/templates/application.emblem` exists
-  * includes *component 'main'* (or main component to be called e.g. dock)
-
-* *main* component includes:
-
-```
-  import ember  from 'ember'
-  import base   from 'thinkspace-base/components/base'
-  import m_dock from 'thinkspace-dock/mixins/main'
-
-  export default base.extend m_dock,
-```
-
-* define (or likely rename) a computed property called **can_access_addon**
-* define **addon_config** hash
-* delete open and close actions if exist
-* modify components and templates as needed
-
-
-## Changesets
-
-* define validators using *totem_changeset* helpers
-  * each model attribute can be set to an array of validators
-  * *totem_changeset* helpers (see https://github.com/DockYard/ember-changeset-validations for options):
-    * vpresence
-    * vlength
-    * vnumber
-    * vexclusion
-    * vinclusion
-    * vconfirmation
-    * vformat
-    * vdecimals (custom totem validator for number of decimals)
-
-* create changeset with *totem_changeset.create(model, validator-hash)*
-
-
-Example Component:
-
-```ruby
-  import totem_changeset from 'totem/changeset'
-
-  export default ...
-    model    = @get('model')
-    presence = totem_changeset.vpresence(presence: true)
-    @set 'changeset', totem_changeset.create model,
-      title: [presence, totem_changeset.vlength(min: 4)]
-      url:   [presence, totem_changeset.vurl()]
-
-    ## Other typical changeset functions:
-    changeset.validate().then =>
-      unless changeset.get('is_valid')
-        <code here>
-    
-    changeset.show_errors_on() #=> e.g. do after a submit or save
-
-    changeset.first_error_on() #=> only show first error when multiple errors are possible
-```
-
-Example Engine Template:
-
-
-```
-  = input value=changeset.title
-  / single attribute 'title' error(s)
-  component '__changeset/errors' changeset=changeset attribute=title
-  ...
-  / all attribute errors (e.g. at bottom of page)
-  component '__changeset/errors' changeset=changeset
-```
 
 ---
 
