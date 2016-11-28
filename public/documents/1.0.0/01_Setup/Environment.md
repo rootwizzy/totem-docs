@@ -194,7 +194,7 @@ After Install:
   - `git clone git@github.com:sixthedge/ethinkspace-client.git`
   - `git clone git@github.com:sixthedge/ethinkspace-api.git`
  
-- In the ~/Desktop/ember20/app-rails folder, run:
+- In the ~/Desktop/ember20/apps-rails folder, run:
   - `git clone git@github.com:sixthedge/totem-oauth.git`
 
 - In the ~/Desktop/ember20/repos-sio folder, run:
@@ -232,7 +232,7 @@ After Install:
 - switch to your ruby and gemset for **totem-oauth**
 
 ```
-  cd ~/Desktop/ember20/app-rails/totem-oauth
+  cd ~/Desktop/ember20/apps-rails/totem-oauth
   rvm use ruby-2.2.1
   rvm use gemset totem-oauth
   bundle install
@@ -247,7 +247,7 @@ After Install:
 - You may have to run `rails db:environment:set RAILS_ENV=development` before migrating your database
 
 ```
-  cd ~/Desktop/ember20/app-rails/orchid
+  cd ~/Desktop/ember20/apps-rails/orchid
   rails db:drop db:create totem:db:reset[staging] CONFIG=all AI=true
 ```
 
@@ -257,7 +257,7 @@ After Install:
 
 ```
   #=> assumes using Rails 4.x and rake
-  cd ~/Desktop/ember20/app-rails/totem-oauth
+  cd ~/Desktop/ember20/apps-rails/totem-oauth
   rvm use ruby-2.2.1
   rvm gemset use rails4
   rake db:drop db:create db:reset
