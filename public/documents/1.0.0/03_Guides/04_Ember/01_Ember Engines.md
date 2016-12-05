@@ -1,30 +1,69 @@
 # Enginize
+[Ember Engines](https://github.com/ember-engines/ember-engines) introduces a new architecture to Ember applications. Engines are in essence isolated packages that can be mounted to the main application, or within other engines and templates. One of the primary benefits besides modularization of functionality is that handles namespacing in a more flat structure. 
 
-## Base Directory Structure
+## Engine Types
+There are two types of engines that are important to know when creating an engine package. These are [Routable Engines](#routable-engines) and [Route-less Engines](#route-less-engines).
+
+### Routable Engines
+Routable engines are mounted onto routes which exsist on the main application, or any other engine that contains routes. This enables the ability to nest engines within each other, and also infers that the main application is its own special type of engine.
+
+Routable engines key difference to enable this functionality is that it also contains its own internal route map. This is important to understand because it creates a parent/child structure requiring some level of dependency management.
+
+#### Routable Structure
 
 ```
-  my-package-name
-    |- addon
-       |- components
+  |- project
+    |- my-package-name
+      |- addon
+        |- components
           |- main.coffee
-       |- initializers
+        |- initializers
           |- totem.coffee
-       |- locales         #=> [optional]
-       |- services        #=> [optional]
-       |- managers        #=> [optional]
-       |- mixins          #=> [optional]
-       |- templates
+        |- helpers         #=> [optional]
+        |- locales         #=> [optional]
+        |- services        #=> [optional]
+        |- managers        #=> [optional]
+        |- mixins          #=> [optional]
+        |- templates
           |- components
-             |- main.emblem
+            |- main.emblem
           |- application.emblem
         |- _config.coffee     #=> package dependent values
         |- engine.coffee      #=> static for all engines
         |- routes.coffee      #=> only if a 'routeable' engines
-    |- config
-       |- environment.js
+      |- config
+        |- environment.js
+      |- index.js
+      |- package.json
+``` 
 
+### Route-less Engines
+Route-less engines are mounted into templates using the `mount` helper, these can not be mounted onto a route and do not have their own internal router.
 
-    #=> no 'app' directory
+#### Route-less  Structure
+```
+  |- project
+    |- my-package-name
+      |- addon
+        |- components
+          |- main.coffee
+        |- initializers
+          |- totem.coffee
+        |- helpers         #=> [optional]
+        |- locales         #=> [optional]
+        |- services        #=> [optional]
+        |- managers        #=> [optional]
+        |- mixins          #=> [optional]
+        |- templates
+          |- components
+            |- main.emblem
+          |- application.emblem
+        |- _config.coffee     #=> package dependent values
+        |- engine.coffee      #=> static for all engines
+      |- config
+        |- environment.js
+      |- index.js
+      |- package.json
 ``` 
 
 ## Configuration
