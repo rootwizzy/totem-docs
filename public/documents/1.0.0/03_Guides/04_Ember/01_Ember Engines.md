@@ -75,6 +75,9 @@ package name in 3 places:
 - review `addon/_config.coffee`
 - remember *casespace* service is now **thinkspace** e.g. ember.computed.reads 'thinkspace.current_phase'
 
+## Update/Install new Engines
+run `~/Desktop/ember20/repos/ethinkspace-api/migrate/scripts/ember-ulk` to update and link ember packages into your `package.json`
+
 ## Add Dock Routeless Engine
 - `add_engine  'engine-name': {dock: {routes: ['someroute.show'], right_pocket: true}}`
 
