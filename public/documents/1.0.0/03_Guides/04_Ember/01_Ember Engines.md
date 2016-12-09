@@ -28,6 +28,8 @@ Routable engines key difference to enable this functionality is that it also con
           |- components
             |- main.emblem
           |- application.emblem
+        |- routes
+          |- route.coffee #=> Route files that mate the engine router
         |- _config.coffee     #=> package dependent values
         |- engine.coffee      #=> static for all engines
         |- routes.coffee      #=> only if a 'routeable' engines
