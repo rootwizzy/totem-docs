@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/components/dropdown</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-common/app/components/dropdown"><meta name="groc-project-path" content="thinkspace-common/app/components/dropdown.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/app/components/dropdown.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base_component from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+<span class="hljs-comment">## thinkspace-dropdown</span>
+<span class="hljs-comment">## options:</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>collection: list of records or strings or objects to display
+  =&gt; if records, need to provide a display_property
+  =&gt; if objects, should take the form of [{display: &#39;stuff&#39;, route: &#39;posts/new&#39;, , route_param_key: &#39;id&#39;, action: &#39;link_selected&#39;}]</p>
+<p>select_action: if set, will send action to the action_receiver with the selected item
+action_receiver: context to receive the select_action. only needed if select_action is specified</p>
+<p>select_route: if set, will link-to the specified route using the item as a param
+text: base text to display on the anchor tag i.e. &#39;select a student&#39;
+selected: the currently selected object.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">## you may also pass the following properties to add custom classes to elements in string form, i.e. "class-a class-b class-c"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  class
+  anchor_class
+  list_class
+  list_item_class
+  link_class</p></div></div><div class="code"><div class="wrapper">export default base_component.extend
+  <span class="hljs-attribute">classNames</span>: [<span class="hljs-string">'thinkspace-dropdown'</span>]
+
+  <span class="hljs-attribute">default_anchor_class</span>:    <span class="hljs-string">'thinkspace-dropdown_anchor'</span>
+  <span class="hljs-attribute">default_list_class</span>:      <span class="hljs-string">'f-dropdown thinkspace-dropdown_list'</span>
+  <span class="hljs-attribute">default_list_item_class</span>: <span class="hljs-string">'thinkspace-dropdown_list-item'</span>
+  <span class="hljs-attribute">default_link_class</span>:      <span class="hljs-string">'thinkspace-dropdown_link'</span>
+
+  <span class="hljs-attribute">anchor_classes</span>:    ember.computed <span class="hljs-string">'anchor_class'</span>,     <span class="hljs-function">-&gt;</span> <span class="hljs-property">@concat_class</span>(<span class="hljs-string">'anchor'</span>)
+  <span class="hljs-attribute">list_classes</span>:      ember.computed <span class="hljs-string">'list_class'</span>,       <span class="hljs-function">-&gt;</span> <span class="hljs-property">@concat_class</span>(<span class="hljs-string">'list'</span>)
+  <span class="hljs-attribute">list_item_classes</span>: ember.computed <span class="hljs-string">'list_item_class'</span>,  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@concat_class</span>(<span class="hljs-string">'list_item'</span>)
+  <span class="hljs-attribute">link_classes</span>:      ember.computed <span class="hljs-string">'link_class'</span>,       <span class="hljs-function">-&gt;</span> <span class="hljs-property">@concat_class</span>(<span class="hljs-string">'link'</span>)
+
+  <span class="hljs-attribute">drop_id</span>: ember.computed -&gt; <span class="hljs-string">"ts-drop_<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'elementId'</span>)}</span>"</span>
+
+  <span class="hljs-attribute">concat_class</span>: <span class="hljs-function"><span class="hljs-params">(tag)</span> -&gt;</span>
+    default_class = <span class="hljs-property">@get</span>(<span class="hljs-string">"default_<span class="hljs-subst">#{tag}</span>_class"</span>)
+    custom_class  = <span class="hljs-property">@get</span>(<span class="hljs-string">"<span class="hljs-subst">#{tag}</span>_class"</span>)
+    <span class="hljs-keyword">if</span> custom_class <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> default_class.concat(<span class="hljs-string">' '</span>, custom_class) <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> default_class</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="keyboard-support">Keyboard support</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">keyDown</span>: <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
+    key_code = event.keyCode
+    <span class="hljs-keyword">switch</span> key_code
+      <span class="hljs-keyword">when</span> <span class="hljs-number">38</span> <span class="hljs-comment"># up arrow</span>
+        <span class="hljs-property">@select_previous</span>()
+        event.stopPropagation()
+        event.preventDefault()
+      <span class="hljs-keyword">when</span> <span class="hljs-number">40</span> <span class="hljs-comment"># down arrow</span>
+        <span class="hljs-property">@select_next</span>()
+        event.stopPropagation()
+        event.preventDefault()
+
+  <span class="hljs-attribute">select_next</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@select_from_offset</span>(<span class="hljs-number">1</span>)
+
+  <span class="hljs-attribute">select_previous</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@select_from_offset</span>(-<span class="hljs-number">1</span>)
+
+  <span class="hljs-attribute">select_from_offset</span>: <span class="hljs-function"><span class="hljs-params">(offset)</span> -&gt;</span>
+    collection      = <span class="hljs-property">@get</span> <span class="hljs-string">'collection'</span>
+    selected        = <span class="hljs-property">@get</span> <span class="hljs-string">'selected'</span>
+    index           = collection.indexOf(selected)
+    find_at         = index + offset
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> index == -<span class="hljs-number">1</span> <span class="hljs-comment"># Not found</span>
+    <span class="hljs-keyword">if</span> collection.length &gt; find_at <span class="hljs-keyword">and</span> find_at &gt;= <span class="hljs-number">0</span>
+      object = collection.objectAt(find_at)
+      <span class="hljs-property">@set</span> <span class="hljs-string">'selected'</span>, object
+      <span class="hljs-property">@set_selected_text</span>()
+
+  <span class="hljs-attribute">set_selected_text</span>: <span class="hljs-function">-&gt;</span>
+    selected         = <span class="hljs-property">@get</span> <span class="hljs-string">'selected'</span>
+    display_property = <span class="hljs-property">@get</span> <span class="hljs-string">'display_property'</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(selected) <span class="hljs-keyword">and</span> ember.isPresent(display_property)
+    <span class="hljs-keyword">if</span> selected[display_property]? <span class="hljs-keyword">then</span> text = selected[display_property] <span class="hljs-keyword">else</span> text = selected.get(display_property)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'text'</span>, text
+
+  <span class="hljs-attribute">send_selection_event</span>: <span class="hljs-function">-&gt;</span>
+    selected        = <span class="hljs-property">@get</span> <span class="hljs-string">'selected'</span>
+    select_action   = <span class="hljs-property">@get</span> <span class="hljs-string">'select_action'</span>
+    action_receiver = <span class="hljs-property">@get</span> <span class="hljs-string">'action_receiver'</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(select_action) <span class="hljs-keyword">and</span> ember.isPresent(action_receiver)
+    action_receiver.send(select_action, selected)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="callbacks">Callbacks</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">auto_width</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">callback_auto_width</span>: <span class="hljs-function">-&gt;</span>
+    drop_selector = <span class="hljs-string">'#'</span> + <span class="hljs-property">@get</span>(<span class="hljs-string">'drop_id'</span>)
+    $drop         = <span class="hljs-property">@$</span>(drop_selector)
+    klass         = <span class="hljs-string">''</span>
+    $drop.children(<span class="hljs-string">'li'</span>).each (i, child) =&gt;
+      $child     = $(child)
+      text       = $child.text()
+      characters = text.length
+      <span class="hljs-keyword">switch</span>
+        <span class="hljs-keyword">when</span> characters &lt; <span class="hljs-number">5</span>, characters &gt;= <span class="hljs-number">0</span>
+          klass = <span class="hljs-string">'thinkspace-dropdown_small'</span>
+        <span class="hljs-keyword">when</span> characters &lt; <span class="hljs-number">10</span>, characters &gt;= <span class="hljs-number">5</span>
+          klass = <span class="hljs-string">'thinkspace-dropdown_medium'</span>
+        <span class="hljs-keyword">else</span>
+          klass = <span class="hljs-string">'thinkspace-dropdown_large'</span>
+
+    $drop.addClass klass
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">click_callbacks</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@callback_auto_width</span>() <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'auto_width'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>TEST DISPATCH LIFECYLE HOOK</p>
+<h6 id="">#</h6>
+<p>didInitAttrs:      -&gt; console.warn &#39;.....DID INIT ATTRS&#39;, @toString()
+didReceiveAttrs:   -&gt; console.warn &#39;.....DID RECEIVE ATTRS&#39;, @toString()
+willRender:        -&gt; console.warn &#39;.....WILL RENDER&#39;, @toString()
+didRender:         -&gt; console.warn &#39;.....DID RENDER&#39;, @toString()
+willUpdate:        -&gt; console.warn &#39;.....WILL UPDATE&#39;, @toString()
+didUpdate:         -&gt; console.warn &#39;.....DID UPDATE&#39;, @toString()
+didRenderElement:  -&gt; console.warn &#39;.....DID RENDER ELEMENT&#39;, @toString()
+didCreateElement:  -&gt; console.warn &#39;.....DID CREATE ELEMENT&#39;, @toString()
+willInsertElement: -&gt; console.warn &#39;.....WILL INSERT ELEMENT&#39;, @
+didInsertElement:  -&gt; console.warn &#39;+++++TOOLBAR MAIN DID INSERT ELEMENT&#39;, @toString()</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>didInsertElement: -&gt; @$().foundation(&#39;dropdown&#39;)
+didInsertElement: -&gt; $(document).foundation(&#39;dropdown&#39;)</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span>
+    $ul = <span class="hljs-property">@$</span>(<span class="hljs-string">'ul'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>do not instantiate a new dropdown in the case of rerender</p></div></div><div class="code"><div class="wrapper">    dropdown = <span class="hljs-property">@get</span>(<span class="hljs-string">'dropdown'</span>) || <span class="hljs-keyword">new</span> Foundation.Dropdown($ul)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'dropdown'</span>, dropdown</div></div></div></div></body></html>

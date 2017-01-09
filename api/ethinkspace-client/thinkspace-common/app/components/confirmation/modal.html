@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/components/confirmation/modal</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/app/components/confirmation/modal"><meta name="groc-project-path" content="thinkspace-common/app/components/confirmation/modal.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/app/components/confirmation/modal.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base_component from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+<span class="hljs-comment">## ### Configuration:</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>modal content:
+  modal_partial: string of partial to render in place of the modal content
+  title                            string of text for the h4 element
+  subtitle                         string of text for the h5 element
+  description                      string of text for the p element
+  confirm_text:                    string of text for the confirm button
+  deny_text:                       string of text for the deny button
+  modal_class_names:               string of class names for the modal, separated by spaces
+modal reveal:<br>  modal_reveal_anchor_class_names: string of class names for the anchor for the modal reveal, separated by spaces
+  modal_reveal_icon_class_names:   string of class names for the icon for the modal reveal, separated by spaces
+  modal_reveal_partial:            string of partial to render in place of the modal reveal icon
+modal actions:<br>  confirm:                         action to send confirmation to
+  deny:                            action to send denial to</p></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">## ###</span>
+
+
+export default base_component.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+  <span class="hljs-attribute">modal_id</span>: ember.computed -&gt; <span class="hljs-string">"ts-confirmation-modal-<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'elementId'</span>)}</span>"</span>
+
+  <span class="hljs-attribute">title</span>:        <span class="hljs-string">'Are you sure?'</span>
+  <span class="hljs-attribute">confirm_text</span>: <span class="hljs-string">'Yes'</span>
+  <span class="hljs-attribute">deny_text</span>:    <span class="hljs-string">'Cancel'</span>
+
+  <span class="hljs-attribute">modal_class_names</span>:         <span class="hljs-string">''</span>
+  <span class="hljs-attribute">default_modal_class_names</span>: <span class="hljs-string">'ts-confirmation-modal reveal-modal'</span>
+  <span class="hljs-attribute">all_modal_class_names</span>:     ember.computed <span class="hljs-string">'modal_class_names'</span>, <span class="hljs-function">-&gt;</span> 
+    class_names = <span class="hljs-property">@get</span>(<span class="hljs-string">'default_modal_class_names'</span>)
+    <span class="hljs-keyword">unless</span> ember.isEmpty <span class="hljs-property">@get</span>(<span class="hljs-string">'modal_class_names'</span>)
+      class_names = class_names + <span class="hljs-string">' '</span> + <span class="hljs-property">@get</span>(<span class="hljs-string">'modal_class_names'</span>)
+    class_names
+
+  <span class="hljs-attribute">get_$modal</span>: <span class="hljs-function">-&gt;</span> $(<span class="hljs-string">"#<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'modal_id'</span>)}</span>"</span>)
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span>
+    $(<span class="hljs-built_in">document</span>).foundation <span class="hljs-string">'reveal'</span>
+
+  <span class="hljs-attribute">actions</span>:
+
+    <span class="hljs-attribute">confirm</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@send</span> <span class="hljs-string">'close'</span>
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'confirm'</span>
+
+    <span class="hljs-attribute">deny</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@send</span> <span class="hljs-string">'close'</span>
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'deny'</span>
+
+    <span class="hljs-attribute">close</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@get_$modal</span>().foundation <span class="hljs-string">'reveal'</span>, <span class="hljs-string">'close'</span></div></div></div></div></body></html>

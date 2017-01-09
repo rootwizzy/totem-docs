@@ -1,0 +1,376 @@
+<!DOCTYPE html><html lang="en"><head><title>migrate/assignments/parse_xml</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="migrate/assignments/parse_xml"><meta name="groc-project-path" content="migrate/assignments/parse_xml.rb"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">migrate/assignments/parse_xml.rb</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>rake db:drop db:create totem:db:reset[none]
+rake thinkspace:migrate:assignments[../../migrate-ts-1-to-2/assignments]  #=&gt; relative path to assignment xml direcotry</p></div></div><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../helpers/require_all'</span>, __FILE_<span class="hljs-number">_</span>)
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Migrate</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Assignments</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ParseXml</span></span>
+
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Parse</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Node</span>
+
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:assignment</span>
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:assignment_item_types</span>
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:assignment_observation_lists</span>
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:assignment_diagnostic_paths</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(options={})</span></span>
+      <span class="hljs-variable">@test_overrides</span> = <span class="hljs-keyword">true</span>
+      <span class="hljs-variable">@verbose</span>        = <span class="hljs-keyword">false</span>
+      <span class="hljs-variable">@debug</span>          = <span class="hljs-keyword">true</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(args=<span class="hljs-keyword">nil</span>)</span></span>
+      start_time = <span class="hljs-constant">Time</span>.now
+      print_message <span class="hljs-string">"\n"</span>
+      print_message <span class="hljs-string">"Start Time: <span class="hljs-subst">#{start_time.to_s(<span class="hljs-symbol">:db</span>)}</span>"</span>
+      set_process_ids
+      set_root_path(args)
+      set_timeline_nodes
+      <span class="hljs-constant">ActiveRecord::Base</span>.transaction <span class="hljs-keyword">do</span>
+        set_space
+        set_user
+        set_image_prefix
+        set_remove_observation_links
+        create_assignments
+      <span class="hljs-keyword">end</span>
+      end_time     = <span class="hljs-constant">Time</span>.now
+      elapsed_time = end_time.minus_with_coercion(start_time)
+      print_message <span class="hljs-string">"\n"</span>
+      print_message <span class="hljs-string">"End Time: <span class="hljs-subst">#{end_time.to_s(<span class="hljs-symbol">:db</span>)}</span>"</span>
+      print_message <span class="hljs-string">"Duration (HH:MM:SS): <span class="hljs-subst">#{<span class="hljs-constant">Time</span>.at(elapsed_time).utc.strftime(<span class="hljs-string">'%H:%M:%S'</span>)}</span>"</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_assignments</span></span>
+      get_assignment_nodes.each <span class="hljs-keyword">do</span> |node|
+        id = get_node_id(node)
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> process_ids.present? &amp;&amp; !process_ids.<span class="hljs-keyword">include</span>?(id)
+        <span class="hljs-variable">@current_assignment_node</span> = node
+        create_assignment
+        create_assignment_observation_list_group
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_assignment_observation_list_group</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> assignment_observation_lists.blank?
+      id    = get_node_id(current_assignment_node)
+      title = get_assignment_title(id)
+      group = <span class="hljs-constant">Thinkspace::ObservationList::Group</span>.create(<span class="hljs-symbol">groupable:</span> assignment, <span class="hljs-symbol">title:</span> timestamp_title(title))
+      [assignment_observation_lists.values].flatten.compact.each <span class="hljs-keyword">do</span> |list|
+        <span class="hljs-constant">Thinkspace::ObservationList::GroupList</span>.create(<span class="hljs-symbol">list_id:</span> list.id, <span class="hljs-symbol">group_id:</span> group.id)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="create-assignment">Create Assignment.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_assignment</span></span>
+      id = get_node_id(current_assignment_node)
+      set_current_assignment_path(id)
+      hash                = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]        = get_assignment_title(id)
+      hash[<span class="hljs-symbol">:space_id</span>]     = space &amp;&amp; space.id
+      hash[<span class="hljs-symbol">:state</span>]        = <span class="hljs-string">'active'</span>
+      hash[<span class="hljs-symbol">:release_at</span>]   = <span class="hljs-keyword">nil</span>
+      hash[<span class="hljs-symbol">:due_at</span>]       = <span class="hljs-keyword">nil</span>
+      hash[<span class="hljs-symbol">:name</span>]         = <span class="hljs-keyword">nil</span>
+      hash[<span class="hljs-symbol">:bundle_type</span>]  = <span class="hljs-string">'casespace'</span>
+      hash[<span class="hljs-symbol">:description</span>]  = <span class="hljs-keyword">nil</span>
+      hash[<span class="hljs-symbol">:instructions</span>] = <span class="hljs-keyword">nil</span>
+      <span class="hljs-keyword">if</span> test_overrides?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="testing-overrides">Testing overrides</h3></div></div><div class="code"><div class="wrapper">        hash[<span class="hljs-symbol">:release_at</span>]   = <span class="hljs-constant">Time</span>.now - <span class="hljs-number">1</span>.days
+        hash[<span class="hljs-symbol">:due_at</span>]       = <span class="hljs-constant">Time</span>.now + <span class="hljs-number">10</span>.days</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="testing-overrides">Testing overrides</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">end</span>
+      <span class="hljs-variable">@assignment</span>         = <span class="hljs-constant">Thinkspace::Casespace::Assignment</span>.create(hash)
+      print_message <span class="hljs-string">"\n"</span>  <span class="hljs-keyword">if</span> verbose?
+      print_message <span class="hljs-string">"-- Assignment xmlid:<span class="hljs-subst">#{id}</span> id:<span class="hljs-subst">#{assignment.id}</span> title: <span class="hljs-subst">#{assignment.title.inspect}</span>"</span>
+      <span class="hljs-variable">@assignment_item_types</span>        = get_assignment_item_type_nodes.collect {|node| <span class="hljs-constant">ItemType</span>.new(node)}
+      <span class="hljs-variable">@assignment_diagnostic_paths</span>  = <span class="hljs-constant">Array</span>.new
+      <span class="hljs-variable">@assignment_observation_lists</span> = <span class="hljs-constant">Hash</span>.new
+      create_phases
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_phases</span></span>
+      get_assignment_phase_nodes.each <span class="hljs-keyword">do</span> |node|
+        <span class="hljs-variable">@current_phase_node</span> = node
+        create_phase
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="create-phase">Create Phase.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_phase</span></span>
+      hash                     = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]             = get_phase_title
+      hash[<span class="hljs-symbol">:state</span>]             = <span class="hljs-string">'inactive'</span>
+      hash[<span class="hljs-symbol">:position</span>]          = get_phase_id.to_i
+      hash[<span class="hljs-symbol">:phase_template_id</span>] = get_phase_template_id
+      hash[<span class="hljs-symbol">:team_category_id</span>]  = get_phase_team_category_id
+      hash[<span class="hljs-symbol">:description</span>]       = <span class="hljs-keyword">nil</span>
+      hash[<span class="hljs-symbol">:default_state</span>]     = get_phase_default_state
+      <span class="hljs-keyword">if</span> test_overrides?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="testing-overrides">Testing overrides</h3></div></div><div class="code"><div class="wrapper">        hash[<span class="hljs-symbol">:state</span>] = <span class="hljs-string">'active'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: REMOVE COMMENT.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-comment">#hash[:default_state] = 'unlocked'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="testing-overrides">Testing overrides</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">end</span>
+      phase = assignment.thinkspace_casespace_phases.create(hash)
+      print_message <span class="hljs-string">"   ++ phase xmlid:<span class="hljs-subst">#{get_phase_id}</span> id:<span class="hljs-subst">#{phase.id}</span> title: <span class="hljs-subst">#{phase.title.inspect}</span>"</span>  <span class="hljs-keyword">if</span> verbose?
+      create_phase_components(phase)
+      create_phase_configuration(phase)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_phase_configuration</span><span class="hljs-params">(phase)</span></span>
+      hash = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:action_submit_server</span>] = <span class="hljs-constant">Array</span>.new
+      hash[<span class="hljs-symbol">:action_submit_server</span>] &lt;&lt; {<span class="hljs-symbol">event:</span> <span class="hljs-symbol">:unlock_phase</span>, <span class="hljs-symbol">phase_id:</span> <span class="hljs-symbol">:next</span>}
+      hash[<span class="hljs-symbol">:action_submit_server</span>] &lt;&lt; {<span class="hljs-symbol">event:</span> <span class="hljs-symbol">:complete_phase</span>, <span class="hljs-symbol">phase_id:</span> <span class="hljs-symbol">:self</span>}
+      hash[<span class="hljs-symbol">:phase_score_validation</span>]                                        = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:phase_score_validation</span>][<span class="hljs-symbol">:numericality</span>]                         = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:phase_score_validation</span>][<span class="hljs-symbol">:numericality</span>][<span class="hljs-symbol">:less_than_or_equal_to</span>] = get_phase_sub_score || <span class="hljs-number">0</span>
+      hash[<span class="hljs-symbol">:phase_score_validation</span>][<span class="hljs-symbol">:validation</span>]                           = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:phase_score_validation</span>][<span class="hljs-symbol">:validation</span>][<span class="hljs-symbol">:validate</span>]                = <span class="hljs-keyword">true</span>
+      hash[<span class="hljs-symbol">:phase_score_validation</span>][<span class="hljs-symbol">:submit</span>]                               = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:phase_score_validation</span>][<span class="hljs-symbol">:submit</span>][<span class="hljs-symbol">:visible</span>]                     = <span class="hljs-keyword">true</span>
+      hash[<span class="hljs-symbol">:phase_score_validation</span>][<span class="hljs-symbol">:submit</span>][<span class="hljs-symbol">:text</span>]                        = <span class="hljs-variable">@submit_text</span> || <span class="hljs-string">'Submit'</span>
+      <span class="hljs-constant">Thinkspace::Common::Configuration</span>.create(<span class="hljs-symbol">configurable:</span> phase, <span class="hljs-symbol">settings:</span> hash)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_phase_components</span><span class="hljs-params">(phase)</span></span>
+      <span class="hljs-variable">@submit_text</span> = <span class="hljs-keyword">nil</span>
+      <span class="hljs-keyword">case</span> get_phase_type
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'content-items'</span>
+        create_header_component(phase)
+        create_html_component(phase, <span class="hljs-symbol">select_text:</span> <span class="hljs-keyword">true</span>)
+        create_observation_list_component(phase, <span class="hljs-string">'H'</span>)
+        create_submit_component(phase)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'labtest'</span>
+        create_header_component(phase)
+        create_lab_component(phase)
+        create_observation_list_component(phase, <span class="hljs-string">'D'</span>)
+        create_submit_component(phase)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'diagnosticpath'</span>
+        create_header_component(phase)
+        create_diagnostic_path_component(phase)
+        create_observation_list_component(phase, <span class="hljs-string">'M'</span>)
+        create_submit_component(phase)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'content'</span>
+        create_header_component(phase)
+        create_html_component(phase)
+        create_submit_component(phase)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'expertpath'</span>
+        create_header_component(phase)
+        create_diagnostic_path_viewer_component(phase)
+        create_submit_component(phase)
+      <span class="hljs-keyword">else</span>
+        stop_run <span class="hljs-string">"Unknown phase type <span class="hljs-subst">#{type.inspect}</span> in <span class="hljs-subst">#{current_assignment_path.inspect}</span>."</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="lab-components">Lab Components.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_lab_component</span><span class="hljs-params">(phase)</span></span>
+      id          = get_phase_id
+      phase_node  = get_phase_node(id)
+      chart_nodes = phase_node.css(<span class="hljs-string">'labtest'</span>)
+      raise_error <span class="hljs-string">'No lab test chart nodes.'</span>  <span class="hljs-keyword">if</span> chart_nodes.blank?
+      title         = <span class="hljs-string">"Lab chart for phase <span class="hljs-subst">#{phase.title}</span>"</span>
+      componentable = <span class="hljs-constant">Thinkspace::Lab::Chart</span>.create(<span class="hljs-symbol">authable:</span> phase, <span class="hljs-symbol">title:</span> title)
+      create_phase_component(phase, componentable, <span class="hljs-string">'lab'</span>, <span class="hljs-string">'chart'</span>)
+      create_lab_categories_and_results(componentable, chart_nodes)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_lab_categories_and_results</span><span class="hljs-params">(chart, nodes)</span></span>
+      <span class="hljs-constant">Helpers::LabChart</span>.new(<span class="hljs-keyword">self</span>, nodes).categories.each <span class="hljs-keyword">do</span> |key, hash|
+        results  = hash.delete(<span class="hljs-symbol">:results</span>)
+        category = <span class="hljs-constant">Thinkspace::Lab::Category</span>.create(hash.merge(<span class="hljs-symbol">chart_id:</span> chart.id))
+        results.each <span class="hljs-keyword">do</span> |result|
+          units = result[<span class="hljs-symbol">:value</span>][<span class="hljs-symbol">:columns</span>][<span class="hljs-symbol">:units</span>]
+          result[<span class="hljs-symbol">:value</span>][<span class="hljs-symbol">:columns</span>][<span class="hljs-symbol">:units</span>] = units.dup.force_encoding(<span class="hljs-string">'ISO-8859-1'</span>).encode(<span class="hljs-string">'UTF-8'</span>) <span class="hljs-keyword">if</span> units
+          <span class="hljs-constant">Thinkspace::Lab::Result</span>.create(result.merge(<span class="hljs-symbol">category_id:</span> category.id))
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="phase-headersubmit-components">Phase Header/Submit Components.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_header_component</span><span class="hljs-params">(phase)</span>;</span> create_phase_component(phase, phase, <span class="hljs-string">'casespace-phase-header'</span>, <span class="hljs-string">'header'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_submit_component</span><span class="hljs-params">(phase)</span>;</span> create_phase_component(phase, phase, <span class="hljs-string">'casespace-phase-submit'</span>, <span class="hljs-string">'submit'</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="diagnostic-path-component">Diagnostic Path Component.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_diagnostic_path_component</span><span class="hljs-params">(phase)</span></span>
+      title         = <span class="hljs-string">'Diagnostic Path'</span>
+      componentable = <span class="hljs-constant">Thinkspace::DiagnosticPath::Path</span>.new(<span class="hljs-symbol">authable:</span> phase, <span class="hljs-symbol">title:</span> title)
+      assignment_diagnostic_paths.push(componentable)
+      create_phase_component(phase, componentable, <span class="hljs-string">'diagnostic-path'</span>, <span class="hljs-string">'diag-path'</span>)
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="observation-list-component">Observation List Component.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_observation_list_component</span><span class="hljs-params">(phase, default_item_type)</span></span>
+      item_type = get_phase_item_type
+      item_type = default_item_type  <span class="hljs-keyword">if</span> item_type.blank?
+      print_debug <span class="hljs-string">"Duplicate phase observation list item type <span class="hljs-subst">#{item_type.inspect}</span>"</span>, <span class="hljs-symbol">ids:</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> assignment_observation_lists.has_key?(item_type)
+      category      = get_item_type_category(item_type)
+      componentable = <span class="hljs-constant">Thinkspace::ObservationList::List</span>.create(<span class="hljs-symbol">authable:</span> phase, <span class="hljs-symbol">category:</span> category)
+      assignment_observation_lists[item_type] ||= <span class="hljs-constant">Array</span>.new
+      assignment_observation_lists[item_type].push(componentable)
+      create_phase_component(phase, componentable, <span class="hljs-string">'observation-list'</span>, <span class="hljs-string">'obs-list'</span>)
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="html-component">HTML Component.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_html_component</span><span class="hljs-params">(phase, options={})</span></span>
+      id         = get_phase_id
+      phase_node = get_phase_node(id)
+      content    = find_node_value(phase_node, <span class="hljs-symbol">:content</span>)
+      raise_error <span class="hljs-string">'No html content.'</span>  <span class="hljs-keyword">if</span> content.blank?
+      doc     = parse_html(content)
+      buttons = doc.search(<span class="hljs-string">'input[type="button"]'</span>)
+      buttons.each <span class="hljs-keyword">do</span> |button|
+        name = button.attribute(<span class="hljs-string">'name'</span>).text
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> name == <span class="hljs-string">'submit'</span>
+        <span class="hljs-variable">@submit_text</span> = button.attribute(<span class="hljs-string">'value'</span>).text
+        button.remove
+      <span class="hljs-keyword">end</span>
+      images = doc.search(<span class="hljs-string">'img'</span>)
+      images.each <span class="hljs-keyword">do</span> |image|
+        src                          = image.attribute(<span class="hljs-string">'src'</span>).text
+        file_name                    = src.split(<span class="hljs-string">'/'</span>).pop
+        new_src                      = get_image_src_for_file_name(file_name)
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> new_src.present?
+        image.attribute(<span class="hljs-string">'src'</span>).value = new_src
+      <span class="hljs-keyword">end</span>
+      html_content  = doc.to_s
+      componentable = <span class="hljs-constant">Thinkspace::Html::Content</span>.create(<span class="hljs-symbol">authable:</span> phase, <span class="hljs-symbol">html_content:</span> html_content)
+      create_html_content_input_elements(componentable)
+      component_title = options[<span class="hljs-symbol">:select_text</span>].present? ? <span class="hljs-string">'html-select-text'</span> <span class="hljs-symbol">:</span> <span class="hljs-string">'html'</span>
+      create_phase_component(phase, componentable, component_title, <span class="hljs-string">'html'</span>)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_image_src_for_file_name</span><span class="hljs-params">(file_name)</span></span>
+      <span class="hljs-keyword">return</span> file_name <span class="hljs-keyword">unless</span> image_prefix.present?
+      image_prefix + <span class="hljs-string">"/<span class="hljs-subst">#{file_name}</span>"</span>
+    <span class="hljs-keyword">end</span>
+    
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_html_content_input_elements</span><span class="hljs-params">(componentable)</span></span>
+      names = get_input_element_names(componentable.html_content)
+      names.each <span class="hljs-keyword">do</span> |hash|
+        name = hash[<span class="hljs-symbol">:name</span>]
+        type = hash[<span class="hljs-symbol">:element_type</span>]
+        element = componentable.thinkspace_input_element_elements.create(<span class="hljs-symbol">name:</span> name, <span class="hljs-symbol">element_type:</span> type, <span class="hljs-symbol">componentable:</span> componentable)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_input_element_names</span><span class="hljs-params">(html_content)</span></span>
+      input_names = <span class="hljs-constant">Array</span>.new
+      radio       = <span class="hljs-constant">Hash</span>.new
+      html        = parse_html(html_content)
+      inputs      = html.css(<span class="hljs-string">'input'</span>)
+      inputs.each <span class="hljs-keyword">do</span> |input|
+        name         = input[<span class="hljs-string">'name'</span>]
+        element_type = input[<span class="hljs-string">'type'</span>]
+        element_type == <span class="hljs-string">'radio'</span> ? radio[name] = element_type <span class="hljs-symbol">:</span> input_names.push({<span class="hljs-symbol">name:</span> name, <span class="hljs-symbol">element_type:</span> element_type})
+      <span class="hljs-keyword">end</span>
+      inputs = html.css(<span class="hljs-string">'textarea'</span>)
+      inputs.each <span class="hljs-keyword">do</span> |input|
+        input_names.push({<span class="hljs-symbol">name:</span> input[<span class="hljs-string">'name'</span>], <span class="hljs-symbol">element_type:</span> <span class="hljs-string">'textarea'</span>})
+      <span class="hljs-keyword">end</span>
+      radio.each {|name, type| input_names.push({<span class="hljs-symbol">name:</span> name, <span class="hljs-symbol">element_type:</span> type})}
+      input_names
+    <span class="hljs-keyword">end</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="diagnostic-path-viewer-component">Diagnostic Path Viewer Component.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_diagnostic_path_viewer_component</span><span class="hljs-params">(phase)</span></span>
+      diagnostic_path = assignment_diagnostic_paths.last
+      raise_error <span class="hljs-string">"Assignment does not have any diagnostic paths."</span>  <span class="hljs-keyword">if</span> diagnostic_path.blank?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Expert side.</p></div></div><div class="code"><div class="wrapper">      componentable   = <span class="hljs-constant">Thinkspace::DiagnosticPathViewer::Viewer</span>.create(
+        <span class="hljs-symbol">authable:</span>  phase,
+        <span class="hljs-symbol">path_id:</span>   diagnostic_path.id,
+        <span class="hljs-symbol">ownerable:</span> user,
+        <span class="hljs-symbol">user_id:</span>   user &amp;&amp; user.id
+      )
+      create_phase_component(phase, componentable, <span class="hljs-string">'diagnostic-path-viewer'</span>, <span class="hljs-string">'diag-path-viewer'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Student side.</p></div></div><div class="code"><div class="wrapper">      create_phase_component(phase, componentable, <span class="hljs-string">'diagnostic-path-viewer-ownerable'</span>, <span class="hljs-string">'diag-path-viewer-ownerable'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create html for above.</p></div></div><div class="code"><div class="wrapper">      nodes = get_assignment_diagnosis_nodes
+      create_diagnostic_path_viewer_html_components(phase, nodes)
+      create_diagnostic_path_viewer_expert_values(phase, diagnostic_path, nodes)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_diagnostic_path_viewer_html_components</span><span class="hljs-params">(phase, nodes)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Expert side.</p></div></div><div class="code"><div class="wrapper">      diagnosis_node = nodes.css(<span class="hljs-string">'diagnosis'</span>)
+      comment        = find_node_value(diagnosis_node, <span class="hljs-symbol">:comment</span>)
+      html_content   = <span class="hljs-string">"&lt;h3&gt;Diagnosis: <span class="hljs-subst">#{comment}</span>&lt;/h3&gt;"</span>
+      componentable  = <span class="hljs-constant">Thinkspace::Html::Content</span>.create(<span class="hljs-symbol">authable:</span> phase, <span class="hljs-symbol">html_content:</span> html_content)
+      create_phase_component(phase, componentable, <span class="hljs-string">'html'</span>, <span class="hljs-string">'html-viewer'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Student side.</p></div></div><div class="code"><div class="wrapper">      comment       = <span class="hljs-string">'&lt;thinkspace type="carry_forward" name="diagnosis"&gt;&lt;/thinkspace&gt;'</span>
+      html_content  = <span class="hljs-string">"&lt;h3&gt;Diagnosis: <span class="hljs-subst">#{comment}</span>&lt;/h3&gt;"</span>
+      componentable = <span class="hljs-constant">Thinkspace::Html::Content</span>.create(<span class="hljs-symbol">authable:</span> phase, <span class="hljs-symbol">html_content:</span> html_content)
+      create_phase_component(phase, componentable, <span class="hljs-string">'html'</span>, <span class="hljs-string">'html-ownerable'</span>)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_diagnostic_path_viewer_expert_values</span><span class="hljs-params">(phase, diagnostic_path, nodes)</span></span>
+      items = nodes.css(<span class="hljs-string">'item'</span>)
+      raise_error <span class="hljs-string">"Items are blank for path viewer."</span>  <span class="hljs-keyword">if</span> items.blank?
+      observations = create_diagnostic_path_viewer_expert_observations(items)
+      create_diagnostic_path_viewer_expert_path_items(items, diagnostic_path, observations)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_diagnostic_path_viewer_expert_observations</span><span class="hljs-params">(items)</span></span>
+      observations = <span class="hljs-constant">Hash</span>.new
+      items.each <span class="hljs-keyword">do</span> |node|
+        id = get_node_id(node)
+        raise_error <span class="hljs-string">"Diagnosis item has a blank id."</span>  <span class="hljs-keyword">if</span> id.blank?
+        item_type = find_node_value(node, <span class="hljs-symbol">:type</span>)
+        list      = (assignment_observation_lists[item_type] || []).first
+        <span class="hljs-keyword">if</span> list.blank?
+          item_type = <span class="hljs-string">'D'</span> <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> What to do here?  Defaulting custom item types to D.</span>
+          list      = (assignment_observation_lists[item_type] || []).first
+        <span class="hljs-keyword">end</span>
+        raise_error <span class="hljs-string">"Observation list for item type <span class="hljs-subst">#{item_type.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> list.blank?
+        value             = get_observation_value_for_node(node, <span class="hljs-symbol">:label</span>)
+        position          = id.to_i
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> item_type == <span class="hljs-string">'M'</span> <span class="hljs-comment"># Do not create observations for Mechanisms.</span>
+        observation       = list.thinkspace_observation_list_observations.create(
+          <span class="hljs-symbol">position:</span>  position,
+          <span class="hljs-symbol">value:</span>     value,
+          <span class="hljs-symbol">ownerable:</span> user,
+          <span class="hljs-symbol">user_id:</span>   user &amp;&amp; user.id
+        )
+        observations[id] = observation
+      <span class="hljs-keyword">end</span>
+      observations
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_diagnostic_path_viewer_expert_path_items</span><span class="hljs-params">(items, path, observations)</span></span>
+      indent_parents  = <span class="hljs-constant">Hash</span>.new
+      indent_position = <span class="hljs-constant">Hash</span>.new(<span class="hljs-number">0</span>)
+      items.each <span class="hljs-keyword">do</span> |node|
+        id          = get_node_id(node)
+        observation = observations[id]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>raise_error &quot;Observation is blank for path item id #{id}.&quot;  if observation.blank?</p></div></div><div class="code"><div class="wrapper">        indent   = find_node_value(node, <span class="hljs-symbol">:indent</span>).to_i
+        parent   = indent_parents[indent]
+        position = indent_position[indent] 
+        indent_position.keys.each {|k| indent_position.delete(k)  <span class="hljs-keyword">if</span> k &gt; indent}
+        <span class="hljs-keyword">if</span> observation.present?
+          path_item = path.thinkspace_diagnostic_path_path_items.create(
+            <span class="hljs-symbol">parent_id:</span>     parent &amp;&amp; parent.id,
+            <span class="hljs-symbol">position:</span>      position,
+            <span class="hljs-symbol">path_itemable:</span> observation,
+            <span class="hljs-symbol">ownerable:</span>     user,
+            <span class="hljs-symbol">user_id:</span>       user &amp;&amp; user.id,
+          )
+        <span class="hljs-keyword">else</span>
+          value = get_observation_value_for_node(node, <span class="hljs-symbol">:label</span>)
+          path_item = path.thinkspace_diagnostic_path_path_items.create(
+            <span class="hljs-symbol">parent_id:</span>     parent &amp;&amp; parent.id,
+            <span class="hljs-symbol">position:</span>      position,
+            <span class="hljs-symbol">description:</span>   value,
+            <span class="hljs-symbol">ownerable:</span>     user,
+            <span class="hljs-symbol">user_id:</span>       user &amp;&amp; user.id,
+          )
+        <span class="hljs-keyword">end</span>
+        indent_parents[indent + <span class="hljs-number">1</span>] = path_item
+        indent_position[indent] += <span class="hljs-number">1</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_observation_value_for_node</span><span class="hljs-params">(node, attribute=<span class="hljs-symbol">:label</span>)</span></span>
+      value = find_node_value(node, <span class="hljs-symbol">:label</span>)
+      link_check = <span class="hljs-constant">::Nokogiri::HTML</span>(value).css(<span class="hljs-string">'a'</span>)
+      <span class="hljs-keyword">if</span> link_check.present? <span class="hljs-keyword">and</span> <span class="hljs-variable">@remove_observation_links</span>
+        raise_error <span class="hljs-string">"Cannot remove links as there are more than one [<span class="hljs-subst">#{link_check.length}</span>]"</span> <span class="hljs-keyword">if</span> link_check.length &gt; <span class="hljs-number">1</span>
+        value = link_check.text
+      <span class="hljs-keyword">end</span>
+      value
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="component-helper">Component Helper.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_phase_component</span><span class="hljs-params">(phase, componentable, component_title, section)</span></span>
+      component = <span class="hljs-constant">Thinkspace::Common::Component</span>.find_by(<span class="hljs-symbol">title:</span> component_title)
+      raise_error <span class="hljs-string">"Component with title <span class="hljs-subst">#{component_title.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> component.blank?
+      phase_component = phase.thinkspace_casespace_phase_components.create(
+        <span class="hljs-symbol">componentable:</span> componentable,
+        <span class="hljs-symbol">component_id:</span>  component.id,
+        <span class="hljs-symbol">section:</span>       section
+      )
+      print_message <span class="hljs-string">"      + component: <span class="hljs-subst">#{component_title.inspect}</span> section: <span class="hljs-subst">#{section.inspect}</span> componentable: <span class="hljs-subst">#{componentable.<span class="hljs-keyword">class</span>.name}</span>.<span class="hljs-subst">#{componentable.id}</span>"</span>  <span class="hljs-keyword">if</span> verbose?
+      phase_component
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># class</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

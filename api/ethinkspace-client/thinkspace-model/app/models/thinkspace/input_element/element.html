@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/models/thinkspace/input_element/element</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/models/thinkspace/input_element/element"><meta name="groc-project-path" content="thinkspace-model/app/models/thinkspace/input_element/element.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-model/app/models/thinkspace/input_element/element.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ta    from <span class="hljs-string">'totem/ds/associations'</span>
+
+export default ta.Model.extend ta.add(
+    ta.polymorphic <span class="hljs-string">'helper_embedable'</span>
+    ta.has_many <span class="hljs-string">'responses'</span>, <span class="hljs-attribute">reads</span>: {<span class="hljs-attribute">filter</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">notify</span>: <span class="hljs-literal">true</span>}
+  ), 
+
+  <span class="hljs-attribute">name</span>:                  ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">element_type</span>:          ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">helper_embedable_type</span>: ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">helper_embedable_id</span>:   ta.attr(<span class="hljs-string">'number'</span>)
+
+  <span class="hljs-attribute">response</span>: ember.computed.reads <span class="hljs-string">'responses.firstObject'</span></div></div></div></div></body></html>

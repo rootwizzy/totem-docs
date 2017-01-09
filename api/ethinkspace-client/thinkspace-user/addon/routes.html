@@ -1,0 +1,12 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-user/addon/routes</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="thinkspace-user/addon/routes"><meta name="groc-project-path" content="thinkspace-user/addon/routes.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-user/addon/routes.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import buildRoutes from <span class="hljs-string">'ember-engines/routes'</span>
+
+export default buildRoutes -&gt;
+  <span class="hljs-property">@route</span> <span class="hljs-string">'sign_in'</span>, <span class="hljs-attribute">path</span>: <span class="hljs-string">'/sign_in'</span>
+  <span class="hljs-property">@route</span> <span class="hljs-string">'sign_up'</span>, <span class="hljs-attribute">path</span>: <span class="hljs-string">'/sign_up'</span>
+
+  <span class="hljs-property">@route</span> <span class="hljs-string">'password'</span>, <span class="hljs-attribute">path</span>: <span class="hljs-string">'/password'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@route</span> <span class="hljs-string">'new'</span>,          <span class="hljs-attribute">path</span>: <span class="hljs-string">'/reset'</span>
+    <span class="hljs-property">@route</span> <span class="hljs-string">'show'</span>,         <span class="hljs-attribute">path</span>: <span class="hljs-string">'/reset/:token'</span>
+    <span class="hljs-property">@route</span> <span class="hljs-string">'fail'</span>,         <span class="hljs-attribute">path</span>: <span class="hljs-string">'/reset/fails'</span>
+    <span class="hljs-property">@route</span> <span class="hljs-string">'success'</span>,      <span class="hljs-attribute">path</span>: <span class="hljs-string">'/reset/success'</span>
+    <span class="hljs-property">@route</span> <span class="hljs-string">'confirmation'</span>, <span class="hljs-attribute">path</span>: <span class="hljs-string">'/reset/confirmation'</span></div></div></div></div></body></html>

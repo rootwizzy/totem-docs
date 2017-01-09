@@ -1,0 +1,447 @@
+<!DOCTYPE html><html lang="en"><head><title>migrate/to_components/helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="migrate/to_components/helper"><meta name="groc-project-path" content="migrate/to_components/helper.rb"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">migrate/to_components/helper.rb</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Migrate</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ToComponents</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Helper</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Totem::DbMigrate</span></span>::<span class="hljs-title">BaseHelper</span></span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_all</span><span class="hljs-params">(*args)</span></span>
+      <span class="hljs-constant">PaperTrail</span>.enabled = <span class="hljs-keyword">false</span>
+      delete_all_new_class_records!(new_paper_trail_version_class)
+      delete_all_new_class_records!(new_phase_template_class)
+      create_phase_templates
+      <span class="hljs-variable">@max_allowed_missing_phase_states_for_phase_scores</span> = <span class="hljs-number">3</span>
+      <span class="hljs-variable">@num_allowed_missing_phase_states_for_phase_scores</span> = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">after_all</span><span class="hljs-params">(*args)</span></span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_create_thinkspace_common_space_types</span><span class="hljs-params">(config, old_space_type, attributes)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Change the lookup_model for assignments.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">case</span> attributes[<span class="hljs-symbol">:lookup_model</span>]
+      <span class="hljs-keyword">when</span> old_class_name(old_assignment_class).underscore.pluralize
+        attributes[<span class="hljs-symbol">:lookup_model</span>] = new_assignment_class.name.underscore.pluralize
+        ignore_record_columns(<span class="hljs-symbol">:lookup_model</span>)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_create_thinkspace_casespace_phases</span><span class="hljs-params">(config, old_phase, attributes)</span></span>
+      <span class="hljs-comment">#=&gt; added:   [team_category_id]</span>
+      <span class="hljs-comment">#=&gt; removed: [team_based]</span>
+      attributes[<span class="hljs-symbol">:team_category_id</span>]  = get_phase_team_category_id(old_phase)
+      attributes[<span class="hljs-symbol">:phase_template_id</span>] = get_new_phase_template_id_for_old_phase(old_phase)
+      ignore_record_columns(<span class="hljs-symbol">:phase_template_id</span>)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_create_thinkspace_casespace_phase_scores</span><span class="hljs-params">(config, old_score, attributes)</span></span>
+      <span class="hljs-comment">#=&gt; added:   [phase_state_id]</span>
+      <span class="hljs-comment">#=&gt; removed: [ownerable_id, ownerable_type, phase_id]</span>
+      phase_state = old_phase_state_class.find_by(
+        <span class="hljs-symbol">ownerable_type:</span> old_score.ownerable_type,
+        <span class="hljs-symbol">ownerable_id:</span>   old_score.ownerable_id,
+        <span class="hljs-symbol">phase_id:</span>       old_score.phase_id,
+      )
+      <span class="hljs-keyword">if</span> phase_state.blank?
+        over_max = (<span class="hljs-variable">@num_allowed_missing_phase_states_for_phase_scores</span> += <span class="hljs-number">1</span>) &gt; <span class="hljs-variable">@max_allowed_missing_phase_states_for_phase_scores</span>
+        raise_error <span class="hljs-string">"Phase state not found for phase score <span class="hljs-subst">#{old_score.inspect}</span>."</span>  <span class="hljs-keyword">if</span> over_max
+        skip_create  <span class="hljs-comment"># skip creating the record since model validations require a phase_state_id</span>
+      <span class="hljs-keyword">else</span>
+        attributes[<span class="hljs-symbol">:phase_state_id</span>] = phase_state.id
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_create_thinkspace_diagnostic_path_viewer_viewers</span><span class="hljs-params">(config, old_record, attributes)</span></span>
+      <span class="hljs-comment">#=&gt; added:   [authable_id, authable_type, ownerable_id, ownerable_type]</span>
+      path = old_diagnostic_path_class.find_by(<span class="hljs-symbol">id:</span> old_record.path_id)
+      raise_error <span class="hljs-string">"Path not found for diagnostic path viewer <span class="hljs-subst">#{old_record.inspect}</span>."</span>  <span class="hljs-keyword">if</span> path.blank?
+      phase = old_phase_class.find_by(<span class="hljs-symbol">id:</span> path.phase_id)
+      raise_error <span class="hljs-string">"Phase not found for diagnostic path viewer <span class="hljs-subst">#{old_record.inspect}</span>."</span>  <span class="hljs-keyword">if</span> phase.blank?
+      attributes[<span class="hljs-symbol">:authable_type</span>]  = old_phase_class.name
+      attributes[<span class="hljs-symbol">:authable_id</span>]    = phase.id
+      attributes[<span class="hljs-symbol">:ownerable_type</span>] = old_user_class.name
+      attributes[<span class="hljs-symbol">:ownerable_id</span>]   = old_record.user_id
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_create_thinkspace_html_contents</span><span class="hljs-params">(config, old_record, attributes)</span></span>
+      <span class="hljs-comment">#=&gt; added:   [html_content]</span>
+      <span class="hljs-comment">#=&gt; removed: [tool_content, view_generator]</span>
+      attributes[<span class="hljs-symbol">:html_content</span>] = attributes[<span class="hljs-symbol">:tool_content</span>]
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_create_thinkspace_input_element_elements</span><span class="hljs-params">(config, old_record, attributes)</span></span>
+      <span class="hljs-comment">#=&gt; added:   [componentable_id, componentable_type]</span>
+      <span class="hljs-comment">#=&gt; removed: [helper_embedable_id, helper_embedable_type]</span>
+      attributes[<span class="hljs-symbol">:componentable_id</span>]   = attributes[<span class="hljs-symbol">:helper_embedable_id</span>]
+      attributes[<span class="hljs-symbol">:componentable_type</span>] = attributes[<span class="hljs-symbol">:helper_embedable_type</span>]
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_create_thinkspace_team_teams</span><span class="hljs-params">(config, old_team, attributes)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Fix teams without an authable.  Set to the team.teamable.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> attributes[<span class="hljs-symbol">:authable_type</span>].blank?
+        teamable                   = old_team_teamable_class.find_by(<span class="hljs-symbol">team_id:</span> old_team.id)
+        raise_error <span class="hljs-string">"Old team id <span class="hljs-subst">#{old_team.id}</span> does not have an authable or a teamable."</span>  <span class="hljs-keyword">if</span> teamable.blank?
+        attributes[<span class="hljs-symbol">:authable_type</span>] = teamable.teamable_type
+        attributes[<span class="hljs-symbol">:authable_id</span>]   = teamable.teamable_id
+        ignore_record_columns(<span class="hljs-symbol">:authable_type</span>, <span class="hljs-symbol">:authable_id</span>)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_create_thinkspace_artifact_files</span><span class="hljs-params">(config, old_file, attributes)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Fix files without an ownerable.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> old_file.ownerable_type.present?
+      attributes[<span class="hljs-symbol">:ownerable_type</span>] = polymorphic_type(old_user_class)
+      attributes[<span class="hljs-symbol">:ownerable_id</span>]   = old_file.user_id
+      ignore_record_columns(<span class="hljs-symbol">:ownerable_type</span>, <span class="hljs-symbol">:ownerable_id</span>)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_create_thinkspace_observation_list_lists</span><span class="hljs-params">(config, old_list, attributes)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Can only fix 1 of 3 blank authables (2 do not have a phase tool helper record).</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> old_list.authable_type.present?
+      phase_tool_helper = old_phase_tool_helper_class.find_by(<span class="hljs-symbol">helperable_type:</span> polymorphic_type(old_list), <span class="hljs-symbol">helperable_id:</span> old_list.id)
+      <span class="hljs-keyword">if</span> phase_tool_helper.present?
+        phase_tool = old_phase_tool_class.find_by(<span class="hljs-symbol">id:</span> phase_tool_helper.phase_tool_id)
+        <span class="hljs-keyword">if</span> phase_tool.present?
+          phase = old_phase_class.find_by(<span class="hljs-symbol">id:</span> phase_tool.phase_id)
+          attributes[<span class="hljs-symbol">:authable_type</span>] = polymorphic_type(old_phase_class)
+          attributes[<span class="hljs-symbol">:authable_id</span>]   = phase.id
+          ignore_record_columns(<span class="hljs-symbol">:authable_type</span>, <span class="hljs-symbol">:authable_id</span>)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="get-phase-team">Get Phase Team.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_phase_team_category_id</span><span class="hljs-params">(old_phase)</span></span>
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> old_phase.team_based?  <span class="hljs-comment"># old model had 'team_based = true' only for collaboration teams</span>
+        new_collaboration_team_category.id
+      <span class="hljs-keyword">when</span> old_phase_has_peer_review_teams?(old_phase)
+        new_peer_review_team_cateogory.id
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">nil</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_has_peer_review_teams?</span><span class="hljs-params">(old_phase)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> old_phase.team_based?
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> old_team_teamable_class.find_by(<span class="hljs-symbol">teamable_id:</span> old_phase.id, <span class="hljs-symbol">teamable_type:</span> polymorphic_type(old_phase))
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> old_team_teamable_class.find_by(<span class="hljs-symbol">teamable_id:</span> old_phase.assignment_id, <span class="hljs-symbol">teamable_type:</span> polymorphic_type(old_assignment_class))
+      <span class="hljs-keyword">false</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_old_configuration</span><span class="hljs-params">(old_record)</span></span>
+      old_configuration_class.find_by(<span class="hljs-symbol">configurable_id:</span> old_record.id, <span class="hljs-symbol">configurable_type:</span> polymorphic_type(old_record))
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="old-model-classes">OLD Model Classes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_user_class</span>;</span>                     get_old_model_class(<span class="hljs-string">'thinkspace/common/user'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_configuration_class</span>;</span>            get_old_model_class(<span class="hljs-string">'thinkspace/common/configuration'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_assignment_class</span>;</span>               get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/assignment'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_class</span>;</span>                    get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_state_class</span>;</span>              get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_state'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_score_class</span>;</span>              get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_score'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_template_class</span>;</span>           get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_template'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_tool_class</span>;</span>               get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_tool'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_tool_helper_class</span>;</span>        get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_tool_helper'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_tool_helper_embed_class</span>;</span>  get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_tool_helper_embed'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_template_section_class</span>;</span>   get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_template_section'</span>); <span class="hljs-keyword">end</span>
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_artifact_bucket_class</span>;</span>     get_old_model_class(<span class="hljs-string">'thinkspace/tools/artifact/bucket'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_html_content_class</span>;</span>        get_old_model_class(<span class="hljs-string">'thinkspace/tools/html/content'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_diagnostic_path_class</span>;</span>     get_old_model_class(<span class="hljs-string">'thinkspace/tools/diagnostic_path/path'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_observation_list_class</span>;</span>    get_old_model_class(<span class="hljs-string">'thinkspace/tools/helpers/observation_list/list'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_input_element_class</span>;</span>       get_old_model_class(<span class="hljs-string">'thinkspace/tools/helper_embeds/input_element/element'</span>); <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_team_class</span>;</span>                get_old_model_class(<span class="hljs-string">'thinkspace/team/team'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_team_teamable_class</span>;</span>       get_old_model_class(<span class="hljs-string">'thinkspace/team/team_teamable'</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="new-model-classes">NEW Model Classes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_user_class</span>;</span>                get_new_model_class(<span class="hljs-string">'thinkspace/common/user'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_assignment_class</span>;</span>          get_new_model_class(<span class="hljs-string">'thinkspace/casespace/assignment'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_phase_class</span>;</span>               get_new_model_class(<span class="hljs-string">'thinkspace/casespace/phase'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_phase_component_class</span>;</span>     get_new_model_class(<span class="hljs-string">'thinkspace/casespace/phase_component'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_phase_template_class</span>;</span>      get_new_model_class(<span class="hljs-string">'thinkspace/casespace/phase_template'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_team_category_class</span>;</span>       get_new_model_class(<span class="hljs-string">'thinkspace/team/team_category'</span>); <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_paper_trail_version_class</span>;</span> get_new_model_class(<span class="hljs-string">'paper_trail/version'</span>); <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_collaboration_team_category</span>;</span> <span class="hljs-variable">@new_collaboration_team_category</span> ||= new_team_category_class.collaboration; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_peer_review_team_cateogory</span>;</span>  <span class="hljs-variable">@new_peer_review_team_category</span>   ||= new_team_category_class.peer_review; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="phase-templates">Phase Templates.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_new_phase_template_id_for_old_phase</span><span class="hljs-params">(old_phase)</span></span>
+      phase_template_id = old_phase.phase_template_id
+      phase_tools       = old_phase_tool_class.where(<span class="hljs-symbol">phase_id:</span> old_phase.id)
+
+      <span class="hljs-keyword">case</span>
+
+      <span class="hljs-keyword">when</span> phase_template_id == <span class="hljs-number">1</span>
+        <span class="hljs-keyword">case</span>
+        <span class="hljs-keyword">when</span> phase_tools.length == <span class="hljs-number">1</span>
+          name = get_new_phase_template_one_column_name(old_phase, phase_tools.first)
+        <span class="hljs-keyword">when</span> phase_tools.length == <span class="hljs-number">2</span>
+          name = <span class="hljs-symbol">:one_column_html_artifact_submit</span>
+        <span class="hljs-keyword">else</span>
+          raise_error <span class="hljs-string">"Unknown new phase template for phase template id 1."</span>
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">when</span> phase_template_id == <span class="hljs-number">2</span>
+        phase_tool_ids = phase_tools.map(&amp;<span class="hljs-symbol">:id</span>)
+        phase_helpers  = old_phase_tool_helper_class.where(<span class="hljs-symbol">phase_tool_id:</span> phase_tool_ids)
+        raise_error <span class="hljs-string">"More than one phase helper for old phase <span class="hljs-subst">#{phase_helpers.inspect}</span>."</span>  <span class="hljs-keyword">if</span> phase_helpers.length &gt; <span class="hljs-number">1</span>
+        phase_helper = phase_helpers.first
+        types = phase_tools.map(&amp;<span class="hljs-symbol">:toolable_type</span>)
+        types.push(phase_helper.helperable_type) <span class="hljs-keyword">if</span> phase_helper.present?
+        name = get_new_phase_template_two_column_name(old_phase, types)
+
+      <span class="hljs-keyword">when</span> phase_template_id == <span class="hljs-number">3</span>
+        name = <span class="hljs-symbol">:one_column_html_submit</span>  <span class="hljs-comment"># default any sandbox phases</span>
+
+      <span class="hljs-keyword">else</span>
+        raise_error <span class="hljs-string">"Unknown phase template id <span class="hljs-subst">#{phase_template_id}</span> for old phase <span class="hljs-subst">#{old_phase.inspect}</span>"</span>
+      <span class="hljs-keyword">end</span>
+      raise_error <span class="hljs-string">"Could not find new phase template for phase template id <span class="hljs-subst">#{phase_template_id}</span>."</span>  <span class="hljs-keyword">if</span> name.blank?
+      phase_template = new_phase_templates_name_map[name]
+      raise_error <span class="hljs-string">"No new phase template found for name <span class="hljs-subst">#{name.to_s.inspect}</span>."</span>  <span class="hljs-keyword">if</span> phase_template.blank?
+      phase_template.id
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_new_phase_template_one_column_name</span><span class="hljs-params">(old_phase, phase_tool)</span></span>
+      section_id = phase_tool.phase_template_section_id
+      raise_error <span class="hljs-string">"Unknown one column phase template section id <span class="hljs-subst">#{section_id}</span>"</span>  <span class="hljs-keyword">unless</span> section_id == <span class="hljs-number">2</span>
+      <span class="hljs-keyword">case</span> phase_tool.toolable_type
+      <span class="hljs-keyword">when</span> polymorphic_type(old_html_content_class)
+        old_phase_has_submit?(old_phase) ? <span class="hljs-symbol">:one_column_html_submit</span> <span class="hljs-symbol">:</span> <span class="hljs-symbol">:one_column_html_no_submit</span>
+      <span class="hljs-keyword">when</span> polymorphic_type(old_artifact_bucket_class)
+        <span class="hljs-symbol">:one_column_artifact_submit</span>
+      <span class="hljs-keyword">else</span>
+        raise_error <span class="hljs-string">"Did not find one column phase template for phase tool type <span class="hljs-subst">#{phase_tool.toolable_type.inspect}</span>."</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_new_phase_template_two_column_name</span><span class="hljs-params">(old_phase, types)</span></span>
+      html = polymorphic_type(old_html_content_class)
+      list = polymorphic_type(old_observation_list_class)
+      path = polymorphic_type(old_diagnostic_path_class)
+      <span class="hljs-keyword">case</span> types
+      <span class="hljs-keyword">when</span> [html, html]   <span class="hljs-keyword">then</span> <span class="hljs-symbol">:two_column_html_html_submit</span>
+      <span class="hljs-keyword">when</span> [html, list]   <span class="hljs-keyword">then</span> <span class="hljs-symbol">:two_column_html_observation_list_submit</span>
+      <span class="hljs-keyword">when</span> [path, list]   <span class="hljs-keyword">then</span> <span class="hljs-symbol">:two_column_diagnostic_path_observation_list_submit</span>
+      <span class="hljs-keyword">else</span>
+        raise_error <span class="hljs-string">"Did not find two column phase template for phase tools/helpers with types <span class="hljs-subst">#{types}</span>."</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_has_submit?</span><span class="hljs-params">(old_phase)</span></span>
+      configuration = get_old_configuration(old_phase)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> configuration.blank?  <span class="hljs-comment"># default to true</span>
+      configuration = configuration.attributes.with_indifferent_access
+      settings      = configuration[<span class="hljs-symbol">:settings</span>] || <span class="hljs-constant">Hash</span>.new
+      submit        = settings[<span class="hljs-symbol">:submit</span>] || <span class="hljs-constant">Hash</span>.new
+      !(submit[<span class="hljs-symbol">:visible</span>] == <span class="hljs-keyword">false</span>)
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<h2 id="">#</h2>
+<h3 id="create-new-phase-templates-before-all">Create NEW Phase Templates (:before_all).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:new_phase_templates_name_map</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_phase_templates</span></span>
+      <span class="hljs-variable">@new_phase_templates_name_map</span> = <span class="hljs-constant">Hash</span>.new
+      phase_template_one_column_html_submit
+      phase_template_one_column_html_no_submit
+      phase_template_one_column_html_artifact_submit
+      phase_template_one_column_artifact_submit
+      phase_template_two_column_html_html_submit
+      phase_template_two_column_html_observation_list_submit
+      phase_template_two_column_diagnostic_path_observation_list_submit
+      phase_template_two_column_diagnostic_path_viewer_diagnostic_path_viewer_ownerable
+      phase_template_two_column_lab_observation_list_submit
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_template_one_column_html_submit</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ol>
+<li>count:   502 -&gt; section: 2 r-1-c-1  tools: [:content] submit: true   phase_template_id: 1</li>
+</ol></div></div><div class="code"><div class="wrapper">      name            = <span class="hljs-symbol">:one_column_html_submit</span>
+      hash            = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]    = <span class="hljs-string">'One Column HTML with Submit'</span>
+      hash[<span class="hljs-symbol">:template</span>] = &lt;&lt;-<span class="hljs-constant">TEND</span>
+        <span class="hljs-comment">#{casespace_phase_header}</span>
+        &lt;row&gt;
+          &lt;column&gt;
+            &lt;component section=<span class="hljs-string">'html'</span> title=<span class="hljs-string">'html'</span>/&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+        &lt;/row</span>&gt;
+        <span class="hljs-comment">#{casespace_phase_submit}</span>
+      <span class="hljs-constant">TEND</span>
+      new_phase_templates_name_map[name] = create_phase_template(hash.merge(<span class="hljs-symbol">name:</span> name))
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_template_one_column_html_no_submit</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ol>
+<li>count:     3 -&gt; section: 2 r-1-c-1  tools: [:content] submit: false  phase_template_id: 1</li>
+</ol></div></div><div class="code"><div class="wrapper">      name            = <span class="hljs-symbol">:one_column_html_no_submit</span>
+      hash            = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]    = <span class="hljs-string">'One Column HTML without Submit'</span>
+      hash[<span class="hljs-symbol">:template</span>] = &lt;&lt;-<span class="hljs-constant">TEND</span>
+        <span class="hljs-comment">#{casespace_phase_header}</span>
+        &lt;row&gt;
+          &lt;column&gt;
+            &lt;component section=<span class="hljs-string">'html'</span> title=<span class="hljs-string">'html'</span>/&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+        &lt;/row</span>&gt;
+      <span class="hljs-constant">TEND</span>
+      new_phase_templates_name_map[name] = create_phase_template(hash.merge(<span class="hljs-symbol">name:</span> name))
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_template_one_column_html_artifact_submit</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ol>
+<li>count:    16 -&gt; section: 2 r-1-c-1  tools: [:content, :bucket] submit: true   phase_template_id: 1</li>
+</ol></div></div><div class="code"><div class="wrapper">      name            = <span class="hljs-symbol">:one_column_html_artifact_submit</span>
+      hash            = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]    = <span class="hljs-string">'One Column HTML and Artifact with Submit'</span>
+      hash[<span class="hljs-symbol">:template</span>] = &lt;&lt;-<span class="hljs-constant">TEND</span>
+        <span class="hljs-comment">#{casespace_phase_header}</span>
+        &lt;row&gt;
+          &lt;column&gt;
+            &lt;component section=<span class="hljs-string">'html'</span> title=<span class="hljs-string">'html'</span>/&gt;
+            &lt;component section=<span class="hljs-string">'artifact'</span> title=<span class="hljs-string">'artifact-bucket'</span>/&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+        &lt;/row</span>&gt;
+        <span class="hljs-comment">#{casespace_phase_submit}</span>
+      <span class="hljs-constant">TEND</span>
+      new_phase_templates_name_map[name] = create_phase_template(hash.merge(<span class="hljs-symbol">name:</span> name))
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_template_one_column_artifact_submit</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ol>
+<li>count:   140 -&gt; section: 2 r-1-c-1  tools: [:bucket] submit: true   phase_template_id: 1</li>
+</ol></div></div><div class="code"><div class="wrapper">      name            = <span class="hljs-symbol">:one_column_artifact_submit</span>
+      hash            = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]    = <span class="hljs-string">'One Column Artifact with Submit'</span>
+      hash[<span class="hljs-symbol">:template</span>] = &lt;&lt;-<span class="hljs-constant">TEND</span>
+        <span class="hljs-comment">#{casespace_phase_header}</span>
+        &lt;row&gt;
+          &lt;column&gt;
+            &lt;component section=<span class="hljs-string">'artifact'</span> title=<span class="hljs-string">'artifact-bucket'</span>/&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+        &lt;/row</span>&gt;
+        <span class="hljs-comment">#{casespace_phase_submit}</span>
+      <span class="hljs-constant">TEND</span>
+      new_phase_templates_name_map[name] = create_phase_template(hash.merge(<span class="hljs-symbol">name:</span> name))
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_template_two_column_html_html_submit</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ol>
+<li>count:   464 -&gt; section: 4 r-1-c-1  tools: [:content]  section: 5 r-1-c-2  tools: [:content] submit: true   phase_template_id: 2</li>
+</ol></div></div><div class="code"><div class="wrapper">      name            = <span class="hljs-symbol">:two_column_html_html_submit</span>
+      hash            = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]    = <span class="hljs-string">'Two column HTML and HTML with Submit'</span>
+      hash[<span class="hljs-symbol">:template</span>] = &lt;&lt;-<span class="hljs-constant">TEND</span>
+        <span class="hljs-comment">#{casespace_phase_header}</span>
+        &lt;row&gt;
+          &lt;column width=<span class="hljs-number">8</span>&gt;
+            &lt;component section=<span class="hljs-string">'html-1'</span> title=<span class="hljs-string">'html'</span>/&gt;
+            <span class="hljs-comment">#{casespace_phase_submit}</span>
+          &lt;<span class="hljs-regexp">/column&gt;
+          &lt;column width=4&gt;
+            &lt;component section='html-2' title='html'/</span>&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+        &lt;/row</span>&gt;
+      <span class="hljs-constant">TEND</span>
+      new_phase_templates_name_map[name] = create_phase_template(hash.merge(<span class="hljs-symbol">name:</span> name))
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_template_two_column_html_observation_list_submit</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ol>
+<li>count: 13 -&gt; section: 4 r-1-c-1  tools: [:content] section: 5 r-1-c-2  tools: [:list] submit: true   phase_template_id: 2</li>
+</ol></div></div><div class="code"><div class="wrapper">      name            = <span class="hljs-symbol">:two_column_html_observation_list_submit</span>
+      hash            = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]    = <span class="hljs-string">'Two column HTML and Observation List with Submit'</span>
+      hash[<span class="hljs-symbol">:template</span>] = &lt;&lt;-<span class="hljs-constant">TEND</span>
+        &lt;row&gt;
+          &lt;column width=<span class="hljs-number">8</span>&gt;
+            <span class="hljs-comment">#{casespace_phase_header}</span>
+            &lt;component section=<span class="hljs-string">'html'</span> title=<span class="hljs-string">'html-select-text'</span> select-text=<span class="hljs-string">'obs-list'</span>/&gt;
+            <span class="hljs-comment">#{casespace_phase_submit}</span>
+          &lt;<span class="hljs-regexp">/column&gt;
+          &lt;column width=4&gt;
+            &lt;component section='obs-list' title='observation-list'/</span>&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+        &lt;/row</span>&gt;
+      <span class="hljs-constant">TEND</span>
+      new_phase_templates_name_map[name] = create_phase_template(hash.merge(<span class="hljs-symbol">name:</span> name))
+    <span class="hljs-keyword">end</span>
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_template_two_column_diagnostic_path_observation_list_submit</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ol>
+<li>count: 6 -&gt; section: 4 r-1-c-1  tools: [:path] section: 5 r-1-c-2  tools: [:list] submit: true   phase_template_id: 2</li>
+</ol></div></div><div class="code"><div class="wrapper">      name            = <span class="hljs-symbol">:two_column_diagnostic_path_observation_list_submit</span>
+      hash            = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]    = <span class="hljs-string">'Two column Diagnostic Path and Observation List with Submit'</span>
+      hash[<span class="hljs-symbol">:template</span>] = &lt;&lt;-<span class="hljs-constant">TEND</span>
+        &lt;row&gt;
+          &lt;column width=<span class="hljs-number">8</span>&gt;
+            <span class="hljs-comment">#{casespace_phase_header}</span>
+            &lt;component section=<span class="hljs-string">'diag-path'</span> title=<span class="hljs-string">'diagnostic-path'</span> source=<span class="hljs-string">'obs-list'</span>/&gt;
+            <span class="hljs-comment">#{casespace_phase_submit}</span>
+          &lt;<span class="hljs-regexp">/column&gt;
+          &lt;column width=4&gt;
+            &lt;component section='obs-list' title='observation-list' droppable='false'/</span>&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+        &lt;/row</span>&gt;
+      <span class="hljs-constant">TEND</span>
+      new_phase_templates_name_map[name] = create_phase_template(hash.merge(<span class="hljs-symbol">name:</span> name))
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_template_two_column_diagnostic_path_viewer_diagnostic_path_viewer_ownerable</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ol>
+<li>new (migrate assignments)</li>
+</ol></div></div><div class="code"><div class="wrapper">      name            = <span class="hljs-symbol">:two_column_diagnostic_path_viewer_diagnostic_path_viewer_ownerable</span>
+      hash            = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]    = <span class="hljs-string">'Two column Diagnostic Path Viewer and Diagnostic Path Ownerable Viewer with Submit'</span>
+      hash[<span class="hljs-symbol">:template</span>] = &lt;&lt;-<span class="hljs-constant">TEND</span>
+        &lt;row&gt;&lt;column&gt;&lt;component section=<span class="hljs-string">'header'</span> title=<span class="hljs-string">'casespace-phase-header'</span>/&gt;&lt;<span class="hljs-regexp">/column&gt;&lt;/row</span>&gt;
+        &lt;row&gt;
+          &lt;column width=<span class="hljs-number">6</span>&gt;
+            &lt;component section=<span class="hljs-string">'html-viewer'</span> title=<span class="hljs-string">'html'</span>/&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+          &lt;column width=6&gt;
+            &lt;component section='html-ownerable' title='html'/</span>&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+        &lt;/row</span>&gt;
+        &lt;row&gt;
+          &lt;column width=<span class="hljs-number">6</span>&gt;
+            &lt;component section=<span class="hljs-string">'diag-path-viewer'</span> title=<span class="hljs-string">'diagnostic-path-viewer'</span>/&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+          &lt;column width=6&gt;
+            &lt;component section='diag-path-viewer-ownerable' title='diagnostic-path-viewer-ownerable'/</span>&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+        &lt;/row</span>&gt;
+        &lt;row&gt;&lt;column&gt;&lt;component section=<span class="hljs-string">'submit'</span> title=<span class="hljs-string">'casespace-phase-submit'</span> data-actions=<span class="hljs-string">'{"submit":"submit"}'</span>/&gt;&lt;<span class="hljs-regexp">/column&gt;&lt;/row</span>&gt;
+      <span class="hljs-constant">TEND</span>
+      new_phase_templates_name_map[name] = create_phase_template(hash.merge(<span class="hljs-symbol">name:</span> name))
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_template_two_column_lab_observation_list_submit</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ol>
+<li>new (migrate assignments)</li>
+</ol></div></div><div class="code"><div class="wrapper">      name            = <span class="hljs-symbol">:two_column_lab_observation_list_submit</span>
+      hash            = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]    = <span class="hljs-string">'Two column Lab and Observation List with Submit'</span>
+      hash[<span class="hljs-symbol">:template</span>] = &lt;&lt;-<span class="hljs-constant">TEND</span>
+        &lt;row&gt;
+          &lt;column width=<span class="hljs-number">8</span>&gt;
+            <span class="hljs-comment">#{casespace_phase_header}</span>
+            &lt;component section=<span class="hljs-string">'chart'</span> title=<span class="hljs-string">'lab'</span>/&gt;
+            <span class="hljs-comment">#{casespace_phase_submit}</span>
+          &lt;<span class="hljs-regexp">/column&gt;
+          &lt;column width=4&gt;
+            &lt;component section='obs-list' title='observation-list' droppable='false'/</span>&gt;
+          &lt;<span class="hljs-regexp">/column&gt;
+        &lt;/row</span>&gt;
+      <span class="hljs-constant">TEND</span>
+      new_phase_templates_name_map[name] = create_phase_template(hash.merge(<span class="hljs-symbol">name:</span> name))
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_phase_header</span></span>
+      html = &lt;&lt;-<span class="hljs-constant">TEND</span>
+        &lt;row&gt;&lt;column&gt;&lt;component section=<span class="hljs-string">'header'</span> title=<span class="hljs-string">'casespace-phase-header'</span>/&gt;&lt;<span class="hljs-regexp">/column&gt;&lt;/row</span>&gt;
+      <span class="hljs-constant">TEND</span>
+      html.strip
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_phase_submit</span></span>
+      html = &lt;&lt;-<span class="hljs-constant">TEND</span>
+        &lt;row&gt;&lt;column&gt;&lt;component section=<span class="hljs-string">'submit'</span> title=<span class="hljs-string">'casespace-phase-submit'</span> data-actions=<span class="hljs-string">'{"submit":"submit"}'</span>/&gt;&lt;<span class="hljs-regexp">/column&gt;&lt;/row</span>&gt;
+      <span class="hljs-constant">TEND</span>
+      html.strip
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_phase_template</span><span class="hljs-params">(hash)</span></span>
+      hash[<span class="hljs-symbol">:domain</span>]  = <span class="hljs-keyword">true</span>  <span class="hljs-keyword">unless</span> hash.has_key?(<span class="hljs-symbol">:domain</span>)
+      phase_template = new_phase_template_class.create(hash)
+      <span class="hljs-keyword">if</span> phase_template.errors.present?
+        raise_error <span class="hljs-string">"Could not save new phase template.  Validation errors: <span class="hljs-subst">#{phase_template.errors.messages}</span>."</span>
+      <span class="hljs-keyword">end</span>
+      phase_template
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># class</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-user/addon/components/sign_in</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-user/addon/components/sign_in"><meta name="groc-project-path" content="thinkspace-user/addon/components/sign_in.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-user/addon/components/sign_in.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import totem_changeset from <span class="hljs-string">'totem/changeset'</span>
+
+export default ember.Component.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">session</span>: ember.inject.service()
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>(arguments...)
+    <span class="hljs-property">@set_changeset</span>()
+
+  <span class="hljs-attribute">authenticator</span>: <span class="hljs-string">'authenticator:totem'</span>
+
+  <span class="hljs-attribute">invitation_present</span>:   ember.computed.notEmpty <span class="hljs-string">'query_params.invitable'</span>
+  <span class="hljs-attribute">referred_from_signup</span>: ember.computed.equal    <span class="hljs-string">'query_params.refer'</span>, <span class="hljs-string">'signup'</span>
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span> $(<span class="hljs-string">'form input'</span>).first().select()
+
+  <span class="hljs-attribute">set_changeset</span>: <span class="hljs-function">-&gt;</span>
+    mock_model = ember.Object.create(<span class="hljs-attribute">email</span>: <span class="hljs-literal">null</span>, <span class="hljs-attribute">password</span>: <span class="hljs-literal">null</span>, <span class="hljs-attribute">credential_error</span>: <span class="hljs-literal">null</span>)
+    vpresence  = totem_changeset.vpresence(<span class="hljs-attribute">presence</span>: <span class="hljs-literal">true</span>)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'changeset'</span>, totem_changeset.create mock_model,
+      <span class="hljs-attribute">email</span>:    [totem_changeset.vpresence(<span class="hljs-attribute">presence</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">message</span>: <span class="hljs-string">'You must enter an email address'</span>), totem_changeset.vemail()]
+      <span class="hljs-attribute">password</span>: [totem_changeset.vpresence(<span class="hljs-attribute">presence</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">message</span>: <span class="hljs-string">'You must enter a password'</span>)]
+
+  <span class="hljs-attribute">actions</span>:
+
+    <span class="hljs-attribute">submit</span>: <span class="hljs-function">-&gt;</span>
+      changeset = <span class="hljs-property">@get</span>(<span class="hljs-string">'changeset'</span>)
+      changeset.validate().<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-keyword">unless</span> changeset.get(<span class="hljs-string">'is_valid'</span>)
+          changeset.first_error_on()
+          changeset.show_errors_on()
+          <span class="hljs-keyword">return</span>
+        <span class="hljs-property">@set</span> <span class="hljs-string">'authenticating'</span>, <span class="hljs-literal">true</span>
+        data = {<span class="hljs-attribute">identification</span>: changeset.get(<span class="hljs-string">'email'</span>), <span class="hljs-attribute">password</span>: changeset.get(<span class="hljs-string">'password'</span>)}
+        changeset.set <span class="hljs-string">'password'</span>, <span class="hljs-literal">null</span>
+        <span class="hljs-property">@get</span>(<span class="hljs-string">'session'</span>).authenticate(<span class="hljs-property">@get</span>(<span class="hljs-string">'authenticator'</span>), data).<span class="hljs-keyword">then</span> =&gt;
+          <span class="hljs-property">@set</span> <span class="hljs-string">'authenticating'</span>, <span class="hljs-literal">false</span>
+          <span class="hljs-property">@totem_messages</span>.info <span class="hljs-string">"Sign in successful!"</span>
+        , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+          changeset.show_errors_off()
+          <span class="hljs-property">@set</span> <span class="hljs-string">'authenticating'</span>, <span class="hljs-literal">false</span>
+          message = error.responseText <span class="hljs-keyword">or</span> <span class="hljs-string">'Email or password incorrect'</span>
+          <span class="hljs-property">@totem_messages</span>.error message</div></div></div></div></body></html>

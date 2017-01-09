@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder/config/routes</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="thinkspace-builder/config/routes"><meta name="groc-project-path" content="thinkspace-builder/config/routes.rb"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-builder/config/routes.rb</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-constant">Thinkspace::Builder::Engine</span>.routes.draw <span class="hljs-keyword">do</span>
+  namespace <span class="hljs-symbol">:api</span> <span class="hljs-keyword">do</span>
+    scope <span class="hljs-symbol">path:</span> <span class="hljs-string">'/thinkspace/builder'</span> <span class="hljs-keyword">do</span>
+
+      resources <span class="hljs-symbol">:templates</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:index</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Admin block needs to be first, otherwise it may collide with normal resources.
+e.g. /users/select?ids=# would be interpreted as /users/:id with id: &#39;select&#39; if this was not first.
+scope module: :admin do
+  resources :assignments, only: [:create, :update] do
+    get :templates, on: :collection
+    member do
+      put    :phase_order
+      get    :load
+      post   :clone
+      delete :delete
+    end
+  end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  resources :phases, only: [:update, :destroy] do
+    get  :componentables, on: :member
+    get  :templates,      on: :collection
+    post :clone,          on: :collection
+  end
+end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="non-admin">Non-admin</h1>
+<p>resources :assignments, only: [:show] do
+  collection do
+    get :select
+  end
+  member do
+    post :view
+    post :roster
+    get  :phase_states
+  end
+end</p></div></div><div class="code"><div class="wrapper">      concern <span class="hljs-symbol">:invalid</span>, <span class="hljs-constant">Totem::Core::Routes::Invalid</span>.new(); concerns [<span class="hljs-symbol">:invalid</span>]
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

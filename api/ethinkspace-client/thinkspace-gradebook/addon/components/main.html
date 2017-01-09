@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-gradebook/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-gradebook/addon/components/main"><meta name="groc-project-path" content="thinkspace-gradebook/addon/components/main.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-gradebook/addon/components/main.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+import base   from <span class="hljs-string">'thinkspace-base/components/base'</span>
+import m_dock from <span class="hljs-string">'thinkspace-dock/mixins/main'</span>
+
+export default base.extend m_dock,
+
+  <span class="hljs-attribute">addon_config</span>:
+    <span class="hljs-attribute">engine</span>:               <span class="hljs-string">'thinkspace-gradebook'</span>
+    <span class="hljs-attribute">display</span>:              <span class="hljs-string">'Gradebook'</span>
+    <span class="hljs-attribute">icon</span>:                 <span class="hljs-string">'tsi tsi-left tsi-tiny tsi-gradebook_white'</span>
+    <span class="hljs-attribute">toggle_property</span>:      <span class="hljs-string">'show_addon'</span>
+    <span class="hljs-attribute">top_pocket</span>:           <span class="hljs-literal">true</span>
+    <span class="hljs-attribute">top_pocket_singleton</span>: <span class="hljs-literal">true</span>
+    <span class="hljs-attribute">group</span>:                <span class="hljs-string">'middle'</span>
+
+  <span class="hljs-attribute">show_addon</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">can_access_addon</span>: ember.computed.bool <span class="hljs-string">'thinkspace.current_assignment.can.gradebook'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>valid_addon_ownerable: (addon_ownerable) -&gt;
+  new ember.RSVP.Promise (resolve, reject) =&gt;
+    console.warn &#39;VALID ADDON OWNERABLE&#39;, @
+    @get(&#39;addons&#39;).close_addon(@addon)
+    reject(&#39;it is bad&#39;)</p>
+<pre><code># @validate_ownerable(addon_ownerable).then (valid) -&gt;
+#   resolve()</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>validate_ownerable: (ownerable) -&gt;
+  new ember.RSVP.Promise (resolve, reject) =&gt;
+    pm_map              = @get(&#39;phase_manager.map&#39;)
+    map                 = @get(&#39;gradebook&#39;)
+    space               = @get(&#39;current_space&#39;)
+    assignment          = @get(&#39;current_assignment&#39;)
+    phase               = @get(&#39;current_phase&#39;)
+    return reject()  unless phase
+    if phase.is_team_ownerable()
+      map.get_gradebook_phase_teams(assignment, phase).then (teams) =&gt;
+        resolve teams.includes(ownerable)
+    else
+      map.get_gradebook_users(space, assignment).then (users) =&gt;
+        resolve users.includes(ownerable)</p></div></div></div></div></body></html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-user/addon/components/sign_up</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-user/addon/components/sign_up"><meta name="groc-project-path" content="thinkspace-user/addon/components/sign_up.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-user/addon/components/sign_up.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Component.extend
+
+  <span class="hljs-attribute">authenticating</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">invitation_present</span>: ember.computed.notEmpty <span class="hljs-string">'query_params.token'</span>
+  <span class="hljs-attribute">provided_token</span>:     ember.computed.reads <span class="hljs-string">'query_params.token'</span>
+  <span class="hljs-attribute">provided_invitable</span>: ember.computed.reads <span class="hljs-string">'query_params.invitable'</span>
+
+  <span class="hljs-attribute">actions</span>:
+
+    <span class="hljs-attribute">submit</span>: <span class="hljs-function">-&gt;</span>
+      model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      <span class="hljs-property">@set</span> <span class="hljs-string">'authenticating'</span>, <span class="hljs-literal">true</span>
+      model.save().<span class="hljs-keyword">then</span> (response) =&gt;
+        <span class="hljs-property">@set</span> <span class="hljs-string">'authenticating'</span>, <span class="hljs-literal">false</span>
+        <span class="hljs-property">@sendAction</span> <span class="hljs-string">'goto_users_password_confirmation'</span>
+
+    <span class="hljs-attribute">sign_in_transition</span>: <span class="hljs-function"><span class="hljs-params">(invitable, email)</span> -&gt;</span>
+      <span class="hljs-property">@transitionToRoute</span> <span class="hljs-string">'sign_in'</span>, {<span class="hljs-attribute">queryParams</span>: {<span class="hljs-attribute">invitable</span>: invitable, <span class="hljs-attribute">email</span>: email, <span class="hljs-attribute">refer</span>: <span class="hljs-string">'signup'</span>}}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>import ember from &#39;ember&#39;
+import totem_changeset from &#39;totem/changeset&#39;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>export default ember.Component.extend
+  tagName: &#39;&#39;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  session: ember.inject.service()</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  init: -&gt;
+    @_super(arguments...)
+    @set_changeset()</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  authenticator: &#39;authenticator:totem&#39;
+  invitable:     null
+  refer:         null</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  invitation_present:   ember.computed.notEmpty &#39;invitable&#39;
+  referred_from_signup: ember.computed.equal &#39;refer&#39;, &#39;signup&#39;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  didInsertElement: -&gt; $(&#39;form input&#39;).first().select()</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  set_changeset: -&gt;
+    model     = ember.Object.create(email: null, password: null, credential_error: null)
+    vpresence = totem_changeset.vpresence(presence: true)
+    @set &#39;changeset&#39;, totem_changeset.create model,
+      email:    [totem_changeset.vpresence(presence: true, message: &#39;You must enter an email address&#39;), totem_changeset.vemail()]
+      password: [totem_changeset.vpresence(presence: true, message: &#39;You must enter a password&#39;)]</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  actions:</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>submit: -&gt;
+  changeset = @get(&#39;changeset&#39;)
+  changeset.validate().then =&gt;
+    unless changeset.get(&#39;is_valid&#39;)
+      changeset.first_error_on()
+      changeset.show_errors_on()
+      return
+    @set &#39;authenticating&#39;, true
+    data = {identification: changeset.get(&#39;email&#39;), password: changeset.get(&#39;password&#39;)}
+    changeset.set &#39;password&#39;, null
+    @get(&#39;session&#39;).authenticate(@get(&#39;authenticator&#39;), data).then =&gt;
+      @set &#39;authenticating&#39;, false
+      @totem_messages.info &quot;Sign in successful!&quot;
+    , (error) =&gt;
+      changeset.show_errors_off()
+      @set &#39;authenticating&#39;, false
+      message = error.responseText or &#39;Email or password incorrect&#39;
+      @totem_messages.error message</code></pre></div></div></div></div></body></html>

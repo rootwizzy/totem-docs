@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-phase/addon/_config</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="thinkspace-phase/addon/_config"><meta name="groc-project-path" content="thinkspace-phase/addon/_config.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-phase/addon/_config.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import env from <span class="hljs-string">'./config/environment'</span>
+
+export default {
+
+  <span class="hljs-attribute">env</span>: env
+
+  <span class="hljs-attribute">engine</span>:
+    <span class="hljs-attribute">mount</span>:           {<span class="hljs-attribute">as</span>: <span class="hljs-string">'phases'</span>, <span class="hljs-attribute">path</span>: <span class="hljs-string">'/cases/:assignment_id/phases'</span>}
+    <span class="hljs-attribute">external_routes</span>: [{<span class="hljs-attribute">login</span>: <span class="hljs-string">'users.sign_in'</span>}, <span class="hljs-string">'spaces.show'</span>, <span class="hljs-string">'cases.show'</span>]
+
+  <span class="hljs-attribute">ns</span>:
+    <span class="hljs-attribute">namespaces</span>: {<span class="hljs-attribute">casespace</span>: <span class="hljs-string">'thinkspace/casespace'</span>}
+    <span class="hljs-attribute">type_to_namespace</span>:
+      <span class="hljs-attribute">phase</span>:           <span class="hljs-string">'casespace'</span>
+      <span class="hljs-attribute">phase_template</span>:  <span class="hljs-string">'casespace'</span>
+      <span class="hljs-attribute">phase_component</span>: <span class="hljs-string">'casespace'</span>
+      <span class="hljs-attribute">phase_state</span>:     <span class="hljs-string">'casespace'</span>
+      <span class="hljs-attribute">phase_score</span>:     <span class="hljs-string">'casespace'</span>
+
+  <span class="hljs-attribute">query_params</span>:
+    <span class="hljs-attribute">phase</span>:         <span class="hljs-attribute">ownerable</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">authable</span>: <span class="hljs-literal">false</span>
+    <span class="hljs-attribute">phase_score</span>:   <span class="hljs-attribute">ownerable</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">authable</span>: <span class="hljs-literal">true</span>
+    <span class="hljs-attribute">phase_state</span>:   <span class="hljs-attribute">ownerable</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">authable</span>: <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">add_engines</span>: [
+    <span class="hljs-string">'thinkspace-message'</span>
+    <span class="hljs-string">'thinkspace-dock'</span>
+    <span class="hljs-string">'thinkspace-artifact'</span>
+    <span class="hljs-string">'thinkspace-html'</span>
+    <span class="hljs-string">'thinkspace-diagnostic-path'</span>
+    <span class="hljs-string">'thinkspace-diagnostic-expert-path'</span>
+    <span class="hljs-string">'thinkspace-lab-vet-med'</span>
+    <span class="hljs-string">'thinkspace-observation-list'</span>
+    <span class="hljs-string">'thinkspace-readiness-assurance'</span>
+    <span class="hljs-string">'thinkspace-toolbar'</span>:      {<span class="hljs-attribute">external_routes</span>: {<span class="hljs-attribute">home</span>: <span class="hljs-string">'spaces.index'</span>}}
+    <span class="hljs-string">'thinkspace-markup'</span>:       {<span class="hljs-attribute">dock</span>: {<span class="hljs-attribute">routes</span>: [<span class="hljs-string">'phases.show'</span>], <span class="hljs-attribute">right_pocket</span>: <span class="hljs-literal">true</span>}}
+    <span class="hljs-string">'thinkspace-resource'</span>:     {<span class="hljs-attribute">dock</span>: {<span class="hljs-attribute">routes</span>: [<span class="hljs-string">'phases.show'</span>], <span class="hljs-attribute">right_pocket</span>: <span class="hljs-literal">true</span>}}
+    <span class="hljs-string">'thinkspace-peer-review'</span>:  {<span class="hljs-attribute">dock</span>: {<span class="hljs-attribute">routes</span>: [<span class="hljs-string">'phases.show'</span>], <span class="hljs-attribute">top_pocket</span>: <span class="hljs-literal">true</span>}}
+    <span class="hljs-string">'thinkspace-gradebook'</span>:    {<span class="hljs-attribute">dock</span>: {<span class="hljs-attribute">routes</span>: [<span class="hljs-string">'phases.show'</span>], <span class="hljs-attribute">top_pocket</span>: <span class="hljs-literal">true</span>}}
+  ]
+}</div></div></div></div></body></html>

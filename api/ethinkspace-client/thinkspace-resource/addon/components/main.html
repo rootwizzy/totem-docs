@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-resource/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-resource/addon/components/main"><meta name="groc-project-path" content="thinkspace-resource/addon/components/main.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-resource/addon/components/main.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+import base   from <span class="hljs-string">'thinkspace-base/components/base'</span>
+import m_dock from <span class="hljs-string">'thinkspace-dock/mixins/main'</span>
+
+export default base.extend m_dock,
+
+  <span class="hljs-attribute">resource_model</span>:       ember.computed.reads <span class="hljs-string">'thinkspace.current_model'</span>
+  <span class="hljs-attribute">can_manage_resources</span>: ember.computed.bool  <span class="hljs-string">'resource_model.can.manage_resources'</span>
+  <span class="hljs-attribute">can_access_addon</span>:     ember.computed.<span class="hljs-keyword">or</span>    <span class="hljs-string">'resource_model.has_resources'</span>, <span class="hljs-string">'can_manage_resources'</span>
+
+  <span class="hljs-attribute">addon_config</span>:
+    <span class="hljs-attribute">engine</span>:          <span class="hljs-string">'thinkspace-resource'</span>
+    <span class="hljs-attribute">display</span>:         <span class="hljs-string">'Resources'</span>
+    <span class="hljs-attribute">icon</span>:            <span class="hljs-string">'tsi tsi-left tsi-tiny tsi-backpack_white'</span>
+    <span class="hljs-attribute">toggle_property</span>: <span class="hljs-string">'show_addon'</span>
+    <span class="hljs-attribute">right_pocket</span>:    <span class="hljs-literal">true</span>
+    <span class="hljs-attribute">init_width</span>:      <span class="hljs-number">2</span>
+    <span class="hljs-attribute">group</span>:           <span class="hljs-string">'first'</span>
+
+  <span class="hljs-attribute">show_addon</span>: <span class="hljs-literal">false</span></div></div></div></div></body></html>

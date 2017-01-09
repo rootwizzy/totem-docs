@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-instructor/addon/mixins/am/trat</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-instructor/addon/mixins/am/trat"><meta name="groc-project-path" content="thinkspace-readiness-assurance-instructor/addon/mixins/am/trat.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance-instructor/addon/mixins/am/trat.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import ajax  from <span class="hljs-string">'totem/ajax'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">send_trat_phase_states</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span> <span class="hljs-property">@send_trat_request</span>(data, <span class="hljs-string">'phase_states'</span>)
+
+  <span class="hljs-attribute">send_trat_request</span>: <span class="hljs-function"><span class="hljs-params">(data, action)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      query = <span class="hljs-property">@get_auth_query</span> <span class="hljs-property">@get_trat_url</span>(action), data
+      ajax.object(query).<span class="hljs-keyword">then</span> =&gt;
+        resolve()
+
+  <span class="hljs-attribute">get_trat_url</span>:  <span class="hljs-function"><span class="hljs-params">(action)</span> -&gt;</span> ns.to_p(<span class="hljs-string">'readiness_assurance'</span>, <span class="hljs-string">'trats'</span>, action)</div></div></div></div></body></html>

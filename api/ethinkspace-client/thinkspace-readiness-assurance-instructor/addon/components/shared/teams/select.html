@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-instructor/addon/components/shared/teams/select</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-instructor/addon/components/shared/teams/select"><meta name="groc-project-path" content="thinkspace-readiness-assurance-instructor/addon/components/shared/teams/select.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance-instructor/addon/components/shared/teams/select.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-readiness-assurance-instructor/components/base'</span>
+import m_data_rows from <span class="hljs-string">'thinkspace-readiness-assurance/mixins/data_rows'</span>
+
+export default base.extend m_data_rows,
+
+  <span class="hljs-attribute">show_all</span>:         <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">team_member_rows</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">columns_per_row</span>:  ember.computed -&gt; (ember.isPresent(<span class="hljs-property">@rad</span>.width_selector) <span class="hljs-keyword">and</span> <span class="hljs-property">@rad</span>.width_selector) <span class="hljs-keyword">or</span> <span class="hljs-number">1</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@validate</span> = <span class="hljs-property">@rad</span>.validate
+
+  <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@setup</span>()
+
+  <span class="hljs-attribute">setup</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@teams</span> = <span class="hljs-property">@rad</span>.get_teams() <span class="hljs-keyword">or</span> []
+    <span class="hljs-property">@set</span> <span class="hljs-string">'show_all'</span>, <span class="hljs-property">@rad</span>.get_show_all()
+    <span class="hljs-property">@send</span> <span class="hljs-string">'select_all'</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@rad</span>.select_all_teams()
+    team_users = <span class="hljs-property">@rad</span>.get_team_users()
+    <span class="hljs-property">@set</span> <span class="hljs-string">'team_member_rows'</span>, <span class="hljs-property">@get_data_rows</span>(team_users)
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">show_all</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'show_all'</span>, <span class="hljs-literal">true</span>
+    <span class="hljs-attribute">hide_all</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'show_all'</span>, <span class="hljs-literal">false</span>
+
+    <span class="hljs-attribute">select_all</span>:   <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@teams</span>.clear()
+      <span class="hljs-property">@teams</span>.pushObject(team.team) <span class="hljs-keyword">for</span> team <span class="hljs-keyword">in</span> <span class="hljs-property">@rad</span>.get_team_users()
+      <span class="hljs-property">@set_teams</span>()
+
+    <span class="hljs-attribute">deselect_all</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@teams</span>.clear()
+      <span class="hljs-property">@set_teams</span>()
+
+    <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(team)</span> -&gt;</span>
+      index = <span class="hljs-property">@teams</span>.indexOf(team)
+      <span class="hljs-keyword">if</span> index &gt;= <span class="hljs-number">0</span>
+        <span class="hljs-property">@teams</span>.removeAt(index)
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@teams</span>.pushObject(team)
+      <span class="hljs-property">@set_teams</span>()
+
+  <span class="hljs-attribute">set_teams</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@rad</span>.set_teams(<span class="hljs-property">@teams</span>)
+    <span class="hljs-property">@sendAction</span> <span class="hljs-string">'validate'</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@validate</span></div></div></div></div></body></html>

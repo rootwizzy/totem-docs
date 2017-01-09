@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-instructor/addon/managers/rad</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-instructor/addon/managers/rad"><meta name="groc-project-path" content="thinkspace-readiness-assurance-instructor/addon/managers/rad.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance-instructor/addon/managers/rad.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Object.extend
+
+  <span class="hljs-attribute">validate</span>:       <span class="hljs-string">'validate'</span>
+  <span class="hljs-attribute">width_selector</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">show_select</span>:    <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">message</span>:      <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">base_message</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">teams</span>:        <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">users</span>:        <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">due_at</span>:       <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">state</span>:        <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">timer</span>:        <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">timer_type</span>:      <span class="hljs-string">'countdown'</span>
+  <span class="hljs-attribute">timer_unit</span>:      <span class="hljs-string">'minute'</span>
+
+  <span class="hljs-attribute">team_users</span>:       <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">select_all_teams</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">select_all_users</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">show_all</span>:         <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
+    <span class="hljs-property">@time_at</span> = <span class="hljs-keyword">new</span> Date()
+    <span class="hljs-property">@errors</span>  = []
+
+  <span class="hljs-attribute">error_message</span>: <span class="hljs-string">'There are errors.  Please correct before doing the transition.'</span>
+
+  <span class="hljs-attribute">clear_errors</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'errors'</span>).clear()
+  <span class="hljs-attribute">error</span>: <span class="hljs-function"><span class="hljs-params">(e)</span>    -&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'errors'</span>).pushObject(e)
+
+  <span class="hljs-attribute">clear_message</span>:     <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set_message</span>(<span class="hljs-literal">null</span>)
+  <span class="hljs-attribute">get_message</span>:       <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'message'</span>
+  <span class="hljs-attribute">set_message</span>: <span class="hljs-function"><span class="hljs-params">(msg)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'message'</span>, msg
+
+  <span class="hljs-attribute">get_base_message</span>:       <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'base_message'</span>
+  <span class="hljs-attribute">set_base_message</span>: <span class="hljs-function"><span class="hljs-params">(msg)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'base_message'</span>, msg
+
+  <span class="hljs-attribute">get_team_users</span>:              <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'team_users'</span>
+  <span class="hljs-attribute">set_team_users</span>: <span class="hljs-function"><span class="hljs-params">(team_users)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'team_users'</span>, team_users
+
+  <span class="hljs-attribute">get_all_users</span>: <span class="hljs-function">-&gt;</span>
+    team_users = <span class="hljs-property">@get_team_users</span>() <span class="hljs-keyword">or</span> []
+    users      = []
+    <span class="hljs-keyword">for</span> tu <span class="hljs-keyword">in</span> team_users
+      <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> tu.users
+        u      = ember.merge({}, user)
+        u.team = ember.merge({}, tu.team <span class="hljs-keyword">or</span> {})
+        users.push(u)
+    users
+
+  <span class="hljs-attribute">get_teams</span>:         <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'teams'</span>
+  <span class="hljs-attribute">set_teams</span>: <span class="hljs-function"><span class="hljs-params">(teams)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'teams'</span>, teams
+
+  <span class="hljs-attribute">get_users</span>:         <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'users'</span>
+  <span class="hljs-attribute">set_users</span>: <span class="hljs-function"><span class="hljs-params">(users)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'users'</span>, users
+
+  <span class="hljs-attribute">get_timer</span>:        <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'timer'</span>
+  <span class="hljs-attribute">set_timer</span>: <span class="hljs-function"><span class="hljs-params">(opts)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'timer'</span>, opts
+
+  <span class="hljs-attribute">get_phase_state</span>:         <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'phase_state'</span>
+  <span class="hljs-attribute">set_phase_state</span>: <span class="hljs-function"><span class="hljs-params">(state)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'phase_state'</span>, state
+
+  <span class="hljs-attribute">select_all_teams_on</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'all_teams'</span>, <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">select_all_users_on</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'all_users'</span>, <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">select_all_teams</span>:    <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'all_teams'</span>) == <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">select_all_users</span>:    <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'all_users'</span>) == <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">get_show_all</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'show_all'</span>
+  <span class="hljs-attribute">show_all_on</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'show_all'</span>, <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">get_data</span>: <span class="hljs-function">-&gt;</span> 
+    users          = <span class="hljs-property">@get_users</span>()
+    teams          = <span class="hljs-property">@get_teams</span>()
+    user_ids       = <span class="hljs-keyword">if</span> ember.isBlank(users) <span class="hljs-keyword">then</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">else</span> users.mapBy(<span class="hljs-string">'id'</span>)
+    team_ids       = <span class="hljs-keyword">if</span> ember.isBlank(teams) <span class="hljs-keyword">then</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">else</span> teams.mapBy(<span class="hljs-string">'id'</span>)
+    message        = <span class="hljs-property">@get_message</span>()
+    release_at     = <span class="hljs-property">@get</span> <span class="hljs-string">'release_at'</span>
+    due_at         = <span class="hljs-property">@get</span> <span class="hljs-string">'due_at'</span>
+    transition_now = <span class="hljs-property">@get</span> <span class="hljs-string">'transition_now'</span>
+    phase_state    = <span class="hljs-property">@get_phase_state</span>()
+    timer          = <span class="hljs-property">@get_timer</span>() <span class="hljs-keyword">or</span> {}
+    settings       = timer.settings
+    start_at       = timer.start_at
+    end_at         = timer.end_at</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set data values.</p></div></div><div class="code"><div class="wrapper">    data                = {}
+    data.user_ids       = user_ids        <span class="hljs-keyword">if</span> ember.isPresent(user_ids)
+    data.team_ids       = team_ids        <span class="hljs-keyword">if</span> ember.isPresent(team_ids)
+    data.message        = message         <span class="hljs-keyword">if</span> ember.isPresent(message)
+    data.release_at     = release_at      <span class="hljs-keyword">if</span> ember.isPresent(release_at)
+    data.due_at         = due_at          <span class="hljs-keyword">if</span> ember.isPresent(due_at)
+    data.transition_now = transition_now  <span class="hljs-keyword">if</span> ember.isPresent(transition_now)
+    data.phase_state    = phase_state     <span class="hljs-keyword">if</span> ember.isPresent(phase_state)
+    data.timer_settings = settings        <span class="hljs-keyword">if</span> ember.isPresent(settings)
+    data.timer_start_at = start_at        <span class="hljs-keyword">if</span> ember.isPresent(start_at)
+    data.timer_end_at   = end_at          <span class="hljs-keyword">if</span> ember.isPresent(end_at)
+    data</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="messages">Messages.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">timer_message_change</span>: ember.observer <span class="hljs-string">'due_at'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@add_default_message</span>() <span class="hljs-keyword">if</span> <span class="hljs-property">@has_default_message</span>()
+
+  <span class="hljs-attribute">get_timer_message</span>: <span class="hljs-function">-&gt;</span>
+    msg = <span class="hljs-property">@get_base_message</span>()
+    <span class="hljs-keyword">return</span> msg <span class="hljs-keyword">if</span> ember.isPresent(msg)
+    <span class="hljs-property">@get_default_message</span>()
+    <span class="hljs-property">@get_base_message</span>()
+
+  <span class="hljs-attribute">default_message</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">"Your <span class="hljs-subst">#{<span class="hljs-property">@name</span>}</span> is due at"</span>
+
+  <span class="hljs-attribute">default_message_regex</span>: <span class="hljs-function">-&gt;</span>
+    message = <span class="hljs-property">@default_message</span>()
+    <span class="hljs-keyword">new</span> RegExp(<span class="hljs-string">"<span class="hljs-subst">#{message}</span>.*?\\\."</span>, <span class="hljs-string">'i'</span>)
+
+  <span class="hljs-attribute">has_default_message</span>: <span class="hljs-function">-&gt;</span>
+    message = <span class="hljs-property">@get_message</span>()
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">if</span> ember.isBlank(message)
+    regex = <span class="hljs-property">@default_message_regex</span>()
+    ember.isPresent(message.match(regex))
+
+  <span class="hljs-attribute">get_default_message</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set_base_message</span>(<span class="hljs-literal">null</span>)
+    due_at = <span class="hljs-property">@get</span>(<span class="hljs-string">'due_at'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(due_at)
+    hhmm = <span class="hljs-property">@am</span>.date_to_hh_mm(due_at)
+    mins = <span class="hljs-property">@am</span>.minutes_from_now(due_at)
+    inmm = <span class="hljs-property">@am</span>.minutes_from_now_message(mins)
+    dmsg = <span class="hljs-property">@default_message</span>() + <span class="hljs-string">" <span class="hljs-subst">#{hhmm}</span>"</span>
+    <span class="hljs-property">@set_base_message</span>(dmsg)
+    dmsg += <span class="hljs-keyword">if</span> mins &lt;= <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-string">' (now).'</span> <span class="hljs-keyword">else</span> <span class="hljs-string">" (in about <span class="hljs-subst">#{inmm}</span>)."</span>
+    dmsg
+
+  <span class="hljs-attribute">add_default_message</span>: <span class="hljs-function">-&gt;</span>
+    dmsg = <span class="hljs-property">@get_default_message</span>()
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(dmsg)
+    message = <span class="hljs-property">@get_message</span>()
+    <span class="hljs-keyword">if</span> ember.isPresent(message)
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@has_default_message</span>()
+        regex = <span class="hljs-property">@default_message_regex</span>()
+        msg   = message.replace(regex, dmsg)
+      <span class="hljs-keyword">else</span>
+        msg = message + <span class="hljs-string">'  '</span> + dmsg
+    <span class="hljs-keyword">else</span>
+      msg = dmsg
+    <span class="hljs-property">@set_message</span>(msg)
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> (<span class="hljs-property">@name</span> <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>) + <span class="hljs-string">'ReadinessAssuranceData'</span></div></div></div></div></body></html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-user/addon/components/password/show</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-user/addon/components/password/show"><meta name="groc-project-path" content="thinkspace-user/addon/components/password/show.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-user/addon/components/password/show.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns         from <span class="hljs-string">'totem/ns'</span>
+import base_component from <span class="hljs-string">'thinkspace-base/components/base'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Add validation</p></div></div><div class="code"><div class="wrapper">export default base_component.extend
+  <span class="hljs-attribute">layoutName</span>: <span class="hljs-string">'thinkspace/common/user/password/show'</span>
+
+  <span class="hljs-attribute">c_checkbox</span>:        ns.to_p <span class="hljs-string">'common'</span>, <span class="hljs-string">'shared'</span>, <span class="hljs-string">'checkbox'</span>
+  <span class="hljs-attribute">c_validated_input</span>: ns.to_p <span class="hljs-string">'common'</span>, <span class="hljs-string">'shared'</span>, <span class="hljs-string">'validated_input'</span>
+  <span class="hljs-attribute">c_loader</span>:          ns.to_p <span class="hljs-string">'common'</span>, <span class="hljs-string">'shared'</span>, <span class="hljs-string">'loader'</span>
+
+  <span class="hljs-attribute">password</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">password_confirmation</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">password_confirmation_errors</span>: ember.computed <span class="hljs-string">'password'</span>, <span class="hljs-string">'password_confirmation'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> [<span class="hljs-string">'Passwords must match'</span>] <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'password'</span>) == <span class="hljs-property">@get</span>(<span class="hljs-string">'password_confirmation'</span>)
+    <span class="hljs-keyword">return</span> []
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">submit</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'isValid'</span>) <span class="hljs-keyword">and</span> ember.isEmpty(<span class="hljs-property">@get</span>(<span class="hljs-string">'password_confirmation_errors'</span>))
+      model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      model.set <span class="hljs-string">'password'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'password'</span>)
+      model.save().<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@sendAction</span> <span class="hljs-string">'goto_users_password_success'</span>
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        <span class="hljs-property">@sendAction</span> <span class="hljs-string">'goto_users_password_fail'</span>, error
+
+  <span class="hljs-attribute">validations</span>:
+    <span class="hljs-attribute">password</span>:
+      <span class="hljs-attribute">length</span>: {<span class="hljs-attribute">minimum</span>: <span class="hljs-number">8</span>, <span class="hljs-attribute">messages</span>: {<span class="hljs-attribute">tooShort</span>: <span class="hljs-string">"Password needs to be at least 8 characters long"</span>}}</div></div></div></div></body></html>

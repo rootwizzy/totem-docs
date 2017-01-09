@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance/addon/mixins/rm/helpers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance/addon/mixins/rm/helpers"><meta name="groc-project-path" content="thinkspace-readiness-assurance/addon/mixins/rm/helpers.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance/addon/mixins/rm/helpers.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import totem_error from <span class="hljs-string">'totem/error'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">current_user_full_name</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@current_user</span>.get(<span class="hljs-string">'full_name'</span>)
+
+  <span class="hljs-attribute">is_function</span>: <span class="hljs-function"><span class="hljs-params">(fn)</span> -&gt;</span> <span class="hljs-keyword">typeof</span>(fn) == <span class="hljs-string">'function'</span>
+  <span class="hljs-attribute">is_object</span>: <span class="hljs-function"><span class="hljs-params">(obj)</span>  -&gt;</span> obj <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(obj) == <span class="hljs-string">'object'</span>
+  <span class="hljs-attribute">is_hash</span>: <span class="hljs-function"><span class="hljs-params">(obj)</span>    -&gt;</span> <span class="hljs-property">@is_object</span>(obj) <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> ember.isArray(obj)
+
+  <span class="hljs-attribute">is_true_or_false</span>: <span class="hljs-function"><span class="hljs-params">(val)</span> -&gt;</span> val == <span class="hljs-literal">true</span> <span class="hljs-keyword">or</span> val == <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">stringify</span>: <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span> JSON.stringify(obj)
+
+  <span class="hljs-attribute">save_off_message</span>: <span class="hljs-function"><span class="hljs-params">(model)</span> -&gt;</span> <span class="hljs-built_in">console</span>.info <span class="hljs-string">"Saving to the server is turned off (options.save_response == false)."</span>, model
+
+  <span class="hljs-attribute">error</span>: <span class="hljs-function"><span class="hljs-params">(args...)</span> -&gt;</span>
+    message = args.shift() <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+    <span class="hljs-built_in">console</span>.error message, args <span class="hljs-keyword">if</span> ember.isPresent(args)
+    totem_error.<span class="hljs-keyword">throw</span> @, message
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'ReadinessAssuranceResponseManager:'</span> + ember.guidFor(@)</div></div></div></div></body></html>

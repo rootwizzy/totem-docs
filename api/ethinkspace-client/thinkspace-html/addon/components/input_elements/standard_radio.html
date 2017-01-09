@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-html/addon/components/input_elements/standard_radio</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-html/addon/components/input_elements/standard_radio"><meta name="groc-project-path" content="thinkspace-html/addon/components/input_elements/standard_radio.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-html/addon/components/input_elements/standard_radio.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">is_checked</span>: ember.computed <span class="hljs-string">'changeset.model.value'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'radio_value'</span>) == <span class="hljs-property">@changeset</span>.get(<span class="hljs-string">'model.value'</span>)
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">check</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'viewonly'</span>)
+      <span class="hljs-property">@changeset</span>.set <span class="hljs-string">'value'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'radio_value'</span>)
+      <span class="hljs-property">@save_response</span>()
+
+  <span class="hljs-attribute">save_response</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@changeset</span>.set_ownerable()
+    <span class="hljs-property">@changeset</span>.save().<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo.status'</span>).update(<span class="hljs-property">@changeset</span>)</div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> totem_messages</span></p></div></div><div class="code"><div class="wrapper">    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo.status'</span>).update(<span class="hljs-property">@changeset</span>)</div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> totem_messages</span></p></div></div></div></div></body></html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-user/addon/components/invitation/row</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-user/addon/components/invitation/row"><meta name="groc-project-path" content="thinkspace-user/addon/components/invitation/row.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-user/addon/components/invitation/row.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import ajax  from <span class="hljs-string">'totem/ajax'</span>
+import base_component from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base_component.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">'tr'</span>
+  <span class="hljs-attribute">roles</span>:   [<span class="hljs-string">'read'</span>, <span class="hljs-string">'update'</span>, <span class="hljs-string">'owner'</span>]
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">destroy</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>).destroyRecord()
+      
+    <span class="hljs-attribute">resend</span>: <span class="hljs-function">-&gt;</span>
+      model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      query =
+        <span class="hljs-attribute">model</span>:  model
+        <span class="hljs-attribute">id</span>:     model.get(<span class="hljs-string">'id'</span>)
+        <span class="hljs-attribute">action</span>: <span class="hljs-string">'resend'</span>
+        <span class="hljs-attribute">verb</span>:   <span class="hljs-string">'put'</span>
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        <span class="hljs-property">@tc</span>.push_payload(ns.to_p(<span class="hljs-string">'invitation'</span>), payload)
+        <span class="hljs-property">@totem_messages</span>.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: model, <span class="hljs-attribute">action</span>: <span class="hljs-string">'update'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'invitation'</span>, <span class="hljs-string">'save'</span>)</div></div></div></div></body></html>

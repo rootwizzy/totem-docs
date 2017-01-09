@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/models/thinkspace/common/space_user</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/models/thinkspace/common/space_user"><meta name="groc-project-path" content="thinkspace-model/app/models/thinkspace/common/space_user.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-model/app/models/thinkspace/common/space_user.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+import config from <span class="hljs-string">'totem-config/config'</span>
+import ta     from <span class="hljs-string">'totem/ds/associations'</span>
+
+export default ta.Model.extend ta.add(
+    ta.belongs_to <span class="hljs-string">'user'</span>, <span class="hljs-attribute">reads</span>: {}
+    ta.belongs_to <span class="hljs-string">'space'</span>, <span class="hljs-attribute">reads</span>: {}
+  ), 
+
+  <span class="hljs-attribute">role</span>:     ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">space_id</span>: ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">state</span>:    ta.attr(<span class="hljs-string">'string'</span>)
+
+  <span class="hljs-attribute">friendly_roles</span>: ember.computed -&gt;
+    roles_map = config.roles_map
+    <span class="hljs-built_in">console</span>.error <span class="hljs-string">"Could not find roles map in config, cannot process space_user."</span> <span class="hljs-keyword">unless</span> ember.isPresent(roles_map)
+    roles = []
+    roles.push(friendly) <span class="hljs-keyword">for</span> role, friendly <span class="hljs-keyword">of</span> roles_map
+    roles
+
+  <span class="hljs-attribute">friendly_role</span>: ember.computed <span class="hljs-string">'role'</span>, <span class="hljs-function">-&gt;</span>
+    current_role = <span class="hljs-property">@get</span> <span class="hljs-string">'role'</span>
+    roles_map    = config.roles_map
+    name         = <span class="hljs-literal">null</span>
+    <span class="hljs-built_in">console</span>.error <span class="hljs-string">"Could not find roles map in config, cannot process space_user."</span> <span class="hljs-keyword">unless</span> ember.isPresent(roles_map)
+    <span class="hljs-keyword">for</span> role, friendly <span class="hljs-keyword">of</span> roles_map
+      name = friendly <span class="hljs-keyword">if</span> ember.isEqual(role.toLowerCase(), current_role.toLowerCase())
+    <span class="hljs-built_in">console</span>.error <span class="hljs-string">"Could not find friendly for [<span class="hljs-subst">#{current_role}</span>] in config.roles_map [<span class="hljs-subst">#{roles_map}</span>]."</span> <span class="hljs-keyword">unless</span> ember.isPresent(name)
+    name
+
+  <span class="hljs-attribute">is_active</span>:   ember.computed.equal <span class="hljs-string">'state'</span>, <span class="hljs-string">'active'</span>
+  <span class="hljs-attribute">is_inactive</span>: ember.computed.equal <span class="hljs-string">'state'</span>, <span class="hljs-string">'inactive'</span>
+
+  <span class="hljs-attribute">set_role_from_friendly</span>: <span class="hljs-function"><span class="hljs-params">(friendly_role)</span> -&gt;</span>
+    roles = config.roles_map
+    <span class="hljs-keyword">for</span> role, friendly <span class="hljs-keyword">of</span> roles
+      <span class="hljs-property">@set</span> <span class="hljs-string">'role'</span>, role <span class="hljs-keyword">if</span> friendly == friendly_role</div></div></div></div></body></html>

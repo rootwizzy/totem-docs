@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-html/addon/components/input_elements/standard_checkbox</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-html/addon/components/input_elements/standard_checkbox"><meta name="groc-project-path" content="thinkspace-html/addon/components/input_elements/standard_checkbox.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-html/addon/components/input_elements/standard_checkbox.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">is_checked</span>: ember.computed
+    <span class="hljs-attribute">get</span>: <span class="hljs-function"><span class="hljs-params">(key)</span>        -&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'model.value'</span>) == <span class="hljs-string">'true'</span>
+    <span class="hljs-attribute">set</span>: <span class="hljs-function"><span class="hljs-params">(key, value)</span> -&gt;</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'model.value'</span>, value.toString()
+      <span class="hljs-property">@save_response</span>()
+      value == <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">save_response</span>: <span class="hljs-function">-&gt;</span>
+    model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    <span class="hljs-property">@totem_scope</span>.set_record_ownerable_attributes(model)
+    model.save().<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@totem_messages</span>.api_success(<span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: model, <span class="hljs-attribute">action</span>: <span class="hljs-string">'save'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'response'</span>, <span class="hljs-string">'save'</span>))
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+      <span class="hljs-property">@totem_messages</span>.api_failure(error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: model)</div></div></div></div></body></html>

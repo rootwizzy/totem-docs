@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/models/thinkspace/observation_list/list</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/models/thinkspace/observation_list/list"><meta name="groc-project-path" content="thinkspace-model/app/models/thinkspace/observation_list/list.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-model/app/models/thinkspace/observation_list/list.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ta    from <span class="hljs-string">'totem/ds/associations'</span>
+import base  from <span class="hljs-string">'../common/componentable'</span>
+
+export default base.extend ta.add(
+    ta.polymorphic <span class="hljs-string">'authable'</span>
+    ta.has_many    <span class="hljs-string">'lists'</span>, <span class="hljs-attribute">inverse</span>: ta.to_p(<span class="hljs-string">'lists'</span>)
+    ta.has_many    <span class="hljs-string">'observations'</span>, <span class="hljs-attribute">reads</span>: {<span class="hljs-attribute">from</span>: <span class="hljs-string">'lists'</span>, <span class="hljs-attribute">filter</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'position:asc'</span>}
+    ta.has_many    <span class="hljs-string">'observation_list:groups'</span>, <span class="hljs-attribute">reads</span>: {<span class="hljs-attribute">name</span>: <span class="hljs-string">'groups'</span>}
+  ),
+
+  <span class="hljs-attribute">category</span>:      ta.attr()
+  <span class="hljs-attribute">authable_type</span>: ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">authable_id</span>:   ta.attr(<span class="hljs-string">'number'</span>)
+
+  <span class="hljs-attribute">observation_positions</span>:    ember.computed.mapBy <span class="hljs-string">'observations'</span>, <span class="hljs-string">'position'</span>
+  <span class="hljs-attribute">max_observation_position</span>: ember.computed.max(<span class="hljs-string">'observation_positions'</span>)
+
+  <span class="hljs-attribute">category_id</span>: ember.computed -&gt; (<span class="hljs-property">@get</span>(<span class="hljs-string">'category.name'</span>) <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>).toLowerCase()
+
+  <span class="hljs-attribute">category_icon</span>: ember.computed -&gt;
+    <span class="hljs-keyword">switch</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'category_id'</span>)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'d'</span>
+        icon = <span class="hljs-string">'&lt;i class="fa fa-flask data" title="Data"&gt;&lt;/i&gt;'</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'h'</span>
+        icon = <span class="hljs-string">'&lt;i class="im im-book history" title="History"&gt;&lt;/i&gt;'</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'m'</span>
+        icon = <span class="hljs-string">'&lt;i class="fa fa-circle-o mechanism" title="Mechanism"&gt;&lt;/i&gt;'</span>
+      <span class="hljs-keyword">else</span>
+        icon = <span class="hljs-string">'&lt;i class="fa fa-square unknown" title="Unknown"&gt;&lt;/i&gt;'</span>
+    icon.htmlSafe()
+
+  <span class="hljs-attribute">category_values</span>: [
+    {<span class="hljs-attribute">id</span>: <span class="hljs-string">'d'</span>, <span class="hljs-attribute">label</span>: <span class="hljs-string">'Data'</span>}
+    {<span class="hljs-attribute">id</span>: <span class="hljs-string">'h'</span>, <span class="hljs-attribute">label</span>: <span class="hljs-string">'History'</span>}
+  ]
+
+  <span class="hljs-attribute">edit_component</span>: ta.to_p <span class="hljs-string">'list'</span>, <span class="hljs-string">'edit'</span></div></div></div></div></body></html>

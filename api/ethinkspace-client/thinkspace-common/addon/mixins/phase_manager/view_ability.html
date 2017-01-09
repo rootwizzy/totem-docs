@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/phase_manager/view_ability</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/phase_manager/view_ability"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/phase_manager/view_ability.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/addon/mixins/phase_manager/view_ability.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">set_totem_scope_view_ability</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> <span class="hljs-property">@has_active_addons</span>()  <span class="hljs-comment"># if addon active, the addon sets the view only value</span>
+      phase       = <span class="hljs-property">@get_phase</span>()
+      phase_state = <span class="hljs-property">@get_map</span>().get_phase_selected_phase_state(phase)
+      <span class="hljs-keyword">unless</span> phase_state
+        <span class="hljs-property">@set_view_only_on</span>()
+        <span class="hljs-keyword">return</span> resolve()
+      <span class="hljs-keyword">if</span> phase_state.get(<span class="hljs-string">'is_view_only'</span>)
+        <span class="hljs-property">@set_view_only_on</span>()
+        <span class="hljs-keyword">return</span> resolve()
+      <span class="hljs-keyword">if</span> phase.is_team_ownerable()
+        <span class="hljs-property">@set_totem_scope_view_ability_team_ownerable</span>().<span class="hljs-keyword">then</span> =&gt; <span class="hljs-keyword">return</span> resolve()
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@set_view_only_off</span>()
+        resolve()
+
+  <span class="hljs-attribute">set_totem_scope_view_ability_team_ownerable</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      phase       = <span class="hljs-property">@get_phase</span>()
+      phase_state = <span class="hljs-property">@get_map</span>().get_phase_selected_phase_state(phase)
+      <span class="hljs-keyword">if</span> phase_state
+        phase_state.get(<span class="hljs-string">'ownerable'</span>).<span class="hljs-keyword">then</span> (ownerable) =&gt;
+          <span class="hljs-keyword">if</span> ownerable <span class="hljs-keyword">and</span> ownerable.get(<span class="hljs-string">'is_member'</span>)
+            <span class="hljs-property">@set_view_only_off</span>()
+          <span class="hljs-keyword">else</span>
+            <span class="hljs-property">@set_view_only_on</span>()
+          resolve()
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@set_view_only_on</span>()
+        resolve()</div></div></div></div></body></html>

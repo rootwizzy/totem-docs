@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/addon/mixins/dragula</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-indented-list/addon/mixins/dragula"><meta name="groc-project-path" content="thinkspace-indented-list/addon/mixins/dragula.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-indented-list/addon/mixins/dragula.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="dragula-options-callbacks---options">Dragula Options Callbacks: @ = options.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="response-manager-values-may-be-set-39after39-the-drake-was-created-with-the-options">Response manager values may be set &#39;after&#39; the drake was created with the options.</h3>
+<h3 id="options-functions-eg-moves-accepts-etc-can-reference-values-by-using-response-managerprop-name">Options functions (e.g. moves, accepts, etc.) can reference values by using: @response_manager.prop-name</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="whether-an-element-can-be-dragged">Whether an element can be dragged.</h3>
+<h3 id="must-have-a-class-listed-in-the-option-39draggable39">Must have a class listed in the option &#39;draggable&#39;.</h3></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">moves</span>: <span class="hljs-function"><span class="hljs-params">(el, source, handle, sibling)</span> -&gt;</span>
+    $el = $(el)
+    <span class="hljs-property">@draggable_classes</span>.find (class_name) -&gt; $el.hasClass(class_name)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="whether-the-39target39-container-will-accept-a-dragged-item">Whether the &#39;target&#39; container will accept a dragged item.</h3>
+<h3 id="the-39list-container39-will-accept-any-dragable-items">The &#39;list container&#39; will accept any dragable items.</h3></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">accepts</span>: <span class="hljs-function"><span class="hljs-params">(el, target, source, sibling)</span> -&gt;</span> <span class="hljs-property">@response_manager</span>.list_container == target</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="whether-the-dragged-item-should-be-a-copy-or-the-item-itself">Whether the dragged item should be a copy or the item itself.</h3>
+<h3 id="if-the-item-is-in-the-39list-container39-do-not-make-a-copy-otherwise-make-a-copy">If the item is in the &#39;list container&#39;, do not make a copy, otherwise make a copy.</h3></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">copy</span>: <span class="hljs-function"><span class="hljs-params">(el, source)</span> -&gt;</span> <span class="hljs-property">@response_manager</span>.list_container != source</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="dragula-event-callbacks---drake">Dragula Event Callbacks: @ = drake.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="triggered-when-the-mirror-eg-copy-or-clone">Triggered when the mirror (e.g. copy or clone).</h3>
+<h3 id="this-is-the-item-being-dragged-to-get-the-x-offset">This is the item being dragged to get the x-offset.</h3></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">cloned</span>: <span class="hljs-function"><span class="hljs-params">(clone, original, type)</span> -&gt;</span>
+    <span class="hljs-property">@cloned_element</span> = clone
+    <span class="hljs-property">@cloned_item</span>    = $(original).data(<span class="hljs-string">'item'</span>)
+
+  <span class="hljs-attribute">drop</span>: <span class="hljs-function"><span class="hljs-params">(el, target, source, sibling)</span> -&gt;</span> <span class="hljs-property">@response_manager</span>.handle_drop(<span class="hljs-property">@cloned_element</span>, el, target, source, sibling)
+
+  <span class="hljs-attribute">cancel</span>: <span class="hljs-function"><span class="hljs-params">(el, container, source)</span> -&gt;</span> <span class="hljs-property">@response_manager</span>.handle_cancel(<span class="hljs-property">@cloned_element</span>, el, container, source)
+
+  <span class="hljs-attribute">shadow</span>: <span class="hljs-function"><span class="hljs-params">(el, original, source)</span> -&gt;</span>
+    $item       = $(<span class="hljs-string">'.gu-mirror'</span>)
+    <span class="hljs-keyword">if</span> ember.isPresent($item)
+      $transit    = $(<span class="hljs-string">'.gu-transit'</span>)
+      pos_x       = <span class="hljs-property">@response_manager</span>.get_element_pos_x($item)
+      margin_left = <span class="hljs-property">@response_manager</span>.calc_item_indent({<span class="hljs-attribute">pos_x</span>: pos_x})
+      $transit.css(<span class="hljs-string">'margin-left'</span>, margin_left + <span class="hljs-string">'px'</span>)
+
+  <span class="hljs-attribute">drag</span>: <span class="hljs-function"><span class="hljs-params">(el, source)</span> -&gt;</span>
+    <span class="hljs-property">@is_dragging</span>       = <span class="hljs-literal">true</span>
+    $(<span class="hljs-built_in">document</span>).mousemove (event) =&gt;
+      <span class="hljs-property">@response_manager</span>.shadow.call(@, el, <span class="hljs-literal">null</span>, source)
+
+  <span class="hljs-attribute">dragend</span>: <span class="hljs-function"><span class="hljs-params">(el)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@is_dragging</span>
+      $(<span class="hljs-built_in">document</span>).unbind(<span class="hljs-string">'mousemove'</span>)
+      <span class="hljs-property">@is_dragging</span> = <span class="hljs-literal">false</span></div></div></div></div></body></html>

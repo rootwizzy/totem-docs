@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/models/thinkspace/lab/observation</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/models/thinkspace/lab/observation"><meta name="groc-project-path" content="thinkspace-model/app/models/thinkspace/lab/observation.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-model/app/models/thinkspace/lab/observation.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ta from <span class="hljs-string">'totem/ds/associations'</span>
+
+export default ta.Model.extend ta.add(
+    ta.polymorphic <span class="hljs-string">'ownerable'</span>
+    ta.belongs_to  <span class="hljs-string">'lab:result'</span>, <span class="hljs-attribute">reads</span>: {}
+  ),
+
+  <span class="hljs-attribute">attempts</span>:       ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">state</span>:          ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">all_correct</span>:    ta.attr(<span class="hljs-string">'boolean'</span>)
+  <span class="hljs-attribute">value</span>:          ta.attr()
+  <span class="hljs-attribute">detail</span>:         ta.attr()
+  <span class="hljs-attribute">ownerable_type</span>: ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">ownerable_id</span>:   ta.attr(<span class="hljs-string">'number'</span>)
+
+  <span class="hljs-attribute">locked</span>: ember.computed.equal <span class="hljs-string">'state'</span>, <span class="hljs-string">'locked'</span>
+
+  <span class="hljs-attribute">didCreate</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@didLoad</span>()
+
+  <span class="hljs-attribute">didLoad</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(ta.to_p <span class="hljs-string">'lab:result'</span>).<span class="hljs-keyword">then</span> (result) =&gt;
+      result.get(ta.to_p <span class="hljs-string">'lab:observations'</span>).<span class="hljs-keyword">then</span> (observations) =&gt;
+        observations.pushObject(@)  <span class="hljs-keyword">unless</span> observations.includes(@)</div></div></div></div></body></html>

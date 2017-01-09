@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/components/--loader</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-common/app/components/--loader"><meta name="groc-project-path" content="thinkspace-common/app/components/--loader.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/app/components/--loader.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import i18n  from <span class="hljs-string">'totem/i18n'</span>
+import base_component from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base_component.extend
+  <span class="hljs-attribute">tagName</span>:   <span class="hljs-string">''</span>
+  <span class="hljs-attribute">type</span>:      <span class="hljs-string">'default'</span>
+  <span class="hljs-attribute">size</span>:      <span class="hljs-string">'medium'</span>
+  <span class="hljs-attribute">header</span>:    <span class="hljs-string">''</span>
+  <span class="hljs-attribute">message</span>:   <span class="hljs-string">''</span>
+  <span class="hljs-attribute">i18n_path</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">text</span>: ember.computed <span class="hljs-string">'message'</span>, <span class="hljs-string">'i18n_path'</span>, <span class="hljs-function">-&gt;</span>
+    message   = <span class="hljs-property">@get</span> <span class="hljs-string">'message'</span>
+    i18n_path = <span class="hljs-property">@get</span> <span class="hljs-string">'i18n_path'</span>
+    <span class="hljs-keyword">return</span> i18n.message <span class="hljs-attribute">path</span>: i18n_path <span class="hljs-keyword">if</span> ember.isPresent(i18n_path)
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Loading...'</span> <span class="hljs-keyword">unless</span> ember.isPresent(message)
+    <span class="hljs-keyword">return</span> message</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>c_loader: ember.computed &#39;type&#39;, -&gt; ns.to_p(&#39;common&#39;, &#39;shared&#39;, &#39;loader&#39;, @get(&#39;type&#39;))</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">c_loader</span>: ember.computed <span class="hljs-string">'type'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-string">"__loader/<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'type'</span>)}</span>"</span></div></div></div></div></body></html>

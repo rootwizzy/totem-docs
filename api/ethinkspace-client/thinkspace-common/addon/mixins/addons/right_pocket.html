@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/addons/right_pocket</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/addons/right_pocket"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/addons/right_pocket.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/addon/mixins/addons/right_pocket.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">right_pocket_width_class</span>: ember.computed <span class="hljs-string">'right_pocket_is_expanded'</span>, <span class="hljs-string">'right_pocket_width'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span> <span class="hljs-string">'right_pocket_is_expanded'</span>
+    <span class="hljs-string">"right-pocket_width-<span class="hljs-subst">#{<span class="hljs-property">@get_right_pocket_width</span>()}</span>"</span>
+
+  <span class="hljs-attribute">right_pocket_is_expanded</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">right_pocket_width</span>:       <span class="hljs-number">0</span>
+
+  <span class="hljs-attribute">reset_right_pocket</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@reset_right_pocket_width</span>()
+
+  <span class="hljs-attribute">show_right_pocket</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'right_pocket_is_expanded'</span>, <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">hide_right_pocket</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@setProperties</span>(<span class="hljs-attribute">right_pocket_is_expanded</span>: <span class="hljs-literal">false</span>, <span class="hljs-attribute">right_pocket_width</span>: <span class="hljs-number">0</span>)
+
+  <span class="hljs-attribute">get_right_pocket_width</span>:         <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'right_pocket_width'</span>
+  <span class="hljs-attribute">set_right_pocket_width</span>: <span class="hljs-function"><span class="hljs-params">(width)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'right_pocket_width'</span>, width
+  <span class="hljs-attribute">reset_right_pocket_width</span>:       <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set_right_pocket_width</span>(<span class="hljs-number">0</span>)
+
+  <span class="hljs-attribute">get_right_pocket_addons</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_active_addons</span>().filterBy <span class="hljs-string">'right_pocket'</span>, <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">has_right_pocket_addons</span>: <span class="hljs-function">-&gt;</span> ember.isPresent <span class="hljs-property">@get_right_pocket_addons</span>()
+
+  <span class="hljs-attribute">is_right_pocket_addon</span>: <span class="hljs-function"><span class="hljs-params">(addon)</span> -&gt;</span> addon <span class="hljs-keyword">and</span> addon.right_pocket == <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">close_all_right_pocket_addons</span>: <span class="hljs-function"><span class="hljs-params">(addon=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    addons = <span class="hljs-keyword">if</span> addon <span class="hljs-keyword">then</span> <span class="hljs-property">@get_right_pocket_addons</span>().without(addon) <span class="hljs-keyword">else</span> <span class="hljs-property">@get_right_pocket_addons</span>()
+    <span class="hljs-property">@close_addons</span>(addons)
+
+  <span class="hljs-attribute">increase_right_pocket</span>: <span class="hljs-function"><span class="hljs-params">(addon, width=<span class="hljs-number">1</span>)</span> -&gt;</span>
+    width             = <span class="hljs-number">1</span> <span class="hljs-keyword">unless</span> width
+    right_pocket_width  = <span class="hljs-property">@get_right_pocket_width</span>()
+    right_pocket_width += width
+    addon.width       = (addon.width <span class="hljs-keyword">or</span> <span class="hljs-number">0</span>) + width
+    <span class="hljs-property">@set_right_pocket_width</span>(right_pocket_width)
+    <span class="hljs-property">@set_addon_right_pocket_class</span>()
+
+  <span class="hljs-attribute">decrease_right_pocket</span>: <span class="hljs-function"><span class="hljs-params">(addon, width=<span class="hljs-number">1</span>)</span> -&gt;</span>
+    width             = <span class="hljs-number">1</span> <span class="hljs-keyword">unless</span> width
+    right_pocket_width  = <span class="hljs-property">@get_right_pocket_width</span>()
+    right_pocket_width -= width
+    addon.width       = (addon.width <span class="hljs-keyword">or</span> <span class="hljs-number">1</span>) - width
+    addon.width       = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> addon.width &lt; <span class="hljs-number">1</span>
+    <span class="hljs-property">@set_right_pocket_width</span>(right_pocket_width)
+    <span class="hljs-property">@set_addon_right_pocket_class</span>()
+
+  <span class="hljs-attribute">set_addon_right_pocket_class</span>: <span class="hljs-function">-&gt;</span>
+    addons = <span class="hljs-property">@get_right_pocket_addons</span>()
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(addons)
+    all_addons_width = <span class="hljs-number">0</span>
+    addons.map (addon) =&gt; all_addons_width += addon.width
+    each_width = Math.floor(<span class="hljs-number">12</span> / all_addons_width) <span class="hljs-keyword">or</span> <span class="hljs-number">1</span>
+    extra      = <span class="hljs-number">12</span> - (each_width * all_addons_width)
+    extra      = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> extra &lt; <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> addon <span class="hljs-keyword">in</span> addons
+      width = addon.width <span class="hljs-keyword">or</span> <span class="hljs-number">1</span>
+      cols  = each_width * width
+      <span class="hljs-keyword">if</span> extra &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> width &gt; <span class="hljs-number">1</span>
+        cols  += <span class="hljs-number">1</span>
+        extra -= <span class="hljs-number">1</span>
+      cols_class = <span class="hljs-string">"right-pocket_addon small-<span class="hljs-subst">#{cols}</span> ts-grid_columns"</span>
+      ember.set addon, <span class="hljs-string">'class'</span>, cols_class</div></div></div></div></body></html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/models/thinkspace/casespace/assignment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/models/thinkspace/casespace/assignment"><meta name="groc-project-path" content="thinkspace-model/app/models/thinkspace/casespace/assignment.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-model/app/models/thinkspace/casespace/assignment.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember                 from <span class="hljs-string">'ember'</span>
+import ta                    from <span class="hljs-string">'totem/ds/associations'</span>
+import tc                    from <span class="hljs-string">'totem/cache'</span>
+import resource_mixin        from <span class="hljs-string">'thinkspace-resource/mixins/resources'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Re-add if applicable</p></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">#import included_models_mixin from 'totem-application/mixins/included_models'</span>
+
+export default ta.Model.extend resource_mixin, ta.totem_data, ta.add(
+    ta.belongs_to <span class="hljs-string">'space'</span>,  <span class="hljs-attribute">reads</span>: {}
+    ta.belongs_to <span class="hljs-string">'assignment_type'</span>, <span class="hljs-attribute">reads</span>: {}
+    ta.has_many   <span class="hljs-string">'phases'</span>, <span class="hljs-attribute">reads</span>: {<span class="hljs-attribute">sort</span>: <span class="hljs-string">'position:asc'</span>}
+  ),
+
+  <span class="hljs-attribute">title</span>:            ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">description</span>:      ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">active</span>:           ta.attr(<span class="hljs-string">'boolean'</span>)
+  <span class="hljs-attribute">release_at</span>:       ta.attr(<span class="hljs-string">'date'</span>)
+  <span class="hljs-attribute">due_at</span>:           ta.attr(<span class="hljs-string">'date'</span>)
+  <span class="hljs-attribute">instructions</span>:     ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">name</span>:             ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">template_id</span>:      ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">bundle_type</span>:      ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">state</span>:            ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">settings</span>:         ta.attr()
+  <span class="hljs-attribute">included_options</span>: ta.attr() <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> Remove in favor of included.records/options?</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="temporary-for-new-builder">TEMPORARY FOR NEW BUILDER</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">builder_version</span>:     ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">builder_template_id</span>: ta.attr(<span class="hljs-string">'number'</span>)
+
+  <span class="hljs-attribute">is_pubsub</span>:      ember.computed.bool <span class="hljs-string">'settings.pub_sub'</span>
+  <span class="hljs-attribute">is_active</span>:      ember.computed.equal <span class="hljs-string">'state'</span>, <span class="hljs-string">'active'</span>
+  <span class="hljs-attribute">is_inactive</span>:    ember.computed.equal <span class="hljs-string">'state'</span>, <span class="hljs-string">'inactive'</span>
+  <span class="hljs-attribute">has_due_at</span>:     ember.computed.notEmpty <span class="hljs-string">'due_at'</span>
+  <span class="hljs-attribute">has_release_at</span>: ember.computed.notEmpty <span class="hljs-string">'release_at'</span>
+
+  <span class="hljs-attribute">ttz</span>: ember.inject.service()
+
+  <span class="hljs-attribute">totem_data_config</span>: <span class="hljs-attribute">ability</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">metadata</span>: <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">default_name</span>: <span class="hljs-string">'Case'</span>
+  <span class="hljs-attribute">states</span>:       [<span class="hljs-string">'inactive'</span>, <span class="hljs-string">'active'</span>]
+
+  <span class="hljs-attribute">components</span>: ember.computed.reads <span class="hljs-string">'settings.ember.components'</span>
+
+  <span class="hljs-attribute">assignment_name</span>:    ember.computed.<span class="hljs-keyword">or</span>    <span class="hljs-string">'name'</span>, <span class="hljs-string">'default_name'</span>
+  <span class="hljs-attribute">first_phase</span>:        ember.computed.reads <span class="hljs-string">'phases.firstObject'</span>
+  <span class="hljs-attribute">is_peer_assessment</span>: ember.computed.equal <span class="hljs-string">'bundle_type'</span>, <span class="hljs-string">'assessment'</span>
+  <span class="hljs-attribute">is_casespace</span>:       ember.computed.equal <span class="hljs-string">'bundle_type'</span>, <span class="hljs-string">'casespace'</span>
+  <span class="hljs-attribute">friendly_due_at</span>:    ember.computed <span class="hljs-string">'due_at'</span>, <span class="hljs-function">-&gt;</span>
+    due_at = <span class="hljs-property">@get</span>(<span class="hljs-string">'due_at'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> ember.isPresent(due_at)
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'ttz'</span>).format(due_at, <span class="hljs-attribute">format</span>: <span class="hljs-string">'MMM Do, h:mm a'</span>)
+    
+  <span class="hljs-attribute">friendly_release_at</span>:    ember.computed <span class="hljs-string">'release_at'</span>, <span class="hljs-function">-&gt;</span>
+    release_at = <span class="hljs-property">@get</span>(<span class="hljs-string">'release_at'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> ember.isPresent(release_at)
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'ttz'</span>).format(release_at, <span class="hljs-attribute">format</span>: <span class="hljs-string">'MMM Do, h:mm a'</span>)
+
+  <span class="hljs-attribute">add_ability</span>: <span class="hljs-function"><span class="hljs-params">(abilities)</span> -&gt;</span>
+    update            = abilities.gradebook
+    abilities.update  = update
+    abilities.clone   = update
+    abilities.destroy = update
+
+  <span class="hljs-attribute">save_logistics</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      configuration =
+        <span class="hljs-attribute">release_at</span>: <span class="hljs-property">@get</span>(<span class="hljs-string">'release_at'</span>)
+        <span class="hljs-attribute">due_at</span>:     <span class="hljs-property">@get</span>(<span class="hljs-string">'due_at'</span>)
+
+      query =
+        <span class="hljs-attribute">id</span>:     <span class="hljs-property">@get</span>(<span class="hljs-string">'id'</span>)
+        <span class="hljs-attribute">configuration</span>: configuration
+        <span class="hljs-attribute">data</span>: { <span class="hljs-attribute">attributes</span>: {} }
+
+      options =
+        <span class="hljs-attribute">action</span>: <span class="hljs-string">''</span>
+        <span class="hljs-attribute">verb</span>:   <span class="hljs-string">'PATCH'</span>
+
+      tc.query_action(ta.to_p(<span class="hljs-string">'assignment'</span>), query, options).<span class="hljs-keyword">then</span> (saved_assignment) =&gt; 
+        resolve saved_assignment
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> reject(error)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="phase-position">Phase position</h3>
+<p>=&gt; Assumes they&#39;ve been updated via the phase model functions.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">save_phase_positions</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      update     = []
+      <span class="hljs-property">@get</span>(ta.to_p(<span class="hljs-string">'phases'</span>)).<span class="hljs-keyword">then</span> (phases) =&gt;
+        phases.forEach (phase) =&gt; update.push(phase) <span class="hljs-keyword">if</span> phase.get(<span class="hljs-string">'isDirty'</span>)
+        <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isEmpty(update)
+        phase_order = []
+        update.forEach (phase) =&gt;
+          phase_order.push({<span class="hljs-attribute">phase_id</span>: phase.get(<span class="hljs-string">'id'</span>), <span class="hljs-attribute">position</span>: phase.get(<span class="hljs-string">'position'</span>)})
+        query =
+          <span class="hljs-attribute">action</span>:      <span class="hljs-string">'phase_order'</span>
+          <span class="hljs-attribute">verb</span>:        <span class="hljs-string">'put'</span>
+          <span class="hljs-attribute">phase_order</span>: phase_order
+          <span class="hljs-attribute">id</span>:          <span class="hljs-property">@get</span>(<span class="hljs-string">'id'</span>)
+        tc.query(ta.to_p(<span class="hljs-string">'assignment'</span>), query, <span class="hljs-attribute">payload_type</span>: ta.to_p(<span class="hljs-string">'phase'</span>)).<span class="hljs-keyword">then</span> =&gt;
+          resolve()
+        , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="phase-helpers">Phase helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">phase_state_promise</span>: <span class="hljs-function"><span class="hljs-params">(states)</span> -&gt;</span>
+    states  = ember.makeArray(states)
+    promise = <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@get</span>(ta.to_p(<span class="hljs-string">'phases'</span>)).<span class="hljs-keyword">then</span> (phases) =&gt;
+        filtered = phases.filter (phase) =&gt; states.includes(phase.get(<span class="hljs-string">'state'</span>))
+        sorted   = filtered.sortBy(<span class="hljs-string">'position'</span>)
+        resolve(sorted)
+
+  <span class="hljs-attribute">phases_without_team_set</span>: ember.computed <span class="hljs-string">'phases.@each.team_category_id'</span>, <span class="hljs-string">'phases.@each.team_set_id'</span>, <span class="hljs-function">-&gt;</span>
+    promise  = <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      phases = <span class="hljs-keyword">new</span> Array
+      <span class="hljs-property">@get</span>(ta.to_p(<span class="hljs-string">'phases'</span>)).<span class="hljs-keyword">then</span> (phases) =&gt;
+        filtered = phases.filter (phase) =&gt; phase.get(<span class="hljs-string">'has_team_category_without_team_set'</span>)
+        resolve(filtered)
+    ta.PromiseArray.create <span class="hljs-attribute">promise</span>: promise
+
+  <span class="hljs-attribute">has_phases_without_team_set</span>:    ember.computed.notEmpty <span class="hljs-string">'phases_without_team_set'</span>
+  <span class="hljs-attribute">has_no_phases_without_team_set</span>: ember.computed.<span class="hljs-keyword">not</span> <span class="hljs-string">'has_phases_without_team_set'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Instructors see both <code>active</code> and <code>inactive</code> phases in the assignment#show list in the builder.
+=&gt; Therefore, <code>active_phases</code> should return the complete set of visible phases.
+=&gt; Students do not see <code>inactive</code> phases due to authorization.
+=&gt; <code>inactive</code> is reffered to as &quot;Draft&quot; in the UI.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">has_inactive_phases</span>:    ember.computed.notEmpty <span class="hljs-string">'inactive_phases'</span>
+  <span class="hljs-attribute">has_no_inactive_phases</span>: ember.computed.<span class="hljs-keyword">not</span> <span class="hljs-string">'has_inactive_phases'</span>
+
+  <span class="hljs-attribute">inactive_phases</span>:     ember.computed <span class="hljs-string">'phases.@each.state'</span>, <span class="hljs-function">-&gt;</span>
+    ta.PromiseArray.create <span class="hljs-attribute">promise</span>: <span class="hljs-property">@phase_state_promise</span>(<span class="hljs-string">'inactive'</span>)
+
+  <span class="hljs-attribute">active_phases</span>: ember.computed <span class="hljs-string">'phases.@each.state'</span>, <span class="hljs-function">-&gt;</span>
+    ta.PromiseArray.create <span class="hljs-attribute">promise</span>: <span class="hljs-property">@phase_state_promise</span>([<span class="hljs-string">'active'</span>, <span class="hljs-string">'inactive'</span>])
+
+  <span class="hljs-attribute">archived_phases</span>: ember.computed <span class="hljs-string">'phases.@each.state'</span>, <span class="hljs-function">-&gt;</span>
+    ta.PromiseArray.create <span class="hljs-attribute">promise</span>: <span class="hljs-property">@phase_state_promise</span>(<span class="hljs-string">'archived'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="phase-validity">Phase validity</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">has_valid_phases</span>: ember.computed.<span class="hljs-keyword">and</span> <span class="hljs-string">'has_no_phases_without_team_set'</span>, <span class="hljs-string">'has_no_inactive_phases'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="state-helpers">State helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">model_state_change</span>: <span class="hljs-function"><span class="hljs-params">(action)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      tc.query(ta.to_p(<span class="hljs-string">'assignment'</span>), {<span class="hljs-attribute">id</span>: <span class="hljs-property">@get</span>(<span class="hljs-string">'id'</span>), <span class="hljs-attribute">action</span>: action, <span class="hljs-attribute">verb</span>: <span class="hljs-string">'PUT'</span>}, <span class="hljs-attribute">single</span>: <span class="hljs-literal">true</span>).<span class="hljs-keyword">then</span> (assignment) =&gt;
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+
+  <span class="hljs-attribute">activate</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@model_state_change</span>(<span class="hljs-string">'activate'</span>)
+  <span class="hljs-attribute">inactivate</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@model_state_change</span>(<span class="hljs-string">'inactivate'</span>)</div></div></div></div></body></html>

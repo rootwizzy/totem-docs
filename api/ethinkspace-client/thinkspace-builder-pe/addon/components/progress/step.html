@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/components/progress/step</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/components/progress/step"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/components/progress/step.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-builder-pe/addon/components/progress/step.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import ajax  from <span class="hljs-string">'totem/ajax'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">'li'</span>
+  <span class="hljs-attribute">classNameBindings</span>: [<span class="hljs-string">'is_current_step:current-step'</span>]
+
+  <span class="hljs-attribute">builder</span>: ember.inject.service()
+
+  <span class="hljs-attribute">steps</span>: ember.computed.reads <span class="hljs-string">'builder.steps'</span>
+  <span class="hljs-attribute">model</span>: ember.computed.reads <span class="hljs-string">'builder.model'</span>
+
+  <span class="hljs-attribute">is_current_step</span>: ember.computed <span class="hljs-string">'builder.current_step'</span>, <span class="hljs-string">'step'</span>, <span class="hljs-function">-&gt;</span>  <span class="hljs-property">@get</span>(<span class="hljs-string">'builder.current_step'</span>) == <span class="hljs-property">@get</span>(<span class="hljs-string">'step'</span>)
+
+  <span class="hljs-attribute">actions</span>:
+
+    <span class="hljs-attribute">transition</span>: <span class="hljs-function">-&gt;</span>
+      step    = <span class="hljs-property">@get</span>(<span class="hljs-string">'step'</span>)
+      builder = <span class="hljs-property">@get</span>(<span class="hljs-string">'builder'</span>)
+      builder.transition_to_step(step, <span class="hljs-attribute">save</span>: <span class="hljs-literal">true</span>)</div></div></div></div></body></html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/models/thinkspace/peer_assessment/assessment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/models/thinkspace/peer_assessment/assessment"><meta name="groc-project-path" content="thinkspace-model/app/models/thinkspace/peer_assessment/assessment.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-model/app/models/thinkspace/peer_assessment/assessment.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ta    from <span class="hljs-string">'totem/ds/associations'</span>
+import util  from <span class="hljs-string">'totem/util'</span>
+import base  from <span class="hljs-string">'../common/componentable'</span>
+
+export default base.extend ta.add(
+    ta.polymorphic <span class="hljs-string">'authable'</span>
+    ta.belongs_to <span class="hljs-string">'assessment_template'</span>, <span class="hljs-attribute">reads</span>: {}
+  ),
+
+  <span class="hljs-attribute">authable_type</span>:          ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">authable_id</span>:            ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">state</span>:                  ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">assessment_template_id</span>: ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">modified_template</span>:      ta.attr(<span class="hljs-string">'boolean'</span>)
+  <span class="hljs-attribute">value</span>:                  ta.attr()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="computed-properties">Computed properties</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">is_categories</span>:           ember.computed.equal <span class="hljs-string">'assessment_type'</span>, <span class="hljs-string">'categories'</span>
+  <span class="hljs-attribute">is_balance</span>:              ember.computed.equal <span class="hljs-string">'assessment_type'</span>, <span class="hljs-string">'balance'</span>
+  <span class="hljs-attribute">is_custom</span>:               ember.computed.equal <span class="hljs-string">'assessment_type'</span>, <span class="hljs-string">'custom'</span>
+  <span class="hljs-attribute">has_no_assessment_template</span>: ember.computed.empty <span class="hljs-string">'assessment_template_id'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>is_active:             ember.computed.equal &#39;state&#39;, &#39;active&#39;
+is_approved:           ember.computed.equal &#39;state&#39;, &#39;approved&#39;
+is_read_only:          ember.computed.or &#39;is_active&#39;, &#39;is_approved&#39;
+is_not_active:         ember.computed.not &#39;is_active&#39;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Abstractions from JSON keys to reference in templates.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">qualitative_items</span>:          ember.computed <span class="hljs-string">'value.qualitative.@each'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'value.qualitative'</span>)
+  <span class="hljs-attribute">quantitative_items</span>:         ember.computed <span class="hljs-string">'value.quantitative.@each'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'value.quantitative'</span>)
+  <span class="hljs-attribute">assessment_type</span>:            ember.computed <span class="hljs-string">'value.options.type'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'value.options.type'</span>)
+  <span class="hljs-attribute">points</span>:                     ember.computed <span class="hljs-string">'value.options.points'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'value.options.points'</span>)
+  <span class="hljs-attribute">points_per_member</span>:          ember.computed <span class="hljs-string">'value.options.points.per_member'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'points.per_member'</span>)
+  <span class="hljs-attribute">points_min</span>:                 ember.computed <span class="hljs-string">'value.options.points.min'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'points.min'</span>)
+  <span class="hljs-attribute">points_max</span>:                 ember.computed <span class="hljs-string">'value.options.points.max'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'points.max'</span>)
+  <span class="hljs-attribute">points_different</span>:           ember.computed <span class="hljs-string">'value.options.points.different'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'points.different'</span>)
+  <span class="hljs-attribute">points_descriptive_enabled</span>: ember.computed <span class="hljs-string">'value.options.points.descriptive.enabled'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'points.descriptive.enabled'</span>)
+  <span class="hljs-attribute">points_descriptive_low</span>:     ember.computed <span class="hljs-string">'value.options.points.descriptive.values'</span>, <span class="hljs-function">-&gt;</span> 
+    values = <span class="hljs-property">@get</span>(<span class="hljs-string">'points.descriptive.values'</span>)
+    values.get(<span class="hljs-string">'firstObject'</span>) <span class="hljs-keyword">if</span> ember.isArray(values)
+  <span class="hljs-attribute">points_descriptive_medium</span>:    ember.computed <span class="hljs-string">'value.options.points.descriptive.values'</span>, <span class="hljs-function">-&gt;</span>
+    values = <span class="hljs-property">@get</span>(<span class="hljs-string">'points.descriptive.values'</span>)
+    values[<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> ember.isArray(values) <span class="hljs-comment"># Middle value.</span>
+  <span class="hljs-attribute">points_descriptive_high</span>:    ember.computed <span class="hljs-string">'value.options.points.descriptive.values'</span>, <span class="hljs-function">-&gt;</span>
+    values = <span class="hljs-property">@get</span>(<span class="hljs-string">'points.descriptive.values'</span>)
+    values.get(<span class="hljs-string">'lastObject'</span>) <span class="hljs-keyword">if</span> ember.isArray(values)
+
+  <span class="hljs-attribute">positive_qualitative_items</span>:     ember.computed <span class="hljs-string">'value.qualitative.@each'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_qualitative_items_for_type</span>(<span class="hljs-string">'positive'</span>)
+  <span class="hljs-attribute">constructive_qualitative_items</span>: ember.computed <span class="hljs-string">'value.qualitative.@each'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_qualitative_items_for_type</span>(<span class="hljs-string">'constructive'</span>)
+
+
+  <span class="hljs-attribute">quant_items</span>: ember.computed <span class="hljs-string">'value.quantitative.@each'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'value.quantitative'</span>
+  <span class="hljs-attribute">qual_items</span>:  ember.computed <span class="hljs-string">'value.qualitative.@each'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'value.qualitative'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="events">Events</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">didLoad</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@validate_value</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_qualitative_items_for_type</span>: <span class="hljs-function"><span class="hljs-params">(type)</span> -&gt;</span>
+    items            = <span class="hljs-property">@get</span> <span class="hljs-string">'qualitative_items'</span>
+    items_of_type    = []
+    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items
+      items_of_type.pushObject item <span class="hljs-keyword">if</span> ember.isEqual(item.feedback_type, type)
+    items_of_type
+
+  <span class="hljs-attribute">validate_value</span>: <span class="hljs-function">-&gt;</span>
+    value                            = <span class="hljs-property">@get</span> <span class="hljs-string">'value'</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(value)
+    value.qualitative                = [] <span class="hljs-keyword">unless</span> ember.isArray(value.qualitative)
+    value.quantitative               = [] <span class="hljs-keyword">unless</span> ember.isArray(value.quantitative)
+    value.options                    = {} <span class="hljs-keyword">unless</span> ember.isPresent(value.options)
+    value.options.points             = {} <span class="hljs-keyword">unless</span> ember.isPresent(value.options.points)
+    value.options.points.descriptive = {} <span class="hljs-keyword">unless</span> ember.isPresent(value.options.points.descriptive)
+
+  <span class="hljs-attribute">value_did_change</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@propertyDidChange</span> <span class="hljs-string">'value'</span>
+
+
+  <span class="hljs-attribute">set_points_per_member</span>: <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span> util.set_path_value(@, <span class="hljs-string">'value.options.points.per_member'</span>, value)
+  <span class="hljs-attribute">reset_points_per_member</span>:       <span class="hljs-function">-&gt;</span> util.set_path_value(@, <span class="hljs-string">'value.options.points.per_member'</span>, <span class="hljs-literal">null</span>)
+  <span class="hljs-attribute">set_points_min</span>:        <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span> util.set_path_value(@, <span class="hljs-string">'value.options.points.min'</span>, value)
+  <span class="hljs-attribute">set_points_max</span>:        <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span> util.set_path_value(@, <span class="hljs-string">'value.options.points.max'</span>, value)
+  <span class="hljs-attribute">set_points_different</span>:  <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span> util.set_path_value(@, <span class="hljs-string">'value.options.points.different'</span>, value)
+  <span class="hljs-attribute">set_type</span>:              <span class="hljs-function"><span class="hljs-params">(type)</span>  -&gt;</span> util.set_path_value(@, <span class="hljs-string">'value.options.type'</span>, type)
+  <span class="hljs-attribute">set_is_balance</span>:        <span class="hljs-function">-&gt;</span>         <span class="hljs-property">@set_type</span> <span class="hljs-string">'balance'</span>
+  <span class="hljs-attribute">reset_is_balance</span>:      <span class="hljs-function">-&gt;</span>         <span class="hljs-property">@reset_type</span>()
+  <span class="hljs-attribute">reset_type</span>:            <span class="hljs-function">-&gt;</span>         <span class="hljs-property">@set_type</span> <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">set_is_categories</span>:     <span class="hljs-function">-&gt;</span>         <span class="hljs-property">@set_type</span> <span class="hljs-string">'categories'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="builder">Builder</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">builder_abilities</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      can_edit  = !<span class="hljs-property">@get</span>(<span class="hljs-string">'is_read_only'</span>)
+      abilities = 
+        <span class="hljs-attribute">has_builder_content</span>:  can_edit
+        <span class="hljs-attribute">has_builder_settings</span>: can_edit
+      resolve(abilities)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>builder_messages: -&gt;
+  new ember.RSVP.Promise (resolve, reject) =&gt;
+    messages     = []
+    is_active    = @get &#39;is_active&#39;
+    is_approved  = @get &#39;is_approved&#39;</p>
+<pre><code># TODO i18n
+if is_active
+  messages.pushObject &#39;The evaluation has been activated, so it cannot be edited.&#39;
+  messages.pushObject &#39;The evaluation has been activated, so you cannot modify the teams associated with it.&#39;
+if is_approved
+  messages.pushObject &#39;The evaluation has been sent, it has been set to read-only.&#39;
+resolve(messages)</code></pre>
+<p>  , (error) =&gt; @error(error)</p></div></div></div></div></body></html>

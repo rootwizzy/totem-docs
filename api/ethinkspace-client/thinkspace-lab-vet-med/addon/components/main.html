@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-lab-vet-med/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-lab-vet-med/addon/components/main"><meta name="groc-project-path" content="thinkspace-lab-vet-med/addon/components/main.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-lab-vet-med/addon/components/main.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">tvo_titles</span>: <span class="hljs-string">'lab'</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    tvo        = <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo'</span>)
+    hash       = tvo.template.dup_value(<span class="hljs-property">@tvo_path</span>)
+    hash.title = <span class="hljs-string">'lab'</span>
+    tvo.value.set_value(hash)
+    <span class="hljs-property">@set_all_data_loaded</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="-properties">### Properties</h1>
+<h1 id="-properties">### Properties</h1>
+<p>  selected_category:             null
+  is_viewing_keyboard_shortcuts: false</p>
+<h1 id="-events">### Events</h1>
+<p>  willInsertElement: -&gt;
+    chart = @get &#39;model&#39;
+    chart.get(ns.to_p(&#39;lab:categories&#39;)).then (categories) =&gt;
+      first_category = categories.sortBy(&#39;position&#39;).get(&#39;firstObject&#39;)
+      @set &#39;selected_category&#39;, first_category if ember.isPresent(first_category)</p>
+<p>  actions:
+    select:                    (category) -&gt; @set &#39;selected_category&#39;, category
+    toggle_keyboard_shortcuts: -&gt; @toggleProperty &#39;is_viewing_keyboard_shortcuts&#39;</p>
+<p>  init: -&gt;
+    @_super()
+    @get(&#39;tvo.template&#39;).engine_values([&#39;lab-vet-med&#39;], @)</p></div></div></div></div></body></html>

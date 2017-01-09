@@ -1,0 +1,7 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/helpers/phase-progress-icon</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-common/app/helpers/phase-progress-icon"><meta name="groc-project-path" content="thinkspace-common/app/helpers/phase-progress-icon.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/app/helpers/phase-progress-icon.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Helper.helper ([current_phase_state, each_phase_state, each_current_state]) -&gt;
+  <span class="hljs-keyword">if</span> current_phase_state == each_phase_state
+    <span class="hljs-string">'&lt;div class="tsi tsi-small tsi-phase-current"&gt;&lt;/div&gt;'</span>.htmlSafe()
+  <span class="hljs-keyword">else</span>
+    <span class="hljs-string">"&lt;div class='tsi tsi-small tsi-phase-<span class="hljs-subst">#{each_current_state}</span>'&gt;&lt;/div&gt;"</span>.htmlSafe()</div></div></div></div></body></html>

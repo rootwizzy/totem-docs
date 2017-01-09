@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-peer-review/addon/services/peer_review</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-peer-review/addon/services/peer_review"><meta name="groc-project-path" content="thinkspace-peer-review/addon/services/peer_review.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-peer-review/addon/services/peer_review.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ds    from <span class="hljs-string">'ember-data'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import ajax  from <span class="hljs-string">'totem/ajax'</span>
+import base  from <span class="hljs-string">'thinkspace-base/services/base'</span>
+import totem_scope    from <span class="hljs-string">'totem/scope'</span>
+import totem_messages from <span class="hljs-string">'totem-messages/messages'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Hold phase peer review users and teams.
+The &#39;peer_review&#39; phase component is regenerated when the dock is regenerated
+e.g. a phase load.  Therefore, this will persist between
+phase view generates.</p></div></div><div class="code"><div class="wrapper">export default base.extend
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'PeerReviewPhaseMap'</span>
+
+  <span class="hljs-attribute">map</span>: ember.Map.create()
+
+  <span class="hljs-attribute">clear</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'map'</span>).clear
+    <span class="hljs-property">@set</span> <span class="hljs-string">'team_ownerable'</span>, <span class="hljs-literal">null</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="map-helpers">Map helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">new_map</span>: <span class="hljs-function">-&gt;</span> ember.Map.create()
+  <span class="hljs-attribute">get_map</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'map'</span>
+
+  <span class="hljs-attribute">get_current_user</span>: <span class="hljs-function">-&gt;</span> totem_scope.get_current_user()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The &#39;team_ownerable&#39; is the original team ownerable selected as the &#39;current user&#39;.
+It is NOT the team selected by the peer review select team.
+Once set, this team&#39;s viewerables are used to determine if a team can be viewed by
+the original team for each phase.
+A phase can have more/less viewerables than the initial phase.
+If a user selects a peer review team on phase then changes to another phase where
+the original team cannot view the peer review team, the peer review addon will exit
+and the user will need to select a team as the &#39;current user&#39;.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_team_ownerable</span>: <span class="hljs-function">-&gt;</span>
+    team_ownerable = <span class="hljs-property">@get</span> <span class="hljs-string">'team_ownerable'</span>
+    <span class="hljs-keyword">return</span> team_ownerable  <span class="hljs-keyword">if</span> team_ownerable
+    <span class="hljs-property">@set</span> <span class="hljs-string">'team_ownerable'</span>, totem_scope.get_ownerable_record()
+    <span class="hljs-property">@get</span> <span class="hljs-string">'team_ownerable'</span>
+
+  <span class="hljs-attribute">get_or_init_map</span>: <span class="hljs-function">-&gt;</span>
+    map = <span class="hljs-property">@get_map</span>()
+    <span class="hljs-keyword">if</span> ember.isBlank(map)
+      <span class="hljs-property">@set</span> <span class="hljs-string">'map'</span>, <span class="hljs-property">@new_map</span>()
+      map = <span class="hljs-property">@get_map</span>()
+    map
+
+  <span class="hljs-attribute">get_or_init_phase_map</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span>
+    map       = <span class="hljs-property">@get_or_init_map</span>()
+    phase_map = map.get(phase)
+    map.set phase, <span class="hljs-property">@new_map</span>() <span class="hljs-keyword">unless</span> phase_map
+    map.get(phase)
+
+  <span class="hljs-attribute">get_or_init_ownerable_map</span>: <span class="hljs-function"><span class="hljs-params">(phase, ownerable)</span> -&gt;</span>
+    phase_map     = <span class="hljs-property">@get_or_init_phase_map</span>(phase)
+    ownerable_map = phase_map.get(ownerable)
+    phase_map.set ownerable, <span class="hljs-property">@new_map</span>() <span class="hljs-keyword">unless</span> ownerable_map
+    phase_map.get(ownerable)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="peer-review-users">Peer Review Users.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_peer_review_users</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      ownerable     = <span class="hljs-property">@get_current_user</span>()
+      ownerable_map = <span class="hljs-property">@get_or_init_ownerable_map</span>(phase, ownerable)
+      map_users     = ownerable_map.get(<span class="hljs-string">'users'</span>)
+      <span class="hljs-keyword">return</span> resolve(map_users) <span class="hljs-keyword">if</span> ember.isPresent(map_users)
+      <span class="hljs-property">@request_peer_review_users</span>(phase).<span class="hljs-keyword">then</span> (users) =&gt;
+        sorted_users = users.sortBy <span class="hljs-string">'sort_name'</span>
+        ownerable_map.set <span class="hljs-string">'users'</span>, sorted_users
+        resolve sorted_users
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> reject(error)
+
+  <span class="hljs-attribute">request_peer_review_users</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      totem_scope.ownerable_to_current_user()
+      query = 
+        <span class="hljs-attribute">model</span>:      ns.to_p(<span class="hljs-string">'team'</span>)
+        <span class="hljs-attribute">verb</span>:       <span class="hljs-string">'post'</span>
+        <span class="hljs-attribute">action</span>:     <span class="hljs-string">'team_users_view'</span>
+        <span class="hljs-attribute">sub_action</span>: <span class="hljs-string">'peer_review_users'</span>
+      query = totem_scope.add_auth_to_ajax_query(query)
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Need to update this to use a <code>tc.query_action</code></p></div></div><div class="code"><div class="wrapper">        users = ajax.push_payload_and_return_data_records(payload)
+        resolve users
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        totem_messages.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: phase, <span class="hljs-attribute">action</span>: <span class="hljs-string">'peer_review_users'</span>
+        reject(error)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="peer-review-teams">Peer Review Teams.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_peer_review_teams</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      ownerable     = <span class="hljs-property">@get_team_ownerable</span>()
+      ownerable_map = <span class="hljs-property">@get_or_init_ownerable_map</span>(phase, ownerable)
+      map_teams     = ownerable_map.get(<span class="hljs-string">'teams'</span>)
+      <span class="hljs-keyword">return</span> resolve(map_teams) <span class="hljs-keyword">if</span> ember.isPresent(map_teams)
+      <span class="hljs-property">@request_peer_review_teams</span>(phase).<span class="hljs-keyword">then</span> (teams) =&gt;
+        sorted_teams = teams.sortBy <span class="hljs-string">'title'</span>
+        ownerable_map.set <span class="hljs-string">'teams'</span>, sorted_teams
+        resolve sorted_teams
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> reject(error)
+
+  <span class="hljs-attribute">request_peer_review_teams</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      query = 
+        <span class="hljs-attribute">model</span>:      ns.to_p(<span class="hljs-string">'team'</span>)
+        <span class="hljs-attribute">verb</span>:       <span class="hljs-string">'post'</span>
+        <span class="hljs-attribute">action</span>:     <span class="hljs-string">'teams_view'</span>
+        <span class="hljs-attribute">sub_action</span>: <span class="hljs-string">'peer_review_teams'</span>
+      query = totem_scope.add_auth_to_ajax_query(query)
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Need to update this to use a <code>tc.query_action</code></p></div></div><div class="code"><div class="wrapper">        teams = ajax.push_payload_and_return_data_records(payload)
+        resolve teams
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        totem_messages.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: phase, <span class="hljs-attribute">action</span>: <span class="hljs-string">'peer_review_teams'</span>
+        reject(error)</div></div></div></div></body></html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-irat/addon/components/radio/ifat_button</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-irat/addon/components/radio/ifat_button"><meta name="groc-project-path" content="thinkspace-readiness-assurance-irat/addon/components/radio/ifat_button.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance-irat/addon/components/radio/ifat_button.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">button_id</span>:        ember.computed.reads <span class="hljs-string">'choice.id'</span>
+  <span class="hljs-attribute">button_label</span>:     ember.computed.reads <span class="hljs-string">'choice.label'</span>
+  <span class="hljs-attribute">buttons_disabled</span>: ember.computed.<span class="hljs-keyword">or</span> <span class="hljs-string">'qm.readonly'</span>, <span class="hljs-string">'qm.answers_disabled'</span>
+  <span class="hljs-attribute">is_correct</span>:       <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">get_answer_id</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'qm.answer_id'</span>)
+  <span class="hljs-attribute">get_button_id</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'button_id'</span>)
+
+  <span class="hljs-attribute">is_selected</span>: ember.computed <span class="hljs-string">'qm.answer_id'</span>, <span class="hljs-function">-&gt;</span>
+    aid = <span class="hljs-property">@get_answer_id</span>()
+    bid = <span class="hljs-property">@get_button_id</span>()
+    bid <span class="hljs-keyword">and</span> bid == aid
+
+  <span class="hljs-attribute">has_been_selected</span>: ember.computed <span class="hljs-string">'qm.response_updated'</span>, <span class="hljs-function">-&gt;</span>
+    qid            = <span class="hljs-property">@qm</span>.qid
+    attempt_values = <span class="hljs-property">@get</span>(<span class="hljs-string">"qm.response.userdata.attempt_values.<span class="hljs-subst">#{qid}</span>"</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">if</span> ember.isBlank(attempt_values)
+    bid = <span class="hljs-property">@get_button_id</span>()
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> attempt_values.contains(bid)
+    qid_is_correct = <span class="hljs-property">@get</span>(<span class="hljs-string">"qm.response.userdata.question_correct.<span class="hljs-subst">#{qid}</span>"</span>)
+    correct_answer = <span class="hljs-property">@get</span>(<span class="hljs-string">"qm.response.userdata.correct_answer.<span class="hljs-subst">#{qid}</span>"</span>)
+    is_correct     = qid_is_correct <span class="hljs-keyword">and</span> bid == correct_answer
+    <span class="hljs-property">@set</span> <span class="hljs-string">'is_correct'</span>, is_correct
+    <span class="hljs-property">@qm</span>.set_question_disabled_on() <span class="hljs-keyword">if</span> is_correct
+    <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'buttons_disabled'</span>)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'has_been_selected'</span>)
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, <span class="hljs-property">@get_button_id</span>()</div></div></div></div></body></html>

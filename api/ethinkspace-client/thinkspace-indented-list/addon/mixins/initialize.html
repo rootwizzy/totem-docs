@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/addon/mixins/initialize</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-indented-list/addon/mixins/initialize"><meta name="groc-project-path" content="thinkspace-indented-list/addon/mixins/initialize.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-indented-list/addon/mixins/initialize.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">init_manager</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    <span class="hljs-property">@init_maps</span>()
+    <span class="hljs-property">@init_readonly</span>(options)
+    <span class="hljs-property">@init_manager_properties</span>(options)
+    <span class="hljs-property">@init_drake</span>(options)  <span class="hljs-keyword">unless</span> <span class="hljs-property">@readonly</span>
+    <span class="hljs-property">@init_value_items</span>()
+
+  <span class="hljs-attribute">init_maps</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@item_to_component</span>     = ember.Map.create()  <span class="hljs-comment"># item-hash to component</span>
+    <span class="hljs-property">@el_id_to_component</span>    = ember.Map.create()  <span class="hljs-comment"># element id (e.g. component guid) to component</span>
+    <span class="hljs-property">@new_source_containers</span> = ember.Map.create()  <span class="hljs-comment"># new item source containers</span>
+
+  <span class="hljs-attribute">init_readonly</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@readonly</span>   = (options.readonly == <span class="hljs-literal">true</span>)
+    <span class="hljs-property">@updateable</span> = <span class="hljs-keyword">not</span> <span class="hljs-property">@readonly</span>
+
+  <span class="hljs-attribute">init_manager_properties</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@store</span> = totem_scope.get_store()
+    <span class="hljs-property">@init_model</span>(options)
+    <span class="hljs-property">@init_containers</span>(options)
+    <span class="hljs-property">@init_draggable</span>(options)
+    <span class="hljs-property">@set_indent_px</span>                    options.indent_px  <span class="hljs-keyword">or</span> <span class="hljs-property">@default_indent_px</span>()
+    <span class="hljs-property">@set_max_indent</span>                   options.max_indent <span class="hljs-keyword">or</span> <span class="hljs-property">@default_max_indent</span>()
+    <span class="hljs-property">@set_zoom_level</span>                   options.zoom_level <span class="hljs-keyword">or</span> <span class="hljs-property">@default_zoom_level</span>()
+    <span class="hljs-property">@set_confirm_remove</span>          <span class="hljs-keyword">not</span> (options.confirm_remove == <span class="hljs-literal">false</span>)
+    <span class="hljs-property">@set_send_response_to_server</span> <span class="hljs-keyword">not</span> (options.save_response == <span class="hljs-literal">false</span>)
+    <span class="hljs-property">@queued_saves</span> = []
+    <span class="hljs-property">@save_error</span>   = <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">init_model</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    response = options.model
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Required 'options.model' is blank."</span>  <span class="hljs-keyword">if</span> ember.isBlank(response)
+    <span class="hljs-property">@response</span> = response
+
+  <span class="hljs-attribute">init_containers</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@list_container</span> = <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">init_draggable</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@draggable_classes</span>        = ember.makeArray(options.draggable <span class="hljs-keyword">or</span> <span class="hljs-property">@default_draggable_class</span>())
+    <span class="hljs-property">@draggable_class</span>          = <span class="hljs-property">@draggable_classes</span>.join(<span class="hljs-string">' '</span>)
+    selectors                 = <span class="hljs-property">@draggable_classes</span>.map (class_name) -&gt; <span class="hljs-string">".<span class="hljs-subst">#{class_name}</span>"</span>
+    <span class="hljs-property">@draggable_selector</span>       = selectors.join(<span class="hljs-string">', '</span>)
+    options.draggable_classes = <span class="hljs-property">@draggable_classes</span>  <span class="hljs-comment"># set for dragula options callbacks</span>
+
+  <span class="hljs-attribute">init_drake</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    options.revertOnSpill    = <span class="hljs-literal">true</span>
+    options.direction        = <span class="hljs-string">'veritcal'</span>
+    options.moves            = <span class="hljs-property">@moves</span>
+    options.copy             = <span class="hljs-property">@copy</span>
+    options.accepts          = <span class="hljs-property">@accepts</span>
+    options.response_manager = @
+    <span class="hljs-property">@drake</span>                   = dragula(options)
+    <span class="hljs-property">@drake</span>.response_manager  = @
+    <span class="hljs-property">@init_drake_events</span>(options)
+
+  <span class="hljs-attribute">init_drake_events</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@drake</span>.<span class="hljs-literal">on</span> <span class="hljs-string">'drop'</span>,    <span class="hljs-property">@drop</span>
+    <span class="hljs-property">@drake</span>.<span class="hljs-literal">on</span> <span class="hljs-string">'cloned'</span>,  <span class="hljs-property">@cloned</span>
+    <span class="hljs-property">@drake</span>.<span class="hljs-literal">on</span> <span class="hljs-string">'cancel'</span>,  <span class="hljs-property">@cancel</span>
+    <span class="hljs-property">@drake</span>.<span class="hljs-literal">on</span> <span class="hljs-string">'shadow'</span>,  <span class="hljs-property">@shadow</span>
+    <span class="hljs-property">@drake</span>.<span class="hljs-literal">on</span> <span class="hljs-string">'drag'</span>,    <span class="hljs-property">@drag</span>
+    <span class="hljs-property">@drake</span>.<span class="hljs-literal">on</span> <span class="hljs-string">'dragend'</span>, <span class="hljs-property">@dragend</span>
+
+  <span class="hljs-attribute">init_value_items</span>: <span class="hljs-function"><span class="hljs-params">(items)</span> -&gt;</span>
+    <span class="hljs-property">@value_items</span> = (<span class="hljs-property">@response</span>.get(<span class="hljs-string">'value.items'</span>) <span class="hljs-keyword">or</span> []).sortBy(<span class="hljs-string">'pos_y'</span>)</div></div></div></div></body></html>

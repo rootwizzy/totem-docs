@@ -1,0 +1,13 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance/addon/mixins/cm/helpers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance/addon/mixins/cm/helpers"><meta name="groc-project-path" content="thinkspace-readiness-assurance/addon/mixins/cm/helpers.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance/addon/mixins/cm/helpers.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import totem_error from <span class="hljs-string">'totem/error'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">current_user_full_name</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@rm</span>.current_user_full_name()
+
+  <span class="hljs-attribute">error</span>: <span class="hljs-function"><span class="hljs-params">(args...)</span> -&gt;</span>
+    message = args.shift() <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+    <span class="hljs-built_in">console</span>.error message, args <span class="hljs-keyword">if</span> ember.isPresent(args)
+    totem_error.<span class="hljs-keyword">throw</span> @, message
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'ReadinessAssuranceChatManager:'</span> + ember.guidFor(@)</div></div></div></div></body></html>

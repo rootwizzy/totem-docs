@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/components/bar/select_teams</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/app/components/bar/select_teams"><meta name="groc-project-path" content="thinkspace-common/app/components/bar/select_teams.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/app/components/bar/select_teams.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">is_current_team</span>: ember.computed <span class="hljs-string">'selected'</span>, <span class="hljs-string">'your_team'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'selected'</span>) == <span class="hljs-property">@get</span>(<span class="hljs-string">'current_team'</span>)
+
+  <span class="hljs-attribute">show_dropdown</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">selected</span>:      <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">dropdown_teams</span>:  <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">prev_next_teams</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">default_setup_options</span>:
+    <span class="hljs-attribute">include_current_team_in_dropdown</span>:      <span class="hljs-literal">true</span>
+    <span class="hljs-attribute">include_current_team_in_previous_next</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    setup_options  = ember.merge {}, <span class="hljs-property">@default_setup_options</span>
+    <span class="hljs-property">@setup_options</span> = ember.merge setup_options, <span class="hljs-property">@setup_options</span> <span class="hljs-keyword">or</span> {}
+    <span class="hljs-property">@set</span> <span class="hljs-string">'current_team'</span>, <span class="hljs-property">@totem_scope</span>.get_ownerable_record()
+    <span class="hljs-property">@set_teams</span>()
+    <span class="hljs-built_in">console</span>.warn @
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">prev</span>:                 <span class="hljs-function">-&gt;</span> <span class="hljs-property">@send</span> <span class="hljs-string">'select'</span>, <span class="hljs-property">@get_team_from_offset</span>(-<span class="hljs-number">1</span>)
+    <span class="hljs-attribute">next</span>:                 <span class="hljs-function">-&gt;</span> <span class="hljs-property">@send</span> <span class="hljs-string">'select'</span>, <span class="hljs-property">@get_team_from_offset</span>(<span class="hljs-number">1</span>)
+    <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(team)</span>        -&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, team <span class="hljs-keyword">or</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'current_team'</span>)
+    <span class="hljs-attribute">toggle_show_dropdown</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@toggleProperty</span> <span class="hljs-string">'show_dropdown'</span>; <span class="hljs-keyword">return</span>
+
+  <span class="hljs-attribute">set_teams</span>: <span class="hljs-function">-&gt;</span>
+    current_team = <span class="hljs-property">@get</span> <span class="hljs-string">'current_team'</span>
+    teams        = <span class="hljs-property">@get</span>(<span class="hljs-string">'teams'</span>)
+    sorted_teams = teams.without(current_team).sortBy <span class="hljs-string">'full_name'</span>
+    sorted_teams.unshift(current_team)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'dropdown_teams'</span>,  <span class="hljs-keyword">if</span> <span class="hljs-property">@get_setup_option</span>(<span class="hljs-string">'include_current_team_in_dropdown'</span>)      <span class="hljs-keyword">then</span> sorted_teams <span class="hljs-keyword">else</span> sorted_teams.without(current_team)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'prev_next_teams'</span>, <span class="hljs-keyword">if</span> <span class="hljs-property">@get_setup_option</span>(<span class="hljs-string">'include_current_team_in_previous_next'</span>) <span class="hljs-keyword">then</span> sorted_teams <span class="hljs-keyword">else</span> sorted_teams.without(current_team)
+
+  <span class="hljs-attribute">get_setup_option</span>: <span class="hljs-function"><span class="hljs-params">(key)</span> -&gt;</span> <span class="hljs-property">@setup_options</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@setup_options</span>[key]
+
+  <span class="hljs-attribute">get_team_from_offset</span>: <span class="hljs-function"><span class="hljs-params">(offset)</span> -&gt;</span>
+    current_team = <span class="hljs-property">@get</span>(<span class="hljs-string">'current_team'</span>)
+    team    = <span class="hljs-property">@get</span>(<span class="hljs-string">'selected'</span>)
+    teams   = <span class="hljs-property">@get</span>(<span class="hljs-string">'prev_next_teams'</span>)
+    <span class="hljs-keyword">if</span> ember.isPresent(team)
+      index = teams.indexOf(team)
+      <span class="hljs-keyword">switch</span>
+        <span class="hljs-keyword">when</span> index &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> offset &gt; <span class="hljs-number">0</span>  <span class="hljs-keyword">then</span> teams.get(<span class="hljs-string">'firstObject'</span>) <span class="hljs-comment"># next past last</span>
+        <span class="hljs-keyword">when</span> index &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> offset &lt; <span class="hljs-number">0</span>  <span class="hljs-keyword">then</span> teams.get(<span class="hljs-string">'lastObject'</span>)  <span class="hljs-comment"># prev past first</span>
+        <span class="hljs-keyword">else</span>
+          offset_team = teams.objectAt(index + offset)
+          <span class="hljs-keyword">return</span> offset_team <span class="hljs-keyword">if</span> offset_team
+          <span class="hljs-keyword">if</span> offset &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> teams.get(<span class="hljs-string">'firstObject'</span>) <span class="hljs-keyword">else</span> teams.get(<span class="hljs-string">'lastObject'</span>)
+    <span class="hljs-keyword">else</span>
+      teams.get(<span class="hljs-string">'firstObject'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="-testing-only">### TESTING ONLY</h1>
+<p>didInsertElement: -&gt;
+  team = @teams.findBy &#39;first_name&#39;, &#39;read_1&#39;
+  @send &#39;select&#39;, team if team</p></div></div></div></div></body></html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/components/changeset/errors</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/app/components/changeset/errors"><meta name="groc-project-path" content="thinkspace-common/app/components/changeset/errors.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/app/components/changeset/errors.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Examples to call this component:
+  component &#39;<strong>changeset/errors&#39; changeset=changeset                    #=&gt; for model attributes (e.g. bottom of page)
+  component &#39;</strong>changeset/errors&#39; changeset=changeset attribute=&#39;title&#39;  #=&gt; single model attribute; e.g. under input for &#39;title&#39;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>changeset.get(&#39;errors&#39;) is an array of hashes:
+  hash.key        = attribute name
+  hash.validation = array of error messages</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If changeset.first_error is true (default false) only the first error will be shown.
+Use changeset.first_error_on() and changeset.first_error_off().</p></div></div><div class="code"><div class="wrapper">export default ember.Component.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">tvo</span>: ember.inject.service()
+
+  <span class="hljs-attribute">errors_visible</span>: ember.computed.<span class="hljs-keyword">or</span> <span class="hljs-string">'tvo.show_errors'</span>, <span class="hljs-string">'changeset.show_errors'</span>
+
+  <span class="hljs-attribute">messages</span>: ember.computed <span class="hljs-string">'changeset.errors'</span>, <span class="hljs-function">-&gt;</span>
+    errors   = <span class="hljs-property">@changeset</span>.get(<span class="hljs-string">'errors'</span>) <span class="hljs-keyword">or</span> []
+    errors   = [errors.findBy(<span class="hljs-string">'key'</span>, <span class="hljs-property">@attribute</span>)].compact() <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@attribute</span>)
+    messages = <span class="hljs-property">@collect_validation_messages</span>(errors)
+    messages = [messages.get(<span class="hljs-string">'firstObject'</span>)] <span class="hljs-keyword">if</span> <span class="hljs-property">@changeset</span>.first_error <span class="hljs-keyword">and</span> ember.isPresent(messages)
+    messages
+
+  <span class="hljs-attribute">collect_validation_messages</span>: <span class="hljs-function"><span class="hljs-params">(errors)</span> -&gt;</span>
+    messages = []
+    messages = messages.concat(hash.validation) <span class="hljs-keyword">for</span> hash <span class="hljs-keyword">in</span> errors
+    messages</div></div></div></div></body></html>

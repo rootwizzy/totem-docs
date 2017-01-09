@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/steps/step</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/steps/step"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/steps/step.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-builder-pe/addon/steps/step.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/objects/base'</span>
+import common_helper from <span class="hljs-string">'thinkspace-common/mixins/helpers/common/all'</span>
+
+export default ember.Object.extend common_helper,
+
+  <span class="hljs-attribute">all_data_loaded</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">set_all_data_loaded</span>: <span class="hljs-function">-&gt;</span>   
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'calling set_all_data_loaded'</span>)
+    <span class="hljs-property">@set</span>(<span class="hljs-string">'all_data_loaded'</span>, <span class="hljs-literal">true</span>)
+  <span class="hljs-attribute">reset_all_data_loaded</span>: <span class="hljs-function">-&gt;</span> 
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'calling reset_all_data_loaded'</span>)
+    <span class="hljs-property">@set</span>(<span class="hljs-string">'all_data_loaded'</span>, <span class="hljs-literal">false</span>)</div></div></div></div></body></html>

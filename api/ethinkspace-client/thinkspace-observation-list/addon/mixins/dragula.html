@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-observation-list/addon/mixins/dragula</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-observation-list/addon/mixins/dragula"><meta name="groc-project-path" content="thinkspace-observation-list/addon/mixins/dragula.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-observation-list/addon/mixins/dragula.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="dragula-to-re-order-observations">Dragula to Re-Order Observations.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">init_dragula</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'viewonly'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'attributes.sortable'</span>)  == <span class="hljs-string">'false'</span>  <span class="hljs-comment"># check if template has &lt;component ... sortable='false'/&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'attributes.droppable'</span>) == <span class="hljs-string">'false'</span>  <span class="hljs-comment"># backward compatibility for 'sortable' &lt;component ... droppable='false'/&gt;</span>
+    container_class  = <span class="hljs-property">@get</span>(<span class="hljs-string">'container_class'</span>)
+    container        = <span class="hljs-property">@$</span>(<span class="hljs-string">".<span class="hljs-subst">#{container_class}</span>"</span>)[<span class="hljs-number">0</span>]
+    <span class="hljs-property">@draggable_class</span> = ember.guidFor(@) + <span class="hljs-string">'-gu-draggable'</span>
+    options          = 
+      <span class="hljs-attribute">revertOnSpill</span>:   <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">direction</span>:       <span class="hljs-string">'veritcal'</span>
+      <span class="hljs-attribute">draggable_class</span>: <span class="hljs-property">@draggable_class</span>
+      <span class="hljs-attribute">drop_container</span>:  container
+      <span class="hljs-attribute">moves</span>:           <span class="hljs-property">@dragula_moves</span>
+      <span class="hljs-attribute">accepts</span>:         <span class="hljs-property">@dragula_accepts</span>
+      <span class="hljs-attribute">copy</span>:            <span class="hljs-property">@dragula_copy</span>
+    <span class="hljs-property">@drake</span> = dragula(options)
+    <span class="hljs-property">@drake</span>.containers.push(container)
+    <span class="hljs-property">@drake</span>.component = @
+    <span class="hljs-property">@init_drake_events</span>(options)
+
+  <span class="hljs-attribute">init_drake_events</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@drake</span>.<span class="hljs-literal">on</span> <span class="hljs-string">'drop'</span>, <span class="hljs-property">@dragula_drop</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="dragula-options-callbacks---options">Dragula Options Callbacks: @ = options.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="whether-an-element-can-be-dragged">Whether an element can be dragged.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">dragula_moves</span>: <span class="hljs-function"><span class="hljs-params">(el, source, handle, sibling)</span> -&gt;</span>
+    $el = $(el)
+    $el.hasClass(<span class="hljs-property">@draggable_class</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="whether-the-39target39-container-will-accept-a-dragged-item">Whether the &#39;target&#39; container will accept a dragged item.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">dragula_accepts</span>: <span class="hljs-function"><span class="hljs-params">(el, target, source, sibling)</span> -&gt;</span> <span class="hljs-property">@drop_container</span> == target</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="whether-the-dragged-item-should-be-a-copy-or-the-item-itself">Whether the dragged item should be a copy or the item itself.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">dragula_copy</span>: <span class="hljs-function"><span class="hljs-params">(el, source)</span> -&gt;</span> <span class="hljs-literal">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="dragula-event-callbacks---drake">Dragula Event Callbacks: @ = drake.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">dragula_drop</span>: <span class="hljs-function"><span class="hljs-params">(el, target, source, sibling)</span> -&gt;</span>
+    <span class="hljs-property">@component</span>.handle_dragula_drop(el, target, source, sibling)</div></div></div></div></body></html>

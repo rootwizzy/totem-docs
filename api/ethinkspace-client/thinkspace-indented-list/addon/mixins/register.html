@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/addon/mixins/register</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-indented-list/addon/mixins/register"><meta name="groc-project-path" content="thinkspace-indented-list/addon/mixins/register.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-indented-list/addon/mixins/register.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">register_component</span>: <span class="hljs-function"><span class="hljs-params">(component)</span> -&gt;</span>
+    item  = <span class="hljs-property">@get_component_item</span>(component)
+    el_id = <span class="hljs-property">@get_component_element_id</span>(component)
+    <span class="hljs-property">@el_id_to_component</span>.set(el_id, component)
+    <span class="hljs-property">@item_to_component</span>.set(item, component)
+
+  <span class="hljs-attribute">register_list_container</span>: <span class="hljs-function"><span class="hljs-params">(component, list_container)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(list_container)
+    <span class="hljs-property">@list_container_component</span> = component
+    <span class="hljs-property">@set_list_container</span>(list_container)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="callback-fn-should-be-the-string-name-of-the-component39s-callback-function">Callback_fn should be the string name of the component&#39;s callback function.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">register_source_container</span>: <span class="hljs-function"><span class="hljs-params">(component, source_container, options={})</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(source_container)
+    <span class="hljs-property">@add_source_container</span>(source_container)
+    container = $(source_container)[<span class="hljs-number">0</span>]
+    <span class="hljs-property">@new_source_containers</span>.set container,
+      <span class="hljs-attribute">component</span>:   component
+      <span class="hljs-attribute">item_values</span>: options.item_values <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+      <span class="hljs-attribute">callback_fn</span>: options.callback <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">get_component_item</span>:       <span class="hljs-function"><span class="hljs-params">(component)</span> -&gt;</span> component.get(<span class="hljs-string">'item'</span>)
+  <span class="hljs-attribute">get_component_element_id</span>: <span class="hljs-function"><span class="hljs-params">(component)</span> -&gt;</span> component.get(<span class="hljs-string">'elementId'</span>)</div></div></div></div></body></html>

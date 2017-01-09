@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-indented-list/addon/components/main"><meta name="groc-project-path" content="thinkspace-indented-list/addon/components/main.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-indented-list/addon/components/main.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">tvo_titles</span>: <span class="hljs-string">'indented-list'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>init: -&gt;
+  @_super()
+  tvo  = @get(&#39;tvo&#39;)
+  @tvo_path = tvo.template.engine_values(&#39;indented-list&#39;, @)</p>
+<h1 id="consolewarn--tvo-path">console.warn @, @tvo_path</h1></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="init-gt">init: -&gt;</h1>
+<h1 id="-super">@_super()</h1>
+<h1 id="register-validation">@register_validation()</h1>
+<h1 id="register-remove-itemable">@register_remove_itemable()</h1>
+<p>register_validation: -&gt; @get(&#39;tvo.status&#39;).register_validation(&#39;indented_list&#39;, @, &#39;validate_indented_list&#39;)</p>
+<p>register_remove_itemable: -&gt;
+  section = @get_indented_list_source_section()
+  return if ember.isBlank(section)  # no source itemables, so don&#39;t need to register
+  @get(&#39;tvo.helper&#39;).register @,
+    section: &#39;remove_itemable&#39;
+    actions:
+      remove: &#39;remove_itemable_in_items&#39;</p>
+<p>remove_itemable_in_items: (itemable) -&gt;
+  new ember.RSVP.Promise (resolve, reject) =&gt;</p>
+<pre><code># @get_response_manager().clear_itemable_from_all_items(itemable).then =&gt; resolve()
+@get_response_manager().remove_items_with_itemable(itemable).then =&gt; resolve()</code></pre>
+<p>get_response_manager: -&gt; @get &#39;response_manager&#39;
+get_list_container:   -&gt; @$(&#39;.indented-list_list-container&#39;)</p>
+<p>willInsertElement: -&gt;
+  $list_container = @get_list_container()
+  @get_response_manager().register_list_container @, $list_container
+  @add_background_grid()
+  indent = @get_response_manager().indent_px + 400
+  $list_container.css(&#39;min-height&#39;, &quot;#{indent}px&quot;)</p>
+<p>add_background_grid: -&gt;
+  rm     = @get_response_manager()
+  px     = rm.get(&#39;indent_px&#39;)
+  ycolor = &#39;lightgrey&#39;
+  xcolor = &#39;white&#39;
+  grid   = &quot;linear-gradient(to right, #{ycolor} 1px, transparent 1px), linear-gradient(to bottom, #{xcolor} 1px, transparent 1px)&quot;
+  $list_container = @get_list_container()
+  $list_container.css &#39;background-size&#39;, &quot;#{px}px #{px}px&quot;
+  $list_container.css &#39;background-image&#39;, grid</p>
+<p>get_indented_list_attributes:     -&gt; @get(&#39;tvo.hash.indented_list_attributes&#39;) or {}
+get_indented_list_source_section: -&gt; @get_indented_list_attributes().source
+get_response_manager_items:       -&gt; @get_response_manager().value_items</p>
+<p>validate_indented_list: (status) -&gt;
+  new ember.RSVP.Promise (resolve, reject) =&gt;
+    tvo      = @get(&#39;tvo&#39;)
+    rm       = @get_response_manager()
+    messages = []
+    status.set_is_valid(true)</p>
+<pre><code>section = @get_indented_list_source_section() # section-name in the template&#39;s &lt;component ... source=&#39;section-name&#39;/&gt;
+return resolve() unless section               # return if no source (e.g. observation list)
+
+@validate_value_items_exist(status)           # must have at least one item in the indented list
+return resolve() unless status.get_is_valid()
+
+action = &#39;itemables&#39;                                             # source section&#39;s registered action method to get the itemables
+return resolve() unless tvo.section.has_action(section, action)  # did not register an &#39;itemables&#39; action
+
+tvo.section.call_action(section, action).then (itemables) =&gt;
+  @validate_itemables_exist(status, itemables)  # must have at least one observation
+  return resolve() unless status.get_is_valid()
+  first = itemables.get(&#39;firstObject&#39;)
+  type  = @totem_scope.get_record_path(first)
+  itemables.forEach (itemable) =&gt;
+    id   = parseInt(itemable.get &#39;id&#39;)
+    item = rm.is_itemable_used_by_another_item(itemable_type: type, itemable_id: id)
+    @add_itemable_unused_message(status, itemable, messages) if ember.isBlank(item)
+  @set_status_messages(status, messages)
+  resolve()
+, (error) =&gt; reject(error)</code></pre>
+<p>  , (error) =&gt; reject(error)</p>
+<p>set_status_messages: (status, messages) -&gt;</p>
+<h1 id="-testing-only">### TESTING ONLY</h1>
+<h1 id="if-statusget-is-valid">if status.get_is_valid()</h1>
+<h1 id="messages-push-span-style-color-green-font-weight-500-phase-would-have-been-submitted-testing-only-span-htmlsafe-">messages.push &quot;<span style='color: green; font-weight: 500'>Phase would have been submitted...............(testing only)</span>&quot;.htmlSafe()</h1>
+<h1 id="statusset-is-validfalse">status.set_is_valid(false)</h1>
+<h1 id="statusincrement-invalid-count">status.increment_invalid_count()</h1>
+<h1 id="-testing-only">### TESTING ONLY</h1>
+<p>  return if status.get_is_valid()
+  count   = status.get_invalid_count()
+  hdr_msg = &quot;Must use ALL observations - #{count} &quot;
+  hdr_msg += if count &lt;= 1 then &#39;observation was not used.&#39; else &#39;observations were not used.&#39;
+  errors  = []
+  errors.push &quot;<span style='font-weight: 500'>#{hdr_msg}</span>&quot;
+  errors.push &#39;<ol>&#39;
+  for msg in messages
+    errors.push &quot;<li>#{msg}</li>&quot;
+  errors.push &#39;</ol>&#39;
+  status_messages = []
+  status_messages.push errors.join(&#39;&#39;).htmlSafe()
+  status.set_status_messages(status_messages)</p>
+<p>add_itemable_unused_message: (status, itemable, messages) -&gt;
+  status.increment_invalid_count()
+  status.set_is_valid(false)
+  messages.push itemable.get(&#39;value&#39;)</p>
+<p>validate_value_items_exist: (status) -&gt;
+  items = @get_response_manager_items()
+  return if ember.isPresent(items)
+  status.set_is_valid(false)
+  status.set_status_messages [&quot;The diagnostic path is blank.&quot;]</p>
+<p>validate_itemables_exist: (status, itemables) -&gt;
+  return if ember.isPresent(itemables)
+  status.set_is_valid(false)
+  status.set_status_messages [&quot;No observations present.&quot;]</p></div></div></div></div></body></html>

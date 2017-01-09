@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-peer-review/addon/_config</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="thinkspace-peer-review/addon/_config"><meta name="groc-project-path" content="thinkspace-peer-review/addon/_config.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-peer-review/addon/_config.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import env from <span class="hljs-string">'./config/environment'</span>
+
+export default {
+
+  <span class="hljs-attribute">env</span>: env</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>EXAMPLE ONLY:</p>
+<p>engine:
+  mount:           {as: &#39;phases&#39;, path: &#39;/cases/:assignment_id/phases&#39;}
+  external_routes: [&#39;spaces.show&#39;, &#39;cases.show&#39;]</p>
+<p>ns:
+  namespaces: {casespace: &#39;thinkspace/casespace&#39;}
+  type_to_namespace:
+    phase:           &#39;casespace&#39;
+    phase_template:  &#39;casespace&#39;
+    phase_component: &#39;casespace&#39;
+    phase_state:     &#39;casespace&#39;
+    phase_score:     &#39;casespace&#39;</p>
+<p>query_params:
+  phase:         ownerable: true, authable: false
+  phase_score:   ownerable: true, authable: true
+  phase_state:   ownerable: true, authable: true</p>
+<p>add_engines: [
+  &#39;thinkspace-message&#39;
+  &#39;thinkspace-dock&#39;
+  &#39;thinkspace-artifact&#39;
+  &#39;thinkspace-html&#39;
+  &#39;thinkspace-diagnostic-path&#39;
+  &#39;thinkspace-diagnostic-expert-path&#39;
+  &#39;thinkspace-lab-vet-med&#39;
+  &#39;thinkspace-observation-list&#39;
+  &#39;thinkspace-toolbar&#39;:   {external_routes: {home: &#39;spaces.index&#39;}}
+  &#39;thinkspace-markup&#39;:    {dock: {routes: [&#39;phases.show&#39;], right_pocket: true}}
+  &#39;thinkspace-gradebook&#39;: {dock: {routes: [&#39;phases.show&#39;], top_pocket: true}}
+]</p></div></div><div class="code"><div class="wrapper">}</div></div></div></div></body></html>

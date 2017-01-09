@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-instructor/addon/mixins/am/base</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-instructor/addon/mixins/am/base"><meta name="groc-project-path" content="thinkspace-readiness-assurance-instructor/addon/mixins/am/base.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance-instructor/addon/mixins/am/base.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember     from <span class="hljs-string">'ember'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Mixins to build service.</p></div></div><div class="code"><div class="wrapper">import m_data    from <span class="hljs-string">'./data'</span>
+import m_helpers from <span class="hljs-string">'./helpers'</span>
+import m_init    from <span class="hljs-string">'./initialize'</span>
+import m_irat    from <span class="hljs-string">'./irat'</span>
+import m_configs from <span class="hljs-string">'./menu_configs'</span>
+import m_msgs    from <span class="hljs-string">'./messages'</span>
+import m_timers  from <span class="hljs-string">'./timers'</span>
+import m_tracker from <span class="hljs-string">'./tracker'</span>
+import m_trat    from <span class="hljs-string">'./trat'</span>
+
+export default ember.Mixin.create(
+  m_init,
+  m_configs,
+  m_irat,
+  m_trat,
+  m_data,
+  m_timers,
+  m_tracker,
+  m_helpers,
+  m_msgs,
+)</div></div></div></div></body></html>

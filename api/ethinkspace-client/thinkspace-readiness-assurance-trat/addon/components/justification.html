@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-trat/addon/components/justification</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-trat/addon/components/justification"><meta name="groc-project-path" content="thinkspace-readiness-assurance-trat/addon/components/justification.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance-trat/addon/components/justification.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">show_save</span>:   <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">input_value</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set_input_value</span>()
+
+  <span class="hljs-attribute">justification_disabled</span>: ember.computed.<span class="hljs-keyword">or</span> <span class="hljs-string">'qm.readonly'</span>, <span class="hljs-string">'qm.justification_disabled'</span>
+
+  <span class="hljs-attribute">justification_change</span>:   ember.observer <span class="hljs-string">'qm.justification'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set_input_value</span>()
+    
+  <span class="hljs-attribute">set_input_value</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'input_value'</span>, <span class="hljs-property">@qm</span>.justification
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">save</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'justification_disabled'</span>)
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'save'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'input_value'</span>)
+      <span class="hljs-property">@set</span> <span class="hljs-string">'show_save'</span>, <span class="hljs-literal">false</span>
+
+    <span class="hljs-attribute">cancel</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@set_input_value</span>()
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'cancel'</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'show_save'</span>, <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">focusIn</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@sendAction</span> <span class="hljs-string">'focus_in'</span>
+    <span class="hljs-property">@set</span> <span class="hljs-string">'show_save'</span>, <span class="hljs-literal">true</span></div></div></div></div></body></html>

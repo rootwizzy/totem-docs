@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/phase_manager/generate_view</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/phase_manager/generate_view"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/phase_manager/generate_view.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/addon/mixins/phase_manager/generate_view.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import util  from <span class="hljs-string">'totem/util_ember'</span>
+import ajax  from <span class="hljs-string">'totem/ajax'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">loaded_phase_ids</span>: []
+
+  <span class="hljs-attribute">view_is_generated</span>: <span class="hljs-literal">false</span>  <span class="hljs-comment"># true when the phase view has been generated - e.g. not a team selection view (addons uses it)</span>
+  <span class="hljs-attribute">view_is_generated_on</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'view_is_generated'</span>, <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">view_is_generated_off</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'view_is_generated'</span>, <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">phase_is_loaded</span>: <span class="hljs-function">-&gt;</span>
+    phase = <span class="hljs-property">@get_phase</span>()
+    phase <span class="hljs-keyword">and</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'loaded_phase_ids'</span>).includes(phase.get <span class="hljs-string">'id'</span>)
+
+  <span class="hljs-attribute">generate_view</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@validate_and_set_addon_ownerable</span>().<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@generate_view_with_ownerable</span>().<span class="hljs-keyword">then</span> =&gt; resolve()
+
+  <span class="hljs-attribute">generate_view_with_ownerable</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@view_is_generated_off</span>()
+      phase = <span class="hljs-property">@get_phase</span>()
+      totem_scope.authable(phase)
+      <span class="hljs-property">@set_totem_scope_view_ability</span>().<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-keyword">if</span> <span class="hljs-property">@phase_is_loaded</span>()
+          <span class="hljs-property">@build_view</span>(phase).<span class="hljs-keyword">then</span> =&gt; resolve()
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-property">@show_loading_outlet</span>()
+          phase_id   = phase.get(<span class="hljs-string">'id'</span>)
+          loaded_ids = <span class="hljs-property">@get</span>(<span class="hljs-string">'loaded_phase_ids'</span>)
+          loaded_ids.push phase_id
+          query =
+            <span class="hljs-attribute">model</span>:  phase
+            <span class="hljs-attribute">id</span>:     phase.get(<span class="hljs-string">'id'</span>)
+            <span class="hljs-attribute">action</span>: <span class="hljs-string">'load'</span>
+            <span class="hljs-attribute">data</span>:   {}
+          totem_scope.add_ownerable_to_query(query.data)
+          ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+            <span class="hljs-property">@tc</span>.push_payload(payload)
+            <span class="hljs-property">@set_all_phase_states</span>().<span class="hljs-keyword">then</span> =&gt;
+              <span class="hljs-property">@build_view</span>(phase).<span class="hljs-keyword">then</span> =&gt; resolve()
+
+  <span class="hljs-attribute">build_view</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@debug_ownerable</span>()
+      tvo = <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo'</span>)
+      tvo.clear()
+      tvo.hash.set_value <span class="hljs-string">'show_errors'</span>, <span class="hljs-literal">false</span>
+      tvo.hash.set_value <span class="hljs-string">'process_validations'</span>, phase.get(<span class="hljs-string">'configuration_validate'</span>)
+      phase_template_id = phase.get <span class="hljs-string">'phase_template_id'</span>
+      phase_template    = <span class="hljs-property">@tc</span>.peek_record ns.to_p(<span class="hljs-string">'phase_template'</span>), phase_template_id
+      <span class="hljs-keyword">return</span> reject(<span class="hljs-string">"Phase template id [<span class="hljs-subst">#{phase_template_id}</span>] not in the store."</span>)  <span class="hljs-keyword">unless</span> phase_template
+      phase.get(ns.to_p <span class="hljs-string">'phase_components'</span>).<span class="hljs-keyword">then</span> (components) =&gt;
+        template = phase_template.get(<span class="hljs-string">'template'</span>)
+        tvo.template.parse(template)
+        <span class="hljs-built_in">console</span>.warn tvo
+        tvo.template.add_components(components).<span class="hljs-keyword">then</span> =&gt;
+          <span class="hljs-property">@view_is_generated_on</span>()
+          phase_show = <span class="hljs-property">@get_current_phase_show_component</span>()
+          <span class="hljs-keyword">if</span> phase_show <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> util.is_destroyed(phase_show)
+            phase_show.set_show_phase_off()
+            ember.run.schedule <span class="hljs-string">'afterRender'</span>, <span class="hljs-function">=&gt;</span>
+              phase_show.set_show_phase_on()
+              <span class="hljs-property">@hide_loading_outlet</span>()
+              resolve()
+          <span class="hljs-keyword">else</span>
+            <span class="hljs-property">@clear_current_phase_show_component</span>()
+            <span class="hljs-property">@hide_loading_outlet</span>()
+            resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> reject(error)
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> reject(error)</div></div></div></div></body></html>

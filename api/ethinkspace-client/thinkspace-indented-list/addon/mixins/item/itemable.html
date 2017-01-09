@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/addon/mixins/item/itemable</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-indented-list/addon/mixins/item/itemable"><meta name="groc-project-path" content="thinkspace-indented-list/addon/mixins/item/itemable.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-indented-list/addon/mixins/item/itemable.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import tc          from <span class="hljs-string">'totem/cache'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">get_item_itemable</span>: <span class="hljs-function"><span class="hljs-params">(item)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      id   = item.itemable_id
+      type = item.itemable_type
+      <span class="hljs-keyword">return</span> resolve(<span class="hljs-literal">null</span>) <span class="hljs-keyword">if</span> ember.isBlank(id) <span class="hljs-keyword">or</span> ember.isBlank(type)
+      type     = totem_scope.rails_polymorphic_type_to_path(type)
+      itemable = <span class="hljs-property">@tc</span>.peek_record(type, id)
+      resolve(itemable)
+
+  <span class="hljs-attribute">set_itemable_is_used</span>: <span class="hljs-function"><span class="hljs-params">(item)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@get_item_itemable</span>(item).<span class="hljs-keyword">then</span> (itemable) =&gt;
+        <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isBlank(itemable)
+        itemable.set_is_used()  <span class="hljs-keyword">if</span> <span class="hljs-property">@is_function</span>(itemable.set_is_used)
+        resolve()
+
+  <span class="hljs-attribute">clear_itemable_is_used_unless_used_by_another_item</span>: <span class="hljs-function"><span class="hljs-params">(items)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> resolve()  <span class="hljs-keyword">if</span> ember.isBlank(items)
+      items          = ember.makeArray(items)
+      clear_promises = items.map (item) =&gt;
+        <span class="hljs-keyword">if</span> <span class="hljs-property">@is_itemable_used_by_another_item</span>(item)
+          ember.RSVP.resolve()  <span class="hljs-comment"># just add a resolved promise to the array since used by another item</span>
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-property">@clear_itemable_is_used</span>(item)
+      ember.RSVP.all(clear_promises).<span class="hljs-keyword">then</span> =&gt; resolve()
+
+  <span class="hljs-attribute">is_itemable_used_in_items</span>: <span class="hljs-function"><span class="hljs-params">(itemable)</span> -&gt;</span>
+    id   = parseInt(itemable.get <span class="hljs-string">'id'</span>)
+    type = totem_scope.record_type_key(itemable)
+    <span class="hljs-property">@is_itemable_used_by_another_item</span>(<span class="hljs-attribute">itemable_id</span>: id, <span class="hljs-attribute">itemable_type</span>: type)
+
+  <span class="hljs-attribute">is_itemable_used_by_another_item</span>: <span class="hljs-function"><span class="hljs-params">(item)</span> -&gt;</span>
+    id   = item.itemable_id
+    type = item.itemable_type
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">if</span> ember.isBlank(id) <span class="hljs-keyword">or</span> ember.isBlank(type)  <span class="hljs-comment"># not associated with an itemable</span>
+    type = totem_scope.rails_polymorphic_type_to_path(type)
+    <span class="hljs-property">@value_items</span>.find (i) =&gt; (i.itemable_id == id <span class="hljs-keyword">and</span> totem_scope.rails_polymorphic_type_to_path(i.itemable_type) == type)
+
+  <span class="hljs-attribute">clear_itemable_is_used</span>: <span class="hljs-function"><span class="hljs-params">(item)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@get_item_itemable</span>(item).<span class="hljs-keyword">then</span> (itemable) =&gt;
+        <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isBlank(itemable)
+        itemable.set_is_used(<span class="hljs-literal">false</span>)  <span class="hljs-keyword">if</span> <span class="hljs-property">@is_function</span>(itemable.set_is_used)
+        resolve()
+
+  <span class="hljs-attribute">get_item_itemable_icon</span>: <span class="hljs-function"><span class="hljs-params">(item)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(item.icon)
+    <span class="hljs-property">@convert_itemable_icon_to_html</span>(item.icon).htmlSafe()
+
+  <span class="hljs-attribute">convert_itemable_icon_to_html</span>: <span class="hljs-function"><span class="hljs-params">(icon_id)</span> -&gt;</span>
+    <span class="hljs-keyword">switch</span> icon_id.toLowerCase()
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'html'</span>         <span class="hljs-keyword">then</span> <span class="hljs-string">'&lt;i class="im im-book history" title="History"&gt;&lt;/i&gt;'</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'lab'</span>          <span class="hljs-keyword">then</span> <span class="hljs-string">'&lt;i class="fa fa-flask data" title="Data"&gt;&lt;/i&gt;'</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'mechanism'</span>    <span class="hljs-keyword">then</span> <span class="hljs-string">'&lt;i class="fa fa-circle-o mechanism" title="Mechanism"&gt;&lt;/i&gt;'</span>
+      <span class="hljs-keyword">else</span> <span class="hljs-string">'&lt;i class="fa fa-square-o unknown" title="Unknown"&gt;&lt;/i&gt;'</span></div></div></div></div></body></html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-instructor/addon/components/shared/radio/buttons</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-instructor/addon/components/shared/radio/buttons"><meta name="groc-project-path" content="thinkspace-readiness-assurance-instructor/addon/components/shared/radio/buttons.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance-instructor/addon/components/shared/radio/buttons.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-readiness-assurance-instructor/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">'div'</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, id
+
+  <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@process_button_columns</span>()
+
+  <span class="hljs-attribute">button_columns</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">process_button_columns</span>: <span class="hljs-function">-&gt;</span>
+    ncols = <span class="hljs-property">@columns</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> (ncols <span class="hljs-keyword">and</span> ncols &gt; <span class="hljs-number">1</span>)
+    buttons = <span class="hljs-property">@buttons</span> <span class="hljs-keyword">or</span> []
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(buttons)
+    per_col = Math.ceil(buttons.length / ncols)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> per_col &lt; <span class="hljs-number">1</span>
+    button_columns = []
+    col_array      = []
+    <span class="hljs-keyword">for</span> button <span class="hljs-keyword">in</span> buttons
+      <span class="hljs-keyword">if</span> col_array.length &lt; per_col
+        col_array.push(button)
+      <span class="hljs-keyword">else</span>
+        button_columns.push(col_array)
+        col_array = []
+        col_array.push(button)
+    button_columns.push(col_array) <span class="hljs-keyword">if</span> ember.isPresent(col_array)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'button_columns'</span>, button_columns</div></div></div></div></body></html>

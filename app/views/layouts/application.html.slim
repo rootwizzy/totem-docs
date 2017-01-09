@@ -9,6 +9,10 @@ html
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload' 
 
+    = javascript_include_tag 'behavior' if params[:controller].eql?('totem/lodestar/api')
+    = stylesheet_link_tag 'style' if params[:controller].eql?('totem/lodestar/api')
+
+
   body
     = yield 
   = content_tag :div, class: "settings", data: {settings: Settings, version: Gem.loaded_specs['totem-lodestar'].version.version} do

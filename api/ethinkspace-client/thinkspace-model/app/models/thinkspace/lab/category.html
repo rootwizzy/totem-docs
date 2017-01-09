@@ -1,0 +1,17 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/models/thinkspace/lab/category</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/models/thinkspace/lab/category"><meta name="groc-project-path" content="thinkspace-model/app/models/thinkspace/lab/category.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-model/app/models/thinkspace/lab/category.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ta    from <span class="hljs-string">'totem/ds/associations'</span>
+
+export default ta.Model.extend ta.add(
+    ta.belongs_to <span class="hljs-string">'lab:chart'</span>, <span class="hljs-attribute">reads</span>: {}
+    ta.has_many   <span class="hljs-string">'lab:results'</span>, <span class="hljs-attribute">reads</span>: {<span class="hljs-attribute">sort</span>: <span class="hljs-string">'position'</span>}
+  ), 
+
+  <span class="hljs-attribute">title</span>:    ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">position</span>: ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">value</span>:    ta.attr()
+
+  <span class="hljs-attribute">description_heading</span>: ember.computed <span class="hljs-string">'value.description_heading'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'value.description_heading'</span>) <span class="hljs-keyword">or</span> <span class="hljs-string">'Description'</span>
+
+  <span class="hljs-attribute">columns</span>:          ember.computed.reads <span class="hljs-string">'value.columns'</span>
+  <span class="hljs-attribute">colspan_for_html</span>: ember.computed <span class="hljs-string">'columns'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'columns.length'</span>) - <span class="hljs-number">1</span> <span class="hljs-comment"># Minus one for the name column.</span>
+  <span class="hljs-attribute">component</span>:        ember.computed -&gt; ta.to_p <span class="hljs-string">'lab:category'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'value.component'</span>)</div></div></div></div></body></html>

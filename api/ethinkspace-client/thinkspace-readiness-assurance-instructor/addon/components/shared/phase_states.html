@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-instructor/addon/components/shared/phase_states</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-instructor/addon/components/shared/phase_states"><meta name="groc-project-path" content="thinkspace-readiness-assurance-instructor/addon/components/shared/phase_states.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance-instructor/addon/components/shared/phase_states.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-readiness-assurance-instructor/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">state_buttons</span>: [
+    {<span class="hljs-attribute">id</span>: <span class="hljs-string">'lock'</span>,     <span class="hljs-attribute">label</span>: <span class="hljs-string">'Locked'</span>}
+    {<span class="hljs-attribute">id</span>: <span class="hljs-string">'unlock'</span>,   <span class="hljs-attribute">label</span>: <span class="hljs-string">'Unlocked'</span>}
+    {<span class="hljs-attribute">id</span>: <span class="hljs-string">'complete'</span>, <span class="hljs-attribute">label</span>: <span class="hljs-string">'Completed'</span>}
+  ]
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@validate</span> = <span class="hljs-property">@rad</span>.validate
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(state)</span> -&gt;</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'selected_state'</span>, state
+      <span class="hljs-property">@rad</span>.set_phase_state(state)
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'validate'</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@validate</span></div></div></div></div></body></html>

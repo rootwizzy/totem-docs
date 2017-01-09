@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/server_events/tracker</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/server_events/tracker"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/server_events/tracker.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/addon/mixins/server_events/tracker.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">use_tracker_sio</span>: <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">get_tracker_room</span>:           <span class="hljs-function">-&gt;</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'use_tracker_sio'</span>) <span class="hljs-keyword">then</span> <span class="hljs-property">@get_tracker_sio_room</span>() <span class="hljs-keyword">else</span> <span class="hljs-string">'tracker_room'</span>
+  <span class="hljs-attribute">tracker</span>:       <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'use_tracker_sio'</span>) <span class="hljs-keyword">then</span> <span class="hljs-property">@tracker_sio_join_room</span>(options)  <span class="hljs-keyword">else</span> <span class="hljs-property">@tracker_join_room</span>(options)
+  <span class="hljs-attribute">tracker_leave</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'use_tracker_sio'</span>) <span class="hljs-keyword">then</span> <span class="hljs-property">@tracker_sio_leave_room</span>(options) <span class="hljs-keyword">else</span> <span class="hljs-property">@tracker_leave_room</span>(options)
+
+  <span class="hljs-attribute">tracker_leave_room</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    room = options.room <span class="hljs-keyword">or</span> <span class="hljs-property">@get_tracker_room</span>()
+    <span class="hljs-property">@pubsub</span>.tracker_leave({room})
+
+  <span class="hljs-attribute">tracker_join_room</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    room = options.room <span class="hljs-keyword">or</span> <span class="hljs-property">@get_tracker_room</span>()
+    data = <span class="hljs-property">@get_tracker_data</span>(options)
+    <span class="hljs-property">@pubsub</span>.tracker({room, data})
+
+  <span class="hljs-attribute">get_tracker_data</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    route  = options.route
+    model  = {}
+    data   = {route, model}
+    record = <span class="hljs-property">@thinkspace</span>.get_current_model()
+    <span class="hljs-keyword">if</span> ember.isPresent(record)
+      data.title      = record.get(<span class="hljs-string">'title'</span>)
+      data.id         = record.get(<span class="hljs-string">'id'</span>)
+      data.model_name = <span class="hljs-property">@get_totem_scope</span>().record_model_name(record)
+      model.title     = record.get(<span class="hljs-string">'title'</span>)
+      model.id        = record.get(<span class="hljs-string">'id'</span>)
+      model.name      = <span class="hljs-property">@get_totem_scope</span>().record_model_name(record)
+    data</div></div></div></div></body></html>

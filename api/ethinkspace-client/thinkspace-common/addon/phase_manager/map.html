@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/phase_manager/map</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-common/addon/phase_manager/map"><meta name="groc-project-path" content="thinkspace-common/addon/phase_manager/map.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/addon/phase_manager/map.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember          from <span class="hljs-string">'ember'</span>
+import ns             from <span class="hljs-string">'totem/ns'</span>
+import ajax           from <span class="hljs-string">'totem/ajax'</span>
+import tc             from <span class="hljs-string">'totem/cache'</span>
+import totem_scope    from <span class="hljs-string">'totem/scope'</span>
+import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
+
+export default ember.Object.extend
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'PhaseManagerMap'</span>
+
+  <span class="hljs-attribute">ownerable_phase_values</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">get_ownerable</span>:    <span class="hljs-function">-&gt;</span> totem_scope.get_ownerable_record()
+  <span class="hljs-attribute">get_current_user</span>: <span class="hljs-function">-&gt;</span> totem_scope.get_current_user()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="set-map">Set Map.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">has_ownerable_phase_states</span>: <span class="hljs-function"><span class="hljs-params">(assignment)</span> -&gt;</span> <span class="hljs-property">@get_or_init_ownerable_map</span>().get(assignment) == <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">set_map_without_phase_states</span>: <span class="hljs-function"><span class="hljs-params">(assignment)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@set_ownerable_phase_map</span>(assignment, {<span class="hljs-attribute">data</span>: []}).<span class="hljs-keyword">then</span> =&gt; resolve()
+
+  <span class="hljs-attribute">set_map</span>: <span class="hljs-function"><span class="hljs-params">(assignment)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@has_ownerable_phase_states</span>(assignment)
+        <span class="hljs-property">@reset_ownerable_phase_states</span>(assignment).<span class="hljs-keyword">then</span> =&gt; resolve()
+      <span class="hljs-keyword">else</span>
+        query =
+          <span class="hljs-attribute">model</span>:  assignment
+          <span class="hljs-attribute">id</span>:     assignment.get(<span class="hljs-string">'id'</span>)
+          <span class="hljs-attribute">action</span>: <span class="hljs-string">'phase_states'</span>
+          <span class="hljs-attribute">data</span>:   {}
+        totem_scope.add_ownerable_to_query(query.data)
+        ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+          <span class="hljs-property">@set_ownerable_phase_map</span>(assignment, payload).<span class="hljs-keyword">then</span> =&gt;
+            <span class="hljs-property">@get_or_init_ownerable_map</span>().set assignment, <span class="hljs-literal">true</span>
+            resolve()
+
+  <span class="hljs-attribute">set_ownerable_phase_map</span>: <span class="hljs-function"><span class="hljs-params">(assignment, payload)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      store = assignment.store
+      assignment.get(ns.to_p <span class="hljs-string">'phases'</span>).<span class="hljs-keyword">then</span> (aphases) =&gt;
+        phase_states = tc.push(payload)
+        phases       = []
+        phase_states.forEach (state) =&gt;
+          phase_id = state.get(<span class="hljs-string">'phase_id'</span>)
+          phase    = tc.peek_record ns.to_p(<span class="hljs-string">'phase'</span>), phase_id
+          <span class="hljs-keyword">if</span> phase <span class="hljs-keyword">and</span> !phases.includes(phase)
+            phases.push(phase)
+            aphases.pushObject(phase)
+        phases.forEach (phase) =&gt;
+          phase_map              = <span class="hljs-property">@get_or_init_ownerable_phase_map</span>(phase)
+          phase_states_for_phase = <span class="hljs-property">@get_phase_states_for_phase</span>(phase, phase_states)
+          phase_map.set <span class="hljs-string">'phase_states'</span>, phase_states_for_phase
+          phase_map.set <span class="hljs-string">'selected_phase_state'</span>, phase_states_for_phase.get(<span class="hljs-string">'firstObject'</span>)  <span class="hljs-keyword">unless</span> <span class="hljs-property">@ownerable_has_multiple_phase_states</span>(phase)
+        resolve()
+
+  <span class="hljs-attribute">get_phase_states_for_phase</span>: <span class="hljs-function"><span class="hljs-params">(phase, phase_states)</span> -&gt;</span>
+    phase_id = parseInt(phase.get <span class="hljs-string">'id'</span>)
+    (phase_states.filter (state) =&gt; state.get(<span class="hljs-string">'phase_id'</span>) == phase_id).sortBy(<span class="hljs-string">'title'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="reset-phase-states-from-map">Reset Phase States from Map.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">reset_ownerable_phase_states</span>: <span class="hljs-function"><span class="hljs-params">(assignment)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      assignment.get(ns.to_p <span class="hljs-string">'phases'</span>).<span class="hljs-keyword">then</span> (phases) =&gt;
+        phase_state_association_promises = phases.getEach(ns.to_p <span class="hljs-string">'phase_states'</span>)
+        ember.RSVP.Promise.all(phase_state_association_promises).<span class="hljs-keyword">then</span> (phase_state_associations) =&gt;
+          phases.forEach (phase, index) =&gt;
+            phase_states       = <span class="hljs-property">@get_ownerable_phase_states</span>(phase) <span class="hljs-keyword">or</span> []
+            phase_phase_states = phase_state_associations.objectAt(index)
+            phase_states.forEach (phase_state) =&gt;
+              phase_phase_states.pushObject(phase_state)  <span class="hljs-keyword">unless</span> phase_phase_states.includes(phase_state)
+          resolve()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="ownerable-getset">Ownerable Get/Set.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_current_user_phase_states</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span>
+    phase_states = ember.makeArray(<span class="hljs-property">@get_current_user_phase_map</span>(phase).get <span class="hljs-string">'phase_states'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="todo-does-this-make-sense-phasestatefix">TODO: Does this make sense? PHASESTATEFIX</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">    <span class="hljs-comment">#return ember.makeArray(phase_states) if ember.isPresent(phase_states) and phase_states.get('length') == 1</span>
+    <span class="hljs-comment">#if phase.is_team_ownerable()</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p> phase_states = phase_states.filter (phase_state) =&gt; phase_state.is_team_ownerable()</p></div></div><div class="code"><div class="wrapper">    ember.makeArray(phase_states)
+
+  <span class="hljs-attribute">get_ownerable_phase_states</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span>    -&gt;</span>
+    phase_states = <span class="hljs-property">@get_or_init_ownerable_phase_map</span>(phase).get <span class="hljs-string">'phase_states'</span>
+    ember.makeArray(phase_states)
+
+  <span class="hljs-attribute">set_global_selected_phase_state</span>: <span class="hljs-function"><span class="hljs-params">(phase_state)</span> -&gt;</span> <span class="hljs-property">@get_or_init_ownerable_map</span>().set <span class="hljs-string">'global_selected_phase_state'</span>, phase_state
+  <span class="hljs-attribute">get_global_selected_phase_state</span>:               <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_or_init_ownerable_map</span>().get <span class="hljs-string">'global_selected_phase_state'</span>
+
+  <span class="hljs-attribute">set_phase_selected_phase_state</span>: <span class="hljs-function"><span class="hljs-params">(phase, phase_state)</span> -&gt;</span> <span class="hljs-property">@get_or_init_ownerable_phase_map</span>(phase).set <span class="hljs-string">'selected_phase_state'</span>, phase_state
+  <span class="hljs-attribute">get_phase_selected_phase_state</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span>              -&gt;</span> <span class="hljs-property">@get_or_init_ownerable_phase_map</span>(phase).get <span class="hljs-string">'selected_phase_state'</span>
+
+  <span class="hljs-attribute">ownerable_has_multiple_phase_states</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span> (<span class="hljs-property">@get_ownerable_phase_states</span>(phase) <span class="hljs-keyword">or</span> []).get(<span class="hljs-string">'length'</span>) &gt; <span class="hljs-number">1</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="find-by-any-ownerable-will-not-init-any-maps">Find by any Ownerable (will not init any maps).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">find_ownerable_phase_states</span>:         <span class="hljs-function"><span class="hljs-params">(phase, ownerable)</span> -&gt;</span> <span class="hljs-property">@find_ownerable_phase_map_value</span>(phase, ownerable, <span class="hljs-string">'phase_states'</span>) <span class="hljs-keyword">or</span> []
+  <span class="hljs-attribute">find_ownerable_selected_phase_state</span>: <span class="hljs-function"><span class="hljs-params">(phase, ownerable)</span> -&gt;</span> <span class="hljs-property">@find_ownerable_phase_map_value</span>(phase, ownerable, <span class="hljs-string">'selected_phase_state'</span>)
+
+  <span class="hljs-attribute">find_ownerable_phase_map_value</span>: <span class="hljs-function"><span class="hljs-params">(phase, ownerable, key)</span> -&gt;</span>
+    map = <span class="hljs-property">@get_or_init_map</span>()
+    ownerable_map = map.get(ownerable)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> ownerable_map
+    phase_map = ownerable_map.get(phase)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> phase_map
+    phase_map.get(key)
+
+  <span class="hljs-attribute">find_phase_state_ownerable_in_phase_states</span>: <span class="hljs-function"><span class="hljs-params">(phase_state, phase_states)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> phase_state
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(phase_states)
+    id   = phase_state.get(<span class="hljs-string">'ownerable_id'</span>)
+    type = phase_state.get(<span class="hljs-string">'ownerable_type'</span>)
+    phase_states.find (state) =&gt; id == state.get(<span class="hljs-string">'ownerable_id'</span>) <span class="hljs-keyword">and</span> type == state.get(<span class="hljs-string">'ownerable_type'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="base-map-getters">Base Map Getters.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">new_map</span>: <span class="hljs-function">-&gt;</span> ember.Map.create()
+  <span class="hljs-attribute">get_map</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'ownerable_phase_values'</span>)
+
+  <span class="hljs-attribute">get_or_init_map</span>: <span class="hljs-function">-&gt;</span>
+    map = <span class="hljs-property">@get_map</span>()
+    <span class="hljs-keyword">unless</span> map
+      <span class="hljs-property">@set</span> <span class="hljs-string">'ownerable_phase_values'</span>, <span class="hljs-property">@new_map</span>()
+      map = <span class="hljs-property">@get_map</span>()
+    map
+
+  <span class="hljs-attribute">get_or_init_ownerable_map</span>: <span class="hljs-function"><span class="hljs-params">(ownerable=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    map           = <span class="hljs-property">@get_or_init_map</span>()
+    ownerable    ?= <span class="hljs-property">@get_ownerable</span>()
+    ownerable_map = map.get(ownerable)
+    <span class="hljs-keyword">unless</span> ownerable_map
+      map.set ownerable, <span class="hljs-property">@new_map</span>()
+      ownerable_map = map.get(ownerable)
+    ownerable_map
+
+  <span class="hljs-attribute">get_or_init_ownerable_phase_map</span>: <span class="hljs-function"><span class="hljs-params">(phase, ownerable=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    ownerable_map = <span class="hljs-property">@get_or_init_ownerable_map</span>(ownerable)
+    phase_map = ownerable_map.get(phase)
+    <span class="hljs-keyword">unless</span> phase_map
+      ownerable_map.set phase, <span class="hljs-property">@new_map</span>()
+      phase_map = ownerable_map.get(phase)
+    phase_map
+
+  <span class="hljs-attribute">get_current_user_phase_map</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span>
+    <span class="hljs-property">@get_or_init_ownerable_phase_map</span> phase, <span class="hljs-property">@get_current_user</span>()</div></div></div></div></body></html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance/addon/mixins/rm/chat</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance/addon/mixins/rm/chat"><meta name="groc-project-path" content="thinkspace-readiness-assurance/addon/mixins/rm/chat.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance/addon/mixins/rm/chat.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember          from <span class="hljs-string">'ember'</span>
+import ajax           from <span class="hljs-string">'totem/ajax'</span>
+import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">join_chat_received_event</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@join_room_event</span>(@, <span class="hljs-string">'chat'</span>)
+
+  <span class="hljs-attribute">handle_chat</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.info <span class="hljs-string">'received chat---&gt;'</span>, data, <span class="hljs-property">@chat</span>
+    value   = data.value <span class="hljs-keyword">or</span> {}
+    message = value.message
+    qid     = value.question_id
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Received chat 'message' is blank."</span>      <span class="hljs-keyword">if</span> ember.isBlank(message)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Received chat 'question_id' is blank."</span>  <span class="hljs-keyword">if</span> ember.isBlank(qid)
+    cm = <span class="hljs-property">@chat_manager_map</span>.get(qid)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Received chat 'chat manager' for question_id '<span class="hljs-subst">#{qid}</span>' not found."</span>  <span class="hljs-keyword">if</span> ember.isBlank(cm)
+    cm.handle_chat(message)
+
+  <span class="hljs-attribute">save_chat</span>: <span class="hljs-function"><span class="hljs-params">(question_id, message)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> <span class="hljs-property">@readonly</span>
+      <span class="hljs-keyword">unless</span> <span class="hljs-property">@save_to_server</span>
+        <span class="hljs-property">@save_off_message</span>(<span class="hljs-property">@chat</span>)
+        <span class="hljs-keyword">return</span> resolve()
+      model       = <span class="hljs-property">@chat</span>
+      id          = <span class="hljs-property">@chat</span>.get(<span class="hljs-string">'id'</span>)
+      action      = <span class="hljs-string">'add'</span>
+      verb        = <span class="hljs-string">'post'</span>
+      data        = {question_id, message}
+      ajax.object({verb, model, id, action, data}).<span class="hljs-keyword">then</span> =&gt;
+        resolve()</div></div></div></div></body></html>

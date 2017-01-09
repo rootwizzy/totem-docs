@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-instructor/addon/components/trat/teams/users</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-instructor/addon/components/trat/teams/users"><meta name="groc-project-path" content="thinkspace-readiness-assurance-instructor/addon/components/trat/teams/users.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-readiness-assurance-instructor/addon/components/trat/teams/users.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-readiness-assurance-instructor/components/base'</span>
+import user_list_mixin from <span class="hljs-string">'thinkspace-readiness-assurance/mixins/user_list'</span>
+
+export default base.extend user_list_mixin,
+
+  <span class="hljs-attribute">header</span>: ember.computed.reads <span class="hljs-string">'team.title'</span>
+  <span class="hljs-attribute">room</span>:   ember.computed.reads <span class="hljs-string">'team.room'</span>
+  <span class="hljs-attribute">users</span>:  ember.computed.reads <span class="hljs-string">'team_users'</span>
+
+  <span class="hljs-attribute">collapsed</span>: <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">show_users</span>: ember.observer <span class="hljs-string">'show_all'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'collapsed'</span>, (<span class="hljs-keyword">not</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'show_all'</span>))
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@setup</span>()
+
+  <span class="hljs-attribute">setup</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@pubsub</span>.join
+      <span class="hljs-attribute">room</span>:          <span class="hljs-property">@get_room</span>()
+      <span class="hljs-attribute">room_type</span>:     <span class="hljs-property">@get_room_type</span>()
+      <span class="hljs-attribute">room_observer</span>: <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">source</span>:        @
+      <span class="hljs-attribute">callback</span>:      <span class="hljs-string">'handle_room_users'</span>
+    <span class="hljs-property">@set_all_sorted_users</span>()
+    <span class="hljs-property">@refresh_users</span>()</div></div></div></div></body></html>
