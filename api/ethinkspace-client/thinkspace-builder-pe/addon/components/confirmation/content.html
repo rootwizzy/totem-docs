@@ -4,6 +4,8 @@ import base  from <span class="hljs-string">'thinkspace-base/components/base'</s
 
 export default base.extend
   <span class="hljs-attribute">builder</span>: ember.inject.service()
+  <span class="hljs-attribute">manager</span>: ember.inject.service()
 
-  <span class="hljs-attribute">model</span>: ember.computed.reads <span class="hljs-string">'builder.model'</span>
-  <span class="hljs-attribute">step</span>:  ember.computed.reads <span class="hljs-string">'builder.step_content'</span></div></div></div></div></body></html>
+  <span class="hljs-attribute">model</span>:      ember.computed.reads <span class="hljs-string">'builder.model'</span>
+  <span class="hljs-attribute">step</span>:       ember.computed.reads <span class="hljs-string">'builder.step_content'</span>
+  <span class="hljs-attribute">assessment</span>: ember.computed.reads <span class="hljs-string">'manager.model'</span></div></div></div></div></body></html>
