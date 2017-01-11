@@ -55,7 +55,6 @@ export default ember.Mixin.create
       <span class="hljs-property">@save_prev_answer_id</span>()
       <span class="hljs-property">@set</span>(<span class="hljs-property">@answer_path</span>, answer_id)
       <span class="hljs-property">@set_answer</span>()
-      <span class="hljs-keyword">return</span> resolve()
       <span class="hljs-property">@rm</span>.save_response().<span class="hljs-keyword">then</span> =&gt;
         <span class="hljs-property">@notify_response_updated</span>()
         resolve()

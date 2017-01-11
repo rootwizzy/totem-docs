@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-report/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-report/addon/components/main"><meta name="groc-project-path" content="thinkspace-report/addon/components/main.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-report/addon/components/main.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import ajax  from <span class="hljs-string">'totem/ajax'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">tvo_titles</span>: <span class="hljs-string">'thinkspace-report'</span>
+
+  <span class="hljs-attribute">drop_id</span>: ember.computed -&gt; <span class="hljs-string">"ts-drop_<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'elementId'</span>)}</span>"</span>
+
+  <span class="hljs-attribute">reports</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@first_button</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'report_dropdown'</span>).shift()
+    <span class="hljs-property">@get_reports</span>().<span class="hljs-keyword">then</span> =&gt; <span class="hljs-property">@set_all_data_loaded</span>()
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">generate</span>: <span class="hljs-function"><span class="hljs-params">(member)</span> -&gt;</span>
+      <span class="hljs-property">@dd</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@dd</span>.close()
+      query =
+        <span class="hljs-attribute">verb</span>:     <span class="hljs-string">'post'</span>
+        <span class="hljs-attribute">action</span>:   <span class="hljs-string">'generate'</span>
+        <span class="hljs-attribute">model</span>:    ns.to_p(<span class="hljs-string">'report:report'</span>)
+        <span class="hljs-attribute">authable</span>: <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      <span class="hljs-property">@totem_scope</span>.add_auth_to_ajax_query(query)
+      query.data.type = member.report_type
+      <span class="hljs-property">@totem_messages</span>.show_loading_outlet(<span class="hljs-attribute">message</span>: <span class="hljs-string">'Requesting reports...'</span>)
+      ajax.object(query).<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@totem_messages</span>.hide_loading_outlet()
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span>
+    $ul = <span class="hljs-property">@$</span>(<span class="hljs-string">'ul'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank($ul)
+    <span class="hljs-property">@dd</span> = <span class="hljs-keyword">new</span> Foundation.Dropdown($ul)
+
+  <span class="hljs-attribute">get_reports</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@tc</span>.find_all(ns.to_p(<span class="hljs-string">'report:report'</span>)).<span class="hljs-keyword">then</span> (reports) =&gt;
+        <span class="hljs-property">@set</span> <span class="hljs-string">'reports'</span>, reports
+        resolve()</div></div></div></div></body></html>

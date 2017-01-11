@@ -73,7 +73,8 @@ and the user will need to select a team as the &#39;current user&#39;.</p></div>
         <span class="hljs-attribute">action</span>:     <span class="hljs-string">'team_users_view'</span>
         <span class="hljs-attribute">sub_action</span>: <span class="hljs-string">'peer_review_users'</span>
       query = totem_scope.add_auth_to_ajax_query(query)
-      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Need to update this to use a <code>tc.query_action</code></p></div></div><div class="code"><div class="wrapper">        users = ajax.push_payload_and_return_data_records(payload)
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        users = ajax.push_payload_and_return_data_records(payload)
         resolve users
       , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
         totem_messages.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: phase, <span class="hljs-attribute">action</span>: <span class="hljs-string">'peer_review_users'</span>
@@ -99,7 +100,8 @@ and the user will need to select a team as the &#39;current user&#39;.</p></div>
         <span class="hljs-attribute">action</span>:     <span class="hljs-string">'teams_view'</span>
         <span class="hljs-attribute">sub_action</span>: <span class="hljs-string">'peer_review_teams'</span>
       query = totem_scope.add_auth_to_ajax_query(query)
-      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Need to update this to use a <code>tc.query_action</code></p></div></div><div class="code"><div class="wrapper">        teams = ajax.push_payload_and_return_data_records(payload)
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        teams = ajax.push_payload_and_return_data_records(payload)
         resolve teams
       , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
         totem_messages.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: phase, <span class="hljs-attribute">action</span>: <span class="hljs-string">'peer_review_teams'</span>

@@ -1,26 +1,46 @@
 <!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/thinkspace/transition</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/thinkspace/transition"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/thinkspace/transition.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-common/addon/mixins/thinkspace/transition.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
 import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
+import totem_scope    from <span class="hljs-string">'totem/scope'</span>
 
 export default ember.Mixin.create
 
-  <span class="hljs-attribute">transition_to_current_assignment</span>: <span class="hljs-function">-&gt;</span>
-    assignment = <span class="hljs-property">@get_current_assignment</span>()
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(assignment)
-    app_route = totem_messages.get_app_route()
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(app_route)
-    app_route.transitionTo <span class="hljs-string">'cases.show'</span>, assignment
+  <span class="hljs-attribute">transition_to_current_space</span>:      <span class="hljs-function"><span class="hljs-params">(route=<span class="hljs-string">'show'</span>)</span> -&gt;</span>  <span class="hljs-property">@transition_to_space</span>(<span class="hljs-property">@get_current_space</span>(), route)
+  <span class="hljs-attribute">transition_to_current_assignment</span>: <span class="hljs-function"><span class="hljs-params">(route=<span class="hljs-string">'show'</span>)</span> -&gt;</span>  <span class="hljs-property">@transition_to_assignment</span>(<span class="hljs-property">@get_current_assignment</span>(), route)
+  <span class="hljs-attribute">transition_to_current_phase</span>:      <span class="hljs-function"><span class="hljs-params">(route=<span class="hljs-string">'show'</span>)</span> -&gt;</span>  <span class="hljs-property">@transition_to_phase</span>(<span class="hljs-property">@get_current_phase</span>(), route)
 
-  <span class="hljs-attribute">transition_to_phase</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span>
+  <span class="hljs-attribute">transition_to_space</span>: <span class="hljs-function"><span class="hljs-params">(space, route=<span class="hljs-string">'show'</span>)</span>-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(space)
+    <span class="hljs-property">@set_current_models</span>(<span class="hljs-attribute">space</span>: space).<span class="hljs-keyword">then</span> =&gt;
+      route = <span class="hljs-string">"spaces.<span class="hljs-subst">#{route}</span>"</span>
+      <span class="hljs-property">@transition_to_route</span>(route, space)
+
+  <span class="hljs-attribute">transition_to_assignment</span>: <span class="hljs-function"><span class="hljs-params">(assignment, route=<span class="hljs-string">'show'</span>)</span>-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(assignment)
+    <span class="hljs-property">@set_current_models</span>(<span class="hljs-attribute">assignment</span>: assignment).<span class="hljs-keyword">then</span> =&gt;
+      route = <span class="hljs-string">"cases.<span class="hljs-subst">#{route}</span>"</span>
+      <span class="hljs-property">@transition_to_route</span>(route, assignment)
+
+  <span class="hljs-attribute">transition_to_phase</span>: <span class="hljs-function"><span class="hljs-params">(phase, route=<span class="hljs-string">'show'</span>)</span> -&gt;</span>
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(phase)
     <span class="hljs-property">@set_current_models</span>(<span class="hljs-attribute">phase</span>: phase).<span class="hljs-keyword">then</span> =&gt;
       assignment = <span class="hljs-property">@get_current_assignment</span>()
-      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(assignment)
-      app_route = totem_messages.get_app_route()
-      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(app_route)
-      app_route.transitionTo <span class="hljs-string">'phases.show'</span>, assignment, phase
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(assignment)
+      route = <span class="hljs-string">"phases.<span class="hljs-subst">#{route}</span>"</span>
+      <span class="hljs-property">@transition_to_route</span>(route, assignment, phase)
+
+  <span class="hljs-attribute">transition_to_model_route</span>: <span class="hljs-function"><span class="hljs-params">(model, route=<span class="hljs-string">'show'</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(model)
+    model_name = totem_scope.record_model_name(model)
+    <span class="hljs-keyword">switch</span> model_name
+      <span class="hljs-keyword">when</span> ns.to_p(<span class="hljs-string">'space'</span>)      <span class="hljs-keyword">then</span> <span class="hljs-property">@transition_to_space</span>(model, route)
+      <span class="hljs-keyword">when</span> ns.to_p(<span class="hljs-string">'assignment'</span>) <span class="hljs-keyword">then</span> <span class="hljs-property">@transition_to_assignment</span>(model, route)
+      <span class="hljs-keyword">when</span> ns.to_p(<span class="hljs-string">'phase'</span>)      <span class="hljs-keyword">then</span> <span class="hljs-property">@transition_to_phase</span>(model, route)
 
   <span class="hljs-attribute">transition_to_route</span>: <span class="hljs-function"><span class="hljs-params">(route, args...)</span> -&gt;</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(route)
-    app_route = totem_messages.get_app_route()
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(app_route)
-    app_route.transitionTo route, args...</div></div></div></div></body></html>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(route)
+    transition_route = <span class="hljs-property">@get_transition_route</span>()
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(transition_route)
+    transition_route.transitionTo route, args...
+
+  <span class="hljs-attribute">get_transition_route</span>: <span class="hljs-function">-&gt;</span> totem_messages.get_app_route()</div></div></div></div></body></html>

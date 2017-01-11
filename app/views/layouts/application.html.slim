@@ -6,12 +6,8 @@ html
     title TotemDocs
     = csrf_meta_tags
 
-    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload' 
-
-    = javascript_include_tag 'behavior' if params[:controller].eql?('totem/lodestar/api')
-    = stylesheet_link_tag 'style' if params[:controller].eql?('totem/lodestar/api')
-
 
   body
     = yield 
