@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace-diagnostic-expert-path/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-diagnostic-expert-path/addon/components/main"><meta name="groc-project-path" content="thinkspace-diagnostic-expert-path/addon/components/main.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-diagnostic-expert-path/addon/components/main.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-diagnostic-expert-path/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-diagnostic-expert-path/addon/components/main"><meta name="groc-project-path" content="thinkspace-diagnostic-expert-path/addon/components/main.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-diagnostic-expert-path/addon/components/main.coffee">thinkspace-diagnostic-expert-path/addon/components/main.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
 import ns    from <span class="hljs-string">'totem/ns'</span>
 import ajax  from <span class="hljs-string">'totem/ajax'</span>
 import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
@@ -28,13 +28,12 @@ export default base.extend
 
   <span class="hljs-attribute">get_expert_responses</span>: <span class="hljs-function">-&gt;</span>
     <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
-      list = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
-      <span class="hljs-property">@tc</span>.view_payload(list, <span class="hljs-attribute">sub_action</span>: <span class="hljs-string">'expert'</span>).<span class="hljs-keyword">then</span> (payload) =&gt;
+      type = ns.to_p <span class="hljs-string">'indented:expert_response'</span>
+      <span class="hljs-property">@send_responses_ajax_request</span>(type, <span class="hljs-attribute">sub_action</span>: <span class="hljs-string">'expert'</span>).<span class="hljs-keyword">then</span> (payload) =&gt;
         id = (payload[<span class="hljs-string">'included'</span>] <span class="hljs-keyword">or</span> []).mapBy(<span class="hljs-string">'id'</span>).get(<span class="hljs-string">'firstObject'</span>)
         <span class="hljs-keyword">if</span> ember.isBlank(id)
           responses = ember.makeArray <span class="hljs-property">@create_response</span>()
         <span class="hljs-keyword">else</span>
-          type = ns.to_p <span class="hljs-string">'indented:expert_response'</span>
           <span class="hljs-property">@tc</span>.push_payload(type, payload)
           responses = ember.makeArray <span class="hljs-property">@tc</span>.peek_record(type, id)
         resolve(responses)

@@ -26,5 +26,6 @@ deploy:
   run:
   - rails db:migrate
   - rails totem:lodestar:generate
+  - rails totem:lodestar:api[false]
   # - npm install
   # - rails totem:lodestar:api

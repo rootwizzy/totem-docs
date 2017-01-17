@@ -1,13 +1,17 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/services/builder</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/services/builder"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/services/builder.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">thinkspace-builder-pe/addon/services/builder.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/services/builder</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/services/builder"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/services/builder.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-builder-pe/addon/services/builder.coffee">thinkspace-builder-pe/addon/services/builder.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
 import ns    from <span class="hljs-string">'totem/ns'</span>
 import base  from <span class="hljs-string">'thinkspace-base/services/base'</span>
+import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
 
 import details_step      from <span class="hljs-string">'thinkspace-builder-pe/steps/details'</span>
 import content_step      from <span class="hljs-string">'thinkspace-builder-pe/steps/content'</span>
 import settings_step     from <span class="hljs-string">'thinkspace-builder-pe/steps/settings'</span>
 import confirmation_step from <span class="hljs-string">'thinkspace-builder-pe/steps/confirmation'</span>
 
-export default base.extend
+import navigate from <span class="hljs-string">'thinkspace-builder-pe/services/builder/navigate'</span>
+import initialize from <span class="hljs-string">'thinkspace-builder-pe/services/builder/initialize'</span>
+
+export default base.extend initialize, navigate,
 
   <span class="hljs-attribute">step_details</span>:      ember.computed -&gt; <span class="hljs-property">@get</span>(<span class="hljs-string">'steps'</span>).findBy <span class="hljs-string">'id'</span>, <span class="hljs-string">'details'</span>
   <span class="hljs-attribute">step_content</span>:      ember.computed -&gt; <span class="hljs-property">@get</span>(<span class="hljs-string">'steps'</span>).findBy <span class="hljs-string">'id'</span>, <span class="hljs-string">'content'</span>
@@ -19,137 +23,13 @@ export default base.extend
     route = <span class="hljs-property">@get</span>(<span class="hljs-string">'route'</span>)
     route.transitionToExternal <span class="hljs-string">'cases.show'</span>, model
 
-  <span class="hljs-attribute">launch</span>: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
-      <span class="hljs-property">@_initialize_map</span>()
+  <span class="hljs-attribute">_warn</span>: <span class="hljs-function"><span class="hljs-params">(message)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.warn <span class="hljs-string">"[pe builder service] <span class="hljs-subst">#{message}</span>"</span>
 
-      step_prototypes = <span class="hljs-property">@get</span>(<span class="hljs-string">'step_prototypes'</span>)
-      steps           = ember.makeArray()
-
-      step_prototypes.forEach (prototype) =&gt;
-        step = <span class="hljs-property">@_create_step_from_prototype</span>(prototype)
-        <span class="hljs-property">@_write_to_map</span>(prototype, step)
-        steps.pushObject step
-
-      <span class="hljs-property">@set</span> <span class="hljs-string">'steps'</span>, steps
-      <span class="hljs-property">@initialize_steps</span>().<span class="hljs-keyword">then</span> =&gt; resolve()
-
-  <span class="hljs-attribute">initialize_steps</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
-    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
-      <span class="hljs-property">@_warn</span> <span class="hljs-string">"you passed in both 'only' and 'except' options to initialize_steps()"</span> <span class="hljs-keyword">if</span> ember.isPresent(options.only) <span class="hljs-keyword">and</span> ember.isPresent(options.except)
-
-      only   = ember.makeArray options.only
-      except = ember.makeArray options.except
-
-      steps = <span class="hljs-property">@get</span>(<span class="hljs-string">'steps'</span>)
-      steps = <span class="hljs-property">@intersection</span>(steps, only) <span class="hljs-keyword">if</span> ember.isPresent(options.only)
-      steps = <span class="hljs-property">@difference</span>(steps, except) <span class="hljs-keyword">if</span> ember.isPresent(options.except)
-
-      promises = []
-      steps.forEach (step) =&gt; promises.pushObject(step.initialize()) <span class="hljs-keyword">if</span> step.initialize?
-
-      ember.RSVP.Promise.all(promises).<span class="hljs-keyword">then</span> =&gt; resolve()
-
-  <span class="hljs-attribute">get_step</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span> <span class="hljs-property">@_get_step_from_id</span>(id)
-
-
-  <span class="hljs-comment">## STEP NAVIGATION</span>
-  <span class="hljs-attribute">set_route</span>: <span class="hljs-function"><span class="hljs-params">(route)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'route'</span>, route
-  <span class="hljs-attribute">set_model</span>: <span class="hljs-function"><span class="hljs-params">(model)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'model'</span>, model
-  <span class="hljs-attribute">set_current_step</span>: <span class="hljs-function"><span class="hljs-params">(step)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'current_step'</span>, step
-
-  <span class="hljs-attribute">set_current_step_from_id</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span>
-    step = <span class="hljs-property">@get</span>(<span class="hljs-string">'steps'</span>).findBy <span class="hljs-string">'id'</span>, id
-    <span class="hljs-property">@_warn</span> <span class="hljs-string">"could not find step for id: [<span class="hljs-subst">#{id}</span>]"</span> <span class="hljs-keyword">unless</span> ember.isPresent(step)
-    <span class="hljs-property">@set_current_step</span>(step)
-
-  <span class="hljs-attribute">current_step</span>: <span class="hljs-literal">null</span>
-  <span class="hljs-attribute">current_step_index</span>: ember.computed.reads <span class="hljs-string">'current_step.index'</span>
-
-  <span class="hljs-attribute">get_next_step</span>: <span class="hljs-function">-&gt;</span>
-    index = <span class="hljs-property">@get</span>(<span class="hljs-string">'current_step_index'</span>)
-    <span class="hljs-property">@get_step_at_index</span>(index + <span class="hljs-number">1</span>)
-
-  <span class="hljs-attribute">get_prev_step</span>: <span class="hljs-function">-&gt;</span>
-    index = <span class="hljs-property">@get</span>(<span class="hljs-string">'current_step_index'</span>)
-    <span class="hljs-property">@get_step_at_index</span>(index - <span class="hljs-number">1</span>)
-
-  <span class="hljs-attribute">get_step_at_index</span>: <span class="hljs-function"><span class="hljs-params">(index)</span> -&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'steps'</span>).objectAt(index)
-
-  <span class="hljs-attribute">transition_to_prev_step</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span>-&gt;</span>
-    step = <span class="hljs-property">@get_prev_step</span>()
-    <span class="hljs-property">@transition_to_step</span>(step, options)
-
-  <span class="hljs-attribute">transition_to_next_step</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span>-&gt;</span>
-    step = <span class="hljs-property">@get_next_step</span>()
-    <span class="hljs-property">@transition_to_step</span>(step, options)
-
-  <span class="hljs-attribute">transition_to_step</span>: <span class="hljs-function"><span class="hljs-params">(step, options={})</span> -&gt;</span>
-    route = <span class="hljs-property">@get</span>(<span class="hljs-string">'route'</span>)
-    model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
-
-    <span class="hljs-keyword">if</span> options.save
-      <span class="hljs-property">@save_current_step</span>().<span class="hljs-keyword">then</span> =&gt;
-        route.transitionTo step.route_path, model
-    <span class="hljs-keyword">else</span>
-      route.transitionTo step.route_path, model
-    
-  <span class="hljs-attribute">save_current_step</span>: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
-      step = <span class="hljs-property">@get</span>(<span class="hljs-string">'current_step'</span>)
-      <span class="hljs-keyword">if</span> step.save?
-        step.save().<span class="hljs-keyword">then</span> =&gt;
-          resolve()
-        , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> 
-          reject(error)
-      <span class="hljs-keyword">else</span>
-        <span class="hljs-property">@_warn</span> <span class="hljs-string">"step '<span class="hljs-subst">#{step.id}</span>' does not implement a save() function"</span>
-        resolve()
-
-
-  <span class="hljs-comment">##### Private
-
-  _initialize_map: -&gt;
-    map = @get('step_map')
-    if ember.isPresent map
-      map.clear()
-    else
-      map = ember.Map.create()
-    @set 'step_map', map
-    return map
-
-  _create_step_from_prototype: (prototype) -&gt;
-    step = prototype.create(container: @container)
-
-  _write_to_map: (key, value) -&gt;
-    map = @get('step_map')
-    unless map
-      @_warn "Calling write_to_map(), but step_map has not yet been created."
-      return null
-    map.set key, value
-
-  _get_step_from_prototype: (prototype) -&gt;
-    map = @get('step_map')
-    unless map
-      @_warn "Calling get_step_from_prototype(), but step_map has not yet been created."
-      return null
-    step = map.get(prototype)
-
-  _get_step_from_id: (id) -&gt;
-    steps = @get('steps')
-    if ember.isEmpty steps
-      @_warn "Calling get_step_from_id(), but steps have not yet been created."
-      return null
-    steps.findBy 'id', id
-
-  _warn: (message) -&gt;
-    console.warn "[pe builder service] #{message}"
-
-  step_prototypes: ember.computed -&gt; 
+  <span class="hljs-attribute">step_prototypes</span>: ember.computed -&gt; 
     [
       details_step,
       content_step,
       settings_step,
       confirmation_step
-    ]
-</span></div></div></div></div></body></html>
+    ]</div></div></div></div></body></html>
