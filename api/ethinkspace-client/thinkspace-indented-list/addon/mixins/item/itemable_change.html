@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/addon/mixins/item/itemable_change</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-indented-list/addon/mixins/item/itemable_change"><meta name="groc-project-path" content="thinkspace-indented-list/addon/mixins/item/itemable_change.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-indented-list/addon/mixins/item/itemable_change.coffee">thinkspace-indented-list/addon/mixins/item/itemable_change.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import tc          from <span class="hljs-string">'totem/cache'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="changes-to-the-itemables-eg-removed">Changes to the Itemables e.g. removed</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Do not remove the item but clear the item&#39;s itemable values and set the item.description to the component&#39;s show value.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">clear_itemable_from_all_items</span>: <span class="hljs-function"><span class="hljs-params">(itemable)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isBlank(itemable) <span class="hljs-keyword">or</span> <span class="hljs-property">@readonly</span>
+      itemable_id   = parseInt(itemable.get <span class="hljs-string">'id'</span>)
+      itemable_type = totem_scope.get_record_path(itemable)
+      save          = <span class="hljs-literal">false</span>
+      <span class="hljs-property">@value_items</span>.forEach (item) =&gt;
+        id   = item.itemable_id
+        type = item.itemable_type
+        <span class="hljs-keyword">if</span> ember.isPresent(id) <span class="hljs-keyword">and</span> ember.isPresent(type)
+          <span class="hljs-keyword">if</span> itemable_id == id <span class="hljs-keyword">and</span> itemable_type == totem_scope.rails_polymorphic_type_to_path(type)
+            save = <span class="hljs-literal">true</span>
+            comp = <span class="hljs-property">@get_item_component</span>(item)
+            desc = <span class="hljs-keyword">if</span> comp <span class="hljs-keyword">then</span> comp.get(<span class="hljs-string">'show_value'</span>) <span class="hljs-keyword">else</span> <span class="hljs-string">''</span>
+            <span class="hljs-keyword">delete</span>(item.itemable_id)
+            <span class="hljs-keyword">delete</span>(item.itemable_type)
+            <span class="hljs-keyword">delete</span>(item.itemable_value_path)
+            item.description = desc
+      <span class="hljs-property">@save_response</span>()  <span class="hljs-keyword">if</span> save
+      resolve()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Remove the items associated with the itemable.
+Either remove just the item or remove the item all &#39;packed&#39; children.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">remove_items_with_itemable</span>: <span class="hljs-function"><span class="hljs-params">(itemable, options={})</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isBlank(itemable) <span class="hljs-keyword">or</span> <span class="hljs-property">@readonly</span>
+      itemable_id   = parseInt(itemable.get <span class="hljs-string">'id'</span>)
+      itemable_type = totem_scope.get_record_path(itemable)
+      remove_items  = []
+      <span class="hljs-property">@value_items</span>.forEach (item) =&gt;
+        id   = item.itemable_id
+        type = item.itemable_type
+        <span class="hljs-keyword">if</span> ember.isPresent(id) <span class="hljs-keyword">and</span> ember.isPresent(type)
+          <span class="hljs-keyword">if</span> itemable_id == id <span class="hljs-keyword">and</span> itemable_type == totem_scope.rails_polymorphic_type_to_path(type)
+            remove_items.push(item)
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isBlank(remove_items)
+      <span class="hljs-keyword">if</span> options.remove_packed_children == <span class="hljs-literal">true</span>
+        <span class="hljs-property">@remove_items_itemable_and_packed_children</span>(remove_items)
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@remove_only_items_with_itemable</span>(remove_items)
+      resolve()
+
+  <span class="hljs-attribute">remove_only_items_with_itemable</span>: <span class="hljs-function"><span class="hljs-params">(items)</span> -&gt;</span>
+    items.map (item) =&gt;
+      prev_item        = <span class="hljs-property">@get_prev_item</span>(item)
+      children_visible = <span class="hljs-property">@are_item_children_visible</span>(item)
+      children         = <span class="hljs-property">@get_item_children</span>(item)
+      index            = <span class="hljs-property">@value_items</span>.indexOf(item)
+      <span class="hljs-property">@value_items</span>.removeAt(index)
+      <span class="hljs-property">@set_children_items_visibility</span>(children, <span class="hljs-literal">true</span>)  <span class="hljs-keyword">unless</span> children_visible
+      <span class="hljs-property">@reset_has_children</span>(prev_item)  <span class="hljs-keyword">if</span> prev_item
+    <span class="hljs-property">@save_response</span>()
+
+  <span class="hljs-attribute">remove_items_itemable_and_packed_children</span>: <span class="hljs-function"><span class="hljs-params">(items)</span> -&gt;</span> items.map (item) =&gt; <span class="hljs-property">@remove_item</span>(item)  <span class="hljs-comment"># call remove_item action for each item</span></div></div></div></div></body></html>

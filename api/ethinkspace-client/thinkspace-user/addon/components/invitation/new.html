@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-user/addon/components/invitation/new</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-user/addon/components/invitation/new"><meta name="groc-project-path" content="thinkspace-user/addon/components/invitation/new.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-user/addon/components/invitation/new.coffee">thinkspace-user/addon/components/invitation/new.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember      from <span class="hljs-string">'ember'</span>
+import ns         from <span class="hljs-string">'totem/ns'</span>
+import config     from <span class="hljs-string">'totem-config/config'</span>
+import ajax       from <span class="hljs-string">'totem/ajax'</span>
+import base_component from <span class="hljs-string">'thinkspace-base/components/base'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Add validation</p></div></div><div class="code"><div class="wrapper">export default base_component.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">friendly_role</span>:  ember.computed <span class="hljs-string">'friendly_roles'</span>, <span class="hljs-function">-&gt;</span>  <span class="hljs-property">@get</span>(<span class="hljs-string">'friendly_roles.firstObject'</span>)
+  <span class="hljs-attribute">friendly_roles</span>: ember.computed -&gt;
+    roles_map = config.roles_map
+    <span class="hljs-built_in">console</span>.error <span class="hljs-string">"Could not find roles map in config, cannot process space_user."</span> <span class="hljs-keyword">unless</span> ember.isPresent(roles_map)
+    roles     = []
+    <span class="hljs-keyword">for</span> role, friendly <span class="hljs-keyword">of</span> roles_map
+      roles.pushObject(friendly)
+    roles
+  <span class="hljs-attribute">c_validated_input</span>: ns.to_p <span class="hljs-string">'common'</span>, <span class="hljs-string">'shared'</span>, <span class="hljs-string">'validated_input'</span>
+
+  <span class="hljs-attribute">is_sending</span>:           <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">show_errors</span>:          <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">email</span>:                <span class="hljs-string">''</span>
+  <span class="hljs-attribute">email_input_class</span>:    <span class="hljs-string">'ts-invitation-new_input-email'</span>
+  <span class="hljs-attribute">email_input_selector</span>: ember.computed -&gt; $(<span class="hljs-string">".<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'email_input_class'</span>)}</span>"</span>).children(<span class="hljs-string">'input'</span>)
+  <span class="hljs-attribute">reveal_errors</span>:        ember.observer <span class="hljs-string">'email'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span>(<span class="hljs-string">'show_errors'</span>, <span class="hljs-literal">true</span>) <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'show_errors'</span>)
+  <span class="hljs-attribute">focus_email_input</span>:    <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'email_input_selector'</span>).focus()
+  <span class="hljs-attribute">select_email_input</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'email_input_selector'</span>).select()
+
+
+  <span class="hljs-attribute">get_role</span>: <span class="hljs-function"><span class="hljs-params">(friendly_role)</span> -&gt;</span>
+    roles_map = config.roles_map
+    <span class="hljs-built_in">console</span>.error <span class="hljs-string">"Could not find roles map in config, cannot process space_user."</span> <span class="hljs-keyword">unless</span> ember.isPresent(roles_map)
+    name      = <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">for</span> role, friendly <span class="hljs-keyword">of</span> roles_map
+      name = role <span class="hljs-keyword">if</span> ember.isEqual(friendly.toLowerCase(), friendly_role.toLowerCase())
+    <span class="hljs-built_in">console</span>.error <span class="hljs-string">"Could not find role for [<span class="hljs-subst">#{friendly_role}</span>] in config.roles_map [<span class="hljs-subst">#{roles_map}</span>]."</span> <span class="hljs-keyword">unless</span> ember.isPresent(name)
+    name
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span> ember.run.schedule <span class="hljs-string">'afterRender'</span>, <span class="hljs-function">=&gt;</span> <span class="hljs-property">@focus_email_input</span>()
+
+
+  <span class="hljs-attribute">actions</span>:
+
+    <span class="hljs-attribute">send</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-keyword">unless</span> ember.isEmpty(<span class="hljs-property">@get</span>(<span class="hljs-string">'errors.email'</span>))
+        <span class="hljs-property">@select_email_input</span>()
+        <span class="hljs-keyword">return</span>
+
+      invitable = <span class="hljs-property">@get</span>(<span class="hljs-string">'invitable'</span>)
+      email     = <span class="hljs-property">@get</span>(<span class="hljs-string">'email'</span>)
+      role      = <span class="hljs-property">@get_role</span>(<span class="hljs-property">@get</span>(<span class="hljs-string">'friendly_role'</span>))
+      options   =
+        <span class="hljs-attribute">verb</span>:   <span class="hljs-string">'PUT'</span>
+        <span class="hljs-attribute">action</span>: <span class="hljs-string">'invite'</span>
+        <span class="hljs-attribute">model</span>:  invitable
+        <span class="hljs-attribute">id</span>:     invitable.get(<span class="hljs-string">'id'</span>)
+        <span class="hljs-attribute">data</span>:   { <span class="hljs-attribute">email</span>: email, <span class="hljs-attribute">role</span>: role}
+
+      <span class="hljs-property">@set</span> <span class="hljs-string">'is_sending'</span>, <span class="hljs-literal">true</span>
+
+      ajax.object(options).<span class="hljs-keyword">then</span> (payload) =&gt;
+        user       = ajax.normalize_and_push_payload(<span class="hljs-string">'user'</span>, payload).get(<span class="hljs-string">'firstObject'</span>)
+        space_user = ajax.normalize_and_push_payload(<span class="hljs-string">'space_user'</span>, payload).get(<span class="hljs-string">'firstObject'</span>)
+        space_user.set <span class="hljs-string">'user'</span>, user
+        <span class="hljs-property">@totem_messages</span>.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: user, <span class="hljs-attribute">action</span>: <span class="hljs-string">'create'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'invitation'</span>, <span class="hljs-string">'save'</span>)
+        <span class="hljs-property">@set</span> <span class="hljs-string">'email'</span>, <span class="hljs-string">''</span>
+        <span class="hljs-property">@set</span> <span class="hljs-string">'show_errors'</span>, <span class="hljs-literal">false</span>
+        <span class="hljs-property">@set</span> <span class="hljs-string">'is_sending'</span>, <span class="hljs-literal">false</span>
+        ember.run.schedule <span class="hljs-string">'afterRender'</span>, <span class="hljs-function">=&gt;</span> <span class="hljs-property">@focus_email_input</span>()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        <span class="hljs-property">@set</span> <span class="hljs-string">'is_sending'</span>, <span class="hljs-literal">false</span>
+        <span class="hljs-property">@totem_messages</span>.api_falure <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: user, <span class="hljs-attribute">action</span>: <span class="hljs-string">'create'</span>
+        ember.run.schedule <span class="hljs-string">'afterRender'</span>, <span class="hljs-function">=&gt;</span> <span class="hljs-property">@select_email_input</span>()
+
+    <span class="hljs-attribute">cancel</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'cancel'</span>
+
+  <span class="hljs-attribute">validations</span>:
+    <span class="hljs-attribute">email</span>:
+      <span class="hljs-attribute">format</span>: {<span class="hljs-attribute">with</span>: <span class="hljs-regexp">/\S+@\S+/</span>, <span class="hljs-attribute">message</span>: <span class="hljs-string">"Must be a valid email"</span>}</div></div></div></div></body></html>

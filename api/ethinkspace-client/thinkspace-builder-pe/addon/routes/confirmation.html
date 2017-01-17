@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/routes/confirmation</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/routes/confirmation"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/routes/confirmation.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-builder-pe/addon/routes/confirmation.coffee">thinkspace-builder-pe/addon/routes/confirmation.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/routes/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">builder</span>: ember.inject.service()
+
+  <span class="hljs-attribute">titleToken</span>: <span class="hljs-function"><span class="hljs-params">(model)</span> -&gt;</span> model.get(<span class="hljs-string">'title'</span>)
+  <span class="hljs-attribute">model</span>:      <span class="hljs-function"><span class="hljs-params">(params)</span> -&gt;</span> <span class="hljs-property">@tc</span>.find_record(<span class="hljs-property">@ns</span>.to_p(<span class="hljs-string">'assignment'</span>), params.assignment_id)
+
+  <span class="hljs-attribute">activate</span>: <span class="hljs-function">-&gt;</span> 
+    builder = <span class="hljs-property">@get</span>(<span class="hljs-string">'builder'</span>)
+    builder.launch()
+    builder.set_route(@)
+    builder.set_current_step_from_id(<span class="hljs-string">'confirmation'</span>)
+
+  <span class="hljs-attribute">afterModel</span>: <span class="hljs-function"><span class="hljs-params">(model)</span> -&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'builder'</span>).set_model(model)</div></div></div></div></body></html>

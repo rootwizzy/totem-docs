@@ -1,0 +1,9 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-case/addon/routes/reports</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-case/addon/routes/reports"><meta name="groc-project-path" content="thinkspace-case/addon/routes/reports.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-case/addon/routes/reports.coffee">thinkspace-case/addon/routes/reports.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/routes/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">titleToken</span>: <span class="hljs-function"><span class="hljs-params">(model)</span> -&gt;</span> model.get(<span class="hljs-string">'title'</span>)
+
+  <span class="hljs-attribute">model</span>: <span class="hljs-function"><span class="hljs-params">(params)</span> -&gt;</span> <span class="hljs-property">@tc</span>.find_record_with_message ns.to_p(<span class="hljs-string">'assignment'</span>), params.assignment_id</div></div></div></div></body></html>

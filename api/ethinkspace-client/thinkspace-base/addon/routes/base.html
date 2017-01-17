@@ -1,0 +1,17 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-base/addon/routes/base</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-base/addon/routes/base"><meta name="groc-project-path" content="thinkspace-base/addon/routes/base.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-base/addon/routes/base.coffee">thinkspace-base/addon/routes/base.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+import auth   from <span class="hljs-string">'totem-simple-auth/mixins/authenticated-route-mixin'</span>
+
+export default ember.Route.extend auth,
+
+  <span class="hljs-attribute">session</span>:    ember.inject.service()
+  <span class="hljs-attribute">thinkspace</span>: ember.inject.service()
+  <span class="hljs-attribute">addons</span>:     ember.inject.service()
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
+    <span class="hljs-property">@session</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'session'</span>)
+    <span class="hljs-property">@init_base</span>()
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-keyword">return</span>
+
+  <span class="hljs-attribute">current_models</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'thinkspace'</span>)</div></div></div></div></body></html>

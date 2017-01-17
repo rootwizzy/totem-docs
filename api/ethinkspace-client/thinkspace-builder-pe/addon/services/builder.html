@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/services/builder</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/services/builder"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/services/builder.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-builder-pe/addon/services/builder.coffee">thinkspace-builder-pe/addon/services/builder.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/services/base'</span>
+import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
+
+import details_step      from <span class="hljs-string">'thinkspace-builder-pe/steps/details'</span>
+import content_step      from <span class="hljs-string">'thinkspace-builder-pe/steps/content'</span>
+import settings_step     from <span class="hljs-string">'thinkspace-builder-pe/steps/settings'</span>
+import confirmation_step from <span class="hljs-string">'thinkspace-builder-pe/steps/confirmation'</span>
+
+import navigate from <span class="hljs-string">'thinkspace-builder-pe/services/builder/navigate'</span>
+import initialize from <span class="hljs-string">'thinkspace-builder-pe/services/builder/initialize'</span>
+
+export default base.extend initialize, navigate,
+
+  <span class="hljs-attribute">step_details</span>:      ember.computed -&gt; <span class="hljs-property">@get</span>(<span class="hljs-string">'steps'</span>).findBy <span class="hljs-string">'id'</span>, <span class="hljs-string">'details'</span>
+  <span class="hljs-attribute">step_content</span>:      ember.computed -&gt; <span class="hljs-property">@get</span>(<span class="hljs-string">'steps'</span>).findBy <span class="hljs-string">'id'</span>, <span class="hljs-string">'content'</span>
+  <span class="hljs-attribute">step_settings</span>:     ember.computed -&gt; <span class="hljs-property">@get</span>(<span class="hljs-string">'steps'</span>).findBy <span class="hljs-string">'id'</span>, <span class="hljs-string">'settings'</span>
+  <span class="hljs-attribute">step_confirmation</span>: ember.computed -&gt; <span class="hljs-property">@get</span>(<span class="hljs-string">'steps'</span>).findBy <span class="hljs-string">'id'</span>, <span class="hljs-string">'confirmation'</span>
+
+  <span class="hljs-attribute">transition_to_cases_show</span>: <span class="hljs-function">-&gt;</span>
+    model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    route = <span class="hljs-property">@get</span>(<span class="hljs-string">'route'</span>)
+    route.transitionToExternal <span class="hljs-string">'cases.show'</span>, model
+
+  <span class="hljs-attribute">_warn</span>: <span class="hljs-function"><span class="hljs-params">(message)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.warn <span class="hljs-string">"[pe builder service] <span class="hljs-subst">#{message}</span>"</span>
+
+  <span class="hljs-attribute">step_prototypes</span>: ember.computed -&gt; 
+    [
+      details_step,
+      content_step,
+      settings_step,
+      confirmation_step
+    ]</div></div></div></div></body></html>

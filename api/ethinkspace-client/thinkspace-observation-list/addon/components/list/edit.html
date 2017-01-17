@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-observation-list/addon/components/list/edit</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-observation-list/addon/components/list/edit"><meta name="groc-project-path" content="thinkspace-observation-list/addon/components/list/edit.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-observation-list/addon/components/list/edit.coffee">thinkspace-observation-list/addon/components/list/edit.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Add validation</p></div></div><div class="code"><div class="wrapper">export default base.extend
+
+  <span class="hljs-attribute">categories</span>: ember.computed.reads <span class="hljs-string">'model.category_values'</span>
+
+  <span class="hljs-attribute">input_value</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    <span class="hljs-attribute">exit</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, <span class="hljs-literal">null</span>
+
+    <span class="hljs-attribute">save</span>: <span class="hljs-function">-&gt;</span>
+      list = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+      list.set <span class="hljs-string">'category.name'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'input_value'</span>)
+      list.save().<span class="hljs-keyword">then</span> (list) =&gt;
+        <span class="hljs-property">@totem_messages</span>.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: list, <span class="hljs-attribute">action</span>: <span class="hljs-string">'update'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'list'</span>, <span class="hljs-string">'save'</span>)
+        <span class="hljs-property">@send</span> <span class="hljs-string">'exit'</span>
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: list, <span class="hljs-attribute">action</span>: <span class="hljs-string">'update'</span>
+
+    <span class="hljs-attribute">cancel</span>: <span class="hljs-function">-&gt;</span>
+      bucket = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+      bucket.rollback()  <span class="hljs-keyword">if</span> bucket.get(<span class="hljs-string">'isDirty'</span>)
+      <span class="hljs-property">@send</span> <span class="hljs-string">'exit'</span>
+
+    <span class="hljs-attribute">check</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'input_value'</span>, id
+    <span class="hljs-attribute">uncheck</span>:    <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'input_value'</span>, <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'input_value'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'model.category_id'</span>)
+
+  <span class="hljs-attribute">validations</span>:
+    <span class="hljs-attribute">input_value</span>:
+      <span class="hljs-attribute">presence</span>:
+        <span class="hljs-attribute">message</span>: <span class="hljs-string">'You must select one of the above categories'</span></div></div></div></div></body></html>

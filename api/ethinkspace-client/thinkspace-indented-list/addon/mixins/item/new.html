@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/addon/mixins/item/new</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-indented-list/addon/mixins/item/new"><meta name="groc-project-path" content="thinkspace-indented-list/addon/mixins/item/new.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-indented-list/addon/mixins/item/new.coffee">thinkspace-indented-list/addon/mixins/item/new.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">get_new_item</span>: <span class="hljs-function"><span class="hljs-params">($el, pos_x, source)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      new_item = 
+        <span class="hljs-attribute">pos_y</span>:       <span class="hljs-number">0</span>
+        <span class="hljs-attribute">pos_x</span>:       pos_x
+        <span class="hljs-attribute">description</span>: <span class="hljs-literal">null</span>
+      <span class="hljs-property">@get_source_container_item_values</span>($el, source, new_item).<span class="hljs-keyword">then</span> (item_values) =&gt;
+        ember.merge(new_item, item_values)  <span class="hljs-keyword">if</span> <span class="hljs-property">@is_hash</span>(item_values)
+        resolve(new_item)
+
+  <span class="hljs-attribute">get_source_container_item_values</span>: <span class="hljs-function"><span class="hljs-params">($el, source, new_item)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      hash = <span class="hljs-property">@new_source_containers</span>.get(source) <span class="hljs-keyword">or</span> {}
+      <span class="hljs-keyword">return</span> resolve(hash.item_values)  <span class="hljs-keyword">if</span> ember.isBlank(hash.callback_fn)
+      <span class="hljs-property">@call_source_container_callback_function</span>($el, hash, new_item).<span class="hljs-keyword">then</span> (item_values) =&gt; resolve(item_values)
+
+  <span class="hljs-attribute">call_source_container_callback_function</span>: <span class="hljs-function"><span class="hljs-params">($el, hash, new_item)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      fn   = hash.callback_fn
+      comp = hash.component
+      <span class="hljs-keyword">return</span> resolve(hash.item_values) <span class="hljs-keyword">unless</span> ember.isPresent(comp) <span class="hljs-keyword">and</span> <span class="hljs-property">@is_function</span>(comp[fn])
+      response = comp[fn]($el, new_item)
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@is_object</span>(response) <span class="hljs-keyword">and</span> <span class="hljs-property">@is_function</span>(response.<span class="hljs-keyword">then</span>)
+        response.<span class="hljs-keyword">then</span> (item_values) =&gt; resolve(item_values)
+      <span class="hljs-keyword">else</span>
+        resolve(response)
+
+  <span class="hljs-attribute">get_source_element_html_model_attributes</span>: <span class="hljs-function"><span class="hljs-params">($el)</span> -&gt;</span>
+    values = {}
+    id     = $el.attr(<span class="hljs-string">'model_id'</span>)
+    id     = parseInt(id)  <span class="hljs-keyword">if</span> id
+    type   = $el.attr(<span class="hljs-string">'model_type'</span>)
+    path   = $el.attr(<span class="hljs-string">'model_value_path'</span>)
+    values.itemable_id         = id    <span class="hljs-keyword">if</span> id
+    values.itemable_type       = type  <span class="hljs-keyword">if</span> type
+    values.itemable_value_path = path  <span class="hljs-keyword">if</span> path
+    values</div></div></div></div></body></html>

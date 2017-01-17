@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-resource/addon/components/pane</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-resource/addon/components/pane"><meta name="groc-project-path" content="thinkspace-resource/addon/components/pane.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-resource/addon/components/pane.coffee">thinkspace-resource/addon/components/pane.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">manage_files_expanded</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">manage_links_expanded</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">manage_tags_expanded</span>:  <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">right_pocket_increased</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">actions</span>:
+
+    <span class="hljs-attribute">toggle_files_pane</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@toggleProperty</span>(<span class="hljs-string">'manage_files_expanded'</span>)
+        <span class="hljs-property">@close_links_pane</span>()
+        <span class="hljs-property">@close_tags_pane</span>()
+
+    <span class="hljs-attribute">toggle_links_pane</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@toggleProperty</span>(<span class="hljs-string">'manage_links_expanded'</span>)
+        <span class="hljs-property">@close_files_pane</span>()
+        <span class="hljs-property">@close_tags_pane</span>()
+        <span class="hljs-property">@increase_right_pocket</span>()
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@decrease_right_pocket</span>()
+
+    <span class="hljs-attribute">toggle_tags_pane</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@toggleProperty</span>(<span class="hljs-string">'manage_tags_expanded'</span>)
+        <span class="hljs-property">@close_files_pane</span>()
+        <span class="hljs-property">@close_links_pane</span>()
+        <span class="hljs-property">@increase_right_pocket</span>()
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@decrease_right_pocket</span>()
+
+  <span class="hljs-attribute">close_files_pane</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span>(<span class="hljs-string">'manage_files_expanded'</span>, <span class="hljs-literal">false</span>)
+  <span class="hljs-attribute">close_links_pane</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span>(<span class="hljs-string">'manage_links_expanded'</span>, <span class="hljs-literal">false</span>)
+  <span class="hljs-attribute">close_tags_pane</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span>(<span class="hljs-string">'manage_tags_expanded'</span>,  <span class="hljs-literal">false</span>)
+
+  <span class="hljs-attribute">increase_right_pocket</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'right_pocket_increased'</span>)
+    addons = <span class="hljs-property">@get</span>(<span class="hljs-string">'addons'</span>)
+    addons.increase_right_pocket(<span class="hljs-property">@addon</span>)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'right_pocket_increased'</span>, <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">decrease_right_pocket</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'right_pocket_increased'</span>)
+    addons = <span class="hljs-property">@get</span>(<span class="hljs-string">'addons'</span>)
+    addons.decrease_right_pocket(<span class="hljs-property">@addon</span>)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'right_pocket_increased'</span>, <span class="hljs-literal">false</span></div></div></div></div></body></html>

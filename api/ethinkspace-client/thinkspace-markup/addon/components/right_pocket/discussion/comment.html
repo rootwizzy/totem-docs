@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-markup/addon/components/right_pocket/discussion/comment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-markup/addon/components/right_pocket/discussion/comment"><meta name="groc-project-path" content="thinkspace-markup/addon/components/right_pocket/discussion/comment.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-markup/addon/components/right_pocket/discussion/comment.coffee">thinkspace-markup/addon/components/right_pocket/discussion/comment.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="services">Services</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">markup</span>: ember.inject.service ns.to_p(<span class="hljs-string">'markup'</span>, <span class="hljs-string">'manager'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="properties">Properties</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">model</span>:        <span class="hljs-literal">null</span> <span class="hljs-comment"># Comment</span>
+  <span class="hljs-attribute">discussion</span>:   <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">is_anonymous</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">is_editing</span>:     <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">is_highlighted</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">is_collapsed</span>:   <span class="hljs-literal">true</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="computed-properties">Computed properties</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">tagName</span>:           <span class="hljs-string">'li'</span>
+  <span class="hljs-attribute">classNames</span>:        [<span class="hljs-string">'ts-markup_right_pocket-comment'</span>]
+  <span class="hljs-attribute">classNameBindings</span>: [<span class="hljs-string">'is_collapsed:is-collapsed'</span>, <span class="hljs-string">'is_child:ts-markup_right_pocket-comment-reply'</span>]
+
+  <span class="hljs-attribute">comment_text</span>: ember.computed.reads <span class="hljs-string">'model.comment'</span>
+
+  <span class="hljs-attribute">can_update</span>: ember.computed.reads <span class="hljs-string">'model.can_update'</span>
+  <span class="hljs-attribute">can_reply</span>:  <span class="hljs-literal">false</span><span class="hljs-comment">#ember.computed.empty 'model.parent_id'</span>
+
+  <span class="hljs-attribute">children</span>:     ember.computed.reads <span class="hljs-string">'model.comments'</span>
+  <span class="hljs-attribute">has_children</span>: ember.computed.reads <span class="hljs-string">'model.has_children'</span>
+  <span class="hljs-attribute">is_child</span>:     ember.computed.reads <span class="hljs-string">'model.is_child'</span>
+  <span class="hljs-attribute">is_new</span>:       ember.computed.reads <span class="hljs-string">'model.isNew'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="components">Components</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">c_markup_discussion_comment</span>: ns.to_p <span class="hljs-string">'markup'</span>, <span class="hljs-string">'right_pocket'</span>, <span class="hljs-string">'discussion'</span>, <span class="hljs-string">'comment'</span>
+  <span class="hljs-attribute">c_confirmation_modal</span>:        ns.to_p <span class="hljs-string">'common'</span>, <span class="hljs-string">'shared'</span>, <span class="hljs-string">'confirmation'</span>, <span class="hljs-string">'modal'</span>
+
+  <span class="hljs-attribute">get_avatar_text</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'model.commenterable'</span>).<span class="hljs-keyword">then</span> (commenterable) =&gt;
+        <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_anonymous'</span>)
+          resolve <span class="hljs-property">@get</span>(<span class="hljs-string">'markup'</span>).get_anonymized_commenter(commenterable)
+        <span class="hljs-keyword">else</span>
+          resolve commenterable.get(<span class="hljs-string">'initials'</span>)
+
+  <span class="hljs-attribute">set_avatar_text</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get_avatar_text</span>().<span class="hljs-keyword">then</span> (avatar_text) =&gt;
+      <span class="hljs-property">@set</span> <span class="hljs-string">'avatar_text'</span>, avatar_text
+
+  <span class="hljs-attribute">keyPress</span>: <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_editing'</span>)
+    key_code = event.keyCode
+    <span class="hljs-keyword">if</span> (key_code == <span class="hljs-number">10</span> || key_code == <span class="hljs-number">13</span>) <span class="hljs-keyword">and</span> event.ctrlKey <span class="hljs-comment"># control + enter</span>
+      <span class="hljs-property">@send</span> <span class="hljs-string">'save'</span> 
+      event.preventDefault()
+      event.stopPropagation()
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set_is_overflowing</span>()
+    <span class="hljs-property">@set_avatar_text</span>()
+
+  <span class="hljs-attribute">get_$input</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@$</span>(<span class="hljs-string">'textarea'</span>)
+
+  <span class="hljs-attribute">set_is_overflowing</span>: <span class="hljs-function">-&gt;</span> 
+    ember.run.schedule <span class="hljs-string">'afterRender'</span>, <span class="hljs-function">=&gt;</span>
+      $value = <span class="hljs-property">@$</span>(<span class="hljs-string">'.ts-markup_right_pocket-comment-value'</span>)
+      <span class="hljs-property">@set</span> <span class="hljs-string">'is_overflowing'</span>, $value[<span class="hljs-number">0</span>].scrollWidth &gt;  $value.innerWidth()
+
+  <span class="hljs-attribute">focus_input</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_editing'</span>)
+      ember.run.schedule <span class="hljs-string">'afterRender'</span>, <span class="hljs-function">=&gt;</span>
+        $input = <span class="hljs-property">@get_$input</span>()
+        $input.select()
+        $input.submit -&gt; <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="events">Events</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'markup'</span>).add_comment_component(@)
+
+  <span class="hljs-attribute">willDestroyElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'markup'</span>).remove_comment_component(@)
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">set_is_editing</span>:   <span class="hljs-function">-&gt;</span> 
+    <span class="hljs-property">@set</span> <span class="hljs-string">'is_editing'</span>, <span class="hljs-literal">true</span>
+    <span class="hljs-property">@focus_input</span>()
+  <span class="hljs-attribute">reset_is_editing</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'is_editing'</span>, <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">toggle_is_editing</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_editing'</span>) <span class="hljs-keyword">then</span> <span class="hljs-property">@reset_is_editing</span>() <span class="hljs-keyword">else</span> <span class="hljs-property">@set_is_editing</span>()
+
+  <span class="hljs-attribute">save_discussion</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      markup     = <span class="hljs-property">@get</span>(<span class="hljs-string">'markup'</span>)
+      discussion = <span class="hljs-property">@get</span>(<span class="hljs-string">'discussion'</span>)
+      component  = markup.get_discussion_component_for_discussion(discussion)
+      component.save_record().<span class="hljs-keyword">then</span> =&gt;
+        resolve discussion
+
+  <span class="hljs-attribute">delete_discussion</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      markup     = <span class="hljs-property">@get</span>(<span class="hljs-string">'markup'</span>)
+      discussion = <span class="hljs-property">@get</span>(<span class="hljs-string">'discussion'</span>)
+      component  = markup.get_discussion_component_for_discussion(discussion)
+      component.delete_record()
+      resolve discussion
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">edit</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@toggle_is_editing</span>()
+
+    <span class="hljs-attribute">save</span>: <span class="hljs-function">-&gt;</span>
+      model      = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+      comment    = <span class="hljs-property">@get</span> <span class="hljs-string">'comment_text'</span>
+      model.set <span class="hljs-string">'comment'</span>, comment
+      <span class="hljs-property">@reset_is_editing</span>()
+      <span class="hljs-property">@set_is_overflowing</span>()
+      <span class="hljs-property">@save_discussion</span>().<span class="hljs-keyword">then</span> =&gt;
+        model.save()
+
+    <span class="hljs-attribute">cancel</span>: <span class="hljs-function">-&gt;</span> 
+      <span class="hljs-property">@reset_is_editing</span>()
+      model      = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      discussion = <span class="hljs-property">@get</span>(<span class="hljs-string">'discussion'</span>)
+      model.deleteRecord() <span class="hljs-keyword">if</span> model.get(<span class="hljs-string">'isNew'</span>)
+      <span class="hljs-property">@delete_discussion</span>() <span class="hljs-keyword">if</span> discussion.get(<span class="hljs-string">'isNew'</span>)
+      
+    <span class="hljs-attribute">remove</span>: <span class="hljs-function">-&gt;</span>
+      model      = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      markup     = <span class="hljs-property">@get</span>(<span class="hljs-string">'markup'</span>)
+      discussion = <span class="hljs-property">@get</span>(<span class="hljs-string">'discussion'</span>)
+      component  = markup.get_discussion_component_for_discussion(discussion)
+      model.get(ns.to_p(<span class="hljs-string">'comments'</span>)).<span class="hljs-keyword">then</span> (comments) =&gt;
+        model.destroyRecord().<span class="hljs-keyword">then</span> =&gt;
+          comments.forEach (comment) =&gt; <span class="hljs-property">@get_store</span>().unloadRecord(comment)
+          discussion.get(ns.to_p(<span class="hljs-string">'comments'</span>)).<span class="hljs-keyword">then</span> (discussion_comments) =&gt;
+            component.destroy_record() <span class="hljs-keyword">if</span> ember.isEmpty discussion_comments
+
+    <span class="hljs-attribute">toggle_expand</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@toggleProperty</span> <span class="hljs-string">'is_collapsed'</span>
+
+    <span class="hljs-attribute">add_reply</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'children'</span>).<span class="hljs-keyword">then</span> (children) =&gt;
+        model      = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+        discussion = <span class="hljs-property">@get</span>(<span class="hljs-string">'discussion'</span>)
+        markup     = <span class="hljs-property">@get</span>(<span class="hljs-string">'markup'</span>)
+        options    = 
+          <span class="hljs-attribute">commenterable</span>: markup.get_current_commenterable()
+          <span class="hljs-attribute">comment</span>:       <span class="hljs-string">'New Reply'</span>
+          <span class="hljs-attribute">position</span>:      <span class="hljs-property">@get</span>(<span class="hljs-string">'children.length'</span>)
+          <span class="hljs-attribute">parent</span>:        <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+        markup.add_comment_to_discussion_and_edit(discussion, options)
+
+    <span class="hljs-attribute">add_to_library</span>: <span class="hljs-function">-&gt;</span>
+      model  = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+      markup = <span class="hljs-property">@get</span> <span class="hljs-string">'markup'</span>
+      markup.add_comment_to_library(model)</div></div></div></div></body></html>

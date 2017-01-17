@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/addons/config</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/addons/config"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/addons/config.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-common/addon/mixins/addons/config.coffee">thinkspace-common/addon/mixins/addons/config.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import util  from <span class="hljs-string">'totem/util_ember'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Addon config options:
+  id:                     hard-set guid for component
+  component:              hard-set to component
+  class:                  hard-set by this service; addon should add to its highest level html tag if appropriate
+  engine:                 [string] engine name to mount e.g. thinkspace-markup
+  display:                [string] text to display on button (e.g. dock button) e.g. &#39;Comments&#39;
+  icon:                   [string] icon classes e.g. &#39;tsi tsi-left tsi-tiny tsi-comments_white&#39;
+  active:                 [true|false] indicates if addon active; can use to highlight button
+  toggle_property:        [string] component property set on open/close; open to true, close to false
+  singleton:              [true|false] if true, only this addon can be active; any other active addons will be closed
+  init_width:             [number] pocket initial width e.g. (15% * init_width)
+  top_pocket:             [true|false] if is a top_pocket addon
+  right_pocket:           [true|false] if is a right_pocket addon
+  top_pocket_singleton:   [true|false] if true, only this top_pocket addon can be active; other active top_pocket addons will be closed
+  right_pocket_singleton: [true|false] if true, only this right_pocket addon can be active; other active right_pocket addons will be closed</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_addon_config</span>: <span class="hljs-function"><span class="hljs-params">(component, options={})</span> -&gt;</span>
+    util.error <span class="hljs-string">"Addon config component must be present."</span>, component, options <span class="hljs-keyword">if</span> ember.isBlank(component)
+    util.error <span class="hljs-string">"Addon config must be a hash."</span>, component, options <span class="hljs-keyword">unless</span> util.is_hash(options)
+    util.error <span class="hljs-string">"Addon config must be either a top or side pocket."</span>, component, options <span class="hljs-keyword">unless</span> (options.right_pocket <span class="hljs-keyword">or</span> options.top_pocket)
+    addon =
+      <span class="hljs-attribute">id</span>:                     ember.guidFor(component)
+      <span class="hljs-attribute">component</span>:              component
+      <span class="hljs-class"><span class="hljs-keyword">class</span>:                  <span class="hljs-title">null</span></span>
+      <span class="hljs-attribute">engine</span>:                 <span class="hljs-string">'no-engine'</span>
+      <span class="hljs-attribute">display</span>:                <span class="hljs-string">'NONE'</span>
+      <span class="hljs-attribute">name</span>:                   <span class="hljs-literal">null</span>
+      <span class="hljs-attribute">icon</span>:                   <span class="hljs-literal">null</span>
+      <span class="hljs-attribute">active</span>:                 <span class="hljs-literal">false</span>
+      <span class="hljs-attribute">toggle_property</span>:        <span class="hljs-literal">null</span>
+      <span class="hljs-attribute">singleton</span>:              <span class="hljs-literal">false</span>
+      <span class="hljs-attribute">init_width</span>:             <span class="hljs-number">1</span>
+      <span class="hljs-attribute">top_pocket</span>:             <span class="hljs-literal">false</span>
+      <span class="hljs-attribute">right_pocket</span>:           <span class="hljs-literal">false</span>
+      <span class="hljs-attribute">top_pocket_singleton</span>:   <span class="hljs-literal">false</span>
+      <span class="hljs-attribute">right_pocket_singleton</span>: <span class="hljs-literal">false</span>
+    ember.merge addon, options</div></div></div></div></body></html>

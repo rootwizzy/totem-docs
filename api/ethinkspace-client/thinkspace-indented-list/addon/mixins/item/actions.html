@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/addon/mixins/item/actions</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-indented-list/addon/mixins/item/actions"><meta name="groc-project-path" content="thinkspace-indented-list/addon/mixins/item/actions.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-indented-list/addon/mixins/item/actions.coffee">thinkspace-indented-list/addon/mixins/item/actions.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">new_top</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@readonly</span>
+    new_item = {<span class="hljs-attribute">pos_y</span>: <span class="hljs-number">0</span>, <span class="hljs-attribute">pos_x</span>: <span class="hljs-number">0</span>}
+    <span class="hljs-property">@value_items</span>.insertAt(<span class="hljs-number">0</span>, new_item)
+    <span class="hljs-property">@save_response</span>()
+    
+  <span class="hljs-attribute">new_bottom</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@readonly</span>
+    bottom   = <span class="hljs-property">@get_value_items_bottom_index</span>()
+    new_item = {<span class="hljs-attribute">pos_y</span>: bottom, <span class="hljs-attribute">pos_x</span>: <span class="hljs-number">0</span>}
+    <span class="hljs-property">@value_items</span>.insertAt(bottom, new_item)
+    <span class="hljs-property">@save_response</span>()
+
+  <span class="hljs-attribute">remove_item</span>: <span class="hljs-function"><span class="hljs-params">(item)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@readonly</span>
+    prev_item = <span class="hljs-property">@get_prev_item</span>(item)
+    num_items = <span class="hljs-number">1</span>
+    children  = <span class="hljs-property">@get_item_children</span>(item)
+    num_items += children.length <span class="hljs-keyword">if</span> <span class="hljs-property">@include_item_children_on_change</span>(item)
+    index     = <span class="hljs-property">@value_items</span>.indexOf(item)
+    <span class="hljs-property">@value_items</span>.removeAt(index, num_items)
+    <span class="hljs-property">@reset_has_children</span>(prev_item)  <span class="hljs-keyword">if</span> prev_item
+    <span class="hljs-property">@save_response</span>()
+    items = [item]
+    items = items.concat(children) <span class="hljs-keyword">if</span> num_items &gt; <span class="hljs-number">1</span>
+    <span class="hljs-property">@clear_itemable_is_used_unless_used_by_another_item</span>(items).<span class="hljs-keyword">then</span> =&gt; <span class="hljs-keyword">return</span></div></div></div></div></body></html>

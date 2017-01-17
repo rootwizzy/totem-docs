@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/addon/components/list/test_only</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-indented-list/addon/components/list/test_only"><meta name="groc-project-path" content="thinkspace-indented-list/addon/components/list/test_only.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-indented-list/addon/components/list/test_only.coffee">thinkspace-indented-list/addon/components/list/test_only.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember            from <span class="hljs-string">'ember'</span>
+import ns               from <span class="hljs-string">'totem/ns'</span>
+import base_component   from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base_component.extend
+
+  <span class="hljs-attribute">get_response_manager</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'response_manager'</span>
+  <span class="hljs-attribute">get_list_container</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@rm</span>.$list_container
+
+  <span class="hljs-attribute">send_response_to_server</span>: <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">confirm_remove</span>:          <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">indent_px</span>:               <span class="hljs-number">20</span>
+  <span class="hljs-attribute">zoom_level</span>:              ember.computed.reads <span class="hljs-string">'response_manager.zoom_level'</span>
+
+  <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set_indent_px</span>                 <span class="hljs-property">@rm</span>.indent_px  <span class="hljs-comment"># init as-is</span>
+    rm.set_confirm_remove          <span class="hljs-property">@get</span>(<span class="hljs-string">'confirm_remove'</span>)
+    rm.set_send_response_to_server <span class="hljs-property">@get</span>(<span class="hljs-string">'send_response_to_server'</span>)
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">toggle_save</span>:           <span class="hljs-function">-&gt;</span> <span class="hljs-property">@rm</span>.set_send_response_to_server <span class="hljs-property">@toggleProperty</span>(<span class="hljs-string">'send_response_to_server'</span>)
+    <span class="hljs-attribute">toggle_confirm_remove</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@rm</span>.set_confirm_remove          <span class="hljs-property">@toggleProperty</span>(<span class="hljs-string">'confirm_remove'</span>)
+
+    <span class="hljs-attribute">indent_px_10</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@indent_px_action</span>(<span class="hljs-number">10</span>)
+    <span class="hljs-attribute">indent_px_20</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@indent_px_action</span>(<span class="hljs-number">20</span>)
+    <span class="hljs-attribute">indent_px_30</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@indent_px_action</span>(<span class="hljs-number">30</span>)
+    <span class="hljs-attribute">indent_px_40</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@indent_px_action</span>(<span class="hljs-number">40</span>)
+    <span class="hljs-attribute">indent_up</span>:    <span class="hljs-function">-&gt;</span> <span class="hljs-property">@indent_px_action</span> <span class="hljs-property">@incrementProperty</span>(<span class="hljs-string">'indent_px'</span>)
+    <span class="hljs-attribute">indent_down</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@indent_px_action</span> <span class="hljs-property">@decrementProperty</span>(<span class="hljs-string">'indent_px'</span>)
+
+    <span class="hljs-attribute">zoom_in</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@zoom_action</span>(<span class="hljs-number">1</span>)
+    <span class="hljs-attribute">zoom_out</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@zoom_action</span>(-<span class="hljs-number">1</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Would be best to trigger on a window resize (in the response_manager or another component).</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-attribute">reset_overflow</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@reset_overflow</span>()
+
+  <span class="hljs-attribute">indent_px_action</span>: <span class="hljs-function"><span class="hljs-params">(px)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> px &lt; <span class="hljs-number">5</span>
+      px = <span class="hljs-number">5</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'indent_px'</span>, px
+    <span class="hljs-property">@set_indent_px</span>(px)
+    <span class="hljs-property">@add_background_grid</span>()
+    rm = <span class="hljs-property">@rm</span>
+    rm.value_items.forEach (item) =&gt;
+      comp = rm.get_item_component(item)
+      comp.set_indent()
+
+  <span class="hljs-attribute">zoom_action</span>: <span class="hljs-function"><span class="hljs-params">(offset)</span> -&gt;</span>
+    rm = <span class="hljs-property">@rm</span>
+    rm.set_zoom_level <span class="hljs-property">@get_zoom_level</span>(offset)
+    <span class="hljs-property">@reset_overflow</span>()
+
+  <span class="hljs-attribute">get_zoom_level</span>: <span class="hljs-function"><span class="hljs-params">(offset)</span> -&gt;</span>
+    zoom_level    = <span class="hljs-property">@get</span> <span class="hljs-string">'zoom_level'</span>
+    default_level = <span class="hljs-property">@rm</span>.default_zoom_level()
+    plus          = offset &gt; <span class="hljs-number">0</span>
+    <span class="hljs-keyword">switch</span>
+      <span class="hljs-keyword">when</span> zoom_level &gt;= <span class="hljs-number">8</span> <span class="hljs-keyword">and</span> plus     <span class="hljs-keyword">then</span> default_level
+      <span class="hljs-keyword">when</span> zoom_level &lt;= <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> plus <span class="hljs-keyword">then</span> default_level
+      <span class="hljs-keyword">else</span> zoom_level + offset
+
+  <span class="hljs-attribute">set_indent_px</span>: <span class="hljs-function"><span class="hljs-params">(px)</span> -&gt;</span>
+    <span class="hljs-property">@rm</span>.set_indent_px(px)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'indent_px'</span>, px
+    <span class="hljs-property">@$</span>(<span class="hljs-string">'.indent-px'</span>).css(<span class="hljs-string">'background-color'</span>, <span class="hljs-string">'#bcbcbc'</span>)
+    <span class="hljs-property">@$</span>(<span class="hljs-string">".px-<span class="hljs-subst">#{px}</span>"</span>).css(<span class="hljs-string">'background-color'</span>, <span class="hljs-string">'#63b4d6'</span>)
+
+  <span class="hljs-attribute">add_background_grid</span>: <span class="hljs-function">-&gt;</span>
+    ipx = <span class="hljs-property">@rm</span>.indent_px
+    px  = ipx - <span class="hljs-number">1</span>
+    $list_container = <span class="hljs-property">@get_list_container</span>()
+    $list_container.css <span class="hljs-string">'background-size'</span>, <span class="hljs-string">"<span class="hljs-subst">#{px}</span>px <span class="hljs-subst">#{px}</span>px"</span>
+    $list_container.css <span class="hljs-string">'background-image'</span>, <span class="hljs-string">'linear-gradient(to right, lightgrey 1px, transparent 1px), linear-gradient(to bottom, lightgrey 1px, transparent 1px)'</span>
+
+  <span class="hljs-attribute">reset_overflow</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@rm</span>.value_items.forEach (item) =&gt;
+      comp = rm.get_item_component(item)
+      comp.set_has_overflow()</div></div></div></div></body></html>

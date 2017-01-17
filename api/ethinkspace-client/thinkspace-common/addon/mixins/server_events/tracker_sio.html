@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/server_events/tracker_sio</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/server_events/tracker_sio"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/server_events/tracker_sio.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-common/addon/mixins/server_events/tracker_sio.coffee">thinkspace-common/addon/mixins/server_events/tracker_sio.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">get_tracker_sio_room</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'tracker_sio_room'</span>
+
+  <span class="hljs-attribute">tracker_sio_join_room</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    room = options.room <span class="hljs-keyword">or</span> <span class="hljs-property">@get_tracker_sio_room</span>()
+    data = <span class="hljs-property">@get_tracker_data</span>(options)
+    <span class="hljs-property">@pubsub</span>.tracker_sio_join({room, data})
+
+  <span class="hljs-attribute">tracker_sio_leave_room</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    room = options.room <span class="hljs-keyword">or</span> <span class="hljs-property">@get_tracker_sio_room</span>()
+    <span class="hljs-property">@pubsub</span>.tracker_sio_leave({room})</div></div></div></div></body></html>

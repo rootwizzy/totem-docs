@@ -1,0 +1,118 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-markup/addon/components/right_pocket/discussions</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-markup/addon/components/right_pocket/discussions"><meta name="groc-project-path" content="thinkspace-markup/addon/components/right_pocket/discussions.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-markup/addon/components/right_pocket/discussions.coffee">thinkspace-markup/addon/components/right_pocket/discussions.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import ajax  from <span class="hljs-string">'totem/ajax'</span>
+import scope from <span class="hljs-string">'totem/scope'</span>
+import ta    from <span class="hljs-string">'totem/ds/associations'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="services">Services</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">manager</span>:   ember.inject.service()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="computed-properties">Computed properties</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">is_library_open</span>: ember.computed.reads <span class="hljs-string">'manager.is_library_open'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>is_library_open: false</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">is_pdf</span>:          ember.computed.reads <span class="hljs-string">'manager.is_pdf'</span>
+  <span class="hljs-attribute">is_pdf_loading</span>:  ember.computed.reads <span class="hljs-string">'manager.is_pdf_loading'</span>
+  <span class="hljs-attribute">current_phase</span>:   ember.computed.reads <span class="hljs-string">'thinkspace.current_phase'</span>
+
+  <span class="hljs-attribute">other_discussions</span>: ember.computed <span class="hljs-string">'totem_scope.ownerable_record'</span>, <span class="hljs-string">'thinkspace.current_phase'</span>, <span class="hljs-function">-&gt;</span>
+    promise = <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      model   = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+      manager = <span class="hljs-property">@get</span> <span class="hljs-string">'manager'</span>
+      discussions = <span class="hljs-property">@tc</span>.filter ns.to_p(<span class="hljs-string">'markup'</span>, <span class="hljs-string">'discussion'</span>), <span class="hljs-function"><span class="hljs-params">(discussion)</span> =&gt;</span>
+        manager.discussion_has_authable(discussion, model) <span class="hljs-keyword">and</span> manager.discussion_has_ownerable(discussion) <span class="hljs-keyword">and</span> manager.discussion_discussionable_is_in_store(discussion) <span class="hljs-keyword">and</span> !manager.discussion_has_discussionable(discussion, model)
+      resolve(discussions)
+    ta.PromiseArray.create <span class="hljs-attribute">promise</span>: promise
+
+  <span class="hljs-attribute">phase_discussions</span>: ember.computed <span class="hljs-string">'totem_scope.ownerable_record'</span>, <span class="hljs-string">'thinkspace.current_phase'</span>, <span class="hljs-function">-&gt;</span>
+    promise = <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      model   = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+      manager = <span class="hljs-property">@get</span> <span class="hljs-string">'manager'</span>
+      discussions = <span class="hljs-property">@tc</span>.filter ns.to_p(<span class="hljs-string">'markup'</span>, <span class="hljs-string">'discussion'</span>), <span class="hljs-function"><span class="hljs-params">(discussion)</span> =&gt;</span>
+        manager.discussion_has_authable(discussion, model) <span class="hljs-keyword">and</span> manager.discussion_has_ownerable(discussion) <span class="hljs-keyword">and</span> manager.discussion_discussionable_is_in_store(discussion) <span class="hljs-keyword">and</span> manager.discussion_has_discussionable(discussion, model)
+      resolve(discussions)
+    ta.PromiseArray.create <span class="hljs-attribute">promise</span>: promise
+
+  <span class="hljs-attribute">discussions_sort_by</span>: [<span class="hljs-string">'sort_by'</span>]
+  <span class="hljs-attribute">sorted_phase_discussions</span>: ember.computed.sort <span class="hljs-string">'phase_discussions'</span>, <span class="hljs-string">'discussions_sort_by'</span>
+  <span class="hljs-attribute">sorted_other_discussions</span>: ember.computed.sort <span class="hljs-string">'other_discussions'</span>, <span class="hljs-string">'discussions_sort_by'</span>
+
+  <span class="hljs-attribute">has_no_phase_discussions</span>: ember.computed.empty <span class="hljs-string">'phase_discussions'</span>
+  <span class="hljs-attribute">has_no_other_discussions</span>: ember.computed.empty <span class="hljs-string">'other_discussions'</span>
+  <span class="hljs-attribute">has_no_discussions</span>:       ember.computed.<span class="hljs-keyword">and</span> <span class="hljs-string">'has_no_phase_discussions'</span>, <span class="hljs-string">'has_no_other_discussions'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="observers">Observers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">fetch_comments_observer</span>: ember.observer <span class="hljs-string">'totem_scope.ownerable_record'</span>, <span class="hljs-string">'thinkspace.current_phase'</span>, <span class="hljs-function">-&gt;</span>
+    phase = <span class="hljs-property">@current_models</span>().get_current_phase()
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(phase)
+    <span class="hljs-property">@reset_all_data_loaded</span>()
+    <span class="hljs-property">@fetch_discussions</span>().<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@set_all_data_loaded</span>() <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_destroyed</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="components">Components</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">c_library</span>:                      ns.to_p <span class="hljs-string">'markup'</span>, <span class="hljs-string">'right_pocket'</span>, <span class="hljs-string">'library'</span>
+  <span class="hljs-attribute">c_loader</span>:                       ns.to_p <span class="hljs-string">'common'</span>, <span class="hljs-string">'loader'</span>
+  <span class="hljs-attribute">c_markup_discussion_right_pocket</span>: ns.to_p <span class="hljs-string">'markup'</span>, <span class="hljs-string">'right_pocket'</span>, <span class="hljs-string">'discussion'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="events">Events</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
+    <span class="hljs-property">@fetch_discussions</span>().<span class="hljs-keyword">then</span> (discussions) =&gt;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Re-add when the 423 on users#show for a team member is solved.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-comment">#@get('manager').set_anonymized_commenters(discussions).then =&gt;</span>
+      <span class="hljs-property">@set_all_data_loaded</span>()
+      ember.run.schedule <span class="hljs-string">'afterRender'</span>, <span class="hljs-function">=&gt;</span>
+        <span class="hljs-property">@didInsertElement</span>()
+
+  <span class="hljs-attribute">didInsertElement</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).open_comments()
+  <span class="hljs-attribute">willDestroyElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).close_comments()
+
+  <span class="hljs-attribute">click</span>: <span class="hljs-function"><span class="hljs-params">(e)</span> -&gt;</span>
+    manager         = <span class="hljs-property">@get</span> <span class="hljs-string">'manager'</span>
+    library_comment = manager.get_selected_library_comment()
+    target_class    = manager.get_library_target_class()
+    <span class="hljs-keyword">if</span> e.target.classList.includes(target_class) <span class="hljs-keyword">and</span> library_comment
+      <span class="hljs-property">@add_comment_to_phase</span>(<span class="hljs-literal">false</span>, <span class="hljs-attribute">library_comment</span>: library_comment)
+      manager.reset_selected_library_comment()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">is_destroyed</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'isDestroyed'</span>
+
+  <span class="hljs-attribute">fetch_discussions</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      model   = <span class="hljs-property">@get</span>(<span class="hljs-string">'current_phase'</span>)
+      options =
+        <span class="hljs-attribute">ownerable</span>:      <span class="hljs-property">@totem_scope</span>.get_ownerable_record()
+        <span class="hljs-attribute">authable</span>:       model
+        <span class="hljs-attribute">discussionable</span>: model
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).get_discussions(options).<span class="hljs-keyword">then</span> (discussions) =&gt;
+        resolve(discussions)
+
+  <span class="hljs-attribute">set_anonymized_commenterables</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'discussions'</span>).<span class="hljs-keyword">then</span> (discussions) =&gt;
+        promises = []
+        discussions.forEach (discussion) =&gt;
+          promises.pushObject discussion.get_commenterables()
+        ember.RSVP.Promise.all(promises).<span class="hljs-keyword">then</span> (commenterables) =&gt;
+          commenterables = <span class="hljs-property">@get</span>(<span class="hljs-string">'taf'</span>).flatten(commenterables).uniq()
+          map            = ember.Map.create()
+          commenterables.forEach (commenterable, index) =&gt;
+            map.set commenterable, index
+          <span class="hljs-property">@set</span> <span class="hljs-string">'anonymized_commenterables'</span>, map
+          resolve map
+
+  <span class="hljs-attribute">add_comment_to_phase</span>: <span class="hljs-function"><span class="hljs-params">(edit=<span class="hljs-literal">true</span>, comment_options={})</span> -&gt;</span>
+    manager = <span class="hljs-property">@get</span> <span class="hljs-string">'manager'</span>
+    phase   = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+    options =
+      <span class="hljs-attribute">authable</span>:       phase
+      <span class="hljs-attribute">discussionable</span>: phase
+      <span class="hljs-attribute">ownerable</span>:      <span class="hljs-property">@totem_scope</span>.get_ownerable_record()
+      <span class="hljs-attribute">creatorable</span>:    <span class="hljs-property">@totem_scope</span>.get_current_user()
+    options.save = <span class="hljs-literal">true</span> <span class="hljs-keyword">if</span> comment_options.library_comment
+    manager.add_discussion(options).<span class="hljs-keyword">then</span> (discussion) =&gt;
+      comment_options.commenterable = <span class="hljs-property">@totem_scope</span>.get_current_user()
+      <span class="hljs-keyword">if</span> edit
+        manager.add_comment_to_discussion_and_edit(discussion, comment_options)
+      <span class="hljs-keyword">else</span>
+        manager.add_comment_to_discussion(discussion, comment_options)
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">add_comment_to_library</span>: <span class="hljs-function"><span class="hljs-params">(comment)</span>      -&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).add_comment_to_library(comment)
+    <span class="hljs-attribute">select_library_comment</span>: <span class="hljs-function"><span class="hljs-params">(comment)</span>      -&gt;</span> <span class="hljs-property">@add_comment</span> <span class="hljs-attribute">library_comment</span>: comment</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>open_library:  -&gt; @get(&#39;manager&#39;).open_library()
+close_library: -&gt; @get(&#39;manager&#39;).close_library()</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-attribute">add_comment_to_phase</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@add_comment_to_phase</span>()
+
+
+    <span class="hljs-attribute">open_library</span>: <span class="hljs-function">-&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>console.warn &#39;open library:&#39;, @</p></div></div><div class="code"><div class="wrapper">      addons = <span class="hljs-property">@get</span>(<span class="hljs-string">'addons'</span>)
+      addons.increase_right_pocket(<span class="hljs-property">@addon</span>)
+      addons.hide_dock()
+      <span class="hljs-property">@set</span>(<span class="hljs-string">'is_library_open'</span>, <span class="hljs-literal">true</span>)</div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> get</span></p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">return</span>
+
+    <span class="hljs-attribute">close_library</span>: <span class="hljs-function">-&gt;</span>
+      addons = <span class="hljs-property">@get</span>(<span class="hljs-string">'addons'</span>)
+      addons.decrease_right_pocket(<span class="hljs-property">@addon</span>)
+      addons.show_dock()
+      <span class="hljs-property">@set</span>(<span class="hljs-string">'is_library_open'</span>, <span class="hljs-literal">false</span>)
+      <span class="hljs-keyword">return</span></div></div></div></div></body></html>

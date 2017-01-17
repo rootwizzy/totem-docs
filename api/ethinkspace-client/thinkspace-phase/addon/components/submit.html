@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-phase/addon/components/submit</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-phase/addon/components/submit"><meta name="groc-project-path" content="thinkspace-phase/addon/components/submit.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-phase/addon/components/submit.coffee">thinkspace-phase/addon/components/submit.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">phase_manager</span>: ember.inject.service()
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    key = <span class="hljs-property">@results_key</span> <span class="hljs-keyword">or</span> <span class="hljs-string">'inputs'</span>
+    ember.defineProperty @, <span class="hljs-string">'has_values'</span>,    ember.computed.bool  <span class="hljs-string">"tvo.status.<span class="hljs-subst">#{key}</span>"</span>
+    ember.defineProperty @, <span class="hljs-string">'valid_count'</span>,   ember.computed.reads <span class="hljs-string">"tvo.status.<span class="hljs-subst">#{key}</span>.results.valid"</span>
+    ember.defineProperty @, <span class="hljs-string">'invalid_count'</span>, ember.computed.reads <span class="hljs-string">"tvo.status.<span class="hljs-subst">#{key}</span>.results.invalid"</span>
+
+  <span class="hljs-attribute">is_edit</span>:               ember.computed.bool  <span class="hljs-string">'tvo.status.is_edit'</span>
+  <span class="hljs-attribute">submit_messages</span>:       ember.computed.reads <span class="hljs-string">'tvo.status.callback_messages'</span>
+  <span class="hljs-attribute">submit_messages_title</span>: <span class="hljs-string">'Please correct the following:'</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">submit</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo.status'</span>).all_valid().<span class="hljs-keyword">then</span> (valid) =&gt; <span class="hljs-keyword">if</span> valid <span class="hljs-keyword">then</span> <span class="hljs-property">@phase_valid</span>() <span class="hljs-keyword">else</span> <span class="hljs-property">@phase_invalid</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>select_phase_state: (phase_state) -&gt;
+  @get(&#39;phase_manager&#39;).set_ownerable_from_phase_state(phase_state).then =&gt;
+    @transition_to_phases_show({phase_state})</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">phase_valid</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@submit_phase</span>().<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@totem_messages</span>.info <span class="hljs-string">'Case submitted successfully.'</span>
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo'</span>).show_errors_off()
+      <span class="hljs-property">@transition_after_submit</span>()
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@phase_invalid</span>()
+
+  <span class="hljs-attribute">phase_invalid</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo'</span>).show_errors_on()
+
+  <span class="hljs-attribute">submit_phase</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      phase = <span class="hljs-property">@get_phase</span>()
+      query =
+        <span class="hljs-attribute">verb</span>:   <span class="hljs-string">'put'</span>
+        <span class="hljs-attribute">action</span>: <span class="hljs-string">'submit'</span>
+        <span class="hljs-attribute">id</span>:     phase.get(<span class="hljs-string">'id'</span>)
+        <span class="hljs-attribute">model</span>:  phase
+
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-comment"># ### TEMP FOR TESTING</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A @tc.find_record on a phase with an action does not side load data in time and introduces a race condition.
+=&gt; This resolves the issue (doing a pushPayload on the model needed later in the chain).</p></div></div><div class="code"><div class="wrapper">      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        <span class="hljs-property">@tc</span>.push_payload(ns.to_p(<span class="hljs-string">'phase_state'</span>), payload)
+        <span class="hljs-property">@totem_messages</span>.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: phase, <span class="hljs-attribute">i18n_path</span>: ns.to_o <span class="hljs-string">'phase'</span>, <span class="hljs-string">'submit'</span>
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: phase
+        reject()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: When submit a team based phase (or vice-versa), the &#39;is_unlocked&#39;
+represents the phase state of the current ownerable.  If subsequent phases
+are a different ownerable, they will not have a current ownerable phase state
+will transition to the assignment#show.</p>
+<ol>
+<li>Should this be based on phase state?  e.g. multiple teams for a phase, go to the
+next team for the phase rather than the next phase.</li>
+<li>Change to check for phase.team_ownerable and switch ownerables.</li>
+</ol></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">transition_after_submit</span>: <span class="hljs-function">-&gt;</span>
+    assignment    = <span class="hljs-property">@get_assignment</span>()
+    current_phase = <span class="hljs-property">@get_phase</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Note: The application route handlers are at the root level so transitioning to a
+route needs the full route path e.g. &#39;phases.show&#39; not this engines&#39; &#39;show&#39; route.</p></div></div><div class="code"><div class="wrapper">    assignment.get(ns.to_p(<span class="hljs-string">'phases'</span>)).<span class="hljs-keyword">then</span> =&gt;  <span class="hljs-comment"># ensure all the assignment's phases are loaded</span>
+      phases = assignment.get(<span class="hljs-string">'phases'</span>)  <span class="hljs-comment"># phases association sorted by position</span>
+      index  = phases.indexOf(current_phase)
+      <span class="hljs-keyword">if</span> index?
+        phase = phases.slice(index + <span class="hljs-number">1</span>).filterBy(<span class="hljs-string">'is_unlocked'</span>).get(<span class="hljs-string">'firstObject'</span>)
+        <span class="hljs-keyword">if</span> phase
+          phase_state = <span class="hljs-property">@get</span>(<span class="hljs-string">'phase_manager'</span>).get_map().find_ownerable_selected_phase_state(phase, <span class="hljs-property">@get_ownerable</span>())
+          <span class="hljs-property">@transition_to_phases_show</span>({phase, phase_state})
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@get_app_route</span>().transitionTo <span class="hljs-string">'cases.show'</span>, assignment</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_assignment</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'thinkspace'</span>).get_current_assignment()
+  <span class="hljs-attribute">get_phase</span>:      <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'thinkspace'</span>).get_current_phase()
+  <span class="hljs-attribute">get_app_route</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@totem_messages</span>.get_app_route()
+  <span class="hljs-attribute">get_ownerable</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@totem_scope</span>.get_ownerable_record()
+
+  <span class="hljs-attribute">transition_to_phases_show</span>: <span class="hljs-function"><span class="hljs-params">({phase, phase_state}={})</span> -&gt;</span>
+    phase       = <span class="hljs-property">@get_phase</span>() <span class="hljs-keyword">if</span> ember.isBlank(phase)
+    assignment  = <span class="hljs-property">@get_assignment</span>()
+    queryParams = <span class="hljs-keyword">if</span> ember.isBlank(phase_state) <span class="hljs-keyword">then</span> {<span class="hljs-attribute">query_id</span>: <span class="hljs-string">'none'</span>} <span class="hljs-keyword">else</span> {<span class="hljs-attribute">query_id</span>: phase_state.get(<span class="hljs-string">'id'</span>)}
+    <span class="hljs-property">@get_app_route</span>().transitionTo <span class="hljs-string">'phases.show'</span>, assignment, phase, {queryParams}</div></div></div></div></body></html>

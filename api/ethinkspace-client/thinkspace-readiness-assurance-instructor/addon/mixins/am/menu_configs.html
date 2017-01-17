@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-instructor/addon/mixins/am/menu_configs</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-instructor/addon/mixins/am/menu_configs"><meta name="groc-project-path" content="thinkspace-readiness-assurance-instructor/addon/mixins/am/menu_configs.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-readiness-assurance-instructor/addon/mixins/am/menu_configs.coffee">thinkspace-readiness-assurance-instructor/addon/mixins/am/menu_configs.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="menu-component-paths">Menu Component Paths.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">c_menu_irat</span>:         <span class="hljs-string">'irat/menu'</span>
+  <span class="hljs-attribute">c_menu_irat_to_trat</span>: <span class="hljs-string">'irat/menu_to_trat'</span>
+  <span class="hljs-attribute">c_menu_trat</span>:         <span class="hljs-string">'trat/menu'</span>
+  <span class="hljs-attribute">c_menu_trat_summary</span>: <span class="hljs-string">'trat/menu_summary'</span>
+  <span class="hljs-attribute">c_menu_clear</span>:        <span class="hljs-string">'shared/menu/clear'</span>
+
+  <span class="hljs-attribute">c_messages_send</span>: <span class="hljs-string">'messages/send'</span>
+  <span class="hljs-attribute">c_messages_view</span>: <span class="hljs-string">'messages/view'</span>
+
+  <span class="hljs-attribute">c_timers</span>:  <span class="hljs-string">'timers/timers'</span>
+  <span class="hljs-attribute">c_tracker</span>: <span class="hljs-string">'tracker/tracker'</span>
+
+  <span class="hljs-attribute">c_irat_phase_states</span>:   <span class="hljs-string">'irat/phase_states'</span>
+  <span class="hljs-attribute">c_irat_to_trat_after</span>:  <span class="hljs-string">'irat/to_trat_after'</span>
+  <span class="hljs-attribute">c_irat_to_trat_due_at</span>: <span class="hljs-string">'irat/to_trat_due_at'</span>
+  <span class="hljs-attribute">c_irat_to_trat_now</span>:    <span class="hljs-string">'irat/to_trat_now'</span>
+
+  <span class="hljs-attribute">c_trat_phase_states</span>:    <span class="hljs-string">'trat/phase_states'</span>
+  <span class="hljs-attribute">c_trat_summary_answers</span>: <span class="hljs-string">'trat/summary/answers'</span>
+  <span class="hljs-attribute">c_trat_summary_teams</span>:   <span class="hljs-string">'trat/summary/teams'</span>
+  <span class="hljs-attribute">c_trat_teams</span>:           <span class="hljs-string">'trat/teams/teams'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="menu-configs">Menu Configs.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">dashboard_menu</span>: ember.computed -&gt;
+    [
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_menu_clear</span>,    <span class="hljs-attribute">title</span>: <span class="hljs-string">'Clear'</span>, <span class="hljs-attribute">is_clear</span>: <span class="hljs-literal">true</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_menu_irat</span>,     <span class="hljs-attribute">title</span>: <span class="hljs-string">'IRAT'</span>, <span class="hljs-attribute">clear</span>: <span class="hljs-literal">true</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_menu_trat</span>,     <span class="hljs-attribute">title</span>: <span class="hljs-string">'TRAT'</span>, <span class="hljs-attribute">clear</span>: <span class="hljs-literal">true</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_tracker</span>,       <span class="hljs-attribute">title</span>: <span class="hljs-string">'Track Users'</span>, <span class="hljs-attribute">clear</span>: <span class="hljs-literal">true</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_timers</span>,        <span class="hljs-attribute">title</span>: <span class="hljs-string">'Timers'</span>, <span class="hljs-attribute">top</span>: <span class="hljs-literal">true</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_messages_send</span>, <span class="hljs-attribute">title</span>: <span class="hljs-string">'Send Message'</span>, <span class="hljs-attribute">top</span>: <span class="hljs-literal">true</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_messages_view</span>, <span class="hljs-attribute">title</span>: <span class="hljs-string">'View Messages'</span>, <span class="hljs-attribute">top</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">first</span>: <span class="hljs-literal">true</span>}
+    ]
+
+  <span class="hljs-attribute">irat_menu</span>: ember.computed -&gt;
+    [
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_menu_irat_to_trat</span>, <span class="hljs-attribute">title</span>: <span class="hljs-string">'Transition Teams to TRAT'</span>, <span class="hljs-attribute">clear</span>: <span class="hljs-literal">true</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_irat_phase_states</span>, <span class="hljs-attribute">title</span>: <span class="hljs-string">'Phase States'</span>, <span class="hljs-attribute">clear</span>: <span class="hljs-literal">true</span>}
+    ]
+
+  <span class="hljs-attribute">irat_to_trat_menu</span>: ember.computed -&gt;
+    [
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_irat_to_trat_after</span>,  <span class="hljs-attribute">title</span>: <span class="hljs-string">'After'</span>, <span class="hljs-attribute">default</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">clear</span>: <span class="hljs-literal">true</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_irat_to_trat_due_at</span>, <span class="hljs-attribute">title</span>: <span class="hljs-string">'Due At'</span>, <span class="hljs-attribute">clear</span>: <span class="hljs-literal">true</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_irat_to_trat_now</span>,    <span class="hljs-attribute">title</span>: <span class="hljs-string">'Now'</span>, <span class="hljs-attribute">clear</span>: <span class="hljs-literal">true</span>}
+    ]
+
+  <span class="hljs-attribute">trat_menu</span>: ember.computed -&gt;
+    [
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_menu_clear</span>,         <span class="hljs-attribute">title</span>: <span class="hljs-string">'Clear'</span>, <span class="hljs-attribute">is_clear</span>: <span class="hljs-literal">true</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_trat_teams</span>,         <span class="hljs-attribute">title</span>: <span class="hljs-string">'Teams'</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_menu_trat_summary</span>,  <span class="hljs-attribute">title</span>: <span class="hljs-string">'Summary'</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_trat_phase_states</span>,  <span class="hljs-attribute">title</span>: <span class="hljs-string">'Phase States'</span>}
+    ]
+
+  <span class="hljs-attribute">trat_summary_menu</span>: ember.computed -&gt;
+    [
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_trat_summary_answers</span>,  <span class="hljs-attribute">title</span>: <span class="hljs-string">'By Answer Counts'</span>, <span class="hljs-attribute">default</span>: <span class="hljs-literal">true</span>}
+      {<span class="hljs-attribute">component</span>: <span class="hljs-property">@c_trat_summary_teams</span>,    <span class="hljs-attribute">title</span>: <span class="hljs-string">'By Teams'</span>}
+    ]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return the &#39;select&#39; menu component property for (team_users | teams | users) defined in config.select (default team_users).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">select_component</span>: <span class="hljs-function"><span class="hljs-params">(config)</span> -&gt;</span>
+    val  = config.select <span class="hljs-keyword">or</span> <span class="hljs-string">'team_users'</span>
+    @[<span class="hljs-string">"c_admin_shared_<span class="hljs-subst">#{val}</span>_select"</span>]</div></div></div></div></body></html>
