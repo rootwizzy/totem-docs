@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/sixthedge/totem-lodestar
   revision: ba4fcc8212c4e5a33005b9a4cf8f80005984992c
-  branch: feature/api
+  branch: master
   specs:
     totem-lodestar (0.4.8)
       browserify-rails
