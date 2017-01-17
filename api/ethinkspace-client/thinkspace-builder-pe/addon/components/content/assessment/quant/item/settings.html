@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/components/content/assessment/quant/item/settings</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/components/content/assessment/quant/item/settings"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/components/content/assessment/quant/item/settings.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-builder-pe/addon/components/content/assessment/quant/item/settings.coffee">thinkspace-builder-pe/addon/components/content/assessment/quant/item/settings.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember          from <span class="hljs-string">'ember'</span>
+import ns             from <span class="hljs-string">'totem/ns'</span>
+import validations    from <span class="hljs-string">'totem/mixins/validations'</span>
+import base           from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend validations,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="services">Services</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-comment">#manager: ember.inject.service ns.to_p 'peer_assessment', 'builder', 'manager'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="computed-properties">Computed properties</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">points_min</span>:      ember.computed.reads <span class="hljs-string">'model.points_min'</span>
+  <span class="hljs-attribute">points_max</span>:      ember.computed.reads <span class="hljs-string">'model.points_max'</span>
+  <span class="hljs-attribute">label</span>:           ember.computed.reads <span class="hljs-string">'model.label'</span>
+  <span class="hljs-attribute">scale_label_min</span>: ember.computed.reads <span class="hljs-string">'model.settings.labels.scale.min'</span>
+  <span class="hljs-attribute">scale_label_max</span>: ember.computed.reads <span class="hljs-string">'model.settings.labels.scale.max'</span>
+  <span class="hljs-attribute">has_comments</span>:    ember.computed.reads <span class="hljs-string">'model.settings.comments.enabled'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="components">Components</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">c_checkbox</span>:        ns.to_p <span class="hljs-string">'common'</span>, <span class="hljs-string">'shared'</span>, <span class="hljs-string">'checkbox'</span>
+  <span class="hljs-attribute">c_validated_input</span>: ns.to_p <span class="hljs-string">'common'</span>, <span class="hljs-string">'shared'</span>, <span class="hljs-string">'validated_input'</span>
+
+  <span class="hljs-attribute">update_model</span>: <span class="hljs-function">-&gt;</span>
+    model           = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+    points_min      = <span class="hljs-property">@get</span> <span class="hljs-string">'points_min'</span>
+    points_max      = <span class="hljs-property">@get</span> <span class="hljs-string">'points_max'</span>
+    label           = <span class="hljs-property">@get</span> <span class="hljs-string">'label'</span>
+    scale_label_min = <span class="hljs-property">@get</span> <span class="hljs-string">'scale_label_min'</span>
+    scale_label_max = <span class="hljs-property">@get</span> <span class="hljs-string">'scale_label_max'</span>
+    has_comments    = <span class="hljs-property">@get</span> <span class="hljs-string">'has_comments'</span>
+
+    model.set_value <span class="hljs-string">'points_min'</span>,      points_min
+    model.set_value <span class="hljs-string">'points_max'</span>,      points_max
+    model.set_value <span class="hljs-string">'label'</span>,           label
+    model.set_value <span class="hljs-string">'scale_label_min'</span>, scale_label_min
+    model.set_value <span class="hljs-string">'scale_label_max'</span>, scale_label_max
+    model.set_value <span class="hljs-string">'has_comments'</span>,    has_comments
+
+    <span class="hljs-built_in">console</span>.info <span class="hljs-string">"[pa:builder:quant:settings] Model post update is: "</span>, model
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">toggle_has_comments</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@toggleProperty</span> <span class="hljs-string">'has_comments'</span>
+    <span class="hljs-attribute">back</span>:                <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'back'</span>
+    <span class="hljs-attribute">save</span>:                <span class="hljs-function">-&gt;</span> 
+      <span class="hljs-property">@update_model</span>()
+      <span class="hljs-comment">#@get('manager').save_model()</span>
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'back'</span>
+
+  <span class="hljs-attribute">validations</span>:
+    <span class="hljs-attribute">points_min</span>:
+      <span class="hljs-attribute">numericality</span>: <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">property_less_than</span>:
+        <span class="hljs-attribute">smaller_property</span>: <span class="hljs-string">'points_min'</span>
+        <span class="hljs-attribute">larger_property</span>:  <span class="hljs-string">'points_max'</span>
+        <span class="hljs-attribute">message</span>:          <span class="hljs-string">'Minimum points must be less than maximum points.'</span>
+    <span class="hljs-attribute">points_max</span>:
+      <span class="hljs-attribute">numericality</span>: <span class="hljs-literal">true</span></div></div></div></div></body></html>

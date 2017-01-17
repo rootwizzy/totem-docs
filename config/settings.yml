@@ -1,6 +1,6 @@
 text:
-  title:     Totem docs
-  sub-title: Building software one stack at a time
+  title: Totem docs
+  logo:  false
 modules:
   layout:
     full_width:
@@ -23,4 +23,22 @@ modules:
     highlight: 
       enabled: true
 
- 
+  api:      
+    repositories:
+      - name: ethinkspace-client
+        url: 'https://github.com/sixthedge/ethinkspace-client'
+        branch: feature/pe-builder
+        options:
+          out:     "-o ../../api/ethinkspace-client"
+          glob:    "./**/*.coffee README.md"
+          project: "-p ethinkspace-client"
+          url:     "--repository-url 'https://github.com/sixthedge/ethinkspace-client'"
+
+      - name: ethinkspace-api
+        url: 'https://github.com/sixthedge/ethinkspace-api'
+        branch: feature/pe-builder
+        options:
+          out: "-o ../../api/ethinkspace-api"
+          glob: "./**/**/*.rb README.md"
+          project: "-p ethinkspace-api"
+          url:     "--repository-url 'https://github.com/sixthedge/ethinkspace-api'"

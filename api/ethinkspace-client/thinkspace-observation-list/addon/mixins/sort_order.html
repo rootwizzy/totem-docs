@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-observation-list/addon/mixins/sort_order</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-observation-list/addon/mixins/sort_order"><meta name="groc-project-path" content="thinkspace-observation-list/addon/mixins/sort_order.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-observation-list/addon/mixins/sort_order.coffee">thinkspace-observation-list/addon/mixins/sort_order.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import ajax  from <span class="hljs-string">'totem/ajax'</span>
+import totem_scope    from <span class="hljs-string">'totem/scope'</span>
+import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="handle-dragula-drop-event-in-re-ordering-observations">Handle Dragula Drop Event in Re-Ordering Observations.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">handle_dragula_drop</span>: <span class="hljs-function"><span class="hljs-params">(el, target, source, sibling)</span> -&gt;</span>
+    $el      = $(el)
+    $sibling = $(sibling)
+    changes  = <span class="hljs-property">@get_observation_increment_and_decrement_changes</span>($el, $sibling)
+    <span class="hljs-property">@save_observation_order</span>(changes) <span class="hljs-keyword">if</span> ember.isPresent(changes)
+
+  <span class="hljs-attribute">get_observation_increment_and_decrement_changes</span>: <span class="hljs-function"><span class="hljs-params">($el, $sibling)</span> -&gt;</span>
+    obs = <span class="hljs-property">@get_element_observation</span>($el)
+    $el.remove()
+    sibling_obs      = <span class="hljs-property">@get_element_observation</span>($sibling)
+    observations     = <span class="hljs-property">@get_ownerable_observations_in_position_order</span>()
+    move_to_position = <span class="hljs-property">@get_dragged_observation_move_to_position</span>(observations, obs, sibling_obs)
+    move_up          = <span class="hljs-property">@is_dragged_observation_moved_up</span>(obs, sibling_obs)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> move_to_position == obs.get(<span class="hljs-string">'position'</span>)
+    changes = []
+    obs_pos = obs.get(<span class="hljs-string">'position'</span>) + <span class="hljs-number">0</span>
+    obs.set <span class="hljs-string">'position'</span>, move_to_position
+    changes.push {<span class="hljs-attribute">id</span>: obs.get(<span class="hljs-string">'id'</span>), <span class="hljs-attribute">position</span>: move_to_position}
+    observations.forEach (observation, index) =&gt;
+      <span class="hljs-keyword">unless</span> observation == obs
+        i   = index + <span class="hljs-number">1</span>  <span class="hljs-comment"># positions start with 1 not 0</span>
+        pos = observation.get(<span class="hljs-string">'position'</span>)
+        <span class="hljs-keyword">if</span> i &lt;= move_to_position
+          i -= <span class="hljs-number">1</span>  <span class="hljs-keyword">if</span> pos &gt; obs_pos
+        <span class="hljs-keyword">else</span>
+          i += <span class="hljs-number">1</span>  <span class="hljs-keyword">if</span> pos &lt;= obs_pos
+        i += <span class="hljs-number">1</span>  <span class="hljs-keyword">if</span> move_up <span class="hljs-keyword">and</span> pos == move_to_position
+        <span class="hljs-keyword">unless</span> pos == i
+          id = observation.get(<span class="hljs-string">'id'</span>)
+          changes.push {<span class="hljs-attribute">id</span>: id, <span class="hljs-attribute">position</span>: i}
+          observation.set <span class="hljs-string">'position'</span>, i
+    changes
+
+  <span class="hljs-attribute">is_dragged_observation_moved_up</span>: <span class="hljs-function"><span class="hljs-params">(obs, sibling_obs)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> sibling_obs
+    obs.get(<span class="hljs-string">'position'</span>) &gt; sibling_obs.get(<span class="hljs-string">'position'</span>)
+
+  <span class="hljs-attribute">get_ownerable_observations_in_position_order</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>).get(<span class="hljs-string">'observations'</span>).copy()
+
+  <span class="hljs-attribute">get_dragged_observation_move_to_position</span>: <span class="hljs-function"><span class="hljs-params">(observations, obs, sibling_obs)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> sibling_obs
+      pos  = obs.get(<span class="hljs-string">'position'</span>)
+      spos = sibling_obs.get(<span class="hljs-string">'position'</span>)
+      <span class="hljs-keyword">if</span> pos &gt; spos <span class="hljs-keyword">then</span> spos <span class="hljs-keyword">else</span> (spos - <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">else</span>
+      observations.get(<span class="hljs-string">'lastObject.position'</span>) <span class="hljs-keyword">or</span> observations.length
+
+  <span class="hljs-attribute">get_element_observation</span>: <span class="hljs-function"><span class="hljs-params">($el)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank($el)
+    type     = ns.to_p <span class="hljs-string">'observation'</span>
+    model_id = $el.attr(<span class="hljs-string">'model_id'</span>)
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'model.store'</span>).getById(type, model_id)
+
+  <span class="hljs-attribute">save_observation_order</span>: <span class="hljs-function"><span class="hljs-params">(changes)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      list  = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      query = 
+        <span class="hljs-attribute">verb</span>:   <span class="hljs-string">'put'</span>
+        <span class="hljs-attribute">action</span>: <span class="hljs-string">'observation_order'</span>
+        <span class="hljs-attribute">model</span>:  list
+        <span class="hljs-attribute">id</span>:     list.get(<span class="hljs-string">'id'</span>)
+        <span class="hljs-attribute">data</span>:   
+          <span class="hljs-attribute">order</span>: changes
+      totem_scope.add_ownerable_to_query(query.data)
+      totem_scope.add_authable_to_query(query.data)
+      ajax.object(query).<span class="hljs-keyword">then</span> =&gt;
+        totem_messages.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: list, <span class="hljs-attribute">action</span>: <span class="hljs-string">'observation_order'</span>
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        totem_messages.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: list</div></div></div></div></body></html>

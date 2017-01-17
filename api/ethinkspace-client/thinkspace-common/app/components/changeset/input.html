@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/components/changeset/input</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/app/components/changeset/input"><meta name="groc-project-path" content="thinkspace-common/app/components/changeset/input.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-common/app/components/changeset/input.coffee">thinkspace-common/app/components/changeset/input.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base_component from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base_component.extend
+
+  <span class="hljs-attribute">tvo</span>: ember.inject.service()
+
+  <span class="hljs-attribute">errors_visible</span>: ember.computed.<span class="hljs-keyword">or</span> <span class="hljs-string">'tvo.show_errors'</span>, <span class="hljs-string">'changeset.show_errors'</span>
+  <span class="hljs-attribute">display_errors</span>: ember.computed.<span class="hljs-keyword">and</span> <span class="hljs-string">'errors_visible'</span>, <span class="hljs-string">'has_focused_out'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Properties</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">type</span>:              <span class="hljs-string">'text'</span>
+  <span class="hljs-attribute">classNameBindings</span>: [<span class="hljs-string">':ts-validated-input'</span>, <span class="hljs-string">'display_errors:has-errors'</span>, <span class="hljs-string">'class'</span>]
+
+  <span class="hljs-attribute">poll</span>: <span class="hljs-literal">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Some browsers do not trigger a &#39;change&#39; event on the input if the field is autofilled
+To fully account for this issue, poll to ensure that ember can catch input changes made by autofill</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">autofill_poll</span>: (<span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'poll'</span>)
+    ember.run.later @, ( <span class="hljs-function">=&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(@) <span class="hljs-keyword">and</span> ember.isPresent(<span class="hljs-property">@$</span>()) <span class="hljs-keyword">and</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'poll'</span>)
+      <span class="hljs-property">@$</span>(<span class="hljs-string">'input'</span>).trigger(<span class="hljs-string">'change'</span>)
+      <span class="hljs-property">@autofill_poll</span>()
+    ), <span class="hljs-number">250</span>
+  ).<span class="hljs-literal">on</span>(<span class="hljs-string">'didInsertElement'</span>)
+
+  <span class="hljs-attribute">actions</span>:
+
+    <span class="hljs-attribute">focus_out</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'has_focused_out'</span>, <span class="hljs-literal">true</span></div></div></div></div></body></html>

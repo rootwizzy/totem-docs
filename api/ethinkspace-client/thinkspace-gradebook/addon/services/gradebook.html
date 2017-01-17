@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-gradebook/addon/services/gradebook</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-gradebook/addon/services/gradebook"><meta name="groc-project-path" content="thinkspace-gradebook/addon/services/gradebook.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-gradebook/addon/services/gradebook.coffee">thinkspace-gradebook/addon/services/gradebook.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ds    from <span class="hljs-string">'ember-data'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import ajax  from <span class="hljs-string">'totem/ajax'</span>
+import base  from <span class="hljs-string">'thinkspace-base/services/base'</span>
+import totem_scope     from <span class="hljs-string">'totem/scope'</span>
+import totem_changeset from <span class="hljs-string">'totem/changeset'</span>
+import totem_messages  from <span class="hljs-string">'totem-messages/messages'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">map</span>:                        <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">phase_score_validation_map</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
+    <span class="hljs-property">@map</span>                        = <span class="hljs-property">@new_map</span>()
+    <span class="hljs-property">@phase_score_validation_map</span> = <span class="hljs-property">@new_map</span>()
+    <span class="hljs-property">@register_change_components</span> = []
+
+  <span class="hljs-attribute">clear_registered_components</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@register_change_components</span>.clear()
+
+  <span class="hljs-attribute">register_change_component</span>: <span class="hljs-function"><span class="hljs-params">(component)</span> -&gt;</span> <span class="hljs-property">@register_change_components</span>.push(component)
+
+  <span class="hljs-attribute">call_change_components</span>: <span class="hljs-function"><span class="hljs-params">(change={})</span> -&gt;</span>
+    destroyed_components = []
+    <span class="hljs-keyword">for</span> comp <span class="hljs-keyword">in</span> <span class="hljs-property">@register_change_components</span>
+      <span class="hljs-keyword">if</span> comp.is_destroyed()
+        destroyed_components.push(comp)
+      <span class="hljs-keyword">else</span>
+        comp.register_change_callback(change)
+    <span class="hljs-property">@register_change_components</span>.removeObject(comp) <span class="hljs-keyword">for</span> comp <span class="hljs-keyword">in</span> destroyed_components</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">clear</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@map</span>                        = <span class="hljs-property">@new_map</span>()
+    <span class="hljs-property">@phase_score_validation_map</span> = <span class="hljs-property">@new_map</span>()
+    <span class="hljs-property">@clear_registered_components</span>()
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'GradebookMap'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="phase-validation-helpers">Phase Validation Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_phase_score_validation</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span> <span class="hljs-property">@phase_score_validation_map</span>.get(phase) <span class="hljs-keyword">or</span> {}
+  <span class="hljs-attribute">get_phase_score_decimals</span>:   <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span> (<span class="hljs-property">@phase_score_validation_map</span>.get(phase) <span class="hljs-keyword">or</span> <span class="hljs-property">@get_default_score_validation</span>()).decimals <span class="hljs-keyword">or</span> <span class="hljs-number">0</span>
+
+  <span class="hljs-attribute">set_phase_score_validations</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      assignment = <span class="hljs-property">@get</span>(<span class="hljs-string">'thinkspace'</span>).get_current_assignment()
+      assignment.get(ns.to_p <span class="hljs-string">'phases'</span>).<span class="hljs-keyword">then</span> (phases) =&gt;
+        phases.forEach (phase) =&gt;
+          validation = phase.get(<span class="hljs-string">'settings.phase_score_validation'</span>) <span class="hljs-keyword">or</span> {}
+          rules      = validation.numericality <span class="hljs-keyword">or</span> <span class="hljs-property">@get_default_score_validation</span>()
+          rules      = totem_changeset.convert_number_rules_to_changeset(rules)
+          <span class="hljs-property">@phase_score_validation_map</span>.set phase, rules
+        resolve()
+
+  <span class="hljs-attribute">get_default_score_validation</span>: <span class="hljs-function">-&gt;</span>
+    validation =
+      <span class="hljs-attribute">allow_blank</span>:              <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">greater_than_or_equal_to</span>: <span class="hljs-number">0</span>
+      <span class="hljs-attribute">less_than_or_equal_to</span>:    <span class="hljs-number">10</span>
+      <span class="hljs-attribute">decimals</span>:                 <span class="hljs-number">0</span>
+
+  <span class="hljs-attribute">get_phase_score_max_decimals</span>: <span class="hljs-function">-&gt;</span>
+    max = <span class="hljs-number">0</span>
+    <span class="hljs-property">@phase_score_validation_map</span>.forEach (validation) =&gt;
+      decimals = Number(validation.decimals <span class="hljs-keyword">or</span> <span class="hljs-number">0</span>)
+      max      = decimals <span class="hljs-keyword">if</span> decimals &gt; max
+    max</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="map-helpers">Map helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">new_map</span>: <span class="hljs-function">-&gt;</span> ember.Map.create()
+  <span class="hljs-attribute">get_map</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'map'</span>
+
+  <span class="hljs-attribute">get_or_init_map</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">unless</span> map = <span class="hljs-property">@get_map</span>()
+      <span class="hljs-property">@set</span> <span class="hljs-string">'map'</span>, <span class="hljs-property">@new_map</span>()
+      map = <span class="hljs-property">@get_map</span>()
+    map
+
+  <span class="hljs-attribute">get_or_init_space_map</span>: <span class="hljs-function"><span class="hljs-params">(space)</span>           -&gt;</span> <span class="hljs-property">@get_or_init_record_map</span>(space)
+  <span class="hljs-attribute">get_or_init_assignment_map</span>: <span class="hljs-function"><span class="hljs-params">(assignment)</span> -&gt;</span> <span class="hljs-property">@get_or_init_record_map</span>(assignment)
+
+  <span class="hljs-attribute">get_or_init_phase_map</span>: <span class="hljs-function"><span class="hljs-params">(assignment, phase)</span> -&gt;</span>
+    assignment_map = <span class="hljs-property">@get_or_init_assignment_map</span>(assignment)
+    phase_map      = assignment_map.get(phase)
+    assignment_map.set phase, <span class="hljs-property">@new_map</span>()  <span class="hljs-keyword">unless</span> phase_map
+    assignment_map.get(phase)
+
+  <span class="hljs-attribute">get_or_init_record_map</span>: <span class="hljs-function"><span class="hljs-params">(record)</span> -&gt;</span>
+    map       = <span class="hljs-property">@get_or_init_map</span>()
+    record_map = map.get(record)
+    map.set record, <span class="hljs-property">@new_map</span>() <span class="hljs-keyword">unless</span> record_map
+    map.get(record)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="gradebook-users-all-space-users">Gradebook Users - all space users.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_gradebook_users</span>: <span class="hljs-function"><span class="hljs-params">(space, assignment, phase)</span> -&gt;</span>
+    promise = <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      space_map       = <span class="hljs-property">@get_or_init_space_map</span>(space)
+      gradebook_users = space_map.get <span class="hljs-string">'gradebook_users'</span>
+      <span class="hljs-keyword">return</span> resolve(gradebook_users) <span class="hljs-keyword">if</span> ember.isPresent(gradebook_users)
+      current_user = totem_scope.get_current_user()
+      <span class="hljs-property">@tc</span>.view_load(assignment, <span class="hljs-attribute">sub_action</span>: <span class="hljs-string">'gradebook_users'</span>, <span class="hljs-attribute">ownerable</span>: current_user, <span class="hljs-attribute">authable</span>: phase, <span class="hljs-attribute">reload</span>: <span class="hljs-literal">true</span>).<span class="hljs-keyword">then</span> =&gt;
+        space.get(ns.to_p <span class="hljs-string">'users'</span>).<span class="hljs-keyword">then</span> (users) =&gt;
+          gradebook_users = users.sortBy <span class="hljs-string">'sort_name'</span>
+          space_map.set <span class="hljs-string">'gradebook_users'</span>, gradebook_users
+          resolve gradebook_users
+    ds.PromiseArray.create <span class="hljs-attribute">promise</span>: promise</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="gradebook-teams-all-phase-teams-for-an-assignment">Gradebook Teams - all phase teams for an assignment.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_gradebook_phase_teams</span>: <span class="hljs-function"><span class="hljs-params">(assignment, team_phase)</span> -&gt;</span>
+    promise = <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      phase_map = <span class="hljs-property">@get_or_init_phase_map</span>(assignment, team_phase)
+      teams     = phase_map.get <span class="hljs-string">'teams'</span>
+      <span class="hljs-keyword">if</span> teams
+        resolve teams
+      <span class="hljs-keyword">else</span>
+        query        = {}
+        query.verb   = <span class="hljs-string">'POST'</span>
+        query.action = <span class="hljs-string">'view'</span>
+        query.data   = totem_scope.get_view_query(assignment, <span class="hljs-attribute">sub_action</span>: <span class="hljs-string">'gradebook_teams'</span>)
+        query.model  = assignment
+        query.id     = assignment.get(<span class="hljs-string">'id'</span>)
+
+        totem_scope.add_authable_to_query(query.data)
+        ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+          teams     = ajax.normalize_and_push_payload(<span class="hljs-string">'team'</span>, payload)
+          teams     = teams.uniq() <span class="hljs-keyword">if</span> ember.isPresent(teams)
+          phase_map = <span class="hljs-property">@get_or_init_phase_map</span>(assignment, team_phase)
+          phase_map.set <span class="hljs-string">'teams'</span>, teams.sortBy(<span class="hljs-string">'title'</span>)
+          resolve <span class="hljs-property">@get_or_init_phase_map</span>(assignment, team_phase).get <span class="hljs-string">'teams'</span>
+    ds.PromiseArray.create <span class="hljs-attribute">promise</span>: promise</div></div></div></div></body></html>

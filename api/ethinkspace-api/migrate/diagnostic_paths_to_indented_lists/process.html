@@ -1,0 +1,398 @@
+<!DOCTYPE html><html lang="en"><head><title>migrate/diagnostic_paths_to_indented_lists/process</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="migrate/diagnostic_paths_to_indented_lists/process"><meta name="groc-project-path" content="migrate/diagnostic_paths_to_indented_lists/process.rb"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/master/migrate/diagnostic_paths_to_indented_lists/process.rb">migrate/diagnostic_paths_to_indented_lists/process.rb</a></div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>e.g. rake thinkspace:migrate:diagnostic_paths_to_indented_lists:phases[1,2,3]</p></div></div><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../helpers/require_all'</span>, __FILE_<span class="hljs-number">_</span>)
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Migrate</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">DiagnosticPathsToIndentedLists</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Process</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>See run help at bottom of file.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::RakeProcesses</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(method, args)</span></span>
+    print_start
+    stop_run <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name.inspect}</span> does not respond to <span class="hljs-subst">#{method.to_s.inspect}</span>"</span>  <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span>.respond_to?(method)
+    init_variables
+    args = [args].flatten.compact.collect {|a| a.strip}
+    <span class="hljs-keyword">self</span>.send method, args
+    print_summary
+    print_end
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init_variables</span></span>
+    <span class="hljs-variable">@destroy_path</span>               = <span class="hljs-keyword">false</span>
+    <span class="hljs-variable">@debug</span>                      = <span class="hljs-keyword">false</span>
+    <span class="hljs-variable">@phases_converted</span>           = <span class="hljs-number">0</span>
+    <span class="hljs-variable">@phase_components_converted</span> = <span class="hljs-number">0</span>
+    <span class="hljs-variable">@lists_created</span>              = <span class="hljs-number">0</span>
+    <span class="hljs-variable">@responses_created</span>          = <span class="hljs-number">0</span>
+    <span class="hljs-variable">@paths_destroyed</span>            = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="convert-expert-phases">Convert Expert Phases</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">convert_phases_to_expert_indented_lists</span></span>
+    phases = expert_phase_scope
+    <span class="hljs-constant">ActiveRecord::Base</span>.transaction <span class="hljs-keyword">do</span>
+      phases.each <span class="hljs-keyword">do</span> |phase|
+        process_expert_phase(phase)
+        convert_phase_to_list_phase_template(phase, <span class="hljs-keyword">true</span>)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_expert_phase</span><span class="hljs-params">(phase)</span></span>
+    phase_components = phase.thinkspace_casespace_phase_components
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> phase_components.blank?
+    sections_to_keep = [<span class="hljs-string">'header'</span>, <span class="hljs-string">'submit'</span>]
+    phase_components.each <span class="hljs-keyword">do</span> |phase_component|
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> phase_component.section == <span class="hljs-string">'diag-path-viewer'</span>
+        process_expert_phase_component(phase, phase_component)
+      <span class="hljs-keyword">when</span> !sections_to_keep.<span class="hljs-keyword">include</span>?(phase_component.section)
+        phase_component.destroy
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_expert_phase_component</span><span class="hljs-params">(phase, phase_component)</span></span>
+    viewer                       = phase_component.componentable
+    path                         = viewer.thinkspace_diagnostic_path_path
+    authable                     = path.authable
+    authable_list                = get_list_from_authable(authable)
+    options                      = <span class="hljs-constant">Hash</span>.new
+    options[<span class="hljs-symbol">:settings</span>]           = {<span class="hljs-symbol">layout:</span> <span class="hljs-string">'diagnostic_path'</span>}
+    options[<span class="hljs-symbol">:settings</span>][<span class="hljs-symbol">:list_id</span>] = authable_list.id <span class="hljs-keyword">if</span> authable_list.present?
+    options[<span class="hljs-symbol">:expert</span>]             = <span class="hljs-keyword">true</span>
+    list                         = create_list(phase, <span class="hljs-keyword">nil</span>, options)
+    convert_phase_component_to_list(phase, phase_component, list)
+    process_expert_path(viewer, authable_list, list)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_list_from_authable</span><span class="hljs-params">(authable)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> authable.present?
+    pc = authable.thinkspace_casespace_phase_components.find_by(<span class="hljs-symbol">componentable_type:</span> list_class.name)
+    pc.present? &amp;&amp; pc.componentable.present? ? pc.componentable <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_expert_path</span><span class="hljs-params">(viewer, authable_list, list)</span></span>
+    expert   = viewer.ownerable
+    response = response_class.find_by(<span class="hljs-symbol">ownerable:</span> expert, <span class="hljs-symbol">list_id:</span> authable_list.id)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> response.present?
+    items = response.value.with_indifferent_access[<span class="hljs-symbol">:items</span>] || <span class="hljs-constant">Array</span>.new
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> items.present? &amp;&amp; items.kind_of?(<span class="hljs-constant">Array</span>)
+    expert_items = <span class="hljs-constant">Array</span>.new
+    items.each <span class="hljs-keyword">do</span> |item|
+      new_item = {
+        <span class="hljs-symbol">category:</span> item[<span class="hljs-symbol">:category</span>],
+        <span class="hljs-symbol">description:</span> get_description_from_item(item),
+        <span class="hljs-symbol">pos_x:</span> item[<span class="hljs-symbol">:pos_x</span>],
+        <span class="hljs-symbol">pos_y:</span> item[<span class="hljs-symbol">:pos_y</span>]
+      }
+      expert_items &lt;&lt; new_item
+    <span class="hljs-keyword">end</span>
+    expert_response             = expert_response_class.new
+    expert_response.value       = {<span class="hljs-symbol">items:</span> expert_items}
+    expert_response.user_id     = expert.id
+    expert_response.list_id     = list.id
+    expert_response.response_id = response.id
+    expert_response.state       = <span class="hljs-string">'active'</span>
+    expert_response.save
+    expert_response
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_description_from_item</span><span class="hljs-params">(item)</span></span>
+    <span class="hljs-keyword">return</span> item[<span class="hljs-symbol">:description</span>] <span class="hljs-keyword">if</span> item.has_key?(<span class="hljs-symbol">:description</span>) &amp;&amp; item[<span class="hljs-symbol">:description</span>].present?
+    type       = item[<span class="hljs-symbol">:itemable_type</span>]
+    id         = item[<span class="hljs-symbol">:itemable_id</span>]
+    value_path = item[<span class="hljs-symbol">:itemable_value_path</span>] || <span class="hljs-string">'value'</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> type.present? &amp;&amp; id.present? &amp;&amp; value_path.present?
+    klass      = type.safe_constantize
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> klass.present?
+    record = klass.find(id)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> record.present?
+    record.send value_path
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="convert-phases">Convert Phases.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">convert_phases_to_indented_lists</span></span>
+    phases = phase_scope
+    <span class="hljs-constant">ActiveRecord::Base</span>.transaction <span class="hljs-keyword">do</span>
+      phases.each <span class="hljs-keyword">do</span> |phase|
+        process_phase(phase)
+        convert_phase_to_list_phase_template(phase)
+      <span class="hljs-keyword">end</span>
+      check_for_errors
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_phase</span><span class="hljs-params">(phase)</span></span>
+    phase_components = phase.thinkspace_casespace_phase_components.where(<span class="hljs-symbol">componentable_type:</span> path_class.name)
+    phase_components = phase_components.where(<span class="hljs-symbol">componentable_id:</span> <span class="hljs-variable">@path_ids</span>)  <span class="hljs-keyword">if</span> <span class="hljs-variable">@path_ids</span>.present?
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> phase_components.blank?
+    <span class="hljs-constant">Helpers::PhaseTemplates</span>.new.validate_phase_templates(phase, get_list_phase_template)
+    phase_components.each <span class="hljs-keyword">do</span> |phase_component|
+      process_phase_component(phase, phase_component)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_phase_component</span><span class="hljs-params">(phase, phase_component)</span></span>
+    path = phase_component.componentable
+    list = create_list(phase, path)
+    convert_phase_component_to_list(phase, phase_component, list)
+    process_path(phase, path, list)
+    <span class="hljs-keyword">if</span> destroy_path?
+      path.destroy
+      <span class="hljs-variable">@paths_destroyed</span> += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">destroy_path?</span>;</span> <span class="hljs-variable">@destroy_path</span> == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_path</span><span class="hljs-params">(phase, path, list)</span></span>
+    ownerables = get_path_ownerables(path)
+    ownerables.each <span class="hljs-keyword">do</span> |ownerable|
+      user           = validate_and_get_path_items_user(path, ownerable)
+      response_items = <span class="hljs-constant">Helpers::BuildItems</span>.new(path, ownerable, <span class="hljs-symbol">debug:</span> <span class="hljs-variable">@debug</span>).process
+      response       = create_response(phase, list, ownerable, user, response_items)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_path_ownerables</span><span class="hljs-params">(path)</span></span>
+    ownerables = <span class="hljs-constant">Array</span>.new
+    get_unique_path_ownerable_type_and_ids(path).each <span class="hljs-keyword">do</span> |o|
+      type  = o.ownerable_type
+      ids   = o.ownerable_ids
+      klass = type.safe_constantize
+      raise_error <span class="hljs-string">"Path item ownerable <span class="hljs-subst">#{type.inspect}</span> cannot be constantized for path <span class="hljs-subst">#{path.inspect}</span>."</span>  <span class="hljs-keyword">if</span> klass.blank?
+      ids.each <span class="hljs-keyword">do</span> |id|
+        record = klass.find_by(<span class="hljs-symbol">id:</span> id)
+        raise_error <span class="hljs-string">"Path item ownerable <span class="hljs-subst">#{type.inspect}</span>.<span class="hljs-subst">#{id.inspect}</span> no longer exists for path <span class="hljs-subst">#{path.inspect}</span>."</span>  <span class="hljs-keyword">if</span> record.blank?
+        ownerables.push(record)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    ownerables
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Verify all of a ownerable&#39;s path items have same user_id.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_and_get_path_items_user</span><span class="hljs-params">(path, ownerable)</span></span>
+    path_items = path.thinkspace_diagnostic_path_path_items.where(<span class="hljs-symbol">ownerable:</span> ownerable)
+    user_ids   = path_items.pluck(<span class="hljs-symbol">:user_id</span>).compact.uniq
+    <span class="hljs-keyword">if</span> user_ids.length &gt; <span class="hljs-number">1</span>
+      convert_user_id_to_ownerable(path_items, ownerable)
+    <span class="hljs-keyword">end</span>
+    id   = user_ids.first
+    user = user_class.find_by(<span class="hljs-symbol">id:</span> id)
+    raise_error <span class="hljs-string">"Path item user id <span class="hljs-subst">#{id}</span> does not exist for path <span class="hljs-subst">#{path.inspect}</span> and ownerable <span class="hljs-subst">#{ownerable.inspect}</span>"</span>  <span class="hljs-keyword">if</span> user.blank?
+    user
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">convert_user_id_to_ownerable</span><span class="hljs-params">(path_items, ownerable)</span></span>
+    path_items.each <span class="hljs-keyword">do</span> |path_item|
+      path_item.user_id = ownerable.id
+      path_item.save
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_for_errors</span></span>
+    message = <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-variable">@phases_converted</span> &gt; <span class="hljs-number">0</span>
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-variable">@phase_components_converted</span> == <span class="hljs-number">0</span>  <span class="hljs-keyword">then</span> message = <span class="hljs-string">'no phase components were converted'</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-variable">@lists_created</span> == <span class="hljs-number">0</span>               <span class="hljs-keyword">then</span> message = <span class="hljs-string">'no indented lists were created'</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> message.present?
+      print_summary
+      raise_error <span class="hljs-string">"Phases were converted (<span class="hljs-subst">#{<span class="hljs-variable">@phases_converted</span>}</span>) but <span class="hljs-subst">#{message}</span>.  Changes rolled back."</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="convert-phase-to-indented-list">Convert Phase to Indented List.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">convert_phase_to_list_phase_template</span><span class="hljs-params">(phase, expert=<span class="hljs-keyword">false</span>)</span></span>
+    expert ? list_phase_template = get_expert_list_phase_template <span class="hljs-symbol">:</span> list_phase_template = get_list_phase_template
+    raise_error <span class="hljs-string">"Indented list phase template not found."</span>  <span class="hljs-keyword">if</span> list_phase_template.blank?
+    phase.thinkspace_casespace_phase_template = list_phase_template
+    raise_error <span class="hljs-string">"Could not save the phase after changing to the list phase template <span class="hljs-subst">#{phase.inspect}</span>.  .  Validation errors: <span class="hljs-subst">#{phase.errors.messages}</span>"</span>  <span class="hljs-keyword">unless</span> phase.save
+    <span class="hljs-variable">@phases_converted</span>  += <span class="hljs-number">1</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">convert_phase_component_to_list</span><span class="hljs-params">(phase, phase_component, list)</span></span>
+    component = get_list_component(phase)
+    raise_error <span class="hljs-string">"Indented list common component not found."</span>  <span class="hljs-keyword">if</span> component.blank?
+    section = get_list_phase_component_section
+    raise_error <span class="hljs-string">"Indented list phase component section is blank <span class="hljs-subst">#{phase_component.inspect}</span>."</span>  <span class="hljs-keyword">if</span> section.blank?
+    phase_component.thinkspace_common_component = component
+    phase_component.componentable               = list
+    phase_component.section                     = section
+    raise_error <span class="hljs-string">"Could not save phase component after changing to list <span class="hljs-subst">#{phase_component.inspect}</span>.  Validation errors: <span class="hljs-subst">#{phase_component.errors.messages}</span>"</span>  <span class="hljs-keyword">unless</span> phase_component.save
+    <span class="hljs-variable">@phase_components_converted</span> += <span class="hljs-number">1</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="get-indented-list-domain-data">Get Indented List Domain Data.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_list_component</span><span class="hljs-params">(phase)</span></span>
+    <span class="hljs-variable">@list_component</span> ||= <span class="hljs-constant">Helpers::PhaseTemplates</span>.new.get_list_common_component
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_list_phase_template</span></span>
+    <span class="hljs-variable">@list_phase_template</span> ||= <span class="hljs-constant">Helpers::PhaseTemplates</span>.new.get_list_phase_template
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_expert_list_phase_template</span></span>
+    <span class="hljs-variable">@get_expert_list_phase_template</span> ||= <span class="hljs-constant">Helpers::PhaseTemplates</span>.new.get_expert_list_phase_template
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_list_phase_component_section</span></span>
+    <span class="hljs-variable">@list_phase_component_section</span> ||= <span class="hljs-constant">Helpers::PhaseTemplates</span>.new.get_phase_component_section_in_list_template(get_list_phase_template)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="create-indented-list-records">Create Indented List Records.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_list</span><span class="hljs-params">(phase, path, options={})</span></span>
+    <span class="hljs-variable">@lists_created</span> += <span class="hljs-number">1</span>
+    settings        = options[<span class="hljs-symbol">:settings</span>] || {<span class="hljs-symbol">layout:</span> <span class="hljs-string">'diagnostic_path'</span>}
+    (options.has_key?(<span class="hljs-symbol">:expert</span>) &amp;&amp; options[<span class="hljs-symbol">:expert</span>]) ? expert = <span class="hljs-keyword">true</span> <span class="hljs-symbol">:</span> expert = <span class="hljs-keyword">false</span>
+    path.present? ? title = path.title <span class="hljs-symbol">:</span> title = <span class="hljs-string">'Expert Path'</span>
+    list_class.create(
+      <span class="hljs-symbol">authable_id:</span>   phase.id,
+      <span class="hljs-symbol">authable_type:</span> phase.<span class="hljs-keyword">class</span>.name,
+      <span class="hljs-symbol">title:</span>         title,
+      <span class="hljs-symbol">settings:</span>      settings,
+      <span class="hljs-symbol">expert:</span>        expert
+    )
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_response</span><span class="hljs-params">(phase, list, ownerable, user, items)</span></span>
+    <span class="hljs-variable">@responses_created</span> += <span class="hljs-number">1</span>
+    user_id             = user.blank? ? <span class="hljs-keyword">nil</span> <span class="hljs-symbol">:</span> user.id
+    response_class.create(
+      <span class="hljs-symbol">user_id:</span>        user_id,
+      <span class="hljs-symbol">list_id:</span>        list.id,
+      <span class="hljs-symbol">ownerable_id:</span>   ownerable.id,
+      <span class="hljs-symbol">ownerable_type:</span> ownerable.<span class="hljs-keyword">class</span>.name,
+      <span class="hljs-symbol">value:</span>          {<span class="hljs-symbol">items:</span> items},
+    )
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="scopes-and-classes">Scopes and Classes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_phases_with_paths</span></span>
+    phase_scope.distinct.
+      joins(<span class="hljs-symbol">:thinkspace_casespace_phase_components</span>).
+      where(<span class="hljs-symbol">thinkspace_casespace_phase_components:</span> {<span class="hljs-symbol">componentable_type:</span> path_class.name}).
+      order(<span class="hljs-symbol">:id</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_unique_path_ownerable_type_and_ids</span><span class="hljs-params">(path)</span></span>
+    path.thinkspace_diagnostic_path_path_items.
+      select(<span class="hljs-symbol">:ownerable_type</span>).
+      select(<span class="hljs-string">'array_agg(distinct ownerable_id) as ownerable_ids'</span>).
+      group(<span class="hljs-symbol">:ownerable_type</span>).
+      order(<span class="hljs-symbol">:ownerable_type</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">user_class</span>;</span>            <span class="hljs-constant">::Thinkspace::Common::User</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">space_class</span>;</span>           <span class="hljs-constant">::Thinkspace::Common::Space</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assignment_class</span>;</span>      <span class="hljs-constant">::Thinkspace::Casespace::Assignment</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_class</span>;</span>           <span class="hljs-constant">::Thinkspace::Casespace::Phase</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">path_class</span>;</span>            <span class="hljs-constant">::Thinkspace::DiagnosticPath::Path</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">path_item_class</span>;</span>       <span class="hljs-constant">::Thinkspace::DiagnosticPath::PathItem</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">path_viewer_class</span>;</span>     <span class="hljs-constant">::Thinkspace::DiagnosticPathViewer::Viewer</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">list_class</span>;</span>            <span class="hljs-constant">::Thinkspace::IndentedList::List</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">response_class</span>;</span>        <span class="hljs-constant">::Thinkspace::IndentedList::Response</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">expert_response_class</span>;</span> <span class="hljs-constant">::Thinkspace::IndentedList::ExpertResponse</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="print">Print.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_message</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+    puts <span class="hljs-string">"[thinkspace:path2list] "</span> + message
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_summary</span></span>
+    print_message
+    print_message <span class="hljs-string">"Summary:"</span>
+    hash                              = <span class="hljs-constant">Hash</span>.new
+    hash[<span class="hljs-symbol">:phases_converted</span>]           = <span class="hljs-variable">@phases_converted</span>
+    hash[<span class="hljs-symbol">:phase_components_converted</span>] = <span class="hljs-variable">@phase_components_converted</span>
+    hash[<span class="hljs-symbol">:indented_lists_created</span>]     = <span class="hljs-variable">@lists_created</span>
+    hash[<span class="hljs-symbol">:indented_responses_created</span>] = <span class="hljs-variable">@responses_created</span>
+    hash[<span class="hljs-symbol">:paths_destroyed</span>]            = <span class="hljs-variable">@paths_destroyed</span>
+    print_hash(hash)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_start</span></span>
+    <span class="hljs-variable">@start_time</span> = <span class="hljs-constant">Time</span>.now
+    print_message <span class="hljs-string">"\n"</span>
+    print_message <span class="hljs-string">"Start Time: <span class="hljs-subst">#{<span class="hljs-variable">@start_time</span>.to_s(<span class="hljs-symbol">:db</span>)}</span>"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_end</span></span>
+    end_time     = <span class="hljs-constant">Time</span>.now
+    elapsed_time = end_time.minus_with_coercion(<span class="hljs-variable">@start_time</span>)
+    print_message <span class="hljs-string">"\n"</span>
+    print_message <span class="hljs-string">"End Time: <span class="hljs-subst">#{end_time.to_s(<span class="hljs-symbol">:db</span>)}</span>"</span>
+    print_message <span class="hljs-string">"Duration (HH:MM:SS): <span class="hljs-subst">#{<span class="hljs-constant">Time</span>.at(elapsed_time).utc.strftime(<span class="hljs-string">'%H:%M:%S'</span>)}</span>"</span>
+    print_message    
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_hash</span><span class="hljs-params">(hash)</span></span>
+    max_key = hash.keys.collect {|k| k.to_s.length}.max || <span class="hljs-number">1</span>
+    max_key += <span class="hljs-number">2</span>
+    hash.keys.each <span class="hljs-keyword">do</span> |key|
+      k = key.to_s.humanize.ljust(max_key, <span class="hljs-string">'.'</span>)
+      v = hash[key]
+      print_message <span class="hljs-string">"  <span class="hljs-subst">#{k}</span>: <span class="hljs-subst">#{v}</span>"</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="errors">Errors.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">stop_run</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+    print_message
+    print_message <span class="hljs-string">'*** ERROR ***'</span>
+    print_message(message)
+    print_message(<span class="hljs-string">'Run stopped.'</span>)
+    print_end
+    exit
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_error</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+    raise <span class="hljs-constant">ConvertIndentedListError</span>, message
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConvertIndentedListError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Run help:
+  CAUTION: FOR RAKE TASKS, NO SPACES ARE ALLOWED BETWEEN ARGUMENTS  right: [1,2,3]  wrong: [1, 2, 3]</p>
+<p>  NOTE: the Helpers::PhaseTemplate class should be modified to match the typical run&#39;s domain data (and seed data).</p>
+<p>  Potential Errors:</p>
+<pre><code>- The phase&#39;s phase template (e.g. for the diagnostic path) is changed to the indent list&#39;s phase template but
+  only the diagnostic path&#39;s phase_component is updated to be the indented list (the other phase&#39;s phase_components
+  remain unchanged). Therefore the other phase_component must be compatible with the indented list&#39;s phase template.
+  This means the other phase_component&#39;s section and title values must be the same (except for the diagnostic path component itself).
+  When the phase_template includes an observation list, the indented list&#39;s &#39;source&#39; must match the section value of the
+  of the observation list&#39;s component.
+  The Helpers::PhaseTemplate class performs some compatibility validation checks, but they are not 100%.
+  Examples:</code></pre></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">##         bad:</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>      existing path template: &lt;component section=&#39;header&#39;       title=&#39;casespace-phase-header&#39;/&gt;
+      indented list template: &lt;component section=&#39;phase-header&#39; title=&#39;casespace-phase-header&#39;/&gt;
+    good (must match existing header title and section):
+      existing path template: &lt;component section=&#39;header&#39; title=&#39;casespace-phase-header&#39;/&gt;
+      indented list template: &lt;component section=&#39;header&#39; title=&#39;casespace-phase-header&#39;/&gt;</code></pre></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">##         bad:</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>      existing path template: &lt;component section=&#39;diag-path&#39;     title=&#39;diagnostic-path&#39; source=&#39;obs-list&#39;/&gt;
+      indented list template: &lt;component section=&#39;indented-list&#39; title=&#39;indented-list&#39;   source=&#39;observation-list&#39;/&gt;
+    good (must match existing observation list&#39;s section):
+      existing path template: &lt;component section=&#39;diag-path&#39;     title=&#39;diagnostic-path&#39; source=&#39;obs-list&#39;/&gt;
+      indented list template: &lt;component section=&#39;indented-list&#39; title=&#39;indented-list&#39;   source=&#39;obs-list&#39;/&gt;
+- The same applies to any seeds when they include phase templates.</code></pre>
+<p>  General rake task format:
+    rake thinkspace:migrate:diagnostic_paths_to_indented_lists:{task}[{options}]</p>
+<pre><code>task: [spaces|assignments|phases|paths|all]
+      except for task &#39;all&#39;, the task identifies the model used for the options ids
+      CAUTION: task &#39;all&#39; will process all paths in all phases.
+
+options: [#|destroy_path|debug|component:#|phase_template:#|section:string]
+        #:               a task model id (multiple ids may be added e.g. [1,2,3])
+        debug:           [true|false] print debug info; e.g. prints response items hash (is very verbose)
+        destroy_path:    destroy the path after conversion e.g. does a &#39;path.destroy&#39;
+                         NOTE: this also deletes the path&#39;s path items if the path association includes has_many dependent: :destroy
+                         NOTE: path item version records are created when destroyed
+        component:#      id of a common component to use; default common component with title: &#39;indented-list&#39;
+        phase_template:# id of the phase template to use; default phase template with name &#39;two_column_indented_list_observation_list_submit&#39;
+        section:         [string] path&#39;s phase component section; default is extracted from the list&#39;s phase_template.template
+
+Typically the component:#, phase_template:# and section options are not needed if the domain data matches the
+the defaults in the Helpers::PhaseTemplate class.
+
+The order of the options is not important e.g. for ids 1,2,3 [debug,1,delete_path,2,3]
+
+The options must can contain id(s) (e.g. digits) and/or keywords (except for &#39;all&#39; task).
+
+The ids correspond to the task&#39;s model and are used to select the &#39;phases&#39; to process.
+  For example:
+    spaces[1]:          all phases in space id 1
+    assignments[1,2,3]: all phases in assignments ids 1, 2 and 3  
+    phases[5,6,7]:      phases ids 5, 6 and 7
+    paths[5,6]:         get phases for path ids 5 and 6 but only process paths 5 and 6</code></pre>
+<p>  Examples:
+    rake thinkspace:migrate:diagnostic_paths_to_indented_lists:spaces[1,2]         #=&gt; all phases and paths in space ids 1 and 2
+    rake thinkspace:migrate:diagnostic_paths_to_indented_lists:assignments[1,2]    #=&gt; all phases and paths in assignments 1 and 2
+    rake thinkspace:migrate:diagnostic_paths_to_indented_lists:phases[1,2]         #=&gt; all paths in phases 1 and 2
+    rake thinkspace:migrate:diagnostic_paths_to_indented_lists:paths[1,2]          #=&gt; paths 1 and 2
+    rake thinkspace:migrate:diagnostic_paths_to_indented_lists:all                 #=&gt; all phases and all paths</p>
+<pre><code>rake thinkspace:migrate:diagnostic_paths_to_indented_lists:phases[1,2,destroy_path]
+rake thinkspace:migrate:diagnostic_paths_to_indented_lists:phases[1,2,debug,phase_template:13,section:new-section]</code></pre></div></div></div></div></body></html>

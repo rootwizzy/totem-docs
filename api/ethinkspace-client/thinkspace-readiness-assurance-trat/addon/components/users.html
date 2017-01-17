@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-trat/addon/components/users</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-trat/addon/components/users"><meta name="groc-project-path" content="thinkspace-readiness-assurance-trat/addon/components/users.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-readiness-assurance-trat/addon/components/users.coffee">thinkspace-readiness-assurance-trat/addon/components/users.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+import user_list_mixin from <span class="hljs-string">'thinkspace-readiness-assurance/mixins/user_list'</span>
+
+export default base.extend user_list_mixin,
+
+  <span class="hljs-attribute">header</span>: ember.computed.reads <span class="hljs-string">'rm.room_users_header'</span>
+  <span class="hljs-attribute">room</span>:   ember.computed.reads <span class="hljs-string">'rm.room'</span>
+  <span class="hljs-attribute">users</span>:  ember.computed.reads <span class="hljs-string">'rm.room_users'</span>
+
+  <span class="hljs-attribute">willDestroy</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@rm</span>.leave_room <span class="hljs-property">@get_room_type</span>()
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@rm</span>.join_room
+      <span class="hljs-attribute">source</span>:                   @
+      <span class="hljs-attribute">room_type</span>:                <span class="hljs-property">@get_room_type</span>()
+      <span class="hljs-attribute">callback</span>:                 <span class="hljs-string">'handle_room_users'</span>
+      <span class="hljs-attribute">after_authorize_callback</span>: <span class="hljs-string">'refresh_users'</span>
+    <span class="hljs-property">@set_all_sorted_users</span>()</div></div></div></div></body></html>

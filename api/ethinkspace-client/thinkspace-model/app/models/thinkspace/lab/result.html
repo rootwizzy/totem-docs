@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/models/thinkspace/lab/result</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/models/thinkspace/lab/result"><meta name="groc-project-path" content="thinkspace-model/app/models/thinkspace/lab/result.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-model/app/models/thinkspace/lab/result.coffee">thinkspace-model/app/models/thinkspace/lab/result.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ta from <span class="hljs-string">'totem/ds/associations'</span>
+
+export default ta.Model.extend ta.add(
+    ta.belongs_to <span class="hljs-string">'lab:category'</span>, <span class="hljs-attribute">reads</span>: {}
+    ta.has_many   <span class="hljs-string">'lab:observations'</span>, <span class="hljs-attribute">reads</span>: {<span class="hljs-attribute">filter</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">notify</span>: <span class="hljs-literal">true</span>}
+  ), 
+
+  <span class="hljs-attribute">title</span>:    ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">position</span>: ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">values</span>:   ta.attr()
+  <span class="hljs-attribute">value</span>:    ta.attr()  <span class="hljs-comment"># admin</span>
+  <span class="hljs-attribute">metadata</span>: ta.attr()  <span class="hljs-comment"># admin</span>
+
+  <span class="hljs-attribute">observation</span>: ember.computed.reads <span class="hljs-string">'observations.firstObject'</span>
+  <span class="hljs-attribute">description</span>: ember.computed.reads <span class="hljs-string">'values.description'</span>
+  <span class="hljs-attribute">html</span>:        ember.computed -&gt; <span class="hljs-property">@get</span>(<span class="hljs-string">'values.columns.result'</span>).htmlSafe()
+
+  <span class="hljs-attribute">is_html</span>:           ember.computed.equal <span class="hljs-string">'values.type'</span>, <span class="hljs-string">'html_result'</span>
+  <span class="hljs-attribute">admin_type</span>:        ember.computed.reads <span class="hljs-string">'value.type'</span>
+  <span class="hljs-attribute">admin_is_html</span>:     ember.computed.equal <span class="hljs-string">'value.type'</span>,  <span class="hljs-string">'html_result'</span>
+  <span class="hljs-attribute">admin_is_adjusted</span>: ember.computed.equal <span class="hljs-string">'value.type'</span>,  <span class="hljs-string">'adjusted_result'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Focusing</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">is_focused</span>:    <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">set_focused</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'is_focused'</span>, <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">reset_focused</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'is_focused'</span>, <span class="hljs-literal">false</span></div></div></div></div></body></html>

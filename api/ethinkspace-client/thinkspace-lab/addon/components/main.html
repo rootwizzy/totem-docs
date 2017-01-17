@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-lab/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-lab/addon/components/main"><meta name="groc-project-path" content="thinkspace-lab/addon/components/main.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-lab/addon/components/main.coffee">thinkspace-lab/addon/components/main.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import labs  from <span class="hljs-string">'thinkspace-lab/managers/labs'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">tvo_titles</span>:                    <span class="hljs-string">'lab'</span>
+  <span class="hljs-attribute">ordered_categories</span>:            <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">selected_category</span>:             <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">is_viewing_keyboard_shortcuts</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@labs</span> = labs.create()
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo.status'</span>).register_callback(@, <span class="hljs-string">'validate_lab'</span>)
+
+  <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span>
+    chart = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+    chart.get(ns.to_p(<span class="hljs-string">'lab:categories'</span>)).<span class="hljs-keyword">then</span> (categories) =&gt;
+      ordered_categories = categories.sortBy(<span class="hljs-string">'position'</span>)
+      first_category     = ordered_categories.get(<span class="hljs-string">'firstObject'</span>)
+      <span class="hljs-property">@set</span> <span class="hljs-string">'selected_category'</span>, first_category <span class="hljs-keyword">if</span> ember.isPresent(first_category)
+      <span class="hljs-property">@set</span> <span class="hljs-string">'ordered_categories'</span>, ordered_categories
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(category)</span>         -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'selected_category'</span>, category
+    <span class="hljs-attribute">toggle_keyboard_shortcuts</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@toggleProperty</span> <span class="hljs-string">'is_viewing_keyboard_shortcuts'</span>
+
+  <span class="hljs-attribute">validate_lab</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      messages = []
+      <span class="hljs-keyword">for</span> lab <span class="hljs-keyword">in</span> <span class="hljs-property">@labs</span>.get_category_labs()
+        category_messages = ember.makeArray lab.validate_lab_observations()
+        messages.push(category_messages...) <span class="hljs-keyword">if</span> ember.isPresent(category_messages)
+      resolve(messages)</div></div></div></div></body></html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-markup/addon/components/library/edit/manager/comment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-markup/addon/components/library/edit/manager/comment"><meta name="groc-project-path" content="thinkspace-markup/addon/components/library/edit/manager/comment.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-markup/addon/components/library/edit/manager/comment.coffee">thinkspace-markup/addon/components/library/edit/manager/comment.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base_component from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base_component.extend
+  <span class="hljs-attribute">model</span>:            <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">all_library_tags</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">tagName</span>:          <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">is_editing</span>:  <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">is_deleting</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">comment</span>:   ember.computed.reads <span class="hljs-string">'model.comment'</span>
+  <span class="hljs-attribute">uses</span>:      ember.computed.reads <span class="hljs-string">'model.uses'</span>
+
+  <span class="hljs-attribute">all_tags</span>: ember.computed.reads <span class="hljs-string">'model.all_tags'</span>
+
+  <span class="hljs-attribute">c_validated_input</span>: ns.to_p(<span class="hljs-string">'common'</span>, <span class="hljs-string">'shared'</span>, <span class="hljs-string">'validated_input'</span>)
+  <span class="hljs-attribute">c_tag_marker</span>:      ns.to_p(<span class="hljs-string">'markup'</span>, <span class="hljs-string">'library'</span>, <span class="hljs-string">'edit'</span>, <span class="hljs-string">'manager'</span>, <span class="hljs-string">'marker'</span>)
+  <span class="hljs-attribute">c_common_dropdown</span>: ns.to_p(<span class="hljs-string">'common'</span>, <span class="hljs-string">'dropdown'</span>)
+
+  <span class="hljs-attribute">dropdown_tags</span>: ember.computed <span class="hljs-string">'all_library_tags'</span>, <span class="hljs-function">-&gt;</span>
+    all_library_tags = <span class="hljs-property">@get</span>(<span class="hljs-string">'all_library_tags'</span>)
+
+    arr = []
+
+    all_library_tags.forEach (tag) =&gt;
+      arr.pushObject({<span class="hljs-attribute">display</span>: tag})
+
+    arr
+
+  <span class="hljs-attribute">last_used</span>: ember.computed <span class="hljs-string">'model.last_used'</span>, <span class="hljs-function">-&gt;</span>
+    model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    last_used = model.get(<span class="hljs-string">'last_used'</span>)
+    moment_last_used = moment.utc(last_used)
+
+    <span class="hljs-keyword">if</span> last_used?
+      <span class="hljs-keyword">return</span> moment_last_used.utc().format(<span class="hljs-string">'MMMM Do, YYYY'</span>)
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-string">'Not yet used'</span>
+
+  <span class="hljs-attribute">requires_input</span>: ember.computed <span class="hljs-string">'is_editing'</span>, <span class="hljs-string">'is_deleting'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'is_editing'</span>) <span class="hljs-keyword">or</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_deleting'</span>)
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">delete</span>:        <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span>(<span class="hljs-string">'is_deleting'</span>, <span class="hljs-literal">true</span>)
+    <span class="hljs-attribute">edit</span>:          <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span>(<span class="hljs-string">'is_editing'</span>, <span class="hljs-literal">true</span>)
+
+    <span class="hljs-attribute">cancel_delete</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span>(<span class="hljs-string">'is_deleting'</span>, <span class="hljs-literal">false</span>)
+    <span class="hljs-attribute">cancel_edit</span>:   <span class="hljs-function">-&gt;</span> 
+      <span class="hljs-property">@set</span>(<span class="hljs-string">'comment'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'model.comment'</span>))
+      <span class="hljs-property">@set</span>(<span class="hljs-string">'all_tags'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'model.all_tags'</span>))
+      <span class="hljs-property">@set</span>(<span class="hljs-string">'is_editing'</span>, <span class="hljs-literal">false</span>)
+
+    <span class="hljs-attribute">confirm_edit</span>: <span class="hljs-function">-&gt;</span>
+      model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      comment = <span class="hljs-property">@get</span>(<span class="hljs-string">'comment'</span>)
+
+      model.set(<span class="hljs-string">'comment'</span>, comment)
+      model.set(<span class="hljs-string">'all_tags'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'all_tags'</span>))
+      model.save().<span class="hljs-keyword">then</span> (saved_comment) =&gt;
+        <span class="hljs-property">@set</span>(<span class="hljs-string">'is_editing'</span>, <span class="hljs-literal">false</span>)
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Error in submitting edited comment.'</span>)
+
+    <span class="hljs-attribute">confirm_delete</span>: <span class="hljs-function">-&gt;</span>
+      model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      model.deleteRecord()
+      model.save()
+
+    <span class="hljs-attribute">remove_tag</span>: <span class="hljs-function"><span class="hljs-params">(tag)</span> -&gt;</span>
+      model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      <span class="hljs-property">@sendAction</span>(<span class="hljs-string">'remove_tag'</span>, model, tag)
+
+    <span class="hljs-attribute">add_tag</span>: <span class="hljs-function"><span class="hljs-params">(tag)</span> -&gt;</span>
+      model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      <span class="hljs-property">@sendAction</span>(<span class="hljs-string">'add_tag'</span>, model, tag.display)</div></div></div></div></body></html>

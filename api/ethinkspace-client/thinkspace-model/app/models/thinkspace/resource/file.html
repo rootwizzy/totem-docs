@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/models/thinkspace/resource/file</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/models/thinkspace/resource/file"><meta name="groc-project-path" content="thinkspace-model/app/models/thinkspace/resource/file.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-model/app/models/thinkspace/resource/file.coffee">thinkspace-model/app/models/thinkspace/resource/file.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ta    from <span class="hljs-string">'totem/ds/associations'</span>
+
+export default ta.Model.extend ta.add(
+    ta.polymorphic <span class="hljs-string">'resourceable'</span>
+    ta.has_many    <span class="hljs-string">'tags'</span>, <span class="hljs-attribute">reads</span>: {}
+  ),
+
+  <span class="hljs-attribute">url</span>:               ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">title</span>:             ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">content_type</span>:      ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">size</span>:              ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">file_updated_at</span>:   ta.attr(<span class="hljs-string">'date'</span>)
+  <span class="hljs-attribute">resourceable_type</span>: ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">resourceable_id</span>:   ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">new_tags</span>:          ta.attr()
+
+  <span class="hljs-attribute">tag</span>: ember.computed.reads ta.to_prop(<span class="hljs-string">'tags'</span>, <span class="hljs-string">'firstObject'</span>)
+
+  <span class="hljs-attribute">extension</span>: ember.computed <span class="hljs-string">'title'</span>, <span class="hljs-function">-&gt;</span>
+    title = <span class="hljs-property">@get</span>(<span class="hljs-string">'title'</span>)
+    <span class="hljs-string">'.'</span> + title.split(<span class="hljs-string">'.'</span>).pop()
+
+  <span class="hljs-attribute">without_extension</span>: ember.computed <span class="hljs-string">'title'</span>, <span class="hljs-function">-&gt;</span>
+    title = <span class="hljs-property">@get</span>(<span class="hljs-string">'title'</span>)
+    parts = title.split(<span class="hljs-string">'.'</span>)
+    parts.pop()
+    parts.join(<span class="hljs-string">'.'</span>)
+
+  <span class="hljs-attribute">human_size</span>: ember.computed <span class="hljs-string">'size'</span>, <span class="hljs-function">-&gt;</span>
+    bytes     = <span class="hljs-property">@get</span>(<span class="hljs-string">'size'</span>)
+    kilobytes = bytes / <span class="hljs-number">1024</span>
+    megabytes = kilobytes / <span class="hljs-number">1024</span>
+    gigabytes = megabytes / <span class="hljs-number">1024</span>
+    <span class="hljs-keyword">return</span> gigabytes.toFixed(<span class="hljs-number">1</span>) + <span class="hljs-string">' GB'</span> <span class="hljs-keyword">if</span> gigabytes &gt;= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> megabytes.toFixed(<span class="hljs-number">1</span>) + <span class="hljs-string">' MB'</span> <span class="hljs-keyword">if</span> megabytes &gt;= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> kilobytes.toFixed(<span class="hljs-number">1</span>) + <span class="hljs-string">' KB'</span> <span class="hljs-keyword">if</span> kilobytes &gt;= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> bytes.toFixed(<span class="hljs-number">1</span>) + <span class="hljs-string">' B'</span></div></div></div></div></body></html>

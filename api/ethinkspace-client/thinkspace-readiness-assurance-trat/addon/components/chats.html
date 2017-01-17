@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-trat/addon/components/chats</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-trat/addon/components/chats"><meta name="groc-project-path" content="thinkspace-readiness-assurance-trat/addon/components/chats.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-readiness-assurance-trat/addon/components/chats.coffee">thinkspace-readiness-assurance-trat/addon/components/chats.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import util  from <span class="hljs-string">'totem/util_ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">chat_managers</span>: ember.computed <span class="hljs-string">'chat_ids.[]'</span>, <span class="hljs-function">-&gt;</span>
+    managers = []
+    chat_ids = <span class="hljs-property">@get</span>(<span class="hljs-string">'chat_ids'</span>) <span class="hljs-keyword">or</span> []
+    <span class="hljs-keyword">for</span> qid <span class="hljs-keyword">in</span> chat_ids
+      cm = <span class="hljs-property">@rm</span>.chat_manager_map.get(qid)
+      qm = <span class="hljs-property">@rm</span>.question_manager_map.get(qid)
+      util.error @, <span class="hljs-string">"Question manager not found for qid: <span class="hljs-subst">#{qid}</span>"</span> <span class="hljs-keyword">if</span> ember.isBlank(qm)
+      util.error @, <span class="hljs-string">"Chat manager not found for qid: <span class="hljs-subst">#{qid}</span>"</span>     <span class="hljs-keyword">if</span> ember.isBlank(cm)
+      managers.push
+        <span class="hljs-attribute">cm</span>: cm
+        <span class="hljs-attribute">qm</span>: qm
+    managers
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">close</span>: <span class="hljs-function"><span class="hljs-params">(qid)</span> -&gt;</span>
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'close'</span>, qid</div></div></div></div></body></html>

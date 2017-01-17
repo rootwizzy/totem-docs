@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-instructor/addon/components/shared/time/after</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-instructor/addon/components/shared/time/after"><meta name="groc-project-path" content="thinkspace-readiness-assurance-instructor/addon/components/shared/time/after.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-readiness-assurance-instructor/addon/components/shared/time/after.coffee">thinkspace-readiness-assurance-instructor/addon/components/shared/time/after.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-readiness-assurance-instructor/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">after_buttons</span>:    <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">selected_minutes</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set_after_buttons</span>()
+    ember.defineProperty @, <span class="hljs-string">'show_formatted'</span>, ember.computed <span class="hljs-string">"rad.<span class="hljs-subst">#{<span class="hljs-property">@time</span>}</span>"</span>, <span class="hljs-function">-&gt;</span> ember.isPresent(<span class="hljs-property">@formatted</span>) <span class="hljs-keyword">and</span> ember.isPresent(<span class="hljs-property">@get</span>(<span class="hljs-string">"rad.<span class="hljs-subst">#{<span class="hljs-property">@time</span>}</span>"</span>))
+    ember.defineProperty @, <span class="hljs-string">'formatted_time'</span>, ember.computed.reads <span class="hljs-string">"rad.<span class="hljs-subst">#{<span class="hljs-property">@time</span>}</span>_formatted"</span>
+    <span class="hljs-property">@validate</span> = <span class="hljs-property">@rad</span>.validate
+
+  <span class="hljs-attribute">set_after_buttons</span>: <span class="hljs-function">-&gt;</span>
+    buttons = []
+    range = <span class="hljs-property">@range</span> <span class="hljs-keyword">or</span> {<span class="hljs-attribute">start</span>: <span class="hljs-number">1</span>, <span class="hljs-attribute">end</span>: <span class="hljs-number">5</span>, <span class="hljs-attribute">by</span>: <span class="hljs-number">1</span>}
+    <span class="hljs-keyword">for</span> hash <span class="hljs-keyword">in</span> ember.makeArray(range)
+      start = hash.start
+      end   = hash.end
+      b     = hash.<span class="hljs-keyword">by</span>
+      <span class="hljs-keyword">if</span> start <span class="hljs-keyword">and</span> end <span class="hljs-keyword">and</span> b
+        n       = Math.floor( (end - start) / b) + <span class="hljs-number">1</span>
+        running = start
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.n]
+          running += b <span class="hljs-keyword">unless</span> i == <span class="hljs-number">1</span>
+          label = <span class="hljs-property">@am</span>.pluralize(running, <span class="hljs-string">'minute'</span>)
+          buttons.push(<span class="hljs-attribute">id</span>: running, <span class="hljs-attribute">label</span>: <span class="hljs-string">"<span class="hljs-subst">#{running}</span> <span class="hljs-subst">#{label}</span>"</span>)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'after_buttons'</span>, buttons
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(minutes)</span> -&gt;</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'selected_minutes'</span>, minutes
+      after_at = <span class="hljs-keyword">new</span> Date()
+      <span class="hljs-property">@am</span>.adjust_by_minutes(after_at, minutes)
+      <span class="hljs-property">@rad</span>.set <span class="hljs-property">@time</span>, after_at
+      <span class="hljs-property">@rad</span>.set <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@time</span>}</span>_formatted"</span>, <span class="hljs-property">@am</span>.format_time_only(after_at)
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'validate'</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@validate</span></div></div></div></div></body></html>

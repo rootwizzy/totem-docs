@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-dock/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-dock/addon/components/main"><meta name="groc-project-path" content="thinkspace-dock/addon/components/main.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-dock/addon/components/main.coffee">thinkspace-dock/addon/components/main.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">dock_is_visible</span>: ember.computed.reads <span class="hljs-string">'addons.dock_is_visible'</span>
+  <span class="hljs-attribute">dock_addons</span>:     ember.computed.reads <span class="hljs-string">'addons.dock_addons'</span>
+
+  <span class="hljs-attribute">ordered_addons</span>: ember.computed <span class="hljs-string">'dock_addons.[]'</span>, <span class="hljs-function">-&gt;</span>
+    addons = <span class="hljs-property">@get</span>(<span class="hljs-string">'dock_addons'</span>)
+    first  = []
+    middle = []
+    last   = []
+    <span class="hljs-keyword">for</span> addon <span class="hljs-keyword">in</span> addons
+      engine = addon.engine
+      <span class="hljs-keyword">switch</span> addon.group
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'first'</span>  <span class="hljs-keyword">then</span> first.push(addon)
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'middle'</span> <span class="hljs-keyword">then</span> middle.push(addon)
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'last'</span>   <span class="hljs-keyword">then</span> last.push(addon)
+        <span class="hljs-keyword">else</span>               middle.push(addon)
+    first.concat(middle.concat(last)).reverse()</div></div></div></div></body></html>

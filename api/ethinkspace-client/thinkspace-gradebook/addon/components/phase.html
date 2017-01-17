@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-gradebook/addon/components/phase</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-gradebook/addon/components/phase"><meta name="groc-project-path" content="thinkspace-gradebook/addon/components/phase.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-gradebook/addon/components/phase.coffee">thinkspace-gradebook/addon/components/phase.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">phase_manager</span>: ember.inject.service()
+  <span class="hljs-attribute">gradebook</span>:     ember.inject.service()
+
+  <span class="hljs-attribute">addon_ownerable</span>:    ember.computed.reads <span class="hljs-string">'addons.active_addon_ownerable'</span>
+  <span class="hljs-attribute">current_phase</span>:      ember.computed.reads <span class="hljs-string">'thinkspace.current_phase'</span>
+  <span class="hljs-attribute">current_assignment</span>: ember.computed.reads <span class="hljs-string">'thinkspace.current_assignment'</span>
+
+  <span class="hljs-attribute">is_viewing_total_score</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">is_viewing_phase_state</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">is_team_collaboration</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">phase_state</span>:           <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">total_score</span>:           <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'gradebook'</span>).register_change_component(@)
+    <span class="hljs-property">@calc_and_set_total_score</span>()
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">phase_score</span>: <span class="hljs-function"><span class="hljs-params">(phase, score)</span> -&gt;</span> <span class="hljs-property">@save_phase_score</span>(phase, score)
+    <span class="hljs-attribute">phase_state</span>: <span class="hljs-function"><span class="hljs-params">(phase, state)</span> -&gt;</span> <span class="hljs-property">@save_phase_state</span>(phase, state)
+    <span class="hljs-attribute">delete_ownerable_data</span>:      <span class="hljs-function">-&gt;</span> <span class="hljs-property">@delete_ownerable_data</span>()
+
+    <span class="hljs-attribute">toggle_is_viewing_phase_state</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span>(<span class="hljs-string">'is_viewing_total_score'</span>, <span class="hljs-literal">false</span>) <span class="hljs-keyword">if</span> <span class="hljs-property">@toggleProperty</span>(<span class="hljs-string">'is_viewing_phase_state'</span>)
+    <span class="hljs-attribute">toggle_is_viewing_total_score</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span>(<span class="hljs-string">'is_viewing_phase_state'</span>, <span class="hljs-literal">false</span>) <span class="hljs-keyword">if</span> <span class="hljs-property">@toggleProperty</span>(<span class="hljs-string">'is_viewing_total_score'</span>)
+
+  <span class="hljs-attribute">register_change_callback</span>: <span class="hljs-function"><span class="hljs-params">(change={})</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> (change.phase <span class="hljs-keyword">or</span> change.ownerable)
+    <span class="hljs-property">@calc_and_set_total_score</span>()
+
+  <span class="hljs-attribute">call_change_components</span>: <span class="hljs-function"><span class="hljs-params">(change={})</span> -&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'gradebook'</span>).call_change_components(change)
+
+  <span class="hljs-attribute">set_total_score</span>: <span class="hljs-function"><span class="hljs-params">(score)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'total_score'</span>, score
+
+  <span class="hljs-attribute">calc_and_set_total_score</span>: <span class="hljs-function">-&gt;</span>
+    map        = <span class="hljs-property">@get</span>(<span class="hljs-string">'phase_manager.map'</span>)
+    assignment = <span class="hljs-property">@get</span> <span class="hljs-string">'current_assignment'</span>
+    <span class="hljs-keyword">if</span> ember.isBlank(assignment)
+      <span class="hljs-property">@set_total_score</span>(<span class="hljs-number">0</span>)
+      <span class="hljs-keyword">return</span>
+    assignment.get(ns.to_p <span class="hljs-string">'phases'</span>).<span class="hljs-keyword">then</span> (phases) =&gt;
+      <span class="hljs-keyword">if</span> ember.isBlank(phases)
+          <span class="hljs-property">@set_total_score</span>(<span class="hljs-number">0</span>)
+          <span class="hljs-keyword">return</span>
+      total = <span class="hljs-number">0</span>
+      phases.forEach (phase) =&gt;
+        phase_states = map.get_ownerable_phase_states(phase)
+        phase_states.forEach (phase_state) =&gt;
+          total += Number(phase_state.get(<span class="hljs-string">'score'</span>) <span class="hljs-keyword">or</span> <span class="hljs-number">0</span>)
+      decimals = <span class="hljs-property">@get</span>(<span class="hljs-string">'gradebook'</span>).get_phase_score_max_decimals()
+      total    = total.toFixed(decimals)
+      <span class="hljs-property">@set_total_score</span>(total)
+
+  <span class="hljs-attribute">save_phase_score</span>: <span class="hljs-function"><span class="hljs-params">(phase, score)</span> -&gt;</span>
+    phase_state = phase.get(<span class="hljs-string">'phase_state'</span>)
+    phase_state.get(ns.to_p <span class="hljs-string">'phase_score'</span>).<span class="hljs-keyword">then</span> (phase_score) =&gt;
+      <span class="hljs-keyword">unless</span> phase_score
+        phase_score = <span class="hljs-property">@tc</span>.create_record ns.to_p(<span class="hljs-string">'phase_score'</span>)
+        phase_score.set ns.to_p(<span class="hljs-string">'phase_state'</span>), phase_state
+      score = Number(score)  <span class="hljs-comment"># score is text but the model attribute is a Number; convert to a number for isDirty check</span>
+      phase_score.set <span class="hljs-string">'score'</span>, score
+      <span class="hljs-keyword">if</span> phase_score.get(<span class="hljs-string">'hasDirtyAttributes'</span>)
+        phase_score.save().<span class="hljs-keyword">then</span> (record) =&gt;
+          <span class="hljs-property">@totem_messages</span>.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: record, <span class="hljs-attribute">action</span>: <span class="hljs-string">'save'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'phase_score'</span>, <span class="hljs-string">'save'</span>)
+          <span class="hljs-comment">#@focus_on_score_input()</span>
+          <span class="hljs-property">@calc_and_set_total_score</span>()
+          <span class="hljs-property">@call_change_components</span>(<span class="hljs-attribute">score</span>: <span class="hljs-literal">true</span>)
+        , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+          <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: phase_score
+
+  <span class="hljs-attribute">save_phase_state</span>: <span class="hljs-function"><span class="hljs-params">(phase, state)</span> -&gt;</span>
+    phase_state = phase.get(<span class="hljs-string">'phase_state'</span>)
+    <span class="hljs-keyword">unless</span> phase_state.get(<span class="hljs-string">'current_state'</span>) == state
+      phase_state.set <span class="hljs-string">'new_state'</span>, state
+      phase_state.save().<span class="hljs-keyword">then</span> (record) =&gt;
+        <span class="hljs-property">@totem_messages</span>.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: record, <span class="hljs-attribute">action</span>: <span class="hljs-string">'save'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'phase_state'</span>, <span class="hljs-string">'save'</span>)</div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> call_change_components</span></p></div></div><div class="code"><div class="wrapper">        <span class="hljs-comment">#@focus_on_score_input()</span>
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: phase_state
+
+  <span class="hljs-attribute">delete_ownerable_data</span>: <span class="hljs-function">-&gt;</span>
+    ownerable = <span class="hljs-property">@get</span> <span class="hljs-string">'addon_ownerable'</span>
+    phase     = <span class="hljs-property">@get</span> <span class="hljs-string">'current_phase'</span>
+    confirm   = <span class="hljs-built_in">window</span>.confirm <span class="hljs-string">"Are you sure you want to clear <span class="hljs-subst">#{ownerable.get(<span class="hljs-string">'first_name'</span>)}</span>'s data for <span class="hljs-subst">#{phase.get(<span class="hljs-string">'title'</span>)}</span>?  This will remove all of their responses for this phase.  This process is NOT REVERSIBLE.  This will refresh your browser."</span>
+    <span class="hljs-keyword">if</span> confirm
+      query =
+        <span class="hljs-attribute">id</span>:             phase.get(<span class="hljs-string">'id'</span>)
+        <span class="hljs-attribute">ownerable_id</span>:   ownerable.get(<span class="hljs-string">'id'</span>)
+        <span class="hljs-attribute">ownerable_type</span>: <span class="hljs-property">@totem_scope</span>.standard_record_path(ownerable)
+        <span class="hljs-attribute">action</span>:         <span class="hljs-string">'delete_ownerable_data'</span>
+        <span class="hljs-attribute">verb</span>:           <span class="hljs-string">'PUT'</span>
+      <span class="hljs-property">@totem_messages</span>.show_loading_outlet(<span class="hljs-attribute">message</span>: <span class="hljs-string">'Removing learner data...'</span>)
+      <span class="hljs-property">@tc</span>.query(ns.to_p(<span class="hljs-string">'phase'</span>), query, <span class="hljs-attribute">single</span>: <span class="hljs-literal">true</span>).<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@calc_and_set_total_score</span>()
+        <span class="hljs-property">@totem_messages</span>.hide_loading_outlet()</div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> set_addon_ownerable   @totem_messages.hide_loading_outlet()
+  location.reload() # TODO: Temporary until we figure out how to handle this in Ember.</span></p>
+<p>location.reload() # TODO: Temporary until we figure out how to handle this in Ember.</p></div></div></div></div></body></html>

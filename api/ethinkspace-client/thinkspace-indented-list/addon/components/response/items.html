@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/addon/components/response/items</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-indented-list/addon/components/response/items"><meta name="groc-project-path" content="thinkspace-indented-list/addon/components/response/items.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-indented-list/addon/components/response/items.coffee">thinkspace-indented-list/addon/components/response/items.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+import response_manager from <span class="hljs-string">'thinkspace-indented-list/managers/response'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    hash          = <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo'</span>).get_path_value(<span class="hljs-property">@tvo_path</span>)
+    indented_list = hash.indented_list <span class="hljs-keyword">or</span> {}
+    <span class="hljs-property">@sources</span>      = indented_list.sources
+    <span class="hljs-property">@index_px</span>     = indented_list.index_px
+    <span class="hljs-property">@attributes</span>   = hash.attributes
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo.helper'</span>).define_ready(@)
+
+  <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@totem_data</span>.ability.refresh().<span class="hljs-keyword">then</span> =&gt;
+      readonly = <span class="hljs-property">@get</span>(<span class="hljs-string">'list.expert'</span>) <span class="hljs-keyword">or</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'viewonly'</span>)
+      rm = response_manager.create()
+      rm.init_manager
+        <span class="hljs-attribute">model</span>:     <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+        <span class="hljs-attribute">indent_px</span>: <span class="hljs-property">@indent_px</span> <span class="hljs-keyword">or</span> <span class="hljs-number">20</span>
+        <span class="hljs-attribute">readonly</span>:  readonly
+      <span class="hljs-property">@config_sources</span>(rm)
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo'</span>).set_path_value(<span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@tvo_path</span>}</span>.response_manager"</span>, rm) <span class="hljs-comment"># save rm in tvo for validation functions</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'response_manager'</span>, rm
+
+  <span class="hljs-attribute">config_sources</span>: <span class="hljs-function"><span class="hljs-params">(rm)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(<span class="hljs-property">@sources</span>)
+    <span class="hljs-keyword">for</span> source <span class="hljs-keyword">in</span> <span class="hljs-property">@sources</span>
+      source.set <span class="hljs-string">'component_name'</span>, <span class="hljs-keyword">if</span> source.new_container <span class="hljs-keyword">then</span> <span class="hljs-string">'source/new'</span> <span class="hljs-keyword">else</span> <span class="hljs-string">'source/existing'</span>
+      source.rm = rm</div></div></div></div></body></html>

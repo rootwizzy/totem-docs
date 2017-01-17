@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/services/builder/initialize</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/services/builder/initialize"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/services/builder/initialize.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-builder-pe/addon/services/builder/initialize.coffee">thinkspace-builder-pe/addon/services/builder/initialize.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/services/base'</span>
+import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
+
+<span class="hljs-comment">## This mixin contains the step initialization functionality for the builder service</span>
+
+export default ember.Mixin.create 
+
+
+
+  <span class="hljs-attribute">launch</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@_initialize_map</span>()
+
+      step_prototypes = <span class="hljs-property">@get</span>(<span class="hljs-string">'step_prototypes'</span>)
+      steps           = ember.makeArray()
+
+      step_prototypes.forEach (prototype) =&gt;
+        step = <span class="hljs-property">@_create_step_from_prototype</span>(prototype)
+        <span class="hljs-property">@_write_to_map</span>(prototype, step)
+        steps.pushObject step
+
+      <span class="hljs-property">@set</span> <span class="hljs-string">'steps'</span>, steps
+      <span class="hljs-property">@initialize_steps</span>().<span class="hljs-keyword">then</span> =&gt; resolve()
+
+  <span class="hljs-attribute">initialize_steps</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@_warn</span> <span class="hljs-string">"you passed in both 'only' and 'except' options to initialize_steps()"</span> <span class="hljs-keyword">if</span> ember.isPresent(options.only) <span class="hljs-keyword">and</span> ember.isPresent(options.except)
+
+      only   = ember.makeArray options.only
+      except = ember.makeArray options.except
+
+      steps = <span class="hljs-property">@get</span>(<span class="hljs-string">'steps'</span>)
+      steps = <span class="hljs-property">@intersection</span>(steps, only) <span class="hljs-keyword">if</span> ember.isPresent(options.only)
+      steps = <span class="hljs-property">@difference</span>(steps, except) <span class="hljs-keyword">if</span> ember.isPresent(options.except)
+
+      promises = []
+      steps.forEach (step) =&gt; promises.pushObject(step.initialize()) <span class="hljs-keyword">if</span> step.initialize?
+
+      ember.RSVP.Promise.all(promises).<span class="hljs-keyword">then</span> =&gt; resolve()
+
+  <span class="hljs-attribute">get_step</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span> <span class="hljs-property">@_get_step_from_id</span>(id)
+
+
+  <span class="hljs-comment">##### Private
+
+  _initialize_map: -&gt;
+    map = @get('step_map')
+    if ember.isPresent map
+      map.clear()
+    else
+      map = ember.Map.create()
+    @set 'step_map', map
+    return map
+
+  _create_step_from_prototype: (prototype) -&gt;
+    step = prototype.create(container: @container)
+
+  _write_to_map: (key, value) -&gt;
+    map = @get('step_map')
+    unless map
+      @_warn "Calling write_to_map(), but step_map has not yet been created."
+      return null
+    map.set key, value
+
+  _get_step_from_prototype: (prototype) -&gt;
+    map = @get('step_map')
+    unless map
+      @_warn "Calling get_step_from_prototype(), but step_map has not yet been created."
+      return null
+    step = map.get(prototype)
+
+  _get_step_from_id: (id) -&gt;
+    steps = @get('steps')
+    if ember.isEmpty steps
+      @_warn "Calling get_step_from_id(), but steps have not yet been created."
+      return null
+    steps.findBy 'id', id
+</span></div></div></div></div></body></html>

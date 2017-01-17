@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/server_events/initialize</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/server_events/initialize"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/server_events/initialize.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-common/addon/mixins/server_events/initialize.coffee">thinkspace-common/addon/mixins/server_events/initialize.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+import m_msgs from <span class="hljs-string">'totem-messages/mixins/messages/base'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">phase_manager</span>: ember.inject.service()
+  <span class="hljs-attribute">pubsub</span>:        ember.inject.service()
+
+  <span class="hljs-attribute">message_model_type</span>: <span class="hljs-string">'thinkspace/casespace/message'</span>
+  <span class="hljs-attribute">pubsub_url</span>:         <span class="hljs-string">'thinkspace/pub_sub/server_events'</span>
+
+  <span class="hljs-attribute">totem_messages_object</span>: ember.Object.extend(m_msgs)
+  <span class="hljs-attribute">filter_rooms</span>:          <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>(arguments...)
+    <span class="hljs-property">@pubsub_active</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'pubsub.pubsub_active'</span>)
+    <span class="hljs-property">@error</span> @, <span class="hljs-string">'[WARNING] You are attempting to use the "server_events" service but pubsub is inactive.'</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@pubsub_active</span>
+    <span class="hljs-property">@store</span>         = <span class="hljs-property">@get</span>(<span class="hljs-string">'store'</span>)
+    <span class="hljs-property">@thinkspace</span>    = <span class="hljs-property">@get</span>(<span class="hljs-string">'thinkspace'</span>)
+    <span class="hljs-property">@pubsub</span>        = <span class="hljs-property">@get</span>(<span class="hljs-string">'pubsub'</span>)
+    <span class="hljs-property">@phase_manager</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'phase_manager'</span>)
+    <span class="hljs-property">@set_messages_object</span>()
+
+  <span class="hljs-attribute">reset_all</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@leave_all</span>()
+
+  <span class="hljs-attribute">get_current_user</span>: <span class="hljs-function">-&gt;</span> totem_scope.get_current_user()
+
+  <span class="hljs-attribute">get_filter_rooms</span>:         <span class="hljs-function">-&gt;</span> ember.makeArray(<span class="hljs-property">@get</span> <span class="hljs-string">'filter_rooms'</span>).compact().copy()
+  <span class="hljs-attribute">set_filter_rooms</span>: <span class="hljs-function"><span class="hljs-params">(rooms)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'filter_rooms'</span>, rooms
+  <span class="hljs-attribute">clear_filter_rooms</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set_filter_rooms</span>(<span class="hljs-literal">null</span>)
+
+  <span class="hljs-attribute">set_messages_object</span>: <span class="hljs-function">-&gt;</span>
+    model_type = <span class="hljs-property">@get</span>(<span class="hljs-string">'message_model_type'</span>)
+    load_url   = <span class="hljs-property">@get</span>(<span class="hljs-string">'pubsub_url'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(model_type) <span class="hljs-keyword">or</span> ember.isBlank(load_url)
+    <span class="hljs-property">@messages</span> = <span class="hljs-property">@totem_messages_object</span>.create
+      <span class="hljs-attribute">container</span>:          <span class="hljs-property">@container</span>
+      <span class="hljs-attribute">message_model_type</span>: model_type
+      <span class="hljs-attribute">message_load_url</span>:   load_url + <span class="hljs-string">'/load_messages'</span>
+
+  <span class="hljs-attribute">get_totem_scope</span>: <span class="hljs-function">-&gt;</span> totem_scope
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'ServerEvents'</span></div></div></div></div></body></html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/components/content/assessment/quant/item/preview</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/components/content/assessment/quant/item/preview"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/components/content/assessment/quant/item/preview.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-builder-pe/addon/components/content/assessment/quant/item/preview.coffee">thinkspace-builder-pe/addon/components/content/assessment/quant/item/preview.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+import quant_item from <span class="hljs-string">'./item'</span>
+
+export default base.extend</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="services">Services</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-comment">#manager: ember.inject.service ns.to_p 'peer_assessment', 'builder', 'manager'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="properties">Properties</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">classNameBindings</span>: [<span class="hljs-string">'is_selected:is-selected'</span>]
+  <span class="hljs-attribute">classNames</span>:        [<span class="hljs-string">'ts-pa_quant-item'</span>, <span class="hljs-string">'ts-pa_item'</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Slider properties</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">fill_class</span>:        <span class="hljs-string">'ts-rangeslider_fill'</span>
+  <span class="hljs-attribute">handle_class</span>:      <span class="hljs-string">'ts-rangeslider_handle'</span>
+  <span class="hljs-attribute">range_class</span>:       <span class="hljs-string">'ts-rangeslider'</span>
+  <span class="hljs-attribute">fill_class_hex</span>:    
+    <span class="hljs-string">'green'</span>:  <span class="hljs-string">'#6dc05e'</span>
+    <span class="hljs-string">'yellow'</span>: <span class="hljs-string">'#fcb725'</span>
+    <span class="hljs-string">'red'</span>:    <span class="hljs-string">'#fb6b6b'</span>
+  <span class="hljs-attribute">slider_background_template</span>: <span class="hljs-string">"&lt;div class='ts-rangeslider_background' /&gt;"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="observers">Observers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">fill_color_change</span>: ember.observer <span class="hljs-string">'fill_color'</span>, <span class="hljs-function">-&gt;</span>
+    fill_color     = <span class="hljs-property">@get</span> <span class="hljs-string">'fill_color'</span>
+    fill_class     = <span class="hljs-property">@get</span> <span class="hljs-string">'fill_class'</span>
+    fill_class_hex = <span class="hljs-property">@get</span> <span class="hljs-string">'fill_class_hex'</span>
+    color          = fill_class_hex[fill_color]
+    <span class="hljs-property">@$</span>(<span class="hljs-string">".<span class="hljs-subst">#{fill_class}</span>"</span>).css(<span class="hljs-string">'background-color'</span>, color)
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@$</span>(<span class="hljs-string">'input[type="range"]'</span>).rangeslider
+        <span class="hljs-attribute">polyfill</span>:    <span class="hljs-literal">false</span>
+        <span class="hljs-attribute">rangeClass</span>:  <span class="hljs-property">@get</span> <span class="hljs-string">'range_class'</span>
+        <span class="hljs-attribute">fillClass</span>:   <span class="hljs-property">@get</span> <span class="hljs-string">'fill_class'</span>
+        <span class="hljs-attribute">handleClass</span>: <span class="hljs-property">@get</span> <span class="hljs-string">'handle_class'</span>
+        <span class="hljs-attribute">onInit</span>: <span class="hljs-function">=&gt;</span> <span class="hljs-property">@slider_set_ruler</span>()
+        <span class="hljs-attribute">onSlide</span>: <span class="hljs-function"><span class="hljs-params">(position, value)</span> =&gt;</span> <span class="hljs-property">@slider_set_color</span>(value)
+
+  <span class="hljs-attribute">willDestroyElement</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@$</span>(<span class="hljs-string">'input[type="range"]'</span>).rangeslider(<span class="hljs-string">'destroy'</span>)
+
+  <span class="hljs-attribute">mouseEnter</span>: <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span> <span class="hljs-property">@focusIn</span>(event)
+  <span class="hljs-attribute">mouseLeave</span>: <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span> <span class="hljs-property">@focusOut</span>(event)
+  <span class="hljs-attribute">focusIn</span>:    <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span> <span class="hljs-property">@set_is_selected</span>()
+  <span class="hljs-attribute">focusOut</span>:   <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span> <span class="hljs-property">@reset_is_selected</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">set_is_selected</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'is_selected'</span>, <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">reset_is_selected</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'is_selected'</span>, <span class="hljs-literal">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="slider-helpers">Slider helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">slider_set_ruler</span>: <span class="hljs-function">-&gt;</span>
+    range_class = <span class="hljs-property">@get</span> <span class="hljs-string">'range_class'</span>
+    template    = <span class="hljs-property">@get</span> <span class="hljs-string">'slider_background_template'</span>
+    $background = $(template)
+    <span class="hljs-property">@$</span>(<span class="hljs-string">".<span class="hljs-subst">#{range_class}</span>"</span>).prepend($background)
+
+  <span class="hljs-attribute">slider_set_color</span>: <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span>
+    points_max = <span class="hljs-number">5</span><span class="hljs-comment">#@get 'points_max'</span>
+    percentage = value / points_max
+    <span class="hljs-keyword">switch</span> 
+      <span class="hljs-keyword">when</span> percentage &gt;= <span class="hljs-number">0.67</span>
+        <span class="hljs-property">@set</span> <span class="hljs-string">'fill_color'</span>, <span class="hljs-string">'green'</span>
+      <span class="hljs-keyword">when</span> percentage &gt;= <span class="hljs-number">0.33</span> <span class="hljs-keyword">and</span> percentage &lt; <span class="hljs-number">0.67</span>
+        <span class="hljs-property">@set</span> <span class="hljs-string">'fill_color'</span>, <span class="hljs-string">'yellow'</span>
+      <span class="hljs-keyword">when</span> percentage &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> percentage &lt; <span class="hljs-number">0.33</span>
+        <span class="hljs-property">@set</span> <span class="hljs-string">'fill_color'</span>, <span class="hljs-string">'red'</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">set_is_managing_settings</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'is_managing_settings'</span>, <span class="hljs-literal">true</span>
+    <span class="hljs-attribute">reset_is_managing_settings</span>: <span class="hljs-function">-&gt;</span> 
+      <span class="hljs-property">@set</span> <span class="hljs-string">'is_managing_settings'</span>, <span class="hljs-literal">false</span>
+      ember.run.schedule <span class="hljs-string">'afterRender'</span>, @, <span class="hljs-function">=&gt;</span> <span class="hljs-property">@didInsertElement</span>() <span class="hljs-comment"># Re-initialize the slider.</span>
+
+    <span class="hljs-attribute">order_up</span>:   <span class="hljs-function">-&gt;</span>
+      model = <span class="hljs-property">@get</span> <span class="hljs-string">'model.model'</span>
+      <span class="hljs-comment">#@get('manager').reorder_quant_item(model, -1) # Model property is the actual object.</span>
+
+    <span class="hljs-attribute">order_down</span>: <span class="hljs-function">-&gt;</span>
+      model = <span class="hljs-property">@get</span> <span class="hljs-string">'model.model'</span>
+      <span class="hljs-comment">#@get('manager').reorder_quant_item(model, 1) # Model property is the actual object.</span>
+
+    <span class="hljs-attribute">duplicate</span>:  <span class="hljs-function">-&gt;</span> 
+      model = <span class="hljs-property">@get</span> <span class="hljs-string">'model.model'</span>
+      <span class="hljs-comment">#@get('manager').duplicate_quant_item(model)</span>
+
+    <span class="hljs-attribute">delete</span>: <span class="hljs-function">-&gt;</span>
+      model = <span class="hljs-property">@get</span> <span class="hljs-string">'model.model'</span>
+      <span class="hljs-comment">#@get('manager').delete_quant_item(model)</span></div></div></div></div></body></html>

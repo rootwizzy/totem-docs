@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/components/dock_engine_mount</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-common/app/components/dock_engine_mount"><meta name="groc-project-path" content="thinkspace-common/app/components/dock_engine_mount.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-common/app/components/dock_engine_mount.coffee">thinkspace-common/app/components/dock_engine_mount.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+import te    from <span class="hljs-string">'totem-engines/engines'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>:   <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
+    <span class="hljs-property">@engines</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'addons'</span>).reset_dock()  <span class="hljs-keyword">if</span> <span class="hljs-property">@reset_dock</span> == <span class="hljs-literal">true</span>
+    <span class="hljs-property">@set_route_addons</span>()
+
+  <span class="hljs-attribute">set_route_addons</span>: <span class="hljs-function"><span class="hljs-params">(top_pocket_done)</span> -&gt;</span>
+    owner = ember.getOwner(@)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(owner)
+    current_engine = owner.get(<span class="hljs-string">'base.modulePrefix'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(current_engine)
+    app_route     = <span class="hljs-property">@totem_messages</span>.get_app_route()
+    current_route = app_route.get(<span class="hljs-string">'router.currentRouteName'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(current_route)
+    all_addons = te.get_dock_addons(current_engine)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(all_addons)
+    engines = {}
+    <span class="hljs-keyword">for</span> engine, hash <span class="hljs-keyword">of</span> all_addons
+      engines[engine] = <span class="hljs-literal">true</span> <span class="hljs-keyword">if</span> hash[<span class="hljs-property">@pocket</span>] <span class="hljs-keyword">and</span> hash.routes.includes(current_route)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'engines'</span>, engines</div></div></div></div></body></html>

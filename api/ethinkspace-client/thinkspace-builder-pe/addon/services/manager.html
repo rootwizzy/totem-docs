@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/services/manager</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/services/manager"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/services/manager.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-builder-pe/addon/services/manager.coffee">thinkspace-builder-pe/addon/services/manager.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember          from <span class="hljs-string">'ember'</span>
+import ns             from <span class="hljs-string">'totem/ns'</span>
+import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
+
+export default ember.Service.extend
+  <span class="hljs-attribute">model</span>: <span class="hljs-literal">null</span> <span class="hljs-comment"># assessment</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="model-helpers">Model helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">set_model</span>: <span class="hljs-function"><span class="hljs-params">(model)</span> -&gt;</span> 
+    <span class="hljs-built_in">console</span>.info <span class="hljs-string">"[pa:builder] Model set to: "</span>, model
+    <span class="hljs-property">@set</span> <span class="hljs-string">'model'</span>, model
+
+  <span class="hljs-attribute">save_model</span>: <span class="hljs-function">-&gt;</span>
+    model = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+    model.save().<span class="hljs-keyword">then</span> =&gt;
+      totem_messages.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: model, <span class="hljs-attribute">action</span>: <span class="hljs-string">'update'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'tbl:assessment'</span>, <span class="hljs-string">'save'</span>)
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="new-item-helpers">New item helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_new_quant_item</span>: <span class="hljs-function"><span class="hljs-params">(label, type, settings={})</span> -&gt;</span>
+    item = 
+      <span class="hljs-attribute">id</span>:       <span class="hljs-property">@get_next_quant_id</span>()
+      <span class="hljs-attribute">label</span>:    label
+      <span class="hljs-attribute">type</span>:     type
+      <span class="hljs-attribute">settings</span>: <span class="hljs-property">@get_new_quant_item_settings</span>()
+    item
+
+  <span class="hljs-attribute">get_new_quant_item_settings</span>: <span class="hljs-function">-&gt;</span>
+    settings = 
+      <span class="hljs-attribute">points</span>:
+        <span class="hljs-attribute">min</span>: <span class="hljs-property">@get_default_quant_points_min</span>()
+        <span class="hljs-attribute">max</span>: <span class="hljs-property">@get_default_quant_points_max</span>()
+      <span class="hljs-attribute">comments</span>:
+        <span class="hljs-attribute">enabled</span>: <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">labels</span>:
+        <span class="hljs-attribute">scale</span>:
+          <span class="hljs-attribute">min</span>: <span class="hljs-literal">null</span>
+          <span class="hljs-attribute">max</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">get_default_quant_points_min</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-number">1</span>
+  <span class="hljs-attribute">get_default_quant_points_max</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-number">10</span>
+
+  <span class="hljs-attribute">get_new_qual_item</span>: <span class="hljs-function"><span class="hljs-params">(label, type, settings={})</span> -&gt;</span>
+    item = 
+      <span class="hljs-attribute">id</span>:            <span class="hljs-property">@get_next_qual_id</span>()
+      <span class="hljs-attribute">label</span>:         label
+      <span class="hljs-attribute">feedback_type</span>: <span class="hljs-string">'positive'</span>
+      <span class="hljs-attribute">type</span>:          type</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="add-helpers">Add helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">add_quant_item</span>: <span class="hljs-function">-&gt;</span>    
+    item = <span class="hljs-property">@get_new_quant_item</span>(<span class="hljs-string">'New label'</span>, <span class="hljs-string">'range'</span>)
+    <span class="hljs-property">@add_item</span>(<span class="hljs-string">'quant'</span>, item)
+
+  <span class="hljs-attribute">add_qual_item</span>: <span class="hljs-function"><span class="hljs-params">(type=<span class="hljs-string">'textarea'</span>)</span> -&gt;</span>
+    item = <span class="hljs-property">@get_new_qual_item</span>(<span class="hljs-string">'New positive qualitative question.'</span>, type)
+    <span class="hljs-property">@add_item</span>(<span class="hljs-string">'qual'</span>, item)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="delete-helpers">Delete helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">delete_quant_item</span>: <span class="hljs-function"><span class="hljs-params">(item)</span> -&gt;</span> <span class="hljs-property">@delete_item</span>(<span class="hljs-string">'quant'</span>, item)
+  <span class="hljs-attribute">delete_qual_item</span>:  <span class="hljs-function"><span class="hljs-params">(item)</span> -&gt;</span> <span class="hljs-property">@delete_item</span>(<span class="hljs-string">'qual'</span>, item)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="reorder-helpers">Reorder helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">reorder_quant_item</span>: <span class="hljs-function"><span class="hljs-params">(item, offset)</span> -&gt;</span> <span class="hljs-property">@reorder_item</span>(<span class="hljs-string">'quant'</span>, item, offset)
+  <span class="hljs-attribute">reorder_qual_item</span>:  <span class="hljs-function"><span class="hljs-params">(item, offset)</span> -&gt;</span> <span class="hljs-property">@reorder_item</span>(<span class="hljs-string">'qual'</span>, item, offset)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="duplication-helpers">Duplication helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">duplicate_quant_item</span>: <span class="hljs-function"><span class="hljs-params">(item)</span> -&gt;</span> <span class="hljs-property">@duplicate_item</span>(<span class="hljs-string">'quant'</span>, <span class="hljs-property">@get_next_quant_id</span>(), item)
+  <span class="hljs-attribute">duplicate_qual_item</span>:  <span class="hljs-function"><span class="hljs-params">(item)</span> -&gt;</span> <span class="hljs-property">@duplicate_item</span>(<span class="hljs-string">'qual'</span>, <span class="hljs-property">@get_next_qual_id</span>(), item)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="id-helpers">ID helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_next_quant_id</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_next_id</span>(<span class="hljs-string">'quant'</span>)
+  <span class="hljs-attribute">get_next_qual_id</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_next_id</span>(<span class="hljs-string">'qual'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="shared-helpers">Shared helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_items_for_type</span>: <span class="hljs-function"><span class="hljs-params">(type)</span> -&gt;</span>
+    model     = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+    model.get <span class="hljs-string">"<span class="hljs-subst">#{type}</span>_items"</span>
+
+  <span class="hljs-attribute">add_item</span>: <span class="hljs-function"><span class="hljs-params">(type, item)</span> -&gt;</span>
+    items = <span class="hljs-property">@get_items_for_type</span> type
+    items.pushObject item
+    <span class="hljs-property">@save_model</span>()
+
+  <span class="hljs-attribute">delete_item</span>: <span class="hljs-function"><span class="hljs-params">(type, item)</span> -&gt;</span>
+    items = <span class="hljs-property">@get_items_for_type</span> type
+    items.removeObject item
+    <span class="hljs-property">@save_model</span>()
+
+  <span class="hljs-attribute">reorder_item</span>: <span class="hljs-function"><span class="hljs-params">(type, item, offset)</span> -&gt;</span>
+    items = <span class="hljs-property">@get_items_for_type</span> type
+    index = items.indexOf(item)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> index &gt; -<span class="hljs-number">1</span>
+    <span class="hljs-keyword">if</span> offset == <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> add_at = index + <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> add_at = index - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> add_at &lt; <span class="hljs-number">0</span>
+    length = items.get(<span class="hljs-string">'length'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> add_at &gt; length - <span class="hljs-number">1</span>
+    items.removeAt(index)
+    items.insertAt(add_at, item)
+    <span class="hljs-property">@save_model</span>()
+
+  <span class="hljs-attribute">duplicate_item</span>: <span class="hljs-function"><span class="hljs-params">(type, id, item)</span> -&gt;</span>
+    items = <span class="hljs-property">@get_items_for_type</span> type
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[PRE] items now '</span>, items)
+
+    index = items.indexOf(item)
+
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'index is '</span>, index)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> index &gt; -<span class="hljs-number">1</span>
+    add_at = index + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> add_at &lt; <span class="hljs-number">0</span>
+    new_item    = ember.merge({}, item)
+    new_item.id = id
+    items.insertAt add_at, new_item
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[POST] items are at '</span>, items)
+
+    <span class="hljs-property">@save_model</span>()
+
+  <span class="hljs-attribute">get_next_id</span>: <span class="hljs-function"><span class="hljs-params">(type)</span> -&gt;</span>
+    items = <span class="hljs-property">@get_items_for_type</span>(type).sortBy(<span class="hljs-string">'id'</span>)
+    id    = items.get(<span class="hljs-string">'lastObject.id'</span>)
+    <span class="hljs-keyword">if</span> ember.isPresent(id) <span class="hljs-keyword">then</span> id = id + <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> id = <span class="hljs-number">1</span></div></div></div></div></body></html>

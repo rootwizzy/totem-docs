@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/addon/mixins/save_response</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-indented-list/addon/mixins/save_response"><meta name="groc-project-path" content="thinkspace-indented-list/addon/mixins/save_response.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-indented-list/addon/mixins/save_response.coffee">thinkspace-indented-list/addon/mixins/save_response.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember          from <span class="hljs-string">'ember'</span>
+import ns             from <span class="hljs-string">'totem/ns'</span>
+import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">save_response</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> <span class="hljs-property">@readonly</span>  <span class="hljs-comment"># catch-all incase called by some method</span>
+      <span class="hljs-property">@process_save_response_queue</span>().<span class="hljs-keyword">then</span> =&gt;
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        <span class="hljs-built_in">console</span>.error <span class="hljs-string">"Error saving response"</span>, error
+        <span class="hljs-property">@set</span> <span class="hljs-string">'save_error'</span>, <span class="hljs-literal">true</span>
+        <span class="hljs-property">@queued_saves</span>.clear()
+        reject(error)
+
+  <span class="hljs-attribute">process_save_response_queue</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      ember.run.schedule <span class="hljs-string">'afterRender'</span>, @, <span class="hljs-function">=&gt;</span>
+        <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@queued_saves</span>)
+          <span class="hljs-property">@queued_saves</span>.push(<span class="hljs-literal">true</span>)
+          <span class="hljs-keyword">return</span> resolve()
+        <span class="hljs-property">@queued_saves</span>.push(<span class="hljs-literal">true</span>)
+        <span class="hljs-property">@save_response_record</span>().<span class="hljs-keyword">then</span> =&gt;
+          <span class="hljs-property">@queued_saves</span>.pop()
+          <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isBlank(<span class="hljs-property">@queued_saves</span>)  <span class="hljs-comment"># no new saves queued during ajax request</span>
+          <span class="hljs-property">@queued_saves</span>.clear()
+          <span class="hljs-property">@process_save_response_queue</span>()
+          resolve()
+        , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> reject(error)
+
+  <span class="hljs-attribute">save_response_record</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      items = <span class="hljs-property">@value_items</span>.copy()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="for-testing-only">FOR TESTING ONLY</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      items = items.map (item) -&gt;
+        <span class="hljs-keyword">delete</span>(item.test_id)
+        item
+
+      <span class="hljs-property">@set_items_pos_y</span>(items)
+      <span class="hljs-property">@response</span>.set <span class="hljs-string">'value.items'</span>, items
+      <span class="hljs-keyword">unless</span> <span class="hljs-property">@send_response_to_server</span>
+        <span class="hljs-built_in">console</span>.info <span class="hljs-string">'Saving the response to the server is turned off (options.save_response == false).'</span>
+        <span class="hljs-keyword">return</span> resolve()
+      <span class="hljs-property">@response</span>.save().<span class="hljs-keyword">then</span> =&gt;
+        totem_messages.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: <span class="hljs-property">@response</span>, <span class="hljs-attribute">action</span>: <span class="hljs-string">'save'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o <span class="hljs-string">'indented:response'</span>, <span class="hljs-string">'save'</span>
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        reject(error)</div></div></div></div></body></html>

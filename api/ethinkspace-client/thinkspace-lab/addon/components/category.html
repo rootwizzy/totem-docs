@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-lab/addon/components/category</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-lab/addon/components/category"><meta name="groc-project-path" content="thinkspace-lab/addon/components/category.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-lab/addon/components/category.coffee">thinkspace-lab/addon/components/category.coffee</a></div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import lab   from <span class="hljs-string">'thinkspace-lab/managers/lab'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">is_inactive</span>:  ember.computed <span class="hljs-string">'selected'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>) != <span class="hljs-property">@get</span>(<span class="hljs-string">'selected'</span>)
+
+  <span class="hljs-attribute">lab</span>: ember.computed -&gt;
+    lab.create
+      <span class="hljs-attribute">tvo</span>:              <span class="hljs-property">@get</span> <span class="hljs-string">'tvo'</span>
+      <span class="hljs-attribute">category</span>:         <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+      <span class="hljs-attribute">lab_observations</span>: []
+      <span class="hljs-attribute">labs</span>:             <span class="hljs-property">@labs</span>
+      <span class="hljs-attribute">totem_scope</span>:      <span class="hljs-property">@totem_scope</span>
+      <span class="hljs-attribute">totem_messages</span>:   <span class="hljs-property">@totem_messages</span>
+
+  <span class="hljs-attribute">set_category_focus_observer</span>: ember.observer <span class="hljs-string">'selected'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_inactive'</span>)
+    <span class="hljs-property">@get_lab</span>().set_focus_on_selected_category()
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_inactive'</span>) <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">else</span> <span class="hljs-property">@get_lab</span>().set_focus_on_selected_category()
+
+  <span class="hljs-attribute">get_lab</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'lab'</span>
+
+  <span class="hljs-attribute">click</span>: <span class="hljs-function"><span class="hljs-params">(e)</span> -&gt;</span>
+    $target  = $(e.target)
+    tag_name = $target.prop(<span class="hljs-string">'tagName'</span>).toLowerCase()
+    <span class="hljs-keyword">unless</span> [<span class="hljs-string">'select'</span>, <span class="hljs-string">'input'</span>, <span class="hljs-string">'option'</span>].includes(tag_name)
+      $parents = $target.parents(<span class="hljs-string">'tr.ts-lab_result'</span>)
+      $select  = $parents.find(<span class="hljs-string">'.ts-lab_select'</span>).first()
+      $input   = $parents.find(<span class="hljs-string">'input:enabled'</span>).first()
+      <span class="hljs-keyword">if</span> ember.isPresent($select) <span class="hljs-keyword">then</span> $select.focus() <span class="hljs-keyword">else</span> $input.focus()</div></div></div></div></body></html>
