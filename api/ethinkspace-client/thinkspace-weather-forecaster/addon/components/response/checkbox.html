@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/addon/components/response/checkbox</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/addon/components/response/checkbox"><meta name="groc-project-path" content="thinkspace-weather-forecaster/addon/components/response/checkbox.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-weather-forecaster/addon/components/response/checkbox.coffee">thinkspace-weather-forecaster/addon/components/response/checkbox.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">classNameBindings</span>: [<span class="hljs-string">'no_errors::thinkspace-weather-forecaster_error'</span>]
+
+  <span class="hljs-attribute">no_errors</span>: ember.computed.<span class="hljs-keyword">or</span> <span class="hljs-string">'changeset.is_valid'</span>, <span class="hljs-string">'is_view_only'</span>
+
+  <span class="hljs-attribute">choices</span>: ember.computed -&gt; <span class="hljs-property">@get</span>(<span class="hljs-string">'item_metadata.choices'</span>)
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">check</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_view_only'</span>)
+      <span class="hljs-property">@add_id</span>(id)
+      <span class="hljs-property">@changeset</span>.validate().<span class="hljs-keyword">then</span> =&gt; <span class="hljs-keyword">if</span> <span class="hljs-property">@changeset</span>.get(<span class="hljs-string">'is_valid'</span>) <span class="hljs-keyword">then</span> <span class="hljs-property">@sendAction</span>(<span class="hljs-string">'save'</span>) <span class="hljs-keyword">else</span> <span class="hljs-property">@remove_id</span>(id)
+
+    <span class="hljs-attribute">uncheck</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_view_only'</span>)
+      <span class="hljs-property">@remove_id</span>(id)
+      <span class="hljs-property">@changeset</span>.validate().<span class="hljs-keyword">then</span> =&gt; <span class="hljs-keyword">if</span> <span class="hljs-property">@changeset</span>.get(<span class="hljs-string">'is_valid'</span>) <span class="hljs-keyword">then</span> <span class="hljs-property">@sendAction</span>(<span class="hljs-string">'save'</span>) <span class="hljs-keyword">else</span> <span class="hljs-property">@add_id</span>(id)
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@changeset</span>.set(<span class="hljs-string">'input_value'</span>, <span class="hljs-property">@changeset</span>.get(<span class="hljs-string">'model.input_value'</span>) <span class="hljs-keyword">or</span> [])
+
+  <span class="hljs-attribute">add_id</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span>
+    values = <span class="hljs-property">@get_checkbox_values</span>()
+    values.pushObject(id)  <span class="hljs-keyword">unless</span> values.contains(id)
+
+  <span class="hljs-attribute">remove_id</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span>
+    values = <span class="hljs-property">@get_checkbox_values</span>()
+    index  = values.indexOf(id)
+    values.removeAt(index)  <span class="hljs-keyword">if</span> index?
+
+  <span class="hljs-attribute">get_checkbox_values</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@changeset</span>.get(<span class="hljs-string">'input_value'</span>)</div></div></div></div></body></html>

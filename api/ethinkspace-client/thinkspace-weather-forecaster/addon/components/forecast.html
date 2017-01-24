@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/addon/components/forecast</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/addon/components/forecast"><meta name="groc-project-path" content="thinkspace-weather-forecaster/addon/components/forecast.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-weather-forecaster/addon/components/forecast.coffee">thinkspace-weather-forecaster/addon/components/forecast.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">is_locked</span>:    ember.computed.bool <span class="hljs-string">'model.is_locked'</span>
+  <span class="hljs-attribute">is_view_only</span>: ember.computed.<span class="hljs-keyword">or</span>   <span class="hljs-string">'totem_scope.is_view_only'</span>, <span class="hljs-string">'is_locked'</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">show_help</span>: <span class="hljs-function"><span class="hljs-params">(help_tip)</span> -&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'show_help'</span>, help_tip
+
+    <span class="hljs-attribute">save</span>: <span class="hljs-function"><span class="hljs-params">(response, values)</span> -&gt;</span> <span class="hljs-property">@save_response</span>(response, values)
+
+    <span class="hljs-attribute">submit</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@tvo_status_validate</span>().<span class="hljs-keyword">then</span> (is_valid) =&gt;
+        <span class="hljs-keyword">if</span> is_valid
+          <span class="hljs-property">@save_forecast</span>()
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-property">@tvo_show_errors_on</span>()
+
+  <span class="hljs-attribute">save_forecast</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_view_only'</span>)
+    forecast = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> forecast
+    forecast.save().<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@totem_messages</span>.api_success(<span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: forecast, <span class="hljs-attribute">action</span>: <span class="hljs-string">'save'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'wf:forecast'</span>, <span class="hljs-string">'save'</span>))
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+      <span class="hljs-property">@totem_messages</span>.api_failure(error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: forecast)
+
+  <span class="hljs-attribute">save_response</span>: <span class="hljs-function"><span class="hljs-params">(changeset)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> changeset
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_view_only'</span>)
+    changeset.validate().<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> changeset.get(<span class="hljs-string">'is_valid'</span>)
+      changeset.save().<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@totem_messages</span>.api_success(<span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: changeset.get_model(), <span class="hljs-attribute">action</span>: <span class="hljs-string">'save'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'wf:response'</span>, <span class="hljs-string">'save'</span>))
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        <span class="hljs-property">@totem_messages</span>.api_failure(error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: changeset.get_model())</div></div></div></div></body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/addon/components/main"><meta name="groc-project-path" content="thinkspace-weather-forecaster/addon/components/main.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-weather-forecaster/addon/components/main.coffee">thinkspace-weather-forecaster/addon/components/main.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ds    from <span class="hljs-string">'ember-data'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">tvo_titles</span>: <span class="hljs-string">'weather-forecaster'</span>
+
+  <span class="hljs-attribute">show_help</span>:          <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">show_attempts</span>:      <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">show_top_forecasts</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">current_forecast</span>:  <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">selected_forecast</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">view_forecast</span>:     ember.computed <span class="hljs-string">'current_forecast'</span>, <span class="hljs-string">'selected_forecast'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'selected_forecast'</span>) <span class="hljs-keyword">or</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'current_forecast'</span>)
+
+  <span class="hljs-attribute">help_tip</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">show_help</span>: <span class="hljs-function"><span class="hljs-params">(help)</span> -&gt;</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'help_tip'</span>, help
+      <span class="hljs-property">@set</span> <span class="hljs-string">'show_help'</span>, <span class="hljs-literal">true</span>
+
+    <span class="hljs-attribute">hide_help</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'show_help'</span>, <span class="hljs-literal">false</span>
+
+    <span class="hljs-attribute">select_forecast</span>: <span class="hljs-function"><span class="hljs-params">(forecast)</span> -&gt;</span>
+      <span class="hljs-keyword">if</span> forecast == <span class="hljs-property">@get</span>(<span class="hljs-string">'current_forecast'</span>)
+        <span class="hljs-property">@set</span> <span class="hljs-string">'selected_forecast'</span>, <span class="hljs-literal">null</span>
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@set</span> <span class="hljs-string">'selected_forecast'</span>, forecast
+
+    <span class="hljs-attribute">select_attempts</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'show_top_forecasts'</span>, <span class="hljs-literal">false</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'show_attempts'</span>, <span class="hljs-literal">true</span>
+
+    <span class="hljs-attribute">select_top_forecasts</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'show_attempts'</span>, <span class="hljs-literal">false</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'show_top_forecasts'</span>, <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@totem_messages</span>.show_loading_outlet()
+    assessment = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    <span class="hljs-property">@tc</span>.view_data_record(assessment, <span class="hljs-attribute">action</span>: <span class="hljs-string">'current_forecast'</span>).<span class="hljs-keyword">then</span> (forecast) =&gt;
+      <span class="hljs-property">@tc</span>.view_load(assessment, <span class="hljs-attribute">sub_action</span>: <span class="hljs-string">'forecast_attempts'</span>).<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@set</span> <span class="hljs-string">'current_forecast'</span>, forecast
+        <span class="hljs-property">@totem_messages</span>.hide_loading_outlet()
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+      <span class="hljs-property">@totem_messages</span>.api_failure(error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: assessment)
+
+  <span class="hljs-attribute">top_forecasts</span>: ember.computed <span class="hljs-string">'current_forecast'</span>, <span class="hljs-function">-&gt;</span>
+    promise = <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      assessment            = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      query                 = <span class="hljs-property">@totem_scope</span>.get_view_query(assessment)
+      query.auth.sub_action = <span class="hljs-string">'top_forecasts'</span>
+      query.data            = {}
+      query.data.auth       = query.auth
+      query.model           = assessment
+      <span class="hljs-keyword">delete</span>(query.auth)
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        users      = payload.top_forecasts <span class="hljs-keyword">or</span> []
+        user.score = parseInt(user.score) <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> users
+        resolve(users)
+        <span class="hljs-property">@set</span> <span class="hljs-string">'have_top_forecasts'</span>, <span class="hljs-literal">true</span>
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> reject(error)
+    ds.PromiseArray.create <span class="hljs-attribute">promise</span>: promise</div></div></div></div></body></html>

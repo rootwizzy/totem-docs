@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/addon/components/assessment_item</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/addon/components/assessment_item"><meta name="groc-project-path" content="thinkspace-weather-forecaster/addon/components/assessment_item.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-weather-forecaster/addon/components/assessment_item.coffee">thinkspace-weather-forecaster/addon/components/assessment_item.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+import totem_changeset from <span class="hljs-string">'totem/changeset'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">item</span>:       <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">response</span>:   <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">c_response</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">item_metadata</span>: ember.computed -&gt; <span class="hljs-property">@get</span> <span class="hljs-string">'item.response_metadata'</span>
+  <span class="hljs-attribute">item_header</span>:   ember.computed -&gt; <span class="hljs-property">@get_assessment_item_or_item_value</span>(<span class="hljs-string">'item_header'</span>)
+  <span class="hljs-attribute">presentation</span>:  ember.computed -&gt; <span class="hljs-property">@get_assessment_item_or_item_value</span>(<span class="hljs-string">'presentation'</span>)
+  <span class="hljs-attribute">help_tip</span>:      ember.computed -&gt; <span class="hljs-property">@get</span>(<span class="hljs-string">'model.help_tip'</span>) <span class="hljs-keyword">or</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'item.help_tip'</span>)
+  <span class="hljs-attribute">has_help_tip</span>:  ember.computed.bool <span class="hljs-string">'help_tip'</span>
+  <span class="hljs-attribute">has_score</span>:     ember.computed.reads <span class="hljs-string">'response.has_score'</span>
+
+  <span class="hljs-attribute">is_correct_class</span>: ember.computed <span class="hljs-string">'has_score'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'has_score'</span>)
+    (<span class="hljs-property">@get</span>(<span class="hljs-string">'response.is_correct'</span>) <span class="hljs-keyword">and</span> <span class="hljs-string">'correct'</span>) <span class="hljs-keyword">or</span> <span class="hljs-string">'incorrect'</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">show_help</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'show_help'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'help_tip'</span>)
+    <span class="hljs-attribute">save</span>:      <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'save'</span>, <span class="hljs-property">@changeset</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    forecast        = <span class="hljs-property">@get</span>(<span class="hljs-string">'forecast'</span>)
+    assessment_item = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    assessment_item.get(ns.to_p <span class="hljs-string">'wf:item'</span>).<span class="hljs-keyword">then</span> (item) =&gt;
+      <span class="hljs-property">@set</span> <span class="hljs-string">'item'</span>, item
+      forecast.response_for_assessment_item(assessment_item).<span class="hljs-keyword">then</span> (response) =&gt;
+        <span class="hljs-keyword">unless</span> response
+          response = forecast.store.createRecord(ns.to_p <span class="hljs-string">'wf:response'</span>)
+          response.set_associations(forecast, assessment_item)
+        <span class="hljs-property">@set_changeset_and_response_component</span>(response).<span class="hljs-keyword">then</span> =&gt;
+          <span class="hljs-property">@set_all_data_loaded</span>()
+
+  <span class="hljs-attribute">set_changeset_and_response_component</span>: <span class="hljs-function"><span class="hljs-params">(response)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      item_metadata = <span class="hljs-property">@get</span>(<span class="hljs-string">'item_metadata'</span>)
+      <span class="hljs-keyword">switch</span> item_metadata.type
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'input'</span>     <span class="hljs-keyword">then</span> input_type = <span class="hljs-string">'input'</span>
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'radio'</span>     <span class="hljs-keyword">then</span> input_type = <span class="hljs-string">'radio'</span>
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'checkbox'</span>  <span class="hljs-keyword">then</span> input_type = <span class="hljs-string">'checkbox'</span>
+        <span class="hljs-keyword">else</span> input_type = <span class="hljs-string">'error'</span>
+      <span class="hljs-property">@c_response</span> = <span class="hljs-string">"response/<span class="hljs-subst">#{input_type}</span>"</span>
+      <span class="hljs-property">@changeset</span>  = totem_changeset.create response, <span class="hljs-attribute">input_value</span>: <span class="hljs-property">@get_input_validators</span>(item_metadata, input_type)
+      <span class="hljs-property">@tvo_status_register_changeset</span>(<span class="hljs-property">@changeset</span>)
+      <span class="hljs-property">@changeset</span>.validate().<span class="hljs-keyword">then</span> =&gt; resolve()
+
+  <span class="hljs-attribute">get_input_validators</span>: <span class="hljs-function"><span class="hljs-params">(item_metadata, input_type)</span> -&gt;</span>
+    hash = item_metadata.validations <span class="hljs-keyword">or</span> {}
+    <span class="hljs-keyword">switch</span> input_type
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'radio'</span>
+        hash.presence = {<span class="hljs-attribute">presence</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">message</span>: <span class="hljs-string">'You must select one of the above choices'</span>} <span class="hljs-keyword">unless</span> hash.presence == <span class="hljs-literal">false</span>
+    totem_changeset.get_validators(hash)
+
+  <span class="hljs-attribute">get_assessment_item_or_item_value</span>: <span class="hljs-function"><span class="hljs-params">(prop)</span> -&gt;</span>
+    value = <span class="hljs-property">@get</span>(<span class="hljs-string">"model.<span class="hljs-subst">#{prop}</span>"</span>) <span class="hljs-keyword">or</span> <span class="hljs-property">@get</span>(<span class="hljs-string">"item.<span class="hljs-subst">#{prop}</span>"</span>)
+    value <span class="hljs-keyword">and</span> value.htmlSafe()</div></div></div></div></body></html>

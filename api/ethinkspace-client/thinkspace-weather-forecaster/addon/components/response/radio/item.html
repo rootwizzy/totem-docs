@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/addon/components/response/radio/item</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/addon/components/response/radio/item"><meta name="groc-project-path" content="thinkspace-weather-forecaster/addon/components/response/radio/item.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-weather-forecaster/addon/components/response/radio/item.coffee">thinkspace-weather-forecaster/addon/components/response/radio/item.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">is_checked</span>: ember.computed <span class="hljs-string">'changeset.input_value'</span>, <span class="hljs-function">-&gt;</span>
+    value = <span class="hljs-property">@changeset</span>.get(<span class="hljs-string">'input_value'</span>)
+    <span class="hljs-property">@choice_id</span> <span class="hljs-keyword">and</span> value == <span class="hljs-property">@choice_id</span>
+
+  <span class="hljs-attribute">is_correct_class</span>: ember.computed <span class="hljs-string">'is_checked'</span>, <span class="hljs-function">-&gt;</span>
+    response = <span class="hljs-property">@changeset</span>.get_model()
+    <span class="hljs-keyword">switch</span>
+      <span class="hljs-keyword">when</span> response.get(<span class="hljs-string">'has_score'</span>)          <span class="hljs-keyword">then</span> <span class="hljs-literal">null</span>
+      <span class="hljs-keyword">when</span> response.id_is_correct(<span class="hljs-property">@choice_id</span>) <span class="hljs-keyword">then</span> <span class="hljs-string">'correct'</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_checked'</span>)                 <span class="hljs-keyword">then</span> <span class="hljs-string">'incorrect'</span>
+      <span class="hljs-keyword">else</span> <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">toggle_radio</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_view_only'</span>)
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_checked'</span>)
+        <span class="hljs-property">@sendAction</span> <span class="hljs-string">'uncheck'</span>, <span class="hljs-property">@choice_id</span>
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@sendAction</span> <span class="hljs-string">'check'</span>, <span class="hljs-property">@choice_id</span></div></div></div></div></body></html>

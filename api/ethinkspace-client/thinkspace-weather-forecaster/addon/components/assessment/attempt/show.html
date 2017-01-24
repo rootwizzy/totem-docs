@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/addon/components/assessment/attempt/show</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/addon/components/assessment/attempt/show"><meta name="groc-project-path" content="thinkspace-weather-forecaster/addon/components/assessment/attempt/show.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-weather-forecaster/addon/components/assessment/attempt/show.coffee">thinkspace-weather-forecaster/addon/components/assessment/attempt/show.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">ttz</span>: ember.inject.service()
+
+  <span class="hljs-attribute">is_selected</span>:  ember.computed <span class="hljs-string">'forecast'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>) == <span class="hljs-property">@get</span>(<span class="hljs-string">'forecast'</span>)
+  <span class="hljs-attribute">is_current</span>:   ember.computed <span class="hljs-string">'forecast'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>) == <span class="hljs-property">@get</span>(<span class="hljs-string">'current_forecast'</span>)
+  <span class="hljs-attribute">is_completed</span>: ember.computed.bool <span class="hljs-string">'model.completed'</span>
+
+  <span class="hljs-attribute">forecast_at</span>: ember.computed -&gt; <span class="hljs-property">@get</span>(<span class="hljs-string">'ttz'</span>).format(<span class="hljs-property">@get</span>(<span class="hljs-string">'model.forecast_at'</span>), <span class="hljs-attribute">format</span>: <span class="hljs-string">'MMMM DD, YYYY'</span>)
+
+  <span class="hljs-attribute">forecast_score</span>: ember.computed -&gt;
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_current'</span>) <span class="hljs-keyword">or</span> (<span class="hljs-keyword">not</span> <span class="hljs-property">@get</span> <span class="hljs-string">'model.locked'</span>)
+      <span class="hljs-string">'--'</span>  <span class="hljs-comment"># current forecast or a forecast that has not yet been scored</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'model.score'</span>)
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)</div></div></div></div></body></html>
