@@ -13,7 +13,7 @@ export default base.extend m_dragula, m_sort_order,
   <span class="hljs-attribute">tvo_titles</span>: <span class="hljs-string">'observation-list'</span>
 
   <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-property">@tvo_section_register_actions</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo.helper'</span>).register @, <span class="hljs-attribute">actions</span>:
       <span class="hljs-string">'select-text'</span>:     <span class="hljs-string">'create_observation'</span>
       <span class="hljs-string">'obs-list-values'</span>: <span class="hljs-string">'get_observation_list_values'</span>
       <span class="hljs-string">'itemables'</span>:       <span class="hljs-string">'get_observation_list_observations'</span>
@@ -28,7 +28,8 @@ export default base.extend m_dragula, m_sort_order,
     <span class="hljs-property">@init_dragula</span>()
     <span class="hljs-property">@get</span>(<span class="hljs-string">'thinkspace'</span>).set_component_column_as_sticky(@)
     list = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
-    <span class="hljs-property">@tc</span>.view_load(list).<span class="hljs-keyword">then</span> =&gt; <span class="hljs-property">@tvo_section_ready</span>()
+    <span class="hljs-property">@tc</span>.view_load(list).<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo.helper'</span>).set_section_ready(@)
 
   <span class="hljs-attribute">actions</span>:
     <span class="hljs-attribute">create_observation_start</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'is_creating_observation'</span>, <span class="hljs-literal">true</span>
@@ -51,8 +52,8 @@ export default base.extend m_dragula, m_sort_order,
   <span class="hljs-attribute">call_section_action_component</span>: <span class="hljs-function"><span class="hljs-params">(section, action, observation)</span> -&gt;</span>
     <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
       tvo = <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo'</span>)
-      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">unless</span> <span class="hljs-property">@tvo_section_has_action</span>(section, action)
-      <span class="hljs-property">@tvo_section_call_action</span>(section, action, observation).<span class="hljs-keyword">then</span> =&gt; resolve()
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">unless</span> tvo.section.has_action(section, action)
+      tvo.section.call_action(section, action, observation).<span class="hljs-keyword">then</span> =&gt; resolve()
 
   <span class="hljs-attribute">create_observation</span>: <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span>
     list        = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
@@ -68,7 +69,6 @@ export default base.extend m_dragula, m_sort_order,
     <span class="hljs-property">@totem_scope</span>.set_record_ownerable_attributes(observation)
     observation.set ns.to_p(<span class="hljs-string">'list'</span>), list
     observation.save().<span class="hljs-keyword">then</span> (observation) =&gt;
-      observation.totem_data.ability.refresh()
       <span class="hljs-property">@totem_messages</span>.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: observation, <span class="hljs-attribute">action</span>: <span class="hljs-string">'save'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'observation'</span>, <span class="hljs-string">'save'</span>)
     , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
       <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: observation
@@ -80,21 +80,14 @@ export default base.extend m_dragula, m_sort_order,
     , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
       <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: observation
 
-  <span class="hljs-attribute">remove_observation</span>: <span class="hljs-function"><span class="hljs-params">(observation)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if another component registers a &#39;remove_itemable&#39; section action; call it with the &#39;remove&#39; action</p></div></div><div class="code"><div class="wrapper">    section = <span class="hljs-string">'remove_itemable'</span>
-    action  = <span class="hljs-string">'remove'</span>
-    <span class="hljs-keyword">if</span> <span class="hljs-property">@tvo_section_has_action</span>(section, action)
-      <span class="hljs-property">@tvo_section_call_action</span>(section, action, observation).<span class="hljs-keyword">then</span> =&gt; <span class="hljs-property">@delete_observation_record</span>(observation)
-    <span class="hljs-keyword">else</span>
-      <span class="hljs-property">@delete_observation_record</span>(observation)
-
-  <span class="hljs-attribute">delete_observation_record</span>: <span class="hljs-function"><span class="hljs-params">(observation)</span> -&gt;</span>
-    list = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
-    <span class="hljs-property">@unload_observation_notes</span>(observation)  <span class="hljs-comment"># Rails dependent: destroy so just unload</span>
-    observation.deleteRecord()  <span class="hljs-comment"># delete in the store</span>
-    observation.save().<span class="hljs-keyword">then</span> (observation) =&gt;
-      <span class="hljs-property">@totem_messages</span>.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: observation, <span class="hljs-attribute">action</span>: <span class="hljs-string">'delete'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'observation'</span>, <span class="hljs-string">'destroy'</span>)
-    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
-      <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: observation
+  <span class="hljs-attribute">remove_observation</span>: <span class="hljs-function"><span class="hljs-params">(observation)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>when another component registers a &#39;remove_itemable&#39; section action; call it with the &#39;remove&#39; action</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@call_section_action_component</span>(<span class="hljs-string">'remove_itemable'</span>, <span class="hljs-string">'remove'</span>, observation).<span class="hljs-keyword">then</span> =&gt;
+      list = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+      <span class="hljs-property">@unload_observation_notes</span>(observation)  <span class="hljs-comment"># Rails dependent: destroy so just unload</span>
+      observation.deleteRecord()  <span class="hljs-comment"># delete in the store</span>
+      observation.save().<span class="hljs-keyword">then</span> (observation) =&gt;
+        <span class="hljs-property">@totem_messages</span>.api_success <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: observation, <span class="hljs-attribute">action</span>: <span class="hljs-string">'delete'</span>, <span class="hljs-attribute">i18n_path</span>: ns.to_o(<span class="hljs-string">'observation'</span>, <span class="hljs-string">'destroy'</span>)
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: observation
 
   <span class="hljs-attribute">unload_observation_notes</span>: <span class="hljs-function"><span class="hljs-params">(observation)</span> -&gt;</span>
     observation.get(ns.to_p <span class="hljs-string">'observation_notes'</span>).<span class="hljs-keyword">then</span> (notes) =&gt;

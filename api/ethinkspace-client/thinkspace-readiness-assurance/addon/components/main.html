@@ -42,7 +42,8 @@ export default base.extend
       <span class="hljs-attribute">ttz</span>:    <span class="hljs-property">@get</span>(<span class="hljs-string">'ttz'</span>)
       <span class="hljs-attribute">se</span>:     <span class="hljs-property">@se</span>
       <span class="hljs-attribute">pubsub</span>: <span class="hljs-property">@se</span>.pubsub</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="-testing-only">### TESTING ONLY</h1>
-<p>test_init: -&gt;
+<p>init: -&gt;
+  @_super()
   @messages = @get(&#39;server_events.messages&#39;)
   @add_test_message(&quot;test message 1 &quot;, &#39;aaaa&#39;)
   @add_test_message(&quot;test message 2 &quot;, &#39;bbbb&#39;)

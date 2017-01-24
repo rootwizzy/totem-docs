@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/addon/util</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="totem/addon/util"><meta name="groc-project-path" content="totem/addon/util.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem/addon/util.coffee">totem/addon/util.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>Javascript only utility functions
+DO NOT add functions that have dependencies on the ember application being created.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UtilityJS</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>startsWith()/endsWith() not implemented in Chrome:
+=&gt; <a href="https://code.google.com/p/chromium/issues/detail?id=372976">https://code.google.com/p/chromium/issues/detail?id=372976</a></p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">starts_with</span>: <span class="hljs-function"><span class="hljs-params">(string, prefix)</span> -&gt;</span>
+    (string <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>).indexOf(prefix) == <span class="hljs-number">0</span>
+
+  <span class="hljs-attribute">ends_with</span>: <span class="hljs-function"><span class="hljs-params">(string, suffix)</span> -&gt;</span>
+    (string <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>).match(suffix + <span class="hljs-string">'$'</span>) + <span class="hljs-string">''</span> == suffix
+
+  <span class="hljs-attribute">rjust</span>: <span class="hljs-function"><span class="hljs-params">(value, length, padding=<span class="hljs-string">' '</span>)</span> -&gt;</span>
+    [pad, value] = <span class="hljs-property">@padding</span>(value, length, padding)
+    pad + value
+
+  <span class="hljs-attribute">ljust</span>: <span class="hljs-function"><span class="hljs-params">(value, length, padding=<span class="hljs-string">' '</span>)</span> -&gt;</span>
+    [pad, value] = <span class="hljs-property">@padding</span>(value, length, padding)
+    value + pad
+
+  <span class="hljs-attribute">padding</span>: <span class="hljs-function"><span class="hljs-params">(value, length, padding)</span> -&gt;</span>
+    value = <span class="hljs-string">''</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> value <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> value == <span class="hljs-literal">false</span>
+    value = value.toString()
+    <span class="hljs-keyword">return</span> [<span class="hljs-string">''</span>, value] <span class="hljs-keyword">if</span> length <span class="hljs-keyword">and</span> value.length &gt;= length
+    pad   = Array(length + <span class="hljs-number">1</span> - value.length).join(padding)
+    <span class="hljs-keyword">return</span> [pad, value]
+
+  <span class="hljs-attribute">flatten_array</span>: <span class="hljs-function"><span class="hljs-params">(array)</span> -&gt;</span>
+    flattened = []
+    <span class="hljs-keyword">for</span> element <span class="hljs-keyword">in</span> array
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@is_array</span>(element)
+        flattened = flattened.concat <span class="hljs-property">@flatten_array</span> element
+      <span class="hljs-keyword">else</span>
+        flattened.push element
+    flattened
+
+  <span class="hljs-attribute">is_array</span>: <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>  <span class="hljs-keyword">unless</span> obj
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>   <span class="hljs-keyword">if</span> (Array.isArray &amp;&amp; Array.isArray(obj))
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>   <span class="hljs-keyword">if</span> ( (obj.length != <span class="hljs-literal">undefined</span>) &amp;&amp; <span class="hljs-keyword">typeof</span>(obj) == <span class="hljs-string">'object'</span> )
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">current_date</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-keyword">new</span> Date()
+
+  <span class="hljs-attribute">mm_dd_yyyy</span>: <span class="hljs-function"><span class="hljs-params">(d=<span class="hljs-property">@current_date</span>())</span> -&gt;</span>
+    mm   = <span class="hljs-property">@rjust</span>(d.getMonth()+<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-string">'0'</span>)
+    dd   = <span class="hljs-property">@rjust</span>(d.getDate(),<span class="hljs-number">2</span>,<span class="hljs-string">'0'</span>)
+    yyyy = d.getFullYear()
+    <span class="hljs-string">"<span class="hljs-subst">#{mm}</span>/<span class="hljs-subst">#{dd}</span>/<span class="hljs-subst">#{yyyy}</span>"</span>
+
+  <span class="hljs-attribute">hh_ss_mm</span>: <span class="hljs-function"><span class="hljs-params">(d=<span class="hljs-property">@current_date</span>())</span> -&gt;</span>
+    hh = <span class="hljs-property">@rjust</span>(d.getHours(),<span class="hljs-number">2</span>,<span class="hljs-string">'0'</span>)
+    mm = <span class="hljs-property">@rjust</span>(d.getMinutes(),<span class="hljs-number">2</span>,<span class="hljs-string">'0'</span>)
+    ss = <span class="hljs-property">@rjust</span>(d.getSeconds(),<span class="hljs-number">2</span>,<span class="hljs-string">'0'</span>)
+    <span class="hljs-string">"<span class="hljs-subst">#{hh}</span>:<span class="hljs-subst">#{mm}</span>:<span class="hljs-subst">#{ss}</span>"</span>
+
+  <span class="hljs-attribute">date_time</span>: <span class="hljs-function"><span class="hljs-params">(d=<span class="hljs-property">@current_date</span>())</span> -&gt;</span>
+    <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@mm_dd_yyyy</span>(d)}</span> <span class="hljs-subst">#{<span class="hljs-property">@hh_ss_mm</span>(d)}</span>"</span>
+
+  <span class="hljs-attribute">date_time_milliseconds</span>: <span class="hljs-function"><span class="hljs-params">(d=<span class="hljs-property">@current_date</span>())</span> -&gt;</span>
+    <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@date_time</span>(d)}</span>:<span class="hljs-subst">#{<span class="hljs-property">@rjust</span>(d.getMilliseconds(),<span class="hljs-number">3</span>,<span class="hljs-string">'0'</span>)}</span>"</span>
+
+  <span class="hljs-attribute">convert_time_string_to_milliseconds</span>: <span class="hljs-function"><span class="hljs-params">(string)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> string <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(string) == <span class="hljs-string">'string'</span>
+    [number_of, units] = string.split(<span class="hljs-string">'.'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> number_of.match(<span class="hljs-regexp">/\D/</span>)
+    <span class="hljs-keyword">switch</span> units
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'seconds'</span>, <span class="hljs-string">'second'</span>
+        number_of * <span class="hljs-number">1000</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'minutes'</span>, <span class="hljs-string">'minute'</span>
+        number_of * <span class="hljs-number">60000</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'hours'</span>, <span class="hljs-string">'hour'</span>
+        number_of * <span class="hljs-number">3600000</span>
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">add_path_objects</span>: <span class="hljs-function"><span class="hljs-params">(obj, route)</span> -&gt;</span>
+    path = <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">for</span> name <span class="hljs-keyword">in</span> route.split(<span class="hljs-string">'.'</span>)
+      <span class="hljs-keyword">if</span> path? <span class="hljs-keyword">then</span> path = path + <span class="hljs-string">'.'</span> + name <span class="hljs-keyword">else</span> path = name
+      obj.set path, {} <span class="hljs-keyword">unless</span> obj.get(path)?
+
+  <span class="hljs-attribute">set_path_value</span>: <span class="hljs-function"><span class="hljs-params">(obj, route, value)</span> -&gt;</span>
+    <span class="hljs-property">@add_path_objects</span>(obj, route)
+    obj.set(route, value)
+
+  <span class="hljs-attribute">string_array_to_numbers</span>: <span class="hljs-function"><span class="hljs-params">(array)</span> -&gt;</span>
+    array.forEach (string, index) =&gt; array[index] = parseInt(string)
+    array
+
+  <span class="hljs-attribute">string_to_color</span>: <span class="hljs-function"><span class="hljs-params">(str)</span> -&gt;</span>
+    hash = <span class="hljs-number">0</span>
+    i    = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> i &lt; str.length
+      hash = str.charCodeAt(i) + (hash &lt;&lt; <span class="hljs-number">5</span>) - hash
+      i++
+    color = <span class="hljs-string">'#'</span>
+    i     = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-number">3</span>
+      value = hash &gt;&gt; i * <span class="hljs-number">8</span> &amp; <span class="hljs-number">0xFF</span>
+      color += (<span class="hljs-string">'00'</span> + value.toString(<span class="hljs-number">16</span>)).substr(-<span class="hljs-number">2</span>)
+      i++
+    color
+
+
+
+export default <span class="hljs-keyword">new</span> UtilityJS</div></div></div></div></body></html>

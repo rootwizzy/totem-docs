@@ -16,7 +16,7 @@ export default ember.Mixin.create
   <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
     <span class="hljs-property">@_super</span>(arguments...)
     <span class="hljs-property">@pubsub_active</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'pubsub.pubsub_active'</span>)
-    <span class="hljs-property">@warn</span> <span class="hljs-string">'[WARNING] You are attempting to use the "server_events" service but pubsub is inactive.'</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@pubsub_active</span>
+    <span class="hljs-property">@error</span> @, <span class="hljs-string">'[WARNING] You are attempting to use the "server_events" service but pubsub is inactive.'</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@pubsub_active</span>
     <span class="hljs-property">@store</span>         = <span class="hljs-property">@get</span>(<span class="hljs-string">'store'</span>)
     <span class="hljs-property">@thinkspace</span>    = <span class="hljs-property">@get</span>(<span class="hljs-string">'thinkspace'</span>)
     <span class="hljs-property">@pubsub</span>        = <span class="hljs-property">@get</span>(<span class="hljs-string">'pubsub'</span>)

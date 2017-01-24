@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="en"><head><title>totem-admin/addon/mixins/am/rooms</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="totem-admin/addon/mixins/am/rooms"><meta name="groc-project-path" content="totem-admin/addon/mixins/am/rooms.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem-admin/addon/mixins/am/rooms.coffee">totem-admin/addon/mixins/am/rooms.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">room_list</span>: <span class="hljs-function"><span class="hljs-params">(component)</span> -&gt;</span>
+    options =
+      <span class="hljs-attribute">after_authenticate_callback</span>: <span class="hljs-string">'room_list_callback'</span>
+      <span class="hljs-attribute">source</span>:                      @
+      <span class="hljs-attribute">component</span>:                   component
+    <span class="hljs-property">@pubsub</span>.get_socket(options) <span class="hljs-comment"># authenticate the user</span>
+
+  <span class="hljs-attribute">room_list_callback</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> <span class="hljs-property">@emit_room_list</span>(options.component)
+
+  <span class="hljs-attribute">emit_room_list</span>: <span class="hljs-function"><span class="hljs-params">(source, callback=<span class="hljs-string">'handle_room_list'</span>)</span> -&gt;</span>
+    event = <span class="hljs-string">'room_list'</span>
+    socket = <span class="hljs-property">@pubsub</span>.get_socket()
+    cevent = <span class="hljs-property">@pubsub</span>.client_event(event)
+    sevent = <span class="hljs-property">@pubsub</span>.server_event(event)
+    <span class="hljs-property">@pubsub</span>.<span class="hljs-literal">on</span>(socket, sevent, source, callback) 
+    socket.emit(cevent)</div></div></div></div></body></html>

@@ -12,7 +12,7 @@ export default base.extend
 
   <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
     <span class="hljs-property">@labs</span> = labs.create()
-    <span class="hljs-property">@tvo_status_register_callback</span>(@, <span class="hljs-string">'validate_lab'</span>)
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo.status'</span>).register_callback(@, <span class="hljs-string">'validate_lab'</span>)
 
   <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span>
     chart = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>

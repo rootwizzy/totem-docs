@@ -43,8 +43,11 @@ export default base.extend ta.add(
     <span class="hljs-keyword">return</span> kilobytes.toFixed(<span class="hljs-number">1</span>) + <span class="hljs-string">' KB'</span> <span class="hljs-keyword">if</span> kilobytes &gt;= <span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> bytes.toFixed(<span class="hljs-number">1</span>) + <span class="hljs-string">' B'</span>
 
-  <span class="hljs-attribute">container_id</span>: ember.computed <span class="hljs-string">'id'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-string">"ts-artifact_file-<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'id'</span>)}</span>"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>didCreate: -&gt; @didLoad()</p>
-<p>didLoad: -&gt;
-  @get(ta.to_p &#39;bucket&#39;).then (bucket) =&gt;
-    bucket.get(ta.to_p &#39;artifact:files&#39;).then (files) =&gt;
-      files.pushObject(@) unless files.contains(@)</p></div></div></div></div></body></html>
+  <span class="hljs-attribute">container_id</span>: ember.computed <span class="hljs-string">'id'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-string">"ts-artifact_file-<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'id'</span>)}</span>"</span>
+
+  <span class="hljs-attribute">didCreate</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@didLoad</span>()
+
+  <span class="hljs-attribute">didLoad</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(ta.to_p <span class="hljs-string">'bucket'</span>).<span class="hljs-keyword">then</span> (bucket) =&gt;
+      bucket.get(ta.to_p <span class="hljs-string">'artifact:files'</span>).<span class="hljs-keyword">then</span> (files) =&gt;
+        files.pushObject(@) <span class="hljs-keyword">unless</span> files.contains(@)</div></div></div></div></body></html>

@@ -4,9 +4,12 @@ import ajax  from <span class="hljs-string">'totem/ajax'</span>
 import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
 
 export default base.extend
+
   <span class="hljs-attribute">builder</span>: ember.inject.service()
 
-  <span class="hljs-attribute">step</span>:    ember.computed.reads <span class="hljs-string">'builder.current_step'</span>
+  <span class="hljs-attribute">step</span>: ember.computed.reads <span class="hljs-string">'builder.current_step'</span>
 
   <span class="hljs-attribute">actions</span>:
-    <span class="hljs-attribute">next_step</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'builder'</span>).transition_to_next_step(<span class="hljs-attribute">save</span>: <span class="hljs-literal">true</span>)</div></div></div></div></body></html>
+
+    <span class="hljs-attribute">next_step</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'builder'</span>).transition_to_next_step()
+    <span class="hljs-attribute">prev_step</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'builder'</span>).transition_to_prev_step()</div></div></div></div></body></html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"><head><title>totem-pub-sub/addon/mixins/initialize</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="totem-pub-sub/addon/mixins/initialize"><meta name="groc-project-path" content="totem-pub-sub/addon/mixins/initialize.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem-pub-sub/addon/mixins/initialize.coffee">totem-pub-sub/addon/mixins/initialize.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+import util   from <span class="hljs-string">'totem/util'</span>
+import config from <span class="hljs-string">'totem-config/config'</span>
+import {env}  from <span class="hljs-string">'totem-config/config'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">session</span>: ember.inject.service()
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@io</span>            = <span class="hljs-built_in">window</span>.io
+    <span class="hljs-property">@pubsub_active</span> = ember.isPresent(<span class="hljs-property">@io</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@pubsub_active</span>
+    <span class="hljs-built_in">console</span>.warn <span class="hljs-string">"socket.io (at: window.io) is blank. Pubsub is inactive."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-property">@pubsub_active</span>
+    <span class="hljs-property">@session</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'session'</span>)
+    <span class="hljs-property">@set_debugging</span>()
+
+  <span class="hljs-attribute">get_socket</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span> <span class="hljs-property">@pubsub_active</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@auth_socket</span>(options)
+
+  <span class="hljs-attribute">get_non_auth_socket</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span> <span class="hljs-property">@pubsub_active</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@non_auth_socket</span>(options)
+
+  <span class="hljs-attribute">invalidate_socket</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@pubsub_active</span>
+    socket.disconnect()
+    socket.destroy()
+
+  <span class="hljs-attribute">get_pubsub_url</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    pubsub = config.pub_sub <span class="hljs-keyword">or</span> {}
+    ns     = pubsub.namespace
+    url    = options.url <span class="hljs-keyword">or</span> pubsub.socketio_url
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"Pubsub url is blank."</span>)        <span class="hljs-keyword">unless</span> url
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"Pubsub namespace is blank."</span>)  <span class="hljs-keyword">unless</span> ns
+    ns  = <span class="hljs-string">'/'</span> + ns  <span class="hljs-keyword">unless</span> util.starts_with(ns, <span class="hljs-string">'/'</span>)
+    url + ns
+
+  <span class="hljs-attribute">set_debugging</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> (env.environment <span class="hljs-keyword">and</span> env.environment == <span class="hljs-string">'development'</span>)
+    <span class="hljs-property">@debugging_delete_events</span> = <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'TotemPubSub'</span></div></div></div></div></body></html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="en"><head><title>totem-application/addon/mixins/included_models</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="totem-application/addon/mixins/included_models"><meta name="groc-project-path" content="totem-application/addon/mixins/included_models.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem-application/addon/mixins/included_models.coffee">totem-application/addon/mixins/included_models.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ta from <span class="hljs-string">'totem/ds/associations'</span>
+
+export default ember.Mixin.create
+  <span class="hljs-attribute">included</span>: ta.attr(<span class="hljs-string">'json-api-models'</span>)
+  <span class="hljs-attribute">add_included_models</span>: <span class="hljs-function"><span class="hljs-params">(models)</span> -&gt;</span>
+    models   = ember.makeArray(models)
+    includes = []
+    models.forEach (model) =&gt; includes.pushObject(model)
+    included = <span class="hljs-property">@get</span> <span class="hljs-string">'included'</span>
+    <span class="hljs-keyword">switch</span>
+      <span class="hljs-keyword">when</span> ember.isNone(included)
+        included = includes
+      <span class="hljs-keyword">when</span> ember.isArray(included)
+        included = included.concat(includes)
+      <span class="hljs-keyword">when</span> ember.isPresent(included)
+        included = ember.makeArray(included)
+        included = included.concat(includes)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'included'</span>, included</div></div></div></div></body></html>

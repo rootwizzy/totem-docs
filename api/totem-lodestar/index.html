@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="en"><head><title>index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="README.md"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/README.md">README.md</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p><a href="https://travis-ci.org/rootwizzy/totem-lodestar"><img src="https://travis-ci.org/rootwizzy/totem-lodestar.svg?branch=master" alt="Build Status"></a></p>
+<h1 id="totemlodestar">Totem::Lodestar</h1>
+<p>A gem built to include base functonaility for markdown based documentation rails app.</p>
+<h2 id="installation">Installation</h2>
+<blockquote>
+<p>Hey!! This process should be done on a fresh installiation of Rails 5.0+, some files will be force replaced and data may be lost to default values!</p>
+</blockquote>
+<p>Add this line to your application&#39;s Gemfile:</p>
+<pre><code class="lang-ruby">gem <span class="hljs-string">'totem-lodestar'</span>, <span class="hljs-symbol">:git</span> =&gt; <span class="hljs-string">'https://github.com/rootwizzy/totem-lodestar'</span></code></pre>
+<p>Install the gem with</p>
+<pre><code class="lang-bash">$ bundle install</code></pre>
+<p>Generate and inject engine requirements with</p>
+<pre><code class="lang-bash">$ rails g totem:lodestar:install</code></pre>
+<p>After the install, configure your database settings in <code>app/config/database.yml</code> these will be defaulted to values that may not be valid in your environment.</p>
+<blockquote>
+<p>The engine requires postgres to be the database of the application at this time.</p>
+</blockquote>
+<p>Migrate the database</p>
+<pre><code class="lang-bash">rails [db:drop] db:create db:migrate</code></pre>
+<blockquote>
+<p>Before this last step you must have the documents directory added currently it must be <code>app/public/documents/</code> within the <code>documents/</code> directory there must be at least one version denoted. (ex: 1.0.0)</p>
+</blockquote>
+<p>Generate the documents</p>
+<pre><code class="lang-bash">rails totem:lodestar:generate</code></pre>
+<h3 id="deploy">Deploy</h3>
+<p>To incorporate Travis CI to the deploy workflow you will need heroku cli as well as the travis cli.</p>
+<p>Generate your secure key</p>
+<pre><code class="lang-bash">travis encrypt $(heroku auth:token) --add deploy.api_key</code></pre>
+<h2 id="license">License</h2>
+<p>The gem is available as open source under the terms of the <a href="http://opensource.org/licenses/MIT">MIT License</a>.</p></div></div></div></div></body></html>

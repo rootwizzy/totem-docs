@@ -14,8 +14,11 @@ export default ta.Model.extend ta.add(
   <span class="hljs-attribute">ownerable_type</span>: ta.attr(<span class="hljs-string">'string'</span>)
   <span class="hljs-attribute">ownerable_id</span>:   ta.attr(<span class="hljs-string">'number'</span>)
 
-  <span class="hljs-attribute">locked</span>: ember.computed.equal <span class="hljs-string">'state'</span>, <span class="hljs-string">'locked'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>didCreate: -&gt; @didLoad()</p>
-<p>didLoad: -&gt;
-  @get(ta.to_p &#39;lab:result&#39;).then (result) =&gt;
-    result.get(ta.to_p &#39;lab:observations&#39;).then (observations) =&gt;
-      observations.pushObject(@)  unless observations.includes(@)</p></div></div></div></div></body></html>
+  <span class="hljs-attribute">locked</span>: ember.computed.equal <span class="hljs-string">'state'</span>, <span class="hljs-string">'locked'</span>
+
+  <span class="hljs-attribute">didCreate</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@didLoad</span>()
+
+  <span class="hljs-attribute">didLoad</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(ta.to_p <span class="hljs-string">'lab:result'</span>).<span class="hljs-keyword">then</span> (result) =&gt;
+      result.get(ta.to_p <span class="hljs-string">'lab:observations'</span>).<span class="hljs-keyword">then</span> (observations) =&gt;
+        observations.pushObject(@)  <span class="hljs-keyword">unless</span> observations.includes(@)</div></div></div></div></body></html>

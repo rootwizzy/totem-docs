@@ -12,7 +12,7 @@ export default base.extend
     <span class="hljs-property">@sources</span>      = indented_list.sources
     <span class="hljs-property">@index_px</span>     = indented_list.index_px
     <span class="hljs-property">@attributes</span>   = hash.attributes
-    <span class="hljs-property">@tvo_section_define_ready</span>()
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo.helper'</span>).define_ready(@)
 
   <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span>
     <span class="hljs-property">@totem_data</span>.ability.refresh().<span class="hljs-keyword">then</span> =&gt;

@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><title>totem-messages/addon/model_validation</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="totem-messages/addon/model_validation"><meta name="groc-project-path" content="totem-messages/addon/model_validation.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem-messages/addon/model_validation.coffee">totem-messages/addon/model_validation.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ModelValidation</span></span>
+
+  <span class="hljs-attribute">message_prop</span>: <span class="hljs-string">'validation_model_messages'</span>
+
+  <span class="hljs-attribute">handle</span>: <span class="hljs-function"><span class="hljs-params">(api, options)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.warn <span class="hljs-string">'options'</span>, options
+    target = options.validation <span class="hljs-keyword">or</span> options.source
+    api.throw_error(<span class="hljs-string">'The model had validation errors but no message target [validation|source] was provided.'</span>, options)  <span class="hljs-keyword">unless</span> target</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If &quot;options.validation_prop: &#39;some-prop-name&#39;&quot; or &quot;options.validation_prop: true&quot;
+then set the property to an array of validation error messages.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> prop = options.validation_prop
+      prop = <span class="hljs-property">@message_prop</span>  <span class="hljs-keyword">if</span> prop == <span class="hljs-literal">true</span>  <span class="hljs-comment"># allow 'options.validation_prop: true'</span>
+      <span class="hljs-property">@set_errors_on_target_property</span>(api, target, prop, options)
+      <span class="hljs-keyword">return</span>
+
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@has_validation_mixin</span>(target)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>To view messages, use the &#39;modelErrors&#39; validator for the property.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-property">@add_to_validation_mixin_errors</span>(target, options)
+    <span class="hljs-keyword">else</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the target does not have the validation mixin, assume setting
+the messages on the default property name &#39;validation_model_messages&#39;.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-property">@set_errors_on_target_property</span>(api, target, <span class="hljs-property">@message_prop</span>, options)
+
+  <span class="hljs-attribute">add_to_validation_mixin_errors</span>: <span class="hljs-function"><span class="hljs-params">(target, options)</span> -&gt;</span>
+    errors = <span class="hljs-property">@get_errors_from_options</span>(options)
+    target.add_validation_model_errors(errors)
+
+  <span class="hljs-attribute">set_errors_on_target_property</span>: <span class="hljs-function"><span class="hljs-params">(api, target, prop, options)</span> -&gt;</span>
+    api.throw_error(<span class="hljs-string">"The model validation target does not have the property [<span class="hljs-subst">#{prop}</span>]."</span>, options)  <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span>(target.get prop) == <span class="hljs-string">'undefined'</span>
+    messages = []
+    <span class="hljs-keyword">for</span> own key, msg_array <span class="hljs-keyword">of</span> <span class="hljs-property">@get_errors_from_options</span>(options)
+      messages.push <span class="hljs-property">@get_message</span>(key, msg, options) <span class="hljs-keyword">for</span> msg <span class="hljs-keyword">in</span> msg_array
+    target.set prop, messages
+
+  <span class="hljs-attribute">get_errors_from_options</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    error = options.error <span class="hljs-keyword">or</span> {}
+    <span class="hljs-keyword">if</span> error.responseJSON
+      errors = error.responseJSON.errors    <span class="hljs-comment"># done via direct ajax call (e.g. not through ActiveModelAdapter)</span>
+    <span class="hljs-keyword">else</span>
+      errors = error.errors                 <span class="hljs-comment"># done via ActiveModelAdapter</span>
+    errors <span class="hljs-keyword">or</span> {}
+
+  <span class="hljs-attribute">get_message</span>: <span class="hljs-function"><span class="hljs-params">(key, message, options)</span> -&gt;</span> (options.with_key == <span class="hljs-literal">false</span> <span class="hljs-keyword">and</span> message) <span class="hljs-keyword">or</span> <span class="hljs-string">"<span class="hljs-subst">#{key}</span> <span class="hljs-subst">#{message}</span>"</span>
+
+  <span class="hljs-attribute">has_validation_mixin</span>: <span class="hljs-function"><span class="hljs-params">(target)</span> -&gt;</span> target.get(<span class="hljs-string">'is_validation_mixin_included'</span>)
+
+export default <span class="hljs-keyword">new</span> ModelValidation</div></div></div></div></body></html>

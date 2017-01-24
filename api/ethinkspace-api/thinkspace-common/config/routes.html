@@ -37,12 +37,29 @@ e.g. /users/select?ids=# would be interpreted as /users/:id with id: &#39;select
         <span class="hljs-keyword">end</span>
       <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Non-admin</p></div></div><div class="code"><div class="wrapper">			resources <span class="hljs-symbol">:spaces</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:index</span>, <span class="hljs-symbol">:show</span>]
 
-      resources <span class="hljs-symbol">:users</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:show</span>, <span class="hljs-symbol">:create</span>] <span class="hljs-keyword">do</span>
+      resources <span class="hljs-symbol">:users</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:show</span>, <span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:update</span>] <span class="hljs-keyword">do</span>
         collection <span class="hljs-keyword">do</span>
           post <span class="hljs-symbol">:sign_in</span>
           post <span class="hljs-symbol">:sign_out</span>
           get  <span class="hljs-symbol">:stay_alive</span>
           get  <span class="hljs-symbol">:validate</span>
+        <span class="hljs-keyword">end</span>
+        member <span class="hljs-keyword">do</span>
+          post <span class="hljs-symbol">:avatar</span>
+          put  <span class="hljs-symbol">:update_tos</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+        
+      resources <span class="hljs-symbol">:disciplines</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:index</span>, <span class="hljs-symbol">:show</span>] <span class="hljs-keyword">do</span>
+        collection <span class="hljs-keyword">do</span>
+          get <span class="hljs-symbol">:select</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+        
+      resources <span class="hljs-symbol">:agreements</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:index</span>, <span class="hljs-symbol">:show</span>] <span class="hljs-keyword">do</span>
+        collection <span class="hljs-keyword">do</span>
+          get <span class="hljs-symbol">:select</span>
+          get <span class="hljs-symbol">:latest_for</span>
         <span class="hljs-keyword">end</span>
       <span class="hljs-keyword">end</span>
       

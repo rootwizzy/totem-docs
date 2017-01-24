@@ -20,7 +20,7 @@ export default base.extend
   <span class="hljs-attribute">set_phase_progress</span>: <span class="hljs-function">-&gt;</span>
     assignment = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
     assignment.get(ns.to_p <span class="hljs-string">'phases'</span> ).<span class="hljs-keyword">then</span> (phases) =&gt;
-      phase_promises = phases.getEach(ns.to_p(<span class="hljs-string">'phase_states'</span>))
+      phase_promises = phases.getEach(<span class="hljs-property">@ns</span>.to_p(<span class="hljs-string">'phase_states'</span>))
       ember.RSVP.Promise.all(phase_promises).<span class="hljs-keyword">then</span> =&gt;
         sorted_phases = phases.sortBy(<span class="hljs-string">'position'</span>)
         resume_phase  = sorted_phases.find (phase) -&gt; phase.get(<span class="hljs-string">'is_unlocked'</span>)

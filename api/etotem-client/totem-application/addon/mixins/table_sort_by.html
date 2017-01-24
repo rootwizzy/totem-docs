@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><title>totem-application/addon/mixins/table_sort_by</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="totem-application/addon/mixins/table_sort_by"><meta name="groc-project-path" content="totem-application/addon/mixins/table_sort_by.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem-application/addon/mixins/table_sort_by.coffee">totem-application/addon/mixins/table_sort_by.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import util  from <span class="hljs-string">'totem/util_ember'</span>
+
+export default ember.Mixin.create 
+
+  <span class="hljs-attribute">sort_ids</span>:        []
+  <span class="hljs-attribute">sort_by</span>:         []
+  <span class="hljs-attribute">sorted_by</span>:       <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">default_sort_by</span>: []
+
+  <span class="hljs-attribute">display_sorted_by</span>: ember.computed <span class="hljs-string">'sorted_by.[]'</span>, <span class="hljs-function">-&gt;</span> ((<span class="hljs-property">@get</span>(<span class="hljs-string">'sorted_by'</span>) <span class="hljs-keyword">or</span> []).mapBy <span class="hljs-string">'text'</span>).join(<span class="hljs-string">', '</span>)
+
+  <span class="hljs-attribute">actions</span>:
+
+    <span class="hljs-attribute">sort_by</span>: <span class="hljs-function"><span class="hljs-params">(sort)</span> -&gt;</span>
+      util.error <span class="hljs-string">"Sort by value must be a hash."</span> <span class="hljs-keyword">unless</span> util.is_hash(sort)
+      sort_id = sort.id
+      util.error <span class="hljs-string">"Sort has blank id."</span>, sort <span class="hljs-keyword">if</span> ember.isBlank(sort_id)
+      sort_ids = <span class="hljs-property">@get</span>(<span class="hljs-string">'sort_ids'</span>)
+      sort_ids.push(sort_id) <span class="hljs-keyword">unless</span> sort_ids.includes(sort_id)
+      <span class="hljs-property">@set_sort_by</span>(sort)
+
+    <span class="hljs-attribute">clear_sort</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@set_id_sort_order</span>(id, <span class="hljs-literal">null</span>) <span class="hljs-keyword">for</span> id <span class="hljs-keyword">in</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'sort_ids'</span>)
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'sort_ids'</span>).clear()
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'sort_by'</span>).clear()
+      <span class="hljs-property">@set</span> <span class="hljs-string">'sorted_by'</span>, <span class="hljs-literal">null</span>
+
+    <span class="hljs-attribute">clear_by</span>: <span class="hljs-function"><span class="hljs-params">(sort)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> util.is_hash(sort)
+      sort_id = sort.id
+      util.error <span class="hljs-string">"Clear by sort has blank id."</span>, sort <span class="hljs-keyword">if</span> ember.isBlank(sort_id)
+      <span class="hljs-property">@set_id_sort_order</span>(sort_id)
+      <span class="hljs-property">@set</span> <span class="hljs-string">'sort_ids'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'sort_ids'</span>).without(sort.id)
+      <span class="hljs-property">@set_sort_by</span>()
+
+    <span class="hljs-attribute">default_by</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@send</span> <span class="hljs-string">'clear_sort'</span>
+      default_sort_by = <span class="hljs-property">@get</span>(<span class="hljs-string">'default_sort_by'</span>)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isArray(default_sort_by)
+      <span class="hljs-property">@send</span>(<span class="hljs-string">'sort_by'</span>, sort) <span class="hljs-keyword">for</span> sort <span class="hljs-keyword">in</span> default_sort_by
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>(arguments...)
+    <span class="hljs-property">@sort_ids</span>  = []
+    <span class="hljs-property">@sort_by</span>   = []
+    <span class="hljs-property">@sorted_by</span> = <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">set_id_sort_order</span>: <span class="hljs-function"><span class="hljs-params">(id, so=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    hash = <span class="hljs-property">@find_sort_by_id</span>(id)
+    util.error <span class="hljs-string">"Sort id '<span class="hljs-subst">#{id}</span>' not found."</span> <span class="hljs-keyword">unless</span> util.is_hash(hash)
+    ember.set(hash, <span class="hljs-string">'order'</span>, so)
+
+  <span class="hljs-attribute">set_sort_by</span>: <span class="hljs-function"><span class="hljs-params">(sort={})</span> -&gt;</span>
+    sort_ids  = <span class="hljs-property">@get</span>(<span class="hljs-string">'sort_ids'</span>) <span class="hljs-keyword">or</span> []
+    sort_id   = sort.id
+    sort_by   = []
+    sorted_by = []
+    <span class="hljs-keyword">for</span> id <span class="hljs-keyword">in</span> sort_ids
+      hash = <span class="hljs-property">@find_sort_by_id</span>(id)
+      util.error <span class="hljs-string">"Sort id '<span class="hljs-subst">#{id}</span>' not found."</span> <span class="hljs-keyword">unless</span> util.is_hash(hash)
+      so = hash.order
+      <span class="hljs-keyword">if</span> id == sort_id
+        so = <span class="hljs-keyword">if</span> so == <span class="hljs-string">'asc'</span> <span class="hljs-keyword">then</span> <span class="hljs-string">'desc'</span> <span class="hljs-keyword">else</span> <span class="hljs-string">'asc'</span>
+      hash_sort = ember.makeArray(hash.sort).compact()
+      <span class="hljs-keyword">for</span> each_sort <span class="hljs-keyword">in</span> hash_sort
+        sort_by.push(each_sort + <span class="hljs-string">":<span class="hljs-subst">#{so}</span>"</span>)
+      sorted_by.push(hash)
+      <span class="hljs-property">@set_id_sort_order</span>(id, so)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'sort_by'</span>, sort_by
+    <span class="hljs-property">@set</span> <span class="hljs-string">'sorted_by'</span>, sorted_by
+    <span class="hljs-property">@notifyPropertyChange</span> <span class="hljs-string">'sort_by'</span>
+
+  <span class="hljs-attribute">find_sort_by_id</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> key, hash <span class="hljs-keyword">of</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'sort'</span>)
+      <span class="hljs-keyword">return</span> hash <span class="hljs-keyword">if</span> hash.id == id
+    <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">set_default_sort_by</span>: <span class="hljs-function"><span class="hljs-params">(sort_ids)</span> -&gt;</span>
+    defaults = []
+    <span class="hljs-keyword">for</span> sort_id <span class="hljs-keyword">in</span> ember.makeArray(sort_ids).compact()
+      sort = <span class="hljs-property">@find_sort_by_id</span>(sort_id)
+      defaults.push(sort) <span class="hljs-keyword">if</span> sort
+    <span class="hljs-property">@set</span> <span class="hljs-string">'default_sort_by'</span>, defaults
+    <span class="hljs-property">@send</span> <span class="hljs-string">'default_by'</span></div></div></div></div></body></html>

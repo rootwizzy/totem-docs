@@ -7,7 +7,6 @@ export default base.extend
   <span class="hljs-attribute">builder</span>: ember.inject.service()
 
   <span class="hljs-attribute">titleToken</span>: <span class="hljs-function"><span class="hljs-params">(model)</span> -&gt;</span> model.get(<span class="hljs-string">'title'</span>)
-
   <span class="hljs-attribute">model</span>:      <span class="hljs-function"><span class="hljs-params">(params)</span> -&gt;</span> <span class="hljs-property">@tc</span>.find_record(<span class="hljs-property">@ns</span>.to_p(<span class="hljs-string">'assignment'</span>), params.assignment_id)
 
   <span class="hljs-attribute">activate</span>: <span class="hljs-function">-&gt;</span> 

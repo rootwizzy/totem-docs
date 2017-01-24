@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/addon/mixins/changeset/extend_changeset</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="totem/addon/mixins/changeset/extend_changeset"><meta name="groc-project-path" content="totem/addon/mixins/changeset/extend_changeset.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem/addon/mixins/changeset/extend_changeset.coffee">totem/addon/mixins/changeset/extend_changeset.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">extend_changeset</span>: <span class="hljs-function"><span class="hljs-params">(changeset)</span> -&gt;</span>
+    changeset.extend
+      <span class="hljs-attribute">is_valid</span>:    ember.computed.reads <span class="hljs-string">'isValid'</span>
+      <span class="hljs-attribute">is_invalid</span>:  ember.computed.reads <span class="hljs-string">'isInvalid'</span>
+      <span class="hljs-attribute">model</span>:       ember.computed.reads <span class="hljs-string">'_content'</span>
+      <span class="hljs-attribute">show_errors</span>: <span class="hljs-literal">false</span>
+      <span class="hljs-attribute">first_error</span>: <span class="hljs-literal">false</span>
+      <span class="hljs-attribute">status_key</span>:  <span class="hljs-literal">null</span>
+
+      <span class="hljs-attribute">get_model</span>:       <span class="hljs-function">-&gt;</span> model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>); <span class="hljs-keyword">if</span> util.is_model(model) <span class="hljs-keyword">then</span> model <span class="hljs-keyword">else</span> <span class="hljs-literal">null</span>
+      <span class="hljs-attribute">show_errors_on</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'show_errors'</span>, <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">show_errors_off</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'show_errors'</span>, <span class="hljs-literal">false</span>
+      <span class="hljs-attribute">first_error_on</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'first_error'</span>, <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">first_error_off</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'first_error'</span>, <span class="hljs-literal">false</span>
+
+      <span class="hljs-attribute">get_status_key</span>:       <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'status_key'</span>
+      <span class="hljs-attribute">set_status_key</span>: <span class="hljs-function"><span class="hljs-params">(key)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'status_key'</span>, key
+
+      <span class="hljs-attribute">has_been_saved</span>:     <span class="hljs-function">-&gt;</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@has_not_been_saved</span>()
+      <span class="hljs-attribute">has_not_been_saved</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'isValid'</span>) <span class="hljs-keyword">and</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'isDirty'</span>)
+
+      <span class="hljs-attribute">set_ownerable</span>: <span class="hljs-function">-&gt;</span>
+        model     = <span class="hljs-property">@get_model</span>()
+        type_attr = totem_scope.get_ownerable_type_attr()
+        id_attr   = totem_scope.get_ownerable_id_attr()
+        model.eachAttribute (rec_attr) =&gt;
+          <span class="hljs-keyword">switch</span> rec_attr
+            <span class="hljs-keyword">when</span> type_attr
+              <span class="hljs-property">@set</span> type_attr, totem_scope.get_ownerable_type()
+            <span class="hljs-keyword">when</span> id_attr
+              <span class="hljs-property">@set</span> id_attr, totem_scope.get_ownerable_id()
+
+      <span class="hljs-attribute">add_model_errors</span>: <span class="hljs-function">-&gt;</span>
+        model       = <span class="hljs-property">@get_model</span>()
+        errors      = model.get(<span class="hljs-string">'errors'</span>) <span class="hljs-keyword">or</span> []
+        validations = {}
+        errors.forEach (error) =&gt;
+          key     = error.attribute
+          message = ember.String.htmlSafe(<span class="hljs-string">"<span class="hljs-subst">#{key}</span>: <span class="hljs-subst">#{error.message}</span>"</span>)
+          (validations[key] ?= []).push(message) <span class="hljs-comment"># combine all key messages</span>
+        value = <span class="hljs-literal">null</span>
+        <span class="hljs-property">@addError</span>(key, {value, validation}) <span class="hljs-keyword">for</span> key, validation <span class="hljs-keyword">of</span> validations
+
+      <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'TotemChangeset'</span></div></div></div></div></body></html>

@@ -17,7 +17,8 @@ export default base.extend
     <span class="hljs-attribute">include_current_user_in_dropdown</span>:      <span class="hljs-literal">true</span>
     <span class="hljs-attribute">include_current_user_in_previous_next</span>: <span class="hljs-literal">false</span>
 
-  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
     setup_options  = ember.merge {}, <span class="hljs-property">@default_setup_options</span>
     <span class="hljs-property">@setup_options</span> = ember.merge setup_options, <span class="hljs-property">@setup_options</span> <span class="hljs-keyword">or</span> {}
     <span class="hljs-property">@set_users</span>()

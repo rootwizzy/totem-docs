@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/addon/i18n</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="totem/addon/i18n"><meta name="groc-project-path" content="totem/addon/i18n.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem/addon/i18n.coffee">totem/addon/i18n.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember   from <span class="hljs-string">'ember'</span>
+import locales from <span class="hljs-string">'totem-config/locales'</span>
+
+<span class="hljs-built_in">console</span>.warn locales
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">i18n</span></span>
+
+  <span class="hljs-attribute">message</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    template = <span class="hljs-property">@template</span>(options)
+    <span class="hljs-property">@format_message</span>(template, options)
+
+  <span class="hljs-attribute">format_message</span>: <span class="hljs-function"><span class="hljs-params">(template, options)</span> -&gt;</span>
+    args    = ember.makeArray(options._i18n_args <span class="hljs-keyword">or</span> [])
+    message = template.fmt(args...)
+    message = <span class="hljs-property">@humanize</span>(message)  <span class="hljs-keyword">unless</span> options.humanize == <span class="hljs-literal">false</span>
+    message
+
+  <span class="hljs-attribute">template</span>:<span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    path               = options.path
+    template           = locales.get_path(path) <span class="hljs-keyword">if</span> path
+    options._i18n_args = options.args <span class="hljs-keyword">if</span> template
+    <span class="hljs-keyword">unless</span> template
+      default_path       = options.default_path
+      template           = locales.get_path(default_path) <span class="hljs-keyword">if</span> default_path
+      options._i18n_args = options.default_args <span class="hljs-keyword">if</span> template
+    template = <span class="hljs-string">'Missing i18n template'</span>  <span class="hljs-keyword">unless</span> template
+    template
+
+  <span class="hljs-attribute">humanize</span>: <span class="hljs-function"><span class="hljs-params">(str)</span> -&gt;</span>
+    <span class="hljs-string">"<span class="hljs-subst">#{str}</span>"</span>.replace(<span class="hljs-regexp">/_/g</span>, <span class="hljs-string">' '</span>).replace( <span class="hljs-regexp">/^\w/g</span>, <span class="hljs-function"><span class="hljs-params">(s)</span> -&gt;</span> s.toUpperCase() )
+
+export default <span class="hljs-keyword">new</span> i18n</div></div></div></div></body></html>

@@ -5,7 +5,8 @@ import lab_observation from <span class="hljs-string">'thinkspace-lab/managers/o
 export default base.extend
   <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
 
-  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
     <span class="hljs-property">@set</span> <span class="hljs-string">'lab_observation'</span>, lab_observation.create
       <span class="hljs-attribute">lab</span>:             <span class="hljs-property">@get</span> <span class="hljs-string">'lab'</span>
       <span class="hljs-attribute">lab_result</span>:      <span class="hljs-property">@get</span> <span class="hljs-string">'lab_result'</span>

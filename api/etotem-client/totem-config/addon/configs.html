@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="en"><head><title>totem-config/addon/configs</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="totem-config/addon/configs"><meta name="groc-project-path" content="totem-config/addon/configs.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem-config/addon/configs.coffee">totem-config/addon/configs.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import util  from <span class="hljs-string">'totem/util_ember'</span>
+import fm    from <span class="hljs-string">'totem-config/find_modules'</span>
+import {env} from <span class="hljs-string">'totem-config/config'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Find &#39;_config&#39; modules in &#39;window.requirejs.entries&#39;, require the module and collect the contents.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemConfigs</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function">-&gt;</span>
+    mp = env.modulePrefix
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Application modulePrefix is blank."</span> <span class="hljs-keyword">if</span> ember.isBlank(mp)
+    <span class="hljs-property">@app_auto_mount</span>     = env.app_auto_mount <span class="hljs-keyword">or</span> <span class="hljs-literal">true</span>
+    <span class="hljs-property">@module_configs</span>     = {}
+    <span class="hljs-property">@router_mounts</span>      = []
+    <span class="hljs-property">@module_configs</span>[mp] = {<span class="hljs-attribute">app</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">module_prefix</span>: mp, <span class="hljs-attribute">module</span>: <span class="hljs-string">'app.js'</span>, <span class="hljs-attribute">engine</span>: <span class="hljs-string">'root app'</span>, <span class="hljs-attribute">add_engines</span>: []}
+    <span class="hljs-property">@app_engines</span>        = <span class="hljs-property">@module_configs</span>[mp].add_engines <span class="hljs-comment"># main app for 'mounted' engines</span>
+    <span class="hljs-property">@populate_contents</span>()
+
+  <span class="hljs-attribute">get_router_mounts</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@router_mounts</span>
+  <span class="hljs-attribute">get_ns</span>:            <span class="hljs-function">-&gt;</span> <span class="hljs-property">@collect_by</span>(<span class="hljs-string">'ns'</span>)
+  <span class="hljs-attribute">get_query_params</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@collect_by</span>(<span class="hljs-string">'query_params'</span>)
+
+  <span class="hljs-attribute">get_config</span>:          <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span> <span class="hljs-property">@module_configs</span>[name] <span class="hljs-keyword">or</span> {}
+  <span class="hljs-attribute">get_config_engine</span>:   <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span> <span class="hljs-property">@get_config</span>(name).engine <span class="hljs-keyword">or</span> {}
+  <span class="hljs-attribute">get_add_engines</span>:     <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span> <span class="hljs-property">@get_config</span>(name).add_engines
+  <span class="hljs-attribute">get_external_routes</span>: <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span> <span class="hljs-property">@get_config_engine</span>(name).external_routes
+
+  <span class="hljs-attribute">get_services</span>:        <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span>
+    engine = <span class="hljs-property">@get_config_engine</span>(name)
+    {<span class="hljs-attribute">services</span>: engine.services, <span class="hljs-attribute">add_services</span>: engine.add_services, <span class="hljs-attribute">except_services</span>: engine.except_services}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="populate">Populate.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">populate_contents</span>: <span class="hljs-function">-&gt;</span>
+    mod_regex = <span class="hljs-keyword">new</span> RegExp <span class="hljs-string">".*\/_config$"</span>
+    mods      = fm.filter_by(mod_regex)
+    <span class="hljs-keyword">for</span> mod <span class="hljs-keyword">in</span> mods
+      original_config = util.require_module(mod)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Module '<span class="hljs-subst">#{mod}</span>' is not a hash."</span>, original_config   <span class="hljs-keyword">unless</span> util.is_hash(original_config)
+      config        = util.dup_hash(original_config)
+      config.<span class="hljs-built_in">module</span> = mod
+      module_prefix = <span class="hljs-property">@get_module_prefix</span>(config)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Module prefix '<span class="hljs-subst">#{module_prefix}</span>' is a duplicate."</span>, config  <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@module_configs</span>[module_prefix])
+      config.module_prefix = module_prefix
+      <span class="hljs-property">@module_configs</span>[module_prefix] = <span class="hljs-property">@standardize_config</span>(config)
+    <span class="hljs-built_in">console</span>.warn <span class="hljs-property">@module_configs</span>
+
+  <span class="hljs-attribute">get_module_prefix</span>: <span class="hljs-function"><span class="hljs-params">(config)</span> -&gt;</span>
+    mod = config.<span class="hljs-built_in">module</span>
+    env = config.env
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Module '<span class="hljs-subst">#{mod}</span>' does not have an environment 'env' key."</span>, config   <span class="hljs-keyword">unless</span> util.is_hash(env)
+    module_prefix = env.modulePrefix
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Module '<span class="hljs-subst">#{mod}</span>' does not have a 'modulePrefix' environment key."</span>, config   <span class="hljs-keyword">unless</span> util.is_string(module_prefix)
+    module_prefix</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="standarize-config">Standarize Config.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">standardize_config</span>: <span class="hljs-function"><span class="hljs-params">(config)</span> -&gt;</span>
+    config.ns           = <span class="hljs-property">@standardize_ns</span>(config)
+    config.query_params = <span class="hljs-property">@standardize_query_params</span>(config)
+    config.add_engines  = <span class="hljs-property">@standardize_add_engines</span>(config)
+    config.engine       = <span class="hljs-property">@standardize_engine</span>(config)
+    util.delete_blank_hash_keys(config)
+    config
+
+  <span class="hljs-attribute">standardize_ns</span>: <span class="hljs-function"><span class="hljs-params">(config)</span> -&gt;</span>
+    ns = config.ns
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(ns)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"NS must be a hash."</span>, config <span class="hljs-keyword">unless</span> util.is_hash(ns)
+    hash        = util.dup_hash(ns)
+    hash.<span class="hljs-built_in">module</span> = config.<span class="hljs-built_in">module</span>
+    hash
+
+  <span class="hljs-attribute">standardize_query_params</span>: <span class="hljs-function"><span class="hljs-params">(config)</span> -&gt;</span>
+    qp = config.query_params
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(qp)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Query params must be a hash."</span>, config <span class="hljs-keyword">unless</span> util.is_hash(qp)
+    array = []
+    <span class="hljs-keyword">for</span> model, args <span class="hljs-keyword">of</span> qp
+      array.push {<span class="hljs-attribute">model</span>: model, <span class="hljs-attribute">args</span>: args, <span class="hljs-attribute">module</span>: config.<span class="hljs-built_in">module</span>}
+    array
+
+  <span class="hljs-attribute">standardize_add_engines</span>: <span class="hljs-function"><span class="hljs-params">(config)</span> -&gt;</span>
+    add_engines = config.add_engines <span class="hljs-keyword">or</span> config.engines
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(add_engines)
+    engines = ember.makeArray(add_engines).compact()
+    array   = []
+    <span class="hljs-keyword">for</span> engine <span class="hljs-keyword">in</span> engines
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Engines must be a string or hash."</span>, engine <span class="hljs-keyword">unless</span> (util.is_string(engine) <span class="hljs-keyword">or</span> util.is_hash(engine))
+      <span class="hljs-keyword">if</span> util.is_string(engine)
+        array.push {<span class="hljs-attribute">engine</span>: engine, <span class="hljs-attribute">args</span>: {}, <span class="hljs-attribute">module</span>: config.<span class="hljs-built_in">module</span>}
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">for</span> k, args <span class="hljs-keyword">of</span> engine
+          <span class="hljs-property">@error</span> <span class="hljs-string">"Engines args be a hash."</span>, engine <span class="hljs-keyword">unless</span> util.is_hash(args)
+          array.push {<span class="hljs-attribute">engine</span>: k, <span class="hljs-attribute">args</span>: args, <span class="hljs-attribute">module</span>: config.<span class="hljs-built_in">module</span>}
+    array</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="engine">Engine.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">standardize_engine</span>: <span class="hljs-function"><span class="hljs-params">(config)</span> -&gt;</span>
+    engine = config.engine
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(engine)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Engine value must be a hash."</span>, engine <span class="hljs-keyword">unless</span> util.is_hash(engine)
+    external_routes = <span class="hljs-property">@standardize_external_routes</span>(config, engine)
+    services        = <span class="hljs-property">@standardize_services</span>(config, engine)
+    mount           = <span class="hljs-property">@standardize_mount</span>(config, engine)
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@app_auto_mount</span> <span class="hljs-keyword">and</span> ember.isPresent(mount)
+      <span class="hljs-property">@router_mounts</span>.push(mount)
+      app_engine = <span class="hljs-property">@build_app_engine</span>(config, engine)
+      <span class="hljs-property">@app_engines</span>.push(app_engine) <span class="hljs-keyword">if</span> ember.isPresent(app_engine)
+      config._app_engine = app_engine  <span class="hljs-comment"># used only for debugging</span>
+      config._mount      = mount       <span class="hljs-comment"># used only for debugging</span>
+    engine.external_routes = external_routes
+    ember.merge engine, services
+    util.delete_blank_hash_keys_except(engine, <span class="hljs-string">'services'</span>)
+    engine
+
+  <span class="hljs-attribute">standardize_mount</span>: <span class="hljs-function"><span class="hljs-params">(config, engine)</span> -&gt;</span>
+    mount = engine.mount
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(mount)
+    <span class="hljs-keyword">switch</span>
+      <span class="hljs-keyword">when</span> util.is_string(mount)  <span class="hljs-keyword">then</span> mount = {<span class="hljs-attribute">as</span>: mount}
+      <span class="hljs-keyword">when</span> util.is_hash(mount)    <span class="hljs-comment"># use as-is</span>
+      <span class="hljs-keyword">else</span> <span class="hljs-property">@error</span> <span class="hljs-string">"Mount value must be a string or hash."</span>, config
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Mount must include an 'as' key."</span> <span class="hljs-keyword">if</span> ember.isBlank(mount.as)
+    {<span class="hljs-attribute">engine</span>: config.module_prefix, <span class="hljs-attribute">module</span>: config.<span class="hljs-built_in">module</span>, <span class="hljs-attribute">args</span>: mount}
+
+  <span class="hljs-attribute">standardize_external_routes</span>: <span class="hljs-function"><span class="hljs-params">(config, engine)</span> -&gt;</span>
+    routes = engine.external_routes
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(routes)
+    array = []
+    <span class="hljs-keyword">for</span> route <span class="hljs-keyword">in</span> ember.makeArray(routes)
+      <span class="hljs-keyword">switch</span>
+        <span class="hljs-keyword">when</span> util.is_string(route)  <span class="hljs-keyword">then</span> array.push(route)
+        <span class="hljs-keyword">when</span> util.is_hash(route)    <span class="hljs-keyword">then</span> array = array.concat util.hash_keys(route)
+        <span class="hljs-keyword">else</span> <span class="hljs-property">@error</span> <span class="hljs-string">"External routes must be a string or hash."</span>, config
+    array
+
+  <span class="hljs-attribute">standardize_services</span>: <span class="hljs-function"><span class="hljs-params">(config, engine)</span> -&gt;</span>
+    {services, add_services, except_services} = engine
+    hash = {}
+    services             = <span class="hljs-keyword">unless</span> util.is_array(services)    <span class="hljs-keyword">then</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">else</span> services
+    hash.add_services    = <span class="hljs-keyword">if</span> ember.isBlank(add_services)    <span class="hljs-keyword">then</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">else</span> ember.makeArray(add_services)
+    hash.except_services = <span class="hljs-keyword">if</span> ember.isBlank(except_services) <span class="hljs-keyword">then</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">else</span> ember.makeArray(except_services)
+    <span class="hljs-keyword">if</span> ember.isPresent(services)
+      array = []
+      <span class="hljs-keyword">for</span> service <span class="hljs-keyword">in</span> services
+        <span class="hljs-keyword">switch</span>
+          <span class="hljs-keyword">when</span> util.is_string(service)  <span class="hljs-keyword">then</span> array.push(service)
+          <span class="hljs-keyword">when</span> util.is_hash(service)    <span class="hljs-keyword">then</span> array.concat util.hash_keys(service)
+          <span class="hljs-keyword">else</span> <span class="hljs-property">@error</span> <span class="hljs-string">"Services must be a string or hash."</span>, config
+      hash.services = array
+    hash</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="build-engine-config-for-mounted-engines">Build Engine Config for Mounted Engines.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>For a mounted engine, services and external-routes are hashes.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">build_app_engine</span>: <span class="hljs-function"><span class="hljs-params">(config, engine, mount)</span> -&gt;</span>
+    args = {}
+    ember.merge args, <span class="hljs-property">@standardize_app_services</span>(config, engine)
+    args.external_routes = <span class="hljs-property">@standardize_app_external_routes</span>(config, engine)
+    util.delete_blank_hash_keys(args)
+    hash = {<span class="hljs-attribute">engine</span>: config.module_prefix, <span class="hljs-attribute">module</span>: config.<span class="hljs-built_in">module</span>, <span class="hljs-attribute">args</span>: args}
+    hash
+
+  <span class="hljs-attribute">standardize_app_external_routes</span>: <span class="hljs-function"><span class="hljs-params">(config, engine)</span> -&gt;</span>
+    routes = engine.external_routes
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(routes)
+    hash = {}
+    <span class="hljs-keyword">for</span> route <span class="hljs-keyword">in</span> ember.makeArray(routes)
+      <span class="hljs-keyword">switch</span>
+        <span class="hljs-keyword">when</span> util.is_string(route)  <span class="hljs-keyword">then</span> hash[route] = route
+        <span class="hljs-keyword">when</span> util.is_hash(route)    <span class="hljs-keyword">then</span> ember.merge hash, route
+        <span class="hljs-keyword">else</span> <span class="hljs-property">@error</span> <span class="hljs-string">"External routes must be a string or hash."</span>, config
+    hash
+
+  <span class="hljs-attribute">standardize_app_services</span>: <span class="hljs-function"><span class="hljs-params">(config, engine)</span> -&gt;</span>
+    {services, add_servicess, except_services} = engine</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">collect_by</span>: <span class="hljs-function"><span class="hljs-params">(key)</span> -&gt;</span>
+    contents = []
+    <span class="hljs-keyword">for</span> pkg, values <span class="hljs-keyword">of</span> <span class="hljs-property">@module_configs</span>
+      val = values[key]
+      contents.push(val) <span class="hljs-keyword">if</span> ember.isPresent(val)
+    contents
+
+  <span class="hljs-attribute">error</span>: <span class="hljs-function">-&gt;</span> util.error(@, arguments...)
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'TotemConfigs'</span>
+
+export default <span class="hljs-keyword">new</span> TotemConfigs</div></div></div></div></body></html>

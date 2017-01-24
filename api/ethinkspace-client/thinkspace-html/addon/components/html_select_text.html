@@ -17,5 +17,5 @@ export default base.extend
     sections = tvo.attribute_value_array <span class="hljs-property">@get</span>(<span class="hljs-string">"attributes.<span class="hljs-subst">#{action}</span>"</span>)
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(sections)
     <span class="hljs-keyword">for</span> section <span class="hljs-keyword">in</span> sections
-      <span class="hljs-keyword">if</span> <span class="hljs-property">@tvo_section_has_action</span>(section, action)
-        <span class="hljs-property">@tvo_section_send_action</span>(section, action, value)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>totem_data_config: ability: {ajax_source: true}</p></div></div></div></div></body></html>
+      <span class="hljs-keyword">if</span> tvo.section.has_action(section, action)
+        tvo.section.send_action section, action, value</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>totem_data_config: ability: {ajax_source: true}</p></div></div></div></div></body></html>

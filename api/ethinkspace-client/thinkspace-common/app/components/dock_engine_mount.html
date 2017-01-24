@@ -5,7 +5,8 @@ import te    from <span class="hljs-string">'totem-engines/engines'</span>
 export default base.extend
   <span class="hljs-attribute">tagName</span>:   <span class="hljs-string">''</span>
 
-  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
     <span class="hljs-property">@engines</span> = <span class="hljs-literal">null</span>
     <span class="hljs-property">@get</span>(<span class="hljs-string">'addons'</span>).reset_dock()  <span class="hljs-keyword">if</span> <span class="hljs-property">@reset_dock</span> == <span class="hljs-literal">true</span>
     <span class="hljs-property">@set_route_addons</span>()

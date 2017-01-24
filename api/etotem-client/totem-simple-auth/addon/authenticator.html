@@ -1,0 +1,127 @@
+<!DOCTYPE html><html lang="en"><head><title>totem-simple-auth/addon/authenticator</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="totem-simple-auth/addon/authenticator"><meta name="groc-project-path" content="totem-simple-auth/addon/authenticator.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem-simple-auth/addon/authenticator.coffee">totem-simple-auth/addon/authenticator.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember          from <span class="hljs-string">'ember'</span>
+import ns             from <span class="hljs-string">'totem/ns'</span>
+import config         from <span class="hljs-string">'totem-config/config'</span>
+import ajax           from <span class="hljs-string">'totem/ajax'</span>
+import util           from <span class="hljs-string">'totem/util'</span>
+import totem_scope    from <span class="hljs-string">'totem/scope'</span>
+import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
+import base           from <span class="hljs-string">'ember-simple-auth/authenticators/base'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="todo-fix-for-using-the-cookie-store">TODO: Fix for using the cookie store</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">export default base.extend
+
+  <span class="hljs-attribute">restore</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.info <span class="hljs-string">'authenticator restore'</span>, data, ajax.adapter_host()
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> reject() <span class="hljs-keyword">unless</span> (data.token <span class="hljs-keyword">and</span> data.email <span class="hljs-keyword">and</span> data.user_id)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Server call to validate the users credentials when a page is refreshed
+or a browser is opened that was prevously signed in by a user.</p>
+<p>Performing this in the restore function, allows gracefully rejecting the restore and
+reloading the application back to the sign in page.
+Otherwise, if just resolve, the first server call (typically show user) will fail
+if the session is invalid (e.g. timed out).</p>
+<p>The credentials (user token, email and user record -&gt; not password) are stored in
+the browser&#39;s local storage and to clear them, the user must &#39;sign out&#39;.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>When &#39;restore&#39; is called, the ember-data store is not intialized yet, so cannot make
+a store/model request so need the full validate user url.</p></div></div><div class="code"><div class="wrapper">      validate_user_url = config.simple_auth <span class="hljs-keyword">and</span> config.simple_auth.validate_user_url
+
+      <span class="hljs-keyword">return</span> reject() <span class="hljs-keyword">unless</span> validate_user_url
+
+      <span class="hljs-keyword">if</span> util.starts_with(validate_user_url, <span class="hljs-string">'http'</span>)
+        url = validate_user_url
+      <span class="hljs-keyword">else</span>
+        url = ajax.adapter_host()
+        <span class="hljs-keyword">return</span> reject() <span class="hljs-keyword">unless</span> url
+        url += <span class="hljs-string">'/'</span>  <span class="hljs-keyword">unless</span> ( util.ends_with(url, <span class="hljs-string">'/'</span>) <span class="hljs-keyword">or</span> util.starts_with(validate_user_url, <span class="hljs-string">'/'</span>) )
+        url += validate_user_url
+
+      query =
+        <span class="hljs-attribute">url</span>:  url
+        <span class="hljs-attribute">data</span>: {<span class="hljs-attribute">user_id</span>: data.user_id}
+        <span class="hljs-attribute">beforeSend</span>: <span class="hljs-function"><span class="hljs-params">(jqXHR)</span> =&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Simulate the authorizer&#39;s jquery Prefilter by adding the Authorization header
+with the token and email values (e.g. simple-auth-devise authorizer).</p></div></div><div class="code"><div class="wrapper">          auth = <span class="hljs-string">'token'</span> + <span class="hljs-string">'="'</span> + data.token + <span class="hljs-string">'", '</span> + <span class="hljs-string">'email'</span> + <span class="hljs-string">'="'</span> + data.email + <span class="hljs-string">'"'</span>
+          jqXHR.setRequestHeader(<span class="hljs-string">'Authorization'</span>, <span class="hljs-string">'Token '</span> + auth)
+        <span class="hljs-attribute">success</span>: <span class="hljs-function"><span class="hljs-params">(payload)</span> =&gt;</span>
+          user = <span class="hljs-property">@push_user_payload</span>(payload)
+          totem_scope.set_current_user(user)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if payload[metadata]
+  metadata = ns.to_p(&#39;metadata&#39;)
+  store.pushMany(metadata, store.normalize(metadata, payload[metadata]))</p></div></div><div class="code"><div class="wrapper">          resolve(data)
+        <span class="hljs-attribute">error</span>: <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+          reject()
+
+      ember.$.ajax(query)
+
+  <span class="hljs-attribute">authenticate</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    totem_messages.clear_all()
+
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      query =
+        <span class="hljs-attribute">model</span>:        ns.to_p(<span class="hljs-string">'user'</span>)
+        <span class="hljs-attribute">verb</span>:         <span class="hljs-string">'post'</span>
+        <span class="hljs-attribute">action</span>:       <span class="hljs-string">'sign_in'</span>
+        <span class="hljs-attribute">data</span>:         options
+        <span class="hljs-attribute">skip_message</span>: <span class="hljs-literal">true</span>
+
+      store       = <span class="hljs-property">@get_store</span>()
+      local_store = <span class="hljs-property">@get_local_store</span>()
+      <span class="hljs-keyword">return</span> reject(<span class="hljs-string">'totem_simple_auth authenticate store is blank.'</span>) <span class="hljs-keyword">unless</span> store
+      <span class="hljs-keyword">return</span> reject(<span class="hljs-string">'totem_simple_auth authenticate local store is blank.'</span>) <span class="hljs-keyword">unless</span> local_store
+      local_store.set(<span class="hljs-string">'isAuthenticated'</span>, <span class="hljs-literal">false</span>) <span class="hljs-comment"># Without this, a new window will not trigger the redirect after route.</span>
+
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>console.warn &quot;PAYLOAD&quot;, type, payload, payload[type]</p></div></div><div class="code"><div class="wrapper">        user = <span class="hljs-property">@push_user_payload</span>(payload)
+        totem_scope.set_current_user(user)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if payload[metadata]
+  metadata = ns.to_p(&#39;metadata&#39;)
+  store.pushMany(metadata, store.normalize(metadata, payload[metadata]))</p></div></div><div class="code"><div class="wrapper">        resolve
+          <span class="hljs-attribute">token</span>:            payload.token
+          <span class="hljs-attribute">email</span>:            user.get(<span class="hljs-string">'email'</span>)
+          <span class="hljs-attribute">user_id</span>:          user.get(<span class="hljs-string">'id'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>for switch user capability:</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-attribute">switch_user</span>:      <span class="hljs-literal">false</span>
+          <span class="hljs-attribute">original_user</span>:    <span class="hljs-literal">true</span>
+          <span class="hljs-attribute">original_user_id</span>: user.get(<span class="hljs-string">'id'</span>)
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        reject(error)
+
+  <span class="hljs-attribute">push_user_payload</span>: <span class="hljs-function"><span class="hljs-params">(payload)</span> -&gt;</span>
+    store = <span class="hljs-property">@get_store</span>()
+    type  = ns.to_p(<span class="hljs-string">'user'</span>)
+    store.pushPayload(payload)
+    users = store.peekAll(type)
+    user  = users.get(<span class="hljs-string">'firstObject'</span>)
+    <span class="hljs-built_in">console</span>.info <span class="hljs-string">"authenticated user"</span>, user
+    user</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>push_user_payload: (payload) -&gt;
+  store           = @get_store()
+  type            = ns.to_p(&#39;user&#39;)
+  user            = payload[type]
+  data            = {type: type, attributes: {}, relationships: {}}
+  data.id         = user.id
+  attr            = data.attributes
+  attr.activated_at = user.activated_at
+  attr.email      = user.email
+  attr.first_name = user.first_name
+  attr.last_name  = user.last_name
+  attr.profile    = user.profile
+  attr.state      = user.state</p>
+<p>  stype       = ns.to_p(&#39;space&#39;)
+  rel         = data.relationships
+  spaces      = rel[&#39;thinkspace/common/spaces&#39;] = {}
+  spaces.data = []
+  spaces.data.push {type: stype, id: 1}
+  spaces.data.push {type: stype, id: 2}
+  spaces.data.push {type: stype, id: 3}</p>
+<h1 id="consolewarn-39normalized-user-data39-data">console.warn &#39;NORMALIZED USER DATA&#39;, data</h1>
+<p>  user  = store.push({data})
+  console.info &quot;USER&quot;, user
+  user</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">invalidate</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.warn <span class="hljs-string">'authenticator invalidate'</span>, data</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>return ember.RSVP.resolve()  # do nothing</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      query =
+        <span class="hljs-attribute">model</span>:        ns.to_p(<span class="hljs-string">'user'</span>)
+        <span class="hljs-attribute">verb</span>:         <span class="hljs-string">'post'</span>
+        <span class="hljs-attribute">action</span>:       <span class="hljs-string">'sign_out'</span>
+        <span class="hljs-attribute">skip_message</span>: <span class="hljs-literal">true</span>
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        resolve()  <span class="hljs-comment"># if the server returns an error, still sign out the ember user to clear the stores e.g. resolve not reject</span>
+
+  <span class="hljs-attribute">get_store</span>: <span class="hljs-function">-&gt;</span>
+    container = ajax.get_container()
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> container
+    container.lookup(<span class="hljs-string">'service:store'</span>)
+
+  <span class="hljs-attribute">get_local_store</span>: <span class="hljs-function">-&gt;</span>
+    container = ajax.get_container()
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> container</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>container.lookup(&#39;simple-auth-session:main&#39;)</p></div></div><div class="code"><div class="wrapper">    container.lookup(<span class="hljs-string">'session-store:application'</span>)</div></div></div></div></body></html>

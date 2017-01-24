@@ -25,7 +25,17 @@ export default base.extend
     collection.push {<span class="hljs-attribute">display</span>: notes_text,      <span class="hljs-attribute">action</span>: <span class="hljs-string">'toggle_notes_visible'</span>}      <span class="hljs-keyword">if</span> can_update <span class="hljs-keyword">or</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'model.has_notes'</span>)
     collection
 
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
+    timer = setInterval (<span class="hljs-function">=&gt;</span> <span class="hljs-property">@update_time</span>(@)), <span class="hljs-number">60000</span>
+    <span class="hljs-property">@set</span> <span class="hljs-string">'timer'</span>, timer
+
   <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set_overflown</span>()
+
+  <span class="hljs-attribute">willDestroyElement</span>: <span class="hljs-function">-&gt;</span>
+    timer = <span class="hljs-property">@get</span>(<span class="hljs-string">'timer'</span>)
+    clearInterval timer
+    <span class="hljs-property">@set</span> <span class="hljs-string">'timer'</span>, <span class="hljs-literal">null</span>
 
   <span class="hljs-attribute">is_expanded</span>:       <span class="hljs-literal">false</span>
   <span class="hljs-attribute">is_overflown</span>:      <span class="hljs-literal">false</span>
@@ -135,6 +145,14 @@ export default base.extend
   <span class="hljs-attribute">disable_observation_list</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@$</span>().removeClass(<span class="hljs-property">@draggable_class</span>)
 
   <span class="hljs-attribute">check_overflow</span>: ember.observer <span class="hljs-string">'model.value'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set_overflown</span>()
+
+  <span class="hljs-attribute">update_time</span>: <span class="hljs-function"><span class="hljs-params">(comp)</span> -&gt;</span>
+    model      = comp.get(<span class="hljs-string">'model'</span>)
+    created_at = model.get(<span class="hljs-string">'created_at'</span>) <span class="hljs-keyword">if</span> model
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> created_at
+    from_now       = moment(created_at).fromNow()
+    $obs_item_date = <span class="hljs-property">@$</span>().find(<span class="hljs-string">'.obs-item-date'</span>)
+    $obs_item_date.text(from_now)
 
   <span class="hljs-attribute">overflown_selector</span>: <span class="hljs-string">'.obs-list_list-item-value'</span>
 

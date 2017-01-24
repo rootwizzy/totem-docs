@@ -6,7 +6,8 @@ export default base.extend
 
   <span class="hljs-attribute">message_present</span>: ember.computed.bool  <span class="hljs-string">'totem_messages.message_present'</span>
   <span class="hljs-attribute">messages</span>:        ember.computed.reads <span class="hljs-string">'totem_messages.message_queue'</span>
-  <span class="hljs-attribute">is_debug</span>:        ember.computed.bool  <span class="hljs-string">'totem_messages.debug_on'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>init_base: -&gt;
+  <span class="hljs-attribute">is_debug</span>:        ember.computed.bool  <span class="hljs-string">'totem_messages.debug_on'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>init: -&gt;
+  @_super()
   @totem_messages.error &quot;ERROR TEST MESSAGE 1&quot;</p>
 <h1 id="totem-messageserror-quoterror-test-message-2quot">@totem_messages.error &quot;ERROR TEST MESSAGE 2&quot;</h1>
 <h1 id="totem-messageswarn-quotwarn-test-message-1quot">@totem_messages.warn &quot;WARN TEST MESSAGE 1&quot;</h1>

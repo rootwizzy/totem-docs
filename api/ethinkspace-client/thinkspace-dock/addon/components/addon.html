@@ -8,5 +8,6 @@ export default base.extend
 
   <span class="hljs-attribute">actions</span>:
     <span class="hljs-attribute">select</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'addons'</span>).toggle_addon <span class="hljs-property">@get</span>(<span class="hljs-string">'addon'</span>); <span class="hljs-keyword">return</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="-testing-only">### TESTING ONLY</h1>
-<p>init_base: -&gt;
+<p>init: -&gt;
+  @_super()
   @send &#39;select&#39; if @addon.engine == &#39;thinkspace-resource&#39;</p></div></div></div></div></body></html>

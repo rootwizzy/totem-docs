@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><title>thinkspace-html/addon/preprocessors/responses</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-html/addon/preprocessors/responses"><meta name="groc-project-path" content="thinkspace-html/addon/preprocessors/responses.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-html/addon/preprocessors/responses.coffee">thinkspace-html/addon/preprocessors/responses.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
-import util   from <span class="hljs-string">'totem/util'</span>
 import ns     from <span class="hljs-string">'totem/ns'</span>
 import ajax   from <span class="hljs-string">'totem/ajax'</span>
+import logger from <span class="hljs-string">'totem/logger'</span>
 import totem_changeset from <span class="hljs-string">'totem/changeset'</span>
 import totem_scope     from <span class="hljs-string">'totem/scope'</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> tvo is set when this preprocessor is created.</span></p>
 <p>Process input and textarea tags and replace with components.</p></div></div><div class="code"><div class="wrapper">export default ember.Object.extend
@@ -15,6 +15,7 @@ import totem_scope     from <span class="hljs-string">'totem/scope'</span></div>
         $content    = ember.$(<span class="hljs-string">'&lt;div/&gt;'</span>).html(template)
         root_path   = <span class="hljs-property">@get</span>(<span class="hljs-string">'input_element_root_path'</span>)
         prefix      = <span class="hljs-property">@get</span>(<span class="hljs-string">'input_element_component_prefix'</span>)
+        results_key = <span class="hljs-string">'inputs'</span>
 
         <span class="hljs-property">@get_ownerable_responses</span>(componentable, elements).<span class="hljs-keyword">then</span> (responses) =&gt;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The html content contains a html string with input tags.  This view generator
 replaces the input tags with handlebars &#39;componet&#39; for the responses.</p></div></div><div class="code"><div class="wrapper">          elements.forEach (element, index) =&gt;
@@ -43,10 +44,9 @@ replaces the input tags with handlebars &#39;componet&#39; for the responses.</p
               response.didLoad()
 
             changeset = <span class="hljs-property">@get_changeset</span>(response, tag_type)
-            <span class="hljs-property">@tvo</span>.status.register_changeset(changeset, <span class="hljs-attribute">key</span>: <span class="hljs-property">@results_key</span>) <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_checkbox</span>(tag_type)
+            <span class="hljs-property">@tvo</span>.status.register_changeset(changeset, <span class="hljs-attribute">key</span>: results_key) <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_checkbox</span>(tag_type)
 
-            hash           = {}
-            hash.tattrs    = attributes
+            hash           = {}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>hash.model       = response</p></div></div><div class="code"><div class="wrapper">            hash.tattrs    = attributes
             hash.changeset = changeset
 
             path = <span class="hljs-property">@tvo</span>.value.set_value_for element, hash
@@ -58,7 +58,7 @@ replaces the input tags with handlebars &#39;componet&#39; for the responses.</p
 
             attribute_query   = <span class="hljs-string">"<span class="hljs-subst">#{tag_kind}</span>[name='<span class="hljs-subst">#{input_name}</span>']"</span>
             attribute_matches = $content.find(attribute_query)
-            util.error @, <span class="hljs-string">"No attribute match found for find on <span class="hljs-subst">#{attribute_query}</span> against: <span class="hljs-subst">#{$content.html()}</span>"</span> <span class="hljs-keyword">if</span> attribute_matches.length == <span class="hljs-number">0</span>
+            logger.error <span class="hljs-string">"No attribute match found for find on <span class="hljs-subst">#{attribute_query}</span> against: <span class="hljs-subst">#{$content.html()}</span>"</span> <span class="hljs-keyword">if</span> attribute_matches.length == <span class="hljs-number">0</span>
 
             <span class="hljs-keyword">if</span> <span class="hljs-property">@is_radio</span>(tag_type)
               attribute_matches.each (index, input_match) =&gt;
@@ -70,12 +70,10 @@ replaces the input tags with handlebars &#39;componet&#39; for the responses.</p
                   comp = [<span class="hljs-string">"radio_value='<span class="hljs-subst">#{value}</span>'"</span>]
                   $radio.replaceWith <span class="hljs-property">@get_component_html</span>(html.concat comp)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If is the last radio button, add the errors component.</p></div></div><div class="code"><div class="wrapper">                  $parent.append(<span class="hljs-string">"{{component '<span class="hljs-subst">#{root_path}</span>/errors' changeset=tvo.<span class="hljs-subst">#{path}</span>.changeset}}"</span>) <span class="hljs-keyword">if</span> last
                 <span class="hljs-keyword">else</span>
-                  util.error @, <span class="hljs-string">"Radio button <span class="hljs-subst">#{input_match}</span> does not have a value attribute."</span>
+                  logger.error <span class="hljs-string">"Radio button <span class="hljs-subst">#{input_match}</span> does not have a value attribute."</span>
             <span class="hljs-keyword">else</span>
-              util.warn @, <span class="hljs-string">"Possible mass-replacement of an InputElement due to multiple matches for <span class="hljs-subst">#{attribute_query}</span>"</span> <span class="hljs-keyword">if</span> attribute_matches.length &gt; <span class="hljs-number">1</span>
+              logger.warn  <span class="hljs-string">"Possible mass-replacement of an InputElement due to multiple matches for <span class="hljs-subst">#{attribute_query}</span>"</span> <span class="hljs-keyword">if</span> attribute_matches.length &gt; <span class="hljs-number">1</span>
               attribute_matches.replaceWith <span class="hljs-property">@get_component_html</span>(html)
-
-          <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo.status'</span>).update(<span class="hljs-attribute">key</span>: <span class="hljs-property">@results_key</span>)
 
           resolve $content.html()
 
@@ -109,6 +107,4 @@ Validations are added to the actual model (e.g. user response).</p></div></div><
     message    = <span class="hljs-keyword">if</span> <span class="hljs-property">@is_radio</span>(tag_type) <span class="hljs-keyword">then</span> <span class="hljs-string">'You must select one of the above choices'</span> <span class="hljs-keyword">else</span> <span class="hljs-string">'You must enter a response'</span>
     validators = []
     validators.push totem_changeset.vpresence(<span class="hljs-attribute">presence</span>: <span class="hljs-literal">true</span>, <span class="hljs-attribute">message</span>: message)
-    totem_changeset.create response, <span class="hljs-attribute">value</span>: validators
-
-  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'HTMLResponsePreprocessor'</span></div></div></div></div></body></html>
+    totem_changeset.create response, <span class="hljs-attribute">value</span>: validators</div></div></div></div></body></html>

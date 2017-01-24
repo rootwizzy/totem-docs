@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/addon/timer</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="totem/addon/timer"><meta name="groc-project-path" content="totem/addon/timer.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem/addon/timer.coffee">totem/addon/timer.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import totem_error from <span class="hljs-string">'totem/error'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>An instance of TotemTimer can contain a single timer or multiple timers.
+When containing multiple timers, they can be restarted|cancelled as a unit.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Timer options (single hash or an array of hashes) containing:
+  source:   [object]   (required) source object with the &#39;method&#39;
+  method:   [string]   (required) method name called on the &#39;source&#39;
+  interval: [number]   (required) interval in milliseconds before calling &#39;source[method]&#39;
+  args:     [any-type] (optional) default null; args passed to method after interval e.g. source<a href="args">method</a></p>
+<p>Examples:
+ @mytimer = new totem_timer source: @, method: &#39;my_timer_method&#39;, interval: 2000, args: {some: value}
+ @mytimer.start()
+ my_timer_method: (args) -&gt;</p>
+<h1 id="do-something-here">do something here</h1>
+<h1 id="gt-depending-on-functionality-then-could-cancel-or-restart-eg-mytimercancel-or-mytimerrestart">=&gt; depending on functionality then could cancel or restart e.g. @mytimer.cancel() -or- @mytimer.restart()</h1>
+<p> @mytimer = new totem_timer [
+   {source: @, method: &#39;my_timer_method1&#39;, interval: 2000,  args: {some: value}}  #=&gt; 2 seconds
+   {source: @, method: &#39;my_timer_method1&#39;, interval: 5000,  args: {some: value}}  #=&gt; 5 seconds
+   {source: @, method: &#39;my_timer_method2&#39;, interval: 10000, args: {some: value}}  #=&gt; 10 seconds
+ ]
+ @mytimer.start()</p>
+<p>TotemTimer has two convience class methods (take the same options as above):
+   new:   create a new TotemTimer 
+   start: create a new TotemTimer and start the timers
+Examples:
+ mytimer1 = totem_timer.new   source: @, method: &#39;my_timer_method1&#39;, interval: 2000
+ mytimer1.start()  #=&gt; required to start the timer(s)
+ mytimer2 = totem_timer.start source: @, method: &#39;my_timer_method1&#39;, interval: 2000  #=&gt; auto-start timer(s) e.g. do not need mytimer.start()</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemTimerRunLater</span></span>
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@tt</span>, <span class="hljs-property">@config</span>)</span> -&gt;</span> <span class="hljs-property">@timer</span> = <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">start</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@timer</span> = ember.run.later(@, <span class="hljs-string">'this_timer'</span>, <span class="hljs-property">@config</span>.interval)
+  <span class="hljs-attribute">cancel</span>: <span class="hljs-function">-&gt;</span> ember.run.cancel(<span class="hljs-property">@timer</span>)  <span class="hljs-keyword">if</span> <span class="hljs-property">@timer</span>
+  <span class="hljs-attribute">this_timer</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@tt</span>.is_active(<span class="hljs-property">@config</span>.source)
+      <span class="hljs-property">@config</span>.source[<span class="hljs-property">@config</span>.method](<span class="hljs-property">@config</span>.args)
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-property">@tt</span>.remove(@)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemTimer</span></span>
+
+  <span class="hljs-property">@new</span>:   <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> <span class="hljs-keyword">new</span> TotemTimer(options)
+  <span class="hljs-property">@start</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> TotemTimer.<span class="hljs-keyword">new</span>(options).start()
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@options</span>)</span> -&gt;</span>
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Options must be a hash or array of hashes."</span>, <span class="hljs-property">@options</span>  <span class="hljs-keyword">unless</span> (<span class="hljs-property">@is_hash</span>(<span class="hljs-property">@options</span>) <span class="hljs-keyword">or</span> ember.isArray(<span class="hljs-property">@options</span>))
+    <span class="hljs-property">@validate_and_set_timer_configs</span>()
+    <span class="hljs-property">@timers</span> = []
+
+  <span class="hljs-attribute">validate_and_set_timer_configs</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@configs</span> = []
+    <span class="hljs-keyword">for</span> opt <span class="hljs-keyword">in</span> ember.makeArray(<span class="hljs-property">@options</span>)
+      source   = opt.source
+      method   = opt.method
+      interval = opt.interval
+      args     = opt.args <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Invalid 'options.source'.  Must be an object."</span>, opt                  <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_hash</span>(source)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Invalid 'options.method'.  Must be a string."</span>,  opt                  <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_string</span>(method)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Invalid 'options.interval'.  Must be a number greater than 0."</span>, opt  <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_number</span>(interval)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Method '<span class="hljs-subst">#{method}</span>' is not a function on the source."</span>,  opt           <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_function</span>(source, method)
+      <span class="hljs-property">@configs</span>.push {source, method, interval, args}
+
+  <span class="hljs-attribute">remove</span>: <span class="hljs-function"><span class="hljs-params">(timer)</span> -&gt;</span> <span class="hljs-property">@timers</span> = <span class="hljs-property">@timers</span>.without(timer)
+
+  <span class="hljs-attribute">reset</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@cancel</span>()
+    <span class="hljs-property">@start</span>()
+
+  <span class="hljs-attribute">start</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">for</span> config <span class="hljs-keyword">in</span> <span class="hljs-property">@configs</span>
+      timer = <span class="hljs-keyword">new</span> TotemTimerRunLater(@, config)
+      timer.start()
+      <span class="hljs-property">@timers</span>.push timer
+    <span class="hljs-keyword">return</span> @
+
+  <span class="hljs-attribute">cancel</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">for</span> timer <span class="hljs-keyword">in</span> <span class="hljs-property">@timers</span>
+      timer.cancel()
+      timer = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@timers</span> = []
+
+  <span class="hljs-attribute">is_number</span>:   <span class="hljs-function"><span class="hljs-params">(num)</span>         -&gt;</span> <span class="hljs-string">"<span class="hljs-subst">#{num}</span>"</span>.match(<span class="hljs-regexp">/^\d+$/</span>)
+  <span class="hljs-attribute">is_string</span>:   <span class="hljs-function"><span class="hljs-params">(str)</span>         -&gt;</span> str <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(str) == <span class="hljs-string">'string'</span>
+  <span class="hljs-attribute">is_hash</span>:     <span class="hljs-function"><span class="hljs-params">(obj)</span>         -&gt;</span> <span class="hljs-property">@is_object</span>(obj) <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> ember.isArray(obj)
+  <span class="hljs-attribute">is_object</span>:   <span class="hljs-function"><span class="hljs-params">(obj)</span>         -&gt;</span> obj <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(obj) == <span class="hljs-string">'object'</span>
+  <span class="hljs-attribute">is_function</span>: <span class="hljs-function"><span class="hljs-params">(obj, method)</span> -&gt;</span> <span class="hljs-property">@is_object</span>(obj) <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(obj[method]) == <span class="hljs-string">'function'</span>
+
+  <span class="hljs-attribute">is_active</span>:   <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@is_inactive</span>(obj)
+  <span class="hljs-attribute">is_inactive</span>: <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">unless</span> obj
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_hash</span>(obj)
+    obj.isDestroyed <span class="hljs-keyword">or</span> obj.isDestroying
+
+  <span class="hljs-attribute">error</span>: <span class="hljs-function"><span class="hljs-params">(args...)</span> -&gt;</span>
+    message = args.shift() <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+    <span class="hljs-built_in">console</span>.error message, args <span class="hljs-keyword">if</span> ember.isPresent(args)
+    totem_error.<span class="hljs-keyword">throw</span> @, message
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'TotemTimer'</span>
+
+export default TotemTimer</div></div></div></div></body></html>
