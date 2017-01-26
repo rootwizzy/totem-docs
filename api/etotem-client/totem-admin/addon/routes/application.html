@@ -19,7 +19,7 @@ export default ember.Route.extend auth,
   <span class="hljs-attribute">if_superuser</span>: <span class="hljs-function"><span class="hljs-params">(current_user)</span> -&gt;</span>
     <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
       <span class="hljs-keyword">return</span> reject() <span class="hljs-keyword">if</span> ember.isBlank(current_user)
-      query        = 
+      query        =
         <span class="hljs-attribute">verb</span>:   <span class="hljs-string">'post'</span>
         <span class="hljs-attribute">action</span>: <span class="hljs-string">'is_superuser'</span>
         <span class="hljs-attribute">model</span>:  current_user

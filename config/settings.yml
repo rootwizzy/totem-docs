@@ -45,7 +45,7 @@ modules:
 
       - name: etotem-client
         url: 'https://github.com/sixthedge/etotem-client'
-        branch: fix/groc-comments
+        branch: development
         options:
           out:     "-o ../../api/etotem-client"
           glob:    "./**/*.coffee README.md"

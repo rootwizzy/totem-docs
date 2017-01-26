@@ -8,6 +8,10 @@ implementation must call &#39;@_super(arguments...)&#39; so that the mixin&#39;s
     <span class="hljs-keyword">if</span> !<span class="hljs-property">@get</span>(<span class="hljs-string">'session.isAuthenticated'</span>)
       transition.abort()
       <span class="hljs-property">@set</span>(<span class="hljs-string">'session.attemptedTransition'</span>, transition)
-      <span class="hljs-property">@transitionToExternal</span>(configuration.authenticationRoute)
+      <span class="hljs-keyword">try</span>
+        <span class="hljs-property">@transitionToExternal</span>(configuration.authenticationRoute)
+      <span class="hljs-keyword">catch</span> error
+        <span class="hljs-built_in">console</span>.error error
+        <span class="hljs-built_in">console</span>.warn <span class="hljs-string">"Error transitioning to authentication route, did you define '<span class="hljs-subst">#{configuration.authenticationRoute}</span>' as an external route in your engine config?"</span>
     <span class="hljs-keyword">else</span>
       <span class="hljs-property">@_super</span>(arguments...)</div></div></div></div></body></html>

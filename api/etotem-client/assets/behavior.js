@@ -16,7 +16,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "commentsOnly": true,
               "name": "Markdown"
             },
-            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/README.md",
+            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/README.md",
             "projectPath": "README.md",
             "targetPath": "index",
             "pageTitle": "index",
@@ -133,7 +133,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/_config.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/_config.coffee",
                     "projectPath": "totem-admin/addon/_config.coffee",
                     "targetPath": "totem-admin/addon/_config",
                     "pageTitle": "totem-admin/addon/_config",
@@ -150,12 +150,27 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   "depth": 3,
                   "children": [
                     {
-                      "type": "folder",
+                      "type": "file",
                       "data": {
-                        "path": "totem-admin/addon/components/configs",
+                        "language": {
+                          "nameMatchers": [".coffee", "Cakefile"],
+                          "pygmentsLexer": "coffee-script",
+                          "highlightJS": "coffeescript",
+                          "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                          "strictMultiLineEnd": false,
+                          "singleLineComment": ["#"],
+                          "ignorePrefix": "}",
+                          "foldPrefix": "^",
+                          "name": "CoffeeScript"
+                        },
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/configs.coffee",
+                        "projectPath": "totem-admin/addon/components/configs.coffee",
+                        "targetPath": "totem-admin/addon/components/configs",
+                        "pageTitle": "totem-admin/addon/components/configs",
                         "title": "configs"
                       },
                       "depth": 4,
+                      "outline": [],
                       "children": [
                         {
                           "type": "file",
@@ -171,7 +186,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/configs/engines.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/configs/engines.coffee",
                             "projectPath": "totem-admin/addon/components/configs/engines.coffee",
                             "targetPath": "totem-admin/addon/components/configs/engines",
                             "pageTitle": "totem-admin/addon/components/configs/engines",
@@ -194,7 +209,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                                   "foldPrefix": "^",
                                   "name": "CoffeeScript"
                                 },
-                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/configs/engines/add.coffee",
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/configs/engines/add.coffee",
                                 "projectPath": "totem-admin/addon/components/configs/engines/add.coffee",
                                 "targetPath": "totem-admin/addon/components/configs/engines/add",
                                 "pageTitle": "totem-admin/addon/components/configs/engines/add",
@@ -218,7 +233,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/configs/header.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/configs/header.coffee",
                             "projectPath": "totem-admin/addon/components/configs/header.coffee",
                             "targetPath": "totem-admin/addon/components/configs/header",
                             "pageTitle": "totem-admin/addon/components/configs/header",
@@ -240,11 +255,33 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/configs/mounts.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/configs/mounts.coffee",
                             "projectPath": "totem-admin/addon/components/configs/mounts.coffee",
                             "targetPath": "totem-admin/addon/components/configs/mounts",
                             "pageTitle": "totem-admin/addon/components/configs/mounts",
                             "title": "mounts"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/configs/routes.coffee",
+                            "projectPath": "totem-admin/addon/components/configs/routes.coffee",
+                            "targetPath": "totem-admin/addon/components/configs/routes",
+                            "pageTitle": "totem-admin/addon/components/configs/routes",
+                            "title": "routes"
                           },
                           "depth": 5,
                           "outline": []
@@ -264,7 +301,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/header.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/header.coffee",
                         "projectPath": "totem-admin/addon/components/header.coffee",
                         "targetPath": "totem-admin/addon/components/header",
                         "pageTitle": "totem-admin/addon/components/header",
@@ -286,7 +323,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/index.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/index.coffee",
                         "projectPath": "totem-admin/addon/components/index.coffee",
                         "targetPath": "totem-admin/addon/components/index",
                         "pageTitle": "totem-admin/addon/components/index",
@@ -308,7 +345,192 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/rooms.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/locales.coffee",
+                        "projectPath": "totem-admin/addon/components/locales.coffee",
+                        "targetPath": "totem-admin/addon/components/locales",
+                        "pageTitle": "totem-admin/addon/components/locales",
+                        "title": "locales"
+                      },
+                      "depth": 4,
+                      "outline": [],
+                      "children": [
+                        {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/locales/code.coffee",
+                            "projectPath": "totem-admin/addon/components/locales/code.coffee",
+                            "targetPath": "totem-admin/addon/components/locales/code",
+                            "pageTitle": "totem-admin/addon/components/locales/code",
+                            "title": "code"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/locales/codes.coffee",
+                            "projectPath": "totem-admin/addon/components/locales/codes.coffee",
+                            "targetPath": "totem-admin/addon/components/locales/codes",
+                            "pageTitle": "totem-admin/addon/components/locales/codes",
+                            "title": "codes"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/locales/compare.coffee",
+                            "projectPath": "totem-admin/addon/components/locales/compare.coffee",
+                            "targetPath": "totem-admin/addon/components/locales/compare",
+                            "pageTitle": "totem-admin/addon/components/locales/compare",
+                            "title": "compare"
+                          },
+                          "depth": 5,
+                          "outline": [],
+                          "children": [
+                            {
+                              "type": "file",
+                              "data": {
+                                "language": {
+                                  "nameMatchers": [".coffee", "Cakefile"],
+                                  "pygmentsLexer": "coffee-script",
+                                  "highlightJS": "coffeescript",
+                                  "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                                  "strictMultiLineEnd": false,
+                                  "singleLineComment": ["#"],
+                                  "ignorePrefix": "}",
+                                  "foldPrefix": "^",
+                                  "name": "CoffeeScript"
+                                },
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/locales/compare/locale.coffee",
+                                "projectPath": "totem-admin/addon/components/locales/compare/locale.coffee",
+                                "targetPath": "totem-admin/addon/components/locales/compare/locale",
+                                "pageTitle": "totem-admin/addon/components/locales/compare/locale",
+                                "title": "locale"
+                              },
+                              "depth": 6,
+                              "outline": []
+                            }
+                          ]
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/locales/header.coffee",
+                            "projectPath": "totem-admin/addon/components/locales/header.coffee",
+                            "targetPath": "totem-admin/addon/components/locales/header",
+                            "pageTitle": "totem-admin/addon/components/locales/header",
+                            "title": "header"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/locales/show.coffee",
+                            "projectPath": "totem-admin/addon/components/locales/show.coffee",
+                            "targetPath": "totem-admin/addon/components/locales/show",
+                            "pageTitle": "totem-admin/addon/components/locales/show",
+                            "title": "show"
+                          },
+                          "depth": 5,
+                          "outline": [],
+                          "children": [
+                            {
+                              "type": "file",
+                              "data": {
+                                "language": {
+                                  "nameMatchers": [".coffee", "Cakefile"],
+                                  "pygmentsLexer": "coffee-script",
+                                  "highlightJS": "coffeescript",
+                                  "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                                  "strictMultiLineEnd": false,
+                                  "singleLineComment": ["#"],
+                                  "ignorePrefix": "}",
+                                  "foldPrefix": "^",
+                                  "name": "CoffeeScript"
+                                },
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/locales/show/locale.coffee",
+                                "projectPath": "totem-admin/addon/components/locales/show/locale.coffee",
+                                "targetPath": "totem-admin/addon/components/locales/show/locale",
+                                "pageTitle": "totem-admin/addon/components/locales/show/locale",
+                                "title": "locale"
+                              },
+                              "depth": 6,
+                              "outline": []
+                            }
+                          ]
+                        }
+                      ]
+                    }, {
+                      "type": "file",
+                      "data": {
+                        "language": {
+                          "nameMatchers": [".coffee", "Cakefile"],
+                          "pygmentsLexer": "coffee-script",
+                          "highlightJS": "coffeescript",
+                          "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                          "strictMultiLineEnd": false,
+                          "singleLineComment": ["#"],
+                          "ignorePrefix": "}",
+                          "foldPrefix": "^",
+                          "name": "CoffeeScript"
+                        },
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/rooms.coffee",
                         "projectPath": "totem-admin/addon/components/rooms.coffee",
                         "targetPath": "totem-admin/addon/components/rooms",
                         "pageTitle": "totem-admin/addon/components/rooms",
@@ -331,7 +553,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/rooms/user.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/rooms/user.coffee",
                             "projectPath": "totem-admin/addon/components/rooms/user.coffee",
                             "targetPath": "totem-admin/addon/components/rooms/user",
                             "pageTitle": "totem-admin/addon/components/rooms/user",
@@ -355,7 +577,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/timers.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/timers.coffee",
                         "projectPath": "totem-admin/addon/components/timers.coffee",
                         "targetPath": "totem-admin/addon/components/timers",
                         "pageTitle": "totem-admin/addon/components/timers",
@@ -378,7 +600,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/timers/timer.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/timers/timer.coffee",
                             "projectPath": "totem-admin/addon/components/timers/timer.coffee",
                             "targetPath": "totem-admin/addon/components/timers/timer",
                             "pageTitle": "totem-admin/addon/components/timers/timer",
@@ -402,7 +624,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/tracker.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/tracker.coffee",
                         "projectPath": "totem-admin/addon/components/tracker.coffee",
                         "targetPath": "totem-admin/addon/components/tracker",
                         "pageTitle": "totem-admin/addon/components/tracker",
@@ -425,7 +647,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/components/tracker/user.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/components/tracker/user.coffee",
                             "projectPath": "totem-admin/addon/components/tracker/user.coffee",
                             "targetPath": "totem-admin/addon/components/tracker/user",
                             "pageTitle": "totem-admin/addon/components/tracker/user",
@@ -451,7 +673,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/engine.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/engine.coffee",
                     "projectPath": "totem-admin/addon/engine.coffee",
                     "targetPath": "totem-admin/addon/engine",
                     "pageTitle": "totem-admin/addon/engine",
@@ -481,7 +703,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/initializers/totem.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/initializers/totem.coffee",
                         "projectPath": "totem-admin/addon/initializers/totem.coffee",
                         "targetPath": "totem-admin/addon/initializers/totem",
                         "pageTitle": "totem-admin/addon/initializers/totem",
@@ -521,7 +743,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/mixins/am/base.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/mixins/am/base.coffee",
                             "projectPath": "totem-admin/addon/mixins/am/base.coffee",
                             "targetPath": "totem-admin/addon/mixins/am/base",
                             "pageTitle": "totem-admin/addon/mixins/am/base",
@@ -543,7 +765,29 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/mixins/am/helpers.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/mixins/am/configs.coffee",
+                            "projectPath": "totem-admin/addon/mixins/am/configs.coffee",
+                            "targetPath": "totem-admin/addon/mixins/am/configs",
+                            "pageTitle": "totem-admin/addon/mixins/am/configs",
+                            "title": "configs"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/mixins/am/helpers.coffee",
                             "projectPath": "totem-admin/addon/mixins/am/helpers.coffee",
                             "targetPath": "totem-admin/addon/mixins/am/helpers",
                             "pageTitle": "totem-admin/addon/mixins/am/helpers",
@@ -594,7 +838,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/mixins/am/initialize.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/mixins/am/initialize.coffee",
                             "projectPath": "totem-admin/addon/mixins/am/initialize.coffee",
                             "targetPath": "totem-admin/addon/mixins/am/initialize",
                             "pageTitle": "totem-admin/addon/mixins/am/initialize",
@@ -616,7 +860,29 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/mixins/am/rooms.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/mixins/am/locales.coffee",
+                            "projectPath": "totem-admin/addon/mixins/am/locales.coffee",
+                            "targetPath": "totem-admin/addon/mixins/am/locales",
+                            "pageTitle": "totem-admin/addon/mixins/am/locales",
+                            "title": "locales"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/mixins/am/rooms.coffee",
                             "projectPath": "totem-admin/addon/mixins/am/rooms.coffee",
                             "targetPath": "totem-admin/addon/mixins/am/rooms",
                             "pageTitle": "totem-admin/addon/mixins/am/rooms",
@@ -638,7 +904,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/mixins/am/timers.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/mixins/am/timers.coffee",
                             "projectPath": "totem-admin/addon/mixins/am/timers.coffee",
                             "targetPath": "totem-admin/addon/mixins/am/timers",
                             "pageTitle": "totem-admin/addon/mixins/am/timers",
@@ -660,7 +926,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/mixins/am/tracker.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/mixins/am/tracker.coffee",
                             "projectPath": "totem-admin/addon/mixins/am/tracker.coffee",
                             "targetPath": "totem-admin/addon/mixins/am/tracker",
                             "pageTitle": "totem-admin/addon/mixins/am/tracker",
@@ -686,7 +952,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/routes.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/routes.coffee",
                     "projectPath": "totem-admin/addon/routes.coffee",
                     "targetPath": "totem-admin/addon/routes",
                     "pageTitle": "totem-admin/addon/routes",
@@ -709,7 +975,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/routes/application.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/routes/application.coffee",
                         "projectPath": "totem-admin/addon/routes/application.coffee",
                         "targetPath": "totem-admin/addon/routes/application",
                         "pageTitle": "totem-admin/addon/routes/application",
@@ -731,7 +997,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/routes/base.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/routes/base.coffee",
                         "projectPath": "totem-admin/addon/routes/base.coffee",
                         "targetPath": "totem-admin/addon/routes/base",
                         "pageTitle": "totem-admin/addon/routes/base",
@@ -753,7 +1019,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/routes/configs.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/routes/configs.coffee",
                         "projectPath": "totem-admin/addon/routes/configs.coffee",
                         "targetPath": "totem-admin/addon/routes/configs",
                         "pageTitle": "totem-admin/addon/routes/configs",
@@ -776,7 +1042,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/routes/configs/engines.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/routes/configs/engines.coffee",
                             "projectPath": "totem-admin/addon/routes/configs/engines.coffee",
                             "targetPath": "totem-admin/addon/routes/configs/engines",
                             "pageTitle": "totem-admin/addon/routes/configs/engines",
@@ -798,7 +1064,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/routes/configs/mounts.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/routes/configs/mounts.coffee",
                             "projectPath": "totem-admin/addon/routes/configs/mounts.coffee",
                             "targetPath": "totem-admin/addon/routes/configs/mounts",
                             "pageTitle": "totem-admin/addon/routes/configs/mounts",
@@ -822,7 +1088,29 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/routes/rooms.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/routes/locales.coffee",
+                        "projectPath": "totem-admin/addon/routes/locales.coffee",
+                        "targetPath": "totem-admin/addon/routes/locales",
+                        "pageTitle": "totem-admin/addon/routes/locales",
+                        "title": "locales"
+                      },
+                      "depth": 4,
+                      "outline": []
+                    }, {
+                      "type": "file",
+                      "data": {
+                        "language": {
+                          "nameMatchers": [".coffee", "Cakefile"],
+                          "pygmentsLexer": "coffee-script",
+                          "highlightJS": "coffeescript",
+                          "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                          "strictMultiLineEnd": false,
+                          "singleLineComment": ["#"],
+                          "ignorePrefix": "}",
+                          "foldPrefix": "^",
+                          "name": "CoffeeScript"
+                        },
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/routes/rooms.coffee",
                         "projectPath": "totem-admin/addon/routes/rooms.coffee",
                         "targetPath": "totem-admin/addon/routes/rooms",
                         "pageTitle": "totem-admin/addon/routes/rooms",
@@ -844,7 +1132,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/routes/timers.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/routes/timers.coffee",
                         "projectPath": "totem-admin/addon/routes/timers.coffee",
                         "targetPath": "totem-admin/addon/routes/timers",
                         "pageTitle": "totem-admin/addon/routes/timers",
@@ -866,7 +1154,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/routes/tracker.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/routes/tracker.coffee",
                         "projectPath": "totem-admin/addon/routes/tracker.coffee",
                         "targetPath": "totem-admin/addon/routes/tracker",
                         "pageTitle": "totem-admin/addon/routes/tracker",
@@ -898,7 +1186,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-admin/addon/services/admin.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-admin/addon/services/admin.coffee",
                         "projectPath": "totem-admin/addon/services/admin.coffee",
                         "targetPath": "totem-admin/addon/services/admin",
                         "pageTitle": "totem-admin/addon/services/admin",
@@ -950,7 +1238,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/addon/mixins/default_property_settings.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/addon/mixins/default_property_settings.coffee",
                         "projectPath": "totem-application/addon/mixins/default_property_settings.coffee",
                         "targetPath": "totem-application/addon/mixins/default_property_settings",
                         "pageTitle": "totem-application/addon/mixins/default_property_settings",
@@ -972,7 +1260,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/addon/mixins/included_models.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/addon/mixins/included_models.coffee",
                         "projectPath": "totem-application/addon/mixins/included_models.coffee",
                         "targetPath": "totem-application/addon/mixins/included_models",
                         "pageTitle": "totem-application/addon/mixins/included_models",
@@ -994,7 +1282,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/addon/mixins/table_sort_by.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/addon/mixins/table_sort_by.coffee",
                         "projectPath": "totem-application/addon/mixins/table_sort_by.coffee",
                         "targetPath": "totem-application/addon/mixins/table_sort_by",
                         "pageTitle": "totem-application/addon/mixins/table_sort_by",
@@ -1016,7 +1304,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/addon/mixins/totem_wizard.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/addon/mixins/totem_wizard.coffee",
                         "projectPath": "totem-application/addon/mixins/totem_wizard.coffee",
                         "targetPath": "totem-application/addon/mixins/totem_wizard",
                         "pageTitle": "totem-application/addon/mixins/totem_wizard",
@@ -1038,7 +1326,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/addon/mixins/validated_field.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/addon/mixins/validated_field.coffee",
                         "projectPath": "totem-application/addon/mixins/validated_field.coffee",
                         "targetPath": "totem-application/addon/mixins/validated_field",
                         "pageTitle": "totem-application/addon/mixins/validated_field",
@@ -1070,7 +1358,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/addon/pagination/array.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/addon/pagination/array.coffee",
                         "projectPath": "totem-application/addon/pagination/array.coffee",
                         "targetPath": "totem-application/addon/pagination/array",
                         "pageTitle": "totem-application/addon/pagination/array",
@@ -1134,7 +1422,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/addon/pagination/object.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/addon/pagination/object.coffee",
                         "projectPath": "totem-application/addon/pagination/object.coffee",
                         "targetPath": "totem-application/addon/pagination/object",
                         "pageTitle": "totem-application/addon/pagination/object",
@@ -1176,7 +1464,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/adapters/application.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/adapters/application.coffee",
                         "projectPath": "totem-application/app/adapters/application.coffee",
                         "targetPath": "totem-application/app/adapters/application",
                         "pageTitle": "totem-application/app/adapters/application",
@@ -1405,7 +1693,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/components/table_sort_by/header.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/components/table_sort_by/header.coffee",
                             "projectPath": "totem-application/app/components/table_sort_by/header.coffee",
                             "targetPath": "totem-application/app/components/table_sort_by/header",
                             "pageTitle": "totem-application/app/components/table_sort_by/header",
@@ -1439,7 +1727,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/controllers/application.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/controllers/application.coffee",
                         "projectPath": "totem-application/app/controllers/application.coffee",
                         "targetPath": "totem-application/app/controllers/application",
                         "pageTitle": "totem-application/app/controllers/application",
@@ -1447,6 +1735,49 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       },
                       "depth": 4,
                       "outline": []
+                    }, {
+                      "type": "file",
+                      "data": {
+                        "language": {
+                          "nameMatchers": [".coffee", "Cakefile"],
+                          "pygmentsLexer": "coffee-script",
+                          "highlightJS": "coffeescript",
+                          "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                          "strictMultiLineEnd": false,
+                          "singleLineComment": ["#"],
+                          "ignorePrefix": "}",
+                          "foldPrefix": "^",
+                          "name": "CoffeeScript"
+                        },
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/controllers/session_timeout.coffee",
+                        "projectPath": "totem-application/app/controllers/session_timeout.coffee",
+                        "targetPath": "totem-application/app/controllers/session_timeout",
+                        "pageTitle": "totem-application/app/controllers/session_timeout",
+                        "title": "session_timeout"
+                      },
+                      "depth": 4,
+                      "outline": [
+                        {
+                          "type": "heading",
+                          "data": {
+                            "level": 1,
+                            "title": "Override timeout values for testing.",
+                            "slug": "override-timeout-values-for-testing"
+                          },
+                          "depth": 1,
+                          "children": [
+                            {
+                              "type": "heading",
+                              "data": {
+                                "level": 2,
+                                "title": "reset timer then send stay alive request ##",
+                                "slug": "reset-timer-then-send-stay-alive-request-"
+                              },
+                              "depth": 2
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 }, {
@@ -1471,7 +1802,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/are-equal.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/are-equal.coffee",
                         "projectPath": "totem-application/app/helpers/are-equal.coffee",
                         "targetPath": "totem-application/app/helpers/are-equal",
                         "pageTitle": "totem-application/app/helpers/are-equal",
@@ -1493,7 +1824,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/chosen-select.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/chosen-select.coffee",
                         "projectPath": "totem-application/app/helpers/chosen-select.coffee",
                         "targetPath": "totem-application/app/helpers/chosen-select",
                         "pageTitle": "totem-application/app/helpers/chosen-select",
@@ -1515,7 +1846,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/date-administered.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/date-administered.coffee",
                         "projectPath": "totem-application/app/helpers/date-administered.coffee",
                         "targetPath": "totem-application/app/helpers/date-administered",
                         "pageTitle": "totem-application/app/helpers/date-administered",
@@ -1537,7 +1868,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/date-picker.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/date-picker.coffee",
                         "projectPath": "totem-application/app/helpers/date-picker.coffee",
                         "targetPath": "totem-application/app/helpers/date-picker",
                         "pageTitle": "totem-application/app/helpers/date-picker",
@@ -1559,7 +1890,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/date-picker-split-row.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/date-picker-split-row.coffee",
                         "projectPath": "totem-application/app/helpers/date-picker-split-row.coffee",
                         "targetPath": "totem-application/app/helpers/date-picker-split-row",
                         "pageTitle": "totem-application/app/helpers/date-picker-split-row",
@@ -1581,7 +1912,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/delimit-string.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/delimit-string.coffee",
                         "projectPath": "totem-application/app/helpers/delimit-string.coffee",
                         "targetPath": "totem-application/app/helpers/delimit-string",
                         "pageTitle": "totem-application/app/helpers/delimit-string",
@@ -1603,7 +1934,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/file-icon-from-type.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/file-icon-from-type.coffee",
                         "projectPath": "totem-application/app/helpers/file-icon-from-type.coffee",
                         "targetPath": "totem-application/app/helpers/file-icon-from-type",
                         "pageTitle": "totem-application/app/helpers/file-icon-from-type",
@@ -1625,7 +1956,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/format-date.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/format-date.coffee",
                         "projectPath": "totem-application/app/helpers/format-date.coffee",
                         "targetPath": "totem-application/app/helpers/format-date",
                         "pageTitle": "totem-application/app/helpers/format-date",
@@ -1647,7 +1978,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/index-of.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/index-of.coffee",
                         "projectPath": "totem-application/app/helpers/index-of.coffee",
                         "targetPath": "totem-application/app/helpers/index-of",
                         "pageTitle": "totem-application/app/helpers/index-of",
@@ -1669,7 +2000,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/is-current.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/is-current.coffee",
                         "projectPath": "totem-application/app/helpers/is-current.coffee",
                         "targetPath": "totem-application/app/helpers/is-current",
                         "pageTitle": "totem-application/app/helpers/is-current",
@@ -1691,7 +2022,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/pluralize-if.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/pluralize-if.coffee",
                         "projectPath": "totem-application/app/helpers/pluralize-if.coffee",
                         "targetPath": "totem-application/app/helpers/pluralize-if",
                         "pageTitle": "totem-application/app/helpers/pluralize-if",
@@ -1713,7 +2044,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/pluralize-string.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/pluralize-string.coffee",
                         "projectPath": "totem-application/app/helpers/pluralize-string.coffee",
                         "targetPath": "totem-application/app/helpers/pluralize-string",
                         "pageTitle": "totem-application/app/helpers/pluralize-string",
@@ -1735,7 +2066,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/possession-string.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/possession-string.coffee",
                         "projectPath": "totem-application/app/helpers/possession-string.coffee",
                         "targetPath": "totem-application/app/helpers/possession-string",
                         "pageTitle": "totem-application/app/helpers/possession-string",
@@ -1757,7 +2088,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/radio-button.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/radio-button.coffee",
                         "projectPath": "totem-application/app/helpers/radio-button.coffee",
                         "targetPath": "totem-application/app/helpers/radio-button",
                         "pageTitle": "totem-application/app/helpers/radio-button",
@@ -1779,7 +2110,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/row-number.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/row-number.coffee",
                         "projectPath": "totem-application/app/helpers/row-number.coffee",
                         "targetPath": "totem-application/app/helpers/row-number",
                         "pageTitle": "totem-application/app/helpers/row-number",
@@ -1801,29 +2132,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/t.coffee",
-                        "projectPath": "totem-application/app/helpers/t.coffee",
-                        "targetPath": "totem-application/app/helpers/t",
-                        "pageTitle": "totem-application/app/helpers/t",
-                        "title": "t"
-                      },
-                      "depth": 4,
-                      "outline": []
-                    }, {
-                      "type": "file",
-                      "data": {
-                        "language": {
-                          "nameMatchers": [".coffee", "Cakefile"],
-                          "pygmentsLexer": "coffee-script",
-                          "highlightJS": "coffeescript",
-                          "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
-                          "strictMultiLineEnd": false,
-                          "singleLineComment": ["#"],
-                          "ignorePrefix": "}",
-                          "foldPrefix": "^",
-                          "name": "CoffeeScript"
-                        },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/time-duration.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/time-duration.coffee",
                         "projectPath": "totem-application/app/helpers/time-duration.coffee",
                         "targetPath": "totem-application/app/helpers/time-duration",
                         "pageTitle": "totem-application/app/helpers/time-duration",
@@ -1845,7 +2154,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/time-from-now.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/time-from-now.coffee",
                         "projectPath": "totem-application/app/helpers/time-from-now.coffee",
                         "targetPath": "totem-application/app/helpers/time-from-now",
                         "pageTitle": "totem-application/app/helpers/time-from-now",
@@ -1867,7 +2176,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/time-to-now.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/time-to-now.coffee",
                         "projectPath": "totem-application/app/helpers/time-to-now.coffee",
                         "targetPath": "totem-application/app/helpers/time-to-now",
                         "pageTitle": "totem-application/app/helpers/time-to-now",
@@ -1889,7 +2198,29 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/helpers/validated-chosen-select.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/tt.coffee",
+                        "projectPath": "totem-application/app/helpers/tt.coffee",
+                        "targetPath": "totem-application/app/helpers/tt",
+                        "pageTitle": "totem-application/app/helpers/tt",
+                        "title": "tt"
+                      },
+                      "depth": 4,
+                      "outline": []
+                    }, {
+                      "type": "file",
+                      "data": {
+                        "language": {
+                          "nameMatchers": [".coffee", "Cakefile"],
+                          "pygmentsLexer": "coffee-script",
+                          "highlightJS": "coffeescript",
+                          "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                          "strictMultiLineEnd": false,
+                          "singleLineComment": ["#"],
+                          "ignorePrefix": "}",
+                          "foldPrefix": "^",
+                          "name": "CoffeeScript"
+                        },
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/helpers/validated-chosen-select.coffee",
                         "projectPath": "totem-application/app/helpers/validated-chosen-select.coffee",
                         "targetPath": "totem-application/app/helpers/validated-chosen-select",
                         "pageTitle": "totem-application/app/helpers/validated-chosen-select",
@@ -1937,11 +2268,33 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                                   "foldPrefix": "^",
                                   "name": "CoffeeScript"
                                 },
-                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/instance-initializers/totem/application/errors.coffee",
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/instance-initializers/totem/application/errors.coffee",
                                 "projectPath": "totem-application/app/instance-initializers/totem/application/errors.coffee",
                                 "targetPath": "totem-application/app/instance-initializers/totem/application/errors",
                                 "pageTitle": "totem-application/app/instance-initializers/totem/application/errors",
                                 "title": "errors"
+                              },
+                              "depth": 6,
+                              "outline": []
+                            }, {
+                              "type": "file",
+                              "data": {
+                                "language": {
+                                  "nameMatchers": [".coffee", "Cakefile"],
+                                  "pygmentsLexer": "coffee-script",
+                                  "highlightJS": "coffeescript",
+                                  "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                                  "strictMultiLineEnd": false,
+                                  "singleLineComment": ["#"],
+                                  "ignorePrefix": "}",
+                                  "foldPrefix": "^",
+                                  "name": "CoffeeScript"
+                                },
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/instance-initializers/totem/application/inputs.coffee",
+                                "projectPath": "totem-application/app/instance-initializers/totem/application/inputs.coffee",
+                                "targetPath": "totem-application/app/instance-initializers/totem/application/inputs",
+                                "pageTitle": "totem-application/app/instance-initializers/totem/application/inputs",
+                                "title": "inputs"
                               },
                               "depth": 6,
                               "outline": []
@@ -1973,7 +2326,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/routes/application_route_mixin.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/routes/application_route_mixin.coffee",
                         "projectPath": "totem-application/app/routes/application_route_mixin.coffee",
                         "targetPath": "totem-application/app/routes/application_route_mixin",
                         "pageTitle": "totem-application/app/routes/application_route_mixin",
@@ -1995,11 +2348,11 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/routes/zzzloading.coffee",
-                        "projectPath": "totem-application/app/routes/zzzloading.coffee",
-                        "targetPath": "totem-application/app/routes/zzzloading",
-                        "pageTitle": "totem-application/app/routes/zzzloading",
-                        "title": "zzzloading"
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/routes/loading.coffee",
+                        "projectPath": "totem-application/app/routes/loading.coffee",
+                        "targetPath": "totem-application/app/routes/loading",
+                        "pageTitle": "totem-application/app/routes/loading",
+                        "title": "loading"
                       },
                       "depth": 4,
                       "outline": []
@@ -2027,7 +2380,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/serializers/application.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/serializers/application.coffee",
                         "projectPath": "totem-application/app/serializers/application.coffee",
                         "targetPath": "totem-application/app/serializers/application",
                         "pageTitle": "totem-application/app/serializers/application",
@@ -2101,7 +2454,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/services/taf.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/services/taf.coffee",
                         "projectPath": "totem-application/app/services/taf.coffee",
                         "targetPath": "totem-application/app/services/taf",
                         "pageTitle": "totem-application/app/services/taf",
@@ -2141,7 +2494,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/services/ttz.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/services/ttz.coffee",
                         "projectPath": "totem-application/app/services/ttz.coffee",
                         "targetPath": "totem-application/app/services/ttz",
                         "pageTitle": "totem-application/app/services/ttz",
@@ -2172,7 +2525,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                                   "foldPrefix": "^",
                                   "name": "CoffeeScript"
                                 },
-                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/services/ttz/zones/us.coffee",
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/services/ttz/zones/us.coffee",
                                 "projectPath": "totem-application/app/services/ttz/zones/us.coffee",
                                 "targetPath": "totem-application/app/services/ttz/zones/us",
                                 "pageTitle": "totem-application/app/services/ttz/zones/us",
@@ -2208,7 +2561,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/transforms/delocalized-date.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/transforms/delocalized-date.coffee",
                         "projectPath": "totem-application/app/transforms/delocalized-date.coffee",
                         "targetPath": "totem-application/app/transforms/delocalized-date",
                         "pageTitle": "totem-application/app/transforms/delocalized-date",
@@ -2230,7 +2583,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/transforms/json-api-models.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/transforms/json-api-models.coffee",
                         "projectPath": "totem-application/app/transforms/json-api-models.coffee",
                         "targetPath": "totem-application/app/transforms/json-api-models",
                         "pageTitle": "totem-application/app/transforms/json-api-models",
@@ -2252,7 +2605,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/transforms/settings.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/transforms/settings.coffee",
                         "projectPath": "totem-application/app/transforms/settings.coffee",
                         "targetPath": "totem-application/app/transforms/settings",
                         "pageTitle": "totem-application/app/transforms/settings",
@@ -2274,7 +2627,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-application/app/transforms/string_id.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-application/app/transforms/string_id.coffee",
                         "projectPath": "totem-application/app/transforms/string_id.coffee",
                         "targetPath": "totem-application/app/transforms/string_id",
                         "pageTitle": "totem-application/app/transforms/string_id",
@@ -2326,7 +2679,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-base/addon/components/base.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-base/addon/components/base.coffee",
                         "projectPath": "totem-base/addon/components/base.coffee",
                         "targetPath": "totem-base/addon/components/base",
                         "pageTitle": "totem-base/addon/components/base",
@@ -2370,7 +2723,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/addon/config.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/addon/config.coffee",
                     "projectPath": "totem-config/addon/config.coffee",
                     "targetPath": "totem-config/addon/config",
                     "pageTitle": "totem-config/addon/config",
@@ -2392,7 +2745,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/addon/configs.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/addon/configs.coffee",
                     "projectPath": "totem-config/addon/configs.coffee",
                     "targetPath": "totem-config/addon/configs",
                     "pageTitle": "totem-config/addon/configs",
@@ -2551,7 +2904,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/addon/find_modules.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/addon/find_modules.coffee",
                     "projectPath": "totem-config/addon/find_modules.coffee",
                     "targetPath": "totem-config/addon/find_modules",
                     "pageTitle": "totem-config/addon/find_modules",
@@ -2573,7 +2926,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/addon/listem.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/addon/listem.coffee",
                     "projectPath": "totem-config/addon/listem.coffee",
                     "targetPath": "totem-config/addon/listem",
                     "pageTitle": "totem-config/addon/listem",
@@ -2595,7 +2948,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/addon/locales.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/addon/locales.coffee",
                     "projectPath": "totem-config/addon/locales.coffee",
                     "targetPath": "totem-config/addon/locales",
                     "pageTitle": "totem-config/addon/locales",
@@ -2617,7 +2970,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/addon/mixins.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/addon/mixins.coffee",
                     "projectPath": "totem-config/addon/mixins.coffee",
                     "targetPath": "totem-config/addon/mixins",
                     "pageTitle": "totem-config/addon/mixins",
@@ -2722,7 +3075,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/addon/ns_map.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/addon/ns_map.coffee",
                     "projectPath": "totem-config/addon/ns_map.coffee",
                     "targetPath": "totem-config/addon/ns_map",
                     "pageTitle": "totem-config/addon/ns_map",
@@ -2773,7 +3126,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/addon/query_params.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/addon/query_params.coffee",
                     "projectPath": "totem-config/addon/query_params.coffee",
                     "targetPath": "totem-config/addon/query_params",
                     "pageTitle": "totem-config/addon/query_params",
@@ -2795,7 +3148,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/addon/routes.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/addon/routes.coffee",
                     "projectPath": "totem-config/addon/routes.coffee",
                     "targetPath": "totem-config/addon/routes",
                     "pageTitle": "totem-config/addon/routes",
@@ -2806,19 +3159,76 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     {
                       "type": "heading",
                       "data": {
-                        "level": 3,
-                        "title": "Map does not return any value but generates the routes based",
-                        "slug": "map-does-not-return-any-value-but-generates-the-routes-based"
+                        "level": 2,
+                        "title": "#",
+                        "slug": ""
                       },
-                      "depth": 3
+                      "depth": 2,
+                      "children": [
+                        {
+                          "type": "heading",
+                          "data": {
+                            "level": 3,
+                            "title": "Populate from Configs.",
+                            "slug": "populate-from-configs"
+                          },
+                          "depth": 3
+                        }
+                      ]
                     }, {
                       "type": "heading",
                       "data": {
-                        "level": 3,
-                        "title": "on the Route map argument (the app-router) e.g. Router.map -&gt; totem_routes.map(@).",
-                        "slug": "on-the-route-map-argument-the-app-router-eg-routermap-gt-totem-routesmap"
+                        "level": 2,
+                        "title": "#",
+                        "slug": ""
                       },
-                      "depth": 3
+                      "depth": 2
+                    }, {
+                      "type": "heading",
+                      "data": {
+                        "level": 2,
+                        "title": "#",
+                        "slug": ""
+                      },
+                      "depth": 2,
+                      "children": [
+                        {
+                          "type": "heading",
+                          "data": {
+                            "level": 3,
+                            "title": "Map.",
+                            "slug": "map"
+                          },
+                          "depth": 3
+                        }
+                      ]
+                    }, {
+                      "type": "heading",
+                      "data": {
+                        "level": 2,
+                        "title": "#",
+                        "slug": ""
+                      },
+                      "depth": 2,
+                      "children": [
+                        {
+                          "type": "heading",
+                          "data": {
+                            "level": 3,
+                            "title": "Map does not return any value but generates the routes based",
+                            "slug": "map-does-not-return-any-value-but-generates-the-routes-based"
+                          },
+                          "depth": 3
+                        }, {
+                          "type": "heading",
+                          "data": {
+                            "level": 3,
+                            "title": "on the Route map argument (the app-router) e.g. Router.map -&gt; totem_routes.map(@).",
+                            "slug": "on-the-route-map-argument-the-app-router-eg-routermap-gt-totem-routesmap"
+                          },
+                          "depth": 3
+                        }
+                      ]
                     }
                   ]
                 }
@@ -2861,7 +3271,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/app/instance-initializers/totem-config/listem.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/app/instance-initializers/totem-config/listem.coffee",
                             "projectPath": "totem-config/app/instance-initializers/totem-config/listem.coffee",
                             "targetPath": "totem-config/app/instance-initializers/totem-config/listem",
                             "pageTitle": "totem-config/app/instance-initializers/totem-config/listem",
@@ -2883,7 +3293,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/app/instance-initializers/totem-config/locales.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/app/instance-initializers/totem-config/locales.coffee",
                             "projectPath": "totem-config/app/instance-initializers/totem-config/locales.coffee",
                             "targetPath": "totem-config/app/instance-initializers/totem-config/locales",
                             "pageTitle": "totem-config/app/instance-initializers/totem-config/locales",
@@ -2905,7 +3315,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/app/instance-initializers/totem-config/mixins.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/app/instance-initializers/totem-config/mixins.coffee",
                             "projectPath": "totem-config/app/instance-initializers/totem-config/mixins.coffee",
                             "targetPath": "totem-config/app/instance-initializers/totem-config/mixins",
                             "pageTitle": "totem-config/app/instance-initializers/totem-config/mixins",
@@ -2927,7 +3337,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-config/app/instance-initializers/totem-config/query_params.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-config/app/instance-initializers/totem-config/query_params.coffee",
                             "projectPath": "totem-config/app/instance-initializers/totem-config/query_params.coffee",
                             "targetPath": "totem-config/app/instance-initializers/totem-config/query_params",
                             "pageTitle": "totem-config/app/instance-initializers/totem-config/query_params",
@@ -2973,7 +3383,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/addon/engines.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/addon/engines.coffee",
                     "projectPath": "totem-engines/addon/engines.coffee",
                     "targetPath": "totem-engines/addon/engines",
                     "pageTitle": "totem-engines/addon/engines",
@@ -3113,7 +3523,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/addon/initializer.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/addon/initializer.coffee",
                     "projectPath": "totem-engines/addon/initializer.coffee",
                     "targetPath": "totem-engines/addon/initializer",
                     "pageTitle": "totem-engines/addon/initializer",
@@ -3143,7 +3553,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/addon/patch/component_lookup.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/addon/patch/component_lookup.coffee",
                         "projectPath": "totem-engines/addon/patch/component_lookup.coffee",
                         "targetPath": "totem-engines/addon/patch/component_lookup",
                         "pageTitle": "totem-engines/addon/patch/component_lookup",
@@ -3165,7 +3575,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/addon/patch/component_node_manager.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/addon/patch/component_node_manager.coffee",
                         "projectPath": "totem-engines/addon/patch/component_node_manager.coffee",
                         "targetPath": "totem-engines/addon/patch/component_node_manager",
                         "pageTitle": "totem-engines/addon/patch/component_node_manager",
@@ -3187,7 +3597,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/addon/patch/link_to_external.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/addon/patch/link_to_external.coffee",
                         "projectPath": "totem-engines/addon/patch/link_to_external.coffee",
                         "targetPath": "totem-engines/addon/patch/link_to_external",
                         "pageTitle": "totem-engines/addon/patch/link_to_external",
@@ -3209,7 +3619,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/addon/patch/outlet.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/addon/patch/outlet.coffee",
                         "projectPath": "totem-engines/addon/patch/outlet.coffee",
                         "targetPath": "totem-engines/addon/patch/outlet",
                         "pageTitle": "totem-engines/addon/patch/outlet",
@@ -3233,7 +3643,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/addon/resolver.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/addon/resolver.coffee",
                     "projectPath": "totem-engines/addon/resolver.coffee",
                     "targetPath": "totem-engines/addon/resolver",
                     "pageTitle": "totem-engines/addon/resolver",
@@ -3281,7 +3691,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/app/initializers/totem_engines/deprecations.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/app/initializers/totem_engines/deprecations.coffee",
                             "projectPath": "totem-engines/app/initializers/totem_engines/deprecations.coffee",
                             "targetPath": "totem-engines/app/initializers/totem_engines/deprecations",
                             "pageTitle": "totem-engines/app/initializers/totem_engines/deprecations",
@@ -3321,7 +3731,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                                   "foldPrefix": "^",
                                   "name": "CoffeeScript"
                                 },
-                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/app/initializers/totem_engines/patch/component_lookup.coffee",
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/app/initializers/totem_engines/patch/component_lookup.coffee",
                                 "projectPath": "totem-engines/app/initializers/totem_engines/patch/component_lookup.coffee",
                                 "targetPath": "totem-engines/app/initializers/totem_engines/patch/component_lookup",
                                 "pageTitle": "totem-engines/app/initializers/totem_engines/patch/component_lookup",
@@ -3343,7 +3753,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                                   "foldPrefix": "^",
                                   "name": "CoffeeScript"
                                 },
-                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/app/initializers/totem_engines/patch/component_node_manager.coffee",
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/app/initializers/totem_engines/patch/component_node_manager.coffee",
                                 "projectPath": "totem-engines/app/initializers/totem_engines/patch/component_node_manager.coffee",
                                 "targetPath": "totem-engines/app/initializers/totem_engines/patch/component_node_manager",
                                 "pageTitle": "totem-engines/app/initializers/totem_engines/patch/component_node_manager",
@@ -3365,7 +3775,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                                   "foldPrefix": "^",
                                   "name": "CoffeeScript"
                                 },
-                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/app/initializers/totem_engines/patch/link_to_external.coffee",
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/app/initializers/totem_engines/patch/link_to_external.coffee",
                                 "projectPath": "totem-engines/app/initializers/totem_engines/patch/link_to_external.coffee",
                                 "targetPath": "totem-engines/app/initializers/totem_engines/patch/link_to_external",
                                 "pageTitle": "totem-engines/app/initializers/totem_engines/patch/link_to_external",
@@ -3387,7 +3797,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                                   "foldPrefix": "^",
                                   "name": "CoffeeScript"
                                 },
-                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-engines/app/initializers/totem_engines/patch/outlet.coffee",
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-engines/app/initializers/totem_engines/patch/outlet.coffee",
                                 "projectPath": "totem-engines/app/initializers/totem_engines/patch/outlet.coffee",
                                 "targetPath": "totem-engines/app/initializers/totem_engines/patch/outlet",
                                 "pageTitle": "totem-engines/app/initializers/totem_engines/patch/outlet",
@@ -3435,7 +3845,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/api.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/api.coffee",
                     "projectPath": "totem-messages/addon/api.coffee",
                     "targetPath": "totem-messages/addon/api",
                     "pageTitle": "totem-messages/addon/api",
@@ -3648,7 +4058,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/api_status_codes.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/api_status_codes.coffee",
                     "projectPath": "totem-messages/addon/api_status_codes.coffee",
                     "targetPath": "totem-messages/addon/api_status_codes",
                     "pageTitle": "totem-messages/addon/api_status_codes",
@@ -3678,7 +4088,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/locales/en.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/locales/en.coffee",
                         "projectPath": "totem-messages/addon/locales/en.coffee",
                         "targetPath": "totem-messages/addon/locales/en",
                         "pageTitle": "totem-messages/addon/locales/en",
@@ -3702,7 +4112,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/messages.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/messages.coffee",
                     "projectPath": "totem-messages/addon/messages.coffee",
                     "targetPath": "totem-messages/addon/messages",
                     "pageTitle": "totem-messages/addon/messages",
@@ -3896,7 +4306,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/mixins/messages/add.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/mixins/messages/add.coffee",
                             "projectPath": "totem-messages/addon/mixins/messages/add.coffee",
                             "targetPath": "totem-messages/addon/mixins/messages/add",
                             "pageTitle": "totem-messages/addon/mixins/messages/add",
@@ -3947,7 +4357,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/mixins/messages/base.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/mixins/messages/base.coffee",
                             "projectPath": "totem-messages/addon/mixins/messages/base.coffee",
                             "targetPath": "totem-messages/addon/mixins/messages/base",
                             "pageTitle": "totem-messages/addon/mixins/messages/base",
@@ -3969,7 +4379,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/mixins/messages/filter.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/mixins/messages/filter.coffee",
                             "projectPath": "totem-messages/addon/mixins/messages/filter.coffee",
                             "targetPath": "totem-messages/addon/mixins/messages/filter",
                             "pageTitle": "totem-messages/addon/mixins/messages/filter",
@@ -3991,7 +4401,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/mixins/messages/format.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/mixins/messages/format.coffee",
                             "projectPath": "totem-messages/addon/mixins/messages/format.coffee",
                             "targetPath": "totem-messages/addon/mixins/messages/format",
                             "pageTitle": "totem-messages/addon/mixins/messages/format",
@@ -4013,7 +4423,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/mixins/messages/helpers.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/mixins/messages/helpers.coffee",
                             "projectPath": "totem-messages/addon/mixins/messages/helpers.coffee",
                             "targetPath": "totem-messages/addon/mixins/messages/helpers",
                             "pageTitle": "totem-messages/addon/mixins/messages/helpers",
@@ -4035,7 +4445,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/mixins/messages/initialize.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/mixins/messages/initialize.coffee",
                             "projectPath": "totem-messages/addon/mixins/messages/initialize.coffee",
                             "targetPath": "totem-messages/addon/mixins/messages/initialize",
                             "pageTitle": "totem-messages/addon/mixins/messages/initialize",
@@ -4057,7 +4467,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/mixins/messages/item.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/mixins/messages/item.coffee",
                             "projectPath": "totem-messages/addon/mixins/messages/item.coffee",
                             "targetPath": "totem-messages/addon/mixins/messages/item",
                             "pageTitle": "totem-messages/addon/mixins/messages/item",
@@ -4079,7 +4489,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/mixins/messages/load.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/mixins/messages/load.coffee",
                             "projectPath": "totem-messages/addon/mixins/messages/load.coffee",
                             "targetPath": "totem-messages/addon/mixins/messages/load",
                             "pageTitle": "totem-messages/addon/mixins/messages/load",
@@ -4111,7 +4521,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/mixins/models/message.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/mixins/models/message.coffee",
                             "projectPath": "totem-messages/addon/mixins/models/message.coffee",
                             "targetPath": "totem-messages/addon/mixins/models/message",
                             "pageTitle": "totem-messages/addon/mixins/models/message",
@@ -4137,7 +4547,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/addon/model_validation.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/addon/model_validation.coffee",
                     "projectPath": "totem-messages/addon/model_validation.coffee",
                     "targetPath": "totem-messages/addon/model_validation",
                     "pageTitle": "totem-messages/addon/model_validation",
@@ -4156,59 +4566,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "depth": 2,
               "children": [
                 {
-                  "type": "folder",
-                  "data": {
-                    "path": "totem-messages/app/controllers",
-                    "title": "controllers"
-                  },
-                  "depth": 3,
-                  "children": [
-                    {
-                      "type": "file",
-                      "data": {
-                        "language": {
-                          "nameMatchers": [".coffee", "Cakefile"],
-                          "pygmentsLexer": "coffee-script",
-                          "highlightJS": "coffeescript",
-                          "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
-                          "strictMultiLineEnd": false,
-                          "singleLineComment": ["#"],
-                          "ignorePrefix": "}",
-                          "foldPrefix": "^",
-                          "name": "CoffeeScript"
-                        },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/app/controllers/session_timeout.coffee",
-                        "projectPath": "totem-messages/app/controllers/session_timeout.coffee",
-                        "targetPath": "totem-messages/app/controllers/session_timeout",
-                        "pageTitle": "totem-messages/app/controllers/session_timeout",
-                        "title": "session_timeout"
-                      },
-                      "depth": 4,
-                      "outline": [
-                        {
-                          "type": "heading",
-                          "data": {
-                            "level": 1,
-                            "title": "Override timeout values for testing.",
-                            "slug": "override-timeout-values-for-testing"
-                          },
-                          "depth": 1,
-                          "children": [
-                            {
-                              "type": "heading",
-                              "data": {
-                                "level": 2,
-                                "title": "reset timer then send stay alive request ##",
-                                "slug": "reset-timer-then-send-stay-alive-request-"
-                              },
-                              "depth": 2
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }, {
                   "type": "folder",
                   "data": {
                     "path": "totem-messages/app/initializers",
@@ -4230,7 +4587,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/app/initializers/totem_messages.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/app/initializers/totem_messages.coffee",
                         "projectPath": "totem-messages/app/initializers/totem_messages.coffee",
                         "targetPath": "totem-messages/app/initializers/totem_messages",
                         "pageTitle": "totem-messages/app/initializers/totem_messages",
@@ -4262,7 +4619,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-messages/app/instance-initializers/totem_messages.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-messages/app/instance-initializers/totem_messages.coffee",
                         "projectPath": "totem-messages/app/instance-initializers/totem_messages.coffee",
                         "targetPath": "totem-messages/app/instance-initializers/totem_messages",
                         "pageTitle": "totem-messages/app/instance-initializers/totem_messages",
@@ -4306,7 +4663,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/callback.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/callback.coffee",
                     "projectPath": "totem-pub-sub/addon/callback.coffee",
                     "targetPath": "totem-pub-sub/addon/callback",
                     "pageTitle": "totem-pub-sub/addon/callback",
@@ -4336,7 +4693,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/mixins/auth.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/mixins/auth.coffee",
                         "projectPath": "totem-pub-sub/addon/mixins/auth.coffee",
                         "targetPath": "totem-pub-sub/addon/mixins/auth",
                         "pageTitle": "totem-pub-sub/addon/mixins/auth",
@@ -4495,7 +4852,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/mixins/base.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/mixins/base.coffee",
                         "projectPath": "totem-pub-sub/addon/mixins/base.coffee",
                         "targetPath": "totem-pub-sub/addon/mixins/base",
                         "pageTitle": "totem-pub-sub/addon/mixins/base",
@@ -4517,7 +4874,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/mixins/current_user.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/mixins/current_user.coffee",
                         "projectPath": "totem-pub-sub/addon/mixins/current_user.coffee",
                         "targetPath": "totem-pub-sub/addon/mixins/current_user",
                         "pageTitle": "totem-pub-sub/addon/mixins/current_user",
@@ -4539,7 +4896,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/mixins/events.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/mixins/events.coffee",
                         "projectPath": "totem-pub-sub/addon/mixins/events.coffee",
                         "targetPath": "totem-pub-sub/addon/mixins/events",
                         "pageTitle": "totem-pub-sub/addon/mixins/events",
@@ -4625,7 +4982,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/mixins/helpers.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/mixins/helpers.coffee",
                         "projectPath": "totem-pub-sub/addon/mixins/helpers.coffee",
                         "targetPath": "totem-pub-sub/addon/mixins/helpers",
                         "pageTitle": "totem-pub-sub/addon/mixins/helpers",
@@ -4730,7 +5087,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/mixins/initialize.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/mixins/initialize.coffee",
                         "projectPath": "totem-pub-sub/addon/mixins/initialize.coffee",
                         "targetPath": "totem-pub-sub/addon/mixins/initialize",
                         "pageTitle": "totem-pub-sub/addon/mixins/initialize",
@@ -4752,7 +5109,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/mixins/non_auth.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/mixins/non_auth.coffee",
                         "projectPath": "totem-pub-sub/addon/mixins/non_auth.coffee",
                         "targetPath": "totem-pub-sub/addon/mixins/non_auth",
                         "pageTitle": "totem-pub-sub/addon/mixins/non_auth",
@@ -4830,7 +5187,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/mixins/rooms.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/mixins/rooms.coffee",
                         "projectPath": "totem-pub-sub/addon/mixins/rooms.coffee",
                         "targetPath": "totem-pub-sub/addon/mixins/rooms",
                         "pageTitle": "totem-pub-sub/addon/mixins/rooms",
@@ -5016,7 +5373,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/mixins/timer.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/mixins/timer.coffee",
                         "projectPath": "totem-pub-sub/addon/mixins/timer.coffee",
                         "targetPath": "totem-pub-sub/addon/mixins/timer",
                         "pageTitle": "totem-pub-sub/addon/mixins/timer",
@@ -5038,7 +5395,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/mixins/tracker.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/mixins/tracker.coffee",
                         "projectPath": "totem-pub-sub/addon/mixins/tracker.coffee",
                         "targetPath": "totem-pub-sub/addon/mixins/tracker",
                         "pageTitle": "totem-pub-sub/addon/mixins/tracker",
@@ -5116,7 +5473,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/addon/mixins/tracker_sio.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/addon/mixins/tracker_sio.coffee",
                         "projectPath": "totem-pub-sub/addon/mixins/tracker_sio.coffee",
                         "targetPath": "totem-pub-sub/addon/mixins/tracker_sio",
                         "pageTitle": "totem-pub-sub/addon/mixins/tracker_sio",
@@ -5230,7 +5587,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                                   "foldPrefix": "^",
                                   "name": "CoffeeScript"
                                 },
-                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/app/_config/totem/pub_sub/ns.coffee",
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/app/_config/totem/pub_sub/ns.coffee",
                                 "projectPath": "totem-pub-sub/app/_config/totem/pub_sub/ns.coffee",
                                 "targetPath": "totem-pub-sub/app/_config/totem/pub_sub/ns",
                                 "pageTitle": "totem-pub-sub/app/_config/totem/pub_sub/ns",
@@ -5266,7 +5623,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-pub-sub/app/services/pubsub.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-pub-sub/app/services/pubsub.coffee",
                         "projectPath": "totem-pub-sub/app/services/pubsub.coffee",
                         "targetPath": "totem-pub-sub/app/services/pubsub",
                         "pageTitle": "totem-pub-sub/app/services/pubsub",
@@ -5310,7 +5667,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-simple-auth/addon/authenticator.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-simple-auth/addon/authenticator.coffee",
                     "projectPath": "totem-simple-auth/addon/authenticator.coffee",
                     "targetPath": "totem-simple-auth/addon/authenticator",
                     "pageTitle": "totem-simple-auth/addon/authenticator",
@@ -5326,14 +5683,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                         "slug": "todo-fix-for-using-the-cookie-store"
                       },
                       "depth": 3
-                    }, {
-                      "type": "heading",
-                      "data": {
-                        "level": 1,
-                        "title": "console.warn &#39;NORMALIZED USER DATA&#39;, data",
-                        "slug": "consolewarn-39normalized-user-data39-data"
-                      },
-                      "depth": 1
                     }
                   ]
                 }, {
@@ -5350,7 +5699,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-simple-auth/addon/authenticator_switch_user.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-simple-auth/addon/authenticator_switch_user.coffee",
                     "projectPath": "totem-simple-auth/addon/authenticator_switch_user.coffee",
                     "targetPath": "totem-simple-auth/addon/authenticator_switch_user",
                     "pageTitle": "totem-simple-auth/addon/authenticator_switch_user",
@@ -5455,7 +5804,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-simple-auth/addon/authorizer.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-simple-auth/addon/authorizer.coffee",
                     "projectPath": "totem-simple-auth/addon/authorizer.coffee",
                     "targetPath": "totem-simple-auth/addon/authorizer",
                     "pageTitle": "totem-simple-auth/addon/authorizer",
@@ -5477,7 +5826,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-simple-auth/addon/cookie_store.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-simple-auth/addon/cookie_store.coffee",
                     "projectPath": "totem-simple-auth/addon/cookie_store.coffee",
                     "targetPath": "totem-simple-auth/addon/cookie_store",
                     "pageTitle": "totem-simple-auth/addon/cookie_store",
@@ -5507,7 +5856,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-simple-auth/addon/mixins/authenticated-route-mixin.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-simple-auth/addon/mixins/authenticated-route-mixin.coffee",
                         "projectPath": "totem-simple-auth/addon/mixins/authenticated-route-mixin.coffee",
                         "targetPath": "totem-simple-auth/addon/mixins/authenticated-route-mixin",
                         "pageTitle": "totem-simple-auth/addon/mixins/authenticated-route-mixin",
@@ -5549,7 +5898,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-simple-auth/app/initializers/totem_simple_auth.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-simple-auth/app/initializers/totem_simple_auth.coffee",
                         "projectPath": "totem-simple-auth/app/initializers/totem_simple_auth.coffee",
                         "targetPath": "totem-simple-auth/app/initializers/totem_simple_auth",
                         "pageTitle": "totem-simple-auth/app/initializers/totem_simple_auth",
@@ -5571,7 +5920,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-simple-auth/app/initializers/totem_simple_auth_current_user.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-simple-auth/app/initializers/totem_simple_auth_current_user.coffee",
                         "projectPath": "totem-simple-auth/app/initializers/totem_simple_auth_current_user.coffee",
                         "targetPath": "totem-simple-auth/app/initializers/totem_simple_auth_current_user",
                         "pageTitle": "totem-simple-auth/app/initializers/totem_simple_auth_current_user",
@@ -5603,46 +5952,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-simple-auth/app/routes/root_url.coffee",
-                        "projectPath": "totem-simple-auth/app/routes/root_url.coffee",
-                        "targetPath": "totem-simple-auth/app/routes/root_url",
-                        "pageTitle": "totem-simple-auth/app/routes/root_url",
-                        "title": "root_url"
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-simple-auth/app/routes/index.coffee",
+                        "projectPath": "totem-simple-auth/app/routes/index.coffee",
+                        "targetPath": "totem-simple-auth/app/routes/index",
+                        "pageTitle": "totem-simple-auth/app/routes/index",
+                        "title": "index"
                       },
                       "depth": 4,
                       "outline": []
-                    }, {
-                      "type": "folder",
-                      "data": {
-                        "path": "totem-simple-auth/app/routes/users",
-                        "title": "users"
-                      },
-                      "depth": 4,
-                      "children": [
-                        {
-                          "type": "file",
-                          "data": {
-                            "language": {
-                              "nameMatchers": [".coffee", "Cakefile"],
-                              "pygmentsLexer": "coffee-script",
-                              "highlightJS": "coffeescript",
-                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
-                              "strictMultiLineEnd": false,
-                              "singleLineComment": ["#"],
-                              "ignorePrefix": "}",
-                              "foldPrefix": "^",
-                              "name": "CoffeeScript"
-                            },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-simple-auth/app/routes/users/sign_in.coffee",
-                            "projectPath": "totem-simple-auth/app/routes/users/sign_in.coffee",
-                            "targetPath": "totem-simple-auth/app/routes/users/sign_in",
-                            "pageTitle": "totem-simple-auth/app/routes/users/sign_in",
-                            "title": "sign_in"
-                          },
-                          "depth": 5,
-                          "outline": []
-                        }
-                      ]
                     }
                   ]
                 }
@@ -5668,6 +5985,94 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 {
                   "type": "folder",
                   "data": {
+                    "path": "totem-template-manager/addon/mixins",
+                    "title": "mixins"
+                  },
+                  "depth": 3,
+                  "children": [
+                    {
+                      "type": "file",
+                      "data": {
+                        "language": {
+                          "nameMatchers": [".coffee", "Cakefile"],
+                          "pygmentsLexer": "coffee-script",
+                          "highlightJS": "coffeescript",
+                          "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                          "strictMultiLineEnd": false,
+                          "singleLineComment": ["#"],
+                          "ignorePrefix": "}",
+                          "foldPrefix": "^",
+                          "name": "CoffeeScript"
+                        },
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-template-manager/addon/mixins/tvo.coffee",
+                        "projectPath": "totem-template-manager/addon/mixins/tvo.coffee",
+                        "targetPath": "totem-template-manager/addon/mixins/tvo",
+                        "pageTitle": "totem-template-manager/addon/mixins/tvo",
+                        "title": "tvo"
+                      },
+                      "depth": 4,
+                      "outline": [
+                        {
+                          "type": "heading",
+                          "data": {
+                            "level": 2,
+                            "title": "#",
+                            "slug": ""
+                          },
+                          "depth": 2,
+                          "children": [
+                            {
+                              "type": "heading",
+                              "data": {
+                                "level": 3,
+                                "title": "Common Helpers.",
+                                "slug": "common-helpers"
+                              },
+                              "depth": 3
+                            }
+                          ]
+                        }, {
+                          "type": "heading",
+                          "data": {
+                            "level": 2,
+                            "title": "#",
+                            "slug": ""
+                          },
+                          "depth": 2
+                        }, {
+                          "type": "heading",
+                          "data": {
+                            "level": 2,
+                            "title": "#",
+                            "slug": ""
+                          },
+                          "depth": 2,
+                          "children": [
+                            {
+                              "type": "heading",
+                              "data": {
+                                "level": 3,
+                                "title": "Internal.  Use with caution if call outside of above functions.",
+                                "slug": "internal-use-with-caution-if-call-outside-of-above-functions"
+                              },
+                              "depth": 3
+                            }
+                          ]
+                        }, {
+                          "type": "heading",
+                          "data": {
+                            "level": 2,
+                            "title": "#",
+                            "slug": ""
+                          },
+                          "depth": 2
+                        }
+                      ]
+                    }
+                  ]
+                }, {
+                  "type": "folder",
+                  "data": {
                     "path": "totem-template-manager/addon/tvo",
                     "title": "tvo"
                   },
@@ -5687,7 +6092,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-template-manager/addon/tvo/hash.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-template-manager/addon/tvo/hash.coffee",
                         "projectPath": "totem-template-manager/addon/tvo/hash.coffee",
                         "targetPath": "totem-template-manager/addon/tvo/hash",
                         "pageTitle": "totem-template-manager/addon/tvo/hash",
@@ -5738,165 +6143,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-template-manager/addon/tvo/helper.coffee",
-                        "projectPath": "totem-template-manager/addon/tvo/helper.coffee",
-                        "targetPath": "totem-template-manager/addon/tvo/helper",
-                        "pageTitle": "totem-template-manager/addon/tvo/helper",
-                        "title": "helper"
-                      },
-                      "depth": 4,
-                      "outline": [
-                        {
-                          "type": "heading",
-                          "data": {
-                            "level": 2,
-                            "title": "#",
-                            "slug": ""
-                          },
-                          "depth": 2,
-                          "children": [
-                            {
-                              "type": "heading",
-                              "data": {
-                                "level": 3,
-                                "title": "Component Init Related.",
-                                "slug": "component-init-related"
-                              },
-                              "depth": 3
-                            }
-                          ]
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 2,
-                            "title": "#",
-                            "slug": ""
-                          },
-                          "depth": 2
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 2,
-                            "title": "#",
-                            "slug": ""
-                          },
-                          "depth": 2,
-                          "children": [
-                            {
-                              "type": "heading",
-                              "data": {
-                                "level": 3,
-                                "title": "Component Related.",
-                                "slug": "component-related"
-                              },
-                              "depth": 3
-                            }
-                          ]
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 2,
-                            "title": "#",
-                            "slug": ""
-                          },
-                          "depth": 2
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 1,
-                            "title": "Return a promise array that resolves to the record&#39;s association.",
-                            "slug": "return-a-promise-array-that-resolves-to-the-record39s-association"
-                          },
-                          "depth": 1
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 1,
-                            "title": "Can be used in a computed property and referenced in a template&#39;s &#39;each&#39;.",
-                            "slug": "can-be-used-in-a-computed-property-and-referenced-in-a-template39s-39each39"
-                          },
-                          "depth": 1
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 1,
-                            "title": "#",
-                            "slug": ""
-                          },
-                          "depth": 1
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 1,
-                            "title": "### Record View Query.",
-                            "slug": "-record-view-query"
-                          },
-                          "depth": 1
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 1,
-                            "title": "#",
-                            "slug": ""
-                          },
-                          "depth": 1
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 1,
-                            "title": "Return a promise that resolves to the record&#39;s association.",
-                            "slug": "return-a-promise-that-resolves-to-the-record39s-association"
-                          },
-                          "depth": 1
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 1,
-                            "title": "Query the server if the association records are not already loaded.",
-                            "slug": "query-the-server-if-the-association-records-are-not-already-loaded"
-                          },
-                          "depth": 1
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 1,
-                            "title": "Return a promise that resolves to the record&#39;s association&#39;s association records.",
-                            "slug": "return-a-promise-that-resolves-to-the-record39s-association39s-association-records"
-                          },
-                          "depth": 1
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 1,
-                            "title": "Load the ownerable view records via the record, then for each association record",
-                            "slug": "load-the-ownerable-view-records-via-the-record-then-for-each-association-record"
-                          },
-                          "depth": 1
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 1,
-                            "title": "get its association&#39;s records.",
-                            "slug": "get-its-association39s-records"
-                          },
-                          "depth": 1
-                        }
-                      ]
-                    }, {
-                      "type": "file",
-                      "data": {
-                        "language": {
-                          "nameMatchers": [".coffee", "Cakefile"],
-                          "pygmentsLexer": "coffee-script",
-                          "highlightJS": "coffeescript",
-                          "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
-                          "strictMultiLineEnd": false,
-                          "singleLineComment": ["#"],
-                          "ignorePrefix": "}",
-                          "foldPrefix": "^",
-                          "name": "CoffeeScript"
-                        },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-template-manager/addon/tvo/section.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-template-manager/addon/tvo/section.coffee",
                         "projectPath": "totem-template-manager/addon/tvo/section.coffee",
                         "targetPath": "totem-template-manager/addon/tvo/section",
                         "pageTitle": "totem-template-manager/addon/tvo/section",
@@ -5947,7 +6194,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-template-manager/addon/tvo/status.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-template-manager/addon/tvo/status.coffee",
                         "projectPath": "totem-template-manager/addon/tvo/status.coffee",
                         "targetPath": "totem-template-manager/addon/tvo/status",
                         "pageTitle": "totem-template-manager/addon/tvo/status",
@@ -5985,95 +6232,84 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                         }, {
                           "type": "heading",
                           "data": {
-                            "level": 1,
-                            "title": "Number the messages in an array (if use &amp;nbsp and a fixed font will line-up).",
-                            "slug": "number-the-messages-in-an-array-if-use-ampnbsp-and-a-fixed-font-will-line-up"
+                            "level": 2,
+                            "title": "#",
+                            "slug": ""
                           },
-                          "depth": 1,
+                          "depth": 2,
                           "children": [
                             {
                               "type": "heading",
                               "data": {
-                                "level": 2,
-                                "title": "#",
-                                "slug": ""
+                                "level": 3,
+                                "title": "Internal Helpers.",
+                                "slug": "internal-helpers"
                               },
-                              "depth": 2,
-                              "children": [
-                                {
-                                  "type": "heading",
-                                  "data": {
-                                    "level": 3,
-                                    "title": "Internal Helpers.",
-                                    "slug": "internal-helpers"
-                                  },
-                                  "depth": 3
-                                }
-                              ]
-                            }, {
-                              "type": "heading",
-                              "data": {
-                                "level": 2,
-                                "title": "#",
-                                "slug": ""
-                              },
-                              "depth": 2
-                            }, {
-                              "type": "heading",
-                              "data": {
-                                "level": 2,
-                                "title": "#",
-                                "slug": ""
-                              },
-                              "depth": 2,
-                              "children": [
-                                {
-                                  "type": "heading",
-                                  "data": {
-                                    "level": 3,
-                                    "title": "Callback Object.",
-                                    "slug": "callback-object"
-                                  },
-                                  "depth": 3
-                                }
-                              ]
-                            }, {
-                              "type": "heading",
-                              "data": {
-                                "level": 2,
-                                "title": "#",
-                                "slug": ""
-                              },
-                              "depth": 2
-                            }, {
-                              "type": "heading",
-                              "data": {
-                                "level": 2,
-                                "title": "#",
-                                "slug": ""
-                              },
-                              "depth": 2,
-                              "children": [
-                                {
-                                  "type": "heading",
-                                  "data": {
-                                    "level": 3,
-                                    "title": "Collection Object.",
-                                    "slug": "collection-object"
-                                  },
-                                  "depth": 3
-                                }
-                              ]
-                            }, {
-                              "type": "heading",
-                              "data": {
-                                "level": 2,
-                                "title": "#",
-                                "slug": ""
-                              },
-                              "depth": 2
+                              "depth": 3
                             }
                           ]
+                        }, {
+                          "type": "heading",
+                          "data": {
+                            "level": 2,
+                            "title": "#",
+                            "slug": ""
+                          },
+                          "depth": 2
+                        }, {
+                          "type": "heading",
+                          "data": {
+                            "level": 2,
+                            "title": "#",
+                            "slug": ""
+                          },
+                          "depth": 2,
+                          "children": [
+                            {
+                              "type": "heading",
+                              "data": {
+                                "level": 3,
+                                "title": "Callback Wrapper Object.",
+                                "slug": "callback-wrapper-object"
+                              },
+                              "depth": 3
+                            }
+                          ]
+                        }, {
+                          "type": "heading",
+                          "data": {
+                            "level": 2,
+                            "title": "#",
+                            "slug": ""
+                          },
+                          "depth": 2
+                        }, {
+                          "type": "heading",
+                          "data": {
+                            "level": 2,
+                            "title": "#",
+                            "slug": ""
+                          },
+                          "depth": 2,
+                          "children": [
+                            {
+                              "type": "heading",
+                              "data": {
+                                "level": 3,
+                                "title": "Changeset Collection Object.",
+                                "slug": "changeset-collection-object"
+                              },
+                              "depth": 3
+                            }
+                          ]
+                        }, {
+                          "type": "heading",
+                          "data": {
+                            "level": 2,
+                            "title": "#",
+                            "slug": ""
+                          },
+                          "depth": 2
                         }
                       ]
                     }, {
@@ -6090,7 +6326,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-template-manager/addon/tvo/template.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-template-manager/addon/tvo/template.coffee",
                         "projectPath": "totem-template-manager/addon/tvo/template.coffee",
                         "targetPath": "totem-template-manager/addon/tvo/template",
                         "pageTitle": "totem-template-manager/addon/tvo/template",
@@ -6222,7 +6458,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-template-manager/addon/tvo/value.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-template-manager/addon/tvo/value.coffee",
                         "projectPath": "totem-template-manager/addon/tvo/value.coffee",
                         "targetPath": "totem-template-manager/addon/tvo/value",
                         "pageTitle": "totem-template-manager/addon/tvo/value",
@@ -6293,70 +6529,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem-template-manager/app/services/tvo.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem-template-manager/app/services/tvo.coffee",
                         "projectPath": "totem-template-manager/app/services/tvo.coffee",
                         "targetPath": "totem-template-manager/app/services/tvo",
                         "pageTitle": "totem-template-manager/app/services/tvo",
                         "title": "tvo"
                       },
                       "depth": 4,
-                      "outline": [
-                        {
-                          "type": "heading",
-                          "data": {
-                            "level": 2,
-                            "title": "#",
-                            "slug": ""
-                          },
-                          "depth": 2,
-                          "children": [
-                            {
-                              "type": "heading",
-                              "data": {
-                                "level": 3,
-                                "title": "Common Helpers.",
-                                "slug": "common-helpers"
-                              },
-                              "depth": 3
-                            }
-                          ]
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 2,
-                            "title": "#",
-                            "slug": ""
-                          },
-                          "depth": 2
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 2,
-                            "title": "#",
-                            "slug": ""
-                          },
-                          "depth": 2,
-                          "children": [
-                            {
-                              "type": "heading",
-                              "data": {
-                                "level": 3,
-                                "title": "Internal.  Use with caution if call outside of above functions.",
-                                "slug": "internal-use-with-caution-if-call-outside-of-above-functions"
-                              },
-                              "depth": 3
-                            }
-                          ]
-                        }, {
-                          "type": "heading",
-                          "data": {
-                            "level": 2,
-                            "title": "#",
-                            "slug": ""
-                          },
-                          "depth": 2
-                        }
-                      ]
+                      "outline": []
                     }
                   ]
                 }
@@ -6393,7 +6573,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/ajax.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/ajax.coffee",
                     "projectPath": "totem/addon/ajax.coffee",
                     "targetPath": "totem/addon/ajax",
                     "pageTitle": "totem/addon/ajax",
@@ -6415,7 +6595,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/cache.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/cache.coffee",
                     "projectPath": "totem/addon/cache.coffee",
                     "targetPath": "totem/addon/cache",
                     "pageTitle": "totem/addon/cache",
@@ -6437,7 +6617,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/changeset.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/changeset.coffee",
                     "projectPath": "totem/addon/changeset.coffee",
                     "targetPath": "totem/addon/changeset",
                     "pageTitle": "totem/addon/changeset",
@@ -6467,7 +6647,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/ds/associations.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/ds/associations.coffee",
                         "projectPath": "totem/addon/ds/associations.coffee",
                         "targetPath": "totem/addon/ds/associations",
                         "pageTitle": "totem/addon/ds/associations",
@@ -6501,7 +6681,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/error.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/error.coffee",
                     "projectPath": "totem/addon/error.coffee",
                     "targetPath": "totem/addon/error",
                     "pageTitle": "totem/addon/error",
@@ -6523,33 +6703,11 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/i18n.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/i18n.coffee",
                     "projectPath": "totem/addon/i18n.coffee",
                     "targetPath": "totem/addon/i18n",
                     "pageTitle": "totem/addon/i18n",
                     "title": "i18n"
-                  },
-                  "depth": 3,
-                  "outline": []
-                }, {
-                  "type": "file",
-                  "data": {
-                    "language": {
-                      "nameMatchers": [".coffee", "Cakefile"],
-                      "pygmentsLexer": "coffee-script",
-                      "highlightJS": "coffeescript",
-                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
-                      "strictMultiLineEnd": false,
-                      "singleLineComment": ["#"],
-                      "ignorePrefix": "}",
-                      "foldPrefix": "^",
-                      "name": "CoffeeScript"
-                    },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/logger.coffee",
-                    "projectPath": "totem/addon/logger.coffee",
-                    "targetPath": "totem/addon/logger",
-                    "pageTitle": "totem/addon/logger",
-                    "title": "logger"
                   },
                   "depth": 3,
                   "outline": []
@@ -6583,7 +6741,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/cache/base.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/cache/base.coffee",
                             "projectPath": "totem/addon/mixins/cache/base.coffee",
                             "targetPath": "totem/addon/mixins/cache/base",
                             "pageTitle": "totem/addon/mixins/cache/base",
@@ -6605,7 +6763,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/cache/finders.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/cache/finders.coffee",
                             "projectPath": "totem/addon/mixins/cache/finders.coffee",
                             "targetPath": "totem/addon/mixins/cache/finders",
                             "pageTitle": "totem/addon/mixins/cache/finders",
@@ -6627,7 +6785,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/cache/helpers.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/cache/helpers.coffee",
                             "projectPath": "totem/addon/mixins/cache/helpers.coffee",
                             "targetPath": "totem/addon/mixins/cache/helpers",
                             "pageTitle": "totem/addon/mixins/cache/helpers",
@@ -6649,7 +6807,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/cache/initialize.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/cache/initialize.coffee",
                             "projectPath": "totem/addon/mixins/cache/initialize.coffee",
                             "targetPath": "totem/addon/mixins/cache/initialize",
                             "pageTitle": "totem/addon/mixins/cache/initialize",
@@ -6671,7 +6829,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/cache/paginate.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/cache/paginate.coffee",
                             "projectPath": "totem/addon/mixins/cache/paginate.coffee",
                             "targetPath": "totem/addon/mixins/cache/paginate",
                             "pageTitle": "totem/addon/mixins/cache/paginate",
@@ -6693,14 +6851,43 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/cache/query.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/cache/query.coffee",
                             "projectPath": "totem/addon/mixins/cache/query.coffee",
                             "targetPath": "totem/addon/mixins/cache/query",
                             "pageTitle": "totem/addon/mixins/cache/query",
                             "title": "query"
                           },
                           "depth": 5,
-                          "outline": []
+                          "outline": [
+                            {
+                              "type": "heading",
+                              "data": {
+                                "level": 2,
+                                "title": "#",
+                                "slug": ""
+                              },
+                              "depth": 2,
+                              "children": [
+                                {
+                                  "type": "heading",
+                                  "data": {
+                                    "level": 3,
+                                    "title": "Helpers",
+                                    "slug": "helpers"
+                                  },
+                                  "depth": 3
+                                }
+                              ]
+                            }, {
+                              "type": "heading",
+                              "data": {
+                                "level": 2,
+                                "title": "#",
+                                "slug": ""
+                              },
+                              "depth": 2
+                            }
+                          ]
                         }, {
                           "type": "file",
                           "data": {
@@ -6715,7 +6902,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/cache/store.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/cache/store.coffee",
                             "projectPath": "totem/addon/mixins/cache/store.coffee",
                             "targetPath": "totem/addon/mixins/cache/store",
                             "pageTitle": "totem/addon/mixins/cache/store",
@@ -6737,11 +6924,33 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/cache/store_filter.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/cache/store_filter.coffee",
                             "projectPath": "totem/addon/mixins/cache/store_filter.coffee",
                             "targetPath": "totem/addon/mixins/cache/store_filter",
                             "pageTitle": "totem/addon/mixins/cache/store_filter",
                             "title": "store_filter"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/cache/view.coffee",
+                            "projectPath": "totem/addon/mixins/cache/view.coffee",
+                            "targetPath": "totem/addon/mixins/cache/view",
+                            "pageTitle": "totem/addon/mixins/cache/view",
+                            "title": "view"
                           },
                           "depth": 5,
                           "outline": []
@@ -6769,7 +6978,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/changeset/extend_changeset.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/changeset/extend_changeset.coffee",
                             "projectPath": "totem/addon/mixins/changeset/extend_changeset.coffee",
                             "targetPath": "totem/addon/mixins/changeset/extend_changeset",
                             "pageTitle": "totem/addon/mixins/changeset/extend_changeset",
@@ -6791,7 +7000,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/changeset/numbers.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/changeset/numbers.coffee",
                             "projectPath": "totem/addon/mixins/changeset/numbers.coffee",
                             "targetPath": "totem/addon/mixins/changeset/numbers",
                             "pageTitle": "totem/addon/mixins/changeset/numbers",
@@ -6800,12 +7009,75 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "depth": 5,
                           "outline": []
                         }, {
-                          "type": "folder",
+                          "type": "file",
                           "data": {
-                            "path": "totem/addon/mixins/changeset/validators",
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/changeset/text_support.coffee",
+                            "projectPath": "totem/addon/mixins/changeset/text_support.coffee",
+                            "targetPath": "totem/addon/mixins/changeset/text_support",
+                            "pageTitle": "totem/addon/mixins/changeset/text_support",
+                            "title": "text_support"
+                          },
+                          "depth": 5,
+                          "outline": [
+                            {
+                              "type": "heading",
+                              "data": {
+                                "level": 3,
+                                "title": "Template Parameters",
+                                "slug": "template-parameters"
+                              },
+                              "depth": 3
+                            }, {
+                              "type": "heading",
+                              "data": {
+                                "level": 1,
+                                "title": "Some browsers do not trigger a &#39;change&#39; event on the input if the field is autofilled",
+                                "slug": "some-browsers-do-not-trigger-a-39change39-event-on-the-input-if-the-field-is-autofilled"
+                              },
+                              "depth": 1
+                            }, {
+                              "type": "heading",
+                              "data": {
+                                "level": 1,
+                                "title": "To fully account for this issue, poll to ensure that ember can catch input changes made by autofill",
+                                "slug": "to-fully-account-for-this-issue-poll-to-ensure-that-ember-can-catch-input-changes-made-by-autofill"
+                              },
+                              "depth": 1
+                            }
+                          ]
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/changeset/validators.coffee",
+                            "projectPath": "totem/addon/mixins/changeset/validators.coffee",
+                            "targetPath": "totem/addon/mixins/changeset/validators",
+                            "pageTitle": "totem/addon/mixins/changeset/validators",
                             "title": "validators"
                           },
                           "depth": 5,
+                          "outline": [],
                           "children": [
                             {
                               "type": "file",
@@ -6821,7 +7093,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                                   "foldPrefix": "^",
                                   "name": "CoffeeScript"
                                 },
-                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/changeset/validators/decimals.coffee",
+                                "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/changeset/validators/decimals.coffee",
                                 "projectPath": "totem/addon/mixins/changeset/validators/decimals.coffee",
                                 "targetPath": "totem/addon/mixins/changeset/validators/decimals",
                                 "pageTitle": "totem/addon/mixins/changeset/validators/decimals",
@@ -6847,7 +7119,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/ckeditor.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/ckeditor.coffee",
                         "projectPath": "totem/addon/mixins/ckeditor.coffee",
                         "targetPath": "totem/addon/mixins/ckeditor",
                         "pageTitle": "totem/addon/mixins/ckeditor",
@@ -6869,7 +7141,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/data.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/data.coffee",
                         "projectPath": "totem/addon/mixins/data.coffee",
                         "targetPath": "totem/addon/mixins/data",
                         "pageTitle": "totem/addon/mixins/data",
@@ -6892,7 +7164,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/data/ability.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/data/ability.coffee",
                             "projectPath": "totem/addon/mixins/data/ability.coffee",
                             "targetPath": "totem/addon/mixins/data/ability",
                             "pageTitle": "totem/addon/mixins/data/ability",
@@ -6997,7 +7269,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/data/base_data.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/data/base_data.coffee",
                             "projectPath": "totem/addon/mixins/data/base_data.coffee",
                             "targetPath": "totem/addon/mixins/data/base_data",
                             "pageTitle": "totem/addon/mixins/data/base_data",
@@ -7019,7 +7291,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/data/base_module.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/data/base_module.coffee",
                             "projectPath": "totem/addon/mixins/data/base_module.coffee",
                             "targetPath": "totem/addon/mixins/data/base_module",
                             "pageTitle": "totem/addon/mixins/data/base_module",
@@ -7232,7 +7504,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/data/did_load.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/data/did_load.coffee",
                             "projectPath": "totem/addon/mixins/data/did_load.coffee",
                             "targetPath": "totem/addon/mixins/data/did_load",
                             "pageTitle": "totem/addon/mixins/data/did_load",
@@ -7254,7 +7526,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/data/metadata.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/data/metadata.coffee",
                             "projectPath": "totem/addon/mixins/data/metadata.coffee",
                             "targetPath": "totem/addon/mixins/data/metadata",
                             "pageTitle": "totem/addon/mixins/data/metadata",
@@ -7332,7 +7604,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/data/queue.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/data/queue.coffee",
                             "projectPath": "totem/addon/mixins/data/queue.coffee",
                             "targetPath": "totem/addon/mixins/data/queue",
                             "pageTitle": "totem/addon/mixins/data/queue",
@@ -7356,7 +7628,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/filter.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/filter.coffee",
                         "projectPath": "totem/addon/mixins/filter.coffee",
                         "targetPath": "totem/addon/mixins/filter",
                         "pageTitle": "totem/addon/mixins/filter",
@@ -7396,7 +7668,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/group_by.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/group_by.coffee",
                         "projectPath": "totem/addon/mixins/group_by.coffee",
                         "targetPath": "totem/addon/mixins/group_by",
                         "pageTitle": "totem/addon/mixins/group_by",
@@ -7444,7 +7716,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/ajax.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/ajax.coffee",
                             "projectPath": "totem/addon/mixins/scope/ajax.coffee",
                             "targetPath": "totem/addon/mixins/scope/ajax",
                             "pageTitle": "totem/addon/mixins/scope/ajax",
@@ -7492,7 +7764,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/association_filters.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/association_filters.coffee",
                             "projectPath": "totem/addon/mixins/scope/association_filters.coffee",
                             "targetPath": "totem/addon/mixins/scope/association_filters",
                             "pageTitle": "totem/addon/mixins/scope/association_filters",
@@ -7514,7 +7786,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/authable.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/authable.coffee",
                             "projectPath": "totem/addon/mixins/scope/authable.coffee",
                             "targetPath": "totem/addon/mixins/scope/authable",
                             "pageTitle": "totem/addon/mixins/scope/authable",
@@ -7536,7 +7808,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/base.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/base.coffee",
                             "projectPath": "totem/addon/mixins/scope/base.coffee",
                             "targetPath": "totem/addon/mixins/scope/base",
                             "pageTitle": "totem/addon/mixins/scope/base",
@@ -7558,7 +7830,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/current_user.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/current_user.coffee",
                             "projectPath": "totem/addon/mixins/scope/current_user.coffee",
                             "targetPath": "totem/addon/mixins/scope/current_user",
                             "pageTitle": "totem/addon/mixins/scope/current_user",
@@ -7580,7 +7852,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/initialize.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/initialize.coffee",
                             "projectPath": "totem/addon/mixins/scope/initialize.coffee",
                             "targetPath": "totem/addon/mixins/scope/initialize",
                             "pageTitle": "totem/addon/mixins/scope/initialize",
@@ -7602,7 +7874,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/ownerable.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/ownerable.coffee",
                             "projectPath": "totem/addon/mixins/scope/ownerable.coffee",
                             "targetPath": "totem/addon/mixins/scope/ownerable",
                             "pageTitle": "totem/addon/mixins/scope/ownerable",
@@ -7624,7 +7896,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/paths.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/paths.coffee",
                             "projectPath": "totem/addon/mixins/scope/paths.coffee",
                             "targetPath": "totem/addon/mixins/scope/paths",
                             "pageTitle": "totem/addon/mixins/scope/paths",
@@ -7702,7 +7974,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/record_helpers.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/record_helpers.coffee",
                             "projectPath": "totem/addon/mixins/scope/record_helpers.coffee",
                             "targetPath": "totem/addon/mixins/scope/record_helpers",
                             "pageTitle": "totem/addon/mixins/scope/record_helpers",
@@ -7724,7 +7996,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/view_query.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/view_query.coffee",
                             "projectPath": "totem/addon/mixins/scope/view_query.coffee",
                             "targetPath": "totem/addon/mixins/scope/view_query",
                             "pageTitle": "totem/addon/mixins/scope/view_query",
@@ -7746,7 +8018,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/view_query_ids.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/view_query_ids.coffee",
                             "projectPath": "totem/addon/mixins/scope/view_query_ids.coffee",
                             "targetPath": "totem/addon/mixins/scope/view_query_ids",
                             "pageTitle": "totem/addon/mixins/scope/view_query_ids",
@@ -7768,7 +8040,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/scope/viewonly.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/scope/viewonly.coffee",
                             "projectPath": "totem/addon/mixins/scope/viewonly.coffee",
                             "targetPath": "totem/addon/mixins/scope/viewonly",
                             "pageTitle": "totem/addon/mixins/scope/viewonly",
@@ -7792,7 +8064,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                           "foldPrefix": "^",
                           "name": "CoffeeScript"
                         },
-                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/mixins/select_text.coffee",
+                        "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/select_text.coffee",
                         "projectPath": "totem/addon/mixins/select_text.coffee",
                         "targetPath": "totem/addon/mixins/select_text",
                         "pageTitle": "totem/addon/mixins/select_text",
@@ -7800,6 +8072,236 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       },
                       "depth": 4,
                       "outline": []
+                    }, {
+                      "type": "folder",
+                      "data": {
+                        "path": "totem/addon/mixins/util",
+                        "title": "util"
+                      },
+                      "depth": 4,
+                      "children": [
+                        {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/util/array.coffee",
+                            "projectPath": "totem/addon/mixins/util/array.coffee",
+                            "targetPath": "totem/addon/mixins/util/array",
+                            "pageTitle": "totem/addon/mixins/util/array",
+                            "title": "array"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/util/base.coffee",
+                            "projectPath": "totem/addon/mixins/util/base.coffee",
+                            "targetPath": "totem/addon/mixins/util/base",
+                            "pageTitle": "totem/addon/mixins/util/base",
+                            "title": "base"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/util/console.coffee",
+                            "projectPath": "totem/addon/mixins/util/console.coffee",
+                            "targetPath": "totem/addon/mixins/util/console",
+                            "pageTitle": "totem/addon/mixins/util/console",
+                            "title": "console"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/util/date_time.coffee",
+                            "projectPath": "totem/addon/mixins/util/date_time.coffee",
+                            "targetPath": "totem/addon/mixins/util/date_time",
+                            "pageTitle": "totem/addon/mixins/util/date_time",
+                            "title": "date_time"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/util/hash.coffee",
+                            "projectPath": "totem/addon/mixins/util/hash.coffee",
+                            "targetPath": "totem/addon/mixins/util/hash",
+                            "pageTitle": "totem/addon/mixins/util/hash",
+                            "title": "hash"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/util/is.coffee",
+                            "projectPath": "totem/addon/mixins/util/is.coffee",
+                            "targetPath": "totem/addon/mixins/util/is",
+                            "pageTitle": "totem/addon/mixins/util/is",
+                            "title": "is"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/util/module.coffee",
+                            "projectPath": "totem/addon/mixins/util/module.coffee",
+                            "targetPath": "totem/addon/mixins/util/module",
+                            "pageTitle": "totem/addon/mixins/util/module",
+                            "title": "module"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/util/number.coffee",
+                            "projectPath": "totem/addon/mixins/util/number.coffee",
+                            "targetPath": "totem/addon/mixins/util/number",
+                            "pageTitle": "totem/addon/mixins/util/number",
+                            "title": "number"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/util/object.coffee",
+                            "projectPath": "totem/addon/mixins/util/object.coffee",
+                            "targetPath": "totem/addon/mixins/util/object",
+                            "pageTitle": "totem/addon/mixins/util/object",
+                            "title": "object"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }, {
+                          "type": "file",
+                          "data": {
+                            "language": {
+                              "nameMatchers": [".coffee", "Cakefile"],
+                              "pygmentsLexer": "coffee-script",
+                              "highlightJS": "coffeescript",
+                              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                              "strictMultiLineEnd": false,
+                              "singleLineComment": ["#"],
+                              "ignorePrefix": "}",
+                              "foldPrefix": "^",
+                              "name": "CoffeeScript"
+                            },
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/mixins/util/string.coffee",
+                            "projectPath": "totem/addon/mixins/util/string.coffee",
+                            "targetPath": "totem/addon/mixins/util/string",
+                            "pageTitle": "totem/addon/mixins/util/string",
+                            "title": "string"
+                          },
+                          "depth": 5,
+                          "outline": []
+                        }
+                      ]
                     }
                   ]
                 }, {
@@ -7816,7 +8318,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/ns.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/ns.coffee",
                     "projectPath": "totem/addon/ns.coffee",
                     "targetPath": "totem/addon/ns",
                     "pageTitle": "totem/addon/ns",
@@ -7864,7 +8366,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/scope.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/scope.coffee",
                     "projectPath": "totem/addon/scope.coffee",
                     "targetPath": "totem/addon/scope",
                     "pageTitle": "totem/addon/scope",
@@ -7886,7 +8388,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/timer.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/timer.coffee",
                     "projectPath": "totem/addon/timer.coffee",
                     "targetPath": "totem/addon/timer",
                     "pageTitle": "totem/addon/timer",
@@ -7926,7 +8428,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/util.coffee",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/addon/util.coffee",
                     "projectPath": "totem/addon/util.coffee",
                     "targetPath": "totem/addon/util",
                     "pageTitle": "totem/addon/util",
@@ -7934,68 +8436,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   },
                   "depth": 3,
                   "outline": []
-                }, {
-                  "type": "file",
-                  "data": {
-                    "language": {
-                      "nameMatchers": [".coffee", "Cakefile"],
-                      "pygmentsLexer": "coffee-script",
-                      "highlightJS": "coffeescript",
-                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
-                      "strictMultiLineEnd": false,
-                      "singleLineComment": ["#"],
-                      "ignorePrefix": "}",
-                      "foldPrefix": "^",
-                      "name": "CoffeeScript"
-                    },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/addon/util_ember.coffee",
-                    "projectPath": "totem/addon/util_ember.coffee",
-                    "targetPath": "totem/addon/util_ember",
-                    "pageTitle": "totem/addon/util_ember",
-                    "title": "util_ember"
-                  },
-                  "depth": 3,
-                  "outline": [
-                    {
-                      "type": "heading",
-                      "data": {
-                        "level": 2,
-                        "title": "#",
-                        "slug": ""
-                      },
-                      "depth": 2,
-                      "children": [
-                        {
-                          "type": "heading",
-                          "data": {
-                            "level": 3,
-                            "title": "Messages.",
-                            "slug": "messages"
-                          },
-                          "depth": 3
-                        }
-                      ]
-                    }, {
-                      "type": "heading",
-                      "data": {
-                        "level": 2,
-                        "title": "#",
-                        "slug": ""
-                      },
-                      "depth": 2,
-                      "children": [
-                        {
-                          "type": "heading",
-                          "data": {
-                            "level": 3,
-                            "title": "Pass Through ###",
-                            "slug": "pass-through-"
-                          },
-                          "depth": 3
-                        }
-                      ]
-                    }
-                  ]
                 }
               ]
             }, {
@@ -8036,7 +8476,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/app/initializers/totem/totem.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/app/initializers/totem/totem.coffee",
                             "projectPath": "totem/app/initializers/totem/totem.coffee",
                             "targetPath": "totem/app/initializers/totem/totem",
                             "pageTitle": "totem/app/initializers/totem/totem",
@@ -8078,7 +8518,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                               "foldPrefix": "^",
                               "name": "CoffeeScript"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170125-13600-100081x/etotem-client/totem/app/instance-initializers/totem/totem.coffee",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170126-14111-t2jm01/etotem-client/totem/app/instance-initializers/totem/totem.coffee",
                             "projectPath": "totem/app/instance-initializers/totem/totem.coffee",
                             "targetPath": "totem/app/instance-initializers/totem/totem",
                             "pageTitle": "totem/app/instance-initializers/totem/totem",

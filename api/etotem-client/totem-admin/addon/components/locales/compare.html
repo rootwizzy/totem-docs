@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en"><head><title>totem-admin/addon/components/locales/compare</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="totem-admin/addon/components/locales/compare"><meta name="groc-project-path" content="totem-admin/addon/components/locales/compare.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem-admin/addon/components/locales/compare.coffee">totem-admin/addon/components/locales/compare.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'totem-base/components/base'</span>
+import m_sort_by from <span class="hljs-string">'totem-application/mixins/table_sort_by'</span>
+
+export default base.extend m_sort_by,
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">admin</span>: ember.inject.service()
+
+  <span class="hljs-attribute">locales_data</span>:        <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">active_code</span>:         <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">active_compare_code</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">show_missing</span>:        <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">ready</span>:               <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">sorted_locales</span>: ember.computed.sort <span class="hljs-string">'locales_data'</span>, <span class="hljs-string">'sort_by'</span>
+
+  <span class="hljs-attribute">sort</span>: ember.computed -&gt; <span class="hljs-property">@am</span>.get_locales_sort()
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select_code</span>: <span class="hljs-function"><span class="hljs-params">(code)</span> -&gt;</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'active_code'</span>, code
+      <span class="hljs-property">@set_sort_value_heading</span>()
+      <span class="hljs-property">@am</span>.set_current_locale(code)
+      <span class="hljs-property">@set_locales</span>()
+      <span class="hljs-keyword">return</span>
+
+    <span class="hljs-attribute">select_compare_code</span>: <span class="hljs-function"><span class="hljs-params">(code)</span> -&gt;</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'active_compare_code'</span>, code
+      <span class="hljs-property">@set_sort_compare_value_heading</span>()
+      <span class="hljs-property">@set_locales</span>(<span class="hljs-attribute">compare</span>: code)
+      <span class="hljs-keyword">return</span>
+
+    <span class="hljs-attribute">toggle_missing</span>: <span class="hljs-function">-&gt;</span>
+      missing = <span class="hljs-property">@toggleProperty</span> <span class="hljs-string">'show_missing'</span>
+      <span class="hljs-property">@set_locales</span>({missing})
+      <span class="hljs-keyword">return</span>
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>(arguments...)
+    <span class="hljs-property">@am</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'admin'</span>)
+    <span class="hljs-property">@am</span>.reset_current_locale()
+    code = <span class="hljs-property">@am</span>.get_current_locale()
+    <span class="hljs-property">@set</span> <span class="hljs-string">'active_code'</span>, code
+    <span class="hljs-property">@set_sort_value_heading</span>()
+    <span class="hljs-property">@set_locales</span>()
+    <span class="hljs-property">@set_default_sort_by</span> [<span class="hljs-string">'key'</span>]
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@am</span>.set_header_link_active(<span class="hljs-string">'locales'</span>)
+  <span class="hljs-attribute">willDestroy</span>:      <span class="hljs-function">-&gt;</span> <span class="hljs-property">@am</span>.reset_current_locale()
+
+  <span class="hljs-attribute">set_locales</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    compare_code = <span class="hljs-property">@get</span>(<span class="hljs-string">'active_compare_code'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(compare_code)
+    array = <span class="hljs-property">@am</span>.get_locales()
+    <span class="hljs-property">@am</span>.set_current_locale(compare_code)
+    <span class="hljs-property">@am</span>.add_locales_compare_value(compare_code, array)
+    <span class="hljs-property">@am</span>.set_current_locale <span class="hljs-property">@get</span>(<span class="hljs-string">'active_code'</span>)
+    <span class="hljs-keyword">if</span> options.missing
+      array = array.filter (hash) =&gt; hash.missing <span class="hljs-keyword">or</span> hash.compare_missing
+    <span class="hljs-property">@set</span> <span class="hljs-string">'locales_data'</span>, array
+    <span class="hljs-property">@set</span> <span class="hljs-string">'ready'</span>, <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">set_sort_value_heading</span>: <span class="hljs-function">-&gt;</span>
+    code  = <span class="hljs-property">@get</span>(<span class="hljs-string">'active_code'</span>) <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+    value = <span class="hljs-property">@get</span>(<span class="hljs-string">'sort.value'</span>) <span class="hljs-keyword">or</span> {}
+    ember.set(value, <span class="hljs-string">'text'</span>, <span class="hljs-string">"<span class="hljs-subst">#{code.toUpperCase()}</span> Value"</span>)
+
+  <span class="hljs-attribute">set_sort_compare_value_heading</span>: <span class="hljs-function">-&gt;</span>
+    code  = <span class="hljs-property">@get</span>(<span class="hljs-string">'active_compare_code'</span>) <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+    value = <span class="hljs-property">@get</span>(<span class="hljs-string">'sort.compare_value'</span>) <span class="hljs-keyword">or</span> {}
+    ember.set(value, <span class="hljs-string">'text'</span>, <span class="hljs-string">"<span class="hljs-subst">#{code.toUpperCase()}</span> Value"</span>)</div></div></div></div></body></html>

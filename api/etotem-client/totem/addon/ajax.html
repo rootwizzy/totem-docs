@@ -113,22 +113,6 @@ Need when running via ember-cli where the host is &#39;localhost:4200&#39;.</p><
     message += <span class="hljs-string">" [options: <span class="hljs-subst">#{<span class="hljs-property">@stringify</span>(options)}</span>]"</span>  <span class="hljs-keyword">if</span> options
     <span class="hljs-property">@totem_error</span>.<span class="hljs-keyword">throw</span> @, <span class="hljs-string">"totem.ajax error: <span class="hljs-subst">#{message}</span>"</span>
 
-  <span class="hljs-attribute">push_payload_and_return_data_records</span>: <span class="hljs-function"><span class="hljs-params">(payload, options={})</span> -&gt;</span>
-    data = payload.data
-    ids  = <span class="hljs-property">@get_payload_record_ids</span>(data)
-    type = <span class="hljs-property">@get_payload_record_type</span>(data)
-    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> ember.isBlank(ids) <span class="hljs-keyword">or</span> ember.isBlank(type)
-    <span class="hljs-property">@store</span>.pushPayload(payload)
-    <span class="hljs-property">@store</span>.peekAll(type).filter (record) -&gt; ids.includes(record.get <span class="hljs-string">'id'</span>)
-
-  <span class="hljs-attribute">get_payload_record_ids</span>: <span class="hljs-function"><span class="hljs-params">(records)</span> -&gt;</span>
-    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> ember.isBlank(records)
-    ember.makeArray(records).map (record) -&gt; <span class="hljs-string">"<span class="hljs-subst">#{record.id}</span>"</span> <span class="hljs-comment"># make id a string</span>
-
-  <span class="hljs-attribute">get_payload_record_type</span>: <span class="hljs-function"><span class="hljs-params">(records)</span> -&gt;</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(records)
-    records.get(<span class="hljs-string">'firstObject'</span>).type
-
   <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'TotemAjax'</span>
 
 export default <span class="hljs-keyword">new</span> Ajax</div></div></div></div></body></html>

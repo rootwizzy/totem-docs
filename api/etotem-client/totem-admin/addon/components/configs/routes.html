@@ -12,10 +12,12 @@ export default base.extend m_sort_by,
   <span class="hljs-attribute">sort</span>: ember.computed -&gt;
     sort_configs =
       <span class="hljs-attribute">name</span>: {<span class="hljs-attribute">id</span>: <span class="hljs-string">'name'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'sort_engine'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Name'</span>}
-      <span class="hljs-attribute">path</span>:   {<span class="hljs-attribute">id</span>: <span class="hljs-string">'path'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'sort_path'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Path'</span>} 
+      <span class="hljs-attribute">path</span>:   {<span class="hljs-attribute">id</span>: <span class="hljs-string">'path'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'sort_path'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Path'</span>}
 
   <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
     <span class="hljs-property">@_super</span>(arguments...)
     <span class="hljs-property">@am</span>     = <span class="hljs-property">@get</span>(<span class="hljs-string">'admin'</span>)
     <span class="hljs-property">@routes</span> = <span class="hljs-property">@am</span>.get_config_routes()
-    <span class="hljs-property">@set_default_sort_by</span> [<span class="hljs-string">'name'</span>]</div></div></div></div></body></html>
+    <span class="hljs-property">@set_default_sort_by</span> [<span class="hljs-string">'name'</span>]
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@am</span>.set_header_link_active(<span class="hljs-string">'configs'</span>)</div></div></div></div></body></html>

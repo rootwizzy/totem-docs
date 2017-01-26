@@ -1,40 +1,104 @@
 # Comment Markup for Source code
-> This is currently still under development
+We use a modified fork of the natural language parser [Groc](https://github.com/rootwizzy/groc). The major concept of this form of documentation is to keep the source and documentation as one cohesive piece. It takes the source comments are parses it out into markdown to be displayed along with the source.
 
-At this time we are looking at [Yard](http://yardoc.org/) as the basis for our documentation for our Ruby source (and hopefully all languages).
+It also has the ability to parse more traditional Document tags for structured API if the file in question requires such.
 
-## Tags
-For more documentation and examples see [Yard Tags](http://www.rubydoc.info/gems/yard/file/docs/Tags.md#Tag_List).
+## Comment Format
+For both `ruby` and `coffescript` the comments share a common designator which is the `#`.
 
-> in the parameter list for tags the '->' means it appears on a new line and indented 2 spaces under the tag.
+### Single line comments
+To start a comment to be parsed simply start the line with `#` anything following will be parsed into markdown and can use markdown syntax.
 
-### Meta-Tags
-- `@abstract description `
-- `@api description` (transitive)
-- `@author description`
-- `@deprecated description`
-- `@example [title] -> Code block`
-- `@note description`
-- `@option name [Types] option_key (default_value) description`
-- `@overload method_signature(parameters) -> docstring`
-- `@param name [Types] description`
-- `@private` (transitive)
-- `@raise [Types] description`
-- `@return [Types] description`
-- `@see name description`
-- `@since description` (transitive)
-- `@todo description`
-- `@version description`
-- `@yield [parameters] description`
-- `@yieldparam name [Types] description`
-- `@yieldreturn [Types] description`
+```ruby
+  # ## Header 2 comment
+  # This is a standard line
+  foo.bar()
 
-### Directive-Tags
-- `@!attribute [r | w | rw] attribute_name -> attribute docstring `
-- `@!group description`
-- `@!endgroup`
-- `@!macro [attach | new] optional_name -> [macro expansion data] `
-- `@!method method_signature(parameters) -> method docstring`
-- `@!parse [language] code`
-- `@!scope class | instance`
-- `@!visibility public | protected | private`
+  # - List **Item**
+  # - List Item
+  # - __List__ Item
+  #    - List Item
+```
+
+
+### Multi line comments
+Comment blocks are wrapped in `###` such as
+
+```ruby
+  ###
+  Foo Bar Comment Block
+  ###
+```
+
+Inside a comment block a preceding `#` is not required for each line but will be parsed out if it is the chosen style. Inside the comment block each line is parsed like a normal markdown line.
+
+
+### Markdown style
+Currently we are using [Github Flavored Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) rendered through [Marked](https://github.com/chjj/marked). The code is highlighted via [highlight.js](http://highlightjs.org/).
+
+
+### Tags
+
+- Section: `Description`
+  - @description
+
+- Section: `Access`
+  - @internal
+  - @private
+  - @protected
+  - @public
+  - @static
+
+- Section: `Special`
+  - @constructor
+  - @deconstructor
+
+- Section: `Type`
+  - @constant
+  - @method
+  - @module
+  - @package
+  - @property
+
+- Section: `Flags`
+  - @accessor
+  - @async
+  - @asychronous
+  - @getter
+  - @recursive
+  - @refactor
+  - @setter
+  - @defaultNoValue
+
+- Section: `Metadata`
+  - @alias
+  - @publishes
+  - @requests
+  - @subscribes
+  - @stype
+  - @defaultHasValue
+
+- Section: `Todo`
+  - @todo
+
+- Section: `Example`
+  - @example
+  - @examples
+  - @usage
+
+- Section: `Howto`
+  - @howto
+
+- Section: `Params`
+  - @param
+
+- Section: `Param`
+  - @params
+  - @param
+  - @parameters
+
+- Section: `Returns`
+  - @return
+  - @returns
+  - @throw
+  - @throws
