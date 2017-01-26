@@ -38,6 +38,26 @@ Currently we are using [Github Flavored Markdown](https://github.com/adam-p/mark
 
 
 ### Tags
+Tags can be used to denote a more structured documentation a la Jsdoc or yard. These tags will still be rendered into markdown with some cases having some text or structure added around the tags.
+
+```ruby
+  # Removes the filter by key from the pending query
+  #
+  # @public
+  # @method remove_filter
+  # @param {String} key property to filter against for each member
+  #
+  # @return {Hash} The full set of current filters
+  remove_filter: (key) ->
+    return if not key
+    filters = @get('filters') || {}
+    delete filters[key]
+    @set 'filters', filters
+    return filters
+
+```
+
+#### Tag Types
 
 - Section: `Description`
   - @description
