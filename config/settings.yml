@@ -27,7 +27,7 @@ modules:
     repositories:
       - name: ethinkspace-client
         url: 'https://github.com/sixthedge/ethinkspace-client'
-        branch: master
+        branch: feature/pe-builder-comments
         options:
           out:     "-o ../../api/ethinkspace-client"
           glob:    "./**/*.coffee README.md"

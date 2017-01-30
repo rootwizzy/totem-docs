@@ -1,44 +1,110 @@
 <!DOCTYPE html><html lang="en"><head><title>totem-engines/addon/resolver</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="totem-engines/addon/resolver"><meta name="groc-project-path" content="totem-engines/addon/resolver.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/master/totem-engines/addon/resolver.coffee">totem-engines/addon/resolver.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember    from <span class="hljs-string">'ember'</span>
-import Resolver from <span class="hljs-string">'ember-engines/resolver'</span>
+import util     from <span class="hljs-string">'totem/util'</span>
+import Resolver from <span class="hljs-string">'ember-engines/resolver'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A new instanace of this resolver class is created for each engine instance.
+An engine&#39;s module-prefix is defined in the engine&#39;s &#39;modulePrefix&#39; value in &#39;config/environment.js&#39;
+which is currently the same as the package name (e.g. thinkspace-phase)</p>
+<p>There are three custom naming conventions to set the pn.root:</p>
+<ul>
+<li>For HELPERS, replace &#39;__&#39; with &#39;--&#39; (hyphens)</li>
+<li>[<strong>|app</strong>]               #=&gt; main application                       e.g. component &#39;<strong>layout&#39; or component &#39;app</strong>layout&#39;</li>
+<li>[parent<strong>]               #=&gt; parent owner of the current pn.root    e.g. component &#39;parent</strong>layout&#39;</li>
+<li>[engine-module-prefix<strong>] #=&gt; pn.root or an ANCESTOR of pn.root      e.g. component &#39;thinkspace-phase</strong>layout&#39;</li>
+</ul>
+<p>Can NOT use an engine-module-prefix in a current-engine template for an engine &#39;mounted&#39; by the current-engine (e.g. a child engine).
+Can NOT use an engine-module-prefix for an engine that is NOT already &#39;mounted&#39;.
+CAN use an engine-module-prefix for an &#39;ancestor&#39; engine of the current-engine (e.g. up the current-engine owner mount-chain).</p>
+<p>Notes:</p>
+<ol>
+<li>If want to reference an &#39;app&#39; component, use [<strong>|app</strong>].  Do not use the app&#39;s module-prefix (e.g. orchid__) since may change.</li>
+<li>An engine-module-prefix can be the underscored value if desired (e.g. thinkspace-phase<strong>layout or thinkspace_phase</strong>layout).</li>
+</ol>
+<p>CAUTION: A component in another engine is still being resolved the context of the CURRENT-engine.  Therefore when referencing another engine,</p>
+<ul>
+<li>any template &#39;link-to-external&#39; routes must be defined in the current-engine</li>
+<li>another engine&#39;s template that calls components or partials must use &#39;<strong>&#39; (e.g. main app) or &#39;engine-module-prefix</strong>&#39;
+since is in the current-engine&#39;s context.<ul>
+<li>One technique is to use the engine&#39;s own module-prefix in its templates for components/templates (e.g. the module-prefix of engine itself).</li>
+<li>Another technique is to use &#39;parent__&#39; if it will always be used by a mounted child engine (but cannot be used by the engine itself).</li>
+</ul>
+</li>
+</ul></div></div><div class="code"><div class="wrapper">export default Resolver.extend
 
-export default Resolver.extend
+  <span class="hljs-attribute">name_variables</span>: [<span class="hljs-string">'fullName'</span>, <span class="hljs-string">'fullNameWithoutType'</span>, <span class="hljs-string">'name'</span>]
 
-  <span class="hljs-attribute">resolveTemplate</span>: <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span>
-    <span class="hljs-property">@set_name</span>(pn)
+  <span class="hljs-attribute">engine_owners</span>: {}
+
+  <span class="hljs-attribute">resolveTemplate</span>: <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span> <span class="hljs-comment"># 'resolveTemplate' does not call 'resolveOther' so need to process separately.</span>
+    <span class="hljs-property">@set_pn_root</span>(pn)
     <span class="hljs-property">@_super</span>(pn)
 
   <span class="hljs-attribute">resolveOther</span>: <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span>
-    <span class="hljs-keyword">if</span> pn.type == <span class="hljs-string">'helper'</span>
-      <span class="hljs-property">@set_helper</span>(pn)
-    <span class="hljs-keyword">else</span>
-      <span class="hljs-property">@underscore_pn</span>(pn)
-      <span class="hljs-property">@set_name</span>(pn)
-    <span class="hljs-property">@_super</span>(pn)
+    <span class="hljs-property">@underscore_pn</span>(pn) <span class="hljs-keyword">unless</span> pn.type == <span class="hljs-string">'helper'</span>
+    <span class="hljs-property">@set_pn_root</span>(pn)
+    <span class="hljs-property">@_super</span>(pn)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="set-owner-in-parsed-name-object-pn">Set Owner in Parsed Name Object (pn).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">set_pn_root</span>: <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(pn.root)
+    <span class="hljs-keyword">switch</span> pn.type
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'helper'</span>  <span class="hljs-keyword">then</span> <span class="hljs-property">@set_owner</span>(pn, <span class="hljs-string">'--'</span>)
+      <span class="hljs-keyword">else</span>                <span class="hljs-property">@set_owner</span>(pn, <span class="hljs-string">'__'</span>)
 
-  <span class="hljs-attribute">set_helper</span>: <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> pn.name.match(<span class="hljs-string">'--'</span>)
-    <span class="hljs-property">@remove_helper_identifier</span>(pn)
-    <span class="hljs-property">@set_app_as_owner</span>(pn)
+  <span class="hljs-attribute">set_owner</span>: <span class="hljs-function"><span class="hljs-params">(pn, match)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> pn.name.match(match)
+    regex    = RegExp <span class="hljs-keyword">if</span> pn.name.match(<span class="hljs-string">"^components/"</span>) <span class="hljs-keyword">then</span> <span class="hljs-string">"^components/(.*)<span class="hljs-subst">#{match}</span>"</span> <span class="hljs-keyword">else</span> <span class="hljs-string">"^(.*)<span class="hljs-subst">#{match}</span>"</span>
+    pn_match = pn.name.match(regex)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(pn_match)
+    key         = pn_match[<span class="hljs-number">1</span>]
+    key_replace = <span class="hljs-string">"<span class="hljs-subst">#{key}</span><span class="hljs-subst">#{match}</span>"</span>
+    <span class="hljs-property">@replace_pn</span>(pn, key_replace)
+    key   = <span class="hljs-string">'app'</span> <span class="hljs-keyword">if</span> key == <span class="hljs-string">''</span>
+    key   = <span class="hljs-property">@underscore_string</span>(key)
+    owner = (<span class="hljs-property">@engine_owners</span>[key] ?= <span class="hljs-property">@get_key_owner</span>(pn, key))
+    <span class="hljs-property">@error_resolve</span> <span class="hljs-string">"No owner found for key '<span class="hljs-subst">#{key}</span>'.\n"</span>, pn, match, pn_match <span class="hljs-keyword">if</span> ember.isBlank(owner)
+    prefix = <span class="hljs-property">@get_module_prefix</span>(owner)
+    <span class="hljs-property">@error_resolve</span> <span class="hljs-string">"No prefix found for key '<span class="hljs-subst">#{key}</span>'.\n"</span>, pn, match, pn_match <span class="hljs-keyword">if</span> ember.isBlank(prefix)
+    <span class="hljs-property">@set_new_owner</span>(pn, owner, prefix)
 
-  <span class="hljs-attribute">set_name</span>: <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> pn.name.match(<span class="hljs-string">'__'</span>)
-    <span class="hljs-property">@remove_app_identifier</span>(pn)
-    <span class="hljs-property">@set_app_as_owner</span>(pn)
+  <span class="hljs-attribute">get_key_owner</span>: <span class="hljs-function"><span class="hljs-params">(pn, key)</span> -&gt;</span>
+    <span class="hljs-keyword">switch</span> key
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'app'</span>     <span class="hljs-keyword">then</span> <span class="hljs-property">@get_app_owner</span>(pn)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'parent'</span>  <span class="hljs-keyword">then</span> <span class="hljs-property">@get_parent_owner</span>(pn)
+      <span class="hljs-keyword">else</span>                <span class="hljs-property">@get_engine_owner</span>(pn, key)
 
-  <span class="hljs-attribute">set_app_as_owner</span>: <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span>
-    engine     = <span class="hljs-property">@get_owner</span>(pn.root)
-    router     = engine.lookup(<span class="hljs-string">'router:main'</span>)
-    owner      = <span class="hljs-property">@get_owner</span>(router)
-    mod_prefix = owner.application.modulePrefix
-    pn.root    = owner
-    pn.prefix  = mod_prefix
+  <span class="hljs-attribute">get_app_owner</span>: <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span>
+    root   = <span class="hljs-property">@get_owner</span>(pn.root)
+    router = root.lookup(<span class="hljs-string">'router:main'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(router)
+    <span class="hljs-property">@get_owner</span>(router)
 
-  <span class="hljs-attribute">get_owner</span>: <span class="hljs-function"><span class="hljs-params">(root)</span> -&gt;</span> Ember.getOwner(root)
+  <span class="hljs-attribute">get_parent_owner</span>: <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span>
+    <span class="hljs-property">@get_owner</span>(pn.root)
 
-  <span class="hljs-attribute">remove_app_identifier</span>:    <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span> pn[prop] = pn[prop].replace(<span class="hljs-string">'__'</span>, <span class="hljs-string">''</span>)   <span class="hljs-keyword">for</span> prop <span class="hljs-keyword">in</span> <span class="hljs-property">@get_name_variables</span>()
-  <span class="hljs-attribute">remove_helper_identifier</span>: <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span> pn[prop] = pn[prop].replace(<span class="hljs-string">'--'</span>, <span class="hljs-string">''</span>)   <span class="hljs-keyword">for</span> prop <span class="hljs-keyword">in</span> <span class="hljs-property">@get_name_variables</span>()
-  <span class="hljs-attribute">underscore_pn</span>:            <span class="hljs-function"><span class="hljs-params">(pn)</span> -&gt;</span> pn[prop] = <span class="hljs-property">@underscore_string</span>(pn[prop]) <span class="hljs-keyword">for</span> prop <span class="hljs-keyword">in</span> <span class="hljs-property">@get_name_variables</span>()
+  <span class="hljs-attribute">get_engine_owner</span>: <span class="hljs-function"><span class="hljs-params">(pn, key)</span> -&gt;</span>
+    mod_prefix = key.dasherize()
+    <span class="hljs-property">@find_ancestor_engine</span>(pn.root, mod_prefix)
 
-  <span class="hljs-attribute">get_name_variables</span>: <span class="hljs-function">-&gt;</span> [<span class="hljs-string">'fullName'</span>, <span class="hljs-string">'fullNameWithoutType'</span>, <span class="hljs-string">'name'</span>]
+  <span class="hljs-attribute">find_ancestor_engine</span>: <span class="hljs-function"><span class="hljs-params">(owner, mod_prefix)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> owner
+    <span class="hljs-keyword">return</span> owner <span class="hljs-keyword">if</span> mod_prefix == <span class="hljs-property">@get_module_prefix</span>(owner)
+    parent = <span class="hljs-property">@get_owner</span>(owner)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> parent
+    <span class="hljs-property">@find_ancestor_engine</span>(parent, mod_prefix)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_owner</span>: <span class="hljs-function"><span class="hljs-params">(current)</span>       -&gt;</span> ember.getOwner(current)
+  <span class="hljs-attribute">get_module_prefix</span>: <span class="hljs-function"><span class="hljs-params">(owner)</span> -&gt;</span> owner <span class="hljs-keyword">and</span> (owner.modulePrefix <span class="hljs-keyword">or</span> owner.application?.modulePrefix <span class="hljs-keyword">or</span> owner.base?.modulePrefix)
 
-  <span class="hljs-attribute">underscore_string</span>: <span class="hljs-function"><span class="hljs-params">(val)</span> -&gt;</span> (val <span class="hljs-keyword">and</span> ember.String.underscore(val)) <span class="hljs-keyword">or</span> <span class="hljs-string">''</span></div></div></div></div></body></html>
+  <span class="hljs-attribute">set_new_owner</span>: <span class="hljs-function"><span class="hljs-params">(pn, root, prefix)</span> -&gt;</span>
+    pn.root   = root
+    pn.prefix = prefix
+
+  <span class="hljs-attribute">replace_pn</span>: <span class="hljs-function"><span class="hljs-params">(pn, match)</span> -&gt;</span> pn[prop] = pn[prop].replace(match, <span class="hljs-string">''</span>)   <span class="hljs-keyword">for</span> prop <span class="hljs-keyword">in</span> <span class="hljs-property">@name_variables</span>
+  <span class="hljs-attribute">underscore_pn</span>: <span class="hljs-function"><span class="hljs-params">(pn)</span>     -&gt;</span> pn[prop] = <span class="hljs-property">@underscore_string</span>(pn[prop])  <span class="hljs-keyword">for</span> prop <span class="hljs-keyword">in</span> <span class="hljs-property">@name_variables</span>
+
+  <span class="hljs-attribute">underscore_string</span>: <span class="hljs-function"><span class="hljs-params">(val)</span> -&gt;</span> (val <span class="hljs-keyword">and</span> ember.String.underscore(val)) <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">error_resolve</span>: <span class="hljs-function"><span class="hljs-params">(args...)</span> -&gt;</span> util.error @, args..., @
+
+  <span class="hljs-attribute">debug_pn</span>: <span class="hljs-function"><span class="hljs-params">(pn, title=<span class="hljs-string">''</span>)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.warn title
+    keys = util.hash_keys(pn).sort()
+    <span class="hljs-built_in">console</span>.info key, <span class="hljs-string">' -&gt; '</span>, pn[key] <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys</div></div></div></div></body></html>
