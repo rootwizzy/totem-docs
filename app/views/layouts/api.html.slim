@@ -13,6 +13,5 @@ html
 
 
   body
-    / = render 'totem/lodestar/navigation/top_nav'
     = yield 
   = content_tag :div, class: "settings", data: {settings: Settings, version: Gem.loaded_specs['totem-lodestar'].version.version} do

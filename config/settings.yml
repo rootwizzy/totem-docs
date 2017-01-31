@@ -33,15 +33,17 @@ modules:
           glob:    "./**/*.coffee README.md"
           project: "-p ethinkspace-client"
           url:     "--repository-url 'https://github.com/sixthedge/ethinkspace-client'"
+          branch: "-b feature/pe-builder-comments"
 
       - name: ethinkspace-api
         url: 'https://github.com/sixthedge/ethinkspace-api'
-        branch: master
+        branch: development
         options:
           out: "-o ../../api/ethinkspace-api"
           glob: "./**/**/*.rb README.md"
           project: "-p ethinkspace-api"
           url:     "--repository-url 'https://github.com/sixthedge/ethinkspace-api'"
+          branch: "-b development"
 
       - name: etotem-client
         url: 'https://github.com/sixthedge/etotem-client'
@@ -51,15 +53,17 @@ modules:
           glob:    "./**/*.coffee README.md"
           project: "-p etotem-client"
           url:     "--repository-url 'https://github.com/sixthedge/etotem-client'"
+          branch: "-b development"
 
       - name: etotem-api
         url: 'https://github.com/sixthedge/etotem-api'
-        branch: master
+        branch: development
         options:
           out: "-o ../../api/etotem-api"
           glob: "./**/**/*.rb README.md"
           project: "-p etotem-api"
           url:     "--repository-url 'https://github.com/sixthedge/etotem-api'"
+          branch: "-b development"
 
       # - name: totem-lodestar
       #   url: 'https://github.com/sixthedge/totem-lodestar'
