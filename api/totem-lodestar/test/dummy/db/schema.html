@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="en"><head><title>test/dummy/db/schema</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="test/dummy/db/schema"><meta name="groc-project-path" content="test/dummy/db/schema.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/test/dummy/db/schema.rb">test/dummy/db/schema.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>This file is auto-generated from the current state of the database. Instead
+of editing this file, please use the migrations feature of Active Record to
+incrementally modify your database, and then regenerate this schema definition.</p>
+<p>Note that this schema.rb definition is the authoritative source for your
+database schema. If you need to create the application database on another
+system, you should be using db:schema:load, not running all the migrations
+from scratch. The latter is a flawed and unsustainable approach (the more migrations
+you&#39;ll amass, the slower it&#39;ll run and the greater likelihood for issues).</p>
+<p>It&#39;s strongly recommended that you check this file into your version control system.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-constant">ActiveRecord::Schema</span>.define(<span class="hljs-symbol">version:</span> <span class="hljs-number">3</span>) <span class="hljs-keyword">do</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>These are extensions that must be enabled in order to support this database</p></div></div><div class="code"><div class="wrapper">  enable_extension <span class="hljs-string">"plpgsql"</span>
+
+  create_table <span class="hljs-string">"totem_lodestar_documents"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-symbol">:cascade</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.text     <span class="hljs-string">"body"</span>
+    t.string   <span class="hljs-string">"slug"</span>
+    t.integer  <span class="hljs-string">"order"</span>
+    t.integer  <span class="hljs-string">"section_id"</span>
+    t.integer  <span class="hljs-string">"version_id"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>, <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>, <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.index [<span class="hljs-string">"section_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"index_totem_lodestar_documents_on_section_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+    t.index [<span class="hljs-string">"version_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"index_totem_lodestar_documents_on_version_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"totem_lodestar_sections"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-symbol">:cascade</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.string   <span class="hljs-string">"slug"</span>
+    t.integer  <span class="hljs-string">"order"</span>
+    t.integer  <span class="hljs-string">"parent_id"</span>
+    t.integer  <span class="hljs-string">"version_id"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>, <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>, <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.index [<span class="hljs-string">"parent_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"index_totem_lodestar_sections_on_parent_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+    t.index [<span class="hljs-string">"version_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"index_totem_lodestar_sections_on_version_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"totem_lodestar_versions"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-symbol">:cascade</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.string   <span class="hljs-string">"slug"</span>
+    t.text     <span class="hljs-string">"body"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>, <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>, <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

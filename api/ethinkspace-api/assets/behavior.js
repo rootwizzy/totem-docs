@@ -16,61 +16,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "commentsOnly": true,
               "name": "Markdown"
             },
-            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/README.md",
+            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/README.md",
             "projectPath": "README.md",
             "targetPath": "index",
             "pageTitle": "index",
-            "firstHeader": {
-              "type": "heading",
-              "data": {
-                "level": 1,
-                "title": "ethinkspace-api",
-                "slug": "ethinkspace-api",
-                "isFileHeader": true
-              },
-              "depth": 1,
-              "children": [
-                {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "Building",
-                    "slug": "building"
-                  },
-                  "depth": 2
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "Contributing",
-                    "slug": "contributing"
-                  },
-                  "depth": 2
-                }
-              ]
-            },
-            "title": "ethinkspace-api"
+            "title": "index"
           },
           "depth": 1,
-          "outline": [
-            {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "Building",
-                "slug": "building"
-              },
-              "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "Contributing",
-                "slug": "contributing"
-              },
-              "depth": 2
-            }
-          ]
+          "outline": []
         }, {
           "type": "folder",
           "data": {
@@ -98,7 +51,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/migrate/assignments/parse_xml.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/migrate/assignments/parse_xml.rb",
                     "projectPath": "migrate/assignments/parse_xml.rb",
                     "targetPath": "migrate/assignments/parse_xml",
                     "pageTitle": "migrate/assignments/parse_xml",
@@ -442,7 +395,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/migrate/diagnostic_paths_to_indented_lists/process.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/migrate/diagnostic_paths_to_indented_lists/process.rb",
                     "projectPath": "migrate/diagnostic_paths_to_indented_lists/process.rb",
                     "targetPath": "migrate/diagnostic_paths_to_indented_lists/process",
                     "pageTitle": "migrate/diagnostic_paths_to_indented_lists/process",
@@ -689,7 +642,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/migrate/to_components/helper.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/migrate/to_components/helper.rb",
                     "projectPath": "migrate/to_components/helper.rb",
                     "targetPath": "migrate/to_components/helper",
                     "pageTitle": "migrate/to_components/helper",
@@ -903,7 +856,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-artifact/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-artifact/config/routes.rb",
                     "projectPath": "thinkspace-artifact/config/routes.rb",
                     "targetPath": "thinkspace-artifact/config/routes",
                     "pageTitle": "thinkspace-artifact/config/routes",
@@ -932,7 +885,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-artifact/lib/thinkspace-artifact.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-artifact/lib/thinkspace-artifact.rb",
                     "projectPath": "thinkspace-artifact/lib/thinkspace-artifact.rb",
                     "targetPath": "thinkspace-artifact/lib/thinkspace-artifact",
                     "pageTitle": "thinkspace-artifact/lib/thinkspace-artifact",
@@ -971,7 +924,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-authorization/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-authorization/config/routes.rb",
                     "projectPath": "thinkspace-authorization/config/routes.rb",
                     "targetPath": "thinkspace-authorization/config/routes",
                     "pageTitle": "thinkspace-authorization/config/routes",
@@ -1000,7 +953,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-authorization/lib/thinkspace-authorization.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-authorization/lib/thinkspace-authorization.rb",
                     "projectPath": "thinkspace-authorization/lib/thinkspace-authorization.rb",
                     "targetPath": "thinkspace-authorization/lib/thinkspace-authorization",
                     "pageTitle": "thinkspace-authorization/lib/thinkspace-authorization",
@@ -1039,7 +992,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-builder/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-builder/config/routes.rb",
                     "projectPath": "thinkspace-builder/config/routes.rb",
                     "targetPath": "thinkspace-builder/config/routes",
                     "pageTitle": "thinkspace-builder/config/routes",
@@ -1078,7 +1031,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-builder/lib/thinkspace-builder.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-builder/lib/thinkspace-builder.rb",
                     "projectPath": "thinkspace-builder/lib/thinkspace-builder.rb",
                     "targetPath": "thinkspace-builder/lib/thinkspace-builder",
                     "pageTitle": "thinkspace-builder/lib/thinkspace-builder",
@@ -1117,7 +1070,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-casespace/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-casespace/config/routes.rb",
                     "projectPath": "thinkspace-casespace/config/routes.rb",
                     "targetPath": "thinkspace-casespace/config/routes",
                     "pageTitle": "thinkspace-casespace/config/routes",
@@ -1146,7 +1099,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-casespace/db/seeds.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-casespace/db/seeds.rb",
                     "projectPath": "thinkspace-casespace/db/seeds.rb",
                     "targetPath": "thinkspace-casespace/db/seeds",
                     "pageTitle": "thinkspace-casespace/db/seeds",
@@ -1175,7 +1128,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-casespace/lib/thinkspace-casespace.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-casespace/lib/thinkspace-casespace.rb",
                     "projectPath": "thinkspace-casespace/lib/thinkspace-casespace.rb",
                     "targetPath": "thinkspace-casespace/lib/thinkspace-casespace",
                     "pageTitle": "thinkspace-casespace/lib/thinkspace-casespace",
@@ -1214,7 +1167,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-common/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-common/config/routes.rb",
                     "projectPath": "thinkspace-common/config/routes.rb",
                     "targetPath": "thinkspace-common/config/routes",
                     "pageTitle": "thinkspace-common/config/routes",
@@ -1243,7 +1196,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-common/lib/thinkspace-common.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-common/lib/thinkspace-common.rb",
                     "projectPath": "thinkspace-common/lib/thinkspace-common.rb",
                     "targetPath": "thinkspace-common/lib/thinkspace-common",
                     "pageTitle": "thinkspace-common/lib/thinkspace-common",
@@ -1282,7 +1235,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-diagnostic-path-viewer/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-diagnostic-path-viewer/config/routes.rb",
                     "projectPath": "thinkspace-diagnostic-path-viewer/config/routes.rb",
                     "targetPath": "thinkspace-diagnostic-path-viewer/config/routes",
                     "pageTitle": "thinkspace-diagnostic-path-viewer/config/routes",
@@ -1311,7 +1264,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-diagnostic-path-viewer/lib/thinkspace-diagnostic-path-viewer.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-diagnostic-path-viewer/lib/thinkspace-diagnostic-path-viewer.rb",
                     "projectPath": "thinkspace-diagnostic-path-viewer/lib/thinkspace-diagnostic-path-viewer.rb",
                     "targetPath": "thinkspace-diagnostic-path-viewer/lib/thinkspace-diagnostic-path-viewer",
                     "pageTitle": "thinkspace-diagnostic-path-viewer/lib/thinkspace-diagnostic-path-viewer",
@@ -1350,7 +1303,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-diagnostic-path/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-diagnostic-path/config/routes.rb",
                     "projectPath": "thinkspace-diagnostic-path/config/routes.rb",
                     "targetPath": "thinkspace-diagnostic-path/config/routes",
                     "pageTitle": "thinkspace-diagnostic-path/config/routes",
@@ -1379,7 +1332,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-diagnostic-path/lib/thinkspace-diagnostic-path.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-diagnostic-path/lib/thinkspace-diagnostic-path.rb",
                     "projectPath": "thinkspace-diagnostic-path/lib/thinkspace-diagnostic-path.rb",
                     "targetPath": "thinkspace-diagnostic-path/lib/thinkspace-diagnostic-path",
                     "pageTitle": "thinkspace-diagnostic-path/lib/thinkspace-diagnostic-path",
@@ -1418,7 +1371,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-html/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-html/config/routes.rb",
                     "projectPath": "thinkspace-html/config/routes.rb",
                     "targetPath": "thinkspace-html/config/routes",
                     "pageTitle": "thinkspace-html/config/routes",
@@ -1447,7 +1400,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-html/lib/thinkspace-html.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-html/lib/thinkspace-html.rb",
                     "projectPath": "thinkspace-html/lib/thinkspace-html.rb",
                     "targetPath": "thinkspace-html/lib/thinkspace-html",
                     "pageTitle": "thinkspace-html/lib/thinkspace-html",
@@ -1486,7 +1439,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-importer/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-importer/config/routes.rb",
                     "projectPath": "thinkspace-importer/config/routes.rb",
                     "targetPath": "thinkspace-importer/config/routes",
                     "pageTitle": "thinkspace-importer/config/routes",
@@ -1515,7 +1468,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-importer/lib/thinkspace-importer.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-importer/lib/thinkspace-importer.rb",
                     "projectPath": "thinkspace-importer/lib/thinkspace-importer.rb",
                     "targetPath": "thinkspace-importer/lib/thinkspace-importer",
                     "pageTitle": "thinkspace-importer/lib/thinkspace-importer",
@@ -1554,7 +1507,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-indented-list/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-indented-list/config/routes.rb",
                     "projectPath": "thinkspace-indented-list/config/routes.rb",
                     "targetPath": "thinkspace-indented-list/config/routes",
                     "pageTitle": "thinkspace-indented-list/config/routes",
@@ -1583,7 +1536,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-indented-list/lib/thinkspace-indented-list.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-indented-list/lib/thinkspace-indented-list.rb",
                     "projectPath": "thinkspace-indented-list/lib/thinkspace-indented-list.rb",
                     "targetPath": "thinkspace-indented-list/lib/thinkspace-indented-list",
                     "pageTitle": "thinkspace-indented-list/lib/thinkspace-indented-list",
@@ -1622,7 +1575,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-input-element/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-input-element/config/routes.rb",
                     "projectPath": "thinkspace-input-element/config/routes.rb",
                     "targetPath": "thinkspace-input-element/config/routes",
                     "pageTitle": "thinkspace-input-element/config/routes",
@@ -1651,7 +1604,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-input-element/lib/thinkspace-input-element.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-input-element/lib/thinkspace-input-element.rb",
                     "projectPath": "thinkspace-input-element/lib/thinkspace-input-element.rb",
                     "targetPath": "thinkspace-input-element/lib/thinkspace-input-element",
                     "pageTitle": "thinkspace-input-element/lib/thinkspace-input-element",
@@ -1690,7 +1643,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-lab/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-lab/config/routes.rb",
                     "projectPath": "thinkspace-lab/config/routes.rb",
                     "targetPath": "thinkspace-lab/config/routes",
                     "pageTitle": "thinkspace-lab/config/routes",
@@ -1719,7 +1672,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-lab/lib/thinkspace-lab.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-lab/lib/thinkspace-lab.rb",
                     "projectPath": "thinkspace-lab/lib/thinkspace-lab.rb",
                     "targetPath": "thinkspace-lab/lib/thinkspace-lab",
                     "pageTitle": "thinkspace-lab/lib/thinkspace-lab",
@@ -1758,7 +1711,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-markup/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-markup/config/routes.rb",
                     "projectPath": "thinkspace-markup/config/routes.rb",
                     "targetPath": "thinkspace-markup/config/routes",
                     "pageTitle": "thinkspace-markup/config/routes",
@@ -1787,7 +1740,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-markup/lib/thinkspace-markup.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-markup/lib/thinkspace-markup.rb",
                     "projectPath": "thinkspace-markup/lib/thinkspace-markup.rb",
                     "targetPath": "thinkspace-markup/lib/thinkspace-markup",
                     "pageTitle": "thinkspace-markup/lib/thinkspace-markup",
@@ -1826,7 +1779,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-observation-list/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-observation-list/config/routes.rb",
                     "projectPath": "thinkspace-observation-list/config/routes.rb",
                     "targetPath": "thinkspace-observation-list/config/routes",
                     "pageTitle": "thinkspace-observation-list/config/routes",
@@ -1855,7 +1808,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-observation-list/lib/thinkspace-observation-list.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-observation-list/lib/thinkspace-observation-list.rb",
                     "projectPath": "thinkspace-observation-list/lib/thinkspace-observation-list.rb",
                     "targetPath": "thinkspace-observation-list/lib/thinkspace-observation-list",
                     "pageTitle": "thinkspace-observation-list/lib/thinkspace-observation-list",
@@ -1894,7 +1847,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-peer-assessment/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-peer-assessment/config/routes.rb",
                     "projectPath": "thinkspace-peer-assessment/config/routes.rb",
                     "targetPath": "thinkspace-peer-assessment/config/routes",
                     "pageTitle": "thinkspace-peer-assessment/config/routes",
@@ -1923,7 +1876,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-peer-assessment/lib/thinkspace-peer-assessment.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-peer-assessment/lib/thinkspace-peer-assessment.rb",
                     "projectPath": "thinkspace-peer-assessment/lib/thinkspace-peer-assessment.rb",
                     "targetPath": "thinkspace-peer-assessment/lib/thinkspace-peer-assessment",
                     "pageTitle": "thinkspace-peer-assessment/lib/thinkspace-peer-assessment",
@@ -1962,7 +1915,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-pub-sub/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-pub-sub/config/routes.rb",
                     "projectPath": "thinkspace-pub-sub/config/routes.rb",
                     "targetPath": "thinkspace-pub-sub/config/routes",
                     "pageTitle": "thinkspace-pub-sub/config/routes",
@@ -1991,7 +1944,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-pub-sub/lib/thinkspace-pub-sub.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-pub-sub/lib/thinkspace-pub-sub.rb",
                     "projectPath": "thinkspace-pub-sub/lib/thinkspace-pub-sub.rb",
                     "targetPath": "thinkspace-pub-sub/lib/thinkspace-pub-sub",
                     "pageTitle": "thinkspace-pub-sub/lib/thinkspace-pub-sub",
@@ -2030,7 +1983,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-readiness-assurance/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-readiness-assurance/config/routes.rb",
                     "projectPath": "thinkspace-readiness-assurance/config/routes.rb",
                     "targetPath": "thinkspace-readiness-assurance/config/routes",
                     "pageTitle": "thinkspace-readiness-assurance/config/routes",
@@ -2059,79 +2012,11 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-readiness-assurance/lib/thinkspace-readiness-assurance.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-readiness-assurance/lib/thinkspace-readiness-assurance.rb",
                     "projectPath": "thinkspace-readiness-assurance/lib/thinkspace-readiness-assurance.rb",
                     "targetPath": "thinkspace-readiness-assurance/lib/thinkspace-readiness-assurance",
                     "pageTitle": "thinkspace-readiness-assurance/lib/thinkspace-readiness-assurance",
                     "title": "thinkspace-readiness-assurance"
-                  },
-                  "depth": 3,
-                  "outline": []
-                }
-              ]
-            }
-          ]
-        }, {
-          "type": "folder",
-          "data": {
-            "path": "thinkspace-report",
-            "title": "thinkspace-report"
-          },
-          "depth": 1,
-          "children": [
-            {
-              "type": "folder",
-              "data": {
-                "path": "thinkspace-report/config",
-                "title": "config"
-              },
-              "depth": 2,
-              "children": [
-                {
-                  "type": "file",
-                  "data": {
-                    "language": {
-                      "nameMatchers": [".rb", ".ru", ".gemspec"],
-                      "pygmentsLexer": "ruby",
-                      "singleLineComment": ["#"],
-                      "ignorePrefix": "}",
-                      "foldPrefix": "^",
-                      "name": "Ruby"
-                    },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-report/config/routes.rb",
-                    "projectPath": "thinkspace-report/config/routes.rb",
-                    "targetPath": "thinkspace-report/config/routes",
-                    "pageTitle": "thinkspace-report/config/routes",
-                    "title": "routes"
-                  },
-                  "depth": 3,
-                  "outline": []
-                }
-              ]
-            }, {
-              "type": "folder",
-              "data": {
-                "path": "thinkspace-report/lib",
-                "title": "lib"
-              },
-              "depth": 2,
-              "children": [
-                {
-                  "type": "file",
-                  "data": {
-                    "language": {
-                      "nameMatchers": [".rb", ".ru", ".gemspec"],
-                      "pygmentsLexer": "ruby",
-                      "singleLineComment": ["#"],
-                      "ignorePrefix": "}",
-                      "foldPrefix": "^",
-                      "name": "Ruby"
-                    },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-report/lib/thinkspace-report.rb",
-                    "projectPath": "thinkspace-report/lib/thinkspace-report.rb",
-                    "targetPath": "thinkspace-report/lib/thinkspace-report",
-                    "pageTitle": "thinkspace-report/lib/thinkspace-report",
-                    "title": "thinkspace-report"
                   },
                   "depth": 3,
                   "outline": []
@@ -2166,7 +2051,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-resource/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-resource/config/routes.rb",
                     "projectPath": "thinkspace-resource/config/routes.rb",
                     "targetPath": "thinkspace-resource/config/routes",
                     "pageTitle": "thinkspace-resource/config/routes",
@@ -2195,7 +2080,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-resource/lib/thinkspace-resource.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-resource/lib/thinkspace-resource.rb",
                     "projectPath": "thinkspace-resource/lib/thinkspace-resource.rb",
                     "targetPath": "thinkspace-resource/lib/thinkspace-resource",
                     "pageTitle": "thinkspace-resource/lib/thinkspace-resource",
@@ -2234,7 +2119,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-simulation/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-simulation/config/routes.rb",
                     "projectPath": "thinkspace-simulation/config/routes.rb",
                     "targetPath": "thinkspace-simulation/config/routes",
                     "pageTitle": "thinkspace-simulation/config/routes",
@@ -2263,7 +2148,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-simulation/lib/thinkspace-simulation.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-simulation/lib/thinkspace-simulation.rb",
                     "projectPath": "thinkspace-simulation/lib/thinkspace-simulation.rb",
                     "targetPath": "thinkspace-simulation/lib/thinkspace-simulation",
                     "pageTitle": "thinkspace-simulation/lib/thinkspace-simulation",
@@ -2302,7 +2187,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-team/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-team/config/routes.rb",
                     "projectPath": "thinkspace-team/config/routes.rb",
                     "targetPath": "thinkspace-team/config/routes",
                     "pageTitle": "thinkspace-team/config/routes",
@@ -2331,7 +2216,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-team/lib/thinkspace-team.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-team/lib/thinkspace-team.rb",
                     "projectPath": "thinkspace-team/lib/thinkspace-team.rb",
                     "targetPath": "thinkspace-team/lib/thinkspace-team",
                     "pageTitle": "thinkspace-team/lib/thinkspace-team",
@@ -2370,7 +2255,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-weather-forecaster/config/routes.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-weather-forecaster/config/routes.rb",
                     "projectPath": "thinkspace-weather-forecaster/config/routes.rb",
                     "targetPath": "thinkspace-weather-forecaster/config/routes",
                     "pageTitle": "thinkspace-weather-forecaster/config/routes",
@@ -2399,7 +2284,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "Ruby"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170131-53294-1iqzrrq/ethinkspace-api/thinkspace-weather-forecaster/lib/thinkspace-weather-forecaster.rb",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170204-16092-1lr1f6r/ethinkspace-api/thinkspace-weather-forecaster/lib/thinkspace-weather-forecaster.rb",
                     "projectPath": "thinkspace-weather-forecaster/lib/thinkspace-weather-forecaster.rb",
                     "targetPath": "thinkspace-weather-forecaster/lib/thinkspace-weather-forecaster",
                     "pageTitle": "thinkspace-weather-forecaster/lib/thinkspace-weather-forecaster",
@@ -2662,7 +2547,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
     discloser = null;
     path = '/api/' + window.TotemLodestar._modules.api.get_cur_repo() + "/";
     if (metaInfo.relativeRoot) {
-      path += /(\.\.\/){1,}([a-z-\/_]*.html)/g.exec(metaInfo.relativeRoot + node.data.targetPath + ".html")[2];
+      path += /(\.\.\/){1,}([a-z0-9-\/_]*.html)/g.exec(metaInfo.relativeRoot + node.data.targetPath + ".html")[2];
     } else {
       path += node.data.targetPath + ".html";
     }

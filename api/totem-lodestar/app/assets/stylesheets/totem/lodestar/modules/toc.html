@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><title>app/assets/stylesheets/totem/lodestar/modules/toc</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="app/assets/stylesheets/totem/lodestar/modules/toc"><meta name="groc-project-path" content="app/assets/stylesheets/totem/lodestar/modules/toc.scss"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/app/assets/stylesheets/totem/lodestar/modules/toc.scss">app/assets/stylesheets/totem/lodestar/modules/toc.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.toc</span> {
+  <span class="hljs-attribute">position</span><span class="hljs-value">: sticky;</span>
+  <span class="hljs-attribute">position</span><span class="hljs-value">: -webkit-sticky;</span>
+  <span class="hljs-attribute">top</span><span class="hljs-value">:      -<span class="hljs-number">1px</span>;</span>
+
+  <span class="hljs-class">.toc_header</span> {
+    <span class="hljs-attribute">color</span><span class="hljs-value">:          <span class="hljs-variable">$toc_header-color</span>;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">:    <span class="hljs-variable">$toc_header-weight</span>;</span>
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">:      <span class="hljs-variable">$toc_header-size</span>;</span>
+    <span class="hljs-attribute">letter-spacing</span><span class="hljs-value">: <span class="hljs-variable">$toc_header-letter-spacing</span>;</span>
+    <span class="hljs-attribute">text-transform</span><span class="hljs-value">: <span class="hljs-variable">$toc_header-text-transform</span>;</span>
+  }
+
+  <span class="hljs-class">.toc_list</span> {
+    <span class="hljs-attribute">width</span><span class="hljs-value">:           <span class="hljs-number">100%</span>;</span>
+    <span class="hljs-attribute">overflow-y</span><span class="hljs-value">:      <span class="hljs-variable">$toc_list-overflowy</span>;</span>
+    <span class="hljs-attribute">height</span><span class="hljs-value">:          <span class="hljs-variable">$toc_list-height</span>;</span>
+
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> breakpoint</span>(small<span class="hljs-preprocessor"> only</span>) {</span>
+      <span class="hljs-attribute">height</span><span class="hljs-value">: auto;</span>
+    }
+    
+    <span class="hljs-tag">a</span><span class="hljs-class">.toc_list-item</span><span class="hljs-pseudo">::before</span> {<span class="hljs-attribute">content</span><span class="hljs-value">: <span class="hljs-variable">$toc_list-link-before-content</span>;</span>}
+    <span class="hljs-tag">a</span><span class="hljs-class">.toc_list-item</span> {
+
+      <span class="hljs-attribute">padding</span><span class="hljs-value">:          <span class="hljs-variable">$toc_list-link-padding</span>;</span>
+      <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$toc_list-link-bg</span>;</span>
+      <span class="hljs-attribute">border-radius</span><span class="hljs-value">:    <span class="hljs-variable">$toc_list-link-radius</span>;</span>
+      <span class="hljs-attribute">color</span><span class="hljs-value">:            <span class="hljs-variable">$toc_list-link-color</span>;</span>
+      <span class="hljs-attribute">font-weight</span><span class="hljs-value">:      <span class="hljs-variable">$toc_list-link-weight</span>;</span>    
+      <span class="hljs-attribute">line-height</span><span class="hljs-value">:      <span class="hljs-variable">$toc_list-link-line-height</span>;</span>
+      <span class="hljs-attribute">font-size</span><span class="hljs-value">:        <span class="hljs-variable">$toc_list-link-size</span>;</span>
+      <span class="hljs-attribute">border-bottom</span><span class="hljs-value">:    <span class="hljs-variable">$toc_list-link-border-bottom</span>;</span>
+      <span class="hljs-attribute">display</span><span class="hljs-value">: block;</span>
+
+      <span class="hljs-attribute">transition-property</span><span class="hljs-value">: background-color;</span>
+      <span class="hljs-attribute">transition-duration</span><span class="hljs-value">: <span class="hljs-variable">$toc_list-link-transition-duration</span>;</span>
+
+      &amp;<span class="hljs-pseudo">:hover</span> {
+        <span class="hljs-attribute">color</span><span class="hljs-value">:            <span class="hljs-variable">$toc_list-link-color-hover</span>;</span>
+        <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$toc_list-link-bg-hover</span>;</span>
+        <span class="hljs-attribute">border-bottom</span><span class="hljs-value">:    <span class="hljs-variable">$toc_list-link-border-bottom-hover</span>;</span>
+        <span class="hljs-attribute">text-decoration</span><span class="hljs-value">:  underline;</span>
+      }
+
+      &amp;<span class="hljs-class">.active</span> {
+        <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$toc_list-link-bg-active</span>;</span>
+        <span class="hljs-attribute">color</span><span class="hljs-value">:            <span class="hljs-variable">$toc_list-link-color-active</span>;</span>
+        <span class="hljs-attribute">border-bottom</span><span class="hljs-value">:    <span class="hljs-variable">$toc_list-link-border-bottom-active</span>;</span>
+
+        &amp;<span class="hljs-pseudo">:hover</span>{ 
+          <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$toc_list-link-bg-active-hover</span>;</span>
+          <span class="hljs-attribute">color</span><span class="hljs-value">:            <span class="hljs-variable">$toc_list-link-color-active-hover</span>;</span>
+          <span class="hljs-attribute">border-bottom</span><span class="hljs-value">:    <span class="hljs-variable">$toc_list-link-border-bottom-active-hover</span>;</span>
+        }
+      }
+
+      &amp;<span class="hljs-class">.h1</span> {<span class="hljs-attribute">margin-left</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>}
+      &amp;<span class="hljs-class">.h2</span> {<span class="hljs-attribute">margin-left</span><span class="hljs-value">: <span class="hljs-variable">$toc_list-link-indent-base</span>;</span>}
+      &amp;<span class="hljs-class">.h3</span> {<span class="hljs-attribute">margin-left</span><span class="hljs-value">: <span class="hljs-variable">$toc_list-link-indent-base</span>*<span class="hljs-number">2</span>;</span>}
+      &amp;<span class="hljs-class">.h4</span> {<span class="hljs-attribute">margin-left</span><span class="hljs-value">: <span class="hljs-variable">$toc_list-link-indent-base</span>*<span class="hljs-number">3</span>;</span>}
+      &amp;<span class="hljs-class">.h5</span> {<span class="hljs-attribute">margin-left</span><span class="hljs-value">: <span class="hljs-variable">$toc_list-link-indent-base</span>*<span class="hljs-number">4</span>;</span>}
+      &amp;<span class="hljs-class">.h6</span> {<span class="hljs-attribute">margin-left</span><span class="hljs-value">: <span class="hljs-variable">$toc_list-link-indent-base</span>*<span class="hljs-number">5</span>;</span>}
+    }
+  }
+}</div></div></div></div></body></html>

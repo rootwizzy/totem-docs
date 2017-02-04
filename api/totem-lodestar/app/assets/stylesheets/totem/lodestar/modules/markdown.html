@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="en"><head><title>app/assets/stylesheets/totem/lodestar/modules/markdown</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="app/assets/stylesheets/totem/lodestar/modules/markdown"><meta name="groc-project-path" content="app/assets/stylesheets/totem/lodestar/modules/markdown.scss"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/app/assets/stylesheets/totem/lodestar/modules/markdown.scss">app/assets/stylesheets/totem/lodestar/modules/markdown.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.markdown</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-variable">$md_document-spacing</span>;</span>
+
+  <span class="hljs-comment">/****
+  Anchors
+  *****/</span>
+  <span class="hljs-tag">a</span> { 
+    <span class="hljs-attribute">color</span><span class="hljs-value">:           <span class="hljs-variable">$md-a_color</span>;</span>
+    <span class="hljs-attribute">text-decoration</span><span class="hljs-value">: <span class="hljs-variable">$md-a_decoration</span>;</span>
+  }
+
+  <span class="hljs-comment">/****
+  Paragraphs
+  ****/</span>
+  <span class="hljs-tag">p</span> {
+    <span class="hljs-attribute">line-height</span><span class="hljs-value">: <span class="hljs-variable">$md-p_line-height</span>;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-variable">$md-p_weight</span>;</span>
+  }
+
+  <span class="hljs-tag">strong</span> {
+    <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$md-strong_color</span>;</span>
+  }
+
+  <span class="hljs-comment">/****
+  Codeblocks
+  ****/</span>
+  <span class="hljs-class">.CodeRay</span> {
+    <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$body_color</span>;</span>
+    <span class="hljs-class">.code</span> {
+      <span class="hljs-tag">pre</span> {<span class="hljs-attribute">font-family</span><span class="hljs-value">:   <span class="hljs-variable">$md-codeblock_font</span>;</span>}
+      <span class="hljs-attribute">font-family</span><span class="hljs-value">:   <span class="hljs-variable">$md-codeblock_font</span>;</span>
+
+      <span class="hljs-attribute">background</span><span class="hljs-value">:    <span class="hljs-variable">$md-codeblock_bg</span>;</span>
+      <span class="hljs-attribute">padding</span><span class="hljs-value">:       <span class="hljs-variable">$md-codeblock_padding</span>;</span>
+      <span class="hljs-attribute">margin</span><span class="hljs-value">:        <span class="hljs-variable">$md-codeblock_margin</span>;</span>
+      <span class="hljs-attribute">border-radius</span><span class="hljs-value">: <span class="hljs-variable">$md-codeblock_radius</span>;</span>
+      <span class="hljs-attribute">border-left</span><span class="hljs-value">:   <span class="hljs-variable">$md-codeblock_border-left</span>;</span>
+    }
+  }
+
+  <span class="hljs-comment">/****
+  Code Spans
+  ****/</span>
+  <span class="hljs-tag">code</span> {
+    <span class="hljs-attribute">color</span><span class="hljs-value">:            <span class="hljs-variable">$md-codespan_color</span>;</span>
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$md-codespan_bg</span>;</span>
+    <span class="hljs-attribute">border-radius</span><span class="hljs-value">:    <span class="hljs-variable">$md-codespan_radius</span>;</span>
+    <span class="hljs-attribute">border</span><span class="hljs-value">:           <span class="hljs-variable">$md-codespan_border</span>;</span>
+    <span class="hljs-attribute">font-family</span><span class="hljs-value">:      <span class="hljs-variable">$md-codespan_font</span>;</span>
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">:        <span class="hljs-variable">$md-codespan_font-size</span>;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">:      <span class="hljs-variable">$md-codespan_font-weight</span>;</span>
+    <span class="hljs-attribute">padding</span><span class="hljs-value">:          <span class="hljs-variable">$md-codespan_padding</span>;</span>
+    <span class="hljs-attribute">overflow</span><span class="hljs-value">:         auto;</span>
+  }
+
+  <span class="hljs-comment">/****
+  Blockquotes
+  ****/</span>
+  <span class="hljs-tag">blockquote</span> {
+    <span class="hljs-attribute">background</span><span class="hljs-value">:    <span class="hljs-variable">$md-blockquote_bg</span>;</span>
+    <span class="hljs-attribute">padding</span><span class="hljs-value">:       <span class="hljs-variable">$md-blockquote_padding</span>;</span>
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-variable">$md-blockquote_spacing</span>;</span>
+    <span class="hljs-attribute">border</span><span class="hljs-value">:        <span class="hljs-variable">$md-blockquote_border</span>;</span>
+    <span class="hljs-attribute">border-left</span><span class="hljs-value">:   <span class="hljs-variable">$md-blockquote_border-left</span>;</span>
+    <span class="hljs-attribute">border-radius</span><span class="hljs-value">: <span class="hljs-variable">$md-blockquote_radius</span>;</span>
+
+
+    <span class="hljs-tag">p</span> {
+      <span class="hljs-attribute">color</span><span class="hljs-value">:       <span class="hljs-variable">$md-blockquote_color</span>;</span>
+      <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-variable">$md-blockquote_weight</span>;</span>
+
+      &amp;<span class="hljs-pseudo">:first-of-type</span>{<span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>}
+    }
+  }
+
+  <span class="hljs-comment">/****
+  Lists
+  ****/</span>
+  <span class="hljs-tag">ul</span>{
+    <span class="hljs-tag">li</span> {
+      <span class="hljs-attribute">padding-left</span><span class="hljs-value">:  <span class="hljs-variable">$md-ul_li-padding-left</span>;</span>
+      <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-variable">$md-ul_li-spacing</span>;</span>
+
+      &gt;<span class="hljs-tag">ul</span> {
+      <span class="hljs-attribute">margin-top</span><span class="hljs-value">: <span class="hljs-variable">$md-ul_nested-spacing</span>;</span>
+      }
+    }
+  }
+
+  <span class="hljs-comment">/****
+  Headers
+  ****/</span>
+  <span class="hljs-tag">h1</span>, <span class="hljs-tag">h2</span>, <span class="hljs-tag">h3</span>, <span class="hljs-tag">h4</span>, <span class="hljs-tag">h5</span>, <span class="hljs-tag">h6</span> {
+    <span class="hljs-attribute">color</span><span class="hljs-value">:          <span class="hljs-variable">$md-h_color</span>;</span>
+    <span class="hljs-attribute">margin-top</span><span class="hljs-value">:     <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">:  <span class="hljs-variable">$md-h_spacing</span>;</span>
+    <span class="hljs-attribute">line-height</span><span class="hljs-value">:    <span class="hljs-variable">$md-h_line-height</span>;</span>
+    <span class="hljs-attribute">font-family</span><span class="hljs-value">:    <span class="hljs-variable">$md-h_font</span>;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">:    <span class="hljs-variable">$md-h_weight</span>;</span>
+    <span class="hljs-attribute">font-style</span><span class="hljs-value">:     <span class="hljs-variable">$md-h_font-style</span>;</span>
+    <span class="hljs-attribute">text-rendering</span><span class="hljs-value">: optimizeLegibility;</span>  
+  }
+
+  <span class="hljs-tag">h1</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-variable">$md-h1_size</span>;</span>}
+  <span class="hljs-tag">h2</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-variable">$md-h2_size</span>;</span>}
+  <span class="hljs-tag">h3</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-variable">$md-h3_size</span>;</span>}
+  <span class="hljs-tag">h4</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-variable">$md-h4_size</span>;</span>}
+  <span class="hljs-tag">h5</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-variable">$md-h5_size</span>;</span>}
+  <span class="hljs-tag">h6</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-variable">$md-h6_size</span>;</span>}
+}</div></div></div></div></body></html>

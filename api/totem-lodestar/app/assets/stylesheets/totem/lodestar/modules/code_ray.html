@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head><title>app/assets/stylesheets/totem/lodestar/modules/code_ray</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="app/assets/stylesheets/totem/lodestar/modules/code_ray"><meta name="groc-project-path" content="app/assets/stylesheets/totem/lodestar/modules/code_ray.scss"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/app/assets/stylesheets/totem/lodestar/modules/code_ray.scss">app/assets/stylesheets/totem/lodestar/modules/code_ray.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.CodeRay</span> <span class="hljs-class">.code</span> { <span class="hljs-attribute">width</span><span class="hljs-value">: <span class="hljs-number">100%</span> }
+
+ol.CodeRay    { font-size: <span class="hljs-number">10pt</span> }
+ol.CodeRay li { white-space: pre }
+
+.CodeRay .code pre { overflow: auto }
+.CodeRay .debug    { color:white ! important;</span> <span class="hljs-attribute">background</span><span class="hljs-value">:blue ! important;</span> }
+
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.annotation</span> { <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#007</span> }
+.CodeRay .attribute-name { color:<span class="hljs-hexcolor">#f08</span> }
+.CodeRay .attribute-value { color:<span class="hljs-hexcolor">#700</span> }
+.CodeRay .binary { color:<span class="hljs-hexcolor">#509</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .comment  { color:<span class="hljs-hexcolor">#998</span>;</span> <span class="hljs-attribute">font-style</span><span class="hljs-value">: italic;</span>}
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.char</span> { <span class="hljs-attribute">color</span><span class="hljs-value">:<span class="hljs-hexcolor">#04D</span> }
+.CodeRay .char .content { color:<span class="hljs-hexcolor">#04D</span> }
+.CodeRay .char .delimiter { color:<span class="hljs-hexcolor">#039</span> }
+.CodeRay .class { color:<span class="hljs-hexcolor">#458</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .complex { color:<span class="hljs-hexcolor">#A08</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .constant { color:teal;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.color</span> { <span class="hljs-attribute">color</span><span class="hljs-value">:<span class="hljs-hexcolor">#0A0</span> }
+.CodeRay .class-variable { color:<span class="hljs-hexcolor">#369</span> }
+.CodeRay .decorator { color:<span class="hljs-hexcolor">#B0B</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.definition</span> { <span class="hljs-attribute">color</span><span class="hljs-value">:<span class="hljs-hexcolor">#099</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .directive { color:<span class="hljs-hexcolor">#088</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .delimiter { color:black }
+.CodeRay .doc { color:<span class="hljs-hexcolor">#970</span> }
+.CodeRay .doctype { color:<span class="hljs-hexcolor">#34b</span> }
+.CodeRay .doc-string { color:<span class="hljs-hexcolor">#D42</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .escape  { color:<span class="hljs-hexcolor">#666</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .entity { color:<span class="hljs-hexcolor">#800</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .error { color:<span class="hljs-hexcolor">#F00</span>;</span> <span class="hljs-attribute">background-color</span><span class="hljs-value">:<span class="hljs-hexcolor">#FAA</span> }
+.CodeRay .exception { color:<span class="hljs-hexcolor">#C00</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .filename { color:<span class="hljs-hexcolor">#099</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.function</span> { <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$ownership</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .global-variable { color:teal;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .hex { color:<span class="hljs-hexcolor">#058</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .integer  { color:green;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.include</span> { <span class="hljs-attribute">color</span><span class="hljs-value">:<span class="hljs-hexcolor">#B44</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .inline { color: black }
+.CodeRay .inline .inline { background: <span class="hljs-hexcolor">#ccc</span> }
+.CodeRay .inline .inline .inline { background: <span class="hljs-hexcolor">#bbb</span> }
+.CodeRay .inline .inline-delimiter { color: <span class="hljs-hexcolor">#D14</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.inline-delimiter</span> { <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#D14</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.important</span> { <span class="hljs-attribute">color</span><span class="hljs-value">:<span class="hljs-hexcolor">#f00</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.interpreted</span> { <span class="hljs-attribute">color</span><span class="hljs-value">:<span class="hljs-hexcolor">#B2B</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .instance-variable { color:teal }
+.CodeRay .label { color:<span class="hljs-hexcolor">#970</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .local-variable { color:<span class="hljs-hexcolor">#fcfc6a</span> }
+.CodeRay .octal { color:<span class="hljs-hexcolor">#40E</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .operator { }
+.CodeRay .predefined-constant {  font-weight:bold }
+.CodeRay .predefined { color:<span class="hljs-hexcolor">#369</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .preprocessor { color:<span class="hljs-hexcolor">#579</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.pseudo-class</span> { <span class="hljs-attribute">color</span><span class="hljs-value">:<span class="hljs-hexcolor">#00C</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .predefined-type { color:<span class="hljs-hexcolor">#074</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .reserved, .keyword  { color:<span class="hljs-variable">$secondary</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+
+.CodeRay .key { color: <span class="hljs-hexcolor">#808</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.key</span> <span class="hljs-class">.delimiter</span> { <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#606</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.key</span> <span class="hljs-class">.char</span> { <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#80f</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.value</span> { <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#088</span>;</span> }
+
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.regexp</span> { <span class="hljs-attribute">background-color</span><span class="hljs-value">:<span class="hljs-hexcolor">#fff0ff</span> }
+.CodeRay .regexp .content { color:<span class="hljs-hexcolor">#808</span> }
+.CodeRay .regexp .delimiter { color:<span class="hljs-hexcolor">#404</span> }
+.CodeRay .regexp .modifier { color:<span class="hljs-hexcolor">#C2C</span> }
+.CodeRay .regexp .function  { color:<span class="hljs-hexcolor">#404</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">: bold }
+
+.CodeRay .string { color: <span class="hljs-hexcolor">#D20</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.string</span> <span class="hljs-class">.string</span> { }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.string</span> <span class="hljs-class">.string</span> <span class="hljs-class">.string</span> { <span class="hljs-attribute">background-color</span><span class="hljs-value">:<span class="hljs-hexcolor">#ffd0d0</span> }
+.CodeRay .string .content { color: <span class="hljs-hexcolor">#D14</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.string</span> <span class="hljs-class">.char</span> { <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#D14</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.string</span> <span class="hljs-class">.delimiter</span> { <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#D14</span>;</span> }
+
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.shell</span> { <span class="hljs-attribute">color</span><span class="hljs-value">:<span class="hljs-hexcolor">#D14</span> }
+.CodeRay .shell .content { }
+.CodeRay .shell .delimiter { color:<span class="hljs-hexcolor">#D14</span> }
+
+.CodeRay .symbol { color:<span class="hljs-hexcolor">#990073</span> }
+.CodeRay .symbol .content { color:<span class="hljs-hexcolor">#A60</span> }
+.CodeRay .symbol .delimiter { color:<span class="hljs-hexcolor">#630</span> }
+
+.CodeRay .tag { color:<span class="hljs-hexcolor">#070</span> }
+.CodeRay .tag-special { color:<span class="hljs-hexcolor">#D70</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .type { color:<span class="hljs-hexcolor">#339</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .variable  { color:<span class="hljs-hexcolor">#036</span> }
+
+.CodeRay .insert { background: <span class="hljs-hexcolor">#afa</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.delete</span> { <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-hexcolor">#faa</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.change</span> { <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#aaf</span>;</span> <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-hexcolor">#007</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.head</span> { <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#f8f</span>;</span> <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-hexcolor">#505</span> }
+
+.CodeRay .insert .insert { color: <span class="hljs-hexcolor">#080</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .delete .delete { color: <span class="hljs-hexcolor">#800</span>;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">:bold }
+.CodeRay .change .change { color: <span class="hljs-hexcolor">#66f</span>;</span> }
+<span class="hljs-class">.CodeRay</span> <span class="hljs-class">.head</span> <span class="hljs-class">.head</span> { <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#f4f</span>;</span> }</div></div></div></div></body></html>

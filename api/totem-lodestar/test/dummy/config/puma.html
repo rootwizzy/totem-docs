@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en"><head><title>test/dummy/config/puma</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="test/dummy/config/puma"><meta name="groc-project-path" content="test/dummy/config/puma.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/test/dummy/config/puma.rb">test/dummy/config/puma.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>Puma can serve each request in a thread from an internal thread pool.
+The <code>threads</code> method setting takes two numbers a minimum and maximum.
+Any libraries that use thread pools should be configured to match
+the maximum value specified for Puma. Default is set to 5 threads for minimum
+and maximum, this matches the default thread size of Active Record.</p></div></div><div class="code"><div class="wrapper">threads_count = <span class="hljs-constant">ENV</span>.fetch(<span class="hljs-string">"RAILS_MAX_THREADS"</span>) { <span class="hljs-number">5</span> }.to_i
+threads threads_count, threads_count</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Specifies the <code>port</code> that Puma will listen on to receive requests, default is 3000.</p></div></div><div class="code"><div class="wrapper">port        <span class="hljs-constant">ENV</span>.fetch(<span class="hljs-string">"PORT"</span>) { <span class="hljs-number">3000</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Specifies the <code>environment</code> that Puma will run in.</p></div></div><div class="code"><div class="wrapper">environment <span class="hljs-constant">ENV</span>.fetch(<span class="hljs-string">"RAILS_ENV"</span>) { <span class="hljs-string">"development"</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Specifies the number of <code>workers</code> to boot in clustered mode.
+Workers are forked webserver processes. If using threads and workers together
+the concurrency of the application would be max <code>threads</code> * <code>workers</code>.
+Workers do not work on JRuby or Windows (both of which do not support
+processes).</p>
+<p>workers ENV.fetch(&quot;WEB_CONCURRENCY&quot;) { 2 }</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Use the <code>preload_app!</code> method when specifying a <code>workers</code> number.
+This directive tells Puma to first boot the application and load code
+before forking the application. This takes advantage of Copy On Write
+process behavior so workers use less memory. If you use this option
+you need to make sure to reconnect any threads in the <code>on_worker_boot</code>
+block.</p>
+<p>preload_app!</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The code in the <code>on_worker_boot</code> will be called if you are using
+clustered mode by specifying a number of <code>workers</code>. After each worker
+process is booted this block will be run, if you are using <code>preload_app!</code>
+option you will want to use this block to reconnect to any threads
+or connections that may have been created at application boot, Ruby
+cannot share connections between processes.</p>
+<p>on_worker_boot do
+  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Allow puma to be restarted by <code>rails restart</code> command.</p></div></div><div class="code"><div class="wrapper">plugin <span class="hljs-symbol">:tmp_restart</span></div></div></div></div></body></html>

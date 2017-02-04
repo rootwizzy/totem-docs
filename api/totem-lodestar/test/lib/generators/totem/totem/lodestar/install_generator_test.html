@@ -1,0 +1,13 @@
+<!DOCTYPE html><html lang="en"><head><title>test/lib/generators/totem/totem/lodestar/install_generator_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="test/lib/generators/totem/totem/lodestar/install_generator_test"><meta name="groc-project-path" content="test/lib/generators/totem/totem/lodestar/install_generator_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/test/lib/generators/totem/totem/lodestar/install_generator_test.rb">test/lib/generators/totem/totem/lodestar/install_generator_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'test_helper'</span>
+<span class="hljs-keyword">require</span> <span class="hljs-string">'generators/totem/lodestar/install/install_generator'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem::Lodestar</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Totem::Lodestar::InstallGeneratorTest</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Rails::Generators</span></span>::<span class="hljs-title">TestCase</span></span>
+    tests <span class="hljs-constant">Totem::Lodestar::InstallGenerator</span>
+    destination <span class="hljs-constant">Rails</span>.root.join(<span class="hljs-string">'tmp/generators'</span>)
+    setup <span class="hljs-symbol">:prepare_destination</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>test &quot;generator runs without errors&quot; do
+  assert_nothing_raised do
+    run_generator [&quot;arguments&quot;]
+  end
+end</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

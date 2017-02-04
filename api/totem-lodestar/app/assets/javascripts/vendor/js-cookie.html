@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="en"><head><title>app/assets/javascripts/vendor/js-cookie</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="app/assets/javascripts/vendor/js-cookie"><meta name="groc-project-path" content="app/assets/javascripts/vendor/js-cookie.js"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/app/assets/javascripts/vendor/js-cookie.js">app/assets/javascripts/vendor/js-cookie.js</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-comment">/*!
+ * JavaScript Cookie v2.1.3
+ * https://github.com/js-cookie/js-cookie
+ *
+ * Copyright 2006, 2015 Klaus Hartl &amp; Fagner Brack
+ * Released under the MIT license
+ */</span>
+;(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">factory</span>) </span>{
+  <span class="hljs-keyword">var</span> registeredInModuleLoader = <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">'function'</span> &amp;&amp; define.amd) {
+    define(factory);
+    registeredInModuleLoader = <span class="hljs-literal">true</span>;
+  }
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports === <span class="hljs-string">'object'</span>) {
+    <span class="hljs-built_in">module</span>.exports = factory();
+    registeredInModuleLoader = <span class="hljs-literal">true</span>;
+  }
+  <span class="hljs-keyword">if</span> (!registeredInModuleLoader) {
+    <span class="hljs-keyword">var</span> OldCookies = <span class="hljs-built_in">window</span>.Cookies;
+    <span class="hljs-keyword">var</span> api = <span class="hljs-built_in">window</span>.Cookies = factory();
+    api.noConflict = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-built_in">window</span>.Cookies = OldCookies;
+      <span class="hljs-keyword">return</span> api;
+    };
+  }
+}(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">extend</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">var</span> result = {};
+    <span class="hljs-keyword">for</span> (; i &lt; <span class="hljs-built_in">arguments</span>.length; i++) {
+      <span class="hljs-keyword">var</span> attributes = <span class="hljs-built_in">arguments</span>[ i ];
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> attributes) {
+        result[key] = attributes[key];
+      }
+    }
+    <span class="hljs-keyword">return</span> result;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">init</span> (<span class="hljs-params">converter</span>) </span>{
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">api</span> (<span class="hljs-params">key, value, attributes</span>) </span>{
+      <span class="hljs-keyword">var</span> result;
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span> === <span class="hljs-string">'undefined'</span>) {
+        <span class="hljs-keyword">return</span>;
+      }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Write</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length &gt; <span class="hljs-number">1</span>) {
+        attributes = extend({
+          path: <span class="hljs-string">'/'</span>
+        }, api.defaults, attributes);
+
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> attributes.expires === <span class="hljs-string">'number'</span>) {
+          <span class="hljs-keyword">var</span> expires = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+          expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * <span class="hljs-number">864e+5</span>);
+          attributes.expires = expires;
+        }
+
+        <span class="hljs-keyword">try</span> {
+          result = <span class="hljs-built_in">JSON</span>.stringify(value);
+          <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/^[\{\[]/</span>.test(result)) {
+            value = result;
+          }
+        } <span class="hljs-keyword">catch</span> (e) {}
+
+        <span class="hljs-keyword">if</span> (!converter.write) {
+          value = <span class="hljs-built_in">encodeURIComponent</span>(<span class="hljs-built_in">String</span>(value))
+            .replace(<span class="hljs-regexp">/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g</span>, <span class="hljs-built_in">decodeURIComponent</span>);
+        } <span class="hljs-keyword">else</span> {
+          value = converter.write(value, key);
+        }
+
+        key = <span class="hljs-built_in">encodeURIComponent</span>(<span class="hljs-built_in">String</span>(key));
+        key = key.replace(<span class="hljs-regexp">/%(23|24|26|2B|5E|60|7C)/g</span>, <span class="hljs-built_in">decodeURIComponent</span>);
+        key = key.replace(<span class="hljs-regexp">/[\(\)]/g</span>, <span class="hljs-built_in">escape</span>);
+
+        <span class="hljs-keyword">return</span> (<span class="hljs-built_in">document</span>.cookie = [
+          key, <span class="hljs-string">'='</span>, value,
+          attributes.expires ? <span class="hljs-string">'; expires='</span> + attributes.expires.toUTCString() : <span class="hljs-string">''</span>, <span class="hljs-comment">// use expires attribute, max-age is not supported by IE</span>
+          attributes.path ? <span class="hljs-string">'; path='</span> + attributes.path : <span class="hljs-string">''</span>,
+          attributes.domain ? <span class="hljs-string">'; domain='</span> + attributes.domain : <span class="hljs-string">''</span>,
+          attributes.secure ? <span class="hljs-string">'; secure'</span> : <span class="hljs-string">''</span>
+        ].join(<span class="hljs-string">''</span>));
+      }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Read</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (!key) {
+        result = {};
+      }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>To prevent the for loop in the first place assign an empty array
+in case there are no cookies at all. Also prevents odd result when
+calling &quot;get()&quot;</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> cookies = <span class="hljs-built_in">document</span>.cookie ? <span class="hljs-built_in">document</span>.cookie.split(<span class="hljs-string">'; '</span>) : [];
+      <span class="hljs-keyword">var</span> rdecode = <span class="hljs-regexp">/(%[0-9A-Z]{2})+/g</span>;
+      <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;
+
+      <span class="hljs-keyword">for</span> (; i &lt; cookies.length; i++) {
+        <span class="hljs-keyword">var</span> parts = cookies[i].split(<span class="hljs-string">'='</span>);
+        <span class="hljs-keyword">var</span> cookie = parts.slice(<span class="hljs-number">1</span>).join(<span class="hljs-string">'='</span>);
+
+        <span class="hljs-keyword">if</span> (cookie.charAt(<span class="hljs-number">0</span>) === <span class="hljs-string">'"'</span>) {
+          cookie = cookie.slice(<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>);
+        }
+
+        <span class="hljs-keyword">try</span> {
+          <span class="hljs-keyword">var</span> name = parts[<span class="hljs-number">0</span>].replace(rdecode, <span class="hljs-built_in">decodeURIComponent</span>);
+          cookie = converter.read ?
+            converter.read(cookie, name) : converter(cookie, name) ||
+            cookie.replace(rdecode, <span class="hljs-built_in">decodeURIComponent</span>);
+
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.json) {
+            <span class="hljs-keyword">try</span> {
+              cookie = <span class="hljs-built_in">JSON</span>.parse(cookie);
+            } <span class="hljs-keyword">catch</span> (e) {}
+          }
+
+          <span class="hljs-keyword">if</span> (key === name) {
+            result = cookie;
+            <span class="hljs-keyword">break</span>;
+          }
+
+          <span class="hljs-keyword">if</span> (!key) {
+            result[name] = cookie;
+          }
+        } <span class="hljs-keyword">catch</span> (e) {}
+      }
+
+      <span class="hljs-keyword">return</span> result;
+    }
+
+    api.set = api;
+    api.get = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key</span>) </span>{
+      <span class="hljs-keyword">return</span> api.call(api, key);
+    };
+    api.getJSON = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">return</span> api.apply({
+        json: <span class="hljs-literal">true</span>
+      }, [].slice.call(<span class="hljs-built_in">arguments</span>));
+    };
+    api.defaults = {};
+
+    api.remove = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, attributes</span>) </span>{
+      api(key, <span class="hljs-string">''</span>, extend(attributes, {
+        expires: -<span class="hljs-number">1</span>
+      }));
+    };
+
+    api.withConverter = init;
+
+    <span class="hljs-keyword">return</span> api;
+  }
+
+  <span class="hljs-keyword">return</span> init(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{});
+}));</div></div></div></div></body></html>

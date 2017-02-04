@@ -1,0 +1,685 @@
+<!DOCTYPE html><html lang="en"><head><title>app/assets/stylesheets/totem/lodestar/api/groc</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="app/assets/stylesheets/totem/lodestar/api/groc"><meta name="groc-project-path" content="app/assets/stylesheets/totem/lodestar/api/groc.scss"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/app/assets/stylesheets/totem/lodestar/api/groc.scss">app/assets/stylesheets/totem/lodestar/api/groc.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"compass"</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"codestyles"</span>;</span>
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"compass/reset"</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="configuration">Configuration</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="sizing">Sizing</h3></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+<li>Margin between segments in two-column mode, padding for code/comments in single-column mode.</li>
+</ul></div></div><div class="code"><div class="wrapper"><span class="hljs-variable">$common-margin</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+<li>Additional padding to each column in two-column mode</li>
+</ul></div></div><div class="code"><div class="wrapper"><span class="hljs-variable">$column-padding</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+<li>The <code>line length</code> of the commentary column in both modes.</li>
+</ul></div></div><div class="code"><div class="wrapper"><span class="hljs-variable">$commentary-width</span><span class="hljs-value">: <span class="hljs-number">29em</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+<li>Width of the tools pulldown in two-column mode.  NOT scaled by tools-font.</li>
+</ul></div></div><div class="code"><div class="wrapper"><span class="hljs-variable">$tools-width</span><span class="hljs-value">: <span class="hljs-number">20em</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+<li>Height of the main toolbar, scaled by the size of tools-font</li>
+</ul></div></div><div class="code"><div class="wrapper"><span class="hljs-variable">$tools-height</span><span class="hljs-value">: <span class="hljs-number">2.1em</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Smooth-scale the page in viewports that are between ideal widths for two-column and one-column
+modes.  Scaling starts at the same width as $tools-width into the code column.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-variable">$scale-steps</span><span class="hljs-value">: <span class="hljs-number">136</span>;</span> <span class="hljs-comment">// Approx 1 per pixel on a desktop (8.5em distance &amp; 16px per em)</span>
+<span class="hljs-variable">$scale-min</span><span class="hljs-value">:   <span class="hljs-number">0.85</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam cursus lorem at mi hendrerit pretium. Maecenas ultrices dolor dictum orci lobortis fringilla. Integer ut sem at libero scelerisque commodo quis a dui. Nulla pellentesque, purus non ultricies porta, diam est fringilla orci, dignissim mattis leo erat a urna. Donec fermentum orci nec magna vehicula consectetur. Vivamus a dui eget orci malesuada elementum. Cras tempor mi sit amet ligula mollis porta. Nulla eu purus eget dui aliquet iaculis in quis massa. Phasellus sed lectus ac augue tincidunt blandit. Pellentesque et aliquam neque. Donec faucibus ultricies sem, ut mattis ante consectetur sed. In sollicitudin consectetur nisl, nec malesuada diam dictum ut. Duis feugiat, lorem in pulvinar interdum, nibh turpis lobortis erat, dictum hendrerit massa nibh molestie odio. Ut ultricies, dui a lobortis aliquam, massa diam tempus eros, eu ornare risus mi vitae elit. Integer pretium vulputate eros vitae luctus. Mauris in rhoncus nisi.</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="color-scheme">Color Scheme</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$commentary-background-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#f5fbff</span>;</span>
+<span class="hljs-variable">$commentary-foreground-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#4a525a</span>;</span> <span class="hljs-comment">// Thank you, Mr. Gruber</span>
+<span class="hljs-variable">$commentary-shadow-color</span><span class="hljs-value">:     <span class="hljs-hexcolor">#ffffff</span>;</span>
+
+<span class="hljs-variable">$code-background-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#4a525a</span>;</span>
+<span class="hljs-variable">$code-foreground-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#cbd1d8</span>;</span>
+<span class="hljs-variable">$code-shadow-color</span><span class="hljs-value">:     <span class="hljs-function">darken</span>(<span class="hljs-variable">$code-background-color</span>, <span class="hljs-number">15%</span>);</span>
+
+<span class="hljs-variable">$link-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#a8614e</span>;</span>
+<span class="hljs-variable">$link-hover-foreground-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#a8614e</span>;</span>
+<span class="hljs-variable">$link-hover-background-color</span><span class="hljs-value">: <span class="hljs-function">lighten</span>(<span class="hljs-hexcolor">#a8614e</span>, <span class="hljs-number">43%</span>);</span>
+<span class="hljs-variable">$link-hover-shadow-color</span><span class="hljs-value">:     <span class="hljs-function">lighten</span>(<span class="hljs-hexcolor">#a8614e</span>, <span class="hljs-number">60%</span>);</span>
+
+<span class="hljs-variable">$tools-background-color</span><span class="hljs-value">: <span class="hljs-function">transparentize</span>(<span class="hljs-hexcolor">#e6e6e6</span>, <span class="hljs-number">0.1</span>);</span>
+<span class="hljs-variable">$tools-foreground-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#4a525a</span>;</span>
+<span class="hljs-variable">$tools-shadow-color</span><span class="hljs-value">:     <span class="hljs-hexcolor">#f0f0f0</span>;</span>
+
+<span class="hljs-variable">$inline-code-background-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#fbf8f3</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="typography">Typography</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-at_rule">@<span class="hljs-keyword">mixin</span><span class="hljs-preprocessor"> commentary-font</span>() {</span>
+  <span class="hljs-attribute">font-family</span><span class="hljs-value">: <span class="hljs-string">"Helvetica Neue"</span>, Helvetica, <span class="hljs-string">"Droid Sans"</span>, sans-serif;</span>
+  <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-number">300</span>;</span>
+  <span class="hljs-attribute">font-size</span><span class="hljs-value">:   <span class="hljs-number">0.9375em</span>;</span>
+  <span class="hljs-attribute">line-height</span><span class="hljs-value">: <span class="hljs-number">1.35</span>;</span>
+}
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">mixin</span><span class="hljs-preprocessor"> code-font</span>() {</span>
+  <span class="hljs-attribute">font-family</span><span class="hljs-value">: <span class="hljs-string">"Droid Sans Mono"</span>, Menlo, Monaco, monospace;</span>
+  <span class="hljs-attribute">font-size</span><span class="hljs-value">:   <span class="hljs-number">0.75em</span>;</span>
+  <span class="hljs-attribute">line-height</span><span class="hljs-value">: <span class="hljs-number">1.4</span>;</span>
+}
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">mixin</span><span class="hljs-preprocessor"> header-font</span>() {</span>
+  <span class="hljs-attribute">font-family</span><span class="hljs-value">:    <span class="hljs-string">"HelveticaNeue-UltraLight"</span>, <span class="hljs-string">"Helvetica Neue"</span>, Helvetica, <span class="hljs-string">"Droid Sans"</span>, sans-serif;</span>
+  <span class="hljs-attribute">font-weight</span><span class="hljs-value">:    <span class="hljs-number">100</span>;</span>
+  <span class="hljs-attribute">letter-spacing</span><span class="hljs-value">: <span class="hljs-number">0.0625em</span>;</span>
+  <span class="hljs-attribute">line-height</span><span class="hljs-value">:    <span class="hljs-number">1.25</span>;</span>
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">:  <span class="hljs-number">0.5em</span>;</span>
+}
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">mixin</span><span class="hljs-preprocessor"> tools-font</span>() {</span>
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> commentary-font</span>;</span>
+}
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">mixin</span><span class="hljs-preprocessor"> header-font-sizes</span>() {</span>
+  <span class="hljs-tag">h1</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">2.5em</span>;</span>}
+  <span class="hljs-tag">h2</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>}
+  <span class="hljs-tag">h3</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1.6em</span>;</span>}
+  <span class="hljs-tag">h4</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1.4em</span>;</span>}
+  <span class="hljs-tag">h5</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1.3em</span>;</span>}
+  <span class="hljs-tag">h6</span> {<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1.2em</span>;</span>}
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="two-column-layout">Two-Column Layout</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>As a general tenet, we try to avoid using margins, as they get us into trouble.  Pparticularly,
+when ensuring that our <code>html</code>/<code>body</code>/<code>#document</code> are full height and do not induce scrolling
+unless their content grows past the page.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-variable">$commentary-column-width</span><span class="hljs-value">: <span class="hljs-variable">$commentary-width</span> + (<span class="hljs-variable">$common-margin</span> + <span class="hljs-variable">$column-padding</span>) * <span class="hljs-number">2</span>;</span>
+
+<span class="hljs-tag">html</span>, <span class="hljs-tag">body</span> {
+  <span class="hljs-attribute">height</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+}
+
+<span class="hljs-id">#document</span> {
+  <span class="hljs-attribute">min-height</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Conceptually, the layout focuses the user on the commentary first, so we lay out that column.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-tag">body</span> {
+  <span class="hljs-attribute">max-width</span><span class="hljs-value">: <span class="hljs-variable">$commentary-column-width</span>;</span>
+}
+
+<span class="hljs-tag">a</span><span class="hljs-class">.lodestar-link</span> {
+  <span class="hljs-attribute">padding-left</span><span class="hljs-value">: (<span class="hljs-variable">$common-margin</span> + <span class="hljs-variable">$column-padding</span>);</span>
+  <span class="hljs-attribute">padding-top</span><span class="hljs-value">:  (<span class="hljs-variable">$common-margin</span> + <span class="hljs-variable">$column-padding</span>);</span>
+  <span class="hljs-attribute">color</span><span class="hljs-value">:        <span class="hljs-variable">$commentary-foreground-color</span>;</span>
+  <span class="hljs-attribute">display</span><span class="hljs-value">:      inline-block;</span>
+  <span class="hljs-attribute">opacity</span><span class="hljs-value">:      .<span class="hljs-number">75</span>;</span>
+
+  &amp;<span class="hljs-pseudo">::before</span> {
+    <span class="hljs-attribute">content</span><span class="hljs-value">:         <span class="hljs-string">"&lt;&lt; "</span>;</span>
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>In two-column mode, the segment is actually shifted over a full column to favor code fragments.
+We may or may not have either .comment or .code sections, so we need to handle all three cases.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class">.segment</span> {
+  <span class="hljs-attribute">padding</span><span class="hljs-value">: (<span class="hljs-variable">$common-margin</span>/<span class="hljs-number">2</span>) <span class="hljs-number">0</span> (<span class="hljs-variable">$common-margin</span>/<span class="hljs-number">2</span>) <span class="hljs-variable">$commentary-column-width</span>;</span>
+  <span class="hljs-attribute">white-space</span><span class="hljs-value">: nowrap;</span>
+
+  &amp;<span class="hljs-pseudo">:first-of-type</span> {
+    <span class="hljs-attribute">padding-top</span><span class="hljs-value">: <span class="hljs-variable">$tools-height</span>;</span>
+  }
+
+  &amp;<span class="hljs-pseudo">:last-of-type</span> {
+    <span class="hljs-attribute">padding-bottom</span><span class="hljs-value">: <span class="hljs-variable">$common-margin</span> + <span class="hljs-variable">$column-padding</span>;</span>
+  }
+
+  <span class="hljs-class">.comments</span>, <span class="hljs-class">.code</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">:        inline-block;</span>
+    <span class="hljs-attribute">vertical-align</span><span class="hljs-value">: top;</span>
+    <span class="hljs-attribute">padding</span><span class="hljs-value">:        <span class="hljs-number">0</span> (<span class="hljs-variable">$common-margin</span> + <span class="hljs-variable">$column-padding</span>);</span>
+  }
+
+  <span class="hljs-class">.comments</span> {
+    <span class="hljs-attribute">margin-left</span><span class="hljs-value">: -<span class="hljs-variable">$commentary-column-width</span>;</span>
+    <span class="hljs-attribute">width</span><span class="hljs-value">:        <span class="hljs-variable">$commentary-width</span>;</span>
+    <span class="hljs-attribute">white-space</span><span class="hljs-value">:  normal;</span>
+  }
+
+  <span class="hljs-class">.code</span> {
+    <span class="hljs-attribute">white-space</span><span class="hljs-value">: pre;</span>
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Fit the meta info into the code column</p></div></div><div class="code"><div class="wrapper"><span class="hljs-id">#meta</span> {
+  <span class="hljs-attribute">position</span><span class="hljs-value">: absolute;</span>
+  <span class="hljs-attribute">left</span><span class="hljs-value">:     <span class="hljs-variable">$commentary-column-width</span>;</span>
+  <span class="hljs-attribute">padding</span><span class="hljs-value">:  <span class="hljs-variable">$common-margin</span> / <span class="hljs-number">4</span> <span class="hljs-variable">$common-margin</span>;</span>
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="two-column-scaling">Two-Column Scaling</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Before we swap over to a single column layout, we scale the page down a little bit in an effort
+to squeeze some extra life out of it.</p>
+<p>Scaling starts once the toolbar is flush with the main column</p></div></div><div class="code"><div class="wrapper"><span class="hljs-variable">$scale-start-width</span><span class="hljs-value">: <span class="hljs-variable">$commentary-column-width</span> + <span class="hljs-variable">$tools-width</span>;</span>
+<span class="hljs-variable">$scale-stop-width</span><span class="hljs-value">:  <span class="hljs-variable">$scale-start-width</span> * <span class="hljs-variable">$scale-min</span>;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> for $i from 0 through $scale-steps - 2 // Skip the last step; it&#39;s exactly $scale-stop-width
+  $scale: 1.0 - (1.0 - $scale-min) <em> ($i / ($scale-steps - 1))
+  @media (max-width: #{$scale-start-width </em> $scale})
+    html
+      font-size: 1em * $scale</span></p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="single-column-layout">Single-Column Layout</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We swap over to the single column layout once we hit the edge of the scaling</p></div></div><div class="code"><div class="wrapper"><span class="hljs-variable">$single-column-toggle-width</span><span class="hljs-value">: <span class="hljs-variable">$scale-stop-width</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Switch modes at a little wider than a full (padded) column</p></div></div><div class="code"><div class="wrapper"><span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (max-width: #{</span><span class="hljs-variable">$single-column-toggle-width</span>}) {
+
+  <span class="hljs-tag">html</span> {
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+  }
+
+  <span class="hljs-tag">body</span> {
+    <span class="hljs-attribute">margin</span><span class="hljs-value">: <span class="hljs-number">0</span> auto;</span>
+  }
+
+  <span class="hljs-class">.segment</span> {
+    <span class="hljs-attribute">padding</span><span class="hljs-value">:     <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">white-space</span><span class="hljs-value">: normal;</span>
+    <span class="hljs-attribute">max-width</span><span class="hljs-value">:   <span class="hljs-variable">$commentary-width</span>;</span>
+    <span class="hljs-attribute">margin</span><span class="hljs-value">:      <span class="hljs-number">0</span> auto;</span>
+
+    <span class="hljs-class">.comments</span>, <span class="hljs-class">.code</span> {
+      <span class="hljs-attribute">display</span><span class="hljs-value">: block;</span>
+      <span class="hljs-attribute">padding</span><span class="hljs-value">: <span class="hljs-variable">$common-margin</span>;</span>
+    }
+
+    <span class="hljs-class">.comments</span> {
+      <span class="hljs-attribute">margin-left</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+      <span class="hljs-attribute">width</span><span class="hljs-value">:       auto;</span>
+    }
+
+    <span class="hljs-class">.code</span> {
+      <span class="hljs-attribute">display</span><span class="hljs-value">:    block;</span>
+      <span class="hljs-attribute">overflow-y</span><span class="hljs-value">: hidden;</span>
+      <span class="hljs-attribute">overflow-x</span><span class="hljs-value">: auto;</span>
+
+      <span class="hljs-class">.wrapper</span> {
+        <span class="hljs-attribute">display</span><span class="hljs-value">: inline-block;</span>
+      }
+    }
+  }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Fit the meta info into on screen, removing any overflow it creates</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-id">#meta</span> {
+    <span class="hljs-attribute">position</span><span class="hljs-value">:   static;</span>
+    <span class="hljs-attribute">margin</span><span class="hljs-value">:     <span class="hljs-variable">$common-margin</span> * <span class="hljs-number">2</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">overflow-y</span><span class="hljs-value">: hidden;</span>
+    <span class="hljs-attribute">overflow-x</span><span class="hljs-value">: auto;</span>
+
+    <span class="hljs-class">.file-path</span> {
+      <span class="hljs-attribute">display</span><span class="hljs-value">: inline-block;</span>
+    }
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="navigation">Navigation</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$tools-padding</span><span class="hljs-value">: (<span class="hljs-variable">$tools-height</span> - <span class="hljs-number">1em</span>) / <span class="hljs-number">2</span>;</span>
+
+<span class="hljs-tag">nav</span> {
+  <span class="hljs-attribute">position</span><span class="hljs-value">: fixed;</span>
+  <span class="hljs-attribute">top</span><span class="hljs-value">:      <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">right</span><span class="hljs-value">:    <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">width</span><span class="hljs-value">:    <span class="hljs-variable">$tools-width</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Nav should be full width in single column mode</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (max-width: #{</span><span class="hljs-variable">$single-column-toggle-width</span>}) {
+    <span class="hljs-attribute">left</span><span class="hljs-value">:  <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">width</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+  }
+
+  <span class="hljs-class">.tools</span> {
+    <span class="hljs-attribute">position</span><span class="hljs-value">: relative;</span>
+    <span class="hljs-attribute">z-index</span><span class="hljs-value">:  <span class="hljs-number">100</span>;</span>
+
+    <span class="hljs-tag">li</span> {
+      <span class="hljs-attribute">display</span><span class="hljs-value">:        table-cell;</span>
+      <span class="hljs-attribute">vertical-align</span><span class="hljs-value">: middle;</span>
+      <span class="hljs-attribute">text-align</span><span class="hljs-value">:     center;</span>
+      <span class="hljs-attribute">white-space</span><span class="hljs-value">:    nowrap;</span>
+      <span class="hljs-attribute">height</span><span class="hljs-value">:         <span class="hljs-variable">$tools-height</span>;</span>
+      <span class="hljs-attribute">padding</span><span class="hljs-value">:        <span class="hljs-number">0</span> <span class="hljs-variable">$tools-padding</span>;</span>
+    }
+
+    <span class="hljs-class">.github</span> {
+      <span class="hljs-attribute">padding</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+
+      <span class="hljs-tag">a</span> {
+        <span class="hljs-attribute">display</span><span class="hljs-value">:      block;</span>
+        <span class="hljs-attribute">height</span><span class="hljs-value">:       <span class="hljs-variable">$tools-height</span>;</span>
+        <span class="hljs-attribute">width</span><span class="hljs-value">:        <span class="hljs-variable">$tools-height</span>;</span>
+        <span class="hljs-attribute">text-indent</span><span class="hljs-value">: -<span class="hljs-number">9001em</span>;</span>
+      }
+    }
+
+    <span class="hljs-class">.search</span> {
+      <span class="hljs-attribute">width</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+
+      <span class="hljs-tag">input</span> {
+        <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> box-sizing</span>(border-box);</span>
+        <span class="hljs-attribute">display</span><span class="hljs-value">: block;</span>
+        <span class="hljs-attribute">width</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+      }   
+    }
+  }
+
+  <span class="hljs-class">.toc</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> box-sizing</span>(border-box);</span>
+    <span class="hljs-attribute">position</span><span class="hljs-value">:   absolute;</span>
+    <span class="hljs-attribute">top</span><span class="hljs-value">:        <span class="hljs-variable">$tools-height</span>;</span>
+    <span class="hljs-attribute">bottom</span><span class="hljs-value">:     <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">width</span><span class="hljs-value">:      <span class="hljs-number">100%</span>;</span>
+    <span class="hljs-attribute">overflow-x</span><span class="hljs-value">: hidden;</span>
+    <span class="hljs-attribute">overflow-y</span><span class="hljs-value">: auto;</span>
+
+    <span class="hljs-tag">li</span> {
+      <span class="hljs-attribute">position</span><span class="hljs-value">: relative;</span>
+    }
+
+    <span class="hljs-class">.label</span> {
+      <span class="hljs-attribute">display</span><span class="hljs-value">:     block;</span>
+      <span class="hljs-attribute">line-height</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>
+      <span class="hljs-attribute">padding</span><span class="hljs-value">:     <span class="hljs-number">0</span> <span class="hljs-variable">$tools-padding</span> <span class="hljs-number">0</span> <span class="hljs-variable">$tools-padding</span>;</span>
+    }
+
+    <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-class">.label</span>{
+      <span class="hljs-attribute">padding-left</span><span class="hljs-value">: <span class="hljs-variable">$tools-padding</span> * <span class="hljs-number">2</span>;</span>
+    }
+    <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-class">.label</span> {
+      <span class="hljs-attribute">padding-left</span><span class="hljs-value">: <span class="hljs-variable">$tools-padding</span> * <span class="hljs-number">3</span>;</span>
+    }
+    <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-class">.label</span> {
+      <span class="hljs-attribute">padding-left</span><span class="hljs-value">: <span class="hljs-variable">$tools-padding</span> * <span class="hljs-number">4</span>;</span>
+    }
+    <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-class">.label</span> {
+      <span class="hljs-attribute">padding-left</span><span class="hljs-value">: <span class="hljs-variable">$tools-padding</span> * <span class="hljs-number">5</span>;</span>
+    }
+    <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-tag">li</span> <span class="hljs-class">.label</span> {
+      <span class="hljs-attribute">padding-left</span><span class="hljs-value">: <span class="hljs-variable">$tools-padding</span> * <span class="hljs-number">6</span>;</span>
+    }
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="behavior">Behavior</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$navigation-shift-duration</span><span class="hljs-value">: <span class="hljs-number">150ms</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>In either mode, we need to expand the nav&#39;s height when showing the table of contents (we don&#39;t
+want a blank div getting in the way of interaction)</p></div></div><div class="code"><div class="wrapper"><span class="hljs-tag">nav</span> {
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> transition</span>(height<span class="hljs-preprocessor"> 0</span> <span class="hljs-variable">$navigation-shift-duration</span>);</span>
+
+  <span class="hljs-class">.tools</span> <span class="hljs-class">.toggle</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> transition</span>(background <span class="hljs-variable">$navigation-shift-duration</span>);</span>
+  }
+
+  &amp;<span class="hljs-class">.active</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> transition</span>(height<span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 0</span>);</span>
+    <span class="hljs-attribute">height</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>In two-column mode, we slide the table of contents in from the right</p></div></div><div class="code"><div class="wrapper"><span class="hljs-tag">nav</span> <span class="hljs-class">.toc</span> {
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> transition</span>(right <span class="hljs-variable">$navigation-shift-duration</span>);</span>
+  <span class="hljs-attribute">right</span><span class="hljs-value">: -<span class="hljs-number">100%</span>;</span>
+}
+
+<span class="hljs-tag">nav</span><span class="hljs-class">.active</span> <span class="hljs-class">.toc</span> {
+  <span class="hljs-attribute">right</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>In single column mode, we slide in from the left (and also pop the body)</p></div></div><div class="code"><div class="wrapper"><span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (max-width: #{</span><span class="hljs-variable">$single-column-toggle-width</span>}) {
+  <span class="hljs-tag">nav</span> <span class="hljs-class">.toc</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> transition</span>(left <span class="hljs-variable">$navigation-shift-duration</span>);</span>
+    <span class="hljs-attribute">right</span><span class="hljs-value">: auto;</span>
+    <span class="hljs-attribute">left</span><span class="hljs-value">: -<span class="hljs-number">100%</span>;</span>
+  }
+
+  <span class="hljs-tag">nav</span><span class="hljs-class">.active</span> <span class="hljs-class">.toc</span> {
+    <span class="hljs-attribute">left</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>When we switch to the navigation in single column mode, &quot;pop&quot; the body off by sliding it off
+screen to the right.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (max-width: #{</span><span class="hljs-variable">$single-column-toggle-width</span>}) {
+  <span class="hljs-tag">body</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> transition</span>(left <span class="hljs-variable">$navigation-shift-duration</span>);</span>
+    <span class="hljs-attribute">position</span><span class="hljs-value">: relative;</span>
+    <span class="hljs-attribute">left</span><span class="hljs-value">:     <span class="hljs-number">0</span>;</span>
+  }
+
+  <span class="hljs-tag">html</span><span class="hljs-class">.popped</span> {
+    <span class="hljs-attribute">overflow</span><span class="hljs-value">: hidden;</span>
+
+    <span class="hljs-tag">body</span> {
+      <span class="hljs-attribute">left</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+      <span class="hljs-attribute">overflow</span><span class="hljs-value">: hidden;</span>
+    }
+  }
+}
+
+<span class="hljs-tag">nav</span> <span class="hljs-class">.toc</span> {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>By default, all file lists are collapsed.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-class">.children</span>, <span class="hljs-class">.outline</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">: none;</span>
+  }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We only expand direct descendants for files, but outlines are fully expanded from the outset.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-class">.expanded</span> &gt; <span class="hljs-class">.children</span>, <span class="hljs-class">.expanded</span> &gt; <span class="hljs-class">.outline</span>, <span class="hljs-class">.expanded</span> &gt; <span class="hljs-class">.outline</span> <span class="hljs-class">.children</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">: block;</span>
+  }
+
+  <span class="hljs-class">.discloser</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> transition-property</span>(-moz-transform<span class="hljs-preprocessor"> -webkit-transform</span><span class="hljs-preprocessor"> -o-transform</span><span class="hljs-preprocessor"> transform</span>) ;</span><span class="hljs-comment">// bah.</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> transition-duration</span>(<span class="hljs-number">200ms</span>);</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> rotate</span>(<span class="hljs-number">0deg</span>);</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">:         inline-block;</span>
+    <span class="hljs-attribute">height</span><span class="hljs-value">:          <span class="hljs-number">9px</span>;</span>
+    <span class="hljs-attribute">width</span><span class="hljs-value">:           <span class="hljs-number">9px</span>;</span>
+    <span class="hljs-attribute">padding</span><span class="hljs-value">:         <span class="hljs-number">0.2em</span>;</span>
+    <span class="hljs-attribute">margin</span><span class="hljs-value">:          <span class="hljs-number">0.2em</span> <span class="hljs-number">0.2em</span> -<span class="hljs-number">0.2em</span> <span class="hljs-number">0.2em</span>;</span>
+    <span class="hljs-attribute">vertical-align</span><span class="hljs-value">:  baseline;</span>
+    <span class="hljs-attribute">background</span><span class="hljs-value">:      <span class="hljs-function">inline-image</span>(<span class="hljs-string">'disclosure-indicator.png'</span>) center center no-repeat;</span>
+    <span class="hljs-attribute">background-size</span><span class="hljs-value">: <span class="hljs-number">9px</span> <span class="hljs-number">9px</span>;</span>
+  }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Every label gets one, but not all need to display them.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-class">.discloser</span><span class="hljs-class">.placeholder</span>, <span class="hljs-class">.expanded</span> &gt; <span class="hljs-class">.outline</span> <span class="hljs-class">.discloser</span> {
+    <span class="hljs-attribute">background</span><span class="hljs-value">: none;</span>
+  }
+
+  <span class="hljs-class">.expanded</span> &gt; <span class="hljs-class">.label</span> <span class="hljs-class">.discloser</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> rotate</span>(<span class="hljs-number">90deg</span>);</span>
+  }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>When searching, we only hide labels so that the hierarchy can still be shown to the user</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-class">.filtered</span> &gt; <span class="hljs-class">.label</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">: none;</span>
+  }
+
+  <span class="hljs-class">.matched-child</span> &gt; <span class="hljs-class">.label</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">: block;</span>
+  }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Make sure that we expand to show any matched nodes</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-class">.matched-child</span> &gt; <span class="hljs-class">.children</span>, <span class="hljs-class">.matched-child</span> &gt; <span class="hljs-class">.outline</span>, <span class="hljs-class">.matched-child</span> &gt; <span class="hljs-class">.outline</span> <span class="hljs-class">.children</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">: block;</span>
+  }
+
+  <span class="hljs-class">.matched</span> &gt; <span class="hljs-class">.children</span>, <span class="hljs-class">.matched</span> &gt; <span class="hljs-class">.outline</span>, <span class="hljs-class">.matched</span> &gt; <span class="hljs-class">.outline</span> <span class="hljs-class">.children</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">: block;</span>
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Disclosure indicators are confusing when we&#39;re searching</p></div></div><div class="code"><div class="wrapper"><span class="hljs-tag">nav</span><span class="hljs-class">.searching</span> <span class="hljs-class">.toc</span> <span class="hljs-class">.discloser</span> {
+  <span class="hljs-attribute">display</span><span class="hljs-value">: none;</span>
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="typography">Typography</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.comments</span> <span class="hljs-class">.wrapper</span> {
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> commentary-font</span>();</span>
+
+  <span class="hljs-tag">h1</span>, <span class="hljs-tag">h2</span>, <span class="hljs-tag">h3</span>, <span class="hljs-tag">h4</span>, <span class="hljs-tag">h5</span>, <span class="hljs-tag">h6</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> header-font</span>();</span>
+  }
+
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> header-font-sizes</span>();</span>
+
+  <span class="hljs-tag">p</span> {
+    <span class="hljs-attribute">margin</span><span class="hljs-value">: <span class="hljs-number">1em</span> <span class="hljs-number">0</span>;</span>
+  }
+
+  &gt; * {
+    &amp;<span class="hljs-pseudo">:first-child</span> {
+      <span class="hljs-attribute">margin-top</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+    }
+
+    &amp;<span class="hljs-pseudo">:last-child</span> {
+      <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+    }
+  }
+
+  <span class="hljs-tag">ol</span>, <span class="hljs-tag">ul</span> {
+    <span class="hljs-attribute">padding-left</span><span class="hljs-value">: <span class="hljs-number">1.75em</span>;</span>
+    <span class="hljs-attribute">margin</span><span class="hljs-value">: <span class="hljs-number">1em</span> <span class="hljs-number">0</span>;</span>
+  }
+
+  <span class="hljs-tag">ol</span> <span class="hljs-tag">li</span> {
+    <span class="hljs-attribute">list-style</span><span class="hljs-value">: decimal;</span>
+  }
+
+  <span class="hljs-tag">ul</span> <span class="hljs-tag">li</span> {
+    <span class="hljs-attribute">list-style</span><span class="hljs-value">: disc;</span>
+  }
+
+  <span class="hljs-tag">li</span> {
+    <span class="hljs-attribute">margin</span><span class="hljs-value">: <span class="hljs-number">1em</span> <span class="hljs-number">0</span>;</span>
+
+    &amp;<span class="hljs-pseudo">:first-child</span> {
+      <span class="hljs-attribute">margin-top</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+    }
+    &amp;<span class="hljs-pseudo">:last-child</span> {
+      <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+    }
+  }
+
+  <span class="hljs-tag">code</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">: inline-block;</span>
+    <span class="hljs-attribute">padding</span><span class="hljs-value">: <span class="hljs-number">0.25em</span> <span class="hljs-number">0.25em</span> <span class="hljs-number">0</span> <span class="hljs-number">0.25em</span>;</span>
+  }
+
+  <span class="hljs-tag">pre</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">:    block;</span>
+    <span class="hljs-attribute">overflow-x</span><span class="hljs-value">: auto;</span>
+    <span class="hljs-attribute">overflow-y</span><span class="hljs-value">: hidden;</span>
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> inline-codestyles</span>();</span>
+
+    <span class="hljs-tag">code</span> {
+      <span class="hljs-attribute">padding</span><span class="hljs-value">: <span class="hljs-variable">$common-margin</span>;</span>
+    }
+  }
+  <span class="hljs-tag">blockquote</span> {
+    <span class="hljs-attribute">padding</span><span class="hljs-value">: <span class="hljs-number">0</span> <span class="hljs-variable">$common-margin</span>;</span>
+  }
+
+  <span class="hljs-tag">strong</span> {
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-number">700</span>;</span>
+  }
+
+  <span class="hljs-tag">em</span> {
+    <span class="hljs-attribute">font-style</span><span class="hljs-value">: italic;</span>
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="visual-design">Visual Design</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We want a bit of depth between the columns, so make the code appear inset</p></div></div><div class="code"><div class="wrapper"><span class="hljs-variable">$code-column-shadow-width</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+<span class="hljs-variable">$background-gradient</span><span class="hljs-value">: <span class="hljs-function">linear-gradient</span>(left, <span class="hljs-function">darken</span>(<span class="hljs-variable">$code-background-color</span>, <span class="hljs-number">15%</span>), <span class="hljs-function">darken</span>(<span class="hljs-variable">$code-background-color</span>, <span class="hljs-number">5%</span>) <span class="hljs-number">0.3</span> * <span class="hljs-variable">$code-column-shadow-width</span>, <span class="hljs-variable">$code-background-color</span> <span class="hljs-variable">$code-column-shadow-width</span>);</span>
+
+<span class="hljs-tag">html</span> {
+  <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-variable">$code-background-color</span>;</span> <span class="hljs-comment">// Degrade gracefully</span>
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We cheat and use #document to display the shadow</p></div></div><div class="code"><div class="wrapper"><span class="hljs-id">#document</span> {
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> background</span>(<span class="hljs-variable">$commentary-background-color</span> <span class="hljs-variable">$background-gradient</span> <span class="hljs-variable">$commentary-column-width</span><span class="hljs-preprocessor"> no-repeat</span>);</span>
+  <span class="hljs-attribute">margin-right</span><span class="hljs-value">: -<span class="hljs-variable">$code-column-shadow-width</span>;</span>
+  <span class="hljs-attribute">padding-right</span><span class="hljs-value">: <span class="hljs-variable">$code-column-shadow-width</span>;</span>
+
+  <span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (max-width: #{</span><span class="hljs-variable">$single-column-toggle-width</span>}) {
+    <span class="hljs-attribute">margin-right</span><span class="hljs-value">:  <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">padding-right</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  }
+}
+
+<span class="hljs-id">#meta</span> &gt; * {
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> commentary-font</span>();</span>
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> text-shadow</span>(<span class="hljs-variable">$code-shadow-color</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 0</span>);</span>
+
+  &amp;, <span class="hljs-tag">a</span> {
+    <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-function">darken</span>(<span class="hljs-variable">$code-foreground-color</span>, <span class="hljs-number">15%</span>);</span>
+  }
+
+  <span class="hljs-tag">a</span> {
+    <span class="hljs-attribute">text-decoration</span><span class="hljs-value">: none;</span>
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We apply font changes to .wrapper elements so that we do not resize the &#39;standard&#39; em unit that
+we are relying on for layout.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class">.comments</span> <span class="hljs-class">.wrapper</span> {
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> commentary-font</span>();</span>
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> text-shadow</span>(<span class="hljs-variable">$commentary-shadow-color</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 0</span>);</span>
+  <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$commentary-foreground-color</span>;</span>
+}
+
+<span class="hljs-class">.code</span> {
+  <span class="hljs-class">.wrapper</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> codestyles</span>();</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> code-font</span>();</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> text-shadow</span>(<span class="hljs-variable">$code-shadow-color</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 0</span>);</span>
+    <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$code-foreground-color</span>;</span>
+  }
+
+  <span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (max-width: #{</span><span class="hljs-variable">$single-column-toggle-width</span>}) {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-radius</span>(<span class="hljs-number">0.4em</span>);</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> box-shadow</span>(<span class="hljs-function">darken</span>(<span class="hljs-variable">$code-background-color</span>,<span class="hljs-preprocessor"> 15</span>%)<span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 0.5em</span><span class="hljs-preprocessor"> 0.2em</span><span class="hljs-preprocessor"> inset</span>);</span>
+    <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-variable">$code-background-color</span>;</span>
+
+    <span class="hljs-class">.wrapper</span> {
+      <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> box-shadow</span>(<span class="hljs-variable">$code-background-color</span><span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 0.25em</span><span class="hljs-preprocessor"> 0.75em</span>);</span>
+      <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-variable">$code-background-color</span>;</span>
+    }
+  }
+  <span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (max-width: #{</span><span class="hljs-variable">$commentary-width</span>}) {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-radius</span>(<span class="hljs-number">0</span>);</span>
+  }
+}
+
+<span class="hljs-tag">nav</span> {
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> text-shadow</span>(<span class="hljs-variable">$tools-shadow-color</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 0</span>);</span>
+  <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$tools-foreground-color</span>;</span>
+
+  <span class="hljs-class">.tools</span>, <span class="hljs-class">.toc</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> tools-font</span>();</span>
+  }
+
+  <span class="hljs-class">.tools</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> box-shadow</span>(<span class="hljs-function">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.3</span>)<span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 0.5em</span><span class="hljs-preprocessor"> 0.1em</span>);</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> background</span>(<span class="hljs-function">linear-gradient</span>(top,<span class="hljs-preprocessor"> lighten</span>(<span class="hljs-variable">$tools-background-color</span>,<span class="hljs-preprocessor"> 10</span>%),<span class="hljs-preprocessor"> darken</span>(<span class="hljs-variable">$tools-background-color</span>,<span class="hljs-preprocessor"> 10</span>%)));</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-bottom-left-radius</span>(<span class="hljs-number">0.4em</span>);</span>
+    <span class="hljs-attribute">border-bottom</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$tools-foreground-color</span>;</span>
+    <span class="hljs-attribute">border-left</span><span class="hljs-value">:   <span class="hljs-number">1px</span> solid <span class="hljs-variable">$tools-foreground-color</span>;</span>
+
+    <span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (max-width: #{</span><span class="hljs-variable">$scale-start-width</span>}) {
+      <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-bottom-left-radius</span>(<span class="hljs-number">0</span>);</span>
+    }
+
+    <span class="hljs-tag">li</span> {
+      <span class="hljs-attribute">border-right</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$tools-foreground-color</span>;</span>
+
+      &amp;<span class="hljs-pseudo">:last-child</span> {
+        <span class="hljs-attribute">border-right</span><span class="hljs-value">: none;</span>
+      }
+    }
+
+    <span class="hljs-class">.toggle</span> {
+      <span class="hljs-attribute">cursor</span><span class="hljs-value">: pointer;</span>
+    }
+
+    <span class="hljs-class">.github</span> <span class="hljs-tag">a</span> {
+      <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> transition</span>(opacity<span class="hljs-preprocessor"> 200ms</span>);</span>
+      <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> opacity</span>(<span class="hljs-number">0.5</span>);</span>
+      <span class="hljs-attribute">background</span><span class="hljs-value">:      <span class="hljs-function">inline-image</span>(<span class="hljs-string">'github-icon.png'</span>) center center no-repeat;</span>
+      <span class="hljs-attribute">background-size</span><span class="hljs-value">: <span class="hljs-number">19.5px</span> <span class="hljs-number">24px</span>;</span>
+
+      &amp;<span class="hljs-pseudo">:hover</span> {
+        <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> opacity</span>(<span class="hljs-number">0.9</span>);</span>
+      }
+    }
+  }
+
+
+  &amp;<span class="hljs-class">.active</span> <span class="hljs-class">.tools</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-bottom-left-radius</span>(<span class="hljs-number">0</span>);</span>
+
+    <span class="hljs-class">.toggle</span> {
+      <span class="hljs-attribute">background</span><span class="hljs-value">:  <span class="hljs-function">darken</span>(<span class="hljs-variable">$tools-background-color</span>, <span class="hljs-number">10%</span>);</span>
+      <span class="hljs-attribute">position</span><span class="hljs-value">:    relative;</span>
+    }
+  }
+
+  <span class="hljs-class">.toc</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> box-shadow</span>(<span class="hljs-function">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.3</span>)<span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 0.5em</span><span class="hljs-preprocessor"> 0.1em</span>);</span>
+    <span class="hljs-attribute">background</span><span class="hljs-value">:  <span class="hljs-variable">$tools-background-color</span>;</span>
+    <span class="hljs-attribute">border-left</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$tools-foreground-color</span>;</span>
+
+    <span class="hljs-class">.label</span> {
+      <span class="hljs-attribute">color</span><span class="hljs-value">:           <span class="hljs-variable">$tools-foreground-color</span>;</span>
+      <span class="hljs-attribute">text-decoration</span><span class="hljs-value">: none;</span>
+      <span class="hljs-attribute">border-top</span><span class="hljs-value">:      <span class="hljs-number">1px</span> solid <span class="hljs-function">darken</span>(<span class="hljs-variable">$tools-background-color</span>, <span class="hljs-number">15%</span>);</span>
+      <span class="hljs-attribute">border-bottom</span><span class="hljs-value">:   <span class="hljs-number">1px</span> solid <span class="hljs-function">darken</span>(<span class="hljs-variable">$tools-background-color</span>, <span class="hljs-number">15%</span>);</span>
+      <span class="hljs-attribute">margin-top</span><span class="hljs-value">:     -<span class="hljs-number">1px</span>;</span>
+
+      &amp;<span class="hljs-pseudo">:hover</span> {
+        <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-function">darken</span>(<span class="hljs-variable">$tools-background-color</span>, <span class="hljs-number">10%</span>);</span>
+      }
+    }
+
+    <span class="hljs-class">.file</span> &gt; <span class="hljs-class">.label</span> {
+      <span class="hljs-attribute">font-weight</span><span class="hljs-value">: bold;</span>
+    }
+
+    <span class="hljs-class">.selected</span> &gt; <span class="hljs-class">.label</span> {
+      <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-variable">$commentary-background-color</span>;</span>
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Search styling</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-class">.label</span> <span class="hljs-tag">em</span> {
+      <span class="hljs-attribute">font-weight</span><span class="hljs-value">: bold;</span>
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This isn&#39;t the best of signals...</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-class">.file</span> &gt; <span class="hljs-class">.label</span> <span class="hljs-tag">em</span> {
+      <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-function">darken</span>(<span class="hljs-variable">$tools-foreground-color</span>, <span class="hljs-number">25%</span>);</span>
+    }
+
+    <span class="hljs-class">.matched-child</span> &gt; <span class="hljs-class">.label</span> {
+      <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> opacity</span>(<span class="hljs-number">0.65</span>);</span>
+      <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> text-shadow</span>(none);</span>
+      <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-function">darken</span>(<span class="hljs-variable">$tools-background-color</span>, <span class="hljs-number">15%</span>);</span>
+    }
+  }
+
+  <span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (max-width: #{</span><span class="hljs-variable">$single-column-toggle-width</span>}) {
+    <span class="hljs-class">.tools</span>, <span class="hljs-class">.toc</span> {
+      <span class="hljs-attribute">border-left-width</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Make sure that our tools are opaque in single column mode so that the transitions aren&#39;t
+distracting</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-variable">$opaque-tools-background-color</span><span class="hljs-value">: <span class="hljs-function">opacify</span>(<span class="hljs-variable">$tools-background-color</span>, <span class="hljs-number">1.0</span>);</span>
+
+    <span class="hljs-class">.tools</span> {
+      <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> background</span>(<span class="hljs-function">linear-gradient</span>(top,<span class="hljs-preprocessor"> lighten</span>(<span class="hljs-variable">$opaque-tools-background-color</span>,<span class="hljs-preprocessor"> 10</span>%),<span class="hljs-preprocessor"> darken</span>(<span class="hljs-variable">$opaque-tools-background-color</span>,<span class="hljs-preprocessor"> 10</span>%)));</span>
+    }
+
+    <span class="hljs-class">.toc</span> {
+      <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-variable">$opaque-tools-background-color</span>;</span>
+    }
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="commentary-elements">Commentary Elements</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.comments</span> <span class="hljs-class">.wrapper</span> {
+  <span class="hljs-tag">a</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">:         inline-block;</span>
+    <span class="hljs-attribute">color</span><span class="hljs-value">:           <span class="hljs-variable">$link-color</span>;</span>
+    <span class="hljs-attribute">text-decoration</span><span class="hljs-value">: none;</span>
+
+    &amp;<span class="hljs-pseudo">:hover</span>, &amp;<span class="hljs-pseudo">:hover</span> * {
+      <span class="hljs-attribute">text-decoration</span><span class="hljs-value">: underline;</span>
+    }
+  }
+
+  <span class="hljs-tag">code</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> code-font</span>();</span>
+    <span class="hljs-attribute">border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-function">darken</span>(<span class="hljs-function">desaturate</span>(<span class="hljs-variable">$inline-code-background-color</span>, <span class="hljs-number">25%</span>), <span class="hljs-number">10%</span>);</span>
+  }
+
+  <span class="hljs-tag">pre</span>, <span class="hljs-tag">code</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-radius</span>(<span class="hljs-number">0.4em</span>);</span>
+    <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-variable">$inline-code-background-color</span>;</span>
+  }
+
+  <span class="hljs-tag">pre</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> box-shadow</span>(<span class="hljs-function">darken</span>(<span class="hljs-function">desaturate</span>(<span class="hljs-variable">$inline-code-background-color</span>,<span class="hljs-preprocessor"> 15</span>%),<span class="hljs-preprocessor"> 5</span>%)<span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 0.4em</span><span class="hljs-preprocessor"> 0.2em</span>);</span>
+    <span class="hljs-attribute">border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-function">darken</span>(<span class="hljs-function">desaturate</span>(<span class="hljs-variable">$inline-code-background-color</span>, <span class="hljs-number">15%</span>), <span class="hljs-number">20%</span>);</span>
+
+    <span class="hljs-tag">code</span> {
+      <span class="hljs-attribute">border-width</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+      <span class="hljs-attribute">background</span><span class="hljs-value">:   transparent;</span>
+    }
+  }
+  <span class="hljs-tag">blockquote</span> {
+    <span class="hljs-variable">$blockquote-border-color</span><span class="hljs-value">: <span class="hljs-function">lighten</span>(<span class="hljs-variable">$commentary-foreground-color</span>, <span class="hljs-number">30%</span>);</span>
+    <span class="hljs-attribute">border-left</span><span class="hljs-value">:  <span class="hljs-number">0.15em</span> solid <span class="hljs-variable">$blockquote-border-color</span>;</span>
+    <span class="hljs-attribute">margin-left</span><span class="hljs-value">: -<span class="hljs-number">0.15em</span>;</span>
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="browser-specific-tweaks">Browser-Specific Tweaks</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Don&#39;t allow mobile WebKit clients to mess with the font size</p></div></div><div class="code"><div class="wrapper"><span class="hljs-tag">body</span> {
+  -webkit-<span class="hljs-value">text</span>-size-adjust<span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Replicate the WebKit type=&quot;search&quot; appearance in other browsers if they don&#39;t have their own
+search field styling</p></div></div><div class="code"><div class="wrapper"><span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="search"]</span> {
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-radius</span>(<span class="hljs-number">1em</span>);</span>
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> box-shadow</span>(<span class="hljs-hexcolor">#dddddd</span><span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 0</span><span class="hljs-preprocessor"> inset</span>);</span>
+  <span class="hljs-attribute">border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-hexcolor">#959595</span>;</span>
+  <span class="hljs-attribute">padding</span><span class="hljs-value">: <span class="hljs-number">0.15em</span> <span class="hljs-number">0.8em</span>;</span>
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="doc-tags">Doc Tags</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.comments</span><span class="hljs-class">.doc-section</span> {
+  <span class="hljs-comment">//&amp;.doc-section-public,</span>
+  <span class="hljs-comment">//&amp;.doc-section-static</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p> .wrapper
+   color: #252519</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-class">.wrapper</span> {
+    <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#252519</span>;</span>
+  }
+
+  &amp;<span class="hljs-class">.doc-section-private</span>,
+  &amp;<span class="hljs-class">.doc-section-protected</span>,
+  &amp;<span class="hljs-class">.doc-section-internal</span> {
+    <span class="hljs-class">.wrapper</span> {
+      <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#7f7f7f</span>;</span>
+    }
+  }
+
+  <span class="hljs-class">.doc-section-header</span> {
+    <span class="hljs-attribute">font</span><span class="hljs-value">: bold <span class="hljs-number">18px</span> <span class="hljs-string">'helvetica neue'</span>, helvetica, sans-serif;</span>
+  }
+
+  <span class="hljs-class">.docs</span> <span class="hljs-class">.doc-section-header</span> <span class="hljs-tag">code</span> {
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">18px</span>;</span>
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="code-folding">Code folding</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.code</span> <span class="hljs-class">.marker</span>, <span class="hljs-class">.code</span> <span class="hljs-class">.marker</span><span class="hljs-class">.wrapper</span>, <span class="hljs-class">.code</span> <span class="hljs-class">.wrapper</span><span class="hljs-class">.marker</span> {
+  <span class="hljs-attribute">display</span><span class="hljs-value">: none;</span>
+}
+
+<span class="hljs-class">.code</span><span class="hljs-class">.folded</span> {
+  <span class="hljs-class">.wrapper</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">: none;</span>
+    <span class="hljs-attribute">cursor</span><span class="hljs-value">: default;</span>
+  }
+
+  <span class="hljs-class">.marker</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-radius</span>(<span class="hljs-number">0.2em</span>);</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> box-shadow</span>(<span class="hljs-hexcolor">#2f3539</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 1px</span><span class="hljs-preprocessor"> 0</span>);</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">: inline-block;</span>
+    <span class="hljs-attribute">border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-hexcolor">#73787f</span>;</span>
+    <span class="hljs-attribute">padding</span><span class="hljs-value">: <span class="hljs-number">0.2em</span> <span class="hljs-number">0.5em</span>;</span>
+    <span class="hljs-attribute">margin-left</span><span class="hljs-value">: -<span class="hljs-number">0.5em</span>;</span>
+    <span class="hljs-attribute">margin-right</span><span class="hljs-value">: -<span class="hljs-number">0.5em</span>;</span>
+    <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-hexcolor">#58616b</span>;</span>
+    <span class="hljs-attribute">font</span><span class="hljs-value">: <span class="hljs-number">12px</span> <span class="hljs-string">'Droid Sans Mono'</span>, Menlo, Monaco, monospace;</span>
+    <span class="hljs-attribute">text-shadow</span><span class="hljs-value">: <span class="hljs-hexcolor">#2f3539</span> <span class="hljs-number">1px</span> <span class="hljs-number">1px</span> <span class="hljs-number">0px</span>;</span>
+    <span class="hljs-attribute">cursor</span><span class="hljs-value">: pointer;</span>
+    -webkit-touch-callout<span class="hljs-value">: none;</span>
+    -webkit-user-<span class="hljs-tag">select</span><span class="hljs-value">: none;</span>
+    -khtml-user-<span class="hljs-tag">select</span><span class="hljs-value">: none;</span>
+    -moz-user-<span class="hljs-tag">select</span><span class="hljs-value">: -moz-none;</span>
+    -ms-user-<span class="hljs-tag">select</span><span class="hljs-value">: none;</span>
+    user-<span class="hljs-tag">select</span><span class="hljs-value">: none;</span>
+
+    <span class="hljs-class">.c1</span> {
+      <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#73787f</span>;</span>
+      <span class="hljs-attribute">font-style</span><span class="hljs-value">: normal;</span>
+    }
+  }
+
+  <span class="hljs-class">.marker</span><span class="hljs-pseudo">:hover</span> {
+    <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-hexcolor">#5f6872</span>;</span>
+
+    <span class="hljs-class">.c1</span> {
+      <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-hexcolor">#7b8087</span>;</span>
+    }
+  }
+
+  <span class="hljs-class">.marker</span> <span class="hljs-class">.c1</span><span class="hljs-pseudo">:after</span> {
+    <span class="hljs-attribute">content</span><span class="hljs-value">: <span class="hljs-string">" …"</span>;</span>
+  }
+}</div></div></div></div></body></html>

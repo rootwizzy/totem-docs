@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"><head><title>app/assets/javascripts/totem/lodestar/loader</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="app/assets/javascripts/totem/lodestar/loader"><meta name="groc-project-path" content="app/assets/javascripts/totem/lodestar/loader.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/app/assets/javascripts/totem/lodestar/loader.coffee">app/assets/javascripts/totem/lodestar/loader.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-built_in">window</span>.TotemLodestar =
+  <span class="hljs-attribute">_modules</span>: {}
+
+  <span class="hljs-attribute">load</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">this</span>.version = $(<span class="hljs-string">'.settings'</span>).data(<span class="hljs-string">'version'</span>)
+    <span class="hljs-keyword">this</span>.user_settings._init()
+
+    settings     = $(<span class="hljs-string">'.settings'</span>).data(<span class="hljs-string">'settings'</span>)
+
+    <span class="hljs-keyword">for</span> <span class="hljs-built_in">module</span> <span class="hljs-keyword">of</span> <span class="hljs-keyword">this</span>._modules
+      <span class="hljs-keyword">this</span>._modules[<span class="hljs-built_in">module</span>].init(<span class="hljs-built_in">module</span>, settings[<span class="hljs-string">'modules'</span>][<span class="hljs-built_in">module</span>]);
+
+  <span class="hljs-attribute">load_module</span>: <span class="hljs-function"><span class="hljs-params">(id, <span class="hljs-built_in">module</span>, settings)</span> -&gt;</span>
+    <span class="hljs-built_in">module</span>._settings = settings
+    <span class="hljs-built_in">module</span>._id       = id
+    <span class="hljs-keyword">this</span>.load_module_plugins(<span class="hljs-built_in">module</span>)
+
+  <span class="hljs-attribute">load_module_plugins</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-built_in">module</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> plugin <span class="hljs-keyword">of</span> <span class="hljs-built_in">module</span>._settings
+      <span class="hljs-built_in">module</span>[plugin](<span class="hljs-built_in">module</span>._settings[plugin])
+    
+
+  <span class="hljs-attribute">user_settings</span>: 
+    <span class="hljs-attribute">_init</span>: <span class="hljs-function">-&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Cookies.defaults = {expires: 30}</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> Cookies.get(<span class="hljs-string">'TotemLodestar'</span>) <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span>
+      Cookies.set(<span class="hljs-string">'TotemLodestar'</span>, <span class="hljs-keyword">this</span>._defaults)
+
+    <span class="hljs-attribute">_defaults</span>: 
+      <span class="hljs-attribute">layout</span>: 
+        <span class="hljs-attribute">full_width</span>: <span class="hljs-literal">true</span>
+
+    <span class="hljs-attribute">set</span>: <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span> Cookies.set(<span class="hljs-string">'TotemLodestar'</span>, value)
+    <span class="hljs-attribute">get</span>: <span class="hljs-function"><span class="hljs-params">(cname)</span> -&gt;</span> <span class="hljs-keyword">return</span> Cookies.getJSON(<span class="hljs-string">'TotemLodestar'</span>)
+    <span class="hljs-attribute">remove</span>: <span class="hljs-function"><span class="hljs-params">(cname)</span> -&gt;</span> <span class="hljs-built_in">console</span>.log <span class="hljs-string">'Needs implementation'</span></div></div></div></div></body></html>

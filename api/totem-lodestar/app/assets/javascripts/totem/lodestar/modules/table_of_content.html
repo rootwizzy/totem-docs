@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><title>app/assets/javascripts/totem/lodestar/modules/table_of_content</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="app/assets/javascripts/totem/lodestar/modules/table_of_content"><meta name="groc-project-path" content="app/assets/javascripts/totem/lodestar/modules/table_of_content.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/app/assets/javascripts/totem/lodestar/modules/table_of_content.coffee">app/assets/javascripts/totem/lodestar/modules/table_of_content.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-built_in">window</span>.TotemLodestar._modules[<span class="hljs-string">'table_of_contents'</span>] =
+  <span class="hljs-attribute">init</span>: <span class="hljs-function"><span class="hljs-params">(id, options)</span> -&gt;</span>
+    TotemLodestar.load_module id, <span class="hljs-keyword">this</span>, options
+    <span class="hljs-keyword">return</span>
+
+  <span class="hljs-attribute">smooth_scroll</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    speed = options[<span class="hljs-string">'speed'</span>]
+    $(<span class="hljs-string">'.toc_list'</span>).children().<span class="hljs-literal">on</span> <span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">(e)</span> -&gt;</span>
+      e.preventDefault()
+      target = <span class="hljs-property">@hash</span>
+      $target = $(target)
+      <span class="hljs-built_in">console</span>.log <span class="hljs-string">'Target'</span>, $target
+      $(<span class="hljs-string">'html, body'</span>).stop().animate { <span class="hljs-string">'scrollTop'</span>: $target.offset().top }, speed, <span class="hljs-string">'swing'</span>, <span class="hljs-function">-&gt;</span>
+        <span class="hljs-built_in">window</span>.location.hash = target
+        <span class="hljs-keyword">return</span>
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">return</span>
+
+  <span class="hljs-attribute">highlight</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+<span class="hljs-function">
+    <span class="hljs-title">build_document_positions</span> = -&gt;</span>
+      $(<span class="hljs-string">'h1, h2, h3, h4, h5, h6'</span>).each -&gt;
+        regions.push
+          <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>
+          <span class="hljs-attribute">bottom</span>: $(<span class="hljs-keyword">this</span>)[<span class="hljs-number">0</span>].offsetTop
+          <span class="hljs-attribute">$</span>: $(<span class="hljs-keyword">this</span>)
+        <span class="hljs-keyword">return</span>
+      prev = <span class="hljs-literal">null</span>
+      regions.forEach (header) -&gt;
+        <span class="hljs-keyword">if</span> prev
+          header.top = prev.bottom - <span class="hljs-number">1</span>
+        prev = header
+        <span class="hljs-keyword">return</span>
+      <span class="hljs-keyword">return</span>
+<span class="hljs-function">
+    <span class="hljs-title">check_header_pos</span> = <span class="hljs-params">(pos, cur_region)</span> =&gt;</span>
+      <span class="hljs-keyword">if</span> cur_region == <span class="hljs-literal">null</span> <span class="hljs-keyword">or</span> pos &lt; cur_region.top <span class="hljs-keyword">or</span> pos &gt; cur_region.bottom
+        set_cur_region pos, cur_region
+      <span class="hljs-keyword">return</span>
+<span class="hljs-function">
+    <span class="hljs-title">set_cur_region</span> = <span class="hljs-params">(pos, cur_region)</span> =&gt;</span>
+      regions.forEach (header) -&gt;
+        <span class="hljs-keyword">if</span> pos &gt;= header.top <span class="hljs-keyword">and</span> pos &lt;= header.bottom
+          cur_region = header
+        <span class="hljs-keyword">return</span>
+      activate_toc_header cur_region
+      <span class="hljs-keyword">return</span>
+<span class="hljs-function">
+    <span class="hljs-title">activate_toc_header</span> = <span class="hljs-params">(cur_region)</span> -&gt;</span>
+      header_href = <span class="hljs-string">'#'</span> + cur_region.$[<span class="hljs-number">0</span>].id
+      $(<span class="hljs-string">'.toc_list'</span>).children(<span class="hljs-string">'a[href="'</span> + header_href + <span class="hljs-string">'"]'</span>).addClass <span class="hljs-string">'active'</span>
+      $(<span class="hljs-string">'.toc_list'</span>).children(<span class="hljs-string">':not(a[href="'</span> + header_href + <span class="hljs-string">'"])'</span>).removeClass <span class="hljs-string">'active'</span>
+      <span class="hljs-keyword">return</span>
+
+    ticking    = <span class="hljs-literal">false</span>
+    regions    = []
+    cur_region = <span class="hljs-literal">null</span>
+
+    build_document_positions()
+    check_header_pos <span class="hljs-built_in">window</span>.scrollY, cur_region</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Initialize to set the first region active</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-built_in">window</span>.addEventListener <span class="hljs-string">'scroll'</span>, <span class="hljs-function"><span class="hljs-params">(e)</span> -&gt;</span>
+      <span class="hljs-keyword">if</span> !ticking
+        <span class="hljs-built_in">window</span>.requestAnimationFrame -&gt;
+          check_header_pos <span class="hljs-built_in">window</span>.scrollY, cur_region
+          ticking = <span class="hljs-literal">false</span>
+          <span class="hljs-keyword">return</span>
+      ticking = <span class="hljs-literal">true</span>
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">return</span></div></div></div></div></body></html>

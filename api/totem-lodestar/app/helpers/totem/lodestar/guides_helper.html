@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><title>app/helpers/totem/lodestar/guides_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="app/helpers/totem/lodestar/guides_helper"><meta name="groc-project-path" content="app/helpers/totem/lodestar/guides_helper.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/app/helpers/totem/lodestar/guides_helper.rb">app/helpers/totem/lodestar/guides_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Lodestar</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">GuidesHelper</span></span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">p_render</span><span class="hljs-params">(path)</span>;</span> render <span class="hljs-constant">File</span>.join(<span class="hljs-string">"totem"</span>,<span class="hljs-string">"lodestar"</span>, path) <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CodeRayify</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Redcarpet::Render</span></span>::<span class="hljs-title">HTML</span></span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">block_code</span><span class="hljs-params">(code, language)</span></span>
+          language ||= <span class="hljs-symbol">:plaintext</span>
+          <span class="hljs-constant">CodeRay</span>.scan(code, language).div(<span class="hljs-symbol">css:</span> <span class="hljs-symbol">:class</span>)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">markdown</span><span class="hljs-params">(text)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>CodeRayify options are used to make code blocks with colored syntax.
+All options passed to CodeRayify are RedCarpet Renderer options.
+for all options see -- <a href="https://github.com/vmg/redcarpet#darling-i-packed-you-a-couple-renderers-for-lunch">https://github.com/vmg/redcarpet#darling-i-packed-you-a-couple-renderers-for-lunch</a></p></div></div><div class="code"><div class="wrapper">        coderayified = <span class="hljs-constant">CodeRayify</span>.new(
+          <span class="hljs-symbol">filter_html:</span>     <span class="hljs-keyword">true</span>, <span class="hljs-comment"># Do not allow user inputted HTML</span>
+          <span class="hljs-symbol">hard_wrap:</span>       <span class="hljs-keyword">true</span>, <span class="hljs-comment"># Insert &lt;br&gt; tags inside paragraphs based on orginal document</span>
+          <span class="hljs-symbol">with_toc_data:</span>   <span class="hljs-keyword">true</span>, <span class="hljs-comment"># Add id anchors to each header to allow linking</span>
+        )</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Define what Markdown extensions to use with Redcarpet
+for all extensions see -- <a href="https://github.com/vmg/redcarpet#and-its-like-really-simple-to-use">https://github.com/vmg/redcarpet#and-its-like-really-simple-to-use</a></p></div></div><div class="code"><div class="wrapper">        options = {
+          <span class="hljs-symbol">disable_indented_code_blocks:</span> <span class="hljs-keyword">true</span>, <span class="hljs-comment"># do not parse usual markdown code blocks with 4 spaces because we use fenced</span>
+          <span class="hljs-symbol">fenced_code_blocks:</span>           <span class="hljs-keyword">true</span>, <span class="hljs-comment"># parse fenced code blocks, used in conjuction with CodeRayify</span>
+          <span class="hljs-symbol">no_intra_emphasis:</span>            <span class="hljs-keyword">true</span>, <span class="hljs-comment"># do not parse emphasis inside of words such as foo_bar_baz</span>
+          <span class="hljs-symbol">autolink:</span>                     <span class="hljs-keyword">true</span>, <span class="hljs-comment"># parse links even when they are not enclosed</span>
+        }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create RedCarpet Markdown Renderer with all given options</p></div></div><div class="code"><div class="wrapper">        redcarpet = <span class="hljs-constant">Redcarpet::Markdown</span>.new(coderayified, options)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Via the Renderer generate HTML with the passed markdown formatted text.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">return</span> redcarpet.render(text).html_safe
+      <span class="hljs-keyword">end</span>
+
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_toc</span><span class="hljs-params">(body)</span></span>
+        <span class="hljs-keyword">if</span> body
+          header_objects = []
+          body.lines.each <span class="hljs-keyword">do</span> |line|
+            <span class="hljs-keyword">if</span> line.starts_with?(<span class="hljs-string">"#"</span>)
+              match = <span class="hljs-regexp">/(?&lt;header&gt;^[#]{1,6})(?&lt;title&gt;.*)/</span>.match(line)
+              header_objects.push({<span class="hljs-symbol">level:</span> match[<span class="hljs-symbol">:header</span>].length.to_i, <span class="hljs-symbol">title:</span> match[<span class="hljs-symbol">:title</span>].strip, <span class="hljs-symbol">children:</span> []})
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+          string = <span class="hljs-string">""</span>
+          header_objects.each <span class="hljs-keyword">do</span> |header|
+            string += <span class="hljs-string">"&lt;a href=#<span class="hljs-subst">#{header[<span class="hljs-symbol">:title</span>].parameterize}</span> class='toc_list-item h<span class="hljs-subst">#{header[<span class="hljs-symbol">:level</span>]}</span>'&gt;"</span>
+            string += header[<span class="hljs-symbol">:title</span>]
+            string += <span class="hljs-string">"&lt;/a&gt;"</span>
+          <span class="hljs-keyword">end</span>
+          string
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_settings_text</span><span class="hljs-params">(var)</span></span>
+        <span class="hljs-constant">Settings</span>[<span class="hljs-symbol">:text</span>][var]
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_class?</span><span class="hljs-params">(link_path)</span></span>
+        <span class="hljs-keyword">if</span> request.path == link_path <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-string">'active'</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-string">''</span> <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

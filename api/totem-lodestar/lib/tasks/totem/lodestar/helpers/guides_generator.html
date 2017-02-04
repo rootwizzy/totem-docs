@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="en"><head><title>lib/tasks/totem/lodestar/helpers/guides_generator</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="lib/tasks/totem/lodestar/helpers/guides_generator"><meta name="groc-project-path" content="lib/tasks/totem/lodestar/helpers/guides_generator.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/lib/tasks/totem/lodestar/helpers/guides_generator.rb">lib/tasks/totem/lodestar/helpers/guides_generator.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Lodestar</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">GuidesGenerator</span>  </span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Parser</span></span>
+        <span class="hljs-constant">DOCUMENTS_DIR</span> = <span class="hljs-string">'/public/documents'</span>
+
+        <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:doc_hash</span>
+
+        <span class="hljs-comment">## Initializes module attributes when included in the rake task</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">included</span><span class="hljs-params">(base)</span></span>
+          <span class="hljs-constant">GuidesGenerator::Parser::</span>doc_hash = {}
+          change_to(<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-constant">DOCUMENTS_DIR</span>, <span class="hljs-keyword">false</span>) {}
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-comment">## Called by the rake task</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_document_structure</span>;</span> build_document_hash <span class="hljs-keyword">end</span>
+
+        private
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_document_hash</span></span>
+          <span class="hljs-comment">## Generate the base version keys for the doc_hash</span>
+          <span class="hljs-constant">Dir</span>.glob(<span class="hljs-string">"*.*.*"</span>).each {|version| <span class="hljs-constant">GuidesGenerator::Parser::</span>doc_hash[version] = {};}
+          <span class="hljs-comment">## Recursively generates the document structure for each version folder</span>
+          <span class="hljs-constant">GuidesGenerator::Parser::</span>doc_hash.each {|version, hash| add_files_and_sections(version, hash);} 
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-comment">## Sets the files and sections keys for a given hash</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_files_and_sections</span><span class="hljs-params">(dir, hash)</span></span>
+          files, dirs      = scrape_dir(dir)
+          hash[<span class="hljs-string">'files'</span>]    = build_files_array(files, dir)   <span class="hljs-keyword">unless</span> files.empty?
+          hash[<span class="hljs-string">'sections'</span>] = build_sections_array(dirs, dir) <span class="hljs-keyword">unless</span> dirs.empty?
+          hash
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-comment">## Takes a directory and returns an array of files and an array of directories</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scrape_dir</span><span class="hljs-params">(dir)</span></span>
+          files, dirs = <span class="hljs-string">''</span>
+          change_to(dir) <span class="hljs-keyword">do</span>
+            files = <span class="hljs-constant">Dir</span>.glob(<span class="hljs-string">"*.*"</span>)                    <span class="hljs-comment">## ["test.md", "test2.md"]</span>
+            dirs  = <span class="hljs-constant">Dir</span>.glob(<span class="hljs-string">"*"</span>)                      <span class="hljs-comment">## ["Deploy", "Help", "test.md"]</span>
+            dirs.delete_if {|dir| files.<span class="hljs-keyword">include</span>?(dir)} <span class="hljs-comment">## ["Deploy", "Help"]</span>
+          <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">return</span> files, dirs
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Takes current directory and creates the sections array for the hash</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_sections_array</span><span class="hljs-params">(sections, cur)</span></span>
+          build_array <span class="hljs-keyword">do</span> |arr|
+            change_to(cur) <span class="hljs-keyword">do</span>
+              sections.each {|section| arr.push(create_section_object(section))}
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Takes current directory and creates the files array for the hash</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_files_array</span><span class="hljs-params">(files, dir)</span></span>
+          build_array {|arr| files.each {|file| arr.push(create_document_object(file, dir))}}
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Creates documents objects to store in the document arrays</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_document_object</span><span class="hljs-params">(file, dir)</span></span>
+          document = <span class="hljs-keyword">nil</span>
+          change_to(dir) {|dir| document = {<span class="hljs-symbol">title:</span> file, <span class="hljs-symbol">path:</span> dir + <span class="hljs-string">'/'</span> + file}}
+          document
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Creates sections objects to store in the sections array</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_section_object</span><span class="hljs-params">(dir)</span></span>
+          section = {<span class="hljs-symbol">title:</span> dir}
+          section = add_files_and_sections(dir, section)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_array</span></span>
+          arr = []
+          <span class="hljs-keyword">yield</span>(arr)
+          arr 
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">change_to</span><span class="hljs-params">(dir, back=<span class="hljs-keyword">true</span>)</span></span>
+          <span class="hljs-constant">Dir</span>.chdir(dir)
+          <span class="hljs-keyword">yield</span>(<span class="hljs-constant">Dir</span>.pwd)
+          <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-string">'..'</span>) <span class="hljs-keyword">if</span> back
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Migrator</span></span>
+        <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:migrated_versions</span>, <span class="hljs-symbol">:migrated_sections</span>, <span class="hljs-symbol">:migrated_documents</span>
+        <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:previous_versions</span>, <span class="hljs-symbol">:previous_sections</span>, <span class="hljs-symbol">:previous_documents</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">version_class</span>;</span>  <span class="hljs-constant">Totem::Lodestar::Version</span>  <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">section_class</span>;</span>  <span class="hljs-constant">Totem::Lodestar::Section</span>  <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">document_class</span>;</span> <span class="hljs-constant">Totem::Lodestar::Document</span> <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">included</span><span class="hljs-params">(base)</span></span>
+          <span class="hljs-constant">GuidesGenerator::Migrator::</span>migrated_versions  = []
+          <span class="hljs-constant">GuidesGenerator::Migrator::</span>migrated_sections  = []
+          <span class="hljs-constant">GuidesGenerator::Migrator::</span>migrated_documents = []
+
+          <span class="hljs-constant">GuidesGenerator::Migrator::</span>previous_versions  = []
+          <span class="hljs-constant">GuidesGenerator::Migrator::</span>previous_sections  = []
+          <span class="hljs-constant">GuidesGenerator::Migrator::</span>previous_documents = []
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_version</span><span class="hljs-params">(version)</span>;</span>   <span class="hljs-constant">GuidesGenerator::Migrator::</span>migrated_versions.push(version);   version  <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_section</span><span class="hljs-params">(section)</span>;</span>   <span class="hljs-constant">GuidesGenerator::Migrator::</span>migrated_sections.push(section);   section  <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_document</span><span class="hljs-params">(document)</span>;</span> <span class="hljs-constant">GuidesGenerator::Migrator::</span>migrated_documents.push(document); document <span class="hljs-keyword">end</span>
+
+        <span class="hljs-comment">## Take document structure from the parser and get or create db records for them, then remove any</span>
+        <span class="hljs-comment">## documents that were not parsed to remove any deleted version/sections/documents.</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">migrate_document_structure</span></span>
+          set_previous_migrations
+
+          <span class="hljs-constant">GuidesGenerator::Parser::</span>doc_hash.each <span class="hljs-keyword">do</span> |version, data|
+            text = get_version_index_text(data[<span class="hljs-string">'files'</span>], version)
+            version_record = get_or_create_version(version, text)
+
+            <span class="hljs-keyword">if</span> data[<span class="hljs-string">'files'</span>]    <span class="hljs-keyword">then</span> migrate_documents(data[<span class="hljs-string">'files'</span>], <span class="hljs-keyword">nil</span>, version_record) <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">if</span> data[<span class="hljs-string">'sections'</span>] <span class="hljs-keyword">then</span> migrate_sections(data[<span class="hljs-string">'sections'</span>], version_record)    <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+          destroy_removed_migrations
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_previous_migrations</span></span>
+          <span class="hljs-constant">GuidesGenerator::Migrator::</span>previous_versions  = version_class.all
+          <span class="hljs-constant">GuidesGenerator::Migrator::</span>previous_sections  = section_class.all
+          <span class="hljs-constant">GuidesGenerator::Migrator::</span>previous_documents = document_class.all
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">destroy_removed_migrations</span></span>
+          versions_to_remove = <span class="hljs-constant">GuidesGenerator::Migrator::</span>previous_versions.to_a.keep_if <span class="hljs-keyword">do</span> |version|
+            !<span class="hljs-constant">GuidesGenerator::Migrator::</span>migrated_versions.<span class="hljs-keyword">include</span>?(version)
+          <span class="hljs-keyword">end</span>
+
+          sections_to_remove = <span class="hljs-constant">GuidesGenerator::Migrator::</span>previous_sections.to_a.keep_if <span class="hljs-keyword">do</span> |sections|
+            !<span class="hljs-constant">GuidesGenerator::Migrator::</span>migrated_sections.<span class="hljs-keyword">include</span>?(sections)
+          <span class="hljs-keyword">end</span>
+
+          documents_to_remove = <span class="hljs-constant">GuidesGenerator::Migrator::</span>previous_documents.to_a.keep_if <span class="hljs-keyword">do</span> |document|
+            !<span class="hljs-constant">GuidesGenerator::Migrator::</span>migrated_documents.<span class="hljs-keyword">include</span>?(document)
+          <span class="hljs-keyword">end</span>
+
+          [versions_to_remove, sections_to_remove, documents_to_remove].each {|records| records.each {|record| record.destroy}}
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-comment">## Check the version hash for an index.md or return default text</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_version_index_text</span><span class="hljs-params">(data, version)</span></span>
+          index = 
+            <span class="hljs-string">"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="version">{version}</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper">            <span class="hljs-constant">No</span> <span class="hljs-constant">Index</span> <span class="hljs-constant">Found</span>.
+            <span class="hljs-constant">To</span> contribute add an index.md to the base directory of this version!
+            <span class="hljs-string">"
+          if data and data.select {|file| file[:title] == 'index.md'} then index = File.read(data[0][:path]) end
+        end
+
+        def migrate_sections(sections, version, parent=nil)
+          sections.each do |section|
+            section_record = get_or_create_section(section, version, parent)
+            if section['files'] then migrate_documents(section['files'], section_record, version) end
+            if section['sections'] then migrate_sections(section['sections'], version, section_record) end
+          end
+        end
+
+        def migrate_documents(files, section, version)
+          files.each do |file|
+            document              = {}
+            document[:title]      = file[:title].sub(/.md/, '')
+            document[:body]       = File.read(file[:path])
+            document[:section_id] = if section then section.id else nil end
+            document[:version_id] = version.id
+            get_or_create_document(document)
+          end      
+        end
+
+        def get_or_create_document(document)
+          order = set_order_from_title(document[:title])
+          obj   = document_class.find_or_create_by(title: document[:title], section_id: document[:section_id], version_id: document[:version_id])
+          document_class.find(obj) ## Hacky to generate the :slug for FriendlyId
+          obj.updated_at = Time.now unless obj.body.eql? document[:body]
+          obj.body  = document[:body]
+          if order then obj.order = order else obj.order = nil end
+          obj.save
+          add_document(obj)
+        end
+
+        def get_or_create_version(title, text)
+          version      = version_class.find_or_create_by(title: title)
+          version.updated_at = Time.now unless version.body.eql? text
+          version.body = text if text
+          version.save
+          add_version(version)
+        end
+
+        def get_or_create_section(section, version, parent)
+          order          = set_order_from_title(section[:title])
+          section        = section_class.find_or_create_by(title: section[:title], version_id: version.id)
+          section.parent = parent if parent
+          section.order  = order if order
+          section.save
+          add_section(section)
+        end
+
+        def set_order_from_title(title)
+          has_order = /^[0-9]?[0-9]_/.match(title)
+          if has_order
+            order = has_order.to_s.to_i
+            title.gsub!(/^[0-9]?[0-9]_/, '')
+            return order
+          end
+        end
+
+      end
+    end
+  end
+end</span></div></div></div></div></body></html>

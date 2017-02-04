@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="en"><head><title>app/assets/javascripts/totem/lodestar/modules/layout</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="app/assets/javascripts/totem/lodestar/modules/layout"><meta name="groc-project-path" content="app/assets/javascripts/totem/lodestar/modules/layout.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/app/assets/javascripts/totem/lodestar/modules/layout.coffee">app/assets/javascripts/totem/lodestar/modules/layout.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-built_in">window</span>.TotemLodestar._modules[<span class="hljs-string">'layout'</span>] =
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function"><span class="hljs-params">(id, options)</span> -&gt;</span> TotemLodestar.load_module id, <span class="hljs-keyword">this</span>, options
+
+  <span class="hljs-attribute">full_width</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+<span class="hljs-function">    <span class="hljs-title">expand</span> = -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Checks if all layout_classes have the full class, if any don&#39;t then add full to all divs</p></div></div><div class="code"><div class="wrapper">      TotemLodestar.user_settings.set <span class="hljs-attribute">layout</span>: <span class="hljs-attribute">full_width</span>: <span class="hljs-literal">true</span>
+      layout_divs().addClass <span class="hljs-string">'full'</span>
+      Turbolinks.clearCache()
+<span class="hljs-function">
+    <span class="hljs-title">compress</span> = -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Checks if all layout_classes have the full class, if any do then remove from all divs</p></div></div><div class="code"><div class="wrapper">      TotemLodestar.user_settings.set <span class="hljs-attribute">layout</span>: <span class="hljs-attribute">full_width</span>: <span class="hljs-literal">false</span>
+      layout_divs().removeClass <span class="hljs-string">'full'</span>
+      Turbolinks.clearCache()
+<span class="hljs-function">
+    <span class="hljs-title">layout_divs</span> = -&gt;</span> $ <span class="hljs-string">'.article, .top-nav_menu'</span>
+<span class="hljs-function">
+    <span class="hljs-title">set_layout_button_to</span> = <span class="hljs-params">(direction)</span> -&gt;</span>
+      <span class="hljs-keyword">switch</span> direction
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'compress'</span>
+          $(<span class="hljs-string">'#layout-style'</span>).children(<span class="hljs-string">'i'</span>).removeClass(<span class="hljs-string">'fa-expand'</span>).addClass <span class="hljs-string">'fa-compress'</span>
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'expand'</span>
+          $(<span class="hljs-string">'#layout-style'</span>).children(<span class="hljs-string">'i'</span>).removeClass(<span class="hljs-string">'fa-compress'</span>).addClass <span class="hljs-string">'fa-expand'</span>
+      <span class="hljs-keyword">return</span>
+
+    pref = TotemLodestar.user_settings.get()[<span class="hljs-string">'layout'</span>][<span class="hljs-string">'full_width'</span>]
+    <span class="hljs-keyword">if</span> pref != <span class="hljs-literal">undefined</span>
+      <span class="hljs-keyword">if</span> pref
+        expand()
+      <span class="hljs-keyword">else</span>
+        compress()
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">if</span> options[<span class="hljs-string">'default'</span>]
+        expand()
+
+    $(<span class="hljs-string">'#layout-style'</span>).<span class="hljs-literal">on</span> <span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">(e)</span> -&gt;</span>
+      e.preventDefault()
+      <span class="hljs-keyword">if</span> layout_divs().hasClass <span class="hljs-string">'full'</span>
+        compress()
+        set_layout_button_to <span class="hljs-string">'expand'</span>
+      <span class="hljs-keyword">else</span>
+        expand()
+        set_layout_button_to <span class="hljs-string">'compress'</span></div></div></div></div></body></html>

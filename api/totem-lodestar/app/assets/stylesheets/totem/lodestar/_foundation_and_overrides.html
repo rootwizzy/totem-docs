@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="en"><head><title>app/assets/stylesheets/totem/lodestar/_foundation_and_overrides</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="app/assets/stylesheets/totem/lodestar/_foundation_and_overrides"><meta name="groc-project-path" content="app/assets/stylesheets/totem/lodestar/_foundation_and_overrides.scss"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/app/assets/stylesheets/totem/lodestar/_foundation_and_overrides.scss">app/assets/stylesheets/totem/lodestar/_foundation_and_overrides.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-at_rule">@<span class="hljs-keyword">charset</span> <span class="hljs-string">'utf-8'</span>;</span>
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'settings'</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'foundation'</span>;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> import &#39;motion-ui/motion-ui&#39;;</span></p>
+<p>If you&#39;d like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We include everything by default.  To slim your CSS, remove components you don&#39;t use.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-global-styles</span>;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> include foundation-grid;</span></p></div></div><div class="code"><div class="wrapper"><span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-flex-grid</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-flex-classes</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-typography</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-button</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-forms</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-visibility-classes</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-float-classes</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-accordion</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-accordion-menu</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-badge</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-breadcrumbs</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-button-group</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-callout</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-close-button</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-drilldown-menu</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-menu</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-dropdown-menu</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-dropdown</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-flex-video</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-label</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-media-object</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-menu-icon</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-off-canvas</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-orbit</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-pagination</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-progress-bar</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-slider</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-sticky</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-reveal</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-switch</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-table</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-tabs</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-thumbnail</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-title-bar</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-tooltip</span>;</span>
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> foundation-top-bar</span>;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> include motion-ui-transitions; and include motion-ui-animations;</span></p>
+<p>If you&#39;d like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.</p></div></div></div></div></body></html>

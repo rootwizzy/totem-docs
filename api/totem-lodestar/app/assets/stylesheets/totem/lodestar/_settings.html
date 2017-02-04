@@ -1,0 +1,434 @@
+<!DOCTYPE html><html lang="en"><head><title>app/assets/stylesheets/totem/lodestar/_settings</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="app/assets/stylesheets/totem/lodestar/_settings"><meta name="groc-project-path" content="app/assets/stylesheets/totem/lodestar/_settings.scss"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/app/assets/stylesheets/totem/lodestar/_settings.scss">app/assets/stylesheets/totem/lodestar/_settings.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><h2 id="-foundation-for-sites-settings"> Foundation for Sites Settings</h2>
+<p> Table of Contents:</p>
+<ol>
+<li>Global</li>
+<li>Breakpoints</li>
+<li>The Grid</li>
+<li>Base Typography</li>
+<li>Typography Helpers</li>
+<li>Abide</li>
+<li>Accordion</li>
+<li>Accordion Menu</li>
+<li>Badge<ol>
+<li>Breadcrumbs</li>
+<li>Button</li>
+<li>Button Group</li>
+<li>Callout</li>
+<li>Card</li>
+<li>Close Button</li>
+<li>Drilldown</li>
+<li>Dropdown</li>
+<li>Dropdown Menu</li>
+<li>Forms</li>
+<li>Label</li>
+<li>Media Object</li>
+<li>Menu</li>
+<li>Meter</li>
+<li>Off-canvas</li>
+<li>Orbit</li>
+<li>Pagination</li>
+<li>Progress Bar</li>
+<li>Responsive Embed</li>
+<li>Reveal</li>
+<li>Slider</li>
+<li>Switch</li>
+<li>Table</li>
+<li>Tabs</li>
+<li>Thumbnail</li>
+<li>Title Bar</li>
+<li>Tooltip</li>
+<li>Top Bar</li>
+</ol>
+</li>
+</ol></div></div><div class="code"><div class="wrapper"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'util/util'</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="1-global">1. Global</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$global-font-size</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+<span class="hljs-variable">$global-width</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">1200</span>);</span>
+<span class="hljs-variable">$global-lineheight</span><span class="hljs-value">: <span class="hljs-number">1.5</span>;</span>
+<span class="hljs-variable">$foundation-palette</span><span class="hljs-value">: (
+  primary: <span class="hljs-hexcolor">#1779ba</span>,
+  secondary: <span class="hljs-hexcolor">#767676</span>,
+  success: <span class="hljs-hexcolor">#3adb76</span>,
+  warning: <span class="hljs-hexcolor">#ffae00</span>,
+  alert: <span class="hljs-hexcolor">#cc4b37</span>,
+);</span>
+<span class="hljs-variable">$light-gray</span><span class="hljs-value">: <span class="hljs-hexcolor">#e6e6e6</span>;</span>
+<span class="hljs-variable">$medium-gray</span><span class="hljs-value">: <span class="hljs-hexcolor">#cacaca</span>;</span>
+<span class="hljs-variable">$dark-gray</span><span class="hljs-value">: <span class="hljs-hexcolor">#8a8a8a</span>;</span>
+<span class="hljs-variable">$black</span><span class="hljs-value">: <span class="hljs-hexcolor">#0a0a0a</span>;</span>
+<span class="hljs-variable">$white</span><span class="hljs-value">: <span class="hljs-hexcolor">#fefefe</span>;</span>
+<span class="hljs-variable">$body-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$body-font-color</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$body-font-family</span><span class="hljs-value">: <span class="hljs-string">'Helvetica Neue'</span>, Helvetica, Roboto, Arial, sans-serif;</span>
+<span class="hljs-variable">$body-antialiased</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$global-margin</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$global-padding</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$global-weight-normal</span><span class="hljs-value">: normal;</span>
+<span class="hljs-variable">$global-weight-bold</span><span class="hljs-value">: bold;</span>
+<span class="hljs-variable">$global-radius</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+<span class="hljs-variable">$global-text-direction</span><span class="hljs-value">: ltr;</span>
+<span class="hljs-variable">$global-flexbox</span><span class="hljs-value">: false;</span>
+<span class="hljs-variable">$print-transparent-backgrounds</span><span class="hljs-value">: true;</span>
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> add-foundation-colors</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="2-breakpoints">2. Breakpoints</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$breakpoints</span><span class="hljs-value">: (
+  small: <span class="hljs-number">0</span>,
+  medium: <span class="hljs-number">640px</span>,
+  large: <span class="hljs-number">1024px</span>,
+  xlarge: <span class="hljs-number">1200px</span>,
+  xxlarge: <span class="hljs-number">1440px</span>,
+);</span>
+<span class="hljs-variable">$print-breakpoint</span><span class="hljs-value">: large;</span>
+<span class="hljs-variable">$breakpoint-classes</span><span class="hljs-value">: (small medium large);</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="3-the-grid">3. The Grid</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$grid-row-width</span><span class="hljs-value">: <span class="hljs-variable">$global-width</span>;</span>
+<span class="hljs-variable">$grid-column-count</span><span class="hljs-value">: <span class="hljs-number">12</span>;</span>
+<span class="hljs-variable">$grid-column-gutter</span><span class="hljs-value">: (
+  small: <span class="hljs-number">20px</span>,
+  medium: <span class="hljs-number">30px</span>,
+);</span>
+<span class="hljs-variable">$grid-column-align-edge</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$block-grid-max</span><span class="hljs-value">: <span class="hljs-number">8</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="4-base-typography">4. Base Typography</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$header-font-family</span><span class="hljs-value">: <span class="hljs-variable">$body-font-family</span>;</span>
+<span class="hljs-variable">$header-font-weight</span><span class="hljs-value">: <span class="hljs-variable">$global-weight-normal</span>;</span>
+<span class="hljs-variable">$header-font-style</span><span class="hljs-value">: normal;</span>
+<span class="hljs-variable">$font-family-monospace</span><span class="hljs-value">: Consolas, <span class="hljs-string">'Liberation Mono'</span>, Courier, monospace;</span>
+<span class="hljs-variable">$header-color</span><span class="hljs-value">: inherit;</span>
+<span class="hljs-variable">$header-lineheight</span><span class="hljs-value">: <span class="hljs-number">1.4</span>;</span>
+<span class="hljs-variable">$header-margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0.5rem</span>;</span>
+<span class="hljs-variable">$header-styles</span><span class="hljs-value">: (
+  small: (
+    <span class="hljs-string">'h1'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">24</span>),
+    <span class="hljs-string">'h2'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">20</span>),
+    <span class="hljs-string">'h3'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">19</span>),
+    <span class="hljs-string">'h4'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">18</span>),
+    <span class="hljs-string">'h5'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">17</span>),
+    <span class="hljs-string">'h6'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">16</span>),
+  ),
+  medium: (
+    <span class="hljs-string">'h1'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">48</span>),
+    <span class="hljs-string">'h2'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">40</span>),
+    <span class="hljs-string">'h3'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">31</span>),
+    <span class="hljs-string">'h4'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">25</span>),
+    <span class="hljs-string">'h5'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">20</span>),
+    <span class="hljs-string">'h6'</span>: (<span class="hljs-string">'font-size'</span>: <span class="hljs-number">16</span>),
+  ),
+);</span>
+<span class="hljs-variable">$header-text-rendering</span><span class="hljs-value">: optimizeLegibility;</span>
+<span class="hljs-variable">$small-font-size</span><span class="hljs-value">: <span class="hljs-number">80%</span>;</span>
+<span class="hljs-variable">$header-small-font-color</span><span class="hljs-value">: <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$paragraph-lineheight</span><span class="hljs-value">: <span class="hljs-number">1.6</span>;</span>
+<span class="hljs-variable">$paragraph-margin-bottom</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$paragraph-text-rendering</span><span class="hljs-value">: optimizeLegibility;</span>
+<span class="hljs-variable">$code-color</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$code-font-family</span><span class="hljs-value">: <span class="hljs-variable">$font-family-monospace</span>;</span>
+<span class="hljs-variable">$code-font-weight</span><span class="hljs-value">: <span class="hljs-variable">$global-weight-normal</span>;</span>
+<span class="hljs-variable">$code-background</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$code-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$code-padding</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">2</span> <span class="hljs-number">5</span> <span class="hljs-number">1</span>);</span>
+<span class="hljs-variable">$anchor-color</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$anchor-color-hover</span><span class="hljs-value">: <span class="hljs-function">scale-color</span>(<span class="hljs-variable">$anchor-color</span>, <span class="hljs-variable">$lightness</span>: -<span class="hljs-number">14%</span>);</span>
+<span class="hljs-variable">$anchor-text-decoration</span><span class="hljs-value">: none;</span>
+<span class="hljs-variable">$anchor-text-decoration-hover</span><span class="hljs-value">: none;</span>
+<span class="hljs-variable">$hr-width</span><span class="hljs-value">: <span class="hljs-variable">$global-width</span>;</span>
+<span class="hljs-variable">$hr-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$hr-margin</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">20</span>) auto;</span>
+<span class="hljs-variable">$list-lineheight</span><span class="hljs-value">: <span class="hljs-variable">$paragraph-lineheight</span>;</span>
+<span class="hljs-variable">$list-margin-bottom</span><span class="hljs-value">: <span class="hljs-variable">$paragraph-margin-bottom</span>;</span>
+<span class="hljs-variable">$list-style-type</span><span class="hljs-value">: disc;</span>
+<span class="hljs-variable">$list-style-position</span><span class="hljs-value">: outside;</span>
+<span class="hljs-variable">$list-side-margin</span><span class="hljs-value">: <span class="hljs-number">1.25rem</span>;</span>
+<span class="hljs-variable">$list-nested-side-margin</span><span class="hljs-value">: <span class="hljs-number">1.25rem</span>;</span>
+<span class="hljs-variable">$defnlist-margin-bottom</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$defnlist-term-weight</span><span class="hljs-value">: <span class="hljs-variable">$global-weight-bold</span>;</span>
+<span class="hljs-variable">$defnlist-term-margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0.3rem</span>;</span>
+<span class="hljs-variable">$blockquote-color</span><span class="hljs-value">: <span class="hljs-variable">$dark-gray</span>;</span>
+<span class="hljs-variable">$blockquote-padding</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">9</span> <span class="hljs-number">20</span> <span class="hljs-number">0</span> <span class="hljs-number">19</span>);</span>
+<span class="hljs-variable">$blockquote-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$cite-font-size</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">13</span>);</span>
+<span class="hljs-variable">$cite-color</span><span class="hljs-value">: <span class="hljs-variable">$dark-gray</span>;</span>
+<span class="hljs-variable">$cite-pseudo-content</span><span class="hljs-value">: <span class="hljs-string">'\2014 \0020'</span>;</span>
+<span class="hljs-variable">$keystroke-font</span><span class="hljs-value">: <span class="hljs-variable">$font-family-monospace</span>;</span>
+<span class="hljs-variable">$keystroke-color</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$keystroke-background</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$keystroke-padding</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">0</span>);</span>
+<span class="hljs-variable">$keystroke-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$abbr-underline</span><span class="hljs-value">: <span class="hljs-number">1px</span> dotted <span class="hljs-variable">$black</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="5-typography-helpers">5. Typography Helpers</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$lead-font-size</span><span class="hljs-value">: <span class="hljs-variable">$global-font-size</span> * <span class="hljs-number">1.25</span>;</span>
+<span class="hljs-variable">$lead-lineheight</span><span class="hljs-value">: <span class="hljs-number">1.6</span>;</span>
+<span class="hljs-variable">$subheader-lineheight</span><span class="hljs-value">: <span class="hljs-number">1.4</span>;</span>
+<span class="hljs-variable">$subheader-color</span><span class="hljs-value">: <span class="hljs-variable">$dark-gray</span>;</span>
+<span class="hljs-variable">$subheader-font-weight</span><span class="hljs-value">: <span class="hljs-variable">$global-weight-normal</span>;</span>
+<span class="hljs-variable">$subheader-margin-top</span><span class="hljs-value">: <span class="hljs-number">0.2rem</span>;</span>
+<span class="hljs-variable">$subheader-margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0.5rem</span>;</span>
+<span class="hljs-variable">$stat-font-size</span><span class="hljs-value">: <span class="hljs-number">2.5rem</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="6-abide">6. Abide</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$abide-inputs</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$abide-labels</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$input-background-invalid</span><span class="hljs-value">: <span class="hljs-function">get-color</span>(alert);</span>
+<span class="hljs-variable">$form-label-color-invalid</span><span class="hljs-value">: <span class="hljs-function">get-color</span>(alert);</span>
+<span class="hljs-variable">$input-error-color</span><span class="hljs-value">: <span class="hljs-function">get-color</span>(alert);</span>
+<span class="hljs-variable">$input-error-font-size</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">12</span>);</span>
+<span class="hljs-variable">$input-error-font-weight</span><span class="hljs-value">: <span class="hljs-variable">$global-weight-bold</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="7-accordion">7. Accordion</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$accordion-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$accordion-plusminus</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$accordion-title-font-size</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">12</span>);</span>
+<span class="hljs-variable">$accordion-item-color</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$accordion-item-background-hover</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$accordion-item-padding</span><span class="hljs-value">: <span class="hljs-number">1.25rem</span> <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$accordion-content-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$accordion-content-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$accordion-content-color</span><span class="hljs-value">: <span class="hljs-variable">$body-font-color</span>;</span>
+<span class="hljs-variable">$accordion-content-padding</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="8-accordion-menu">8. Accordion Menu</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$accordionmenu-arrows</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$accordionmenu-arrow-color</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$accordionmenu-arrow-size</span><span class="hljs-value">: <span class="hljs-number">6px</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="9-badge">9. Badge</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$badge-background</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$badge-color</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$badge-color-alt</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$badge-palette</span><span class="hljs-value">: <span class="hljs-variable">$foundation-palette</span>;</span>
+<span class="hljs-variable">$badge-padding</span><span class="hljs-value">: <span class="hljs-number">0.3em</span>;</span>
+<span class="hljs-variable">$badge-minwidth</span><span class="hljs-value">: <span class="hljs-number">2.1em</span>;</span>
+<span class="hljs-variable">$badge-font-size</span><span class="hljs-value">: <span class="hljs-number">0.6rem</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="10-breadcrumbs">10. Breadcrumbs</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$breadcrumbs-margin</span><span class="hljs-value">: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-variable">$global-margin</span> <span class="hljs-number">0</span>;</span>
+<span class="hljs-variable">$breadcrumbs-item-font-size</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">11</span>);</span>
+<span class="hljs-variable">$breadcrumbs-item-color</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$breadcrumbs-item-color-current</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$breadcrumbs-item-color-disabled</span><span class="hljs-value">: <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$breadcrumbs-item-margin</span><span class="hljs-value">: <span class="hljs-number">0.75rem</span>;</span>
+<span class="hljs-variable">$breadcrumbs-item-uppercase</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$breadcrumbs-item-slash</span><span class="hljs-value">: true;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="11-button">11. Button</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$button-padding</span><span class="hljs-value">: <span class="hljs-number">0.85em</span> <span class="hljs-number">1em</span>;</span>
+<span class="hljs-variable">$button-margin</span><span class="hljs-value">: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-variable">$global-margin</span> <span class="hljs-number">0</span>;</span>
+<span class="hljs-variable">$button-fill</span><span class="hljs-value">: solid;</span>
+<span class="hljs-variable">$button-background</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$button-background-hover</span><span class="hljs-value">: <span class="hljs-function">scale-color</span>(<span class="hljs-variable">$button-background</span>, <span class="hljs-variable">$lightness</span>: -<span class="hljs-number">15%</span>);</span>
+<span class="hljs-variable">$button-color</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$button-color-alt</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$button-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$button-sizes</span><span class="hljs-value">: (
+  tiny: <span class="hljs-number">0.6rem</span>,
+  small: <span class="hljs-number">0.75rem</span>,
+  default: <span class="hljs-number">0.9rem</span>,
+  large: <span class="hljs-number">1.25rem</span>,
+);</span>
+<span class="hljs-variable">$button-palette</span><span class="hljs-value">: <span class="hljs-variable">$foundation-palette</span>;</span>
+<span class="hljs-variable">$button-opacity-disabled</span><span class="hljs-value">: <span class="hljs-number">0.25</span>;</span>
+<span class="hljs-variable">$button-background-hover-lightness</span><span class="hljs-value">: -<span class="hljs-number">20%</span>;</span>
+<span class="hljs-variable">$button-hollow-hover-lightness</span><span class="hljs-value">: -<span class="hljs-number">50%</span>;</span>
+<span class="hljs-variable">$button-transition</span><span class="hljs-value">: background-color <span class="hljs-number">0.25s</span> ease-out, color <span class="hljs-number">0.25s</span> ease-out;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="12-button-group">12. Button Group</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$buttongroup-margin</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$buttongroup-spacing</span><span class="hljs-value">: <span class="hljs-number">1px</span>;</span>
+<span class="hljs-variable">$buttongroup-child-selector</span><span class="hljs-value">: <span class="hljs-string">'.button'</span>;</span>
+<span class="hljs-variable">$buttongroup-expand-max</span><span class="hljs-value">: <span class="hljs-number">6</span>;</span>
+<span class="hljs-variable">$buttongroup-radius-on-each</span><span class="hljs-value">: true;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="13-callout">13. Callout</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$callout-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$callout-background-fade</span><span class="hljs-value">: <span class="hljs-number">85%</span>;</span>
+<span class="hljs-variable">$callout-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-function">rgba</span>(<span class="hljs-variable">$black</span>, <span class="hljs-number">0.25</span>);</span>
+<span class="hljs-variable">$callout-margin</span><span class="hljs-value">: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1rem</span> <span class="hljs-number">0</span>;</span>
+<span class="hljs-variable">$callout-padding</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$callout-font-color</span><span class="hljs-value">: <span class="hljs-variable">$body-font-color</span>;</span>
+<span class="hljs-variable">$callout-font-color-alt</span><span class="hljs-value">: <span class="hljs-variable">$body-background</span>;</span>
+<span class="hljs-variable">$callout-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$callout-link-tint</span><span class="hljs-value">: <span class="hljs-number">30%</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="14-card">14. Card</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$card-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$card-font-color</span><span class="hljs-value">: <span class="hljs-variable">$body-font-color</span>;</span>
+<span class="hljs-variable">$card-divider-background</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$card-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$card-shadow</span><span class="hljs-value">: none;</span>
+<span class="hljs-variable">$card-border-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$card-padding</span><span class="hljs-value">: <span class="hljs-variable">$global-padding</span>;</span>
+<span class="hljs-variable">$card-margin</span><span class="hljs-value">: <span class="hljs-variable">$global-margin</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="15-close-button">15. Close Button</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$closebutton-position</span><span class="hljs-value">: right top;</span>
+<span class="hljs-variable">$closebutton-offset-horizontal</span><span class="hljs-value">: (
+  small: <span class="hljs-number">0.66rem</span>,
+  medium: <span class="hljs-number">1rem</span>,
+);</span>
+<span class="hljs-variable">$closebutton-offset-vertical</span><span class="hljs-value">: (
+  small: <span class="hljs-number">0.33em</span>,
+  medium: <span class="hljs-number">0.5rem</span>,
+);</span>
+<span class="hljs-variable">$closebutton-size</span><span class="hljs-value">: (
+  small: <span class="hljs-number">1.5em</span>,
+  medium: <span class="hljs-number">2em</span>,
+);</span>
+<span class="hljs-variable">$closebutton-lineheight</span><span class="hljs-value">: <span class="hljs-number">1</span>;</span>
+<span class="hljs-variable">$closebutton-color</span><span class="hljs-value">: <span class="hljs-variable">$dark-gray</span>;</span>
+<span class="hljs-variable">$closebutton-color-hover</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="16-drilldown">16. Drilldown</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$drilldown-transition</span><span class="hljs-value">: transform <span class="hljs-number">0.15s</span> linear;</span>
+<span class="hljs-variable">$drilldown-arrows</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$drilldown-arrow-color</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$drilldown-arrow-size</span><span class="hljs-value">: <span class="hljs-number">6px</span>;</span>
+<span class="hljs-variable">$drilldown-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="17-dropdown">17. Dropdown</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$dropdown-padding</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$dropdown-background</span><span class="hljs-value">: <span class="hljs-variable">$body-background</span>;</span>
+<span class="hljs-variable">$dropdown-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$dropdown-font-size</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$dropdown-width</span><span class="hljs-value">: <span class="hljs-number">300px</span>;</span>
+<span class="hljs-variable">$dropdown-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$dropdown-sizes</span><span class="hljs-value">: (
+  tiny: <span class="hljs-number">100px</span>,
+  small: <span class="hljs-number">200px</span>,
+  large: <span class="hljs-number">400px</span>,
+);</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="18-dropdown-menu">18. Dropdown Menu</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$dropdownmenu-arrows</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$dropdownmenu-arrow-color</span><span class="hljs-value">: <span class="hljs-variable">$anchor-color</span>;</span>
+<span class="hljs-variable">$dropdownmenu-arrow-size</span><span class="hljs-value">: <span class="hljs-number">6px</span>;</span>
+<span class="hljs-variable">$dropdownmenu-min-width</span><span class="hljs-value">: <span class="hljs-number">200px</span>;</span>
+<span class="hljs-variable">$dropdownmenu-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$dropdownmenu-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$medium-gray</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="19-forms">19. Forms</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$fieldset-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$fieldset-padding</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">20</span>);</span>
+<span class="hljs-variable">$fieldset-margin</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">18</span> <span class="hljs-number">0</span>);</span>
+<span class="hljs-variable">$legend-padding</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">0</span> <span class="hljs-number">3</span>);</span>
+<span class="hljs-variable">$form-spacing</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">16</span>);</span>
+<span class="hljs-variable">$helptext-color</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$helptext-font-size</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">13</span>);</span>
+<span class="hljs-variable">$helptext-font-style</span><span class="hljs-value">: italic;</span>
+<span class="hljs-variable">$input-prefix-color</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$input-prefix-background</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$input-prefix-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$input-prefix-padding</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$form-label-color</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$form-label-font-size</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">14</span>);</span>
+<span class="hljs-variable">$form-label-font-weight</span><span class="hljs-value">: <span class="hljs-variable">$global-weight-normal</span>;</span>
+<span class="hljs-variable">$form-label-line-height</span><span class="hljs-value">: <span class="hljs-number">1.8</span>;</span>
+<span class="hljs-variable">$select-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$select-triangle-color</span><span class="hljs-value">: <span class="hljs-variable">$dark-gray</span>;</span>
+<span class="hljs-variable">$select-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$input-color</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$input-placeholder-color</span><span class="hljs-value">: <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$input-font-family</span><span class="hljs-value">: inherit;</span>
+<span class="hljs-variable">$input-font-size</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">16</span>);</span>
+<span class="hljs-variable">$input-font-weight</span><span class="hljs-value">: <span class="hljs-variable">$global-weight-normal</span>;</span>
+<span class="hljs-variable">$input-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$input-background-focus</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$input-background-disabled</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$input-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$input-border-focus</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$dark-gray</span>;</span>
+<span class="hljs-variable">$input-shadow</span><span class="hljs-value">: inset <span class="hljs-number">0</span> <span class="hljs-number">1px</span> <span class="hljs-number">2px</span> <span class="hljs-function">rgba</span>(<span class="hljs-variable">$black</span>, <span class="hljs-number">0.1</span>);</span>
+<span class="hljs-variable">$input-shadow-focus</span><span class="hljs-value">: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">5px</span> <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$input-cursor-disabled</span><span class="hljs-value">: not-allowed;</span>
+<span class="hljs-variable">$input-transition</span><span class="hljs-value">: box-shadow <span class="hljs-number">0.5s</span>, border-color <span class="hljs-number">0.25s</span> ease-in-out;</span>
+<span class="hljs-variable">$input-number-spinners</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$input-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$form-button-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="20-label">20. Label</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$label-background</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$label-color</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$label-color-alt</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$label-palette</span><span class="hljs-value">: <span class="hljs-variable">$foundation-palette</span>;</span>
+<span class="hljs-variable">$label-font-size</span><span class="hljs-value">: <span class="hljs-number">0.8rem</span>;</span>
+<span class="hljs-variable">$label-padding</span><span class="hljs-value">: <span class="hljs-number">0.33333rem</span> <span class="hljs-number">0.5rem</span>;</span>
+<span class="hljs-variable">$label-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="21-media-object">21. Media Object</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$mediaobject-margin-bottom</span><span class="hljs-value">: <span class="hljs-variable">$global-margin</span>;</span>
+<span class="hljs-variable">$mediaobject-section-padding</span><span class="hljs-value">: <span class="hljs-variable">$global-padding</span>;</span>
+<span class="hljs-variable">$mediaobject-image-width-stacked</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="22-menu">22. Menu</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$menu-margin</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+<span class="hljs-variable">$menu-margin-nested</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$menu-item-padding</span><span class="hljs-value">: <span class="hljs-number">0.7rem</span> <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$menu-item-color-active</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$menu-item-background-active</span><span class="hljs-value">: <span class="hljs-function">get-color</span>(primary);</span>
+<span class="hljs-variable">$menu-icon-spacing</span><span class="hljs-value">: <span class="hljs-number">0.25rem</span>;</span>
+<span class="hljs-variable">$menu-item-background-hover</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$menu-border</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="23-meter">23. Meter</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$meter-height</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$meter-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$meter-background</span><span class="hljs-value">: <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$meter-fill-good</span><span class="hljs-value">: <span class="hljs-variable">$success-color</span>;</span>
+<span class="hljs-variable">$meter-fill-medium</span><span class="hljs-value">: <span class="hljs-variable">$warning-color</span>;</span>
+<span class="hljs-variable">$meter-fill-bad</span><span class="hljs-value">: <span class="hljs-variable">$alert-color</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="24-off-canvas">24. Off-canvas</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$offcanvas-size</span><span class="hljs-value">: <span class="hljs-number">250px</span>;</span>
+<span class="hljs-variable">$offcanvas-vertical-size</span><span class="hljs-value">: <span class="hljs-number">250px</span>;</span>
+<span class="hljs-variable">$offcanvas-background</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$offcanvas-shadow</span><span class="hljs-value">: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">10px</span> <span class="hljs-function">rgba</span>(<span class="hljs-variable">$black</span>, <span class="hljs-number">0.7</span>);</span>
+<span class="hljs-variable">$offcanvas-push-zindex</span><span class="hljs-value">: <span class="hljs-number">1</span>;</span>
+<span class="hljs-variable">$offcanvas-overlap-zindex</span><span class="hljs-value">: <span class="hljs-number">10</span>;</span>
+<span class="hljs-variable">$offcanvas-reveal-zindex</span><span class="hljs-value">: <span class="hljs-number">1</span>;</span>
+<span class="hljs-variable">$offcanvas-transition-length</span><span class="hljs-value">: <span class="hljs-number">0.5s</span>;</span>
+<span class="hljs-variable">$offcanvas-transition-timing</span><span class="hljs-value">: ease;</span>
+<span class="hljs-variable">$offcanvas-fixed-reveal</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$offcanvas-exit-background</span><span class="hljs-value">: <span class="hljs-function">rgba</span>(<span class="hljs-variable">$white</span>, <span class="hljs-number">0.25</span>);</span>
+<span class="hljs-variable">$maincontent-class</span><span class="hljs-value">: <span class="hljs-string">'off-canvas-content'</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="25-orbit">25. Orbit</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$orbit-bullet-background</span><span class="hljs-value">: <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$orbit-bullet-background-active</span><span class="hljs-value">: <span class="hljs-variable">$dark-gray</span>;</span>
+<span class="hljs-variable">$orbit-bullet-diameter</span><span class="hljs-value">: <span class="hljs-number">1.2rem</span>;</span>
+<span class="hljs-variable">$orbit-bullet-margin</span><span class="hljs-value">: <span class="hljs-number">0.1rem</span>;</span>
+<span class="hljs-variable">$orbit-bullet-margin-top</span><span class="hljs-value">: <span class="hljs-number">0.8rem</span>;</span>
+<span class="hljs-variable">$orbit-bullet-margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0.8rem</span>;</span>
+<span class="hljs-variable">$orbit-caption-background</span><span class="hljs-value">: <span class="hljs-function">rgba</span>(<span class="hljs-variable">$black</span>, <span class="hljs-number">0.5</span>);</span>
+<span class="hljs-variable">$orbit-caption-padding</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$orbit-control-background-hover</span><span class="hljs-value">: <span class="hljs-function">rgba</span>(<span class="hljs-variable">$black</span>, <span class="hljs-number">0.5</span>);</span>
+<span class="hljs-variable">$orbit-control-padding</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$orbit-control-zindex</span><span class="hljs-value">: <span class="hljs-number">10</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="26-pagination">26. Pagination</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$pagination-font-size</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">14</span>);</span>
+<span class="hljs-variable">$pagination-margin-bottom</span><span class="hljs-value">: <span class="hljs-variable">$global-margin</span>;</span>
+<span class="hljs-variable">$pagination-item-color</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$pagination-item-padding</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">3</span> <span class="hljs-number">10</span>);</span>
+<span class="hljs-variable">$pagination-item-spacing</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">1</span>);</span>
+<span class="hljs-variable">$pagination-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$pagination-item-background-hover</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$pagination-item-background-current</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$pagination-item-color-current</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$pagination-item-color-disabled</span><span class="hljs-value">: <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$pagination-ellipsis-color</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$pagination-mobile-items</span><span class="hljs-value">: false;</span>
+<span class="hljs-variable">$pagination-mobile-current-item</span><span class="hljs-value">: false;</span>
+<span class="hljs-variable">$pagination-arrows</span><span class="hljs-value">: true;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="27-progress-bar">27. Progress Bar</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$progress-height</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+<span class="hljs-variable">$progress-background</span><span class="hljs-value">: <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$progress-margin-bottom</span><span class="hljs-value">: <span class="hljs-variable">$global-margin</span>;</span>
+<span class="hljs-variable">$progress-meter-background</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$progress-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="28-responsive-embed">28. Responsive Embed</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$responsive-embed-margin-bottom</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">16</span>);</span>
+<span class="hljs-variable">$responsive-embed-ratios</span><span class="hljs-value">: (
+  default: <span class="hljs-number">4</span> by <span class="hljs-number">3</span>,
+  widescreen: <span class="hljs-number">16</span> by <span class="hljs-number">9</span>,
+);</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="29-reveal">29. Reveal</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$reveal-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$reveal-width</span><span class="hljs-value">: <span class="hljs-number">600px</span>;</span>
+<span class="hljs-variable">$reveal-max-width</span><span class="hljs-value">: <span class="hljs-variable">$global-width</span>;</span>
+<span class="hljs-variable">$reveal-padding</span><span class="hljs-value">: <span class="hljs-variable">$global-padding</span>;</span>
+<span class="hljs-variable">$reveal-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$reveal-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$reveal-zindex</span><span class="hljs-value">: <span class="hljs-number">1005</span>;</span>
+<span class="hljs-variable">$reveal-overlay-background</span><span class="hljs-value">: <span class="hljs-function">rgba</span>(<span class="hljs-variable">$black</span>, <span class="hljs-number">0.45</span>);</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="30-slider">30. Slider</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$slider-width-vertical</span><span class="hljs-value">: <span class="hljs-number">0.5rem</span>;</span>
+<span class="hljs-variable">$slider-transition</span><span class="hljs-value">: all <span class="hljs-number">0.2s</span> ease-in-out;</span>
+<span class="hljs-variable">$slider-height</span><span class="hljs-value">: <span class="hljs-number">0.5rem</span>;</span>
+<span class="hljs-variable">$slider-background</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$slider-fill-background</span><span class="hljs-value">: <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$slider-handle-height</span><span class="hljs-value">: <span class="hljs-number">1.4rem</span>;</span>
+<span class="hljs-variable">$slider-handle-width</span><span class="hljs-value">: <span class="hljs-number">1.4rem</span>;</span>
+<span class="hljs-variable">$slider-handle-background</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$slider-opacity-disabled</span><span class="hljs-value">: <span class="hljs-number">0.25</span>;</span>
+<span class="hljs-variable">$slider-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="31-switch">31. Switch</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$switch-background</span><span class="hljs-value">: <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$switch-background-active</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$switch-height</span><span class="hljs-value">: <span class="hljs-number">2rem</span>;</span>
+<span class="hljs-variable">$switch-height-tiny</span><span class="hljs-value">: <span class="hljs-number">1.5rem</span>;</span>
+<span class="hljs-variable">$switch-height-small</span><span class="hljs-value">: <span class="hljs-number">1.75rem</span>;</span>
+<span class="hljs-variable">$switch-height-large</span><span class="hljs-value">: <span class="hljs-number">2.5rem</span>;</span>
+<span class="hljs-variable">$switch-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$switch-margin</span><span class="hljs-value">: <span class="hljs-variable">$global-margin</span>;</span>
+<span class="hljs-variable">$switch-paddle-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$switch-paddle-offset</span><span class="hljs-value">: <span class="hljs-number">0.25rem</span>;</span>
+<span class="hljs-variable">$switch-paddle-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span>
+<span class="hljs-variable">$switch-paddle-transition</span><span class="hljs-value">: all <span class="hljs-number">0.25s</span> ease-out;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="32-table">32. Table</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$table-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$table-color-scale</span><span class="hljs-value">: <span class="hljs-number">5%</span>;</span>
+<span class="hljs-variable">$table-border</span><span class="hljs-value">: <span class="hljs-number">1px</span> solid <span class="hljs-function">smart-scale</span>(<span class="hljs-variable">$table-background</span>, <span class="hljs-variable">$table-color-scale</span>);</span>
+<span class="hljs-variable">$table-padding</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">8</span> <span class="hljs-number">10</span> <span class="hljs-number">10</span>);</span>
+<span class="hljs-variable">$table-hover-scale</span><span class="hljs-value">: <span class="hljs-number">2%</span>;</span>
+<span class="hljs-variable">$table-row-hover</span><span class="hljs-value">: <span class="hljs-function">darken</span>(<span class="hljs-variable">$table-background</span>, <span class="hljs-variable">$table-hover-scale</span>);</span>
+<span class="hljs-variable">$table-row-stripe-hover</span><span class="hljs-value">: <span class="hljs-function">darken</span>(<span class="hljs-variable">$table-background</span>, <span class="hljs-variable">$table-color-scale</span> + <span class="hljs-variable">$table-hover-scale</span>);</span>
+<span class="hljs-variable">$table-is-striped</span><span class="hljs-value">: true;</span>
+<span class="hljs-variable">$table-striped-background</span><span class="hljs-value">: <span class="hljs-function">smart-scale</span>(<span class="hljs-variable">$table-background</span>, <span class="hljs-variable">$table-color-scale</span>);</span>
+<span class="hljs-variable">$table-stripe</span><span class="hljs-value">: even;</span>
+<span class="hljs-variable">$table-head-background</span><span class="hljs-value">: <span class="hljs-function">smart-scale</span>(<span class="hljs-variable">$table-background</span>, <span class="hljs-variable">$table-color-scale</span> / <span class="hljs-number">2</span>);</span>
+<span class="hljs-variable">$table-head-row-hover</span><span class="hljs-value">: <span class="hljs-function">darken</span>(<span class="hljs-variable">$table-head-background</span>, <span class="hljs-variable">$table-hover-scale</span>);</span>
+<span class="hljs-variable">$table-foot-background</span><span class="hljs-value">: <span class="hljs-function">smart-scale</span>(<span class="hljs-variable">$table-background</span>, <span class="hljs-variable">$table-color-scale</span>);</span>
+<span class="hljs-variable">$table-foot-row-hover</span><span class="hljs-value">: <span class="hljs-function">darken</span>(<span class="hljs-variable">$table-foot-background</span>, <span class="hljs-variable">$table-hover-scale</span>);</span>
+<span class="hljs-variable">$table-head-font-color</span><span class="hljs-value">: <span class="hljs-variable">$body-font-color</span>;</span>
+<span class="hljs-variable">$table-foot-font-color</span><span class="hljs-value">: <span class="hljs-variable">$body-font-color</span>;</span>
+<span class="hljs-variable">$show-header-for-stacked</span><span class="hljs-value">: false;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="33-tabs">33. Tabs</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$tab-margin</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+<span class="hljs-variable">$tab-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$tab-color</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$tab-background-active</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$tab-active-color</span><span class="hljs-value">: <span class="hljs-variable">$primary-color</span>;</span>
+<span class="hljs-variable">$tab-item-font-size</span><span class="hljs-value">: <span class="hljs-function">rem-calc</span>(<span class="hljs-number">12</span>);</span>
+<span class="hljs-variable">$tab-item-background-hover</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$tab-item-padding</span><span class="hljs-value">: <span class="hljs-number">1.25rem</span> <span class="hljs-number">1.5rem</span>;</span>
+<span class="hljs-variable">$tab-expand-max</span><span class="hljs-value">: <span class="hljs-number">6</span>;</span>
+<span class="hljs-variable">$tab-content-background</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$tab-content-border</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$tab-content-color</span><span class="hljs-value">: <span class="hljs-variable">$body-font-color</span>;</span>
+<span class="hljs-variable">$tab-content-padding</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="34-thumbnail">34. Thumbnail</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$thumbnail-border</span><span class="hljs-value">: solid <span class="hljs-number">4px</span> <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$thumbnail-margin-bottom</span><span class="hljs-value">: <span class="hljs-variable">$global-margin</span>;</span>
+<span class="hljs-variable">$thumbnail-shadow</span><span class="hljs-value">: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1px</span> <span class="hljs-function">rgba</span>(<span class="hljs-variable">$black</span>, <span class="hljs-number">0.2</span>);</span>
+<span class="hljs-variable">$thumbnail-shadow-hover</span><span class="hljs-value">: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">6px</span> <span class="hljs-number">1px</span> <span class="hljs-function">rgba</span>(<span class="hljs-variable">$primary-color</span>, <span class="hljs-number">0.5</span>);</span>
+<span class="hljs-variable">$thumbnail-transition</span><span class="hljs-value">: box-shadow <span class="hljs-number">200ms</span> ease-out;</span>
+<span class="hljs-variable">$thumbnail-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="35-title-bar">35. Title Bar</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$titlebar-background</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$titlebar-color</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$titlebar-padding</span><span class="hljs-value">: <span class="hljs-number">0.5rem</span>;</span>
+<span class="hljs-variable">$titlebar-text-font-weight</span><span class="hljs-value">: bold;</span>
+<span class="hljs-variable">$titlebar-icon-color</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$titlebar-icon-color-hover</span><span class="hljs-value">: <span class="hljs-variable">$medium-gray</span>;</span>
+<span class="hljs-variable">$titlebar-icon-spacing</span><span class="hljs-value">: <span class="hljs-number">0.25rem</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="36-tooltip">36. Tooltip</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$has-tip-font-weight</span><span class="hljs-value">: <span class="hljs-variable">$global-weight-bold</span>;</span>
+<span class="hljs-variable">$has-tip-border-bottom</span><span class="hljs-value">: dotted <span class="hljs-number">1px</span> <span class="hljs-variable">$dark-gray</span>;</span>
+<span class="hljs-variable">$tooltip-background-color</span><span class="hljs-value">: <span class="hljs-variable">$black</span>;</span>
+<span class="hljs-variable">$tooltip-color</span><span class="hljs-value">: <span class="hljs-variable">$white</span>;</span>
+<span class="hljs-variable">$tooltip-padding</span><span class="hljs-value">: <span class="hljs-number">0.75rem</span>;</span>
+<span class="hljs-variable">$tooltip-font-size</span><span class="hljs-value">: <span class="hljs-variable">$small-font-size</span>;</span>
+<span class="hljs-variable">$tooltip-pip-width</span><span class="hljs-value">: <span class="hljs-number">0.75rem</span>;</span>
+<span class="hljs-variable">$tooltip-pip-height</span><span class="hljs-value">: <span class="hljs-variable">$tooltip-pip-width</span> * <span class="hljs-number">0.866</span>;</span>
+<span class="hljs-variable">$tooltip-radius</span><span class="hljs-value">: <span class="hljs-variable">$global-radius</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="37-top-bar">37. Top Bar</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$topbar-padding</span><span class="hljs-value">: <span class="hljs-number">0.5rem</span>;</span>
+<span class="hljs-variable">$topbar-background</span><span class="hljs-value">: <span class="hljs-variable">$light-gray</span>;</span>
+<span class="hljs-variable">$topbar-submenu-background</span><span class="hljs-value">: <span class="hljs-variable">$topbar-background</span>;</span>
+<span class="hljs-variable">$topbar-title-spacing</span><span class="hljs-value">: <span class="hljs-number">0.5rem</span> <span class="hljs-number">1rem</span> <span class="hljs-number">0.5rem</span> <span class="hljs-number">0</span>;</span>
+<span class="hljs-variable">$topbar-input-width</span><span class="hljs-value">: <span class="hljs-number">200px</span>;</span>
+<span class="hljs-variable">$topbar-unstack-breakpoint</span><span class="hljs-value">: medium;</span></div></div></div></div></body></html>
