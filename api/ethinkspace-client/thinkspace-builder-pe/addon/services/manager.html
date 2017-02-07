@@ -1,4 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/services/manager</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/services/manager"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/services/manager.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-builder-pe/addon/services/manager.coffee">thinkspace-builder-pe/addon/services/manager.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember          from <span class="hljs-string">'ember'</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/services/manager</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/services/manager"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/services/manager.coffee"><meta name="groc-branch-path" content="feature/pe-builder"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/pe-builder/thinkspace-builder-pe/addon/services/manager.coffee">thinkspace-builder-pe/addon/services/manager.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><h1 id="managercoffee">manager.coffee</h1>
+<ul>
+<li>Type: <strong>Service</strong></li>
+<li>Package: <strong>ethinkspace-builder-pe</strong></li>
+</ul></div></div><div class="code"><div class="wrapper">import ember          from <span class="hljs-string">'ember'</span>
 import ns             from <span class="hljs-string">'totem/ns'</span>
 import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
 
@@ -67,7 +71,15 @@ export default ember.Service.extend
     items = <span class="hljs-property">@get_items_for_type</span> type
     index = items.indexOf(item)
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> index &gt; -<span class="hljs-number">1</span>
-    <span class="hljs-keyword">if</span> offset == <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> add_at = index + <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> add_at = index - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">switch</span> offset
+      <span class="hljs-keyword">when</span> <span class="hljs-number">1</span>
+        add_at = index + <span class="hljs-number">1</span>
+      <span class="hljs-keyword">when</span> -<span class="hljs-number">1</span>
+        add_at = index - <span class="hljs-number">1</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'top'</span>
+        add_at = <span class="hljs-number">0</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'bottom'</span>
+        add_at = items.get(<span class="hljs-string">'length'</span>) - <span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> add_at &lt; <span class="hljs-number">0</span>
     length = items.get(<span class="hljs-string">'length'</span>)
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> add_at &gt; length - <span class="hljs-number">1</span>

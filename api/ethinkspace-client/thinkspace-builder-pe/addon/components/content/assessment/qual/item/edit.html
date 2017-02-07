@@ -1,4 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit.coffee"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/master/thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit.coffee">thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit"><meta name="groc-project-path" content="thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit.coffee"><meta name="groc-branch-path" content="feature/pe-builder"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/pe-builder/thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit.coffee">thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><h1 id="previewcoffee">preview.coffee</h1>
+<ul>
+<li>Type: <strong>Component</strong></li>
+<li>Package: <strong>ethinkspace-builder-pe</strong></li>
+</ul></div></div><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
 import ns    from <span class="hljs-string">'totem/ns'</span>
 import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
 
@@ -28,36 +32,23 @@ export default base.extend
     model     = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
     changeset = model.get(<span class="hljs-string">'changeset'</span>)
 
-    <span class="hljs-comment">## We can either:</span>
-    <span class="hljs-comment">## =&gt; Save regardless of validity (only valid fields will be set)</span>
-    <span class="hljs-comment">## =&gt; Not save until all fields are valid</span>
-
     changeset.save() <span class="hljs-keyword">if</span> changeset.get(<span class="hljs-string">'isValid'</span>)
-
     <span class="hljs-keyword">return</span> changeset.get(<span class="hljs-string">'isValid'</span>)
 
   <span class="hljs-attribute">actions</span>:
-    <span class="hljs-attribute">back</span>:                <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'back'</span>
-    <span class="hljs-attribute">save</span>:                <span class="hljs-function">-&gt;</span> 
+    <span class="hljs-attribute">back</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'back'</span>
+    <span class="hljs-attribute">save</span>: <span class="hljs-function">-&gt;</span> 
       <span class="hljs-property">@update_model</span>()
-      <span class="hljs-comment">#@get('manager').save_model()</span>
       <span class="hljs-property">@sendAction</span> <span class="hljs-string">'back'</span>
 
     <span class="hljs-attribute">update</span>: <span class="hljs-function">-&gt;</span> 
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[CHANGESET] update validity? '</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'model.changeset.isValid'</span>), <span class="hljs-property">@get</span>(<span class="hljs-string">'model.changeset.isDirty'</span>))
-
-      <span class="hljs-comment">#@update_model()</span>
       <span class="hljs-keyword">if</span> <span class="hljs-property">@update_model</span>()
         <span class="hljs-property">@sendAction</span>(<span class="hljs-string">'update'</span>)
 
     <span class="hljs-attribute">edit</span>: <span class="hljs-function">-&gt;</span>      
       changeset = <span class="hljs-property">@get</span>(<span class="hljs-string">'changeset'</span>)
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'changeset is '</span>, changeset)
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'changeset isDirty is '</span>, changeset.get(<span class="hljs-string">'isDirty'</span>))
       changeset.rollback()
       <span class="hljs-property">@sendAction</span>(<span class="hljs-string">'edit'</span>, <span class="hljs-literal">false</span>)
-    <span class="hljs-attribute">duplicate</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span>(<span class="hljs-string">'duplicate'</span>)
-    <span class="hljs-attribute">delete</span>: <span class="hljs-function">-&gt;</span>    <span class="hljs-property">@sendAction</span>(<span class="hljs-string">'delete'</span>)
 
     <span class="hljs-attribute">select_feedback_type</span>: <span class="hljs-function"><span class="hljs-params">(type)</span> -&gt;</span>  <span class="hljs-property">@set</span> <span class="hljs-string">'feedback_type'</span>, type.id
     <span class="hljs-attribute">select_type</span>:          <span class="hljs-function"><span class="hljs-params">(type)</span> -&gt;</span>  <span class="hljs-property">@set</span> <span class="hljs-string">'type'</span>, type.id</div></div></div></div></body></html>

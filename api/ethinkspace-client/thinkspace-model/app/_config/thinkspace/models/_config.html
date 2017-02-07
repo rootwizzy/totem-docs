@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/_config/thinkspace/models/_config</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/_config/thinkspace/models/_config"><meta name="groc-project-path" content="thinkspace-model/app/_config/thinkspace/models/_config.coffee"><meta name="groc-branch-path" content="feature/pe-builder-comments"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/pe-builder-comments/thinkspace-model/app/_config/thinkspace/models/_config.coffee">thinkspace-model/app/_config/thinkspace/models/_config.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">export default {
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/_config/thinkspace/models/_config</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/_config/thinkspace/models/_config"><meta name="groc-project-path" content="thinkspace-model/app/_config/thinkspace/models/_config.coffee"><meta name="groc-branch-path" content="feature/pe-builder"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/pe-builder/thinkspace-model/app/_config/thinkspace/models/_config.coffee">thinkspace-model/app/_config/thinkspace/models/_config.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">export default {
 
   <span class="hljs-attribute">env</span>: {<span class="hljs-attribute">modulePrefix</span>: <span class="hljs-string">'thinkspace-models'</span>}
 
@@ -22,9 +22,7 @@ lab:                    &#39;thinkspace/lab&#39;
 markup:                 &#39;thinkspace/markup&#39;
 observation_list:       &#39;thinkspace/observation_list&#39;
 resource:               &#39;thinkspace/resource&#39;</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-attribute">team</span>:                   <span class="hljs-string">'thinkspace/team'</span>
-      <span class="hljs-attribute">peer_assessment</span>:        <span class="hljs-string">'thinkspace/peer_assessment'</span>
-      <span class="hljs-attribute">weather_forecaster</span>:     <span class="hljs-string">'thinkspace/weather_forecaster'</span>
-      <span class="hljs-attribute">simulation</span>:             <span class="hljs-string">'thinkspace/simulation'</span>
+      <span class="hljs-attribute">peer_assessment</span>:        <span class="hljs-string">'thinkspace/peer_assessment'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>weather_forecaster:     &#39;thinkspace/weather_forecaster&#39;</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-attribute">simulation</span>:             <span class="hljs-string">'thinkspace/simulation'</span>
       <span class="hljs-attribute">builder</span>:                <span class="hljs-string">'thinkspace/builder'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>indented_list:          &#39;thinkspace/indented_list&#39;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Convert commonly used key values to a full namespace path.
 When using a &#39;ns.to_&#39; function, the type key will be converted to a namespaced path.</p>
 <p>The &#39;type&#39; must be the first argument and match either a key in &#39;type<em>to_namespace&#39;
@@ -76,14 +74,14 @@ case_manager_template: &#39;casespace&#39;</p></div></div></div><div class="segm
 &#39;artifact:file&#39;:    &#39;artifact&#39;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>&#39;lab:chart&#39;:       &#39;lab&#39;
 &#39;lab:category&#39;:    &#39;lab&#39;
 &#39;lab:result&#39;:      &#39;lab&#39;
-&#39;lab:observation&#39;: &#39;lab&#39;</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-string">'wf:assessment'</span>:      <span class="hljs-string">'weather_forecaster'</span>
-      <span class="hljs-string">'wf:assessment_item'</span>: <span class="hljs-string">'weather_forecaster'</span>
-      <span class="hljs-string">'wf:forecast'</span>:        <span class="hljs-string">'weather_forecaster'</span>
-      <span class="hljs-string">'wf:forecast_day'</span>:    <span class="hljs-string">'weather_forecaster'</span>
-      <span class="hljs-string">'wf:item'</span>:            <span class="hljs-string">'weather_forecaster'</span>
-      <span class="hljs-string">'wf:response'</span>:        <span class="hljs-string">'weather_forecaster'</span>
-      <span class="hljs-string">'wf:response_score'</span>:  <span class="hljs-string">'weather_forecaster'</span>
-      <span class="hljs-string">'wf:station'</span>:         <span class="hljs-string">'weather_forecaster'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>list:                     &#39;observation_list&#39;
+&#39;lab:observation&#39;: &#39;lab&#39;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>&#39;wf:assessment&#39;:      &#39;weather_forecaster&#39;
+&#39;wf:assessment_item&#39;: &#39;weather_forecaster&#39;
+&#39;wf:forecast&#39;:        &#39;weather_forecaster&#39;
+&#39;wf:forecast_day&#39;:    &#39;weather_forecaster&#39;
+&#39;wf:item&#39;:            &#39;weather_forecaster&#39;
+&#39;wf:response&#39;:        &#39;weather_forecaster&#39;
+&#39;wf:response_score&#39;:  &#39;weather_forecaster&#39;
+&#39;wf:station&#39;:         &#39;weather_forecaster&#39;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>list:                     &#39;observation_list&#39;
 observation:              &#39;observation_list&#39;
 observation_note:         &#39;observation_list&#39;
 &#39;observation_list:group&#39;: &#39;observation_list&#39;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>element:          &#39;input_element&#39;

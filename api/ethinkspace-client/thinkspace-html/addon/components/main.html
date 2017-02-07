@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace-html/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-html/addon/components/main"><meta name="groc-project-path" content="thinkspace-html/addon/components/main.coffee"><meta name="groc-branch-path" content="feature/pe-builder-comments"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/pe-builder-comments/thinkspace-html/addon/components/main.coffee">thinkspace-html/addon/components/main.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-html/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-html/addon/components/main"><meta name="groc-project-path" content="thinkspace-html/addon/components/main.coffee"><meta name="groc-branch-path" content="feature/pe-builder"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/pe-builder/thinkspace-html/addon/components/main.coffee">thinkspace-html/addon/components/main.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
 import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
 import prerp from <span class="hljs-string">'thinkspace-html/preprocessors/responses'</span>
 import precf from <span class="hljs-string">'thinkspace-html/preprocessors/carry_forward'</span>
@@ -10,6 +10,7 @@ export default base.extend
   <span class="hljs-attribute">tvo_titles</span>:   [<span class="hljs-string">'html'</span>, <span class="hljs-string">'html-select-text'</span>, <span class="hljs-string">'html-only'</span>]
   <span class="hljs-attribute">preprocess</span>:   [<span class="hljs-string">'html'</span>, <span class="hljs-string">'html_select_text'</span>]
   <span class="hljs-attribute">html_content</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">results_key</span>:  <span class="hljs-string">'inputs'</span>
 
   <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
     <span class="hljs-property">@preprocess_html_content</span>().<span class="hljs-keyword">then</span> (html_content) =&gt;
@@ -26,8 +27,14 @@ export default base.extend
       html_content = html_content.replace(<span class="hljs-regexp">/&lt;\/input&gt;/g</span>, <span class="hljs-string">''</span>)  <span class="hljs-comment"># fix content</span>
       html_content = html_content.replace(<span class="hljs-regexp">/&lt;\/br&gt;/g</span>, <span class="hljs-string">'&lt;br&gt;'</span>) <span class="hljs-comment"># fix content</span>
       <span class="hljs-keyword">return</span> resolve(html_content) <span class="hljs-keyword">unless</span> <span class="hljs-property">@preprocess</span>.includes(<span class="hljs-property">@component_name</span>)
-      responses     = prerp.create(<span class="hljs-attribute">tvo</span>: tvo, <span class="hljs-attribute">tc</span>: <span class="hljs-property">@tc</span>, <span class="hljs-attribute">input_element_root_path</span>: <span class="hljs-string">'input_elements'</span>, <span class="hljs-attribute">input_element_component_prefix</span>: <span class="hljs-string">'standard'</span> )
-      carry_forward = precf.create(<span class="hljs-attribute">tvo</span>: tvo, <span class="hljs-attribute">tc</span>: <span class="hljs-property">@tc</span>, <span class="hljs-attribute">input_element_root_path</span>: <span class="hljs-string">'input_elements'</span>, <span class="hljs-attribute">input_element_component_prefix</span>: <span class="hljs-string">'standard'</span> )
+      options =
+        <span class="hljs-attribute">tvo</span>:                            tvo
+        <span class="hljs-attribute">tc</span>:                             <span class="hljs-property">@tc</span>
+        <span class="hljs-attribute">results_key</span>:                    <span class="hljs-property">@results_key</span>
+        <span class="hljs-attribute">input_element_root_path</span>:        <span class="hljs-string">'input_elements'</span>
+        <span class="hljs-attribute">input_element_component_prefix</span>: <span class="hljs-string">'standard'</span>
+      responses     = prerp.create(options)
+      carry_forward = precf.create(options)
       responses.process(model, html_content).<span class="hljs-keyword">then</span> (html_content) =&gt;
         carry_forward.process(model, html_content).<span class="hljs-keyword">then</span> (html_content) =&gt;
           resolve(html_content)</div></div></div></div></body></html>

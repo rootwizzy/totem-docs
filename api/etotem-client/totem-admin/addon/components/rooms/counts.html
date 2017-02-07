@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><title>totem-admin/addon/components/rooms/counts</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="totem-admin/addon/components/rooms/counts"><meta name="groc-project-path" content="totem-admin/addon/components/rooms/counts.coffee"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/etotem-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/etotem-client/blob/development/totem-admin/addon/components/rooms/counts.coffee">totem-admin/addon/components/rooms/counts.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+import util   from <span class="hljs-string">'totem/util'</span>
+import base   from <span class="hljs-string">'totem-base/components/base'</span>
+import m_sort_by from <span class="hljs-string">'totem-application/mixins/table_sort_by'</span>
+
+export default base.extend m_sort_by,
+
+  <span class="hljs-attribute">admin</span>: ember.inject.service()
+
+  <span class="hljs-attribute">ready</span>:            <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">has_room_counts</span>:  <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">show_confirm_all</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">room_counts</span>:      <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">sorted_room_counts</span>: ember.computed.sort <span class="hljs-string">'room_counts'</span>, <span class="hljs-string">'sort_by'</span>
+
+  <span class="hljs-attribute">sort</span>: ember.computed -&gt;
+    sort_configs =
+      <span class="hljs-attribute">room</span>:  {<span class="hljs-attribute">id</span>: <span class="hljs-string">'room'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'sort_room'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Room'</span>}
+      <span class="hljs-attribute">count</span>: {<span class="hljs-attribute">id</span>: <span class="hljs-string">'count'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'sort_count'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Count'</span>}
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">refresh</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@am</span>.emit_room_counts(@)
+    <span class="hljs-attribute">confirm</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@confirm</span>()
+    <span class="hljs-attribute">hide</span>:      <span class="hljs-function">-&gt;</span> <span class="hljs-property">@hide</span>()
+
+    <span class="hljs-attribute">reset</span>: <span class="hljs-function"><span class="hljs-params">(room, count=<span class="hljs-number">0</span>)</span> -&gt;</span> <span class="hljs-property">@am</span>.emit_room_count_reset({room, count})
+    <span class="hljs-attribute">reset_all</span>:             <span class="hljs-function">-&gt;</span> <span class="hljs-property">@am</span>.emit_room_count_reset(<span class="hljs-attribute">room</span>: <span class="hljs-string">'*'</span>); <span class="hljs-property">@hide</span>()
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>(arguments...)
+    <span class="hljs-property">@am</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'admin'</span>)
+    <span class="hljs-property">@set_default_sort_by</span> [<span class="hljs-string">'room'</span>]
+    <span class="hljs-property">@am</span>.room_counts(@)
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'admin'</span>).set_other_header_links_inactvie(<span class="hljs-string">'rooms'</span>)
+
+  <span class="hljs-attribute">confirm</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@toggleProperty</span>(<span class="hljs-string">'show_confirm_all'</span>); <span class="hljs-keyword">return</span>
+  <span class="hljs-attribute">hide</span>:    <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span>(<span class="hljs-string">'show_confirm_all'</span>, <span class="hljs-literal">false</span>)
+
+  <span class="hljs-attribute">handle_room_counts</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.info <span class="hljs-string">'=&gt; room counts'</span>, data
+    data_hash   = <span class="hljs-keyword">if</span> util.is_hash(data) <span class="hljs-keyword">then</span> data <span class="hljs-keyword">else</span> {}
+    room_counts = []
+    <span class="hljs-keyword">for</span> room, count <span class="hljs-keyword">of</span> data_hash
+      hash = {room, count}
+      <span class="hljs-property">@make_sortable</span>(hash)
+      room_counts.push(hash)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'room_counts'</span>, room_counts
+    <span class="hljs-property">@set</span> <span class="hljs-string">'has_room_counts'</span>, ember.isPresent(room_counts)
+    <span class="hljs-property">@notifyPropertyChange</span> <span class="hljs-string">'sorted_room_counts'</span>
+    <span class="hljs-property">@set</span> <span class="hljs-string">'ready'</span>, <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">make_sortable</span>: <span class="hljs-function"><span class="hljs-params">(hash)</span> -&gt;</span>
+    hash.sort_room  = (hash.room <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>).toLowerCase()
+    hash.sort_count = <span class="hljs-number">0</span></div></div></div></div></body></html>

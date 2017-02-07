@@ -1,8 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/models/thinkspace/common/space</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/models/thinkspace/common/space"><meta name="groc-project-path" content="thinkspace-model/app/models/thinkspace/common/space.coffee"><meta name="groc-branch-path" content="feature/pe-builder-comments"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/pe-builder-comments/thinkspace-model/app/models/thinkspace/common/space.coffee">thinkspace-model/app/models/thinkspace/common/space.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
-import ta from <span class="hljs-string">'totem/ds/associations'</span>
-import ajax from <span class="hljs-string">'totem/ajax'</span>
-import ds    from <span class="hljs-string">'ember-data'</span>
-import tc from <span class="hljs-string">'totem/cache'</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-model/app/models/thinkspace/common/space</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-model/app/models/thinkspace/common/space"><meta name="groc-project-path" content="thinkspace-model/app/models/thinkspace/common/space.coffee"><meta name="groc-branch-path" content="feature/pe-builder"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/pe-builder/thinkspace-model/app/models/thinkspace/common/space.coffee">thinkspace-model/app/models/thinkspace/common/space.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ta    from <span class="hljs-string">'totem/ds/associations'</span>
 
 export default ta.Model.extend ta.add(
     ta.has_many <span class="hljs-string">'users'</span>
@@ -24,12 +21,12 @@ export default ta.Model.extend ta.add(
 
   <span class="hljs-attribute">get_team_sets</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
     <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
-      params =
-        <span class="hljs-attribute">verb</span>:   <span class="hljs-string">'get'</span>
+      params = 
+        <span class="hljs-attribute">id</span>: <span class="hljs-property">@get</span>(<span class="hljs-string">'id'</span>)
+      options =
         <span class="hljs-attribute">action</span>: <span class="hljs-string">'team_sets'</span>
-        <span class="hljs-attribute">id</span>:     <span class="hljs-property">@get</span>(<span class="hljs-string">'id'</span>)
-
-      tc.query(ta.to_p(<span class="hljs-string">'space'</span>), params, <span class="hljs-attribute">payload_model_name</span>: ta.to_p(<span class="hljs-string">'team_sets'</span>)).<span class="hljs-keyword">then</span> (team_sets) =&gt;
+        <span class="hljs-attribute">model</span>:  ta.to_p(<span class="hljs-string">'team_set'</span>)
+      <span class="hljs-property">@tc</span>.query_action(ta.to_p(<span class="hljs-string">'space'</span>), params, options).<span class="hljs-keyword">then</span> (team_sets) =&gt;
         team_sets = team_sets.filter (team_set) =&gt; team_set.get(<span class="hljs-string">'unlocked_states'</span>).includes team_set.get(<span class="hljs-string">'state'</span>) <span class="hljs-keyword">unless</span> options.include_locked
         resolve(team_sets)
     , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-built_in">console</span>.error <span class="hljs-string">"[space model] Error in get_team_sets."</span>, error
