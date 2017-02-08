@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/components/changeset/errors</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/app/components/changeset/errors"><meta name="groc-project-path" content="thinkspace-common/app/components/changeset/errors.coffee"><meta name="groc-branch-path" content="feature/pe-builder"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/pe-builder/thinkspace-common/app/components/changeset/errors.coffee">thinkspace-common/app/components/changeset/errors.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Examples to call this component:
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/components/changeset/errors</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/app/components/changeset/errors"><meta name="groc-project-path" content="thinkspace-common/app/components/changeset/errors.coffee"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/development/thinkspace-common/app/components/changeset/errors.coffee">thinkspace-common/app/components/changeset/errors.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Examples to call this component:
   component &#39;<strong>changeset/errors&#39; changeset=changeset                    #=&gt; for model attributes (e.g. bottom of page)
   component &#39;</strong>changeset/errors&#39; changeset=changeset attribute=&#39;title&#39;  #=&gt; single model attribute; e.g. under input for &#39;title&#39;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>changeset.get(&#39;errors&#39;) is an array of hashes:
   hash.key        = attribute name
@@ -8,16 +8,26 @@ Use changeset.first_error_on() and changeset.first_error_off().</p></div></div><
 
   <span class="hljs-attribute">tvo</span>: ember.inject.service()
 
-  <span class="hljs-attribute">errors_visible</span>: ember.computed.<span class="hljs-keyword">or</span> <span class="hljs-string">'tvo.show_errors'</span>, <span class="hljs-string">'changeset.show_errors'</span>
+  <span class="hljs-attribute">errors_visible</span>: ember.computed.<span class="hljs-keyword">or</span> <span class="hljs-string">'tvo.show_errors'</span>, <span class="hljs-string">'changeset.show_errors'</span>, <span class="hljs-string">'show_errors'</span>
+
+  <span class="hljs-attribute">input_id</span>:    <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">error_class</span>: <span class="hljs-literal">null</span>
 
   <span class="hljs-attribute">messages</span>: ember.computed <span class="hljs-string">'changeset.errors'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(<span class="hljs-property">@changeset</span>)
     errors   = <span class="hljs-property">@changeset</span>.get(<span class="hljs-string">'errors'</span>) <span class="hljs-keyword">or</span> []
     errors   = [errors.findBy(<span class="hljs-string">'key'</span>, <span class="hljs-property">@attribute</span>)].compact() <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@attribute</span>)
     messages = <span class="hljs-property">@collect_validation_messages</span>(errors)
     messages = [messages.get(<span class="hljs-string">'firstObject'</span>)] <span class="hljs-keyword">if</span> <span class="hljs-property">@changeset</span>.first_error <span class="hljs-keyword">and</span> ember.isPresent(messages)
+    <span class="hljs-property">@update_error_class</span>(messages) <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@input_id</span>) <span class="hljs-keyword">and</span> ember.isPresent(<span class="hljs-property">@error_class</span>)
     messages
 
   <span class="hljs-attribute">collect_validation_messages</span>: <span class="hljs-function"><span class="hljs-params">(errors)</span> -&gt;</span>
     messages = []
     messages = messages.concat(hash.validation) <span class="hljs-keyword">for</span> hash <span class="hljs-keyword">in</span> errors
-    messages</div></div></div></div></body></html>
+    messages
+
+  <span class="hljs-attribute">update_error_class</span>: <span class="hljs-function"><span class="hljs-params">(messages)</span> -&gt;</span>
+    <span class="hljs-property">@$e</span> ?= $(<span class="hljs-string">"#<span class="hljs-subst">#{<span class="hljs-property">@input_id</span>}</span>"</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(<span class="hljs-property">@$e</span>)
+    <span class="hljs-keyword">if</span> ember.isBlank(messages) <span class="hljs-keyword">then</span> <span class="hljs-property">@$e</span>.removeClass(<span class="hljs-property">@error_class</span>) <span class="hljs-keyword">else</span> <span class="hljs-property">@$e</span>.addClass(<span class="hljs-property">@error_class</span>)</div></div></div></div></body></html>

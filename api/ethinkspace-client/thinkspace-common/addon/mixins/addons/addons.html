@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/addons/addons</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/addons/addons"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/addons/addons.coffee"><meta name="groc-branch-path" content="feature/pe-builder"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/pe-builder/thinkspace-common/addon/mixins/addons/addons.coffee">thinkspace-common/addon/mixins/addons/addons.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/addons/addons</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/addons/addons"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/addons/addons.coffee"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/development/thinkspace-common/addon/mixins/addons/addons.coffee">thinkspace-common/addon/mixins/addons/addons.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
 import util  from <span class="hljs-string">'totem/util'</span>
 
 export default ember.Mixin.create
@@ -10,12 +10,20 @@ export default ember.Mixin.create
   <span class="hljs-attribute">get_active_addon_ownerable</span>:             <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'active_addon_ownerable'</span>
   <span class="hljs-attribute">set_active_addon_ownerable</span>: <span class="hljs-function"><span class="hljs-params">(ownerable)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'active_addon_ownerable'</span>, ownerable
 
+  <span class="hljs-attribute">clean_up_active_addons</span>: <span class="hljs-function">-&gt;</span>
+    addons = <span class="hljs-property">@active_addons</span>.filter (addon) =&gt; <span class="hljs-property">@is_destroyed_addon</span>(addon)
+    <span class="hljs-property">@active_addons</span>.removeObject(addon) <span class="hljs-keyword">for</span> addon <span class="hljs-keyword">in</span> addons
+
   <span class="hljs-attribute">get_active_addons</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@active_addons</span>
   <span class="hljs-attribute">has_active_addons</span>: <span class="hljs-function">-&gt;</span> ember.isPresent(<span class="hljs-property">@get_active_addons</span>())
 
-  <span class="hljs-attribute">add_active_addon</span>: <span class="hljs-function"><span class="hljs-params">(addon)</span> -&gt;</span> <span class="hljs-property">@active_addons</span>.pushObject(addon)
+  <span class="hljs-attribute">add_active_addon</span>:    <span class="hljs-function"><span class="hljs-params">(addon)</span> -&gt;</span> <span class="hljs-property">@active_addons</span>.pushObject(addon)
+  <span class="hljs-attribute">remove_active_addon</span>: <span class="hljs-function"><span class="hljs-params">(addon)</span> -&gt;</span> <span class="hljs-property">@active_addons</span>.removeObject(addon)
 
   <span class="hljs-attribute">is_active_addon</span>: <span class="hljs-function"><span class="hljs-params">(addon)</span> -&gt;</span> addon <span class="hljs-keyword">and</span> <span class="hljs-property">@get_active_addons</span>().includes(addon)
+
+  <span class="hljs-attribute">is_open_addon</span>:      <span class="hljs-function"><span class="hljs-params">(addon)</span> -&gt;</span> util.is_hash(addon) <span class="hljs-keyword">and</span> addon.active == <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">is_destroyed_addon</span>: <span class="hljs-function"><span class="hljs-params">(addon)</span> -&gt;</span> util.is_hash(addon) <span class="hljs-keyword">and</span> util.is_destroyed(addon.component)
 
   <span class="hljs-attribute">get_active_addon_components</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_active_addons</span>().mapBy <span class="hljs-string">'component'</span>
 
@@ -29,6 +37,7 @@ export default ember.Mixin.create
 
   <span class="hljs-attribute">open_addon</span>: <span class="hljs-function"><span class="hljs-params">(addon)</span>   -&gt;</span>
     <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> <span class="hljs-property">@is_destroyed_addon</span>(addon)
       ember.set(addon, <span class="hljs-string">'active'</span>, <span class="hljs-literal">true</span>)
       <span class="hljs-property">@add_active_addon</span>(addon)
       promises = <span class="hljs-property">@get_singleton_close_promises</span>(addon)
@@ -48,7 +57,8 @@ export default ember.Mixin.create
 
   <span class="hljs-attribute">close_addon</span>: <span class="hljs-function"><span class="hljs-params">(addon)</span> -&gt;</span>
     <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
-      <span class="hljs-property">@get_active_addons</span>().removeObject(addon)
+      <span class="hljs-property">@remove_active_addon</span>(addon)
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> <span class="hljs-property">@is_destroyed_addon</span>(addon)
       ember.set(addon, <span class="hljs-string">'active'</span>, <span class="hljs-literal">false</span>)
       <span class="hljs-property">@decrease_right_pocket</span>(addon, addon.width) <span class="hljs-keyword">if</span> <span class="hljs-property">@is_right_pocket_addon</span>(addon)
       <span class="hljs-property">@call_component</span>(addon, <span class="hljs-string">'close_addon'</span>).<span class="hljs-keyword">then</span> =&gt;
@@ -67,7 +77,7 @@ export default ember.Mixin.create
   <span class="hljs-attribute">call_component</span>: <span class="hljs-function"><span class="hljs-params">(addon, fn)</span> -&gt;</span>
     <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
       component = addon.component
-      rc        = <span class="hljs-keyword">if</span> util.is_object_function(component, fn) <span class="hljs-keyword">then</span> component[fn](addon) <span class="hljs-keyword">else</span> <span class="hljs-literal">null</span>
+      rc = <span class="hljs-keyword">if</span> util.is_object_function(component, fn) <span class="hljs-keyword">then</span> component[fn](addon) <span class="hljs-keyword">else</span> <span class="hljs-literal">null</span>
       <span class="hljs-keyword">if</span> util.is_promise(rc)
         rc.<span class="hljs-keyword">then</span> =&gt; resolve()
       <span class="hljs-keyword">else</span>

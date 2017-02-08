@@ -1,8 +1,11 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace-gradebook/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-gradebook/addon/components/main"><meta name="groc-project-path" content="thinkspace-gradebook/addon/components/main.coffee"><meta name="groc-branch-path" content="feature/pe-builder"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/pe-builder/thinkspace-gradebook/addon/components/main.coffee">thinkspace-gradebook/addon/components/main.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-gradebook/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-gradebook/addon/components/main"><meta name="groc-project-path" content="thinkspace-gradebook/addon/components/main.coffee"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="/assets/style.css"><script type="text/javascript" src="/assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/development/thinkspace-gradebook/addon/components/main.coffee">thinkspace-gradebook/addon/components/main.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
 import base   from <span class="hljs-string">'thinkspace-base/components/base'</span>
 import m_dock from <span class="hljs-string">'thinkspace-dock/mixins/main'</span>
 
 export default base.extend m_dock,
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">gradebook</span>: ember.inject.service()
 
   <span class="hljs-attribute">addon_config</span>:
     <span class="hljs-attribute">engine</span>:               <span class="hljs-string">'thinkspace-gradebook'</span>
@@ -13,25 +16,57 @@ export default base.extend m_dock,
     <span class="hljs-attribute">top_pocket_singleton</span>: <span class="hljs-literal">true</span>
     <span class="hljs-attribute">group</span>:                <span class="hljs-string">'middle'</span>
 
-  <span class="hljs-attribute">show_addon</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">show_addon</span>:       <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">can_access_addon</span>: ember.computed.bool <span class="hljs-string">'thinkspace.current_assignment.can.gradebook'</span>
 
-  <span class="hljs-attribute">can_access_addon</span>: ember.computed.bool <span class="hljs-string">'thinkspace.current_assignment.can.gradebook'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>valid_addon_ownerable: (addon_ownerable) -&gt;
-  new ember.RSVP.Promise (resolve, reject) =&gt;
-    console.warn &#39;VALID ADDON OWNERABLE&#39;, @
-    @get(&#39;addons&#39;).close_addon(@addon)
-    reject(&#39;it is bad&#39;)</p>
-<pre><code># @validate_ownerable(addon_ownerable).then (valid) -&gt;
-#   resolve()</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>validate_ownerable: (ownerable) -&gt;
-  new ember.RSVP.Promise (resolve, reject) =&gt;
-    pm_map              = @get(&#39;phase_manager.map&#39;)
-    map                 = @get(&#39;gradebook&#39;)
-    space               = @get(&#39;current_space&#39;)
-    assignment          = @get(&#39;current_assignment&#39;)
-    phase               = @get(&#39;current_phase&#39;)
-    return reject()  unless phase
-    if phase.is_team_ownerable()
-      map.get_gradebook_phase_teams(assignment, phase).then (teams) =&gt;
-        resolve teams.includes(ownerable)
-    else
-      map.get_gradebook_users(space, assignment).then (users) =&gt;
-        resolve users.includes(ownerable)</p></div></div></div></div></body></html>
+  <span class="hljs-attribute">ownerables</span>:           <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">selected_ownerable</span>:   <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">is_viewing_scorecard</span>: <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">is_team_ownerables</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">current_team</span>:       <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(ownerable)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ownerable == <span class="hljs-property">@get</span>(<span class="hljs-string">'selected_ownerable'</span>)
+      <span class="hljs-property">@set</span> <span class="hljs-string">'selected_ownerable'</span>, ownerable
+      <span class="hljs-property">@gradebook</span>.change_ownerable(ownerable)
+
+    <span class="hljs-attribute">toggle_is_viewing_scorecard</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@toggleProperty</span> <span class="hljs-string">'is_viewing_scorecard'</span>; <span class="hljs-keyword">return</span>
+
+  <span class="hljs-attribute">init_dock</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@gradebook</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'gradebook'</span>)
+    <span class="hljs-property">@addObserver</span> <span class="hljs-string">'thinkspace.current_phase'</span>, @, <span class="hljs-string">'handle_phase_change'</span>
+
+  <span class="hljs-attribute">handle_phase_change</span>: <span class="hljs-function">-&gt;</span>
+    ember.run.schedule <span class="hljs-string">'afterRender'</span>, <span class="hljs-function">=&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'show_addon'</span>)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank <span class="hljs-property">@get</span>(<span class="hljs-string">'thinkspace.current_phase'</span>)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@gradebook</span>.is_destroyed(@)
+      <span class="hljs-property">@gradebook</span>.addon_ownerable_valid().<span class="hljs-keyword">then</span> (valid) =&gt;
+        <span class="hljs-keyword">if</span> valid
+          <span class="hljs-property">@gradebook</span>.call_change_components(<span class="hljs-attribute">phase</span>: <span class="hljs-literal">true</span>)
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-property">@set_ownerables</span>().<span class="hljs-keyword">then</span> =&gt; <span class="hljs-property">@gradebook</span>.call_change_components(<span class="hljs-attribute">phase</span>: <span class="hljs-literal">true</span>)
+
+  <span class="hljs-attribute">open_addon</span>:  <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@gradebook</span>.open_addon().<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@set_ownerables</span>().<span class="hljs-keyword">then</span> =&gt; resolve()
+
+  <span class="hljs-attribute">close_addon</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@gradebook</span>.close_addon()
+    <span class="hljs-property">@setProperties</span>(<span class="hljs-attribute">ownerables</span>: <span class="hljs-literal">null</span>, <span class="hljs-attribute">selected_ownerable</span>: <span class="hljs-literal">null</span>, <span class="hljs-attribute">current_team</span>: <span class="hljs-literal">null</span>)
+
+  <span class="hljs-attribute">set_ownerables</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@gradebook</span>.get_ownerables().<span class="hljs-keyword">then</span> (ownerables) =&gt;
+        <span class="hljs-property">@gradebook</span>.get_selected_ownerable().<span class="hljs-keyword">then</span> (ownerable) =&gt;
+          <span class="hljs-property">@set</span> <span class="hljs-string">'selected_ownerable'</span>, ownerable
+          <span class="hljs-property">@gradebook</span>.get_current_team().<span class="hljs-keyword">then</span> (team) =&gt;
+            <span class="hljs-property">@set</span> <span class="hljs-string">'is_team_ownerables'</span>, <span class="hljs-property">@gradebook</span>.is_phase_team_ownerables()
+            <span class="hljs-property">@set</span> <span class="hljs-string">'current_team'</span>, team
+            <span class="hljs-property">@set</span> <span class="hljs-string">'ownerables'</span>, ownerables
+            resolve()
+
+  <span class="hljs-attribute">valid_addon_ownerable</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@gradebook</span>.valid_addon_ownerable()</div></div></div></div></body></html>
