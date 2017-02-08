@@ -2,7 +2,7 @@
 
 ## Rake Task
 
->> Individual test files must end in **_test.rb** while files in **helpers**folder are excluded.
+> Individual test files must end in **_test.rb** while files in **helpers** folder are excluded.
 
 `rake totem:test:unit:engine[engine_name,pattern]` where pattern is any Dir.glob path
 
@@ -31,7 +31,7 @@ Examples of patterns:
     - `rake totem:test:unit:engine[thinkspace_casespace] BACKTRACE=1 SEED=true`
     - or `rake totem:test:unit:engine[thinkspace_casespace,ability,routes] BACKTRACE=1 SEED=true`
 
->> Note: When need a full backtrace on 'errors' (e.g. not failures) add BACKTRACE=1.
+> Note: When need a full backtrace on 'errors' (e.g. not failures) add BACKTRACE=1.
 
 ## Structure:
 
@@ -81,7 +81,7 @@ Helpers are broken into modules for a specific use.
 
 ## Seeds
 
->> **IMPORTANT:** If the db schema has changed, need to run: `rake totem:db:reset[none] RAILS_ENV='test'`
+> **IMPORTANT:** If the db schema has changed, need to run: `rake totem:db:reset[none] RAILS_ENV='test'`
 
 A config file in the thinkspace-casespace/db/test_data/test folder can be loaded before the test by calling `Test::Casespace::Seed.load(config: :config-name)` before the test class. A config file name will be loaded only once per rake task but multiple config file names can loaded per rake task.
 
@@ -240,11 +240,11 @@ Hooks include:
 - If the hook accepts two args, it will receive the route and the options for the route (the options include the params).
 - The dictionary, database and params can be changed by any hook.
 
->> IMPORTANT: When a hook is called, only the values to that point-in-time have been established.
+> **IMPORTANT**: When a hook is called, only the values to that point-in-time have been established.
 
->> IMPORTANT: If the 'controller_helper_namespace' option is blank, no hooks will be called.
+> **IMPORTANT**: If the 'controller_helper_namespace' option is blank, no hooks will be called.
 
->> IMPORTANT: The hook class must have been required to be constantized. One location that will be required is in the helpers e.g. helpers/ability/controllers.
+> **IMPORTANT**: The hook class must have been required to be constantized. One location that will be required is in the helpers e.g. helpers/ability/controllers.
 
 Examples (for thinkspace-common):
 

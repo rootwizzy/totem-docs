@@ -184,14 +184,16 @@ $md-a_color:      $ownership;
 $md-a_decoration: underline;
 
 /** Block Quotes **/
-$md-blockquote_bg:          $secondary;
-$md-blockquote_color:       white;
-$md-blockquote_radius:      $border-radius;
-$md-blockquote_padding:     $padding;
-$md-blockquote_border:      0;
-$md-blockquote_border-left: 5px solid darken($md-blockquote_bg, 10%);
-$md-blockquote_weight:      $regular;
-$md-blockquote_spacing:     1.5em;
+$md-blockquote_bg:            $secondary;
+$md-blockquote_color:         white;
+$md-blockquote_radius:        $border-radius;
+$md-blockquote_padding:       $padding;
+$md-blockquote_border:        0;
+$md-blockquote_border-left:   5px solid darken($md-blockquote_bg, 10%);
+$md-blockquote_weight:        $regular;
+$md-blockquote_spacing:       1.5em;
+$md-blockquote_strong-color:  white;
+$md-blockquout_strong-weight: bold
 
 /** Code Blocks **/
 $md-codeblock_bg:          darken($primary, 5%);
