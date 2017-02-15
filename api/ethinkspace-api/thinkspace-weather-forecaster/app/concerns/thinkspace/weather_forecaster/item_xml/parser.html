@@ -1,0 +1,118 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/parser</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/parser"><meta name="groc-project-path" content="thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/parser.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/parser.rb">thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/parser.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">WeatherForecaster</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ItemXml</span></span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Parser</span></span>
+
+        <span class="hljs-keyword">attr_reader</span>   <span class="hljs-symbol">:parser_items</span>
+        <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:default_id_key</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(dir=<span class="hljs-keyword">nil</span>, parser_filename=<span class="hljs-keyword">nil</span>)</span></span>
+          parser_extend(dir, parser_filename)  <span class="hljs-keyword">if</span> dir.present?
+          <span class="hljs-variable">@parser_items</span> = <span class="hljs-constant">Array</span>.new
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parser_extend</span><span class="hljs-params">(dir, parser_filename)</span></span>
+          parser_filename  = <span class="hljs-string">'parser.rb'</span>  <span class="hljs-keyword">if</span> parser_filename.blank?
+          parser_filename += <span class="hljs-string">'.rb'</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.extname(parser_filename) == <span class="hljs-string">'.rb'</span>
+          xml_parser       = <span class="hljs-constant">Dir</span>.glob(<span class="hljs-constant">File</span>.join(dir, parser_filename)).first
+          raise <span class="hljs-constant">ParserError</span>, <span class="hljs-string">"XML Parser not found: <span class="hljs-subst">#{xml_parser.inspect}</span>.  Did you specify the correct directory and parser filename (defalut 'parser.rb')?"</span>  <span class="hljs-keyword">if</span> xml_parser.blank?
+          rc = load xml_parser
+          raise <span class="hljs-constant">ParserError</span>, <span class="hljs-string">"XML Parser require failed for <span class="hljs-subst">#{xml_parser.inspect}</span>."</span>  <span class="hljs-keyword">if</span> rc.blank?
+          ns       = <span class="hljs-constant">File</span>.basename(dir)
+          mod_name = <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name.deconstantize}</span>::<span class="hljs-subst">#{ns.classify}</span>"</span>
+          mod      = mod_name.safe_constantize
+          raise <span class="hljs-constant">ParserError</span>, <span class="hljs-string">"Could not constantize module <span class="hljs-subst">#{mod_name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> mod.blank?
+          extend mod
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_xml</span><span class="hljs-params">(xml)</span></span>
+          <span class="hljs-constant">Nokogiri</span>.<span class="hljs-constant">XML</span>(xml) <span class="hljs-keyword">do</span> |config|
+            config.nonet
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_html</span><span class="hljs-params">(content)</span></span>
+          <span class="hljs-constant">Nokogiri::HTML</span>.fragment(content) <span class="hljs-keyword">do</span> |config|
+            config.nonet
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_item</span>;</span> <span class="hljs-constant">ItemXml::Item</span>.new; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_default_id_key</span><span class="hljs-params">(key)</span>;</span> <span class="hljs-variable">@default_id_key</span> = key; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_attr</span><span class="hljs-params">(node, attribute, default=<span class="hljs-string">''</span>)</span></span>
+          value = node.attribute(attribute.to_s)
+          value.present? ? value.text <span class="hljs-symbol">:</span> default
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_id</span><span class="hljs-params">(node, key=default_id_key)</span></span>
+          raise <span class="hljs-constant">XMLError</span>, <span class="hljs-string">"Missing id key <span class="hljs-subst">#{key.inspect}</span> for node <span class="hljs-subst">#{node.name.inspect}</span> \n<span class="hljs-subst">#{node.to_xml}</span>"</span> <span class="hljs-keyword">unless</span> node.key?(key)
+          node.attribute(key).text
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_id_from_qid</span><span class="hljs-params">(qid)</span></span>
+          raise <span class="hljs-constant">XMLError</span>, <span class="hljs-string">"QUE id is blank."</span> <span class="hljs-keyword">unless</span> qid.present?
+          qid.to_s.split(<span class="hljs-string">'_'</span>).last.sub(<span class="hljs-regexp">/\D*/</span>,<span class="hljs-string">''</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extract_content_and_name_text</span><span class="hljs-params">(content, names, join_with=<span class="hljs-string">''</span>)</span></span>
+          names = [names].flatten.compact
+          html  = parse_html(content)
+          nodes = html.css(<span class="hljs-string">'*'</span>).select {|node| names.<span class="hljs-keyword">include</span>?(node.name)}
+          text  = nodes.collect {|node| node.to_s}.join(join_with)
+          nodes.each {|node| node.remove}
+          [html.to_s, text]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_node_attributes_hash</span><span class="hljs-params">(node)</span></span>
+          hash         = <span class="hljs-constant">Hash</span>.new
+          hash[<span class="hljs-string">'name'</span>] = node.name
+          hash[<span class="hljs-string">'text'</span>] = node.text
+          node.attributes.each <span class="hljs-keyword">do</span> |key, value|
+            hash[key] = value.to_s
+          <span class="hljs-keyword">end</span>
+          hash
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_integer?</span><span class="hljs-params">(value)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> value.blank?
+          value.to_s.match(<span class="hljs-regexp">/^[-|+]?\d+$/</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sanitize_string</span><span class="hljs-params">(string)</span></span>
+          string.gsub(<span class="hljs-regexp">/\t/</span>, <span class="hljs-string">''</span>).gsub(<span class="hljs-regexp">/\n/</span>, <span class="hljs-string">''</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_items</span><span class="hljs-params">(items=parser_items)</span></span>
+          items.each <span class="hljs-keyword">do</span> |item|
+            len = <span class="hljs-number">15</span>
+            puts <span class="hljs-string">"\n"</span> + (<span class="hljs-string">'-'</span> * <span class="hljs-number">50</span>) + <span class="hljs-string">"\n"</span>
+            puts <span class="hljs-string">'id'</span>.ljust(len) + <span class="hljs-string">': '</span> + item.id
+            puts <span class="hljs-string">'title'</span>.ljust(len) + <span class="hljs-string">': '</span> + item.title
+            puts <span class="hljs-string">'content'</span>.ljust(len) + <span class="hljs-string">': '</span> + item.content
+            <span class="hljs-keyword">if</span> (response = item.response).present?
+              puts <span class="hljs-string">'response id'</span>.ljust(len) + <span class="hljs-string">': '</span> + response.id
+              response.response.choices.each <span class="hljs-keyword">do</span> |choice|
+                puts <span class="hljs-string">'  - choice id'</span>.ljust(len) + <span class="hljs-string">': '</span> + choice.id
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+            conditions = item.processing.condition
+            conditions.each <span class="hljs-keyword">do</span> |key, condition|</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>puts &quot;#{key}&quot;.ljust(len) + &#39;: &#39; + condition.id</p></div></div><div class="code"><div class="wrapper">              <span class="hljs-keyword">if</span> (ret = condition.ret).present?
+                [ret].flatten.compact.each <span class="hljs-keyword">do</span> |r|
+                  puts <span class="hljs-string">"  - <span class="hljs-subst">#{key}</span> ret"</span>.ljust(len) + <span class="hljs-string">': '</span> + r
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">XMLError</span>    <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ParserError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

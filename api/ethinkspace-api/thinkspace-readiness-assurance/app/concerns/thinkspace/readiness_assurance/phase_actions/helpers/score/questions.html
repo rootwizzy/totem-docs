@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/score/questions</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/score/questions"><meta name="groc-project-path" content="thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/score/questions.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/score/questions.rb">thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/score/questions.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReadinessAssurance</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PhaseActions</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Helpers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Score</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Questions</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Example response metadata/userdata layout (userdata will include only ifat questions): 
+      all_correct:        false (metadata only)
+      number_of_updates:  2<br>      question_scores:    {ra_1_1: 3, ra_1_2: 2, ra_1_3: 0}
+      attempt_values:     {ra_1_1: [b, a], ra_1_2: [a, a], ra_1_3: [a, a]}
+      question_correct:   {ra_1_1: true, ra_1_2: false, ra_1_3: false}
+      correct_answer:     {ra_1_1: a, ra_1_2: b, ra_1_3: c}</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:base</span>, <span class="hljs-symbol">:response</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:metadata</span>, <span class="hljs-symbol">:userdata</span>, <span class="hljs-symbol">:current_data</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:question_ids</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(base, response)</span></span>
+    <span class="hljs-variable">@base</span>           = base
+    <span class="hljs-variable">@response</span>       = response
+    <span class="hljs-variable">@metadata</span>       = (response.metadata || <span class="hljs-constant">Hash</span>.new).deep_dup.with_indifferent_access
+    <span class="hljs-variable">@userdata</span>       = (response.userdata || <span class="hljs-constant">Hash</span>.new).deep_dup.with_indifferent_access
+    <span class="hljs-variable">@question_ids</span>   = base.question_ids
+    <span class="hljs-variable">@total_score</span>    = <span class="hljs-constant">BigDecimal</span>(<span class="hljs-string">'0'</span>)
+    <span class="hljs-variable">@added_attempt</span>  = <span class="hljs-keyword">false</span>
+    init_data
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="public-methods">Public Methods.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span>
+    score_questions
+    set_data
+    save_response
+    response.score
+  <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Score::MultipleChoice</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="save-response">Save Response.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save_response</span></span>
+    raise <span class="hljs-constant">ResponseSaveError</span>, <span class="hljs-string">"Response save error validation messages <span class="hljs-subst">#{response.errors}</span>"</span>  <span class="hljs-keyword">unless</span> response.save
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="metadata">Metadata.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init_data</span></span>
+    init_hash_data(metadata)
+    init_hash_data(userdata)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init_hash_data</span><span class="hljs-params">(hash)</span></span>
+    hash[<span class="hljs-symbol">:number_of_updates</span>] ||= <span class="hljs-number">0</span>
+    hash[<span class="hljs-symbol">:attempt_values</span>]    ||= <span class="hljs-constant">Hash</span>.new
+    hash[<span class="hljs-symbol">:question_scores</span>]   ||= <span class="hljs-constant">Hash</span>.new
+    hash[<span class="hljs-symbol">:question_correct</span>]    = <span class="hljs-constant">Hash</span>.new
+    hash[<span class="hljs-symbol">:correct_answer</span>]      = <span class="hljs-constant">Hash</span>.new
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_data</span></span>
+    metadata[<span class="hljs-symbol">:all_correct</span>] = all_correct?(metadata) &amp;&amp; all_correct?(userdata)
+    remove_blank_data(metadata)
+    remove_blank_data(userdata)
+    response.metadata      = metadata
+    response.userdata      = userdata
+    response.score         = <span class="hljs-variable">@total_score</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">remove_blank_data</span><span class="hljs-params">(hash)</span></span>
+    hash.delete(<span class="hljs-symbol">:question_scores</span>)   <span class="hljs-keyword">if</span> hash[<span class="hljs-symbol">:question_scores</span>].blank?
+    hash.delete(<span class="hljs-symbol">:question_correct</span>)  <span class="hljs-keyword">if</span> hash[<span class="hljs-symbol">:question_correct</span>].blank?
+    hash.delete(<span class="hljs-symbol">:attempt_values</span>)    <span class="hljs-keyword">if</span> hash[<span class="hljs-symbol">:attempt_values</span>].blank?
+    hash.delete(<span class="hljs-symbol">:correct_answer</span>)    <span class="hljs-keyword">if</span> hash[<span class="hljs-symbol">:correct_answer</span>].blank?
+    hash.delete(<span class="hljs-symbol">:number_of_updates</span>) <span class="hljs-keyword">if</span> hash[<span class="hljs-symbol">:number_of_updates</span>] == <span class="hljs-number">0</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">all_correct?</span><span class="hljs-params">(hash)</span>;</span> !hash[<span class="hljs-symbol">:question_correct</span>].values.<span class="hljs-keyword">include</span>?(<span class="hljs-keyword">false</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="score-questions">Score Questions.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Currently only implements mutiple choice questions.
+To add a new question type:</p>
+<ol>
+<li>Set the value in the assessment.settings[:questions][:type] -or- assessment.questions[i][:questions][:type] (if blank inherits from assessment)</li>
+<li>Add a &#39;when&#39; statement and apply the scoring rules (either in this class or include a module)<ul>
+<li>scoring should end up calling either correct(qid, score) or incorrect(qid, score)</li>
+</ul>
+</li>
+</ol></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">score_questions</span></span>
+    question_ids.each <span class="hljs-keyword">do</span> |qid|
+      set_is_ifat_qid(qid)
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> base.ifat_only? &amp;&amp; !ifat_qid?
+      <span class="hljs-variable">@current_data</span> = ifat_qid? ? userdata <span class="hljs-symbol">:</span> metadata
+      type          = (base.question_type(qid) || <span class="hljs-string">''</span>).to_sym
+      <span class="hljs-keyword">case</span> type
+      <span class="hljs-keyword">when</span> <span class="hljs-symbol">:multiple_choice</span>   <span class="hljs-keyword">then</span> score_multiple_choice_question(qid)
+      <span class="hljs-keyword">else</span>
+        raise <span class="hljs-constant">InvalidQuestionType</span>, <span class="hljs-string">"Question type '<span class="hljs-subst">#{type}</span>' scoring is not implmented."</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="add-data-values">Add Data Values.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_correct</span><span class="hljs-params">(qid, score)</span></span>
+    current_data[<span class="hljs-symbol">:question_correct</span>][qid] = <span class="hljs-keyword">true</span>
+    current_data[<span class="hljs-symbol">:correct_answer</span>][qid]   = base.correct_answer(qid)
+    add_common(qid, score)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_incorrect</span><span class="hljs-params">(qid, score)</span></span>
+    current_data[<span class="hljs-symbol">:question_correct</span>][qid] = <span class="hljs-keyword">false</span>
+    add_common(qid, score)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_common</span><span class="hljs-params">(qid, score)</span></span>
+    <span class="hljs-keyword">if</span> rescore?
+      add_score(qid, score)
+    <span class="hljs-keyword">else</span>
+      add_attempt
+      add_score(qid, score)
+      add_question_attempt_value(qid)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_attempt</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@added_attempt</span>
+    current_data[<span class="hljs-symbol">:number_of_updates</span>] += <span class="hljs-number">1</span>
+    <span class="hljs-variable">@added_attempt</span> = <span class="hljs-keyword">true</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_score</span><span class="hljs-params">(qid, score)</span></span>
+    <span class="hljs-variable">@total_score</span> += score
+    current_data[<span class="hljs-symbol">:question_scores</span>][qid] = score
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_question_attempt_value</span><span class="hljs-params">(qid)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> base.answered?(qid)
+    answer = base.response_answer(qid) || <span class="hljs-string">''</span>
+    array  = (current_data[<span class="hljs-symbol">:attempt_values</span>][qid] ||= <span class="hljs-constant">Array</span>.new)
+    array.push(answer) <span class="hljs-keyword">unless</span> array.last == answer
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_is_ifat_qid</span><span class="hljs-params">(qid)</span>;</span> <span class="hljs-variable">@ifat_qid</span> = base.ifat?(qid); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ifat_qid?</span>;</span>            <span class="hljs-variable">@ifat_qid</span> == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rescore?</span>;</span> base.rescore?; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ResponseSaveError</span>   <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InvalidQuestionType</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

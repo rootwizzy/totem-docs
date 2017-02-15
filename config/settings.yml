@@ -40,7 +40,7 @@ modules:
         branch: development
         options:
           out: "-o ../../api/ethinkspace-api"
-          glob: "./**/**/*.rb README.md"
+          glob: '"./**/*.rb" "README.md"'
           project: "-p ethinkspace-api"
           url:     "--repository-url 'https://github.com/sixthedge/ethinkspace-api'"
           branch: "-b development"

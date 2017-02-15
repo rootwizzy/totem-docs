@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/sandbox/helpers/cache</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/sandbox/helpers/cache"><meta name="groc-project-path" content="thinkspace-casespace/test/sandbox/helpers/cache.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/sandbox/helpers/cache.rb">thinkspace-casespace/test/sandbox/helpers/cache.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::Sandbox::Helpers::Cache</span></span>
+extend <span class="hljs-constant">ActiveSupport::Concern</span>
+included <span class="hljs-keyword">do</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_ability</span>;</span> <span class="hljs-variable">@controller</span>.send <span class="hljs-symbol">:current_ability</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cache_clear</span>;</span>     <span class="hljs-variable">@controller</span>.send <span class="hljs-symbol">:controller_cache_clear</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cache_debug_on</span>;</span>  <span class="hljs-variable">@controller</span>.controller_cache_debug_on; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cache_debug_off</span>;</span> <span class="hljs-variable">@controller</span>.controller_cache_debug_on; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Override serializer_options methods to return a specific value (so do not need totem_action_authorize).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">params_ownerable</span><span class="hljs-params">(user)</span>;</span> serializer_options.send <span class="hljs-symbol">:define_singleton_method</span>, <span class="hljs-symbol">:params_ownerable</span> <span class="hljs-keyword">do</span>; user; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authable_ability</span>;</span>       serializer_options.send <span class="hljs-symbol">:define_singleton_method</span>, <span class="hljs-symbol">:authable_ability</span> <span class="hljs-keyword">do</span>; <span class="hljs-constant">Hash</span>.new; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_instance_var</span><span class="hljs-params">(records)</span></span>
+    record = <span class="hljs-constant">Array</span>.wrap(records).first
+    var = record.<span class="hljs-keyword">class</span>.name.demodulize.downcase
+    var = var.pluralize <span class="hljs-keyword">if</span> records.is_a?(<span class="hljs-constant">Array</span>) || records.respond_to?(<span class="hljs-symbol">:to_ary</span>)
+    <span class="hljs-variable">@controller</span>.instance_variable_set(<span class="hljs-string">"@<span class="hljs-subst">#{var}</span>"</span>.to_sym, records)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_spaces_cache_key</span><span class="hljs-params">(key, title=<span class="hljs-keyword">nil</span>, print_split_key=<span class="hljs-keyword">true</span>)</span></span>
+    print_cache_key(key, title)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> print_split_key
+    split_on = [
+      <span class="hljs-string">'/ownerable'</span>,
+      <span class="hljs-string">'/space'</span>,
+      <span class="hljs-string">'/assignments'</span>,
+      <span class="hljs-string">'/space_users'</span>,
+      <span class="hljs-string">'/owners'</span>,
+      <span class="hljs-string">'/assignments'</span>,
+      <span class="hljs-string">'/cache_options'</span>,
+      <span class="hljs-string">'/ability:cache'</span>,
+      <span class="hljs-string">':method'</span>,
+      ([<span class="hljs-string">':options_key'</span>] * <span class="hljs-number">5</span>),
+    ]
+    print_split_key(key, split_on)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_assignment_cache_key</span><span class="hljs-params">(key, title=<span class="hljs-keyword">nil</span>, print_split_key=<span class="hljs-keyword">true</span>)</span></span>
+    print_cache_key(key, title)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> print_split_key
+    split_on = [
+      <span class="hljs-string">'/ownerable'</span>,
+      <span class="hljs-string">'/assignment'</span>,
+      <span class="hljs-string">'/phases'</span>,
+      <span class="hljs-string">'/phase_states'</span>,
+      <span class="hljs-string">'/phase_scores'</span>,
+      <span class="hljs-string">'/cache_options'</span>,
+    ]
+    print_split_key(key, split_on)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_phase_cache_key</span><span class="hljs-params">(key, title=<span class="hljs-keyword">nil</span>, print_split_key=<span class="hljs-keyword">true</span>)</span></span>
+    print_cache_key(key, title)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> print_split_key
+    split_on = [
+      <span class="hljs-string">'/phase/'</span>,
+      <span class="hljs-string">'/phase_template'</span>,
+      <span class="hljs-string">'/configuration'</span>,
+      <span class="hljs-string">'/phase_components'</span>,
+      <span class="hljs-string">'/team_category'</span>,
+      <span class="hljs-string">'/resource_tags'</span>,
+      <span class="hljs-string">'/resource_files'</span>,
+      <span class="hljs-string">'/resource_links'</span>,
+      <span class="hljs-string">'/cache_options'</span>,
+      ([<span class="hljs-string">':options_key'</span>] * <span class="hljs-number">5</span>),
+    ]
+    print_split_key(key, split_on)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_split_key</span><span class="hljs-params">(key, split_on)</span></span>
+    puts <span class="hljs-string">'  '</span> + split_string_by_keys(key, split_on).join(<span class="hljs-string">"\n    "</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_cache_key</span><span class="hljs-params">(key, title=<span class="hljs-keyword">nil</span>)</span></span>
+    puts <span class="hljs-string">"\n\n"</span>
+    puts <span class="hljs-string">"<span class="hljs-subst">#{title.to_s.ljust(<span class="hljs-number">80</span>,<span class="hljs-string">'-'</span>)}</span>"</span>  <span class="hljs-keyword">if</span> title.present?
+    puts <span class="hljs-string">"KEY: (<span class="hljs-subst">#{key.length}</span>)"</span>, key.inspect
+    puts <span class="hljs-string">"\n"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">split_string_by_keys</span><span class="hljs-params">(split_str, keys)</span></span>
+    strs = <span class="hljs-constant">Array</span>.new
+    str  = split_str.to_s
+    pkey = <span class="hljs-string">''</span>
+    <span class="hljs-constant">Array</span>.wrap(keys).flatten.each <span class="hljs-keyword">do</span> |key|
+      part1, part2 = str.split(key, <span class="hljs-number">2</span>)
+      strs.push(pkey + part1) <span class="hljs-keyword">if</span> part1.present?
+      str  = part2 || <span class="hljs-string">''</span>
+      pkey = key.to_s
+    <span class="hljs-keyword">end</span>
+    strs.push(pkey + str) <span class="hljs-keyword">if</span> str.present?
+    strs
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

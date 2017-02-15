@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/mailers/thinkspace/common/notification_mailer</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-common/app/mailers/thinkspace/common/notification_mailer"><meta name="groc-project-path" content="thinkspace-common/app/mailers/thinkspace/common/notification_mailer.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-common/app/mailers/thinkspace/common/notification_mailer.rb">thinkspace-common/app/mailers/thinkspace/common/notification_mailer.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Common</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NotificationMailer</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActionMailer::Base</span></span></span>
+      <span class="hljs-keyword">include</span> <span class="hljs-constant">Thinkspace::Common::BaseMailer</span>
+      layout <span class="hljs-string">'thinkspace/common/layouts/invitation'</span>
+      default <span class="hljs-symbol">from:</span> <span class="hljs-string">'ThinkBot &lt;thinkbot@thinkspace.org&gt;'</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">added_to_space</span><span class="hljs-params">(space_user, inviter)</span></span>
+
+        <span class="hljs-variable">@sender</span>    = inviter
+        <span class="hljs-variable">@invitable</span> = space_user.thinkspace_common_space
+        <span class="hljs-variable">@user</span>      = space_user.thinkspace_common_user
+        <span class="hljs-variable">@to</span>        = <span class="hljs-variable">@user</span>.email
+
+        url_suffix = <span class="hljs-string">"spaces/<span class="hljs-subst">#{<span class="hljs-variable">@invitable</span>.id}</span>"</span>
+        <span class="hljs-variable">@url</span>       = <span class="hljs-string">'http://localhost:4200/'</span> + url_suffix <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.development?
+        <span class="hljs-variable">@url</span>       = <span class="hljs-string">'https://think.thinkspace.org/'</span> + url_suffix <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.production?
+
+        raise <span class="hljs-string">"Cannot send an notification without a sender [<span class="hljs-subst">#{<span class="hljs-variable">@sender</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@sender</span>.present?
+        raise <span class="hljs-string">"Cannot send an notification without an email [<span class="hljs-subst">#{<span class="hljs-variable">@to</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@to</span>.present?
+        raise <span class="hljs-string">"Cannot send an notification without a valid invitable [<span class="hljs-subst">#{<span class="hljs-variable">@invitable</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@invitable</span>.present?
+
+        subject    = <span class="hljs-string">"You have been added to <span class="hljs-subst">#{<span class="hljs-variable">@invitable</span>.title}</span>"</span>
+        mail(<span class="hljs-symbol">to:</span> <span class="hljs-variable">@to</span>, <span class="hljs-symbol">subject:</span> format_subject(subject))
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invited_to_space</span><span class="hljs-params">(space_user, inviter)</span></span>
+        <span class="hljs-variable">@sender</span>     = inviter
+        <span class="hljs-variable">@invitable</span>  = space_user.thinkspace_common_space
+        <span class="hljs-variable">@user</span>       = space_user.thinkspace_common_user
+        <span class="hljs-variable">@to</span>         = <span class="hljs-variable">@user</span>.email
+        <span class="hljs-variable">@token</span>      = <span class="hljs-variable">@user</span>.activation_token
+        <span class="hljs-variable">@expires_in</span> = ((<span class="hljs-variable">@user</span>.activation_expires_at - <span class="hljs-constant">DateTime</span>.now).to_i)/<span class="hljs-number">86400</span> <span class="hljs-comment"># to days</span>
+
+        url_suffix = <span class="hljs-string">"/users/sign_up/?token=<span class="hljs-subst">#{<span class="hljs-constant">CGI</span>.escape(<span class="hljs-variable">@token</span>)}</span>&amp;email=<span class="hljs-subst">#{<span class="hljs-constant">CGI</span>.escape(<span class="hljs-variable">@to</span>)}</span>&amp;invitable=<span class="hljs-subst">#{<span class="hljs-constant">CGI</span>.escape(<span class="hljs-variable">@invitable</span>.title)}</span>"</span>
+        <span class="hljs-variable">@host</span>      = <span class="hljs-string">'http://localhost:4200'</span> <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.development?
+        <span class="hljs-variable">@host</span>      = <span class="hljs-constant">Rails</span>.application.secrets.smtp[<span class="hljs-string">'postmark'</span>][<span class="hljs-string">'domain'</span>] <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.production?
+        <span class="hljs-variable">@url</span>       = <span class="hljs-variable">@host</span> + url_suffix
+        subject    = <span class="hljs-string">"Invitation to <span class="hljs-subst">#{<span class="hljs-variable">@invitable</span>.title}</span>"</span>
+
+        mail(<span class="hljs-symbol">to:</span> <span class="hljs-variable">@to</span>, <span class="hljs-symbol">subject:</span> format_subject(subject))
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">roster_imported</span><span class="hljs-params">(sender, status, invitable)</span></span>
+        <span class="hljs-variable">@to</span>        = sender.email
+        <span class="hljs-variable">@status</span>    = status
+        <span class="hljs-variable">@success</span>   = status.blank?
+        <span class="hljs-variable">@invitable</span> = invitable
+
+        url_suffix    = <span class="hljs-string">"/casespace/case_manager/spaces/<span class="hljs-subst">#{invitable.id}</span>/roster"</span>
+        <span class="hljs-variable">@host</span>         = <span class="hljs-string">'http://localhost:4200'</span> <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.development?
+        <span class="hljs-variable">@host</span>         = <span class="hljs-constant">Rails</span>.application.secrets.smtp[<span class="hljs-string">'postmark'</span>][<span class="hljs-string">'domain'</span>] <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.production?
+        <span class="hljs-variable">@url</span>          = <span class="hljs-variable">@host</span> + url_suffix
+        subject       = <span class="hljs-string">'Roster Imported'</span>
+        mail_settings = { <span class="hljs-symbol">to:</span> <span class="hljs-variable">@to</span>, <span class="hljs-symbol">subject:</span> format_subject(subject) }
+        mail(mail_settings)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">space_clone_completed</span><span class="hljs-params">(user, original_space, cloned_space)</span></span>
+        <span class="hljs-variable">@user</span>           = user
+        <span class="hljs-variable">@original_space</span> = original_space
+        <span class="hljs-variable">@cloned_space</span>   = cloned_space
+
+        url_suffix    = <span class="hljs-string">"/spaces/<span class="hljs-subst">#{cloned_space.id}</span>"</span>
+        <span class="hljs-variable">@host</span>         = <span class="hljs-string">'http://localhost:4200'</span> <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.development?
+        <span class="hljs-variable">@host</span>         = <span class="hljs-constant">Rails</span>.application.secrets.smtp[<span class="hljs-string">'postmark'</span>][<span class="hljs-string">'domain'</span>] <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.production?
+        <span class="hljs-variable">@url</span>          = <span class="hljs-variable">@host</span> + url_suffix
+        subject       = <span class="hljs-string">"<span class="hljs-subst">#{original_space.title}</span> has been successfully cloned."</span>
+        mail_settings = { <span class="hljs-symbol">to:</span> <span class="hljs-variable">@user</span>.email, <span class="hljs-symbol">subject:</span> format_subject(subject) }
+        mail(mail_settings)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">space_clone_failed</span><span class="hljs-params">(user, original_space)</span></span>
+        <span class="hljs-variable">@user</span>           = user
+        <span class="hljs-variable">@original_space</span> = original_space
+
+        subject       = <span class="hljs-string">"<span class="hljs-subst">#{original_space.title}</span> could not be cloned."</span>
+        mail_settings = { <span class="hljs-symbol">to:</span> <span class="hljs-variable">@user</span>.email, <span class="hljs-symbol">subject:</span> format_subject(subject) }
+        mail(mail_settings)
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-pub-sub/app/models/thinkspace/pub_sub/server_event</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-pub-sub/app/models/thinkspace/pub_sub/server_event"><meta name="groc-project-path" content="thinkspace-pub-sub/app/models/thinkspace/pub_sub/server_event.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-pub-sub/app/models/thinkspace/pub_sub/server_event.rb">thinkspace-pub-sub/app/models/thinkspace/pub_sub/server_event.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PubSub</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ServerEvent</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
+      totem_associations</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="scopes">Scopes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_room</span><span class="hljs-params">(room)</span>;</span>    where(<span class="hljs-string">"rooms ? '<span class="hljs-subst">#{room}</span>'"</span>); <span class="hljs-keyword">end</span> <span class="hljs-comment"># when self.rooms contains room</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_rooms</span><span class="hljs-params">(rooms)</span>;</span>  where(<span class="hljs-string">"rooms ?| <span class="hljs-subst">#{get_json_query_array(rooms)}</span>"</span>); <span class="hljs-keyword">end</span> <span class="hljs-comment"># when self.rooms contains any room in the rooms array</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_ge_time</span><span class="hljs-params">(time)</span>;</span> where(<span class="hljs-string">'created_at &gt;= ?'</span>, time); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_le_time</span><span class="hljs-params">(time)</span>;</span> where(<span class="hljs-string">'created_at &lt;= ?'</span>, time); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_message_event</span>;</span> where(<span class="hljs-symbol">event:</span> <span class="hljs-symbol">:message</span>); <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_messages</span><span class="hljs-params">(rooms, start_time=<span class="hljs-keyword">nil</span>, end_time=<span class="hljs-keyword">nil</span>)</span></span>
+        scope = active.scope_by_message_event.scope_by_rooms(rooms)
+        scope = scope.scope_by_ge_time(start_time) <span class="hljs-keyword">if</span> start_time.present?
+        scope = scope.scope_by_le_time(end_time)   <span class="hljs-keyword">if</span> end_time.present?
+        scope
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">get_json_query_array</span><span class="hljs-params">(array)</span></span>
+        str = <span class="hljs-constant">Array</span>.wrap(array).map {|a| <span class="hljs-string">"'<span class="hljs-subst">#{a}</span>'"</span>}.join(<span class="hljs-string">','</span>)
+        <span class="hljs-string">"array[<span class="hljs-subst">#{str}</span>]"</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_active_timers</span>;</span> where(<span class="hljs-string">'timer_settings IS NOT NULL'</span>).where(<span class="hljs-string">'timer_cancelled_at IS NULL'</span>); <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_timers_by_gt_time</span><span class="hljs-params">(time=<span class="hljs-constant">Time</span>.now.utc)</span></span>
+        where(<span class="hljs-string">'timer_end_at &gt; ?'</span>, time).scope_by_active_timers
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="validations">Validations.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      validates_presence_of <span class="hljs-symbol">:channel</span>, <span class="hljs-symbol">:origin</span>, <span class="hljs-symbol">:authable</span>, <span class="hljs-symbol">:user_id</span>
+      validate <span class="hljs-symbol">:validate_rooms</span>
+      validate <span class="hljs-symbol">:validate_value</span>
+      validate <span class="hljs-symbol">:validate_records</span>
+      validate <span class="hljs-symbol">:validate_timer</span>
+
+      <span class="hljs-constant">TIMER_SETTINGS_UNIT</span> = [<span class="hljs-string">'minute'</span>, <span class="hljs-string">'second'</span>]
+      <span class="hljs-constant">TIMER_SETTINGS_TYPE</span> = [<span class="hljs-string">'countdown'</span>, <span class="hljs-string">'countup'</span>, <span class="hljs-string">'once'</span>]
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_rooms</span></span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> timer_cancel?
+        <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:rooms</span>, <span class="hljs-string">"Rooms must be an array"</span>) <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span>.rooms.is_a?(<span class="hljs-constant">Array</span>)
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_value</span>;</span>   <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:value</span>,   <span class="hljs-string">"Value must be a hash"</span>)   <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.value.present?   &amp;&amp; !<span class="hljs-keyword">self</span>.value.is_a?(<span class="hljs-constant">Hash</span>); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_records</span>;</span> <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:records</span>, <span class="hljs-string">"Records must be a hash"</span>) <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.records.present? &amp;&amp; !<span class="hljs-keyword">self</span>.records.is_a?(<span class="hljs-constant">Hash</span>); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_timer</span></span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> timer_cancel?
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> timer?
+        validate_timer_settings
+        validate_timer_times
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_timer_settings</span></span>
+        <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:timer_settings</span>, <span class="hljs-string">"Timer settings must be a hash"</span>)   <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span>.timer_settings.is_a?(<span class="hljs-constant">Hash</span>)
+        <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:timer_settings</span>, <span class="hljs-string">"Timer settings cannot be blank"</span>)  <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.timer_settings.blank?
+        type = <span class="hljs-keyword">self</span>.timer_settings[<span class="hljs-string">'type'</span>]
+        unit = <span class="hljs-keyword">self</span>.timer_settings[<span class="hljs-string">'unit'</span>]
+        <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:timer_settings</span>, <span class="hljs-string">"Timer settings 'type' must be <span class="hljs-subst">#{<span class="hljs-constant">TIMER_SETTINGS_TYPE</span>}</span>"</span>) <span class="hljs-keyword">unless</span> <span class="hljs-constant">TIMER_SETTINGS_TYPE</span>.<span class="hljs-keyword">include</span>?(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> type == <span class="hljs-string">'once'</span>
+        <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:timer_settings</span>, <span class="hljs-string">"Timer settings 'unit' must be <span class="hljs-subst">#{<span class="hljs-constant">TIMER_SETTINGS_UNIT</span>}</span>"</span>) <span class="hljs-keyword">unless</span> <span class="hljs-constant">TIMER_SETTINGS_UNIT</span>.<span class="hljs-keyword">include</span>?(unit)
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_timer_times</span></span>
+        <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:timer_end_at</span>, <span class="hljs-string">"Timer requires a 'timer_end_at'"</span>) <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.timer_end_at.blank?
+        interval = <span class="hljs-keyword">self</span>.timer_settings[<span class="hljs-string">'interval'</span>]
+        unit     = <span class="hljs-keyword">self</span>.timer_settings[<span class="hljs-string">'unit'</span>]
+        start_at = <span class="hljs-keyword">self</span>.timer_start_at
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> interval.blank? &amp;&amp; start_at.blank?
+        <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:timer_settings</span>, <span class="hljs-string">"Timer settings requires an 'interval' with 'timer_start_at'"</span>) <span class="hljs-keyword">if</span> interval.blank?
+        <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:timer_settings</span>, <span class="hljs-string">"Timer settings requires an 'unit' with 'timer_start_at'"</span>)     <span class="hljs-keyword">if</span> unit.blank?
+        <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:timer_start_at</span>, <span class="hljs-string">"Timer requires a 'timer_start_at' with an 'interval'"</span>) <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.timer_start_at.blank? &amp;&amp; interval.present?
+        <span class="hljs-keyword">self</span>.errors.add(<span class="hljs-symbol">:timer_settings</span>, <span class="hljs-string">"Timer settings 'interval' must be a number"</span>) <span class="hljs-keyword">unless</span> interval.to_s.match(<span class="hljs-regexp">/^\d+$/</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">timer?</span>;</span> <span class="hljs-keyword">self</span>.timer_end_at.present? || <span class="hljs-keyword">self</span>.timer_start_at.present? || !<span class="hljs-keyword">self</span>.timer_settings.<span class="hljs-keyword">nil</span>?; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">timer_cancel?</span>;</span> <span class="hljs-keyword">self</span>.event == <span class="hljs-string">'timer_cancel'</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cancel_timer</span><span class="hljs-params">(time=<span class="hljs-constant">Time</span>.now.utc)</span></span>
+        <span class="hljs-keyword">self</span>.timer_cancelled_at = time
+        raise <span class="hljs-string">"Timer server event [id <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.id}</span>] could not be cancelled."</span> <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span>.save
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="aasm">AASM</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">AASM</span>
+      aasm <span class="hljs-symbol">column:</span> <span class="hljs-symbol">:state</span> <span class="hljs-keyword">do</span>
+        state <span class="hljs-symbol">:active</span>, <span class="hljs-symbol">initial:</span> <span class="hljs-keyword">true</span>
+        state <span class="hljs-symbol">:inactive</span>
+        state <span class="hljs-symbol">:archived</span>
+        event <span class="hljs-symbol">:activate</span> <span class="hljs-keyword">do</span>;   transitions <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:active</span>; <span class="hljs-keyword">end</span>
+        event <span class="hljs-symbol">:inactivate</span> <span class="hljs-keyword">do</span>; transitions <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:inactive</span>; <span class="hljs-keyword">end</span>
+        event <span class="hljs-symbol">:archive</span> <span class="hljs-keyword">do</span>;    transitions <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:archived</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::PubSub::Client</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>totem_pubsub debug: true</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<h3 id="server-event-record-class">Server Event Record Class.</h3>
+<h6 id="">#</h6></div></div><div class="code"><div class="wrapper">      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Record</span></span>
+
+        <span class="hljs-constant">COLUMN_METHODS</span> = [<span class="hljs-symbol">:authable</span>, <span class="hljs-symbol">:user</span>, <span class="hljs-symbol">:origin</span>, <span class="hljs-symbol">:channel</span>, <span class="hljs-symbol">:event</span>, <span class="hljs-symbol">:room_event</span>, <span class="hljs-symbol">:room</span>, <span class="hljs-symbol">:rooms</span>, <span class="hljs-symbol">:value</span>, <span class="hljs-symbol">:records</span>, <span class="hljs-symbol">:timer_settings</span>, <span class="hljs-symbol">:timer_start_at</span>, <span class="hljs-symbol">:timer_end_at</span>]
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:server_event</span>, <span class="hljs-symbol">:pubsub</span>, <span class="hljs-symbol">:error_class</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(options={})</span></span>
+          <span class="hljs-variable">@server_event</span> = <span class="hljs-constant">::Thinkspace::PubSub::ServerEvent</span>.new
+          <span class="hljs-variable">@rooms</span>        = <span class="hljs-constant">Array</span>.new
+          <span class="hljs-variable">@action</span>       = <span class="hljs-keyword">nil</span>
+          <span class="hljs-variable">@pubsub</span>       = server_event.<span class="hljs-keyword">class</span>.totem_pubsub
+          set_error_class
+          options.present? ? with_options(options) <span class="hljs-symbol">:</span> init_defaults
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init_defaults</span>;</span> channel; room_event; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="chainable-methods-some-methods-have-aliases">Chainable Methods (some methods have aliases).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save</span>;</span> save_error <span class="hljs-keyword">unless</span> server_event.save; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish</span></span>
+          save <span class="hljs-keyword">if</span> server_event.new_record?
+          value = get_publish_value
+          timer = get_publish_timer
+          pubsub.data
+            .to(server_event.rooms)
+            .room_event(server_event.room_event)
+            .value(value)
+            .timer(timer)
+            .action(<span class="hljs-variable">@action</span>)
+            .publish
+          <span class="hljs-keyword">self</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">channel</span><span class="hljs-params">(val=<span class="hljs-keyword">nil</span>)</span>;</span>    server_event.channel    = val || pubsub.channel_name; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">room_event</span><span class="hljs-params">(val=<span class="hljs-keyword">nil</span>)</span>;</span> server_event.room_event = val || <span class="hljs-symbol">:server_event</span>; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action</span><span class="hljs-params">(val=<span class="hljs-keyword">nil</span>)</span>;</span>     <span class="hljs-variable">@action</span> = val || <span class="hljs-keyword">nil</span>; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authable</span><span class="hljs-params">(val)</span>;</span> server_event.authable = val; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">user</span><span class="hljs-params">(u)</span>;</span>       server_event.user_id  = u.present? ? u.id <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">origin</span><span class="hljs-params">(val)</span>;</span>   server_event.origin   = val.is_a?(<span class="hljs-constant">Class</span>) ? val.name <span class="hljs-symbol">:</span> val.<span class="hljs-keyword">class</span>.name; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">timer_settings</span><span class="hljs-params">(val)</span>;</span>  server_event.timer_settings = val; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">timer_start_at</span><span class="hljs-params">(val)</span>;</span>  server_event.timer_start_at = val; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">timer_end_at</span><span class="hljs-params">(val)</span>;</span>    server_event.timer_end_at   = val; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">value</span><span class="hljs-params">(val)</span>;</span>   server_event.value = val; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">event</span><span class="hljs-params">(val)</span>;</span>   server_event.event = val; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">records</span><span class="hljs-params">(val)</span>;</span> server_event.records = val; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">room</span><span class="hljs-params">(r)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span> <span class="hljs-keyword">if</span> r.blank?
+          r.is_a?(<span class="hljs-constant">Array</span>) ? <span class="hljs-variable">@rooms</span> += r <span class="hljs-symbol">:</span> <span class="hljs-variable">@rooms</span>.push(r)
+          server_event.rooms = <span class="hljs-variable">@rooms</span>.uniq
+          <span class="hljs-keyword">self</span>
+        <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">alias</span> <span class="hljs-symbol">:rooms</span> <span class="hljs-symbol">:room</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">room_for</span><span class="hljs-params">(rs, *args)</span>;</span> room pubsub.room_for(rs, *args); <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">with_options</span><span class="hljs-params">(options)</span></span>
+          opts = options.symbolize_keys
+          <span class="hljs-constant">COLUMN_METHODS</span>.each <span class="hljs-keyword">do</span> |m|
+            <span class="hljs-keyword">self</span>.send m, opts[m]  <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.respond_to?(m)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">on_error</span><span class="hljs-params">(klass)</span>;</span> <span class="hljs-variable">@error_class</span> = klass; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+        private</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="publish-helpers">Publish Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_publish_value</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> (server_event.value.present? || server_event.event.present? || server_event.records.present?)
+          value = (server_event.value || <span class="hljs-constant">Hash</span>.new).deep_dup
+          value.merge!(<span class="hljs-symbol">event:</span> server_event.event)      <span class="hljs-keyword">if</span> server_event.event.present?
+          value.merge!(<span class="hljs-symbol">records:</span> server_event.records)  <span class="hljs-keyword">if</span> server_event.records.present?
+          value
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_publish_timer</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> server_event.timer_settings.blank?
+          id    = pubsub.room_for(server_event)
+          timer = server_event.timer_settings.deep_dup
+          timer.merge!(<span class="hljs-symbol">id:</span> id, <span class="hljs-symbol">start_at:</span> server_event.timer_start_at, <span class="hljs-symbol">end_at:</span> server_event.timer_end_at)
+          timer.merge!(<span class="hljs-symbol">user_id:</span> server_event.user_id) <span class="hljs-keyword">unless</span> timer[<span class="hljs-symbol">:user_id</span>].present?
+          timer
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="errors">Errors.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_error_class</span><span class="hljs-params">(klass=<span class="hljs-keyword">nil</span>)</span>;</span> <span class="hljs-variable">@error_class</span> = klass || <span class="hljs-constant">SaveError</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save_error</span></span>
+          message  = <span class="hljs-string">"Server event save error."</span>
+          message += <span class="hljs-string">"\nValidation errors: <span class="hljs-subst">#{server_event.errors.messages}</span>"</span>
+          message += <span class="hljs-string">"\nServerEvent: <span class="hljs-subst">#{server_event.inspect}</span>"</span>
+          raise error_class, message
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SaveError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<h3 id="end-server-event-record-class">End Server Event Record Class.</h3>
+<h6 id="">#</h6></div></div><div class="code"><div class="wrapper">      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RePublish</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Record</span></span></span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span></span>
+          <span class="hljs-variable">@pubsub</span> = <span class="hljs-constant">Thinkspace::PubSub::ServerEvent</span>.totem_pubsub
+          set_error_class
+        <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">republish</span><span class="hljs-params">(server_events)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> server_events.blank?
+          <span class="hljs-constant">Array</span>.wrap(server_events).each <span class="hljs-keyword">do</span> |server_event|
+            <span class="hljs-variable">@server_event</span> = server_event
+            publish
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

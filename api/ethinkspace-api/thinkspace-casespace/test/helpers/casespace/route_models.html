@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/helpers/casespace/route_models</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/helpers/casespace/route_models"><meta name="groc-project-path" content="thinkspace-casespace/test/helpers/casespace/route_models.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/helpers/casespace/route_models.rb">thinkspace-casespace/test/helpers/casespace/route_models.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::Casespace::RouteModels</span></span>
+  extend <span class="hljs-constant">ActiveSupport::Concern</span>
+
+  included <span class="hljs-keyword">do</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_new_model_dictionary_for_route_request</span><span class="hljs-params">(model_class, options={})</span></span>
+      base_classes  = get_base_model_classes(model_class)
+      assoc_classes = get_association_classes_for_base_classes(model_class, base_classes)
+      dictionary    = <span class="hljs-constant">Hash</span>.new
+      get_let_models.each {|m| dictionary[m.<span class="hljs-keyword">class</span>] = m}
+      base_classes.each  {|c| dictionary[c] = c.new  <span class="hljs-keyword">unless</span> dictionary.has_key?(c)}
+      assoc_classes.each {|c| dictionary[c] = c.new  <span class="hljs-keyword">unless</span> dictionary.has_key?(c)}
+      add_model_values_and_associations(dictionary)
+      model = dictionary[model_class]
+      <span class="hljs-variable">@route</span>.set_model(model)
+      <span class="hljs-variable">@route</span>.before_save(dictionary, options)  <span class="hljs-comment"># allow controller specfic changes to the dictionary (sets the dictionary in the route)</span>
+      save_dictionary_models(dictionary, base_classes.reverse)
+      save_dictionary_models(dictionary, dictionary.keys)  <span class="hljs-comment"># save all new records e.g. assoc models +/- any changes by helpers</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save_dictionary_models</span><span class="hljs-params">(dictionary, model_classes)</span></span>
+      model_classes.each <span class="hljs-keyword">do</span> |klass|
+        model = dictionary[klass]
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> model.new_record?
+        save_model(model)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="model-classes-to-build">Model Classes to Build.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">delegateable_assocations</span>;</span> [<span class="hljs-symbol">:authable</span>, <span class="hljs-symbol">:ownerable</span>]; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_base_model_classes</span><span class="hljs-params">(model_class, base_classes=[])</span></span>
+      add_build_model_class(base_classes, model_class)
+      raise <span class="hljs-string">"Error finding build model classes for <span class="hljs-subst">#{base_classes.first.inspect}</span>.  Over max depth 5."</span>  <span class="hljs-keyword">if</span> base_classes.length &gt;= <span class="hljs-number">5</span>    <span class="hljs-comment"># incase code bug in recursive calls</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add any delegateable model classes.</p></div></div><div class="code"><div class="wrapper">      delegateable_assocations.each <span class="hljs-keyword">do</span> |name|
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> model_class_has_association?(model_class, name)  <span class="hljs-comment"># model has the association e.g. not delegated</span>
+        <span class="hljs-keyword">if</span> model_class_has_method?(model_class, name)
+          klass = get_next_model_class_for_association_name(model_class, name)
+          <span class="hljs-keyword">if</span> klass.present? &amp;&amp; !base_classes.<span class="hljs-keyword">include</span>?(klass)  <span class="hljs-comment"># prevent self referencing delegates</span>
+            add_build_model_class(base_classes, klass)
+            get_base_model_classes(klass, base_classes)  <span class="hljs-keyword">unless</span> model_class_has_association?(klass, name)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      base_classes
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_next_model_class_for_association_name</span><span class="hljs-params">(model_class, name)</span></span>
+      <span class="hljs-keyword">return</span> model_class <span class="hljs-keyword">if</span> model_class_has_association?(model_class, name)
+      get_all_associations(model_class).each <span class="hljs-keyword">do</span> |assoc|
+        klass = get_association_model_class(assoc)
+        <span class="hljs-keyword">return</span> klass <span class="hljs-keyword">if</span> klass.present? &amp;&amp; (model_class_has_association?(klass, name) || model_class_has_method?(klass, name))
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_association_classes_for_base_classes</span><span class="hljs-params">(model_class, base_classes, assoc_classes=[], do_classes=[])</span></span>
+      raise <span class="hljs-string">"Error finding build classes associations.  Over max depth 15."</span>  <span class="hljs-keyword">if</span> assoc_classes.length &gt;= <span class="hljs-number">15</span>  <span class="hljs-comment"># incase code bug in recursive calls</span>
+      classes = <span class="hljs-constant">Array</span>.new
+      (do_classes.present? ? do_classes <span class="hljs-symbol">:</span> base_classes).each <span class="hljs-keyword">do</span> |base_class|
+        get_all_associations(base_class).each <span class="hljs-keyword">do</span> |assoc|
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> is_through_association?(assoc)
+          name = get_association_name(assoc)
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> delegateable_assocations.<span class="hljs-keyword">include</span>?(name)
+          klass = get_association_model_class(assoc)
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> klass.blank?
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> model_classes_in_same_namespace?(model_class, klass)
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> base_classes.<span class="hljs-keyword">include</span>?(klass)
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> assoc_classes.<span class="hljs-keyword">include</span>?(klass)
+          classes.push(klass)
+          add_build_model_class(assoc_classes, klass)
+        <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">if</span> classes.present?
+          get_association_classes_for_base_classes(model_class, base_classes, assoc_classes, classes)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      assoc_classes.uniq
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_build_model_class</span><span class="hljs-params">(classes, model_class)</span>;</span> classes.push(model_class)  <span class="hljs-keyword">unless</span> classes.<span class="hljs-keyword">include</span>?(model_class); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="add-model-values-and-associations">Add Model Values and Associations.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_model_values_and_associations</span><span class="hljs-params">(dictionary)</span></span>
+      dictionary.keys.each <span class="hljs-keyword">do</span> |model_class|
+        model = dictionary[model_class]
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> model.new_record?
+        perform_common_model_values(model)
+        get_all_associations(model_class).each <span class="hljs-keyword">do</span> |assoc|
+          name = get_association_name(assoc)
+          <span class="hljs-keyword">case</span>
+          <span class="hljs-keyword">when</span> name == <span class="hljs-symbol">:authable</span>
+            set_model_authable(model)
+          <span class="hljs-keyword">when</span> name == <span class="hljs-symbol">:ownerable</span>
+            set_model_ownerable(model)
+          <span class="hljs-keyword">when</span> is_polymorphic_association?(assoc)
+            set_polymorphic_model(model, name)
+          <span class="hljs-keyword">else</span>
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> is_through_association?(assoc)
+            klass = get_association_model_class(assoc)
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> klass.blank?
+            assoc_model = dictionary[klass]
+            <span class="hljs-keyword">if</span> assoc_model.present?
+              <span class="hljs-keyword">if</span> is_has_many?(model_class, name)
+                model.send <span class="hljs-string">"<span class="hljs-subst">#{name}</span>="</span>, [assoc_model]
+              <span class="hljs-keyword">else</span>
+                model.send <span class="hljs-string">"<span class="hljs-subst">#{name}</span>="</span>, assoc_model
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">else</span>
+              <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> model_classes_in_same_namespace?(model_class, klass)
+              new_model = klass.new
+              perform_common_model_values(new_model)
+              set_model_authable(new_model)
+              set_model_ownerable(new_model)
+              poly_assocs = get_belongs_to_associations(klass).select {|a| is_polymorphic_association?(a)}
+              poly_names  = poly_assocs.map {|a| get_association_name(a)} - [<span class="hljs-symbol">:authable</span>, <span class="hljs-symbol">:ownerable</span>]
+              poly_names.each <span class="hljs-keyword">do</span> |name|
+                set_polymorphic_model(new_model, name)
+              <span class="hljs-keyword">end</span>
+              name = get_model_association_method(new_model, model_class.name)
+              <span class="hljs-keyword">if</span> is_has_many?(klass, name)
+                new_model.send <span class="hljs-string">"<span class="hljs-subst">#{name}</span>="</span>, [model]
+              <span class="hljs-keyword">else</span>
+                new_model.send <span class="hljs-string">"<span class="hljs-subst">#{name}</span>="</span>, model
+              <span class="hljs-keyword">end</span>
+              dictionary[klass] = new_model
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">perform_common_model_values</span><span class="hljs-params">(model)</span></span>
+      set_model_test_values(model)
+      set_model_email(model)
+      set_model_user_id(model)
+      stub_model_callbacks(model)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_model_test_values</span><span class="hljs-params">(model)</span></span>
+      ignore_string_columns = [<span class="hljs-symbol">:state</span>, <span class="hljs-symbol">:current_state</span>]
+      model.<span class="hljs-keyword">class</span>.columns.each <span class="hljs-keyword">do</span> |column|
+        name  = column.name.to_sym
+        value = <span class="hljs-keyword">nil</span>
+        <span class="hljs-keyword">case</span>
+        <span class="hljs-keyword">when</span> column.type == <span class="hljs-symbol">:string</span>
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> ignore_string_columns.<span class="hljs-keyword">include</span>?(name)
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> name.to_s.end_with?(<span class="hljs-string">'_type'</span>) &amp;&amp; is_polymorphic?(model.<span class="hljs-keyword">class</span>, name.to_s.sub(<span class="hljs-regexp">/_type$/</span>,<span class="hljs-string">''</span>))
+          value = <span class="hljs-constant">Time</span>.now.to_s + model.object_id.to_s
+        <span class="hljs-keyword">when</span> column.type == <span class="hljs-symbol">:datetime</span>
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> [<span class="hljs-symbol">:created_at</span>, <span class="hljs-symbol">:updated_at</span>].<span class="hljs-keyword">include</span>?(name)
+          value = <span class="hljs-constant">Time</span>.now
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">next</span>
+        <span class="hljs-keyword">end</span>
+        model.send <span class="hljs-string">"<span class="hljs-subst">#{name}</span>="</span>, value
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">stub_model_callbacks</span><span class="hljs-params">(model)</span></span>
+      model.<span class="hljs-keyword">class</span>.send(<span class="hljs-symbol">:get_callbacks</span>, <span class="hljs-symbol">:create</span>).each <span class="hljs-keyword">do</span> |callback|
+        method = callback.instance_variable_get(<span class="hljs-symbol">:</span><span class="hljs-variable">@key</span>)
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> method.blank? || method.is_a?(<span class="hljs-constant">Fixnum</span>)
+        model.define_singleton_method method <span class="hljs-keyword">do</span>; <span class="hljs-keyword">return</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_model_authable</span><span class="hljs-params">(model)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> model_class_has_association?(model.<span class="hljs-keyword">class</span>, <span class="hljs-symbol">:authable</span>)
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> model.is_a?(team_class)
+        authable = find_model_in_let_models(space_class) || get_let_value(<span class="hljs-symbol">:authable</span>)
+      <span class="hljs-keyword">else</span>
+        authable = get_let_value(<span class="hljs-symbol">:authable</span>) || find_model_in_let_models(phase_class)
+      <span class="hljs-keyword">end</span>
+      model.authable = authable
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_model_ownerable</span><span class="hljs-params">(model)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> model_class_has_association?(model.<span class="hljs-keyword">class</span>, <span class="hljs-symbol">:ownerable</span>)
+      ownerable = get_let_value(<span class="hljs-symbol">:ownerable</span>) || find_model_in_let_models(user_class) || get_let_value(<span class="hljs-symbol">:user</span>)
+      model.ownerable = ownerable
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_polymorphic_model</span><span class="hljs-params">(model, name)</span></span>
+      poly_model = find_model_in_let_models(phase_class) || get_let_value(<span class="hljs-symbol">:authable</span>)
+      model.send <span class="hljs-string">"<span class="hljs-subst">#{name}</span>="</span>, poly_model
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_model_email</span><span class="hljs-params">(model)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> model_class_has_column?(model.<span class="hljs-keyword">class</span>, <span class="hljs-symbol">:email</span>)
+      user = get_let_value(<span class="hljs-symbol">:user</span>)
+      model.email = user &amp;&amp; user.email
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_model_user_id</span><span class="hljs-params">(model)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> model_class_has_column?(model.<span class="hljs-keyword">class</span>, <span class="hljs-symbol">:user_id</span>)
+      user = get_let_value(<span class="hljs-symbol">:user</span>)
+      model.user_id = user &amp;&amp; user.id
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_association_model_class</span><span class="hljs-params">(assoc)</span></span>
+      class_name = get_association_class_name(assoc)
+      class_name &amp;&amp; class_name.safe_constantize
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_let_models</span>;</span> get_let_value_array(<span class="hljs-symbol">:models</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_model_in_let_models</span><span class="hljs-params">(model_class)</span>;</span> get_let_models.find {|m| m.is_a?(model_class)}; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">model_classes_in_same_namespace?</span><span class="hljs-params">(model1, model2)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> model1.blank? || model2.blank?
+      model1.name.deconstantize == model2.name.deconstantize
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_association_name</span><span class="hljs-params">(assoc)</span>;</span>        assoc &amp;&amp; assoc.name; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_association_class_name</span><span class="hljs-params">(assoc)</span>;</span>  assoc &amp;&amp; assoc.options[<span class="hljs-symbol">:class_name</span>]; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_association_foreign_key</span><span class="hljs-params">(assoc)</span>;</span> assoc &amp;&amp; assoc.options[<span class="hljs-symbol">:foreign_key</span>]; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_through_association?</span><span class="hljs-params">(assoc)</span>;</span>     assoc &amp;&amp; assoc.options[<span class="hljs-symbol">:through</span>].present?; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_polymorphic_association?</span><span class="hljs-params">(assoc)</span>;</span> assoc &amp;&amp; assoc.options[<span class="hljs-symbol">:polymorphic</span>].present?; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_has_many?</span><span class="hljs-params">(model_class, name)</span></span>
+      assoc = model_class_association(model_class, name)
+      assoc &amp;&amp; assoc.macro == <span class="hljs-symbol">:has_many</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_polymorphic?</span><span class="hljs-params">(model_class, name)</span>;</span> name &amp;&amp; is_polymorphic_association?(model_class.reflect_on_association(name.to_sym)); <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_belongs_to_associations</span><span class="hljs-params">(model_class)</span>;</span>        model_class.reflect_on_all_associations(<span class="hljs-symbol">:belongs_to</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_all_associations</span><span class="hljs-params">(model_class)</span>;</span>               model_class.reflect_on_all_associations; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">model_class_association</span><span class="hljs-params">(model_class, name)</span>;</span>      name   &amp;&amp; model_class.reflect_on_association(name.to_sym); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">model_class_has_association?</span><span class="hljs-params">(model_class, name)</span>;</span> name   &amp;&amp; model_class_association(model_class, name).present?; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">model_class_has_method?</span><span class="hljs-params">(model_class, method)</span>;</span>    method &amp;&amp; model_class.method_defined?(method); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">model_class_has_column?</span><span class="hljs-params">(model_class, column)</span>;</span>    column &amp;&amp; model_class.column_names.<span class="hljs-keyword">include</span>?(column.to_s); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># included</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

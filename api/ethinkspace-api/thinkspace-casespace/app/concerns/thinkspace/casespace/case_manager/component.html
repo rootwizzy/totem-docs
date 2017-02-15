@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/app/concerns/thinkspace/casespace/case_manager/component</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-casespace/app/concerns/thinkspace/casespace/case_manager/component"><meta name="groc-project-path" content="thinkspace-casespace/app/concerns/thinkspace/casespace/case_manager/component.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/app/concerns/thinkspace/casespace/case_manager/component.rb">thinkspace-casespace/app/concerns/thinkspace/casespace/case_manager/component.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Casespace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">CaseManager</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Component</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>from init options</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:phase_template</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:tag</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:section</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:title</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:attributes</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>set by this class</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:create_order</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:common_component</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(phase_template, component)</span></span>
+    <span class="hljs-variable">@phase_template</span> = phase_template
+    <span class="hljs-variable">@tag</span>            = component.to_s
+    <span class="hljs-variable">@attributes</span>     = <span class="hljs-constant">Hash</span>.from_xml(tag).with_indifferent_access[<span class="hljs-symbol">:component</span>] || <span class="hljs-constant">Hash</span>.new
+    <span class="hljs-variable">@title</span>          = attributes.delete(<span class="hljs-symbol">:title</span>)
+    <span class="hljs-variable">@section</span>        = attributes.delete(<span class="hljs-symbol">:section</span>) || title
+    <span class="hljs-variable">@create_order</span>   = get_create_order
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_create_order</span></span>
+    <span class="hljs-keyword">case</span> section
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'header'</span>  <span class="hljs-keyword">then</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'submit'</span>  <span class="hljs-keyword">then</span> <span class="hljs-number">99</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-number">10</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="create-componentable-and-phase-component">Create Componentable and Phase Component.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span><span class="hljs-params">(phase)</span></span>
+    validate  <span class="hljs-comment"># basic validate incase was not called before the create</span>
+    raise_create_error <span class="hljs-string">"phase is blank"</span> <span class="hljs-keyword">if</span> phase.blank?
+    phase_component = phase_component_class.new(
+      <span class="hljs-symbol">component_id:</span> common_component.id,
+      <span class="hljs-symbol">phase_id:</span>     phase.id,
+      <span class="hljs-symbol">section:</span>      section,
+    )
+    phase_component.componentable = create_componentable(phase)
+    raise_create_error <span class="hljs-string">"error saving phase component"</span> <span class="hljs-keyword">unless</span> phase_component.save
+    phase_component
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_componentable</span><span class="hljs-params">(phase)</span></span>
+    componentable_model(phase, get_componentable_model_path)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">componentable_model</span><span class="hljs-params">(phase, model_path)</span></span>
+    method      = <span class="hljs-symbol">:create_componentable</span>
+    model_class = model_path.classify
+    klass       = model_class.safe_constantize
+    <span class="hljs-keyword">return</span> phase <span class="hljs-keyword">if</span> phase.is_a?(klass)  <span class="hljs-comment"># could add a phase method to return the phase param</span>
+    raise_create_error <span class="hljs-string">"could not constantize <span class="hljs-subst">#{model_class.inspect}</span>"</span>  <span class="hljs-keyword">if</span> klass.blank?
+    raise_create_error <span class="hljs-string">"model <span class="hljs-subst">#{model_class.inspect}</span> does not respond to <span class="hljs-subst">#{method}</span>"</span>  <span class="hljs-keyword">unless</span> klass.respond_to?(method)
+    klass.send method, phase
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_componentable_model_path</span></span>
+    <span class="hljs-keyword">case</span> title
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'artifact-bucket'</span>
+      <span class="hljs-string">'thinkspace/artifact/bucket'</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'casespace-phase-header'</span>, <span class="hljs-string">'casespace-phase-submit'</span>
+      <span class="hljs-string">'thinkspace/casespace/phase'</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'diagnostic-path-viewer'</span>, <span class="hljs-string">'diagnostic-path-viewer-ownerable'</span>
+      <span class="hljs-string">'thinkspace/diagnostic_path_viewer/viewer'</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'diagnostic-path'</span>
+      <span class="hljs-string">'thinkspace/diagnostic_path/path'</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'html'</span>, <span class="hljs-string">'html-only'</span>, <span class="hljs-string">'html-select-text'</span>
+      <span class="hljs-string">'thinkspace/html/content'</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'lab'</span>
+      <span class="hljs-string">'thinkspace/lab/chart'</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'observation-list'</span>
+      <span class="hljs-string">'thinkspace/observation_list/list'</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'weather-forecaster'</span>
+      <span class="hljs-string">'thinkspace/weather_forecaster/assessment'</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'peer-assessment'</span>
+      <span class="hljs-string">'thinkspace/peer_assessment/assessment'</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'peer-assessment-overview'</span>
+      <span class="hljs-string">'thinkspace/peer_assessment/assessment'</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-string">'simulation'</span>
+      <span class="hljs-string">'thinkspace/simulation/simulation'</span>
+    <span class="hljs-keyword">else</span>
+      raise_error <span class="hljs-string">"unknown componentable model path for <span class="hljs-subst">#{title.inspect}</span>"</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="validate">Validate.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate</span></span>
+    raise_validation_error <span class="hljs-string">"title is blank"</span>    <span class="hljs-keyword">if</span> title.blank?
+    raise_validation_error <span class="hljs-string">"section is blank"</span>  <span class="hljs-keyword">if</span> section.blank?
+    <span class="hljs-variable">@common_component</span> = common_component_class.find_by(<span class="hljs-symbol">title:</span> title)
+    raise_validation_error <span class="hljs-string">"is not a common component"</span>  <span class="hljs-keyword">if</span> common_component.blank?
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_references</span><span class="hljs-params">(sections=[])</span></span>
+    get_section_references.each <span class="hljs-keyword">do</span> |section|
+      raise_validation_error <span class="hljs-string">"section reference <span class="hljs-subst">#{section.inspect}</span> not defined in the template"</span> <span class="hljs-keyword">unless</span> sections.<span class="hljs-keyword">include</span>?(section)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_section_references</span></span>
+    references = <span class="hljs-constant">Array</span>.new
+    attributes.each <span class="hljs-keyword">do</span> |key, value|
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> key.start_with?(<span class="hljs-string">'data'</span>)  <span class="hljs-comment"># skip data attributes</span>
+      <span class="hljs-keyword">if</span> value.present?
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> value == <span class="hljs-string">'true'</span> || value == <span class="hljs-string">'false'</span>  <span class="hljs-comment"># if a boolean, then is not a reference to another section</span>
+        values      = value.split(<span class="hljs-string">' '</span>).select {|v| v.present?}.map {|v| v.strip}
+        references += values
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    references
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">common_component_class</span>;</span> <span class="hljs-constant">Thinkspace::Common::Component</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_component_class</span>;</span>  <span class="hljs-constant">Thinkspace::Casespace::PhaseComponent</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">error_message</span><span class="hljs-params">(message)</span>;</span> <span class="hljs-string">"Phase template id <span class="hljs-subst">#{phase_template.id}</span> "</span> + message + <span class="hljs-string">" [tag: <span class="hljs-subst">#{tag}</span>]"</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_validation_error</span><span class="hljs-params">(message)</span></span>
+    raise <span class="hljs-constant">ValidationError</span>, error_message(message)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_create_error</span><span class="hljs-params">(message)</span></span>
+    raise <span class="hljs-constant">CreateError</span>, error_message(message)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CreateError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ValidationError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

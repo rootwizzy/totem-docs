@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/app/controllers/thinkspace/casespace/api/admin/assignments_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace-casespace/app/controllers/thinkspace/casespace/api/admin/assignments_controller"><meta name="groc-project-path" content="thinkspace-casespace/app/controllers/thinkspace/casespace/api/admin/assignments_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/app/controllers/thinkspace/casespace/api/admin/assignments_controller.rb">thinkspace-casespace/app/controllers/thinkspace/casespace/api/admin/assignments_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Casespace</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Admin</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AssignmentsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+          load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+          totem_action_serializer_options
+          before_action <span class="hljs-symbol">:set_common_values</span>
+          before_action <span class="hljs-symbol">:set_common_assignment_values</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:update</span>]
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">templates</span></span>
+            controller_render(get_templates(<span class="hljs-variable">@assignment_class</span>))
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone</span></span>
+            space_id = params[<span class="hljs-symbol">:space_id</span>]
+            raise_assignment_exception <span class="hljs-string">"Cannot clone an assignment without a space id."</span> <span class="hljs-keyword">if</span> space_id.blank?
+            space = <span class="hljs-constant">Thinkspace::Common::Space</span>.find_by(<span class="hljs-symbol">id:</span> space_id)
+            raise_assignment_exception <span class="hljs-string">"Space id <span class="hljs-subst">#{space_id}</span> not found."</span> <span class="hljs-keyword">if</span> space.blank?
+            authorize!(<span class="hljs-symbol">:update</span>, space)
+            clone_assignment = <span class="hljs-variable">@assignment</span>.cyclone(<span class="hljs-symbol">space:</span> space)
+            controller_render(clone_assignment)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load</span></span>
+            controller_render(<span class="hljs-variable">@assignment</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span>
+            builder_version = params_root[<span class="hljs-symbol">:builder_version</span>]
+            <span class="hljs-keyword">if</span> builder_version.present?
+              bundle_type = params_root[<span class="hljs-symbol">:bundle_type</span>]
+              <span class="hljs-keyword">case</span> bundle_type.to_sym
+              <span class="hljs-keyword">when</span> <span class="hljs-symbol">:casespace</span>
+                create_casespace
+              <span class="hljs-keyword">when</span> <span class="hljs-symbol">:assessment</span>
+                create_assessment
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">else</span>
+              <span class="hljs-variable">@assignment</span> = <span class="hljs-variable">@assignment_class</span>.new <span class="hljs-comment"># Allow AASM to property set columns, CanCan avoids this somehow.</span>
+              space_id    = params_root[<span class="hljs-string">'thinkspace/common/space_id'</span>]
+              space       = <span class="hljs-constant">Thinkspace::Common::Space</span>.find(space_id)
+              authorize! <span class="hljs-symbol">:update</span>, space
+              <span class="hljs-variable">@assignment</span>.state                   = <span class="hljs-string">'inactive'</span>
+              <span class="hljs-variable">@assignment</span>.thinkspace_common_space = space
+              <span class="hljs-variable">@assignment</span>.title = <span class="hljs-string">"New Case - <span class="hljs-subst">#{<span class="hljs-constant">Time</span>.now.to_formatted_s(<span class="hljs-symbol">:db</span>)}</span>"</span>
+              controller_save_record(<span class="hljs-variable">@assignment</span>)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Transaction wrap?</p></div></div><div class="code"><div class="wrapper">            template_id = params_root[<span class="hljs-symbol">:template_id</span>]
+
+            <span class="hljs-keyword">case</span>
+            <span class="hljs-keyword">when</span> template_id.present?
+              template = <span class="hljs-variable">@template_class</span>.find_by(<span class="hljs-symbol">id:</span> template_id)
+              raise_access_denied_exception <span class="hljs-string">"Template ID is invalid [<span class="hljs-subst">#{template_id}</span>]."</span> <span class="hljs-keyword">unless</span> template.present?
+              templateable = template.templateable
+              raise_access_denied_exception <span class="hljs-string">"Template does not have a valid templateable."</span> <span class="hljs-keyword">unless</span> templateable.present? &amp;&amp; templateable.<span class="hljs-keyword">class</span> == <span class="hljs-variable">@assignment_class</span>
+              phases = templateable.thinkspace_casespace_phases.order(<span class="hljs-symbol">:position</span>)
+              <span class="hljs-variable">@assignment</span>.thinkspace_casespace_phases.map(&amp;<span class="hljs-symbol">:archive!</span>)
+
+              dictionary = <span class="hljs-constant">Hash</span>.new
+              phases.each <span class="hljs-keyword">do</span> |p|
+                cloned_phase = p.cyclone(<span class="hljs-symbol">assignment:</span> <span class="hljs-variable">@assignment</span>, <span class="hljs-symbol">dictionary:</span> dictionary)
+              <span class="hljs-keyword">end</span>
+
+              controller_render(<span class="hljs-variable">@assignment</span>)
+            <span class="hljs-keyword">else</span>
+              controller_save_record(<span class="hljs-variable">@assignment</span>)
+            <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">delete</span></span>
+            raise_access_denied_exception <span class="hljs-string">"Cannot delete a peer assessment assignment."</span>, <span class="hljs-symbol">:clone</span>, <span class="hljs-variable">@assignment</span>  <span class="hljs-keyword">if</span> <span class="hljs-variable">@assignment</span>.peer_assessment?
+            <span class="hljs-variable">@assignment</span>.to_deleted <span class="hljs-comment"># set state to deleted</span>
+            raise_assignment_exception <span class="hljs-string">"Assignment [id: <span class="hljs-subst">#{<span class="hljs-variable">@assignment</span>.id}</span>] could not be saved as deleted."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-variable">@assignment</span>.save
+            controller_render_no_content
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_order</span></span>
+            phase_order = params[<span class="hljs-symbol">:phase_order</span>]
+            raise_assignment_exception <span class="hljs-string">"Assignment [id: <span class="hljs-subst">#{<span class="hljs-variable">@assignment</span>.id}</span>] phase order is not an array."</span>  <span class="hljs-keyword">unless</span> phase_order.kind_of?(<span class="hljs-constant">Array</span>)
+            phases = []
+            <span class="hljs-variable">@assignment</span>.transaction <span class="hljs-keyword">do</span>
+              phase_order.each <span class="hljs-keyword">do</span> |hash|
+                phase_id = hash[<span class="hljs-symbol">:phase_id</span>]
+                position = hash[<span class="hljs-symbol">:position</span>]
+                raise_assignment_exception <span class="hljs-string">"Assignment [id: <span class="hljs-subst">#{<span class="hljs-variable">@assignment</span>.id}</span>] phase order phase id is blank."</span>  <span class="hljs-keyword">if</span> phase_id.blank?
+                raise_assignment_exception <span class="hljs-string">"Assignment [id: <span class="hljs-subst">#{<span class="hljs-variable">@assignment</span>.id}</span>] phase order phase position [<span class="hljs-subst">#{position.inspect}</span>] is invalid."</span>  <span class="hljs-keyword">unless</span> position.kind_of?(<span class="hljs-constant">Fixnum</span>)
+                phase          = get_and_authorize_phase(phase_id)
+                phase.position = position
+                raise_assignment_exception <span class="hljs-string">"Unable to save phase [id: <span class="hljs-subst">#{phase.id}</span>]."</span>  <span class="hljs-keyword">unless</span> phase.save
+                phases.push phase
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+            controller_render(phases)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_componentables</span></span>
+            componentable_type = params[<span class="hljs-symbol">:componentable_type</span>]
+            raise_assignment_exception(<span class="hljs-string">'Cannot find phase componentables without a valid componentable_type.'</span>) <span class="hljs-keyword">unless</span> componentable_type.present?
+            componentable_class = componentable_type.classify.safe_constantize
+            raise_assignment_exception(<span class="hljs-string">"componentable_type [<span class="hljs-subst">#{componentable_type}</span>] is invalid, no class found."</span>) <span class="hljs-keyword">unless</span> componentable_class.present?
+            phase_ids         = <span class="hljs-variable">@assignment</span>.thinkspace_casespace_phases.pluck(<span class="hljs-symbol">:id</span>)
+            componentable_ids = <span class="hljs-variable">@phase_component_class</span>.accessible_by(current_ability).where(<span class="hljs-symbol">phase_id:</span> phase_ids, <span class="hljs-symbol">componentable_type:</span> componentable_class).pluck(<span class="hljs-symbol">:componentable_id</span>)
+            componentables    = componentable_class.accessible_by(current_ability).where(<span class="hljs-symbol">id:</span> componentable_ids)
+            controller_render(componentables)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="states">States</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">inactivate</span></span>
+            <span class="hljs-variable">@assignment</span>.inactivate!
+            controller_render(<span class="hljs-variable">@assignment</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">activate</span></span>
+            <span class="hljs-variable">@assignment</span>.activate!
+            controller_render(<span class="hljs-variable">@assignment</span>)
+          <span class="hljs-keyword">end</span>
+
+          private
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_templates</span><span class="hljs-params">(klass)</span></span>
+            <span class="hljs-variable">@template_class</span>.where(<span class="hljs-symbol">templateable_type:</span> klass.name)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_common_values</span></span>
+            <span class="hljs-variable">@space_class</span>           = <span class="hljs-constant">Thinkspace::Common::Space</span>
+            <span class="hljs-variable">@user_class</span>            = <span class="hljs-constant">Thinkspace::Common::User</span>
+            <span class="hljs-variable">@config_class</span>          = <span class="hljs-constant">Thinkspace::Common::Configuration</span>
+            <span class="hljs-variable">@assignment_class</span>      = <span class="hljs-constant">Thinkspace::Casespace::Assignment</span>
+            <span class="hljs-variable">@phase_class</span>           = <span class="hljs-constant">Thinkspace::Casespace::Phase</span>
+            <span class="hljs-variable">@phase_component_class</span> = <span class="hljs-constant">Thinkspace::Casespace::PhaseComponent</span>
+            <span class="hljs-variable">@template_class</span>        = <span class="hljs-constant">Thinkspace::Builder::Template</span>
+            <span class="hljs-variable">@team_class</span>            = <span class="hljs-constant">Thinkspace::Team::Team</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_and_authorize_phase</span><span class="hljs-params">(phase_id = params[<span class="hljs-symbol">:phase_id</span>])</span></span>
+            raise_assignment_exception <span class="hljs-string">"Phase id is blank."</span>  <span class="hljs-keyword">if</span> phase_id.blank?
+            phase = <span class="hljs-variable">@phase_class</span>.accessible_by(current_ability, <span class="hljs-symbol">:update</span>).find_by(<span class="hljs-symbol">id:</span> phase_id)
+            raise_assignment_exception(<span class="hljs-string">"Unauthorized to access phase [id: <span class="hljs-subst">#{phase_id.inspect}</span>]"</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-variable">@phase_class</span>)  <span class="hljs-keyword">if</span> phase.blank?
+            phase
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Bundle type creation helpers</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_common_assignment_values</span></span>
+            <span class="hljs-keyword">if</span> params_configuration_has?(<span class="hljs-symbol">:release_at</span>) || params_configuration_has?(<span class="hljs-symbol">:due_at</span>)
+              update_timetable
+            <span class="hljs-keyword">end</span>
+            <span class="hljs-variable">@assignment</span>.title        = params_root[<span class="hljs-symbol">:title</span>]        <span class="hljs-keyword">if</span> params_root_has?(<span class="hljs-symbol">:title</span>)
+            <span class="hljs-variable">@assignment</span>.description  = params_root[<span class="hljs-symbol">:description</span>]  <span class="hljs-keyword">if</span> params_root_has?(<span class="hljs-symbol">:description</span>)
+            <span class="hljs-variable">@assignment</span>.name         = params_root[<span class="hljs-symbol">:name</span>]         <span class="hljs-keyword">if</span> params_root_has?(<span class="hljs-symbol">:name</span>)
+            <span class="hljs-variable">@assignment</span>.instructions = params_root[<span class="hljs-symbol">:instructions</span>] <span class="hljs-keyword">if</span> params_root_has?(<span class="hljs-symbol">:instructions</span>)
+            <span class="hljs-variable">@assignment</span>.bundle_type  = params_root[<span class="hljs-symbol">:bundle_type</span>]  <span class="hljs-keyword">if</span> params_root_has?(<span class="hljs-symbol">:bundle_type</span>)
+            <span class="hljs-variable">@assignment</span>.state        = params_root[<span class="hljs-symbol">:state</span>]        <span class="hljs-keyword">if</span> params_root_has?(<span class="hljs-symbol">:state</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_timetable</span></span>
+            params_configuration = get_params_configuration
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> params_configuration.present?
+            due_at               = get_params_configuration[<span class="hljs-symbol">:due_at</span>]
+            release_at           = get_params_configuration[<span class="hljs-symbol">:release_at</span>]
+            timetable            = <span class="hljs-variable">@assignment</span>.get_or_set_timetable_for_self
+            timetable.due_at     = due_at <span class="hljs-keyword">if</span> due_at.present?
+            timetable.release_at = release_at <span class="hljs-keyword">if</span> release_at.present?
+            timetable.save
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_casespace</span></span>
+            space_id = params_root[<span class="hljs-string">'thinkspace/common/space_id'</span>]
+            t_id     = params_root[<span class="hljs-symbol">:builder_template_id</span>]
+            template = <span class="hljs-variable">@template_class</span>.find(t_id)
+            space    = <span class="hljs-constant">Thinkspace::Common::Space</span>.find(space_id)
+            authorize! <span class="hljs-symbol">:update</span>, space
+            template                = template.templateable 
+            <span class="hljs-variable">@assignment</span>             = template.cyclone(<span class="hljs-symbol">space:</span> space, <span class="hljs-symbol">title:</span> params_root[<span class="hljs-symbol">:title</span>])
+            <span class="hljs-variable">@assignment</span>.bundle_type = params_root[<span class="hljs-symbol">:bundle_type</span>]
+            controller_save_record(<span class="hljs-variable">@assignment</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_assessment</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Two phases, first phase has componentable of the created assessment (maybe added later).
+Second phase is the overview componentable to get anonymized feedback.</p></div></div><div class="code"><div class="wrapper">            assessment       = extract_included_records(<span class="hljs-symbol">single:</span> <span class="hljs-keyword">true</span>)
+            space_id         = params_root[<span class="hljs-string">'thinkspace/common/space_id'</span>]
+            space            = <span class="hljs-variable">@space_class</span>.find(space_id)
+            team_set_id      = included_options[<span class="hljs-symbol">:team_set_id</span>]
+            team_set         = <span class="hljs-constant">Thinkspace::Team::TeamSet</span>.find_by(<span class="hljs-symbol">id:</span> team_set_id)
+            raise_assignment_exception <span class="hljs-string">"Cannot create an assessment without a valid team set for id: [<span class="hljs-subst">#{team_set_id}</span>]"</span> <span class="hljs-keyword">unless</span> team_set.present?
+            authorize! <span class="hljs-symbol">:update</span>, space
+            authorize! <span class="hljs-symbol">:update</span>, team_set.thinkspace_common_space
+            raise_assignment_exception <span class="hljs-string">"Team set [<span class="hljs-subst">#{team_set_id}</span>] does not belong to space_id [<span class="hljs-subst">#{space_id}</span>]."</span> <span class="hljs-keyword">unless</span> team_set.thinkspace_common_space == space
+            <span class="hljs-variable">@assignment</span>.thinkspace_common_space = space
+            <span class="hljs-variable">@assignment</span>.title                   = params_root[<span class="hljs-symbol">:title</span>]
+            <span class="hljs-variable">@assignment</span>.state                   = <span class="hljs-string">'active'</span>
+            <span class="hljs-variable">@assignment</span>.save
+            <span class="hljs-constant">Thinkspace::PeerAssessment::Assessment</span>.create_assessment(<span class="hljs-variable">@assignment</span>, assessment, team_set)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: AUth team set id</p></div></div><div class="code"><div class="wrapper">            controller_render(<span class="hljs-variable">@assignment</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">included_options</span></span>
+            params_root[<span class="hljs-symbol">:included_options</span>]
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">params_root_has?</span><span class="hljs-params">(key)</span></span>
+            params_root.has_key?(key)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">params_configuration_has?</span><span class="hljs-params">(key)</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> params.has_key?(<span class="hljs-symbol">:configuration</span>)
+            params_configuration = params[<span class="hljs-symbol">:configuration</span>]
+            params_configuration.has_key?(key)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_params_configuration</span>;</span> params[<span class="hljs-symbol">:configuration</span>]; <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_assignment_exception</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+            raise <span class="hljs-constant">AssignmentException</span>.new message
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AssignmentException</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>;
+
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

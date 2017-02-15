@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-markup/app/controllers/thinkspace/markup/api/libraries_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-markup/app/controllers/thinkspace/markup/api/libraries_controller"><meta name="groc-project-path" content="thinkspace-markup/app/controllers/thinkspace/markup/api/libraries_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-markup/app/controllers/thinkspace/markup/api/libraries_controller.rb">thinkspace-markup/app/controllers/thinkspace/markup/api/libraries_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Markup</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LibrariesController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+        <span class="hljs-comment">#totem_action_authorize! only: [:create, :destroy, :update], ownerable_ability_action: :view, module: :action_authorize_markup</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">select</span></span>
+          <span class="hljs-variable">@libraries</span> = <span class="hljs-variable">@libraries</span>.where(<span class="hljs-symbol">id:</span> params[<span class="hljs-symbol">:ids</span>])
+          serializer_options.include_association(<span class="hljs-symbol">:thinkspace_markup_library_comments</span>)
+          controller_render(<span class="hljs-variable">@libraries</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
+          serializer_options.include_association(<span class="hljs-symbol">:thinkspace_markup_library_comments</span>)
+          controller_render(<span class="hljs-variable">@library</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span>
+          <span class="hljs-variable">@library</span>.user_id       = current_user.id
+          controller_save_record(<span class="hljs-variable">@library</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
+          controller_save_record(<span class="hljs-variable">@library</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fetch</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get the current_user&#39;s library.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-variable">@library</span> = <span class="hljs-constant">Thinkspace::Markup::Library</span>.find_or_create_by(<span class="hljs-symbol">user_id:</span> current_user.id)
+          controller_render(<span class="hljs-variable">@library</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_tag</span></span>
+          <span class="hljs-variable">@library</span> = <span class="hljs-constant">Thinkspace::Markup::Library</span>.find(params[<span class="hljs-symbol">:id</span>])
+
+          tag = params[<span class="hljs-symbol">:tag_name</span>]
+
+          <span class="hljs-variable">@library</span>.tag_list.add(tag)
+
+          controller_save_record(<span class="hljs-variable">@library</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_comment_tag</span></span>
+          <span class="hljs-variable">@library</span> = <span class="hljs-constant">Thinkspace::Markup::Library</span>.find(params[<span class="hljs-symbol">:id</span>])
+          library_comment = <span class="hljs-constant">Thinkspace::Markup::LibraryComment</span>.find(params[<span class="hljs-symbol">:comment_id</span>])
+
+          all_tags = params[<span class="hljs-symbol">:all_tags</span>]
+
+          <span class="hljs-variable">@library</span>.tag(library_comment, <span class="hljs-symbol">with:</span> all_tags, <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:tags</span>)
+          controller_save_record(library_comment)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">remove_comment_tag</span></span>
+          <span class="hljs-variable">@library</span>        = <span class="hljs-constant">Thinkspace::Markup::Library</span>.find(params[<span class="hljs-symbol">:id</span>])
+          library_comment = <span class="hljs-constant">Thinkspace::Markup::LibraryComment</span>.find(params[<span class="hljs-symbol">:comment_id</span>])
+
+          all_tags = params[<span class="hljs-symbol">:all_tags</span>]
+
+          <span class="hljs-variable">@library</span>.tag(library_comment, <span class="hljs-symbol">with:</span> all_tags, <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:tags</span>)
+          controller_save_record(<span class="hljs-variable">@library</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">destroy</span></span>
+          controller_destroy_record(<span class="hljs-variable">@library</span>)
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

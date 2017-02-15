@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="en"><head><title>migrate/assignments/inspect/phase_values</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="migrate/assignments/inspect/phase_values"><meta name="groc-project-path" content="migrate/assignments/inspect/phase_values.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/migrate/assignments/inspect/phase_values.rb">migrate/assignments/inspect/phase_values.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../../helpers/require_all'</span>, __FILE_<span class="hljs-number">_</span>)
+<span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../node_values_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Migrate</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Assignments</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Inspect</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PhaseValues</span></span>
+
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Parse</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Node</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">NodeValuesHelper</span>
+
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:process_ids</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(args=<span class="hljs-keyword">nil</span>)</span></span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> process_ids = [&#39;3&#39;,&#39;4&#39;,&#39;5&#39;,&#39;6&#39;]</span></p></div></div><div class="code"><div class="wrapper">      set_root_path(args)
+      get_assignment_nodes.each <span class="hljs-keyword">do</span> |node|
+        id = get_node_id(node)
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> process_ids.present? &amp;&amp; !process_ids.<span class="hljs-keyword">include</span>?(id)
+        set_current_assignment_path(id)
+        get_assignment_phase_nodes.each <span class="hljs-keyword">do</span> |node|
+          collect_node_values(node)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      print_collected_node_values(<span class="hljs-string">'Phases count'</span>)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># class</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

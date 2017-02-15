@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="en"><head><title>migrate/assignments/helpers/lab_chart</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="migrate/assignments/helpers/lab_chart"><meta name="groc-project-path" content="migrate/assignments/helpers/lab_chart.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/migrate/assignments/helpers/lab_chart.rb">migrate/assignments/helpers/lab_chart.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>clear; rake thinkspace:migrate:inspect[../../migrate-ts-1-to-2/assignments] S=lab_charts</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Migrate</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Assignments</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Helpers</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LabChart</span></span>
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:nodes</span>
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:categories</span>
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:current_node</span>
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:current_category</span>
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:parse_inst</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(parse_inst, nodes)</span></span>
+      <span class="hljs-variable">@nodes</span>      = nodes
+      <span class="hljs-variable">@parse_inst</span> = parse_inst
+      <span class="hljs-variable">@categories</span> = <span class="hljs-constant">Hash</span>.new
+      process_nodes
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_type</span>;</span> parse_inst.get_phase_type; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>XML node mappings.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">type</span>;</span>             get_node_value(<span class="hljs-symbol">:type</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">category_title</span>;</span>   get_node_value(<span class="hljs-symbol">:panel</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">title</span>;</span>            get_node_value(<span class="hljs-symbol">:name</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">description</span>;</span>      get_node_value(<span class="hljs-symbol">:description</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">result</span>;</span>           get_node_value(<span class="hljs-symbol">:result</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">adjusted_result</span>;</span>  get_node_value(<span class="hljs-symbol">:adjustedResult</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">units</span>;</span>            get_node_value(<span class="hljs-symbol">:units</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ratings</span>;</span>          get_node_value(<span class="hljs-symbol">:ratings</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">analysis</span>;</span>         get_node_value(<span class="hljs-symbol">:ratings</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">abnormality</span>;</span>      get_node_value(<span class="hljs-symbol">:abnormality</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">correct_analysis</span>;</span> get_node_value(<span class="hljs-symbol">:correctRating</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">normal_analysis</span>;</span>  get_node_value(<span class="hljs-symbol">:normalRating</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">lower_bound</span>;</span>      get_node_value(<span class="hljs-symbol">:lowerBound</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">upper_bound</span>;</span>      get_node_value(<span class="hljs-symbol">:upperBound</span>); <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_nodes</span></span>
+      nodes.each <span class="hljs-keyword">do</span> |node|
+        <span class="hljs-variable">@current_node</span> = node
+        set_current_category
+        <span class="hljs-keyword">case</span> type.to_sym
+        <span class="hljs-keyword">when</span> <span class="hljs-symbol">:title</span>            <span class="hljs-comment"># ignore</span>
+        <span class="hljs-keyword">when</span> <span class="hljs-symbol">:header</span>           <span class="hljs-keyword">then</span> add_category
+        <span class="hljs-keyword">when</span> <span class="hljs-symbol">:result</span>           <span class="hljs-keyword">then</span> add_result
+        <span class="hljs-keyword">when</span> <span class="hljs-symbol">:adjustedResult</span>   <span class="hljs-keyword">then</span> add_adjusted_result
+        <span class="hljs-keyword">when</span> <span class="hljs-symbol">:observation</span>      <span class="hljs-keyword">then</span> add_observation_result
+        <span class="hljs-keyword">else</span>
+          raise_error <span class="hljs-string">"Unknown lab test type <span class="hljs-subst">#{type.inspect}</span>."</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="category-type-header">Category - Type: header.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set or initialize the current category.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_current_category</span></span>
+      <span class="hljs-keyword">if</span> categories.has_key?(category_title)
+        <span class="hljs-variable">@current_category</span> = categories[category_title]
+        <span class="hljs-keyword">return</span>
+      <span class="hljs-keyword">end</span>
+      category                        = categories[category_title] = <span class="hljs-constant">Hash</span>.new
+      category[<span class="hljs-symbol">:title</span>]                = category_title
+      category[<span class="hljs-symbol">:position</span>]             = get_position
+      category[<span class="hljs-symbol">:metadata</span>]             = <span class="hljs-constant">Hash</span>.new
+      category[<span class="hljs-symbol">:results</span>]              = <span class="hljs-constant">Array</span>.new  <span class="hljs-comment"># not part of category model; used to build the results for the category</span>
+      value                           = category[<span class="hljs-symbol">:value</span>] = <span class="hljs-constant">Hash</span>.new
+      value[<span class="hljs-symbol">:component</span>]               = <span class="hljs-symbol">:vet_med</span>
+      value[<span class="hljs-symbol">:columns</span>]                 = <span class="hljs-constant">Array</span>.new
+      value[<span class="hljs-symbol">:messages</span>]                = <span class="hljs-constant">Hash</span>.new
+      value[<span class="hljs-symbol">:correctable_prompt</span>]      = <span class="hljs-string">'Should this be corrected?'</span>
+      <span class="hljs-variable">@current_category</span>               = category
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Category mapping used in the add result methods.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">category_results</span>;</span> current_category[<span class="hljs-symbol">:results</span>]; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_category</span></span>
+      value    = current_category[<span class="hljs-symbol">:value</span>]
+      columns  = value[<span class="hljs-symbol">:columns</span>]
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> columns.empty?
+      columns.push(<span class="hljs-symbol">heading:</span> title,           <span class="hljs-symbol">source:</span> <span class="hljs-symbol">:title</span>)                 <span class="hljs-keyword">if</span> title.present? 
+      columns.push(<span class="hljs-symbol">heading:</span> result,          <span class="hljs-symbol">source:</span> <span class="hljs-symbol">:result</span>)                <span class="hljs-keyword">if</span> result.present?
+      columns.push(<span class="hljs-symbol">heading:</span> units,           <span class="hljs-symbol">source:</span> <span class="hljs-symbol">:units</span>)                 <span class="hljs-keyword">if</span> units.present?
+      columns.push(<span class="hljs-symbol">heading:</span> ratings,         <span class="hljs-symbol">source:</span> <span class="hljs-symbol">:ratings</span>, <span class="hljs-symbol">range:</span> <span class="hljs-keyword">true</span>)  <span class="hljs-keyword">if</span> ratings.present?
+      columns.push(<span class="hljs-symbol">heading:</span> <span class="hljs-string">'Analysis'</span>,      <span class="hljs-symbol">observation:</span> <span class="hljs-symbol">:analysis</span>)         <span class="hljs-keyword">if</span> analysis.present?
+      columns.push(<span class="hljs-symbol">heading:</span> abnormality,     <span class="hljs-symbol">observation:</span> <span class="hljs-symbol">:abnormality</span>)      <span class="hljs-keyword">if</span> abnormality.present?
+      add_category_metadata
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Is max attempts at the category level (e.g. for all results) or at the individual result?</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_category_metadata</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>metadata               = current_category[:metadata]
+metadata[:analysis]    = get_max_attempts(max: 3, lock: true)
+metadata[:abnormality] = get_max_attempts(max: 3, lock: true)</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="result-type-result">Result - Type: result.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_result</span></span>
+      hash                       = <span class="hljs-constant">Hash</span>.new
+      metadata                   = hash[<span class="hljs-symbol">:metadata</span>] = <span class="hljs-constant">Hash</span>.new
+      value                      = hash[<span class="hljs-symbol">:value</span>]    = <span class="hljs-constant">Hash</span>.new
+      columns                    = value[<span class="hljs-symbol">:columns</span>] = <span class="hljs-constant">Hash</span>.new
+      observations               = value[<span class="hljs-symbol">:observations</span>] = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]               = title
+      hash[<span class="hljs-symbol">:position</span>]            = get_position
+      value[<span class="hljs-symbol">:type</span>]               = <span class="hljs-symbol">:result</span>
+      value[<span class="hljs-symbol">:description</span>]        = description
+      columns[<span class="hljs-symbol">:units</span>]            = units
+      columns[<span class="hljs-symbol">:result</span>]           = result
+      columns[<span class="hljs-symbol">:ratings</span>]          = {<span class="hljs-symbol">lower:</span> lower_bound, <span class="hljs-symbol">upper:</span> upper_bound}
+      normal                     = normal_analysis.present? ? label_to_id(normal_analysis) <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>
+      observations[<span class="hljs-symbol">:analysis</span>]    = {<span class="hljs-symbol">input_type:</span> <span class="hljs-symbol">:select</span>}.merge(<span class="hljs-symbol">selections:</span> get_selections(analysis), <span class="hljs-symbol">normal:</span> normal)
+      observations[<span class="hljs-symbol">:abnormality</span>] = {<span class="hljs-symbol">input_type:</span> <span class="hljs-symbol">:input</span>}
+      <span class="hljs-keyword">if</span> analysis.present?
+        meta_hash           = <span class="hljs-constant">Hash</span>.new
+        validate            = meta_hash[<span class="hljs-symbol">:validate</span>] = <span class="hljs-constant">Hash</span>.new
+        validate[<span class="hljs-symbol">:correct</span>]  = label_to_id(get_correct_analysis)
+        metadata[<span class="hljs-symbol">:analysis</span>] = meta_hash  <span class="hljs-comment"># add a merge of the max attempts hash if needed</span>
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">if</span> abnormality.present?
+        meta_hash                = <span class="hljs-constant">Hash</span>.new
+        meta_hash[<span class="hljs-symbol">:max_attempts</span>] = <span class="hljs-number">3</span>
+        validate                 = meta_hash[<span class="hljs-symbol">:validate</span>] = <span class="hljs-constant">Hash</span>.new
+        validate[<span class="hljs-symbol">:correct</span>]       = get_correct_input(abnormality)
+        metadata[<span class="hljs-symbol">:abnormality</span>]   = meta_hash  <span class="hljs-comment"># add a merge of the max attempts hash if needed</span>
+      <span class="hljs-keyword">end</span>
+      category_results.push(hash)
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="adjusted-result-type-adjusted-result">Adjusted Result - Type: adjusted_result.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_adjusted_result</span></span>
+      hash                             = <span class="hljs-constant">Hash</span>.new
+      metadata                         = hash[<span class="hljs-symbol">:metadata</span>] = <span class="hljs-constant">Hash</span>.new
+      value                            = hash[<span class="hljs-symbol">:value</span>]    = <span class="hljs-constant">Hash</span>.new
+      columns                          = value[<span class="hljs-symbol">:columns</span>] = <span class="hljs-constant">Hash</span>.new
+      observations                     = value[<span class="hljs-symbol">:observations</span>] = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]                     = title
+      hash[<span class="hljs-symbol">:position</span>]                  = get_position
+      value[<span class="hljs-symbol">:type</span>]                     = <span class="hljs-symbol">:adjusted_result</span>
+      value[<span class="hljs-symbol">:description</span>]              = description
+      columns[<span class="hljs-symbol">:units</span>]                  = units
+      columns[<span class="hljs-symbol">:result</span>]                 = result
+      columns[<span class="hljs-symbol">:ratings</span>]                = {<span class="hljs-symbol">lower:</span> lower_bound, <span class="hljs-symbol">upper:</span> upper_bound}
+      observations[<span class="hljs-symbol">:analysis</span>]          = {<span class="hljs-symbol">input_type:</span> <span class="hljs-symbol">:correctable</span>}
+      observations[<span class="hljs-symbol">:abnormality</span>]       = get_no_input_type
+      meta_hash                        = <span class="hljs-constant">Hash</span>.new
+      meta_hash[<span class="hljs-symbol">:max_attempts</span>]         = <span class="hljs-number">3</span>
+      meta_hash[<span class="hljs-symbol">:lock_on_max_attempts</span>] = <span class="hljs-keyword">false</span>
+      validate                         = meta_hash[<span class="hljs-symbol">:validate</span>] = <span class="hljs-constant">Hash</span>.new
+      validate[<span class="hljs-symbol">:correct_method</span>]        = get_adjust_result_correct_method
+      validate[<span class="hljs-symbol">:correct</span>]               = adjusted_result
+      metadata[<span class="hljs-symbol">:analysis</span>]              = meta_hash
+      metadata[<span class="hljs-symbol">:abnormality</span>]           = get_no_input_value
+      category_results.push(hash)
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="observation-result-type-observation-result">Observation Result - Type: observation_result.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_observation_result</span></span>
+      hash                = <span class="hljs-constant">Hash</span>.new
+      metadata            = hash[<span class="hljs-symbol">:metadata</span>] = <span class="hljs-constant">Hash</span>.new
+      value               = hash[<span class="hljs-symbol">:value</span>]    = <span class="hljs-constant">Hash</span>.new
+      columns             = value[<span class="hljs-symbol">:columns</span>] = <span class="hljs-constant">Hash</span>.new
+      observations        = value[<span class="hljs-symbol">:observations</span>] = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:title</span>]        = title
+      hash[<span class="hljs-symbol">:position</span>]     = get_position
+      value[<span class="hljs-symbol">:type</span>]        = <span class="hljs-symbol">:html_result</span>
+      value[<span class="hljs-symbol">:description</span>] = description
+
+      columns[<span class="hljs-symbol">:result</span>]    = get_observation_result_result
+      category_results.push(hash)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_observation_result_result</span></span>
+      image_prefix = <span class="hljs-variable">@parse_inst</span>.image_prefix
+      <span class="hljs-keyword">return</span> result <span class="hljs-keyword">unless</span> image_prefix.present?
+      image_formats = [<span class="hljs-string">'jpg'</span>, <span class="hljs-string">'jpeg'</span>, <span class="hljs-string">'tiff'</span>, <span class="hljs-string">'png'</span>, <span class="hljs-string">'gif'</span>]
+      doc           = <span class="hljs-constant">::Nokogiri::HTML</span>.fragment(result)
+      anchors       = doc.css(<span class="hljs-string">'a'</span>)
+      <span class="hljs-keyword">if</span> anchors.present?
+        anchors.each <span class="hljs-keyword">do</span> |anchor|
+          href      = anchor.attribute(<span class="hljs-string">'href'</span>).text
+          file_name = href.split(<span class="hljs-string">'/'</span>).pop
+          extension = file_name.split(<span class="hljs-string">'.'</span>).pop
+          <span class="hljs-keyword">return</span> result <span class="hljs-keyword">unless</span> image_formats.<span class="hljs-keyword">include</span>?(extension)
+          path                             = image_prefix + <span class="hljs-string">"/<span class="hljs-subst">#{file_name}</span>"</span>
+          anchor.attribute(<span class="hljs-string">'href'</span>).value   = path
+          anchor.set_attribute(<span class="hljs-string">'target'</span>, <span class="hljs-string">'_blank'</span>)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      anchors.present? ? doc.to_html <span class="hljs-symbol">:</span> result
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_no_input_type</span>;</span>  {<span class="hljs-symbol">input_type:</span> <span class="hljs-symbol">:none</span>}; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_no_input_value</span>;</span> {<span class="hljs-symbol">no_value:</span> <span class="hljs-keyword">true</span>}; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_max_attempts</span><span class="hljs-params">(options={})</span></span>
+      max  = options[<span class="hljs-symbol">:max</span>]
+      lock = options[<span class="hljs-symbol">:lock</span>]
+      hash = <span class="hljs-constant">Hash</span>.new
+      hash[<span class="hljs-symbol">:max_attempts</span>]         = max    <span class="hljs-keyword">if</span> max.present?
+      hash[<span class="hljs-symbol">:lock_on_max_attempts</span>] = <span class="hljs-keyword">true</span>   <span class="hljs-keyword">if</span> lock == <span class="hljs-keyword">true</span>
+      hash
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_position</span></span>
+      id = current_node.attribute(<span class="hljs-string">'_id'</span>).text
+      raise_error <span class="hljs-string">"Lab test id is blank."</span>  <span class="hljs-keyword">if</span> id.blank?
+      id.to_i
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_adjust_result_correct_method</span></span>
+      <span class="hljs-symbol">:standard_adjusted</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_selections</span><span class="hljs-params">(select_string)</span></span>
+      selections     = <span class="hljs-constant">Array</span>.new
+      select_options = select_string.split(<span class="hljs-string">','</span>).map {|s| s.strip}
+      raise_error <span class="hljs-string">"Select options are not a string <span class="hljs-subst">#{select_string.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> select_string.is_a?(<span class="hljs-constant">String</span>)
+      select_options.each <span class="hljs-keyword">do</span> |label|
+        id = label_to_id(label)
+        selections.push(<span class="hljs-symbol">id:</span> id, <span class="hljs-symbol">label:</span> label)
+      <span class="hljs-keyword">end</span>
+      selections
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_correct_analysis</span></span>
+      correct = correct_analysis
+      <span class="hljs-keyword">return</span> correct <span class="hljs-keyword">if</span> correct.is_a?(<span class="hljs-constant">String</span>)
+      node = current_node.css(<span class="hljs-string">'ratings'</span>)
+      node.attribute(<span class="hljs-string">'correct'</span>).text
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_correct_input</span><span class="hljs-params">(input)</span>;</span> input.split(<span class="hljs-string">','</span>).map {|i| i.strip}; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">label_to_id</span><span class="hljs-params">(label)</span></span>
+      raise_error <span class="hljs-string">"Label is blank."</span>  <span class="hljs-keyword">if</span> label.blank?
+      label.underscore.gsub(<span class="hljs-string">' '</span>, <span class="hljs-string">'_'</span>)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_debug</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+      parse_inst.print_debug message, <span class="hljs-symbol">ids:</span> <span class="hljs-keyword">true</span>
+      parse_inst.print_debug current_node.to_s, <span class="hljs-symbol">nothing:</span> <span class="hljs-keyword">true</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_node_value</span><span class="hljs-params">(attribute)</span></span>
+      val = current_node.css(attribute.to_s)
+      val.present? ? val.text <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_error</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+      message = message + <span class="hljs-string">"\n"</span> + current_node.to_s
+      parse_inst.present? ? parse_inst.raise_error(message) <span class="hljs-symbol">:</span> raise(<span class="hljs-constant">XMLError</span>, message)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">XMLError</span>  <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

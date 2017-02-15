@@ -1,0 +1,538 @@
+<!DOCTYPE html><html lang="en"><head><title>migrate/to_components/schema-diff/old-schema</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="migrate/to_components/schema-diff/old-schema"><meta name="groc-project-path" content="migrate/to_components/schema-diff/old-schema.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/migrate/to_components/schema-diff/old-schema.rb">migrate/to_components/schema-diff/old-schema.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>encoding: UTF-8
+This file is auto-generated from the current state of the database. Instead
+of editing this file, please use the migrations feature of Active Record to
+incrementally modify your database, and then regenerate this schema definition.</p>
+<p>Note that this schema.rb definition is the authoritative source for your
+database schema. If you need to create the application database on another
+system, you should be using db:schema:load, not running all the migrations
+from scratch. The latter is a flawed and unsustainable approach (the more migrations
+you&#39;ll amass, the slower it&#39;ll run and the greater likelihood for issues).</p>
+<p>It&#39;s strongly recommended that you check this file into your version control system.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-constant">ActiveRecord::Schema</span>.define(<span class="hljs-symbol">version:</span> <span class="hljs-number">20150526186022</span>) <span class="hljs-keyword">do</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>These are extensions that must be enabled in order to support this database</p></div></div><div class="code"><div class="wrapper">  enable_extension <span class="hljs-string">"plpgsql"</span>
+
+  create_table <span class="hljs-string">"delayed_jobs"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"priority"</span>,   <span class="hljs-symbol">default:</span> <span class="hljs-number">0</span>, <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.integer  <span class="hljs-string">"attempts"</span>,   <span class="hljs-symbol">default:</span> <span class="hljs-number">0</span>, <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.text     <span class="hljs-string">"handler"</span>,                <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.text     <span class="hljs-string">"last_error"</span>
+    t.datetime <span class="hljs-string">"run_at"</span>
+    t.datetime <span class="hljs-string">"locked_at"</span>
+    t.datetime <span class="hljs-string">"failed_at"</span>
+    t.string   <span class="hljs-string">"locked_by"</span>
+    t.string   <span class="hljs-string">"queue"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"delayed_jobs"</span>, [<span class="hljs-string">"priority"</span>, <span class="hljs-string">"run_at"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"delayed_jobs_priority"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_comment_comments"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"owner_id"</span>
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.string   <span class="hljs-string">"comment_type"</span>
+    t.integer  <span class="hljs-string">"commentable_id"</span>
+    t.string   <span class="hljs-string">"commentable_type"</span>
+    t.text     <span class="hljs-string">"comment"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_comment_comments"</span>, [<span class="hljs-string">"commentable_id"</span>, <span class="hljs-string">"commentable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_comments_on_commentable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_comment_comments"</span>, [<span class="hljs-string">"commentable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_comments_on_comment_type"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_common_configurations"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"configurable_id"</span>
+    t.string   <span class="hljs-string">"configurable_type"</span>
+    t.json     <span class="hljs-string">"settings"</span>,          <span class="hljs-symbol">default:</span> {}
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_common_helpers"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.text     <span class="hljs-string">"description"</span>
+    t.string   <span class="hljs-string">"association_name"</span>
+    t.string   <span class="hljs-string">"default_view_generator"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_common_space_space_types"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"space_type_id"</span>
+    t.integer  <span class="hljs-string">"space_id"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_common_space_types"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.string   <span class="hljs-string">"lookup_model"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_common_space_users"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"space_id"</span>
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.string   <span class="hljs-string">"role"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_common_space_users"</span>, [<span class="hljs-string">"space_id"</span>, <span class="hljs-string">"user_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_common_space_users_space_user_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_common_spaces"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_common_tools"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.text     <span class="hljs-string">"description"</span>
+    t.string   <span class="hljs-string">"default_view_generator"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_common_user_invitations"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.text     <span class="hljs-string">"settings"</span>
+    t.string   <span class="hljs-string">"state"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_common_users"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"oauth_user_id"</span>
+    t.string   <span class="hljs-string">"oauth_access_token"</span>
+    t.string   <span class="hljs-string">"first_name"</span>
+    t.string   <span class="hljs-string">"last_name"</span>
+    t.string   <span class="hljs-string">"email"</span>,                <span class="hljs-symbol">default:</span> <span class="hljs-string">""</span>, <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.string   <span class="hljs-string">"authentication_token"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_importer_files"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.string   <span class="hljs-string">"custom_url"</span>
+    t.string   <span class="hljs-string">"generated_model"</span>
+    t.json     <span class="hljs-string">"settings"</span>
+    t.string   <span class="hljs-string">"attachment_file_name"</span>
+    t.string   <span class="hljs-string">"attachment_content_type"</span>
+    t.integer  <span class="hljs-string">"attachment_file_size"</span>
+    t.datetime <span class="hljs-string">"attachment_updated_at"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_markup_comments"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.integer  <span class="hljs-string">"commenterable_id"</span>
+    t.string   <span class="hljs-string">"commenterable_type"</span>
+    t.integer  <span class="hljs-string">"authable_id"</span>
+    t.string   <span class="hljs-string">"authable_type"</span>
+    t.integer  <span class="hljs-string">"ownerable_id"</span>
+    t.string   <span class="hljs-string">"ownerable_type"</span>
+    t.text     <span class="hljs-string">"comment"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.float    <span class="hljs-string">"top"</span>
+    t.integer  <span class="hljs-string">"commentable_id"</span>
+    t.string   <span class="hljs-string">"commentable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_markup_comments"</span>, [<span class="hljs-string">"commenterable_id"</span>, <span class="hljs-string">"commenterable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_markup_on_commenterable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_markup_comments"</span>, [<span class="hljs-string">"ownerable_id"</span>, <span class="hljs-string">"ownerable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_markup_on_ownerable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_resources_file_tags"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"file_id"</span>
+    t.integer  <span class="hljs-string">"tag_id"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_resources_files"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"resourceable_id"</span>
+    t.string   <span class="hljs-string">"resourceable_type"</span>
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.string   <span class="hljs-string">"file_file_name"</span>
+    t.string   <span class="hljs-string">"file_content_type"</span>
+    t.integer  <span class="hljs-string">"file_file_size"</span>
+    t.datetime <span class="hljs-string">"file_updated_at"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_resources_link_tags"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"link_id"</span>
+    t.integer  <span class="hljs-string">"tag_id"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_resources_links"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.string   <span class="hljs-string">"url"</span>
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"resourceable_id"</span>
+    t.string   <span class="hljs-string">"resourceable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_resources_tags"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.integer  <span class="hljs-string">"taggable_id"</span>
+    t.string   <span class="hljs-string">"taggable_type"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_team_categories"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.string   <span class="hljs-string">"category"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_team_team_teamables"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"team_id"</span>
+    t.integer  <span class="hljs-string">"teamable_id"</span>
+    t.string   <span class="hljs-string">"teamable_type"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_team_team_teamables"</span>, [<span class="hljs-string">"team_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_team_team_teamables_on_team"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_team_team_teamables"</span>, [<span class="hljs-string">"teamable_id"</span>, <span class="hljs-string">"teamable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_team_team_teamables_on_teamable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_team_team_users"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.integer  <span class="hljs-string">"team_id"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_team_team_users"</span>, [<span class="hljs-string">"user_id"</span>, <span class="hljs-string">"team_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_team_users_on_user_id_team_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_team_team_viewers"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"team_id"</span>
+    t.integer  <span class="hljs-string">"viewerable_id"</span>
+    t.string   <span class="hljs-string">"viewerable_type"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_team_team_viewers"</span>, [<span class="hljs-string">"team_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_team_team_viewers_on_team"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_team_team_viewers"</span>, [<span class="hljs-string">"viewerable_id"</span>, <span class="hljs-string">"viewerable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_team_team_viewers_on_viewerable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_team_teams"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.text     <span class="hljs-string">"description"</span>
+    t.integer  <span class="hljs-string">"category_id"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"authable_id"</span>
+    t.string   <span class="hljs-string">"authable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_team_teams"</span>, [<span class="hljs-string">"authable_id"</span>, <span class="hljs-string">"authable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_team_teams_on_authable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_team_teams"</span>, [<span class="hljs-string">"category_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_team_teams_on_category"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_artifact_buckets"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.text     <span class="hljs-string">"instructions"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"authable_id"</span>
+    t.string   <span class="hljs-string">"authable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_artifact_buckets"</span>, [<span class="hljs-string">"authable_id"</span>, <span class="hljs-string">"authable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_artifact_buckets_onauthable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_artifact_files"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.integer  <span class="hljs-string">"bucket_id"</span>
+    t.string   <span class="hljs-string">"attachment_file_name"</span>
+    t.string   <span class="hljs-string">"attachment_content_type"</span>
+    t.integer  <span class="hljs-string">"attachment_file_size"</span>
+    t.datetime <span class="hljs-string">"attachment_updated_at"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"ownerable_id"</span>
+    t.string   <span class="hljs-string">"ownerable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_artifact_files"</span>, [<span class="hljs-string">"ownerable_id"</span>, <span class="hljs-string">"ownerable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_artifact_files_onownerable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_diagnostic_path_path_items"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"position"</span>
+    t.integer  <span class="hljs-string">"path_id"</span>
+    t.integer  <span class="hljs-string">"parent_id"</span>
+    t.integer  <span class="hljs-string">"path_itemable_id"</span>
+    t.string   <span class="hljs-string">"path_itemable_type"</span>
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.text     <span class="hljs-string">"description"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"ownerable_id"</span>
+    t.string   <span class="hljs-string">"ownerable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_diagnostic_path_path_items"</span>, [<span class="hljs-string">"ownerable_id"</span>, <span class="hljs-string">"ownerable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_diagnostic_path_path_items_on_ownerable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_tools_diagnostic_path_path_items"</span>, [<span class="hljs-string">"path_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_diagnostic_path_path_items_on_path_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_diagnostic_path_paths"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"authable_id"</span>
+    t.string   <span class="hljs-string">"authable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_diagnostic_path_paths"</span>, [<span class="hljs-string">"authable_id"</span>, <span class="hljs-string">"authable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_diagnostic_path_paths_on_authable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_helper_embeds_input_element_elements"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"name"</span>
+    t.string   <span class="hljs-string">"element_type"</span>
+    t.integer  <span class="hljs-string">"helper_embedable_id"</span>
+    t.string   <span class="hljs-string">"helper_embedable_type"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_helper_embeds_input_element_elements"</span>, [<span class="hljs-string">"helper_embedable_id"</span>, <span class="hljs-string">"helper_embedable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helper_embeds_input_element_elems_on_embedable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_helper_embeds_input_element_responses"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"element_id"</span>
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.text     <span class="hljs-string">"value"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"ownerable_id"</span>
+    t.string   <span class="hljs-string">"ownerable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_helper_embeds_input_element_responses"</span>, [<span class="hljs-string">"element_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helper_embeds_input_element_resp_on_elem_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_tools_helper_embeds_input_element_responses"</span>, [<span class="hljs-string">"ownerable_id"</span>, <span class="hljs-string">"ownerable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helper_embeds_input_element_resp_on_ownerable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_tools_helper_embeds_input_element_responses"</span>, [<span class="hljs-string">"user_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helper_embeds_input_element_resp_on_user_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_helpers_observation_list_group_lists"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"group_id"</span>
+    t.integer  <span class="hljs-string">"list_id"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_helpers_observation_list_group_lists"</span>, [<span class="hljs-string">"group_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helpers_observation_list_grp_lsts_on_group_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_tools_helpers_observation_list_group_lists"</span>, [<span class="hljs-string">"list_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helpers_observation_list_grp_lsts_on_list_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_helpers_observation_list_groups"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.integer  <span class="hljs-string">"groupable_id"</span>
+    t.string   <span class="hljs-string">"groupable_type"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_helpers_observation_list_groups"</span>, [<span class="hljs-string">"groupable_id"</span>, <span class="hljs-string">"groupable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helpers_observation_list_groups_on_groupable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_helpers_observation_list_lists"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"view_generator"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"authable_id"</span>
+    t.string   <span class="hljs-string">"authable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_helpers_observation_list_lists"</span>, [<span class="hljs-string">"authable_id"</span>, <span class="hljs-string">"authable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helpers_observation_list_list_on_authable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_helpers_observation_list_observation_notes"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"observation_id"</span>
+    t.text     <span class="hljs-string">"value"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_helpers_observation_list_observation_notes"</span>, [<span class="hljs-string">"observation_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helpers_observation_list_notes_on_obs_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_helpers_observation_list_observations"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"list_id"</span>
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.integer  <span class="hljs-string">"position"</span>
+    t.string   <span class="hljs-string">"category"</span>
+    t.text     <span class="hljs-string">"value"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"ownerable_id"</span>
+    t.string   <span class="hljs-string">"ownerable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_helpers_observation_list_observations"</span>, [<span class="hljs-string">"list_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helpers_observation_list_obs_on_list_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_tools_helpers_observation_list_observations"</span>, [<span class="hljs-string">"ownerable_id"</span>, <span class="hljs-string">"ownerable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helpers_observation_list_obs_on_ownerable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_tools_helpers_observation_list_observations"</span>, [<span class="hljs-string">"user_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_helpers_observation_list_obs_on_user_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_html_contents"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.text     <span class="hljs-string">"tool_content"</span>
+    t.string   <span class="hljs-string">"view_generator"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"authable_id"</span>
+    t.string   <span class="hljs-string">"authable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_tools_html_contents"</span>, [<span class="hljs-string">"authable_id"</span>, <span class="hljs-string">"authable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_tools_html_content_on_authable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_tools_path_viewer_viewers"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"path_id"</span>
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_wips_casespace_assignments"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"space_id"</span>
+    t.string   <span class="hljs-string">"title"</span>
+    t.string   <span class="hljs-string">"name"</span>
+    t.text     <span class="hljs-string">"description"</span>
+    t.text     <span class="hljs-string">"instructions"</span>
+    t.boolean  <span class="hljs-string">"active"</span>
+    t.datetime <span class="hljs-string">"release_at"</span>
+    t.datetime <span class="hljs-string">"due_at"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_assignments"</span>, [<span class="hljs-string">"space_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_assignments_on_space_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_wips_casespace_case_manager_templates"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.string   <span class="hljs-string">"description"</span>
+    t.integer  <span class="hljs-string">"templateable_id"</span>
+    t.string   <span class="hljs-string">"templateable_type"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_wips_casespace_phase_scores"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.integer  <span class="hljs-string">"phase_id"</span>
+    t.decimal  <span class="hljs-string">"score"</span>,          <span class="hljs-symbol">precision:</span> <span class="hljs-number">9</span>, <span class="hljs-symbol">scale:</span> <span class="hljs-number">3</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"ownerable_id"</span>
+    t.string   <span class="hljs-string">"ownerable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_scores"</span>, [<span class="hljs-string">"ownerable_id"</span>, <span class="hljs-string">"ownerable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_scores_on_ownerable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_scores"</span>, [<span class="hljs-string">"phase_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_scores_on_phase_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_scores"</span>, [<span class="hljs-string">"user_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_scores_on_user_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_wips_casespace_phase_states"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"user_id"</span>
+    t.integer  <span class="hljs-string">"phase_id"</span>
+    t.string   <span class="hljs-string">"current_state"</span>
+    t.datetime <span class="hljs-string">"archived_at"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.integer  <span class="hljs-string">"ownerable_id"</span>
+    t.string   <span class="hljs-string">"ownerable_type"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_states"</span>, [<span class="hljs-string">"archived_at"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_states_on_archived_at"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_states"</span>, [<span class="hljs-string">"ownerable_id"</span>, <span class="hljs-string">"ownerable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_states_on_ownerable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_states"</span>, [<span class="hljs-string">"phase_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_states_on_phase_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_states"</span>, [<span class="hljs-string">"user_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_states_on_user_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_wips_casespace_phase_template_sections"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"phase_template_id"</span>
+    t.integer  <span class="hljs-string">"parent_id"</span>
+    t.integer  <span class="hljs-string">"template_section_order"</span>
+    t.string   <span class="hljs-string">"section_name"</span>
+    t.string   <span class="hljs-string">"class_names"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_template_sections"</span>, [<span class="hljs-string">"phase_template_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_template_sections_on_phase_template_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_wips_casespace_phase_templates"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"title"</span>
+    t.string   <span class="hljs-string">"description"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  create_table <span class="hljs-string">"thinkspace_wips_casespace_phase_tool_helper_embeds"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"helper_id"</span>
+    t.integer  <span class="hljs-string">"phase_tool_id"</span>
+    t.string   <span class="hljs-string">"view_generator"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_tool_helper_embeds"</span>, [<span class="hljs-string">"helper_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_tool_helper_embeds_on_helper_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_tool_helper_embeds"</span>, [<span class="hljs-string">"phase_tool_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_tool_helper_embeds_on_phase_tool_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_wips_casespace_phase_tool_helpers"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"helper_id"</span>
+    t.integer  <span class="hljs-string">"phase_tool_id"</span>
+    t.integer  <span class="hljs-string">"helperable_id"</span>
+    t.string   <span class="hljs-string">"helperable_type"</span>
+    t.integer  <span class="hljs-string">"phase_template_section_id"</span>
+    t.integer  <span class="hljs-string">"template_section_order"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_tool_helpers"</span>, [<span class="hljs-string">"helper_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_tool_helpers_on_helper_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_tool_helpers"</span>, [<span class="hljs-string">"helperable_id"</span>, <span class="hljs-string">"helperable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_tool_helpers_on_helperable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_tool_helpers"</span>, [<span class="hljs-string">"phase_template_section_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_tool_helpers_on_pt_section_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_tool_helpers"</span>, [<span class="hljs-string">"phase_tool_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_tool_helpers_on_phase_tool_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_wips_casespace_phase_tools"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"tool_id"</span>
+    t.integer  <span class="hljs-string">"phase_id"</span>
+    t.integer  <span class="hljs-string">"toolable_id"</span>
+    t.string   <span class="hljs-string">"toolable_type"</span>
+    t.integer  <span class="hljs-string">"phase_template_section_id"</span>
+    t.integer  <span class="hljs-string">"template_section_order"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_tools"</span>, [<span class="hljs-string">"phase_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_tools_on_phase_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_tools"</span>, [<span class="hljs-string">"phase_template_section_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_tools_on_phase_template_section_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_tools"</span>, [<span class="hljs-string">"tool_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_tools_on_tool_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phase_tools"</span>, [<span class="hljs-string">"toolable_id"</span>, <span class="hljs-string">"toolable_type"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phase_tools_on_toolable"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"thinkspace_wips_casespace_phases"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.integer  <span class="hljs-string">"position"</span>
+    t.string   <span class="hljs-string">"title"</span>
+    t.text     <span class="hljs-string">"description"</span>
+    t.integer  <span class="hljs-string">"assignment_id"</span>
+    t.boolean  <span class="hljs-string">"active"</span>
+    t.integer  <span class="hljs-string">"phase_template_id"</span>
+    t.string   <span class="hljs-string">"default_state"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+    t.datetime <span class="hljs-string">"updated_at"</span>
+    t.boolean  <span class="hljs-string">"team_based"</span>,        <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phases"</span>, [<span class="hljs-string">"assignment_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phases_on_assignment_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+  add_index <span class="hljs-string">"thinkspace_wips_casespace_phases"</span>, [<span class="hljs-string">"phase_template_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"idx_ts_casespace_phases_on_phase_template_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+  create_table <span class="hljs-string">"versions"</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+    t.string   <span class="hljs-string">"item_type"</span>,  <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.integer  <span class="hljs-string">"item_id"</span>,    <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.string   <span class="hljs-string">"event"</span>,      <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+    t.string   <span class="hljs-string">"whodunnit"</span>
+    t.text     <span class="hljs-string">"object"</span>
+    t.datetime <span class="hljs-string">"created_at"</span>
+  <span class="hljs-keyword">end</span>
+
+  add_index <span class="hljs-string">"versions"</span>, [<span class="hljs-string">"item_type"</span>, <span class="hljs-string">"item_id"</span>], <span class="hljs-symbol">name:</span> <span class="hljs-string">"index_versions_on_item_type_and_item_id"</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:btree</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/helpers/casespace/debug</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/helpers/casespace/debug"><meta name="groc-project-path" content="thinkspace-casespace/test/helpers/casespace/debug.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/helpers/casespace/debug.rb">thinkspace-casespace/test/helpers/casespace/debug.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::Casespace::Debug</span></span>
+  extend <span class="hljs-constant">ActiveSupport::Concern</span>
+  included <span class="hljs-keyword">do</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_on</span>;</span> <span class="hljs-keyword">false</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>NON-controller log.  </p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_log</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> name.blank?
+      log = debug_log
+      puts <span class="hljs-string">"\n"</span>
+      <span class="hljs-keyword">if</span> log.present?
+        puts <span class="hljs-string">"# Log for test [<span class="hljs-subst">#{name}</span>]:\n\n"</span>
+        puts log.collect {|l| <span class="hljs-string">'  '</span> + l}
+      <span class="hljs-keyword">else</span>
+        puts <span class="hljs-string">"# Log [<span class="hljs-subst">#{name}</span>]:\n"</span>
+        puts <span class="hljs-string">"No test log found.\n"</span>
+      <span class="hljs-keyword">end</span>
+      puts <span class="hljs-string">"\n"</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_log</span></span>
+      match   = name.to_s
+      log     = <span class="hljs-constant">Array</span>.new
+      collect = <span class="hljs-keyword">false</span>
+      debug_open_test_log_file.each_line <span class="hljs-keyword">do</span> |line|
+        <span class="hljs-keyword">if</span> line.chomp.end_with?(match)
+          collect = <span class="hljs-keyword">true</span>
+          log     = <span class="hljs-constant">Array</span>.new  <span class="hljs-keyword">if</span> log.present?  <span class="hljs-comment"># only collect the last one</span>
+          <span class="hljs-keyword">next</span>
+        <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">if</span> line.start_with?(<span class="hljs-string">'-----------'</span>)
+          collect = <span class="hljs-keyword">false</span>  <span class="hljs-keyword">if</span> log.present?
+          <span class="hljs-keyword">next</span>
+        <span class="hljs-keyword">end</span>
+        log.push(line) <span class="hljs-keyword">if</span> collect &amp;&amp; !debug_ignore_log_line?(line)
+      <span class="hljs-keyword">end</span>
+      log
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_controller_log</span></span>
+      log = debug_controller_log
+      puts <span class="hljs-string">"\n"</span>
+      <span class="hljs-keyword">if</span> log.present?
+        puts <span class="hljs-string">"# Controller log [<span class="hljs-subst">#{method_name}</span>]:\n"</span>
+        puts log.collect {|l| <span class="hljs-string">'  '</span> + l}
+      <span class="hljs-keyword">else</span>
+        puts <span class="hljs-string">"No controller log found.\n"</span>
+      <span class="hljs-keyword">end</span>
+      puts <span class="hljs-string">"\n"</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_controller_log</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Assumes tests are nested:
+  describe controller-class
+    describe &#39;action-name&#39; (or describe &#39;action-name followed-by-space-and-addition-text&#39;)
+      it &#39;test-name&#39;
+      describe &#39;sub-action describe text&#39;
+Each &#39;describe&#39; text is appended to the test class name (e.g. self.class.name::describe-1-text::describe-2-text),
+so ok to nest describes after the action describe.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> _controller_class.blank?
+      class_name = _controller_class.name
+      action     = <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name.sub(class_name+<span class="hljs-string">'::'</span>, <span class="hljs-string">''</span>)
+      action     = action.split(<span class="hljs-string">'::'</span>).first.split(<span class="hljs-string">' '</span>).first.sub(<span class="hljs-string">':'</span>, <span class="hljs-string">''</span>)
+      match      = class_name + <span class="hljs-string">"#<span class="hljs-subst">#{action}</span>"</span>
+      log        = <span class="hljs-constant">Array</span>.new
+      collect    = <span class="hljs-keyword">false</span>
+      debug_open_test_log_file.each_line <span class="hljs-keyword">do</span> |line|
+        <span class="hljs-keyword">if</span> line.start_with?(<span class="hljs-string">'Processing by'</span>) &amp;&amp; line.match(match)
+          collect = <span class="hljs-keyword">true</span>
+          log     = <span class="hljs-constant">Array</span>.new  <span class="hljs-keyword">if</span> log.present?  <span class="hljs-comment"># only collect the last one</span>
+        <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">if</span> line.start_with?(<span class="hljs-string">'-----------'</span>)
+          collect = <span class="hljs-keyword">false</span>
+          <span class="hljs-keyword">next</span>
+        <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">if</span> collect
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> debug_ignore_log_line?(line)
+          <span class="hljs-keyword">if</span> line.match(<span class="hljs-string">'Parameters:'</span>)
+            log.push <span class="hljs-string">"\n"</span>
+            log.push line
+            log.push <span class="hljs-string">"\n"</span>
+          <span class="hljs-keyword">else</span>
+            log.push line
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      log
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_controller_params</span></span>
+      log = debug_controller_log
+      <span class="hljs-keyword">if</span> log.present?
+        params = log.select {|l| l.match(<span class="hljs-string">'Parameters:'</span>)}
+        puts <span class="hljs-string">"# Controller params [<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name}</span>]:\n"</span>
+        puts params
+      <span class="hljs-keyword">else</span>
+        puts <span class="hljs-string">"No controller params found.\n"</span>
+      <span class="hljs-keyword">end</span>
+      puts <span class="hljs-string">"\n"</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_ignore_log_line?</span><span class="hljs-params">(line)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> line.start_with?(<span class="hljs-string">'[debug]'</span>)   <span class="hljs-comment"># skip any totem debug logs</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> line.start_with?(<span class="hljs-string">'[warning]'</span>) <span class="hljs-comment"># skip any totem debug logs</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> line.start_with?(<span class="hljs-string">'[WARNING]'</span>) <span class="hljs-comment"># skip any totem debug logs</span>
+      <span class="hljs-keyword">false</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_open_test_log_file</span></span>
+      log_file = <span class="hljs-constant">Rails</span>.root.join(<span class="hljs-string">'log/test.log'</span>)
+      <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.exists?(log_file)
+        puts <span class="hljs-string">"[error] Log file <span class="hljs-subst">#{log_file.inspect}</span> does not exist."</span>
+        <span class="hljs-keyword">return</span>
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-constant">File</span>.open(log_file)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_sql</span><span class="hljs-params">(klass, username, options={})</span></span>
+      action = options[<span class="hljs-symbol">:action</span>]    || <span class="hljs-symbol">:read</span>
+      query  = klass.accessible_by(get_ability(username), action)
+      sql    = query.to_sql
+      puts <span class="hljs-string">"\n\n"</span>
+      puts <span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>
+      puts <span class="hljs-string">"Debug SQL: Class=<span class="hljs-subst">#{klass.name.inspect}</span>  User=<span class="hljs-subst">#{username.inspect}</span>  Action=<span class="hljs-subst">#{action.inspect}</span>"</span>
+      puts <span class="hljs-string">"\n"</span>
+      select, from = sql.split(<span class="hljs-string">'FROM'</span>, <span class="hljs-number">2</span>)
+      parts = select.split(<span class="hljs-string">','</span>)
+      puts <span class="hljs-string">"  <span class="hljs-subst">#{parts.shift.strip}</span>"</span>
+      <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:select</span>]
+        parts.each <span class="hljs-keyword">do</span> |part|
+          puts <span class="hljs-string">"     <span class="hljs-subst">#{part.strip}</span>"</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      puts <span class="hljs-string">"\n"</span>
+      parts = from.split(<span class="hljs-regexp">/([A-Z]+\s*[A-Z]*\s*[A-Z]*)/</span>)
+      puts <span class="hljs-string">"  FROM <span class="hljs-subst">#{parts.shift.strip}</span>"</span>
+      i = <span class="hljs-number">0</span>
+      <span class="hljs-keyword">while</span> (i &lt; parts.length)
+        part = parts[i].strip
+        i += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> part.blank?
+        <span class="hljs-keyword">if</span> part.match(<span class="hljs-string">'JOIN'</span>) || part.match(<span class="hljs-string">'WHERE'</span>)
+          puts <span class="hljs-string">"\n"</span>
+          puts <span class="hljs-string">"    <span class="hljs-subst">#{part}</span> <span class="hljs-subst">#{parts[i].strip}</span>"</span>
+          i += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elsif</span> part.match(<span class="hljs-regexp">/[A-Z]+/</span>)
+          puts <span class="hljs-string">"      <span class="hljs-subst">#{part}</span> <span class="hljs-subst">#{parts[i].strip}</span>"</span>
+          i += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>
+          puts <span class="hljs-string">"      <span class="hljs-subst">#{part}</span>"</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      puts <span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>
+      puts <span class="hljs-string">"\n\n"</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># included</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

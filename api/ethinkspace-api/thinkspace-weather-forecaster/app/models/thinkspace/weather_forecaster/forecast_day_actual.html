@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/forecast_day_actual</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/forecast_day_actual"><meta name="groc-project-path" content="thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/forecast_day_actual.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/forecast_day_actual.rb">thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/forecast_day_actual.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">WeatherForecaster</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ForecastDayActual</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span>        </span>
+      totem_associations
+
+      validates_presence_of <span class="hljs-symbol">:thinkspace_weather_forecaster_forecast_day</span>, <span class="hljs-symbol">:thinkspace_weather_forecaster_station</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="scopes">Scopes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_forecast_day_id_and_station_id</span><span class="hljs-params">(forecast_day_id, station_id)</span></span>
+        find_by(<span class="hljs-symbol">forecast_day_id:</span> forecast_day_id, <span class="hljs-symbol">station_id:</span> station_id)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_forecast</span><span class="hljs-params">(forecast)</span></span>
+        station = forecast.thinkspace_weather_forecaster_station
+        scope_by_forecast_day_id_and_station_id(forecast.forecast_day_id, station.id)
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="class-method-helpers">Class Method Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">get_new_record</span><span class="hljs-params">(forecast_day_id, station_id)</span></span>
+        <span class="hljs-keyword">self</span>.new(<span class="hljs-symbol">forecast_day_id:</span> forecast_day_id, <span class="hljs-symbol">station_id:</span> station_id)
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="instance-methods">Instance Methods.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_response</span><span class="hljs-params">(score_var, response_value)</span></span>
+        raise <span class="hljs-constant">CheckResponseError</span>, <span class="hljs-string">"Score var is blank."</span>  <span class="hljs-keyword">if</span> score_var.blank?
+        actuals    = <span class="hljs-keyword">self</span>.value || <span class="hljs-constant">Hash</span>.new
+        var_actual = (actuals[score_var.to_s] || <span class="hljs-constant">Hash</span>.new).deep_symbolize_keys
+        logic      = var_actual[<span class="hljs-symbol">:logic</span>]  || <span class="hljs-string">''</span>
+        actual     = var_actual[<span class="hljs-symbol">:actual</span>]
+        resp_val   = [response_value].flatten.compact
+        <span class="hljs-keyword">case</span> logic.to_sym
+        <span class="hljs-keyword">when</span> <span class="hljs-symbol">:equal</span>, <span class="hljs-symbol">:and</span>
+          actual     = [actual].flatten.compact
+          is_correct = (actual.sort == resp_val.sort)
+        <span class="hljs-keyword">when</span> <span class="hljs-symbol">:or</span>
+          actual     = [actual].flatten.compact
+          is_correct = (resp_val - actual).blank? &amp;&amp; (actual.present? &amp;&amp; resp_val.present?)
+        <span class="hljs-keyword">when</span> <span class="hljs-symbol">:range</span>
+          raise <span class="hljs-constant">CheckResponseError</span>, <span class="hljs-string">"Range actual must be a hash e.g. actual: {min: 1, max:10}."</span>  <span class="hljs-keyword">unless</span> actual.is_a?(<span class="hljs-constant">Hash</span>)
+          min  = actual[<span class="hljs-symbol">:min</span>]
+          max  = actual[<span class="hljs-symbol">:max</span>]
+          resp = resp_val.first
+          <span class="hljs-keyword">case</span>
+          <span class="hljs-keyword">when</span> !is_integer?(resp)
+            is_correct = <span class="hljs-keyword">false</span>
+          <span class="hljs-keyword">when</span> is_integer?(min) &amp;&amp; is_integer?(max)
+            is_correct = (resp.to_i &gt;= min.to_i &amp;&amp; resp.to_i &lt;= max.to_i)
+          <span class="hljs-keyword">when</span> is_integer?(min)
+            is_correct = (resp.to_i &gt;= min.to_i)
+          <span class="hljs-keyword">when</span> is_integer?(max)
+            is_correct = (resp.to_i &lt;= max.to_i)
+          <span class="hljs-keyword">else</span>
+            is_correct = <span class="hljs-keyword">false</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">else</span>
+          raise <span class="hljs-constant">CheckResponseError</span>, <span class="hljs-string">"Unknown logic value <span class="hljs-subst">#{logic.inspect}</span> for score var <span class="hljs-subst">#{score_var.inspect}</span> and var_actual <span class="hljs-subst">#{var_actual.inspect}</span>."</span>
+        <span class="hljs-keyword">end</span>
+        {<span class="hljs-symbol">is_correct:</span> is_correct, <span class="hljs-symbol">var_actual:</span> var_actual, <span class="hljs-symbol">score_var:</span> score_var, <span class="hljs-symbol">response_value:</span> response_value}
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_integer?</span><span class="hljs-params">(val)</span></span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> val.blank?
+        val.to_s.match(<span class="hljs-regexp">/^[-|+]?\d+$/</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CheckResponseError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

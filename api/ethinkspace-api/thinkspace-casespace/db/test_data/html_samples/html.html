@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/db/test_data/html_samples/html</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/db/test_data/html_samples/html"><meta name="groc-project-path" content="thinkspace-casespace/db/test_data/html_samples/html.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/db/test_data/html_samples/html.rb">thinkspace-casespace/db/test_data/html_samples/html.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">html_sample_content_html_only</span><span class="hljs-params">(options={})</span></span>
+  id, description = html_sample_content_id_and_description_from_options(options)
+  content     = &lt;&lt;-<span class="hljs-constant">TEND</span>
+    <span class="hljs-comment">#{html_sample_content_title(id, description)}</span>
+    <span class="hljs-comment">#{html_sample_content_text_1}</span>
+    <span class="hljs-comment">#{html_sample_content_text_2}</span>
+  <span class="hljs-constant">TEND</span>
+  html_format_sample_content(content)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">html_sample_content_html_input_a</span><span class="hljs-params">(options={})</span></span>
+  id, description = html_sample_content_id_and_description_from_options(options, <span class="hljs-symbol">:a</span>)
+  content = &lt;&lt;-<span class="hljs-constant">TEND</span>
+    <span class="hljs-comment">#{html_sample_content_title(id, description)}</span>
+    <span class="hljs-comment">#{html_sample_content_checkbox(id, 1)}</span>
+    <span class="hljs-comment">#{html_sample_content_textfield(id, 1)}</span>
+    <span class="hljs-comment">#{html_sample_content_textarea(id, 1)}</span>
+  <span class="hljs-constant">TEND</span>
+  html_format_sample_content(content)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">html_sample_content_html_input_b</span><span class="hljs-params">(options={})</span></span>
+  id, description = html_sample_content_id_and_description_from_options(options, <span class="hljs-symbol">:b</span>)
+  content = &lt;&lt;-<span class="hljs-constant">TEND</span>
+    <span class="hljs-comment">#{html_sample_content_title(id, description)}</span>
+    <span class="hljs-comment">#{html_sample_content_checkbox(id, 1)}</span>
+    <span class="hljs-comment">#{html_sample_content_checkbox(id, 2)}</span>
+    <span class="hljs-comment">#{html_sample_content_textfield(id, 1)}</span>
+    <span class="hljs-comment">#{html_sample_content_textfield(id, 2)}</span>
+    <span class="hljs-comment">#{html_sample_content_textarea(id, 1)}</span>
+  <span class="hljs-constant">TEND</span>
+  html_format_sample_content(content)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">html_sample_content_html_carry_forward_assignment_all</span><span class="hljs-params">(phase, options)</span></span>
+  id, description = html_sample_content_id_and_description_from_options(options, <span class="hljs-symbol">:a</span>)
+  content = &lt;&lt;-<span class="hljs-constant">TEND</span>
+    <span class="hljs-comment">#{html_sample_content_title(id, description)}</span>
+    <span class="hljs-comment">#{html_sample_content_textfield(id, 1)}</span>
+    <span class="hljs-comment">#{html_sample_content_textfield(id, 2)}</span>
+  <span class="hljs-constant">TEND</span>
+  assignment = <span class="hljs-variable">@seed</span>.get_association(phase, <span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:assignment</span>)
+  phases     = <span class="hljs-variable">@seed</span>.get_association(assignment, <span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:phases</span>)
+  elements   = html_sample_content_html_get_input_elements_for_phases(phases)
+  content   += html_sample_content_html_get_carry_forward_tags(elements)
+  html_format_sample_content(content)
+<span class="hljs-keyword">end</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">html_sample_content_html_get_input_elements_for_phases</span><span class="hljs-params">(phases)</span></span>
+  comp_class     = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:phase_component</span>)
+  content_class  = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:html</span>, <span class="hljs-symbol">:content</span>)
+  element_class  = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:input_element</span>, <span class="hljs-symbol">:element</span>)
+  components     = comp_class.where(<span class="hljs-symbol">phase_id:</span> phases.map(&amp;<span class="hljs-symbol">:id</span>), <span class="hljs-symbol">componentable_type:</span> content_class.name)
+  componentables = components.map(&amp;<span class="hljs-symbol">:componentable</span>)
+  element_class.where(<span class="hljs-symbol">componentable:</span> componentables).order(<span class="hljs-symbol">:id</span>)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">html_sample_content_html_get_carry_forward_tags</span><span class="hljs-params">(elements)</span></span>
+  content_left  = <span class="hljs-string">'&lt;div class="small-6 columns"&gt;'</span>
+  content_right = <span class="hljs-string">'&lt;div class="small-6 columns"&gt;'</span>
+  elements.each_with_index <span class="hljs-keyword">do</span> |element, index|
+    name = element.name
+    text = <span class="hljs-string">"&lt;h5&gt;Carry forward: <span class="hljs-subst">#{name}</span> [eid:<span class="hljs-subst">#{element.id}</span>]&lt;/h5&gt;"</span>
+    tag  = index.even? ? <span class="hljs-string">"&lt;thinkspace type='carry_forward' name='<span class="hljs-subst">#{name}</span>' title='table'&gt;"</span> <span class="hljs-symbol">:</span> <span class="hljs-string">"&lt;thinkspace type='carry_forward' name='<span class="hljs-subst">#{name}</span>'&gt;"</span>
+    tag += <span class="hljs-string">'&lt;/thinkspace&gt;'</span>
+    row  = <span class="hljs-string">'&lt;div class="row"&gt;&lt;div class="small-12 columns"&gt;'</span>
+    row += text
+    row += tag
+    row += <span class="hljs-string">'&lt;/div&gt;&lt;/div&gt;'</span>
+    index.even? ? content_left += row <span class="hljs-symbol">:</span> content_right += row
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-string">'&lt;div class="row"&gt;'</span> + content_left + <span class="hljs-string">'&lt;/div&gt;'</span> + content_right + <span class="hljs-string">'&lt;/div&gt;'</span> + <span class="hljs-string">'&lt;/div&gt;'</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

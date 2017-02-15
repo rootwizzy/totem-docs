@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/app/controllers/thinkspace/casespace/api/phase_scores_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-casespace/app/controllers/thinkspace/casespace/api/phase_scores_controller"><meta name="groc-project-path" content="thinkspace-casespace/app/controllers/thinkspace/casespace/api/phase_scores_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/app/controllers/thinkspace/casespace/api/phase_scores_controller.rb">thinkspace-casespace/app/controllers/thinkspace/casespace/api/phase_scores_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Casespace</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PhaseScoresController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+        totem_action_authorize! <span class="hljs-symbol">ownerable_ability_action:</span> <span class="hljs-symbol">:gradebook</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> phase_score</span></p></div></div><div class="code"><div class="wrapper">          authorize_score_change
+          <span class="hljs-variable">@phase_score</span>.score = params_root[<span class="hljs-symbol">:score</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>serializer_options.remove_association :ownerable</p></div></div><div class="code"><div class="wrapper">serializer_options.remove_association <span class="hljs-symbol">:thinkspace_common_user</span>
+          controller_save_record(<span class="hljs-variable">@phase_score</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
+          authorize_score_change
+          <span class="hljs-variable">@phase_score</span>.score = params_root[<span class="hljs-symbol">:score</span>]
+serializer_options.remove_association <span class="hljs-symbol">:ownerable</span>
+serializer_options.remove_association <span class="hljs-symbol">:thinkspace_common_user</span>
+          controller_save_record(<span class="hljs-variable">@phase_score</span>)
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_score_change</span></span>
+          phase      = <span class="hljs-variable">@phase_score</span>.thinkspace_casespace_phase
+          assignment = phase.thinkspace_casespace_assignment
+          <span class="hljs-keyword">unless</span> can?(<span class="hljs-symbol">:gradebook</span>, assignment)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Additional information to error message before raising unauthorized exception (since scores are sensitive).</p></div></div><div class="code"><div class="wrapper">            message  = <span class="hljs-string">"Unauthorized attempt to update a user phase score!\n"</span>
+            message += <span class="hljs-string">"Current user [<span class="hljs-subst">#{current_user.inspect}</span>]\n"</span>
+            message += <span class="hljs-string">"Phase [<span class="hljs-subst">#{phase.inspect}</span>]\n"</span>
+            message += <span class="hljs-string">"PhaseScore [<span class="hljs-subst">#{<span class="hljs-variable">@phase_score</span>.inspect}</span>]"</span>
+            logger.error message
+            authorize!(<span class="hljs-symbol">:gradebook</span>, assignment)  <span class="hljs-comment"># raise unauthorized error</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

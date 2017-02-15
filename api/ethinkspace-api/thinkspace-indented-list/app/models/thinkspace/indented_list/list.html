@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-indented-list/app/models/thinkspace/indented_list/list</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-indented-list/app/models/thinkspace/indented_list/list"><meta name="groc-project-path" content="thinkspace-indented-list/app/models/thinkspace/indented_list/list.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-indented-list/app/models/thinkspace/indented_list/list.rb">thinkspace-indented-list/app/models/thinkspace/indented_list/list.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">IndentedList</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">List</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
+
+      totem_associations
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">expert?</span>;</span> <span class="hljs-keyword">self</span>.expert; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_settings</span>;</span> <span class="hljs-keyword">self</span>.settings || <span class="hljs-constant">Hash</span>.new; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">expert_list_list_id</span>;</span> get_settings[<span class="hljs-string">'list_id'</span>]; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="clone-path">Clone Path.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.deep_clone_helper
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cyclone</span><span class="hljs-params">(options={})</span></span>
+        <span class="hljs-keyword">self</span>.transaction <span class="hljs-keyword">do</span>
+          <span class="hljs-keyword">if</span> expert?
+            list_id = expert_list_list_id
+            list    = <span class="hljs-constant">Thinkspace::IndentedList::List</span>.find_by(<span class="hljs-symbol">id:</span> list_id)
+            raise_clone_exception <span class="hljs-string">"List [<span class="hljs-subst">#{id}</span>] does not exist, cannot continue."</span> <span class="hljs-keyword">unless</span> list.present?
+            cloned_expert_list = get_cloned_record_from_dictionary(list, get_clone_dictionary(options))
+            <span class="hljs-keyword">if</span> cloned_expert_list.present?
+              include_associations            = [<span class="hljs-symbol">:thinkspace_indented_list_expert_responses</span>]
+              cloned_list                     = clone_self(options, include_associations)
+              cloned_list.settings[<span class="hljs-string">'list_id'</span>] = cloned_expert_list.id
+            <span class="hljs-keyword">else</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Do not do any association or setting of list_id if the cloned_expert_list is not present.
+=&gt; This occurs when the clone originates from a phase and not a full case clone.</p></div></div><div class="code"><div class="wrapper">              cloned_list = clone_self(options)
+            <span class="hljs-keyword">end</span>
+            clone_save_record(cloned_list)
+          <span class="hljs-keyword">else</span>
+            cloned_list = clone_self(options)
+            clone_save_record(cloned_list)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="delete-ownerable-data">Delete Ownerable Data.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.delete_ownerable_data_helper
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ownerable_data_associations</span>;</span> [<span class="hljs-symbol">:thinkspace_indented_list_responses</span>]; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

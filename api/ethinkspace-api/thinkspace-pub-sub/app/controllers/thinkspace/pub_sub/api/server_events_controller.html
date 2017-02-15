@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-pub-sub/app/controllers/thinkspace/pub_sub/api/server_events_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-pub-sub/app/controllers/thinkspace/pub_sub/api/server_events_controller"><meta name="groc-project-path" content="thinkspace-pub-sub/app/controllers/thinkspace/pub_sub/api/server_events_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-pub-sub/app/controllers/thinkspace/pub_sub/api/server_events_controller.rb">thinkspace-pub-sub/app/controllers/thinkspace/pub_sub/api/server_events_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PubSub</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ServerEventsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_messages</span></span>
+          validate_load_message_params
+          validate_rooms(get_rooms)
+          server_events = controller_model_class.scope_messages(get_rooms, get_start_time, get_end_time).order(<span class="hljs-symbol">created_at:</span> <span class="hljs-symbol">:desc</span>)
+          serializer_options.remove_all
+          hash = controller_as_json(server_events)
+          controller_render_json({<span class="hljs-symbol">messages:</span> hash[controller_plural_path]})
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tracker</span></span>
+          access_denied <span class="hljs-string">"Unauthorized tracker request."</span> <span class="hljs-keyword">unless</span> can?(<span class="hljs-symbol">:update</span>, authable)
+          rooms = get_rooms
+          validate_rooms(rooms)
+          sid = pubsub.channel_name + <span class="hljs-string">'#'</span> + (get_params[<span class="hljs-symbol">:sid</span>] || <span class="hljs-string">''</span>)
+          server_event_record_class.new
+            .origin(<span class="hljs-keyword">self</span>)
+            .authable(authable)
+            .user(current_user)
+            .rooms(rooms)
+            .event(<span class="hljs-symbol">:tracker</span>)
+            .room_event(<span class="hljs-symbol">:tracker</span>)
+            .action(<span class="hljs-symbol">:tracker</span>)
+            .value(<span class="hljs-symbol">sid:</span> sid, <span class="hljs-symbol">room_type:</span> <span class="hljs-symbol">:tracker</span>)
+            .publish
+          controller_render_no_content
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">PubSub::AuthorizeHelpers</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_params</span>;</span> params.permit!.to_h[action_name] || <span class="hljs-constant">Hash</span>.new; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_room_type</span>;</span> get_params[<span class="hljs-symbol">:room_type</span>]; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_rooms</span>;</span>     <span class="hljs-variable">@server_event_rooms</span> ||= [get_params[<span class="hljs-symbol">:rooms</span>]].flatten.compact; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Add team based validation rules.
+TODO: Check for assignment &amp; phase due_at? - Use taa?</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_load_message_params</span></span>
+          access_denied <span class="hljs-string">"Must supply rooms to load messages."</span>  <span class="hljs-keyword">if</span> get_rooms.blank?
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_start_time</span></span>
+          from_time = get_params[<span class="hljs-symbol">:from_time</span>]
+          <span class="hljs-keyword">if</span> from_time.blank?
+            <span class="hljs-keyword">if</span> get_params[<span class="hljs-symbol">:from_last_login</span>].present?
+              api_session = read_api_session(current_user)
+              access_denied <span class="hljs-string">"API session is blank."</span> <span class="hljs-keyword">if</span> api_session.blank?
+              start_time = api_session.created_at
+            <span class="hljs-keyword">else</span>
+              ndays      = get_params[<span class="hljs-symbol">:from_days</span>] || <span class="hljs-number">1</span>
+              start_time = <span class="hljs-constant">Time</span>.now.utc - ndays.to_i.days
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">else</span>
+            start_time = <span class="hljs-constant">Time</span>.parse(from_time).utc <span class="hljs-keyword">rescue</span> <span class="hljs-keyword">nil</span>
+            access_denied <span class="hljs-string">"Params start time <span class="hljs-subst">#{from_time.inspect}</span> is an invalid time format."</span> <span class="hljs-keyword">if</span> start_time.blank?
+          <span class="hljs-keyword">end</span>
+          start_time
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_end_time</span></span>
+          to_time = get_params[<span class="hljs-symbol">:to_time</span>]
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> to_time.blank?
+          end_time = <span class="hljs-constant">Time</span>.parse(to_time).utc <span class="hljs-keyword">rescue</span> <span class="hljs-keyword">nil</span>
+          access_denied <span class="hljs-string">"Params end time <span class="hljs-subst">#{to_time.inspect}</span> is an invalid time format."</span> <span class="hljs-keyword">if</span> end_time.blank?
+          end_time
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">server_event_record_class</span>;</span> <span class="hljs-constant">::Thinkspace::PubSub::ServerEvent::Record</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(message, user_message=<span class="hljs-string">''</span>)</span></span>
+          action = (<span class="hljs-keyword">self</span>.action_name || <span class="hljs-string">''</span>).to_sym
+          model  = <span class="hljs-variable">@server_event</span> || controller_model_class
+          raise_access_denied_exception(message, action, model, <span class="hljs-symbol">user_message:</span> user_message)
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/helpers/processor/actions</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/helpers/processor/actions"><meta name="groc-project-path" content="thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/helpers/processor/actions.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/helpers/processor/actions.rb">thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/helpers/processor/actions.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Casespace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PhaseActions</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Helpers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Processor</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Actions</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_action</span><span class="hljs-params">(ownerable)</span></span>
+    debug <span class="hljs-string">"Action <span class="hljs-subst">#{action.to_s.inspect}</span>"</span>, ownerable <span class="hljs-keyword">if</span> debug?
+    get_action_class.new(<span class="hljs-keyword">self</span>, ownerable).process
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action_score</span><span class="hljs-params">(ownerable, phase=current_phase)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> action_auto_score? &amp;&amp; get_action_auto_score
+    auto_score(ownerable, phase)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action_phase_state_transition</span><span class="hljs-params">(ownerable, phase=current_phase)</span></span>
+    state = get_action_state
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> state.blank?
+    event = map_action_state_to_event(state)
+    send_event_to_phase_state(ownerable, event, phase) <span class="hljs-keyword">if</span> event.present?
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action_lock_phase_state</span><span class="hljs-params">(ownerable, phase=current_phase)</span></span>
+    key = get_action_lock
+    process_phase_state_event(phase, ownerable, key, <span class="hljs-symbol">:lock</span>) <span class="hljs-keyword">if</span> key.present?
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action_unlock_phase_state</span><span class="hljs-params">(ownerable, phase=current_phase)</span></span>
+    key = get_action_unlock
+    process_phase_state_event(phase, ownerable, key, <span class="hljs-symbol">:unlock</span>) <span class="hljs-keyword">if</span> key.present?
+  <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action_auto_score?</span>;</span>      action_settings.has_key?(<span class="hljs-symbol">:auto_score</span>); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_action_auto_score</span>;</span>   action_settings[<span class="hljs-symbol">:auto_score</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_action_state</span>;</span>        action_settings[<span class="hljs-symbol">:state</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_action_lock</span>;</span>         action_settings[<span class="hljs-symbol">:lock</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_action_unlock</span>;</span>       action_settings[<span class="hljs-symbol">:unlock</span>]; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_action_class</span></span>
+    <span class="hljs-keyword">return</span> action_class <span class="hljs-keyword">if</span> action_class.present?
+    as_class = action_settings[<span class="hljs-symbol">:class</span>]
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> as_class.blank?
+      class_name = <span class="hljs-string">"Thinkspace::Casespace::PhaseActions::Action::<span class="hljs-subst">#{action.to_s.camelize}</span>"</span>
+    <span class="hljs-keyword">when</span> as_class.to_s.match(<span class="hljs-string">'/'</span>)
+      class_name = as_class.to_s.camelize
+    <span class="hljs-keyword">else</span>
+      class_name = <span class="hljs-string">"Thinkspace::Casespace::PhaseActions::Action::<span class="hljs-subst">#{as_class.to_s.camelize}</span>"</span>
+    <span class="hljs-keyword">end</span>
+    klass = class_name.safe_constantize
+    raise <span class="hljs-constant">InvalidClassError</span>, <span class="hljs-string">"Action class name <span class="hljs-subst">#{class_name.inspect}</span> cannot be constantized."</span> <span class="hljs-keyword">if</span> klass.blank?
+    klass
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">map_action_state_to_event</span><span class="hljs-params">(state)</span></span>
+    <span class="hljs-keyword">case</span> state.to_sym
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:complete</span>, <span class="hljs-symbol">:completed</span>   <span class="hljs-keyword">then</span> <span class="hljs-symbol">:complete_phase</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:lock</span>, <span class="hljs-symbol">:locked</span>          <span class="hljs-keyword">then</span> <span class="hljs-symbol">:lock_phase</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:unlock</span>, <span class="hljs-symbol">:unlocked</span>      <span class="hljs-keyword">then</span> <span class="hljs-symbol">:unlock_phase</span>
+    <span class="hljs-keyword">else</span> state.to_sym
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_phase_state_event</span><span class="hljs-params">(phase, ownerable, key, event)</span></span>
+    klass  = get_phase_state_event_class(event)
+    phases = klass.present? ? klass.new(<span class="hljs-keyword">self</span>, phase, ownerable, <span class="hljs-symbol">key:</span> key, <span class="hljs-symbol">event:</span> event).process <span class="hljs-symbol">:</span> get_phases_by_key(phase, key, event)
+    <span class="hljs-constant">Array</span>.wrap(phases).each <span class="hljs-keyword">do</span> |event_phase|
+      event_phase.get_ownerables(ownerable, current_user, <span class="hljs-symbol">can_update:</span> can_update).each <span class="hljs-keyword">do</span> |phase_ownerable|
+        call_phase_state_event(event_phase, phase_ownerable, event)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_phase_state_event_class</span><span class="hljs-params">(event)</span></span>
+    <span class="hljs-keyword">case</span> event
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:unlock</span> <span class="hljs-keyword">then</span> unlock_class
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:lock</span>   <span class="hljs-keyword">then</span> lock_class
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">call_phase_state_event</span><span class="hljs-params">(phase, ownerable, event)</span></span>
+    <span class="hljs-keyword">case</span> event
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:unlock</span> <span class="hljs-keyword">then</span> unlock_phase_state(ownerable, phase)
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:lock</span>   <span class="hljs-keyword">then</span> lock_phase_state(ownerable, phase)
+    <span class="hljs-keyword">else</span>
+      raise <span class="hljs-constant">InvalidPhaseStateEvent</span>, <span class="hljs-string">"Invalid phase state event <span class="hljs-subst">#{event.to_s.inspect}</span>."</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="phases-based-on-key">Phases Based on Key.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_phases_by_key</span><span class="hljs-params">(phase, key, event)</span></span>
+    <span class="hljs-keyword">case</span> (key.is_a?(<span class="hljs-constant">String</span>) ? key.to_sym <span class="hljs-symbol">:</span> key)
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:next</span>           <span class="hljs-keyword">then</span> next_phases(phase).limit(<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:next_all</span>       <span class="hljs-keyword">then</span> next_phases(phase)
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:previous</span>       <span class="hljs-keyword">then</span> prev_phases(phase).limit(<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:previous_all</span>   <span class="hljs-keyword">then</span> prev_phases(phase)
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:next_after_all_ownerables</span>      <span class="hljs-keyword">then</span> process_after_all_ownerables(next_phase, event)
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:previous_after_all_ownerables</span>  <span class="hljs-keyword">then</span> process_after_all_ownerables(prev_phase, event)
+    <span class="hljs-keyword">else</span> []
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="after-all-ownerables">After All Ownerables.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Note: phases = next/prev phase(s).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_after_all_ownerables</span><span class="hljs-params">(phases, event)</span></span>
+    current_phase_is_team_ownerable = current_phase.team_ownerable?
+    [phases].flatten.compact.each <span class="hljs-keyword">do</span> |phase|
+      phase_is_team_ownerable = phase.team_ownerable? <span class="hljs-comment"># the next/prev phase</span>
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> !current_phase_is_team_ownerable &amp;&amp; phase_is_team_ownerable  <span class="hljs-comment"># ### user-to-team ### #</span>
+        teams      = get_user_teams(current_user, phase) <span class="hljs-comment"># get next/prev phase's teams to check for completed current phase users</span>
+        ownerables = get_teams_with_all_user_ownerables_completed(current_phase, teams)
+      <span class="hljs-keyword">when</span> current_phase_is_team_ownerable &amp;&amp; !phase_is_team_ownerable  <span class="hljs-comment"># ### team-to-user ### #</span>
+        teams      = get_user_teams(current_user, current_phase)
+        ownerables = get_users_with_all_team_ownerables_completed(current_phase, teams)
+      <span class="hljs-keyword">else</span> ownerables = <span class="hljs-constant">Array</span>.new
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-constant">Array</span>.wrap(ownerables).each <span class="hljs-keyword">do</span> |ownerable|
+        call_phase_state_event(phase, ownerable, event)  <span class="hljs-comment"># set next/prev phase state for ownerable</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    [] <span class="hljs-comment"># nothing more to do in the common event process e.g. return empty phases array</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>When the current phase is user based and the next/prev phase is team based, ensure
+all of the next/prev phase team members have completed the current phase.
+e.g. when a current user completes, will not change the next/prev phase&#39;s phase states
+unless all of the next/prev phase team members (for the current user teams) have also
+completed the current phase.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_teams_with_all_user_ownerables_completed</span><span class="hljs-params">(phase, teams)</span></span>
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> teams.blank?
+    completed_teams = <span class="hljs-constant">Array</span>.new
+    teams.each <span class="hljs-keyword">do</span> |team|
+      complete = <span class="hljs-keyword">true</span>
+      get_team_users(team).each <span class="hljs-keyword">do</span> |user|
+        ps       = get_existing_phase_state(user, phase)
+        complete = <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> phase_state_completed?(ps)
+      <span class="hljs-keyword">end</span>
+      completed_teams.push(team) <span class="hljs-keyword">if</span> complete
+    <span class="hljs-keyword">end</span>
+    completed_teams
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>When the current phase is team based and next/prev phase is user based, only
+change the next/prev phase&#39;s phase state for the users that have completed all
+of their current phase teams.
+e.g. when a user has mulitple teams for the current phase, ensure all the user&#39;s teams
+are completed before changing the next/prev phase&#39;s phase states.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_users_with_all_team_ownerables_completed</span><span class="hljs-params">(phase, teams, processed_teams=[], complete_users=[], incomplete_users=[], depth=<span class="hljs-number">1</span>)</span></span>
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> teams.blank?
+    raise <span class="hljs-constant">TeamRecursionError</span>, <span class="hljs-string">"To much team recursion"</span> <span class="hljs-keyword">if</span> depth &gt; <span class="hljs-number">5</span>
+    teams.each <span class="hljs-keyword">do</span> |team|
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> processed_teams.<span class="hljs-keyword">include</span>?(team)
+      ps    = get_existing_phase_state(team, phase)
+      users = get_team_users(team)
+      phase_state_completed?(ps) ? complete_users.push(users) <span class="hljs-symbol">:</span> incomplete_users.push(users)
+      users.each <span class="hljs-keyword">do</span> |user|
+        user_teams = get_user_teams(user, phase)
+        more_teams = (user_teams - teams)
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> more_teams.blank?
+        get_users_with_all_team_ownerables_completed(phase, teams + more_teams, teams, complete_users, incomplete_users, depth += <span class="hljs-number">1</span>)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    complete_users  = [complete_users].flatten.compact.uniq
+    incomplete_users = [incomplete_users].flatten.compact.uniq
+    (complete_users - incomplete_users)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TeamRecursionError</span>     <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InvalidClassError</span>      <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InvalidPhaseStateEvent</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

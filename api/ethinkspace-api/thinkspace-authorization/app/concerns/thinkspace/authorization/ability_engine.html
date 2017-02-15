@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-authorization/app/concerns/thinkspace/authorization/ability_engine</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-authorization/app/concerns/thinkspace/authorization/ability_engine"><meta name="groc-project-path" content="thinkspace-authorization/app/concerns/thinkspace/authorization/ability_engine.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-authorization/app/concerns/thinkspace/authorization/ability_engine.rb">thinkspace-authorization/app/concerns/thinkspace/authorization/ability_engine.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authorization</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AbilityEngine</span></span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:ability</span>, <span class="hljs-symbol">:current_user</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(ability)</span></span>
+    <span class="hljs-variable">@ability</span>      = ability
+    <span class="hljs-variable">@current_user</span> = ability.user
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span>
+    raise <span class="hljs-string">"Ability class <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name.inspect}</span> did not implement the 'process' method."</span>
+  <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_class</span><span class="hljs-params">(class_name)</span>;</span> class_name.safe_constantize; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_space_ids</span>;</span>  ability.read_space_ids; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">admin_space_ids</span>;</span> ability.admin_space_ids; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">admin?</span>;</span> ability.admin?; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">can</span><span class="hljs-params">(   actions, klass, hash={})</span>;</span> ability.can(actions, klass, hash); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cannot</span><span class="hljs-params">(actions, klass, hash={})</span>;</span> ability.cannot(actions, klass, hash); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">alias_action</span><span class="hljs-params">(*args)</span>;</span> ability.alias_action(*args); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_private_methods</span>;</span> <span class="hljs-keyword">self</span>.private_methods(<span class="hljs-keyword">false</span>); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">call_private_methods</span>;</span> get_private_methods.each {|method| <span class="hljs-keyword">self</span>.send(method)}; <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/models/thinkspace/common/timetable</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-common/app/models/thinkspace/common/timetable"><meta name="groc-project-path" content="thinkspace-common/app/models/thinkspace/common/timetable.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-common/app/models/thinkspace/common/timetable.rb">thinkspace-common/app/models/thinkspace/common/timetable.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Common</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Timetable</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
+      totem_associations</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="scopes">Scopes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_timeable_ownerables</span><span class="hljs-params">(timeable, ownerables)</span>;</span> <span class="hljs-keyword">self</span>.where(<span class="hljs-symbol">timeable:</span> timeable, <span class="hljs-symbol">ownerable:</span> ownerables); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="findcreate">Find/Create.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">find_or_create_timetable</span><span class="hljs-params">(timeable, options={})</span></span>
+        raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Timeable is blank."</span> <span class="hljs-keyword">if</span> timeable.blank?
+        ownerable = options[<span class="hljs-symbol">:ownerable</span>]
+        tt        = ownerable.blank? ? find_by_timeable(timeable) <span class="hljs-symbol">:</span> find_by_timeable_ownerable(timeable, ownerable)
+        <span class="hljs-keyword">if</span> tt.blank?
+          user              = options[<span class="hljs-symbol">:user</span>]
+          release_at        = options[<span class="hljs-symbol">:release_at</span>]
+          due_at            = options[<span class="hljs-symbol">:due_at</span>]
+          hash              = {<span class="hljs-symbol">timeable:</span> timeable}
+          hash[<span class="hljs-symbol">:ownerable</span>]  = ownerable  <span class="hljs-keyword">if</span> ownerable.present?
+          hash[<span class="hljs-symbol">:user_id</span>]    = user.id    <span class="hljs-keyword">if</span> user.present?
+          hash[<span class="hljs-symbol">:release_at</span>] = release_at <span class="hljs-keyword">if</span> release_at.present?
+          hash[<span class="hljs-symbol">:due_at</span>]     = due_at     <span class="hljs-keyword">if</span> due_at.present?
+          tt = <span class="hljs-keyword">self</span>.create(hash)
+          raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Could not find or create timetable for timeable [errors: <span class="hljs-subst">#{tt.errors.messages}</span>] [ownerable: <span class="hljs-subst">#{ownerable.inspect}</span>]."</span>  <span class="hljs-keyword">if</span> tt.errors.present?
+        <span class="hljs-keyword">end</span>
+        raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Could not find or create timetable state for timeable [ownerable: <span class="hljs-subst">#{ownerable.inspect}</span>]."</span>  <span class="hljs-keyword">unless</span> tt.present?
+        tt
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">find_by_timeable</span><span class="hljs-params">(timeable)</span>;</span> <span class="hljs-keyword">self</span>.find_by(<span class="hljs-symbol">timeable:</span> timeable); <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">find_by_timeable_ownerable</span><span class="hljs-params">(timeable, ownerable)</span>;</span> <span class="hljs-keyword">self</span>.find_by(<span class="hljs-symbol">timeable:</span> timeable, <span class="hljs-symbol">ownerable:</span> ownerable); <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FindOrCreateError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="">#</h1>
+<h1 id="-timetable-scope-class">### Timetable Scope Class.</h1>
+<h1 id="">#</h1></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Encapsulate the timetable scope generation in a class.
+Multiple (or none) association classes can be added to the scope.</p>
+<p>Generates the appropriate left outer joins (with table aliases) and coalesces values on
+ownerable(s) (if present) then without an ownerable (e.g. IS NULL).</p>
+<p>Ownerables are coalesced in same order as passed.
+A left outer join is added for each ownerable and IS NULL.
+e.g. base_class-ownerable1, base_class-ownerable2, base_class, association_classes[0]-ownerable, association_classes[0], ...</p>
+<p>Usage:
+  Create a new instance of this class with following arguments:
+    base_class:          [required] [class] model class of the records returned via the scope
+    ownerables:          [required] [single ownerable record | array of ownerable records | nil]
+    association_classes: [optional] [class | hash | string] additional association model classes</p>
+<pre><code>                     * a class must be a &#39;belongs_to&#39; association class (e.g. the base class table has a foreign key for the association)
+                     * the timetable &#39;timeables&#39; are coalesced in the same order as the classes
+                     * a string class name can be in module or slash format (e.g. &#39;Thinkspace::Casespace::Assignment&#39; or &#39;thinkspace/casespace/assignment&#39;)
+                     * see &#39;Association class hash keys&#39; below for hash layout</code></pre>
+<p>  e.g. for a phase: tts = Thinkspace::Common::Timetable::Scope.new(self, ownerable, Thinkspace::Casespace::Assignment)</p>
+<p>Association class hash keys (use to go up a &#39;belongs to&#39; association hierarchy):
+  on:  [required] [class | string] base class belongs_to association class (adds a base class inner join to the association class table)
+  for: [required] [class | string] association class belongs_to association class
+  e.g. to include space timetables with a phase:
+    tts = Thinkspace::Common::Timetable::Scope.new(
+            self,
+            ownerable,
+            &#39;Thinkspace::Casespace::Assignment&#39;,
+            {on: &#39;Thinkspace::Casespace::Assignment&#39;, for: &#39;Thinkspace::Common::Space&#39;}
+         )
+    SQL includes the following from the hash (with tt2 included in coalesce statements):
+      INNER JOIN &quot;thinkspace_casespace_assignments&quot; ON &quot;thinkspace_casespace_assignments&quot;.&quot;id&quot; = &quot;thinkspace_casespace_phases&quot;.&quot;assignment_id&quot;
+      LEFT OUTER JOIN thinkspace_common_timetables tt2
+        ON thinkspace_casespace_assignments.space_id = tt2.timeable_id AND tt2.timeable_type = &#39;Thinkspace::Common::Space&#39; ...</p>
+<p>Additional model based scopes (e.g. other than the timetable scope) can be chained to the timetable scope.
+Call &#39;scope&#39; or &#39;with_scope&#39; on the timetable scope to chain the model based scopes.
+e.g. tts.select_virual().where().with_scope.active  #=&gt; active is another scope defined in the model</p>
+<p>Helpers:
+  coalesce: returns a COALESCE string for a column
+  value:    returns a COALESCE value for a single record (record id and column are required)</p>
+<p>Notes:</p>
+<ol>
+<li>If a &#39;select_virtual&#39; is the first method called (e.g. a coalesced column), the select &quot;base_class.table_name.*&quot; is suppressed.</li>
+<li>A &#39;select<em>virtual&#39; prefixes the column name with &#39;v</em>&#39; e.g. select_virtual(:due_at) #=&gt; coalesce(...) AS v_due_at.</li>
+<li>If add model scopes to the timetable scope, recommend passing the timetable scope to ensure the table aliases are correct.</li>
+<li>When association classes are &#39;strings&#39;, the table name is derived from the string (e.g. not constantized first).</li>
+<li>When association classes are &#39;classes&#39;, the table name is &#39;klass.table_name&#39; (must use if klass.name does not match the table name).</li>
+</ol></div></div><div class="code"><div class="wrapper">      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Scope</span></span>
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:base_class</span>, <span class="hljs-symbol">:ownerables</span>, <span class="hljs-symbol">:association_classes</span>
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:left_outer_joins</span>, <span class="hljs-symbol">:inner_joins</span>
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:table_name</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(base_class, ownerables, *association_classes)</span></span>
+          <span class="hljs-variable">@base_class</span>          = base_class
+          <span class="hljs-variable">@ownerables</span>          = ownerables.blank? ? <span class="hljs-keyword">nil</span> <span class="hljs-symbol">:</span> <span class="hljs-constant">Array</span>.wrap(ownerables)
+          <span class="hljs-variable">@association_classes</span> = association_classes
+          <span class="hljs-variable">@select_virtual</span>      = <span class="hljs-keyword">false</span>
+          <span class="hljs-variable">@left_outer_joins</span>    = <span class="hljs-constant">Array</span>.new
+          <span class="hljs-variable">@inner_joins</span>         = <span class="hljs-constant">Array</span>.new
+          <span class="hljs-variable">@table_name</span>          = <span class="hljs-symbol">:thinkspace_common_timetables</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scope</span>;</span> <span class="hljs-variable">@current_scope</span> ||= generate_base_scope; <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">alias</span> <span class="hljs-symbol">:with_scope</span> <span class="hljs-symbol">:scope</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">time_now</span>;</span> <span class="hljs-variable">@time_now</span> ||= <span class="hljs-constant">Time</span>.now; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="chainable-scopes">Chainable Scopes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">select_virtual</span><span class="hljs-params">(col, vname=<span class="hljs-keyword">nil</span>)</span></span>
+          <span class="hljs-variable">@select_virtual</span> = <span class="hljs-keyword">true</span>
+          vname           = <span class="hljs-string">"v_<span class="hljs-subst">#{col}</span>"</span>  <span class="hljs-keyword">if</span> vname.blank?
+          <span class="hljs-variable">@current_scope</span>  = scope.select <span class="hljs-string">"<span class="hljs-subst">#{coalesce(col)}</span> AS <span class="hljs-subst">#{vname}</span>"</span>
+          <span class="hljs-keyword">self</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">where</span><span class="hljs-params">(col, op, val)</span></span>
+          <span class="hljs-variable">@current_scope</span> = scope.where val.is_a?(<span class="hljs-constant">Array</span>) ? [<span class="hljs-string">"<span class="hljs-subst">#{coalesce(col)}</span> <span class="hljs-subst">#{op}</span> IN (?)"</span>, val] <span class="hljs-symbol">:</span> [<span class="hljs-string">"<span class="hljs-subst">#{coalesce(col)}</span> <span class="hljs-subst">#{op}</span> ?"</span>, val]
+          <span class="hljs-keyword">self</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">where_time</span><span class="hljs-params">(col, op, time=time_now)</span>;</span> where(col, op, time); <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">where_now</span><span class="hljs-params">(op, col)</span>;</span> where_time(col, op); <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">joins</span><span class="hljs-params">(tn)</span></span>
+          <span class="hljs-variable">@current_scope</span> = scope.joins(tn)
+          <span class="hljs-keyword">self</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="scope-helpers">Scope Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">coalesce</span><span class="hljs-params">(col)</span></span>
+          tc = <span class="hljs-constant">Array</span>.new
+          left_outer_joins.length.times {|i| tc.push(<span class="hljs-string">"<span class="hljs-subst">#{table_alias(i)}</span>.<span class="hljs-subst">#{col}</span>"</span>)}
+          <span class="hljs-string">"COALESCE(<span class="hljs-subst">#{tc.join(<span class="hljs-string">', '</span>)}</span>)"</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">value</span><span class="hljs-params">(id, *cols)</span>;</span> get_record_values(id, cols); <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">alias</span> <span class="hljs-symbol">:values</span> <span class="hljs-symbol">:value</span>
+
+        private</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="base-scope">Base Scope.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_base_scope</span></span>
+          base = <span class="hljs-variable">@select_virtual</span>.blank? ? base_class.select(<span class="hljs-string">"<span class="hljs-subst">#{base_class.table_name}</span>.*"</span>) <span class="hljs-symbol">:</span> base_class
+          generate_left_outer_joins
+          inner_joins.each      {|tn|  base = base.joins(tn)}
+          left_outer_joins.each {|loj| base = base.joins(loj)}
+          base
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="left-outer-joins">Left Outer Joins.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_left_outer_joins</span></span>
+          join_tables(base_class, <span class="hljs-symbol">:id</span>)
+          association_classes.each {|klass| join_tables(klass)}
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">join_tables</span><span class="hljs-params">(klass, fk=<span class="hljs-keyword">nil</span>)</span></span>
+          <span class="hljs-keyword">if</span> ownerables.blank?
+            join_no_ownerables(klass, fk)
+          <span class="hljs-keyword">else</span>
+            join_with_ownerables(klass, fk)
+            join_no_ownerables(klass, fk)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">join_no_ownerables</span><span class="hljs-params">(klass, fk)</span>;</span> make_join(klass, fk); <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">join_with_ownerables</span><span class="hljs-params">(klass, fk)</span></span>
+          ownerables.each <span class="hljs-keyword">do</span> |ownerable|
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> ownerable.blank?
+            make_join(klass, fk, ownerable)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_join</span><span class="hljs-params">(klass, fk, ownerable=<span class="hljs-keyword">nil</span>)</span></span>
+          klass.is_a?(<span class="hljs-constant">Hash</span>) ? make_join_from_hash(klass, fk, ownerable) <span class="hljs-symbol">:</span> make_join_from_class(klass, fk, ownerable)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_join_from_class</span><span class="hljs-params">(klass, fk, ownerable=<span class="hljs-keyword">nil</span>)</span></span>
+          fk   = foreign_key(klass) <span class="hljs-keyword">if</span> fk.blank?
+          ta   = next_table_alias
+          type = class_type(klass)
+          join = <span class="hljs-string">"LEFT OUTER JOIN <span class="hljs-subst">#{table_name}</span> <span class="hljs-subst">#{ta}</span>"</span>
+          join += <span class="hljs-string">" ON <span class="hljs-subst">#{base_class.table_name}</span>.<span class="hljs-subst">#{fk}</span> = <span class="hljs-subst">#{ta}</span>.timeable_id"</span>
+          join += <span class="hljs-string">" AND <span class="hljs-subst">#{ta}</span>.timeable_type = '<span class="hljs-subst">#{type}</span>'"</span>
+          add_to_left_outer_joins_with_ownerable(join, ta, ownerable)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_join_from_hash</span><span class="hljs-params">(hash, fk, ownerable=<span class="hljs-keyword">nil</span>)</span></span>
+          klass = hash[<span class="hljs-symbol">:on</span>]
+          inner_joins.push inner_join_table_name(klass)
+          for_klass = hash[<span class="hljs-symbol">:for</span>]
+          fk        = foreign_key(for_klass)  <span class="hljs-keyword">if</span> fk.blank?
+          ta        = next_table_alias
+          tn        = class_table_name(klass)
+          type      = class_type(for_klass)
+          join      = <span class="hljs-string">"LEFT OUTER JOIN <span class="hljs-subst">#{table_name}</span> <span class="hljs-subst">#{ta}</span>"</span>
+          join     += <span class="hljs-string">" ON <span class="hljs-subst">#{tn}</span>.<span class="hljs-subst">#{fk}</span> = <span class="hljs-subst">#{ta}</span>.timeable_id"</span>
+          join     += <span class="hljs-string">" AND <span class="hljs-subst">#{ta}</span>.timeable_type = '<span class="hljs-subst">#{type}</span>'"</span>
+          add_to_left_outer_joins_with_ownerable(join, ta, ownerable)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_to_left_outer_joins_with_ownerable</span><span class="hljs-params">(join, ta, ownerable=<span class="hljs-keyword">nil</span>)</span></span>
+          <span class="hljs-keyword">if</span> ownerable.blank?
+            join += <span class="hljs-string">" AND <span class="hljs-subst">#{ta}</span>.ownerable_id IS NULL"</span>
+          <span class="hljs-keyword">else</span>
+            join += <span class="hljs-string">" AND <span class="hljs-subst">#{ta}</span>.ownerable_id = <span class="hljs-subst">#{ownerable.id}</span>"</span>
+            join += <span class="hljs-string">" AND <span class="hljs-subst">#{ta}</span>.ownerable_type = '<span class="hljs-subst">#{ownerable.<span class="hljs-keyword">class</span>.name}</span>'"</span>
+          <span class="hljs-keyword">end</span>
+          left_outer_joins.push(join)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">class_table_name</span><span class="hljs-params">(klass)</span>;</span>      klass.is_a?(<span class="hljs-constant">String</span>) ? klass.tableize.gsub(<span class="hljs-string">'/'</span>,<span class="hljs-string">'_'</span>) <span class="hljs-symbol">:</span> klass.table_name; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">inner_join_table_name</span><span class="hljs-params">(klass)</span>;</span> class_table_name(klass).singularize.to_sym; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">foreign_key</span><span class="hljs-params">(klass)</span>;</span>           class_type(klass).foreign_key; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">class_type</span><span class="hljs-params">(klass)</span>;</span>            klass.is_a?(<span class="hljs-constant">String</span>) ? klass.classify <span class="hljs-symbol">:</span> klass.name; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">table_alias</span><span class="hljs-params">(count)</span>;</span> <span class="hljs-string">"tt<span class="hljs-subst">#{count}</span>"</span>; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">next_table_alias</span>;</span>   table_alias(left_outer_joins.length); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="single-record-helpers">Single Record Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">virtual_column</span><span class="hljs-params">(col)</span>;</span> <span class="hljs-string">"_<span class="hljs-subst">#{col}</span>_"</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">virtual_select</span><span class="hljs-params">(col)</span>;</span> <span class="hljs-variable">@current_scope</span> = scope.select <span class="hljs-string">"<span class="hljs-subst">#{coalesce(col)}</span> AS <span class="hljs-subst">#{virtual_column(col)}</span>"</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_record_values</span><span class="hljs-params">(id, cols)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> id.blank? || cols.blank?
+          cols.each {|col| virtual_select(col)}
+          record = scope.where(<span class="hljs-symbol">id:</span> id).first
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> record.blank?
+          <span class="hljs-keyword">if</span> cols.length == <span class="hljs-number">1</span>
+            record.send virtual_column(cols.first)
+          <span class="hljs-keyword">else</span>
+            hash = <span class="hljs-constant">HashWithIndifferentAccess</span>.new
+            cols.each <span class="hljs-keyword">do</span> |col|
+              hash[col] = record.send virtual_column(col)
+            <span class="hljs-keyword">end</span>
+            hash
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

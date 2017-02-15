@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/helpers/ability/test_routes</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/helpers/ability/test_routes"><meta name="groc-project-path" content="thinkspace-casespace/test/helpers/ability/test_routes.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/helpers/ability/test_routes.rb">thinkspace-casespace/test/helpers/ability/test_routes.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::Ability::TestRoutes</span></span>
+  extend <span class="hljs-constant">ActiveSupport::Concern</span>
+  included <span class="hljs-keyword">do</span>
+
+    <span class="hljs-keyword">if</span> (readers = <span class="hljs-variable">@config</span>.readers).present?
+      <span class="hljs-variable">@config</span>.controller_routes.each <span class="hljs-keyword">do</span> |route|
+        route.set_as_reader
+        route.setup
+        describe <span class="hljs-string">"..<span class="hljs-subst">#{route.user_type}</span>.."</span> <span class="hljs-keyword">do</span>
+          before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@route</span> = route; <span class="hljs-keyword">end</span>
+          readers.each <span class="hljs-keyword">do</span> |username|
+            let(<span class="hljs-symbol">:user</span>)      {get_user(username)}
+            let(<span class="hljs-symbol">:ownerable</span>) {user}
+            let(<span class="hljs-symbol">:models</span>)    {base_models + [user, get_space_user(space, user)]}
+            it <span class="hljs-string">"..<span class="hljs-subst">#{username}</span><span class="hljs-subst">#{route.test_it_name}</span>"</span> <span class="hljs-keyword">do</span>
+              assert_sign_in(method(<span class="hljs-symbol">:send_route_request</span>))             &amp;&amp; <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@route</span>.sign_in?
+              assert_route_error(method(<span class="hljs-symbol">:send_route_request</span>), <span class="hljs-variable">@route</span>) &amp;&amp; <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@route</span>.assert_raise_error?
+              hash = send_route_request
+              (<span class="hljs-variable">@route</span>.admin? || <span class="hljs-variable">@route</span>.assert_unauthorized?) ? assert_route_unauthorized(<span class="hljs-variable">@route</span>, hash) <span class="hljs-symbol">:</span> assert_route_authorized(<span class="hljs-variable">@route</span>, hash)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">if</span> (updaters = <span class="hljs-variable">@config</span>.updaters).present?
+      <span class="hljs-variable">@config</span>.controller_routes.each <span class="hljs-keyword">do</span> |route|
+        route.set_as_updater
+        route.setup
+        describe <span class="hljs-string">"..<span class="hljs-subst">#{route.user_type}</span>.."</span> <span class="hljs-keyword">do</span>
+          before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@route</span> = route; <span class="hljs-keyword">end</span>
+          updaters.each <span class="hljs-keyword">do</span> |username|
+            let(<span class="hljs-symbol">:user</span>)      {get_user(username)}
+            let(<span class="hljs-symbol">:ownerable</span>) {user}
+            let(<span class="hljs-symbol">:models</span>)    {base_models + [user, get_space_user(space, user)]}
+            it <span class="hljs-string">"..<span class="hljs-subst">#{username}</span><span class="hljs-subst">#{route.test_it_name}</span>"</span> <span class="hljs-keyword">do</span>
+              assert_sign_in(method(<span class="hljs-symbol">:send_route_request</span>))             &amp;&amp; <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@route</span>.sign_in?
+              assert_route_error(method(<span class="hljs-symbol">:send_route_request</span>), <span class="hljs-variable">@route</span>) &amp;&amp; <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@route</span>.assert_raise_error?
+              hash = send_route_request
+              <span class="hljs-variable">@route</span>.assert_unauthorized? ? assert_route_unauthorized(<span class="hljs-variable">@route</span>, hash) <span class="hljs-symbol">:</span> assert_route_authorized(<span class="hljs-variable">@route</span>, hash)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">if</span> (owners = <span class="hljs-variable">@config</span>.owners).present?
+      <span class="hljs-variable">@config</span>.controller_routes.each <span class="hljs-keyword">do</span> |route|
+        route.set_as_owner
+        route.setup
+        describe <span class="hljs-string">"..<span class="hljs-subst">#{route.user_type}</span>.."</span> <span class="hljs-keyword">do</span>
+          before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@route</span> = route; <span class="hljs-keyword">end</span>
+          owners.each <span class="hljs-keyword">do</span> |username|
+            let(<span class="hljs-symbol">:user</span>)      {get_user(username)}
+            let(<span class="hljs-symbol">:ownerable</span>) {user}
+            let(<span class="hljs-symbol">:models</span>)    {base_models + [user, get_space_user(space, user)]}
+            it <span class="hljs-string">"..<span class="hljs-subst">#{username}</span><span class="hljs-subst">#{route.test_it_name}</span>"</span> <span class="hljs-keyword">do</span>
+              assert_sign_in(method(<span class="hljs-symbol">:send_route_request</span>))             &amp;&amp; <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@route</span>.sign_in?
+              assert_route_error(method(<span class="hljs-symbol">:send_route_request</span>), <span class="hljs-variable">@route</span>) &amp;&amp; <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@route</span>.assert_raise_error?
+              hash = send_route_request
+              <span class="hljs-variable">@route</span>.assert_unauthorized? ? assert_route_unauthorized(<span class="hljs-variable">@route</span>, hash) <span class="hljs-symbol">:</span> assert_route_authorized(<span class="hljs-variable">@route</span>, hash)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-variable">@config</span>.unauthorized_user_types.each <span class="hljs-keyword">do</span> |user_type|
+      <span class="hljs-keyword">if</span> (unauthorized = <span class="hljs-variable">@config</span>.send(user_type)).present?
+        <span class="hljs-variable">@config</span>.controller_routes.each <span class="hljs-keyword">do</span> |route|
+          route.send <span class="hljs-string">"set_as_<span class="hljs-subst">#{user_type.to_s.singularize}</span>"</span>
+          route.setup
+          describe <span class="hljs-string">"..<span class="hljs-subst">#{route.user_type}</span>.."</span> <span class="hljs-keyword">do</span>
+            before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@route</span> = route; <span class="hljs-keyword">end</span>
+            unauthorized.each <span class="hljs-keyword">do</span> |username|
+              let(<span class="hljs-symbol">:user</span>)      {get_user(username)}
+              let(<span class="hljs-symbol">:ownerable</span>) {user}
+              let(<span class="hljs-symbol">:models</span>)    {base_models + [user]}
+              it <span class="hljs-string">"..<span class="hljs-subst">#{username}</span><span class="hljs-subst">#{route.test_it_name}</span>"</span> <span class="hljs-keyword">do</span>
+                assert_sign_in method(<span class="hljs-symbol">:send_route_request</span>) &amp;&amp; <span class="hljs-keyword">return</span>  <span class="hljs-keyword">if</span> <span class="hljs-variable">@route</span>.sign_in?
+                assert_route_error(method(<span class="hljs-symbol">:send_route_request</span>), <span class="hljs-variable">@route</span>) &amp;&amp; <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@route</span>.assert_raise_error?
+                <span class="hljs-keyword">begin</span>
+                  hash = send_route_request
+                  <span class="hljs-variable">@route</span>.assert_authorized? ? assert_route_authorized(<span class="hljs-variable">@route</span>, hash) <span class="hljs-symbol">:</span> assert_route_unauthorized(<span class="hljs-variable">@route</span>, hash)
+                <span class="hljs-keyword">rescue</span> record_not_found_error =&gt; e
+                  assert_equal <span class="hljs-keyword">true</span>, <span class="hljs-keyword">true</span>  <span class="hljs-comment"># indicate an assertion was done e.g. raised error == unauthorized</span>
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># included</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/converter</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/converter"><meta name="groc-project-path" content="thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/converter.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/converter.rb">thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/converter.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">WeatherForecaster</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ItemXml</span></span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Converter</span></span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">model_attributes</span><span class="hljs-params">(item)</span></span>
+          {
+            <span class="hljs-symbol">name:</span>              get_name(item),
+            <span class="hljs-symbol">title:</span>             get_title(item),
+            <span class="hljs-symbol">description:</span>       get_description(item),
+            <span class="hljs-symbol">score_var:</span>         get_score_var(item),
+            <span class="hljs-symbol">presentation:</span>      get_presentation(item),
+            <span class="hljs-symbol">item_header:</span>       get_item_header(item),
+            <span class="hljs-symbol">response_metadata:</span> get_response_metadata(item),
+            <span class="hljs-symbol">processing:</span>        get_processing(item),
+            <span class="hljs-symbol">help_tip:</span>          get_help_tip(item),
+          }
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_name</span><span class="hljs-params">(item)</span></span>
+          item.id
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_title</span><span class="hljs-params">(item)</span></span>
+          item.title
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_description</span><span class="hljs-params">(item)</span></span>
+          item.description
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_presentation</span><span class="hljs-params">(item)</span></span>
+          content = item.content.strip
+          raise <span class="hljs-constant">ConvertError</span>, <span class="hljs-string">"Item content is blank. item: <span class="hljs-subst">#{item.inspect}</span>."</span>  <span class="hljs-keyword">if</span> content.blank?
+          content.strip
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_item_header</span><span class="hljs-params">(item)</span></span>
+          item.header
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_response_metadata</span><span class="hljs-params">(item)</span></span>
+          item.response.metadata
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_score_var</span><span class="hljs-params">(item)</span></span>
+          item.processing.value.var
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_processing</span><span class="hljs-params">(item)</span></span>
+          item.processing.value.except(<span class="hljs-symbol">:var</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_help_tip</span><span class="hljs-params">(item)</span></span>
+          item.help_tip.present? ? item.help_tip <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConvertError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

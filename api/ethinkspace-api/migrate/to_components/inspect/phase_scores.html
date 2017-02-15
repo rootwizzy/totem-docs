@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><title>migrate/to_components/inspect/phase_scores</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="migrate/to_components/inspect/phase_scores"><meta name="groc-project-path" content="migrate/to_components/inspect/phase_scores.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/migrate/to_components/inspect/phase_scores.rb">migrate/to_components/inspect/phase_scores.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Migrate</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ToComponents</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Inspect</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PhaseScores</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Totem::DbMigrate</span></span>::<span class="hljs-title">BaseHelper</span></span>
+    <span class="hljs-keyword">require</span> <span class="hljs-string">'pp'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span>
+      phase_states = old_phase_state_class.all
+      phase_scores = old_phase_score_class.all
+      puts <span class="hljs-string">"Phase state count: <span class="hljs-subst">#{phase_states.count}</span>"</span>
+      puts <span class="hljs-string">"Phase score count: <span class="hljs-subst">#{phase_scores.count}</span>"</span>
+      orphan_phase_scores
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">orphan_phase_scores</span></span>
+      orphans = <span class="hljs-constant">Array</span>.new
+      old_phase_score_class.all.each <span class="hljs-keyword">do</span> |score|
+        phase_state = old_phase_state_class.find_by(
+          <span class="hljs-symbol">ownerable_type:</span> score.ownerable_type,
+          <span class="hljs-symbol">ownerable_id:</span>   score.ownerable_id,
+          <span class="hljs-symbol">phase_id:</span>       score.phase_id,
+        )
+        orphans.push(score)  <span class="hljs-keyword">if</span> phase_state.blank?
+      <span class="hljs-keyword">end</span>
+      puts <span class="hljs-string">"Phase scores without a phase state count: <span class="hljs-subst">#{orphans.length}</span>"</span>
+      pp orphans
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_state_class</span>;</span> get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_state'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_score_class</span>;</span> get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_score'</span>); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+  
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Result on 07/09/2015:
+Phase state count: 23502
+Phase score count: 12839
+Phase scores without a phase state count: 3
+[#<Totem::DbMigrate::OldModel::Thinkspace::Wips::Casespace::PhaseScore:0xbdd43b0
+  id: 10375,
+  user_id: nil,
+  phase_id: 832,
+  score: #<BigDecimal:f95f2f4,'0.1E1',9(18)>,
+  created_at: Fri, 08 May 2015 13:55:57 UTC +00:00,
+  updated_at: Fri, 08 May 2015 13:55:58 UTC +00:00,
+  ownerable_id: 106,
+  ownerable_type: &quot;Thinkspace::Common::User&quot;&gt;,</p>
+<h1 id="lttotemdbmigrateoldmodelthinkspacewipscasespacephasescore0xcc32f24">&lt;Totem::DbMigrate::OldModel::Thinkspace::Wips::Casespace::PhaseScore:0xcc32f24</h1>
+<p>  id: 5997,
+  user_id: nil,
+  phase_id: 649,
+  score: #<BigDecimal:f95d468,'0.5E1',9(18)>,
+  created_at: Fri, 13 Feb 2015 17:18:26 UTC +00:00,
+  updated_at: Fri, 13 Feb 2015 17:18:27 UTC +00:00,
+  ownerable_id: 2,
+  ownerable_type: &quot;Thinkspace::Common::User&quot;&gt;,</p>
+<h1 id="lttotemdbmigrateoldmodelthinkspacewipscasespacephasescore0xcfb7910">&lt;Totem::DbMigrate::OldModel::Thinkspace::Wips::Casespace::PhaseScore:0xcfb7910</h1>
+<p>  id: 10195,
+  user_id: nil,
+  phase_id: 741,
+  score: #<BigDecimal:f9535f8,'0.1E1',9(18)>,
+  created_at: Fri, 01 May 2015 19:23:55 UTC +00:00,
+  updated_at: Fri, 01 May 2015 19:23:55 UTC +00:00,
+  ownerable_id: 103,
+  ownerable_type: &quot;Thinkspace::Common::User&quot;&gt;]</p></div></div></div></div></body></html>

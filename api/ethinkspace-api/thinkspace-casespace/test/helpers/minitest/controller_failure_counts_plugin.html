@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/helpers/minitest/controller_failure_counts_plugin</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/helpers/minitest/controller_failure_counts_plugin"><meta name="groc-project-path" content="thinkspace-casespace/test/helpers/minitest/controller_failure_counts_plugin.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/helpers/minitest/controller_failure_counts_plugin.rb">thinkspace-casespace/test/helpers/minitest/controller_failure_counts_plugin.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>minitest report plugin conventions:</p>
+<ol>
+<li>A &#39;minitest&#39; directory immediately under a load path directory (e.g. &#39;test/helpers&#39; is added to the load path
+by the totem test runner).</li>
+<li>Name of the plugin file must be in the form: my_name_plugin.rb.</li>
+<li>In the Minitest module must define a class method to initialize the reporter e.g. self.plugin_my_name_init(options).
+a. In this method must add the report class instance to the minitest reporter array e.g. self.reporter &lt;&lt; MyName.new
+b. FYI: the report &#39;class name&#39; does not have to match the plugin name e.g. class MyDiffName &lt; AbstractReporter.</li>
+</ol></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Minitest</span></span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ControllerFailureCounts</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">AbstractReporter</span></span></span>
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:failure_counts</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span></span>
+      <span class="hljs-variable">@failure_counts</span> = <span class="hljs-constant">Hash</span>.new
+      <span class="hljs-variable">@running_count</span>  = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_is_active</span><span class="hljs-params">(result)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@is_active</span>.<span class="hljs-keyword">nil</span>?
+      <span class="hljs-keyword">if</span> result.respond_to?(<span class="hljs-symbol">:report_failures</span>) &amp;&amp; result.report_failures.present?
+        <span class="hljs-variable">@is_active</span> = <span class="hljs-keyword">true</span>
+      <span class="hljs-keyword">elsif</span> result.respond_to?(<span class="hljs-symbol">:report_failures_by_count</span>) &amp;&amp; result.report_failures_by_count.present?
+        <span class="hljs-variable">@is_active</span>        = <span class="hljs-keyword">true</span>
+        <span class="hljs-variable">@report_by_counts</span> = <span class="hljs-keyword">true</span>
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-variable">@is_active</span> = <span class="hljs-keyword">false</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_active?</span>;</span> <span class="hljs-variable">@is_active</span>.present?; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">by_name?</span>;</span>   <span class="hljs-variable">@report_by_counts</span>.blank?; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The &#39;result&#39; parameter is the test class itself.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">record</span><span class="hljs-params">(result)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> result.passed?
+      set_is_active(result)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> is_active?
+      controller = result.instance_variable_get(<span class="hljs-symbol">:</span><span class="hljs-variable">@controller</span>)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> controller.blank?
+      key    = controller.<span class="hljs-keyword">class</span>.name
+      counts = (failure_counts[key] ||= <span class="hljs-constant">Hash</span>.new(<span class="hljs-number">0</span>))
+      result.result_code == <span class="hljs-string">'E'</span> ? counts[<span class="hljs-symbol">:errors</span>] += <span class="hljs-number">1</span> <span class="hljs-symbol">:</span> counts[<span class="hljs-symbol">:failures</span>] += <span class="hljs-number">1</span>
+      counts[<span class="hljs-symbol">:total</span>] += <span class="hljs-number">1</span>
+      add_running_count(counts)
+      add_actions(result, counts)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_running_count</span><span class="hljs-params">(counts)</span></span>
+      counts[<span class="hljs-symbol">:running_counts</span>] = <span class="hljs-constant">Array</span>.new  <span class="hljs-keyword">unless</span> counts[<span class="hljs-symbol">:running_counts</span>].is_a?(<span class="hljs-constant">Array</span>)
+      counts[<span class="hljs-symbol">:running_counts</span>].push(<span class="hljs-variable">@running_count</span> += <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_actions</span><span class="hljs-params">(result, counts)</span></span>
+      counts[<span class="hljs-symbol">:actions</span>] = <span class="hljs-constant">Array</span>.new  <span class="hljs-keyword">unless</span> counts[<span class="hljs-symbol">:actions</span>].is_a?(<span class="hljs-constant">Array</span>)
+      route = result.instance_variable_get(<span class="hljs-symbol">:</span><span class="hljs-variable">@route</span>)
+      counts[<span class="hljs-symbol">:actions</span>].push(route.action)  <span class="hljs-keyword">if</span> route.present?
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">report</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> failure_counts.blank?
+      keys = by_name? ? failure_counts.keys.sort <span class="hljs-symbol">:</span> failure_counts.sort_by {|k,v| [v[<span class="hljs-symbol">:total</span>],k]}.map {|a| a.first}
+      puts <span class="hljs-string">"\n"</span>
+      puts <span class="hljs-string">'Controller Failure Counts:'</span>.ljust(<span class="hljs-number">110</span>, <span class="hljs-string">'-'</span>)
+      len = <span class="hljs-number">4</span>
+      max = keys.map {|k| k.length}.max || <span class="hljs-number">1</span>
+      keys.each_with_index <span class="hljs-keyword">do</span> |key, index|
+        counts   = failure_counts[key]
+        e_count  = counts[<span class="hljs-symbol">:errors</span>]   &gt; <span class="hljs-number">0</span> ? counts[<span class="hljs-symbol">:errors</span>]   <span class="hljs-symbol">:</span> <span class="hljs-string">''</span>
+        f_count  = counts[<span class="hljs-symbol">:failures</span>] &gt; <span class="hljs-number">0</span> ? counts[<span class="hljs-symbol">:failures</span>] <span class="hljs-symbol">:</span> <span class="hljs-string">''</span>
+        r_counts = <span class="hljs-string">"[<span class="hljs-subst">#{counts[<span class="hljs-symbol">:running_counts</span>].join(<span class="hljs-string">','</span>)}</span>]"</span>.ljust(<span class="hljs-number">12</span>, <span class="hljs-string">'.'</span>)
+        actions  = counts[<span class="hljs-symbol">:actions</span>].present? ? <span class="hljs-string">"(<span class="hljs-subst">#{counts[<span class="hljs-symbol">:actions</span>].join(<span class="hljs-string">','</span>)}</span>)"</span> <span class="hljs-symbol">:</span> <span class="hljs-string">''</span>
+        name     = key.ljust(max + <span class="hljs-number">2</span>,<span class="hljs-string">'.'</span>)
+        counter  = (index + <span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">4</span>)
+        failures = <span class="hljs-string">'.failures'</span> + f_count.to_s.rjust(len, <span class="hljs-string">'.'</span>)
+        errors   = <span class="hljs-string">'errors'</span>    + e_count.to_s.rjust(len, <span class="hljs-string">'.'</span>)
+        total    = <span class="hljs-string">'total'</span>     + counts[<span class="hljs-symbol">:total</span>].to_s.rjust(len, <span class="hljs-string">'.'</span>)
+        puts <span class="hljs-string">"  <span class="hljs-subst">#{counter}</span>. <span class="hljs-subst">#{name}</span><span class="hljs-subst">#{failures}</span>  <span class="hljs-subst">#{errors}</span>  <span class="hljs-subst">#{total}</span>    <span class="hljs-subst">#{r_counts}</span>..<span class="hljs-subst">#{actions}</span>"</span>
+      <span class="hljs-keyword">end</span>
+      puts <span class="hljs-string">"\n"</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">plugin_controller_failure_counts_init</span><span class="hljs-params">(options)</span></span>
+    <span class="hljs-keyword">self</span>.reporter &lt;&lt; <span class="hljs-constant">ControllerFailureCounts</span>.new
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

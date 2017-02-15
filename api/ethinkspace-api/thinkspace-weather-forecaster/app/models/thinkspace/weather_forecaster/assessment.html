@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/assessment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/assessment"><meta name="groc-project-path" content="thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/assessment.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/assessment.rb">thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/assessment.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">WeatherForecaster</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Assessment</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span>        </span>
+      totem_associations
+
+      validates_presence_of <span class="hljs-symbol">:title</span>, <span class="hljs-symbol">:thinkspace_weather_forecaster_station</span>, <span class="hljs-symbol">:authable</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="scopes">Scopes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">to_score</span></span>
+        joins(<span class="hljs-symbol">:thinkspace_weather_forecaster_forecasts</span>).
+        merge(<span class="hljs-constant">Forecast</span>.to_score).
+        order(<span class="hljs-symbol">:id</span>).uniq
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">to_rescore</span></span>
+        joins(<span class="hljs-symbol">:thinkspace_weather_forecaster_forecasts</span>).
+        merge(<span class="hljs-constant">Forecast</span>.to_rescore).
+        order(<span class="hljs-symbol">:id</span>).uniq
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_assessment_item_ids</span><span class="hljs-params">(ids)</span></span>
+        joins(<span class="hljs-symbol">:thinkspace_weather_forecaster_assessment_items</span>).
+        where(<span class="hljs-symbol">thinkspace_weather_forecaster_assessment_items:</span> {<span class="hljs-symbol">id:</span> ids})
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="instance-methods">Instance Methods.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_current_day_forecast</span><span class="hljs-params">(ownerable, user=<span class="hljs-keyword">nil</span>)</span></span>
+        raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Forecast ownerable is blank for assessment [<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.inspect}</span>]."</span>  <span class="hljs-keyword">if</span> ownerable.blank?
+        forecast = <span class="hljs-keyword">self</span>.thinkspace_weather_forecaster_forecasts.find_ownerable_current_day(ownerable)
+        <span class="hljs-keyword">if</span> forecast.blank?
+          forecast_day = forecast_day_class.find_or_create_current_forecast_day
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> forecast_day.blank? || forecast_day.is_locked?
+          forecast = thinkspace_weather_forecaster_forecasts.create(
+            <span class="hljs-symbol">ownerable:</span>       ownerable,
+            <span class="hljs-symbol">forecast_day_id:</span> forecast_day.id,
+            <span class="hljs-symbol">user_id:</span>         user &amp;&amp; user.id,
+            <span class="hljs-symbol">state:</span>           forecast_day.default_state
+          )
+          raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Could not find or create forecast for assessment [errors: <span class="hljs-subst">#{forecast.errors.messages}</span>] [<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.inspect}</span>] [ownerable: <span class="hljs-subst">#{ownerable.inspect}</span>]."</span>  <span class="hljs-keyword">if</span> forecast.errors.present?
+        <span class="hljs-keyword">end</span>
+        raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Could not find or create forecast for assessment [<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.inspect}</span>] [ownerable: <span class="hljs-subst">#{ownerable.inspect}</span>]."</span>  <span class="hljs-keyword">if</span> forecast.blank?
+        forecast
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">previous_forecasts</span><span class="hljs-params">(ownerable, number_of_forecasts=<span class="hljs-keyword">nil</span>)</span></span>
+        scope = <span class="hljs-keyword">self</span>.thinkspace_weather_forecaster_forecasts.
+                scope_by_ownerable(ownerable).
+                scope_by_state_attempts.
+                scope_and_order_by_previous_forecast_days
+        scope = scope.limit(number_of_forecasts) <span class="hljs-keyword">if</span> number_of_forecasts.present?
+        scope
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">top_forecasts_json</span><span class="hljs-params">(number_of_scores=<span class="hljs-keyword">nil</span>)</span></span>
+        <span class="hljs-keyword">self</span>.thinkspace_weather_forecaster_forecasts.top_forecasts_json(number_of_scores)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">forecast_day_class</span>;</span> <span class="hljs-constant">Thinkspace::WeatherForecaster::ForecastDay</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FindOrCreateError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="clone-assessment">Clone Assessment.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.deep_clone_helper
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cyclone</span><span class="hljs-params">(options={})</span></span>
+        <span class="hljs-keyword">self</span>.transaction <span class="hljs-keyword">do</span>
+          clone_associations = [<span class="hljs-symbol">:thinkspace_weather_forecaster_assessment_items</span>]
+          cloned_assessment  = clone_self(options, clone_associations)
+          clone_save_record(cloned_assessment)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="delete-ownerable-data">Delete Ownerable Data.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.delete_ownerable_data_helper
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ownerable_data_associations</span>;</span> [<span class="hljs-symbol">:thinkspace_weather_forecaster_forecasts</span>]; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

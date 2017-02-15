@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><title>migrate/assignments/inspect/labtest_values</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="migrate/assignments/inspect/labtest_values"><meta name="groc-project-path" content="migrate/assignments/inspect/labtest_values.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/migrate/assignments/inspect/labtest_values.rb">migrate/assignments/inspect/labtest_values.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../../helpers/require_all'</span>, __FILE_<span class="hljs-number">_</span>)
+<span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../node_values_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Migrate</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Assignments</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Inspect</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LabtestValues</span></span>
+
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Parse</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Node</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">NodeValuesHelper</span>
+
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:process_ids</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(args=<span class="hljs-keyword">nil</span>)</span></span>
+      title = <span class="hljs-string">'Lab test count'</span>
+      set_root_path(args)
+      get_assignment_nodes.each <span class="hljs-keyword">do</span> |node|
+        id = get_node_id(node)
+        set_current_assignment_path(id)
+        get_assignment_phase_nodes.each <span class="hljs-keyword">do</span> |node|
+          <span class="hljs-variable">@current_phase_node</span> = node
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> get_phase_type == <span class="hljs-string">'labtest'</span>
+          id          = get_phase_id
+          phase_node  = get_phase_node(id)
+          phase_node.css(<span class="hljs-string">'labtest'</span>).each <span class="hljs-keyword">do</span> |node|</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>next unless get_labtest_type(node) == &#39;title&#39;
+next unless get_labtest_type(node) == &#39;result&#39;
+next unless get_labtest_type(node) == &#39;header&#39;
+next unless get_labtest_type(node) == &#39;adjustedResult&#39;</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> get_labtest_type(node) == <span class="hljs-string">'observation'</span>
+            collect_node_values(node)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      print_collected_node_values(title)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>print_collected_node_values(title, only: [:type])
+print_collected_node_values(title, except: [:result])
+print_collected_node_values(title, only: [:result])</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_labtest_type</span><span class="hljs-params">(node)</span></span>
+      val = node.css(<span class="hljs-string">'type'</span>)
+      val.present? ? val.text <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">end</span>
+
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># class</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/seed/base</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/seed/base"><meta name="groc-project-path" content="thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/seed/base.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/seed/base.rb">thinkspace-weather-forecaster/app/concerns/thinkspace/weather_forecaster/item_xml/seed/base.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">WeatherForecaster</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ItemXml</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Seed</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base</span></span>
+
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:totem_settings</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:engine</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:root_db_path</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:root_path</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(env=<span class="hljs-keyword">nil</span>)</span></span>
+            <span class="hljs-variable">@totem_settings</span> = env || <span class="hljs-constant">::Totem::Settings</span>
+            set_engine
+            set_root_db_path
+          <span class="hljs-keyword">end</span>
+
+          private
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_engine</span></span>
+            engine_name = <span class="hljs-string">'thinkspace_weather_forecaster'</span>
+            engines     = totem_settings.engine.get_by_name(engine_name)
+            stop_run <span class="hljs-string">"Could not find engine <span class="hljs-subst">#{engine_name.inspect}</span>."</span>      <span class="hljs-keyword">if</span> engines.blank?
+            stop_run <span class="hljs-string">"Mutiple engines found for <span class="hljs-subst">#{engine_name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> engines.length &gt; <span class="hljs-number">1</span>
+            <span class="hljs-variable">@engine</span> = engines.first
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_root_db_path</span>;</span> <span class="hljs-variable">@root_db_path</span> = <span class="hljs-constant">File</span>.join(engine.root, <span class="hljs-string">'db'</span>, <span class="hljs-string">'production_data'</span>); <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_root_path</span><span class="hljs-params">(args)</span>;</span> <span class="hljs-variable">@root_path</span> = <span class="hljs-constant">File</span>.join(root_db_path, args); <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">model_attributes_to_yaml</span><span class="hljs-params">(model_attributes)</span></span>
+            model_attributes.map {|attrs| attrs.deep_stringify_keys}.to_yaml
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_message</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+            puts <span class="hljs-string">'[wf-seed] '</span> + message
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">stop_run</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+            print_message <span class="hljs-string">"\n"</span>
+            print_message message
+            print_message <span class="hljs-string">"Run stopped."</span>
+            print_message <span class="hljs-string">"\n"</span>
+            exit
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_error</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+            raise <span class="hljs-constant">SeedError</span>, message
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SeedError</span>  <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

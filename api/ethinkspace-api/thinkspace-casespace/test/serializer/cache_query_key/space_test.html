@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/serializer/cache_query_key/space_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/serializer/cache_query_key/space_test"><meta name="groc-project-path" content="thinkspace-casespace/test/serializer/cache_query_key/space_test.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/serializer/cache_query_key/space_test.rb">thinkspace-casespace/test/serializer/cache_query_key/space_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>#</p>
+<h1 id="temporary-tests-to-verify-the-new-serializer-options-query-key-matches-the-old-model-query-key">TEMPORARY tests to verify the new serializer options query-key matches the old model query-key.</h1>
+<p>#
+require &#39;serializer_helper&#39;
+Test::Casespace::Seed.load(config: :serializer)
+module Test; module Serializer; class CacheKeyQuery &lt; ActionController::TestCase
+  include Controller
+  include Model
+  include Assert
+  include ModuleMethods</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  describe @spaces_controller do
+    let(:user)   {serializer_update_user}
+    describe &#39;space index&#39; do
+      let(:record) {all_serializer_spaces}
+      let(:action) {:index}
+      it &#39;using cache_query_key method&#39; do
+        serializer_options.cache ownerable: user
+        orig_digest = cache_digest(cache_key)
+        serializer_options.cache ownerable: user
+        serializer_options.cache_query_key name: :spaces, column: :updated_at
+        serializer_options.cache_query_key name: :assignments, maximum: :thinkspace_casespace_assignments
+        serializer_options.cache_query_key name: :space_users, maximum: :thinkspace_common_space_users
+        serializer_options.cache_query_key(name: :release_at,  maximum: :thinkspace_casespace_assignments,
+          where:  [&#39;thinkspace_casespace_assignments.release_at &lt; ?&#39;, Time.now],
+          column: :release_at
+        )
+        query_digest = cache_digest(cache_key)
+        assert_equal orig_digest, query_digest, &#39;==&gt; model and serializer options cache key digests should match&#39;
+      end
+      it &#39;using cache :query_key option&#39; do
+        serializer_options.cache ownerable: user
+        orig_digest = cache_digest(cache_key)
+        hash = {
+          ownerable: user,
+          query_key: [
+            {name: :spaces, column: :updated_at},
+            {name: :assignments, maximum: :thinkspace_casespace_assignments},
+            {name: :space_users, maximum: :thinkspace_common_space_users},
+            {name: :release_at,  maximum: :thinkspace_casespace_assignments,
+              where: [&#39;thinkspace_casespace_assignments.release_at &lt; ?&#39;, Time.now],
+              column: :release_at},
+          ]
+        }
+        serializer_options.cache(hash)
+        query_digest = cache_digest(cache_key)
+        assert_equal orig_digest, query_digest, &#39;==&gt; model and serializer options cache key digests should match&#39;
+      end
+      it &#39;mixed cache query_key options&#39; do
+        serializer_options.cache ownerable: user
+        orig_digest = cache_digest(cache_key)
+        serializer_options.cache ownerable: user, query_key: {name: :spaces, column: :updated_at}
+        serializer_options.cache_query_key name: :assignments, maximum: :thinkspace_casespace_assignments
+        serializer_options.cache_query_key name: :space_users, maximum: :thinkspace_common_space_users
+        serializer_options.cache_query_key(name: :release_at,  maximum: :thinkspace_casespace_assignments,
+          where:  [&#39;thinkspace_casespace_assignments.release_at &lt; ?&#39;, Time.now],
+          column: :release_at
+        )
+        query_digest = cache_digest(cache_key)
+        assert_equal orig_digest, query_digest, &#39;==&gt; model and serializer options cache key digests should match&#39;
+      end
+    end  # all spaces</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>describe &#39;space..show&#39; do
+  let(:record) {all_serializer_spaces.first}
+  let(:action) {:show}
+  it &#39;query key&#39; do
+    serializer_options.cache ownerable: user
+    orig_digest = cache_digest(cache_key)
+    serializer_options.cache ownerable: user
+    serializer_options.cache_query_key name: :space, column: :updated_at
+    serializer_options.cache_query_key name: :assignments, maximum: :thinkspace_casespace_assignments
+    serializer_options.cache_query_key name: :space_users, maximum: :thinkspace_common_space_users
+    serializer_options.cache_query_key(name: :release_at,  maximum: :thinkspace_casespace_assignments,
+      where:  [&#39;thinkspace_casespace_assignments.release_at &lt; ?&#39;, Time.now],
+      column: :release_at
+    )
+    query_digest = cache_digest(cache_key)
+    assert_equal orig_digest, query_digest, &#39;==&gt; model and serializer options cache key digests should match&#39;
+  end
+end</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>end; end; end</p></div></div></div></div></body></html>

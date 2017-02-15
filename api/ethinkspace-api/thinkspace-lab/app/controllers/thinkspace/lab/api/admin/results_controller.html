@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-lab/app/controllers/thinkspace/lab/api/admin/results_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace-lab/app/controllers/thinkspace/lab/api/admin/results_controller"><meta name="groc-project-path" content="thinkspace-lab/app/controllers/thinkspace/lab/api/admin/results_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-lab/app/controllers/thinkspace/lab/api/admin/results_controller.rb">thinkspace-lab/app/controllers/thinkspace/lab/api/admin/results_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Lab</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Admin</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ResultsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+          load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span>
+            category_id = params_association_id(<span class="hljs-symbol">:category_id</span>)
+            access_denied <span class="hljs-string">"Lab result create category id is blank."</span>  <span class="hljs-keyword">if</span> category_id.blank?
+            category = <span class="hljs-constant">Thinkspace::Lab::Category</span>.find_by(<span class="hljs-symbol">id:</span> category_id)
+            access_denied <span class="hljs-string">"Lab result create category [id: <span class="hljs-subst">#{category_id}</span>] not found."</span>  <span class="hljs-keyword">if</span> category.blank?
+            authorize!(<span class="hljs-symbol">:update</span>, category.authable)
+            <span class="hljs-variable">@result</span>.category_id = category.id
+            set_result_values_from_params
+            controller_save_record(<span class="hljs-variable">@result</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
+            authorize!(<span class="hljs-symbol">:update</span>, <span class="hljs-variable">@result</span>.authable)
+            set_result_values_from_params
+            controller_save_record(<span class="hljs-variable">@result</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">destroy</span></span>
+            authorize!(<span class="hljs-symbol">:update</span>, <span class="hljs-variable">@result</span>.authable)
+            controller_destroy_record(<span class="hljs-variable">@result</span>)
+          <span class="hljs-keyword">end</span>
+
+          private
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_result_values_from_params</span></span>
+            <span class="hljs-variable">@result</span>.title    = params_root[<span class="hljs-symbol">:title</span>]
+            <span class="hljs-variable">@result</span>.position = params_root[<span class="hljs-symbol">:position</span>]
+            <span class="hljs-variable">@result</span>.value    = params_root[<span class="hljs-symbol">:value</span>]     <span class="hljs-keyword">unless</span> params_root[<span class="hljs-symbol">:value</span>]    == <span class="hljs-variable">@result</span>.value
+            <span class="hljs-variable">@result</span>.metadata = params_root[<span class="hljs-symbol">:metadata</span>]  <span class="hljs-keyword">unless</span> params_root[<span class="hljs-symbol">:metadata</span>] == <span class="hljs-variable">@result</span>.metadata
+            serializer_options.except_attributes <span class="hljs-symbol">:values</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
+            serializer_options.add_attributes    <span class="hljs-symbol">:value</span>, <span class="hljs-symbol">:metadata</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(message, user_message=<span class="hljs-keyword">nil</span>)</span></span>
+            raise_access_denied_exception(message, <span class="hljs-keyword">self</span>.action_name, <span class="hljs-variable">@result</span>, <span class="hljs-symbol">user_message:</span> user_message)
+          <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

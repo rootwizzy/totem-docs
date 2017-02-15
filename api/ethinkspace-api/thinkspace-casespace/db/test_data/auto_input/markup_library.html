@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/db/test_data/auto_input/markup_library</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/db/test_data/auto_input/markup_library"><meta name="groc-project-path" content="thinkspace-casespace/db/test_data/auto_input/markup_library.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/db/test_data/auto_input/markup_library.rb">thinkspace-casespace/db/test_data/auto_input/markup_library.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AutoInputMarkupLibrary</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">AutoInputBase</span></span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(options)</span></span>
+    <span class="hljs-variable">@num_lib_coms</span> = options[<span class="hljs-symbol">:comments</span>] || <span class="hljs-number">3</span>
+    <span class="hljs-variable">@lib_tags</span>     = options[<span class="hljs-symbol">:tags</span>] || []
+    process_spaces
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_spaces</span></span>
+    selected_spaces.each <span class="hljs-keyword">do</span> |space|
+      users = get_space_users(space)
+      process_users(users)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_users</span><span class="hljs-params">(users)</span></span>
+    users.each <span class="hljs-keyword">do</span> |user|
+      lib      = find_or_create_library(user)
+      lib_coms = find_or_create_library_comments(lib, user)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_library</span><span class="hljs-params">(user)</span></span>
+    lib = library_class.find_by(<span class="hljs-symbol">user_id:</span> user.id)
+    <span class="hljs-keyword">return</span> lib <span class="hljs-keyword">if</span> lib.present?
+    lib  = <span class="hljs-variable">@seed</span>.new_model(<span class="hljs-symbol">:markup</span>, <span class="hljs-symbol">:library</span>, <span class="hljs-symbol">user_id:</span> user.id)
+    tags = <span class="hljs-variable">@lib_tags</span>.deep_dup
+    tags += [<span class="hljs-string">'Tag X'</span>]  <span class="hljs-keyword">if</span> <span class="hljs-variable">@num_lib_coms</span> &gt; tags.length  <span class="hljs-comment"># add default if more comments than tags</span>
+    add_tags(lib, tags)
+    <span class="hljs-variable">@seed</span>.create_error(lib)  <span class="hljs-keyword">unless</span> lib.save
+    lib
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_library_comments</span><span class="hljs-params">(lib, user)</span></span>
+    lib_coms = library_comment_class.where(<span class="hljs-symbol">user_id:</span> user.id)
+    <span class="hljs-keyword">return</span> lib_coms <span class="hljs-keyword">if</span> lib_coms.present?
+    lib_coms = <span class="hljs-constant">Array</span>.new
+    tags     = <span class="hljs-variable">@lib_tags</span>.deep_dup
+    <span class="hljs-variable">@num_lib_coms</span>.times <span class="hljs-keyword">do</span> |i|
+      tag     = tags.shift || <span class="hljs-string">'Tag X'</span>
+      comment = <span class="hljs-string">"[<span class="hljs-subst">#{user.first_name}</span>] Comment <span class="hljs-subst">#{i+<span class="hljs-number">1</span>}</span>."</span>
+      lib_com = <span class="hljs-variable">@seed</span>.new_model(<span class="hljs-symbol">:markup</span>, <span class="hljs-symbol">:library_comment</span>, <span class="hljs-symbol">library_id:</span> lib.id, <span class="hljs-symbol">user_id:</span> user.id, <span class="hljs-symbol">comment:</span> comment)
+      add_tags(lib_com, tag)
+      <span class="hljs-variable">@seed</span>.create_error(lib_com)  <span class="hljs-keyword">unless</span> lib_com.save
+      lib_coms.push(lib_com)
+    <span class="hljs-keyword">end</span>
+    lib_coms
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_tags</span><span class="hljs-params">(rec, tags)</span></span>
+    all_tags = [tags].flatten.compact.sort.uniq
+    all_tags.each <span class="hljs-keyword">do</span> |tag|
+      rec.tag_list.add(tag)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">library_class</span>;</span>         <span class="hljs-variable">@_library_class</span>         ||= <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:markup</span>, <span class="hljs-symbol">:library</span>); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">library_comment_class</span>;</span> <span class="hljs-variable">@_library_comment_class</span> ||= <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:markup</span>, <span class="hljs-symbol">:library_comment</span>); <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

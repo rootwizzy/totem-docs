@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-markup/app/controllers/thinkspace/markup/api/library_comments_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-markup/app/controllers/thinkspace/markup/api/library_comments_controller"><meta name="groc-project-path" content="thinkspace-markup/app/controllers/thinkspace/markup/api/library_comments_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-markup/app/controllers/thinkspace/markup/api/library_comments_controller.rb">thinkspace-markup/app/controllers/thinkspace/markup/api/library_comments_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Markup</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LibraryCommentsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+        <span class="hljs-comment">#totem_action_authorize! only: [:create, :destroy, :update], ownerable_ability_action: :view, module: :action_authorize_markup</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">select</span> </span>
+          <span class="hljs-variable">@library_comments</span> = <span class="hljs-variable">@library_comments</span>.where(<span class="hljs-symbol">id:</span> params[<span class="hljs-symbol">:ids</span>])
+          controller_render(<span class="hljs-variable">@library_comments</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
+          controller_render(<span class="hljs-variable">@library_comment</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span>
+          <span class="hljs-variable">@library_comment</span>.user_id            = current_user.id
+          <span class="hljs-variable">@library_comment</span>.comment            = params_root[<span class="hljs-symbol">:comment</span>]
+          <span class="hljs-keyword">if</span> params_root[<span class="hljs-symbol">:uses</span>] != <span class="hljs-keyword">nil</span>
+            <span class="hljs-variable">@library_comment</span>.uses             = params_root[<span class="hljs-symbol">:uses</span>]
+          <span class="hljs-keyword">else</span>
+            <span class="hljs-variable">@library_comment</span>.uses             = <span class="hljs-number">0</span>
+          <span class="hljs-keyword">end</span>
+          <span class="hljs-variable">@library_comment</span>.last_used          = params_root[<span class="hljs-symbol">:last_used</span>]
+          <span class="hljs-variable">@library_comment</span>.library_id         = params_association_id(<span class="hljs-symbol">:library_id</span>)
+          controller_save_record(<span class="hljs-variable">@library_comment</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
+          <span class="hljs-variable">@library_comment</span>.comment   = params_root[<span class="hljs-symbol">:comment</span>]
+          <span class="hljs-keyword">if</span> params_root[<span class="hljs-symbol">:uses</span>] != <span class="hljs-keyword">nil</span> 
+            <span class="hljs-keyword">if</span> params_root[<span class="hljs-symbol">:uses</span>] &gt; (<span class="hljs-variable">@library_comment</span>.uses || <span class="hljs-number">0</span>)
+              <span class="hljs-variable">@library_comment</span>.uses      = params_root[<span class="hljs-symbol">:uses</span>]
+              <span class="hljs-variable">@library_comment</span>.last_used = <span class="hljs-constant">Date</span>.today
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+<span class="hljs-comment">## <span class="hljs-doctag">TODO:</span> Make sure that we arent adding any tags that aren't already on the library</span>
+          tags         = params_root[<span class="hljs-symbol">:all_tags</span>]
+          library      = <span class="hljs-variable">@library_comment</span>.thinkspace_markup_library
+          library_tags = library.tag_list
+
+          library.tag(<span class="hljs-variable">@library_comment</span>, <span class="hljs-symbol">with:</span> tags, <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:tags</span>)
+
+          controller_save_record(<span class="hljs-variable">@library_comment</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">destroy</span></span>
+          controller_destroy_record(<span class="hljs-variable">@library_comment</span>)
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

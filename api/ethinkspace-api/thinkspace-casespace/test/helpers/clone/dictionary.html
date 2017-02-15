@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/helpers/clone/dictionary</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/helpers/clone/dictionary"><meta name="groc-project-path" content="thinkspace-casespace/test/helpers/clone/dictionary.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/helpers/clone/dictionary.rb">thinkspace-casespace/test/helpers/clone/dictionary.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::Clone::Dictionary</span></span>
+  extend <span class="hljs-constant">ActiveSupport::Concern</span>
+  included <span class="hljs-keyword">do</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_dictionary</span><span class="hljs-params">(dictionary, options={})</span></span>
+      <span class="hljs-keyword">if</span> options.kind_of?(<span class="hljs-constant">String</span>) || options.kind_of?(<span class="hljs-constant">Symbol</span>)  <span class="hljs-comment"># backward compatible without options</span>
+        title = options
+        id    = <span class="hljs-keyword">nil</span>
+      <span class="hljs-keyword">else</span>
+        title = options[<span class="hljs-symbol">:title</span>] || name  <span class="hljs-comment"># default to test name</span>
+        id    = options[<span class="hljs-symbol">:id</span>]
+      <span class="hljs-keyword">end</span>
+      puts <span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>
+      puts <span class="hljs-string">"DICTIONARY: <span class="hljs-subst">#{title}</span>\n"</span>      
+      print_clone_dictionary_header
+      dictionary.each <span class="hljs-keyword">do</span> |key, value|
+        puts <span class="hljs-string">"\n"</span>
+        puts <span class="hljs-string">"** <span class="hljs-subst">#{key.inspect}</span>"</span>
+        value.each <span class="hljs-keyword">do</span> |from, to|
+          puts <span class="hljs-string">"\n"</span>
+          <span class="hljs-keyword">if</span> id.present?
+            from_id = print_dictionary_record_id(from, id)
+            to_id   = print_dictionary_record_id(to, id)
+            <span class="hljs-keyword">if</span> from_id.present? &amp;&amp; to_id.present?
+              len     = [from_id.to_s.length, to_id.to_s.length].max
+              from_id = from_id.to_s.rjust(len)
+              to_id   = to_id.to_s.rjust(len)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">else</span>
+            from_id = <span class="hljs-string">''</span>
+            to_id   = <span class="hljs-string">''</span>
+          <span class="hljs-keyword">end</span>
+          puts <span class="hljs-string">"    [from=&gt;<span class="hljs-subst">#{from_id}</span>] <span class="hljs-subst">#{from.inspect}</span>"</span>
+          puts <span class="hljs-string">"    [to===&gt;<span class="hljs-subst">#{to_id}</span>] <span class="hljs-subst">#{to.inspect}</span>"</span>
+        <span class="hljs-keyword">end</span>      
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_dictionary_record_id</span><span class="hljs-params">(record, id)</span></span>
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> record.respond_to?(id)
+        id = record[id]
+      <span class="hljs-keyword">when</span> record.respond_to?(<span class="hljs-symbol">:authable_id</span>)
+        id = record[<span class="hljs-symbol">:authable_id</span>]
+      <span class="hljs-keyword">when</span> record.respond_to?(<span class="hljs-symbol">:configurable</span>)
+        id = record[<span class="hljs-symbol">:configurable_id</span>]
+      <span class="hljs-keyword">when</span> record.respond_to?(<span class="hljs-symbol">:componentable</span>)
+        id = record[<span class="hljs-symbol">:componentable_id</span>]
+      <span class="hljs-keyword">when</span> record.respond_to?(<span class="hljs-symbol">:teamable_id</span>)
+        id = record[<span class="hljs-symbol">:teamable_id</span>]
+      <span class="hljs-keyword">when</span> record.respond_to?(<span class="hljs-symbol">:resourceable_id</span>)
+        id = record[<span class="hljs-symbol">:resourceable_id</span>]
+      <span class="hljs-keyword">when</span> record.respond_to?(<span class="hljs-symbol">:taggable_id</span>)
+        id = record[<span class="hljs-symbol">:taggable_id</span>]
+      <span class="hljs-keyword">else</span>
+        id = record[<span class="hljs-symbol">:id</span>]
+      <span class="hljs-keyword">end</span>
+      id.blank? ? <span class="hljs-string">'&lt;nil&gt;'</span> <span class="hljs-symbol">:</span> id
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_options_dictionary_ids</span><span class="hljs-params">(options)</span>;</span> print_dictionary_ids get_dictionary(options), options; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_dictionary_ids</span><span class="hljs-params">(dictionary, options={})</span></span>
+      puts <span class="hljs-string">"\n"</span>
+      puts <span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>
+      title = options[<span class="hljs-symbol">:title</span>] || name  <span class="hljs-comment"># default to test name</span>
+      puts color_line(<span class="hljs-string">"DICTIONARY: <span class="hljs-subst">#{title}</span>\n"</span>, <span class="hljs-symbol">:cyan</span>, <span class="hljs-symbol">:bold</span>)
+      print_clone_dictionary_header
+      dictionary.each <span class="hljs-keyword">do</span> |key, value|
+        puts <span class="hljs-string">"\n"</span>
+        puts color_line(<span class="hljs-string">"** <span class="hljs-subst">#{key.to_s.inspect}</span>"</span>, <span class="hljs-symbol">:cyan</span>)
+        <span class="hljs-keyword">unless</span> value.is_a?(<span class="hljs-constant">Hash</span>)
+          puts <span class="hljs-string">"      No substitutions."</span>
+          <span class="hljs-keyword">next</span>
+        <span class="hljs-keyword">end</span>
+        value.each <span class="hljs-keyword">do</span> |from, to|
+          puts <span class="hljs-string">"\n"</span>
+          id_line = dictionary_from_to_ids(from, to, <span class="hljs-symbol">:id</span>) + <span class="hljs-string">"  [<span class="hljs-subst">#{key.to_s.classify.demodulize}</span>]"</span>
+          id_line += <span class="hljs-string">"  [to-title: <span class="hljs-subst">#{to.title.inspect}</span>]"</span>  <span class="hljs-keyword">if</span> to.respond_to?(<span class="hljs-symbol">:title</span>)
+          puts id_line
+          id_columns = get_dictionary_record_ids(from)
+          id_columns.each <span class="hljs-keyword">do</span> |col|
+            puts dictionary_from_to_ids(from, to, col)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>      
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dictionary_from_to_ids</span><span class="hljs-params">(from, to, column)</span></span>
+      from_id      = from.send(column)
+      to_id        = to.send(column)
+      from_text    = <span class="hljs-string">"from<span class="hljs-subst">#{from_id.to_s.rjust(<span class="hljs-number">5</span>,<span class="hljs-string">'.'</span>)}</span>"</span>
+      to_text      = <span class="hljs-string">"to<span class="hljs-subst">#{to_id.to_s.rjust(<span class="hljs-number">5</span>,<span class="hljs-string">'.'</span>)}</span>"</span>
+      same_id      = from_id == to_id
+      message      = same_id ? <span class="hljs-string">'    == '</span> <span class="hljs-symbol">:</span>  <span class="hljs-string">'       '</span>
+      color        = same_id ? <span class="hljs-symbol">:yellow</span> <span class="hljs-symbol">:</span> <span class="hljs-symbol">:white</span>
+      bold         = <span class="hljs-keyword">nil</span>
+      message     += <span class="hljs-string">"<span class="hljs-subst">#{column.to_s.ljust(<span class="hljs-number">20</span>,<span class="hljs-string">'.'</span>)}</span> <span class="hljs-subst">#{from_text}</span>  <span class="hljs-subst">#{to_text}</span>"</span>
+      message     += <span class="hljs-string">'  nil'</span>  <span class="hljs-keyword">if</span> to_id.blank?
+      poly_type    = get_record_polymorphic_type(from, column)
+      message     += <span class="hljs-string">"  <span class="hljs-subst">#{poly_type}</span>"</span>  <span class="hljs-keyword">if</span> poly_type.present?
+      <span class="hljs-keyword">if</span> poly_type == user_class.name
+        poly_assoc = column.sub(<span class="hljs-regexp">/_id$/</span>,<span class="hljs-string">''</span>)
+        from_user  = from.send poly_assoc
+        to_user    = to.send poly_assoc
+        message   += from_id == to_id ? <span class="hljs-string">"[<span class="hljs-subst">#{from_user.first_name}</span>]"</span> <span class="hljs-symbol">:</span> <span class="hljs-string">" [<span class="hljs-subst">#{from_user.first_name}</span> -&gt; <span class="hljs-subst">#{to_user.first_name}</span>]"</span>
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">if</span> column == <span class="hljs-string">'user_id'</span>
+        from_user = user_class.find_by(<span class="hljs-symbol">id:</span> from_id)
+        to_user   = user_class.find_by(<span class="hljs-symbol">id:</span> to_id)
+        message  += from_id == to_id ? <span class="hljs-string">"  [<span class="hljs-subst">#{from_user.first_name}</span>]"</span> <span class="hljs-symbol">:</span> <span class="hljs-string">"  [<span class="hljs-subst">#{from_user.first_name}</span> -&gt; <span class="hljs-subst">#{to_user.first_name}</span>]"</span>
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">if</span> same_id &amp;&amp; column == <span class="hljs-symbol">:id</span>  <span class="hljs-comment"># if the id column ids are the same, probably an issue</span>
+        color = <span class="hljs-symbol">:red</span>
+        bold  = <span class="hljs-symbol">:bold</span>
+      <span class="hljs-keyword">end</span>
+      color_line(message, color, bold)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_record_polymorphic_type</span><span class="hljs-params">(record, column)</span></span>
+      regex = <span class="hljs-constant">Regexp</span>.new /_id<span class="hljs-variable">$/</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> column.to_s.match(regex)
+      type_column = column.to_s.sub(regex, <span class="hljs-string">'_type'</span>)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> record.respond_to?(type_column)
+      record.send type_column
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_dictionary_record_ids</span><span class="hljs-params">(record)</span></span>
+      record.<span class="hljs-keyword">class</span>.column_names.select{|c| c.end_with?(<span class="hljs-string">'_id'</span>)}.sort
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_clone_dictionary_header</span><span class="hljs-params">(color=<span class="hljs-symbol">:cyan</span>)</span></span>
+      header = get_let_value(<span class="hljs-symbol">:clone_dictionary_header</span>)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> header.blank?
+      puts color_line(header, color)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># included</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/db/helpers/seed_config/phase_component_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/db/helpers/seed_config/phase_component_helper"><meta name="groc-project-path" content="thinkspace-casespace/db/helpers/seed_config/phase_component_helper.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/db/helpers/seed_config/phase_component_helper.rb">thinkspace-casespace/db/helpers/seed_config/phase_component_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_casespace_phase_components</span></span>
+  casespace_get_assignments_created.each <span class="hljs-keyword">do</span> |assignment|
+    phases = <span class="hljs-variable">@seed</span>.get_association(assignment, <span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:phases</span>).order(<span class="hljs-symbol">:id</span>)
+    phases.each <span class="hljs-keyword">do</span> |phase|
+      phase_template = <span class="hljs-variable">@seed</span>.get_association(phase, <span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:phase_template</span>)
+      <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Phase id <span class="hljs-subst">#{phase.id}</span> does not have a phase template."</span>  <span class="hljs-keyword">if</span> phase_template.blank?
+      component_hash = get_ordered_phase_template_section_hash(phase_template)
+      component_hash.each <span class="hljs-keyword">do</span> |section, attrs|
+        title            = attrs[<span class="hljs-string">'title'</span>] || <span class="hljs-string">''</span>
+        common_component = find_common_component(<span class="hljs-symbol">title:</span> title)
+        <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Phase template <span class="hljs-subst">#{phase_template.name.inspect}</span> section <span class="hljs-subst">#{section.inspect}</span> common component <span class="hljs-subst">#{title.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> common_component.blank?
+        componentable = get_casespace_phase_componentable(phase, section, common_component)
+        create_casespace_phase_component(
+          <span class="hljs-symbol">section:</span>        section,
+          <span class="hljs-symbol">phase:</span>          phase,
+          <span class="hljs-symbol">component:</span>      common_component,
+          <span class="hljs-symbol">componentable:</span>  componentable,
+        )
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Call any post phase component methods defined for a namespace.
+e.g. &quot;post_casespace_phase_componentables_observation_list&quot; to group lists</p></div></div><div class="code"><div class="wrapper">  post_casespace_phase_componentables_methods.each <span class="hljs-keyword">do</span> |method|
+    <span class="hljs-keyword">self</span>.send method
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_casespace_phase_component</span><span class="hljs-params">(*args)</span></span>
+  options         = args.extract_options!
+  phase_component = <span class="hljs-variable">@seed</span>.new_model(<span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:phase_component</span>, options)
+  <span class="hljs-variable">@seed</span>.create_error(phase_component)  <span class="hljs-keyword">unless</span> phase_component.save
+  phase_component
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">post_casespace_phase_componentables_methods</span></span>
+  methods = <span class="hljs-constant">Array</span>.new
+  <span class="hljs-variable">@seed</span>.namespace_lookup.keys.sort.each <span class="hljs-keyword">do</span> |key|
+    method = <span class="hljs-string">"post_casespace_phase_componentables_<span class="hljs-subst">#{key}</span>"</span>.to_sym
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.respond_to?(method, <span class="hljs-keyword">true</span>)
+      methods.push method
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  methods
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">#########################################################################################</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="componentable">Componentable.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_casespace_phase_componentable</span><span class="hljs-params">(phase, section, common_component)</span></span>
+  ns, model = get_casespace_common_component_namespace_and_model(common_component)
+  <span class="hljs-keyword">return</span> phase <span class="hljs-keyword">if</span> model == <span class="hljs-symbol">:phase</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The value of the phase &#39;sections&#39; depends on the type of component (typically a hash).
+It can be any data type that allows the the component specific method to interpret it accordingly.
+The config below is the phase&#39;s &#39;sections&#39; value for this section.</p></div></div><div class="code"><div class="wrapper">  config = get_casespace_phase_template_section_configs[phase.id]
+  config = (config || <span class="hljs-constant">Hash</span>.new)[section.to_sym] || <span class="hljs-constant">Hash</span>.new
+  <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Phase <span class="hljs-subst">#{phase.title.inspect}</span> section <span class="hljs-subst">#{section.inspect}</span> namespace is blank.  Can not build phase componentable."</span>  <span class="hljs-keyword">if</span> ns.blank?
+  method = <span class="hljs-string">"create_casespace_phase_componentable_<span class="hljs-subst">#{ns}</span>"</span>.to_sym
+  <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span>.respond_to?(method, <span class="hljs-keyword">true</span>)
+    <span class="hljs-variable">@seed</span>.message <span class="hljs-string">"Phase <span class="hljs-subst">#{phase.title.inspect}</span> section <span class="hljs-subst">#{section.inspect}</span> namespace <span class="hljs-subst">#{ns.to_s.inspect}</span> method <span class="hljs-subst">#{method.to_s.inspect}</span> not implemented."</span>
+    <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Can not build phase componentable."</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">self</span>.send method, phase, section, common_component, config
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_casespace_common_component_namespace_and_model</span><span class="hljs-params">(common_component)</span></span>
+  ns, model, other = common_component.value[<span class="hljs-string">'path'</span>]
+  comp_ns          = common_component.value[<span class="hljs-string">'ns'</span>]
+  ns               = comp_ns.present? ? comp_ns.to_sym <span class="hljs-symbol">:</span> ns.to_s.split(<span class="hljs-string">':'</span>).last.to_sym
+  model            = model.to_s.split(<span class="hljs-string">':'</span>).last.singularize.to_sym
+  [ns, model]
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

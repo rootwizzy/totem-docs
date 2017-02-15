@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/ability_mod_vs_class/mods/thinkspace_casespace</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/ability_mod_vs_class/mods/thinkspace_casespace"><meta name="groc-project-path" content="thinkspace-casespace/test/ability_mod_vs_class/mods/thinkspace_casespace.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/ability_mod_vs_class/mods/thinkspace_casespace.rb">thinkspace-casespace/test/ability_mod_vs_class/mods/thinkspace_casespace.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">TestThinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authorization</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ThinkspaceCasespace</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="main">Main</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability</span></span>
+        alias_action <span class="hljs-symbol">:index</span>, <span class="hljs-symbol">:show</span>, <span class="hljs-symbol">:select</span>, <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:read</span>
+        set_crud_alias_actions
+        set_user_role(<span class="hljs-symbol">:all</span>)
+        thinkspace_common_ability
+        thinkspace_casespace_teams
+        thinkspace_casespace_ability_all
+        thinkspace_casespace_ability_engines
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="teams">Teams</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_teams</span></span>
+        can [<span class="hljs-symbol">:read</span>], thinkspace_team_team_category_class
+        can [<span class="hljs-symbol">:read</span>], thinkspace_team_team_user_class
+        can [<span class="hljs-symbol">:read</span>], thinkspace_team_team_viewer_class
+
+        can [<span class="hljs-symbol">:crud</span>], thinkspace_team_team_class
+        can [<span class="hljs-symbol">:crud</span>, <span class="hljs-symbol">:teams</span>], thinkspace_team_team_set_class
+        can [<span class="hljs-symbol">:teams_view</span>, <span class="hljs-symbol">:team_users_view</span>], thinkspace_team_team_class
+
+        can [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:destroy</span>], thinkspace_team_team_user_class
+        can [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:destroy</span>], thinkspace_team_team_teamable_class
+        can [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:destroy</span>], thinkspace_team_team_viewer_class</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Comments</p></div></div><div class="code"><div class="wrapper">        can [<span class="hljs-symbol">:read_commenterable</span>], thinkspace_common_user_class
+        can [<span class="hljs-symbol">:read_commenterable</span>], thinkspace_team_team_class
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="casespace">Casespace</h3>
+<h2 id="">#</h2>
+<p>Assignment and phase read/update abiilty is based its associated space&#39;s ability.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_assignment_class</span>;</span>  <span class="hljs-constant">Thinkspace::Casespace::Assignment</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_phase_class</span>;</span>       <span class="hljs-constant">Thinkspace::Casespace::Phase</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_phase_score_class</span>;</span> <span class="hljs-constant">Thinkspace::Casespace::PhaseScore</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_phase_state_class</span>;</span> <span class="hljs-constant">Thinkspace::Casespace::PhaseState</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_all</span></span>
+        can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:phase_states</span>],    thinkspace_casespace_assignment_class, thinkspace_casespace_assignment_read
+        can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:load</span>, <span class="hljs-symbol">:submit</span>],     thinkspace_casespace_phase_class, thinkspace_casespace_phase_read
+
+        can [<span class="hljs-symbol">:read</span>], thinkspace_casespace_phase_state_class
+        can [<span class="hljs-symbol">:read</span>], thinkspace_casespace_phase_score_class
+
+        can [<span class="hljs-symbol">:read</span>], <span class="hljs-constant">Thinkspace::Casespace::PhaseTemplate</span>
+        can [<span class="hljs-symbol">:read</span>], <span class="hljs-constant">Thinkspace::Casespace::PhaseComponent</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="admin-additions">Admin additions</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">        can [<span class="hljs-symbol">:create</span>], thinkspace_casespace_assignment_class <span class="hljs-comment"># Create non-authed.</span>
+        can [<span class="hljs-symbol">:templates</span>, <span class="hljs-symbol">:clone</span>, <span class="hljs-symbol">:load</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">:roster</span>, <span class="hljs-symbol">:phase_order</span>, <span class="hljs-symbol">:delete</span>], thinkspace_casespace_assignment_class, thinkspace_casespace_assignment_update 
+        can [<span class="hljs-symbol">:templates</span>, <span class="hljs-symbol">:clone</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:destroy</span>, <span class="hljs-symbol">:componentables</span>], thinkspace_casespace_phase_class, thinkspace_casespace_phase_update <span class="hljs-comment"># Clone is not authed presently.</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="can-toolshelpershelperembeds">Can Tools/Helpers/HelperEmbeds</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_engines</span></span>
+        thinkspace_casespace_ability_resource
+        thinkspace_casespace_ability_markup
+        thinkspace_casespace_ability_gradebook
+        thinkspace_casespace_ability_html
+        thinkspace_casespace_ability_diagnostic_path
+        thinkspace_casespace_ability_diagnostic_path_viewer
+        thinkspace_casespace_ability_artifact
+        thinkspace_casespace_ability_lab
+        thinkspace_casespace_ability_observation_list
+        thinkspace_casespace_ability_input_element
+        thinkspace_casespace_ability_peer_assessment
+        thinkspace_casespace_ability_simulation
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>MARKUP</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_markup_comment_class</span>;</span> <span class="hljs-constant">Thinkspace::Markup::Comment</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_markup_library_class</span>;</span> <span class="hljs-constant">Thinkspace::Markup::Library</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_markup_library_comment_class</span>;</span> <span class="hljs-constant">Thinkspace::Markup::LibraryComment</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_markup</span></span>
+        can [<span class="hljs-symbol">:crud</span>, <span class="hljs-symbol">:fetch</span>], thinkspace_markup_comment_class
+        can [<span class="hljs-symbol">:crud</span>, <span class="hljs-symbol">:add_tag</span>, <span class="hljs-symbol">:remove_comment_tag</span>, <span class="hljs-symbol">:add_comment_tag</span>, <span class="hljs-symbol">:fetch</span>], thinkspace_markup_library_class
+        can [<span class="hljs-symbol">:crud</span>, <span class="hljs-symbol">:select</span>], thinkspace_markup_library_comment_class
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>RESOURCES</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_resource</span></span>
+        can [<span class="hljs-symbol">:crud</span>], <span class="hljs-constant">Thinkspace::Resource::File</span>
+        can [<span class="hljs-symbol">:crud</span>], <span class="hljs-constant">Thinkspace::Resource::Link</span>
+        can [<span class="hljs-symbol">:crud</span>], <span class="hljs-constant">Thinkspace::Resource::Tag</span>
+        can [<span class="hljs-symbol">:read</span>], <span class="hljs-constant">Thinkspace::Resource::FileTag</span>
+        can [<span class="hljs-symbol">:read</span>], <span class="hljs-constant">Thinkspace::Resource::LinkTag</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>GRADEBOOK</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_gradebook</span></span>
+        can [<span class="hljs-symbol">:create</span>],    thinkspace_casespace_phase_score_class
+        can [<span class="hljs-symbol">:create</span>],    thinkspace_casespace_phase_state_class
+        can [<span class="hljs-symbol">:update</span>],    thinkspace_casespace_phase_score_class,  thinkspace_casespace_phase_association_update
+        can [<span class="hljs-symbol">:update</span>],    thinkspace_casespace_phase_state_class,  thinkspace_casespace_phase_association_update
+        can [<span class="hljs-symbol">:roster_update</span>], thinkspace_casespace_phase_state_class,  thinkspace_casespace_phase_association_update
+
+        can [<span class="hljs-symbol">:gradebook</span>], thinkspace_casespace_phase_state_class,  thinkspace_casespace_phase_association_update
+        can [<span class="hljs-symbol">:gradebook</span>], thinkspace_casespace_phase_score_class,  thinkspace_casespace_phase_association_update
+
+        can [<span class="hljs-symbol">:gradebook</span>], thinkspace_casespace_assignment_class,   thinkspace_casespace_assignment_update
+        can [<span class="hljs-symbol">:gradebook</span>], thinkspace_common_user_class,            thinkspace_common_space_read_users
+        can [<span class="hljs-symbol">:gradebook</span>], thinkspace_team_team_class
+
+        can [<span class="hljs-symbol">:manage_resources</span>], thinkspace_casespace_assignment_class, thinkspace_casespace_assignment_update
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>HTML</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_html_content_class</span>;</span> <span class="hljs-constant">Thinkspace::Html::Content</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_html</span></span>
+        can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:validate</span>], thinkspace_html_content_class
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>INPUT ELEMENTS</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_input_element_response_class</span>;</span> <span class="hljs-constant">Thinkspace::InputElement::Response</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_input_element_element_class</span>;</span>  <span class="hljs-constant">Thinkspace::InputElement::Element</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_input_element</span></span>
+        can [<span class="hljs-symbol">:read</span>], thinkspace_input_element_element_class
+        can [<span class="hljs-symbol">:crud</span>], thinkspace_input_element_response_class
+        can [<span class="hljs-symbol">:carry_forward</span>], thinkspace_input_element_response_class
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>OBSERVATION LISTS</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_observation_list_list_class</span>;</span>             <span class="hljs-constant">Thinkspace::ObservationList::List</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_observation_list_observation_class</span>;</span>      <span class="hljs-constant">Thinkspace::ObservationList::Observation</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_observation_list_observation_note_class</span>;</span> <span class="hljs-constant">Thinkspace::ObservationList::ObservationNote</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_observation_list</span></span>
+        can [<span class="hljs-symbol">:read</span>], thinkspace_observation_list_list_class
+        can [<span class="hljs-symbol">:crud</span>], thinkspace_observation_list_observation_class
+        can [<span class="hljs-symbol">:crud</span>], thinkspace_observation_list_observation_note_class</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="admin-additions">Admin additions</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">        can [<span class="hljs-symbol">:update</span>], thinkspace_observation_list_list_class
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_diagnostic_path_path_class</span>;</span>       <span class="hljs-constant">Thinkspace::DiagnosticPath::Path</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_diagnostic_path_path_item_class</span>;</span>  <span class="hljs-constant">Thinkspace::DiagnosticPath::PathItem</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>DIAGNOSTIC PATHS</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_diagnostic_path</span></span>
+        can [<span class="hljs-symbol">:crud</span>], thinkspace_diagnostic_path_path_class
+        can [<span class="hljs-symbol">:bulk</span>, <span class="hljs-symbol">:bulk_destroy</span>], thinkspace_diagnostic_path_path_class
+        can [<span class="hljs-symbol">:crud</span>], thinkspace_diagnostic_path_path_item_class
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>DIAGNOSTIC PATH VIEWERS</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_diagnostic_path_viewer</span></span>
+        viewer = <span class="hljs-constant">Thinkspace::DiagnosticPathViewer::Viewer</span>
+        can [<span class="hljs-symbol">:read</span>], viewer    
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ARTIFACTS</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_artifact</span></span>
+        bucket = <span class="hljs-constant">Thinkspace::Artifact::Bucket</span>
+        file   = <span class="hljs-constant">Thinkspace::Artifact::File</span>
+        can [<span class="hljs-symbol">:read</span>],       bucket
+        can [<span class="hljs-symbol">:view_users</span>], bucket
+        can [<span class="hljs-symbol">:crud</span>],       file</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="admin-additions">Admin additions</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">        can [<span class="hljs-symbol">:update</span>], bucket
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>LAB</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_lab</span></span>
+        chart       = <span class="hljs-constant">Thinkspace::Lab::Chart</span>
+        category    = <span class="hljs-constant">Thinkspace::Lab::Category</span>
+        result      = <span class="hljs-constant">Thinkspace::Lab::Result</span>
+        observation = <span class="hljs-constant">Thinkspace::Lab::Observation</span>
+
+        can [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:update</span>], [observation]
+        can [<span class="hljs-symbol">:read</span>], [chart, category, result, observation]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="admin-additions">Admin additions</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">        can [<span class="hljs-symbol">:load</span>, <span class="hljs-symbol">:category_positions</span>], chart
+        can [<span class="hljs-symbol">:crud</span>, <span class="hljs-symbol">:result_positions</span>], category
+        can [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:destroy</span>], result
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>PEER ASSESSMENT</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_peer_assessment</span></span>
+        assessment = <span class="hljs-constant">Thinkspace::PeerAssessment::Assessment</span>
+        review_set = <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>
+        team_set   = <span class="hljs-constant">Thinkspace::PeerAssessment::TeamSet</span>
+        review     = <span class="hljs-constant">Thinkspace::PeerAssessment::Review</span>
+        overview   = <span class="hljs-constant">Thinkspace::PeerAssessment::Overview</span>
+        can [<span class="hljs-symbol">:read</span>], assessment
+        can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:submit</span>], review_set
+        can [<span class="hljs-symbol">:crud</span>], review
+        can [<span class="hljs-symbol">:read</span>], overview</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="admin-additions">Admin additions</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">        can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:teams</span>, <span class="hljs-symbol">:fetch</span>, <span class="hljs-symbol">:review_sets</span>, <span class="hljs-symbol">:team_sets</span>], assessment 
+        can [<span class="hljs-symbol">:approve</span>], review
+        can [<span class="hljs-symbol">:approve</span>], review_set
+        can [<span class="hljs-symbol">:approve</span>], team_set
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>SIMULATION</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_ability_simulation</span></span>
+        simulation = <span class="hljs-constant">Thinkspace::Simulation::Simulation</span>
+        can [<span class="hljs-symbol">:read</span>], simulation
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="can-helpers">Can Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_assignment_read</span></span>
+        {<span class="hljs-symbol">thinkspace_common_space:</span> thinkspace_common_space_read}
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_assignment_update</span></span>
+        {<span class="hljs-symbol">thinkspace_common_space:</span> thinkspace_common_space_update}
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_phase_read</span></span>
+        {<span class="hljs-symbol">thinkspace_casespace_assignment:</span> thinkspace_casespace_assignment_read}
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_phase_update</span></span>
+        {<span class="hljs-symbol">thinkspace_casespace_assignment:</span> thinkspace_casespace_assignment_update}
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_phase_association_read</span></span>
+        {<span class="hljs-symbol">thinkspace_casespace_phase:</span> thinkspace_casespace_phase_read}
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_phase_association_update</span></span>
+        {<span class="hljs-symbol">thinkspace_casespace_phase:</span> thinkspace_casespace_phase_update}
+      <span class="hljs-keyword">end</span>
+
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_phases_association_read</span></span>
+        {<span class="hljs-symbol">thinkspace_casespace_phases:</span> thinkspace_casespace_phase_read}
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">thinkspace_casespace_phases_association_update</span></span>
+        {<span class="hljs-symbol">thinkspace_casespace_phases:</span> thinkspace_casespace_phase_update}
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

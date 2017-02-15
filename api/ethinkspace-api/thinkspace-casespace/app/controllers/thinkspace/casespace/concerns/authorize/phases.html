@@ -1,0 +1,391 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/app/controllers/thinkspace/casespace/concerns/authorize/phases</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace-casespace/app/controllers/thinkspace/casespace/concerns/authorize/phases"><meta name="groc-project-path" content="thinkspace-casespace/app/controllers/thinkspace/casespace/concerns/authorize/phases.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/app/controllers/thinkspace/casespace/concerns/authorize/phases.rb">thinkspace-casespace/app/controllers/thinkspace/casespace/concerns/authorize/phases.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Casespace</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Concerns</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authorize</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Phases</span></span>
+
+            public</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">###############################################</h6>
+<p>Custom Action (e.g. platform specific) Related Methods.</p>
+<h6 id="">###############################################</h6></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assignment_phases</span></span>
+              <span class="hljs-variable">@_assignment_phases</span> ||= <span class="hljs-keyword">begin</span>
+                phase      = params_authable
+                assignment = get_phase_assignment(phase)
+                assignment.thinkspace_casespace_phases
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_carry_forward_elements</span><span class="hljs-params">(names)</span></span>
+              <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> names.blank?
+              names    = [names].flatten
+              contents = content_class.where(<span class="hljs-symbol">authable:</span> get_assignment_phases)
+              element_class.where(<span class="hljs-symbol">componentable:</span> contents, <span class="hljs-symbol">name:</span> names)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_carry_forward_element_map_and_responses</span><span class="hljs-params">(names)</span>            </span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Ensure that params_ownerable is authorized correctly.</p></div></div><div class="code"><div class="wrapper">              phase = params_authable
+              <span class="hljs-keyword">case</span>
+              <span class="hljs-keyword">when</span> can_update_phase?
+                ownerable = params_ownerable
+              <span class="hljs-keyword">when</span> (phase.peer_review? &amp;&amp; (params_ownerable != current_user))
+                has_common = !<span class="hljs-constant">Thinkspace::Team::Team</span>.users_common_teams(phase, [params_ownerable, current_user]).empty?
+                ownerable  = has_common ? params_ownerable <span class="hljs-symbol">:</span> current_user
+              <span class="hljs-keyword">else</span>
+                ownerable = current_user                
+              <span class="hljs-keyword">end</span>
+
+              elements      = get_carry_forward_elements(names)
+              element_map   = <span class="hljs-constant">Hash</span>.new
+              phase_teams   = <span class="hljs-constant">Hash</span>.new
+              all_responses = <span class="hljs-constant">Array</span>.new
+              elements.each <span class="hljs-keyword">do</span> |element|
+                name  = element.name
+                phase = element.authable
+                <span class="hljs-keyword">if</span> phase_is_team_ownerable?(phase)
+                  teams = (phase_teams[phase.id] ||= team_class.scope_by_teamables(phase).scope_by_users(ownerable))
+                  element_responses = element.thinkspace_input_element_responses.where(<span class="hljs-symbol">ownerable:</span> teams)
+                <span class="hljs-keyword">else</span>
+                  element_responses = element.thinkspace_input_element_responses.where(<span class="hljs-symbol">ownerable:</span> ownerable)
+                <span class="hljs-keyword">end</span>
+                ids = element_responses.map(&amp;<span class="hljs-symbol">:id</span>)
+                element_map[name] ||= <span class="hljs-constant">Array</span>.new
+                element_map[name] += ids
+                all_responses     += element_responses
+              <span class="hljs-keyword">end</span>
+              [element_map, all_responses]
+            <span class="hljs-keyword">end</span>
+
+            private</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="method-overrides-required-by-totem-action-authorize">Method overrides required by totem_action_authorize!.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_authable_classes</span>;</span>  phase_class; <span class="hljs-keyword">end</span>               <span class="hljs-comment"># Classes allowed to be an 'authable'.</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_ownerable_classes</span>;</span> [user_class, team_class]; <span class="hljs-keyword">end</span>  <span class="hljs-comment"># Classes allowed to be an 'ownerable'.</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="main-authorize-processing-and-method-override">Main authorize processing (and method override).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action_authorize!</span><span class="hljs-params">(phase=record_authable, ownerable=record_ownerable, view_ids=params_view_ids)</span></span>
+              <span class="hljs-keyword">if</span> phase.blank?
+                phase = params_authable
+                access_denied(<span class="hljs-string">"Phase params authable is blank."</span>)  <span class="hljs-keyword">if</span> phase.blank?
+                <span class="hljs-variable">@can_update_phase</span> = can?(<span class="hljs-symbol">:update</span>, phase)
+              <span class="hljs-keyword">else</span>
+                <span class="hljs-variable">@can_update_phase</span> = can_update_record_authable?
+              <span class="hljs-keyword">end</span>
+
+              <span class="hljs-keyword">case</span>
+              <span class="hljs-keyword">when</span> authorize_phase_only?(phase)
+                <span class="hljs-keyword">if</span> action == <span class="hljs-symbol">:submit</span>
+                  ownerable = params_ownerable.present? &amp;&amp; params_ownerable.instance_of?(team_class) ? params_ownerable <span class="hljs-symbol">:</span> current_user
+                <span class="hljs-keyword">else</span>
+                  ownerable = current_user
+                <span class="hljs-keyword">end</span>
+                authorize_phase(phase, ownerable)
+                <span class="hljs-keyword">if</span> action == <span class="hljs-symbol">:load</span>
+                  set_authable_ability(
+                    <span class="hljs-symbol">peer_review_users:</span> phase_user_can_peer_review_users?(phase, ownerable),
+                    <span class="hljs-symbol">peer_review_teams:</span> phase_user_can_peer_review_teams?(phase, ownerable),
+                    <span class="hljs-symbol">modify_assignment:</span> modify_assignment?(phase, ownerable),
+                    <span class="hljs-symbol">modify_phase:</span>      modify_phase?(phase, ownerable),
+                  )
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">when</span> authorize_phase_peer_review?
+                ownerable = params_ownerable  <span class="hljs-keyword">if</span> ownerable.blank?
+                access_denied(phase, <span class="hljs-string">"Record and params ownerables are blank."</span>)  <span class="hljs-keyword">if</span> ownerable.blank?
+                authorize_phase(phase, current_user)
+                authorize_phase_ownerable(phase, ownerable)
+                authorize_phase_view_ids(phase, ownerable)  <span class="hljs-keyword">if</span> is_view?
+              <span class="hljs-keyword">else</span>
+                ownerable = params_ownerable  <span class="hljs-keyword">if</span> ownerable.blank?
+                access_denied(phase, <span class="hljs-string">"Record and params ownerables are blank."</span>)  <span class="hljs-keyword">if</span> ownerable.blank?
+                can_update_phase? ? set_ownerable_abilities_for_user(ownerable) <span class="hljs-symbol">:</span> authorize_phase_ownerable(phase, ownerable)
+                authorize_phase_ownerable(phase, ownerable)  <span class="hljs-keyword">unless</span> can_update_phase?
+                authorize_phase(phase, ownerable)
+                authorize_phase_view_ids(phase, ownerable)  <span class="hljs-keyword">if</span> is_view?
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase_only?</span><span class="hljs-params">(phase)</span></span>
+              current_record.present? <span class="hljs-keyword">and</span> (current_record.<span class="hljs-keyword">class</span> == phase_class || current_record.<span class="hljs-keyword">class</span> == assignment_class)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase_peer_review?</span></span>
+              sub_action == <span class="hljs-symbol">:peer_review_users</span> || sub_action == <span class="hljs-symbol">:peer_review_teams</span>
+            <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Classes used in this module.</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">user_class</span>;</span>  <span class="hljs-constant">Thinkspace::Common::User</span>; <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_class</span>;</span>  <span class="hljs-constant">Thinkspace::Team::Team</span>; <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_class</span>;</span> <span class="hljs-constant">Thinkspace::Casespace::Phase</span>; <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assignment_class</span>;</span> <span class="hljs-constant">Thinkspace::Casespace::Assignment</span>; <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">observation_list_class</span>;</span> <span class="hljs-constant">Thinkspace::ObservationList::List</span>; <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">observation_note_class</span>;</span> <span class="hljs-constant">Thinkspace::ObservationList::ObservationNote</span>; <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">content_class</span>;</span>  <span class="hljs-constant">Thinkspace::Html::Content</span>; <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">response_class</span>;</span> <span class="hljs-constant">Thinkspace::InputElement::Response</span>; <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">element_class</span>;</span>  <span class="hljs-constant">Thinkspace::InputElement::Element</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#############################</h6>
+<p>Authable (e.g phase).</p>
+<h6 id="">#############################</h6></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase</span><span class="hljs-params">(phase, ownerable)</span></span>
+              <span class="hljs-keyword">unless</span> can_update_phase?
+                authorize_phase_active(phase)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>=&gt; Dates do not need to be checked (unless one is added in the future) on read requests.
+=&gt; Dates only need to be checked when modifying (input_elements update, etc.)</p></div></div><div class="code"><div class="wrapper">                authorize_phase_dates(phase, ownerable)  <span class="hljs-keyword">unless</span> skip_phase_date_check? || is_read?
+                authorize_phase_state(phase, ownerable)  <span class="hljs-keyword">unless</span> skip_phase_state_check?
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A phase observation list&#39;s observations (and associated observation notes) are combined into
+a single list and access may be allowed to any phase&#39;s list regardless of dates.
+In the future this could be changed to match different criteria
+(e.g. only on certain phase states, read only on &#39;locked&#39; phases, etc.).</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">skip_phase_date_check?</span></span>
+              model_class == observation_list_class || model_class == observation_note_class 
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">skip_phase_state_check?</span></span>
+              skip_phase_date_check?
+            <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="phase-checks">Phase checks.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase_active</span><span class="hljs-params">(phase)</span></span>
+              assignment = get_phase_assignment(phase)
+              access_denied(phase, <span class="hljs-string">"Is not active."</span>)  <span class="hljs-keyword">unless</span> assignment.active?
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase_dates</span><span class="hljs-params">(phase, ownerable)</span></span>
+              assignment = get_phase_assignment(phase)
+              release_at = phase.release_at(ownerable)
+              due_at     = phase.due_at(ownerable)
+              access_denied(phase, <span class="hljs-string">"Phase release_at is blank."</span>)  <span class="hljs-keyword">if</span> release_at.blank?
+              access_denied(phase, <span class="hljs-string">"Phase due_at is blank."</span>)      <span class="hljs-keyword">if</span> due_at.blank?
+              now = <span class="hljs-constant">Time</span>.now.utc
+              access_denied(phase, <span class="hljs-string">"Phase is not available until release_at"</span>, <span class="hljs-symbol">user_message:</span> <span class="hljs-string">"Case is not available until <span class="hljs-subst">#{fmt_time(release_at)}</span>."</span>)  <span class="hljs-keyword">unless</span> release_at &lt;= now
+              access_denied(phase, <span class="hljs-string">"Phase is past due."</span>, <span class="hljs-symbol">user_message:</span> <span class="hljs-string">"Case is past the due date <span class="hljs-subst">#{fmt_time(due_at)}</span>."</span>)  <span class="hljs-keyword">unless</span> due_at &gt;= now
+              debug_message(<span class="hljs-string">'phase dates'</span>, <span class="hljs-string">"authorized phase dates [now: <span class="hljs-subst">#{now}</span>] [release_at: <span class="hljs-subst">#{release_at}</span>] [due_at: <span class="hljs-subst">#{due_at}</span>]."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase_state</span><span class="hljs-params">(phase, ownerable, valid_states=<span class="hljs-keyword">nil</span>)</span></span>
+              access_denied(phase, <span class="hljs-string">"Ownerable is blank in authorize_phase_state."</span>)  <span class="hljs-keyword">if</span> ownerable.blank?
+              valid_states ||= (is_read? ? read_phase_states_allowed <span class="hljs-symbol">:</span> modify_phase_states_allowed)
+              state = phase.find_or_create_state_for_ownerable(ownerable, current_user)
+              access_denied(phase, <span class="hljs-string">"Invalid phase state <span class="hljs-subst">#{state.inspect}</span>."</span>) <span class="hljs-keyword">if</span> !valid_states.<span class="hljs-keyword">include</span>?(state.current_state)
+              debug_message(<span class="hljs-string">'phase states'</span>, <span class="hljs-string">"authorized phase state [current_state: <span class="hljs-subst">#{state.current_state.inspect}</span> id=<span class="hljs-subst">#{state.id}</span>]."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">modify_assignment?</span><span class="hljs-params">(phase, ownerable)</span></span>
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> can_update_phase?
+              assignment = get_phase_assignment(phase)
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> assignment.blank?
+              valid_dates?(assignment, ownerable)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">modify_phase?</span><span class="hljs-params">(phase, ownerable)</span></span>
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> can_update_phase?
+              valid_dates?(phase, ownerable)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">valid_dates?</span><span class="hljs-params">(record, ownerable)</span></span>
+              release_at = record.release_at(ownerable)
+              due_at     = record.due_at(ownerable)
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> release_at.blank? || due_at.blank?
+              now = <span class="hljs-constant">Time</span>.now.utc
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> release_at &lt;= now
+              due_at &gt;= now
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_phase_states_allowed</span>;</span>   phase_class.read_states;       <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">modify_phase_states_allowed</span>;</span> phase_class.modify_states;     <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">admin_only_phase_states</span>;</span>     phase_class.admin_only_states; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#############################</h6>
+<p>Ownerable.</p>
+<h6 id="">#############################</h6></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>CAUTION: If the ownerable is not the current user, cannot use &#39;current_ability&#39;
+         to validate an ownerable&#39;s abilities (e.g. cannot use: can?, authorize!, etc.).</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase_ownerable</span><span class="hljs-params">(phase, ownerable)</span></span>
+              <span class="hljs-keyword">case</span>
+              <span class="hljs-keyword">when</span> team_ownerable_phase_user_request?(phase, ownerable)
+                authorize_current_user_is_user(phase, ownerable)
+                authorize_user_is_a_phase_user(phase, ownerable)
+              <span class="hljs-keyword">when</span> phase_is_team_ownerable?(phase)
+                authorize_phase_team_ownerable(phase, ownerable)
+              <span class="hljs-keyword">else</span>
+                authorize_phase_user_ownerable(phase, ownerable)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A team based phase, but really a user based request e.g. a user&#39;s phase collaboration teams.</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_ownerable_phase_user_request?</span><span class="hljs-params">(phase, ownerable)</span></span>
+              action == <span class="hljs-symbol">:teams_view</span> &amp;&amp; sub_action == <span class="hljs-symbol">:collaboration_teams</span> &amp;&amp; phase_is_team_ownerable?(phase)
+            <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Current user must be for a team ownerable:</p>
+<ul>
+<li>On the collaboration team.</li>
+<li>On a collaboration team peer reviewing another collaboration team.</li>
+<li>Can read all phase collboration teams.</li>
+</ul></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase_team_ownerable</span><span class="hljs-params">(phase, team)</span></span>
+              access_denied(phase, <span class="hljs-string">"Phase team ownerable is not a team but [<span class="hljs-subst">#{team.<span class="hljs-keyword">class</span>.name}</span>]."</span>) <span class="hljs-keyword">unless</span> team.instance_of?(team_class)
+              authorize_team_is_a_phase_team(phase, team)
+              is_on_team = <span class="hljs-keyword">false</span>
+              <span class="hljs-keyword">unless</span> can_read_all?
+                <span class="hljs-keyword">case</span>
+                <span class="hljs-keyword">when</span> sub_action == <span class="hljs-symbol">:peer_review_teams</span>
+                  authorize_current_user_on_or_can_view_team(phase, team)
+                <span class="hljs-keyword">else</span>
+                  authorize_current_user_is_on_team(phase, team)
+                  is_on_team = <span class="hljs-keyword">true</span>
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+              debug_message(<span class="hljs-string">'phase ownerable'</span>, <span class="hljs-string">"authorized 'team' ownerable [<span class="hljs-subst">#{team.<span class="hljs-keyword">class</span>.name}</span> <span class="hljs-subst">#{msg_id team}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+              set_ownerable_ability(<span class="hljs-symbol">create:</span> is_on_team, <span class="hljs-symbol">update:</span> is_on_team, <span class="hljs-symbol">destroy:</span> is_on_team)
+              debug_message(<span class="hljs-string">'team ability'</span>, <span class="hljs-string">"user action team ability set to <span class="hljs-subst">#{is_on_team.inspect}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase_user_ownerable</span><span class="hljs-params">(phase, user)</span></span>
+              access_denied(phase, <span class="hljs-string">"Phase user ownerable is not a user but [<span class="hljs-subst">#{user.<span class="hljs-keyword">class</span>.name}</span>]."</span>)  <span class="hljs-keyword">unless</span> user.instance_of?(user_class)
+              authorize_user_is_a_phase_user(phase, user)
+              <span class="hljs-keyword">unless</span> can_read_all?
+                <span class="hljs-keyword">if</span> phase.peer_review?
+                  authorize_current_user_can_view_user(phase, user)
+                <span class="hljs-keyword">else</span>
+                  authorize_current_user_is_user(phase, user)
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+              debug_message(<span class="hljs-string">'phase ownerable'</span>, <span class="hljs-string">"authorized 'user' ownerable <span class="hljs-subst">#{msg_class_id user}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+              set_ownerable_abilities_for_user(user)
+              debug_message(<span class="hljs-string">'user ability'</span>, <span class="hljs-string">"user action ability set to <span class="hljs-subst">#{is_same_record?(current_user, user)}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_current_user_is_user</span><span class="hljs-params">(phase, user)</span></span>
+              valid = is_same_record?(current_user, user)
+              access_denied(phase, <span class="hljs-string">"Ownerable <span class="hljs-subst">#{msg_id user}</span> is not the current user."</span>)  <span class="hljs-keyword">unless</span> valid
+              debug_message(<span class="hljs-string">'current user'</span>, <span class="hljs-string">"authorized user <span class="hljs-subst">#{msg_id user}</span> is current user."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_user_is_a_phase_user</span><span class="hljs-params">(phase, user)</span></span>
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> user.superuser?
+              valid = phase.get_space.is_space_user?(user)
+              access_denied(phase, <span class="hljs-string">"User <span class="hljs-subst">#{msg_id user}</span> is not a phase user."</span>)  <span class="hljs-keyword">unless</span> valid
+              debug_message(<span class="hljs-string">'phase user'</span>, <span class="hljs-string">"authorized user <span class="hljs-subst">#{msg_id user}</span> is phase <span class="hljs-subst">#{msg_id phase}</span> user."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_team_is_a_phase_team</span><span class="hljs-params">(phase, team)</span></span>
+              valid = phase.thinkspace_team_teams.scope_by_teams(team).exists?
+              <span class="hljs-keyword">if</span> !valid  <span class="hljs-comment"># if not valid, check if member of an assignment team for this phase</span>
+                assignment = get_phase_assignment(phase)
+                valid      = assignment.thinkspace_team_teams.scope_by_teams(team).exists?
+              <span class="hljs-keyword">end</span>
+              access_denied(phase, <span class="hljs-string">"Team <span class="hljs-subst">#{msg_id team}</span> is not associated with phase <span class="hljs-subst">#{msg_id phase}</span>]."</span>) <span class="hljs-keyword">unless</span> valid
+              debug_message(<span class="hljs-string">'phase team'</span>, <span class="hljs-string">"authorized team <span class="hljs-subst">#{msg_id team}</span> is phase <span class="hljs-subst">#{msg_id phase}</span> team."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_current_user_on_or_can_view_team</span><span class="hljs-params">(phase, team)</span></span>
+              valid = phase_user_on_team?(phase, current_user, team) || phase_user_view_team?(phase, current_user, team)
+              access_denied(phase, <span class="hljs-string">"User <span class="hljs-subst">#{msg_id current_user}</span> is not on and cannot view team <span class="hljs-subst">#{msg_id team}</span>."</span>)  <span class="hljs-keyword">unless</span> valid
+              debug_message(<span class="hljs-string">'team view'</span>, <span class="hljs-string">"authorized user <span class="hljs-subst">#{msg_id current_user}</span> is on or can view team <span class="hljs-subst">#{msg_id team}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_current_user_is_on_team</span><span class="hljs-params">(phase, team)</span></span>
+              valid = phase_user_on_team?(phase, current_user, team)
+              access_denied(phase, <span class="hljs-string">"User <span class="hljs-subst">#{msg_id current_user}</span> is not on team <span class="hljs-subst">#{msg_id team}</span>."</span>)  <span class="hljs-keyword">unless</span> valid
+              debug_message(<span class="hljs-string">'team member'</span>, <span class="hljs-string">"authorized user <span class="hljs-subst">#{msg_id current_user}</span> on team <span class="hljs-subst">#{msg_id team}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_current_user_can_view_user</span><span class="hljs-params">(phase, user)</span></span>
+              valid = phase_user_view_user?(phase, current_user, user)
+              access_denied(phase, <span class="hljs-string">"User <span class="hljs-subst">#{msg_id user}</span> does not have a common peer review team."</span>)  <span class="hljs-keyword">unless</span> valid
+              debug_message(<span class="hljs-string">'peer review'</span>, <span class="hljs-string">"authorized current user can peer review user <span class="hljs-subst">#{msg_id user}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#############################</h6>
+<p>View ids
+e.g. ownerable viewing a different ownerable such as a user or team.</p>
+<h6 id="">#############################</h6></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Authorizations on view requests are based on the &#39;current user&#39;s teams unless can update the phase.
+View ids are &#39;users&#39; for peer review teams (e.g. users viewing users).
+View ids are &#39;teams&#39; for collaboration team users (e.g. teams viewing teams).</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase_view_ids</span><span class="hljs-params">(phase, ownerable, view_ids=params_view_ids, class_name=params_view_class_name)</span></span>
+              view_ids.each <span class="hljs-keyword">do</span> |view_id|
+                <span class="hljs-keyword">case</span> class_name
+                <span class="hljs-keyword">when</span> user_class.name
+                  authorize_phase_view_user_id(phase, view_id)
+                <span class="hljs-keyword">when</span> team_class.name
+                  authorize_phase_view_team_id(phase, view_id)
+                <span class="hljs-keyword">else</span>
+                  access_denied(phase, <span class="hljs-string">"Invalid view action class [<span class="hljs-subst">#{class_name}</span>]."</span>)
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase_view_user_id</span><span class="hljs-params">(phase, user_id)</span></span>
+              user = user_class.find_by(<span class="hljs-symbol">id:</span> user_id)
+              access_denied(phase, <span class="hljs-string">"View user <span class="hljs-subst">#{msg_id user_id}</span>] not found."</span>)  <span class="hljs-keyword">if</span> user.blank?
+              authorize_user_is_a_phase_user(phase, user)
+              <span class="hljs-keyword">if</span> can_update_phase?
+                debug_message(<span class="hljs-string">'view user'</span>, <span class="hljs-string">"authorized view user <span class="hljs-subst">#{msg_id user}</span> since phase updater."</span>)  <span class="hljs-keyword">if</span> debug?
+              <span class="hljs-keyword">else</span>
+                <span class="hljs-keyword">if</span> is_same_record?(current_user, user)
+                  debug_message(<span class="hljs-string">'view user'</span>, <span class="hljs-string">"authorized current_user <span class="hljs-subst">#{msg_id current_user}</span> is viewing themself <span class="hljs-subst">#{msg_id user}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+                <span class="hljs-keyword">else</span>
+                  authorize_current_user_can_view_user(phase, user)
+                  debug_message(<span class="hljs-string">'view user'</span>, <span class="hljs-string">"authorized current_user <span class="hljs-subst">#{msg_id current_user}</span> can peer review user <span class="hljs-subst">#{msg_id user}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_phase_view_team_id</span><span class="hljs-params">(phase, team_id)</span></span>
+              team = team_class.find_by(<span class="hljs-symbol">id:</span> team_id)
+              access_denied(phase, <span class="hljs-string">"View team <span class="hljs-subst">#{msg_id team_id}</span>] not found."</span>)   <span class="hljs-keyword">if</span> team.blank?
+              authorize_team_is_a_phase_team(phase, team)
+              <span class="hljs-keyword">if</span> can_update_phase?
+                debug_message(<span class="hljs-string">'view team'</span>, <span class="hljs-string">"authorized view team <span class="hljs-subst">#{msg_id team}</span> since phase updater."</span>)  <span class="hljs-keyword">if</span> debug?
+              <span class="hljs-keyword">else</span>
+                authorize_current_user_on_or_can_view_team(phase, team)
+                debug_message(<span class="hljs-string">'view team'</span>, <span class="hljs-string">"authorized current_user <span class="hljs-subst">#{msg_id current_user}</span> can peer review team <span class="hljs-subst">#{msg_id team}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="team-helpers">Team Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_user_on_team?</span><span class="hljs-params">(phase, user, team)</span></span>
+              assignment = get_phase_assignment(phase)
+              team_class.users_on_teams?(phase, user, team) || team_class.users_on_teams?(assignment, user, team)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_user_view_team?</span><span class="hljs-params">(phase, user, team)</span></span>
+              assignment = get_phase_assignment(phase)
+              team_class.users_view_teams?(phase, user, team) || team_class.users_view_teams?(assignment, user, team)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_user_view_user?</span><span class="hljs-params">(phase, user, view_user)</span></span>
+              assignment = get_phase_assignment(phase)
+              team_class.users_view_users?(phase, user, view_user) || team_class.users_view_users?(assignment, user, view_user)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_user_can_peer_review_users?</span><span class="hljs-params">(phase, user)</span></span>
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> phase_peer_review?(phase)
+              assignment = get_phase_assignment(phase)
+              team_class.users_teams(phase, user).exists? || team_class.users_teams(assignment, user).exists? ||
+              team_class.can_view_users?(phase, user)     || team_class.can_view_users?(assignment, user)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_user_can_peer_review_teams?</span><span class="hljs-params">(phase, user)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>return false unless phase_peer_review?(phase)</p></div></div><div class="code"><div class="wrapper">              <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> phase_collaboration?(phase)
+              assignment = get_phase_assignment(phase)
+              team_class.can_view_teams?(phase, user)  || team_class.can_view_teams?(assignment, user)
+            <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(*args)</span></span>
+              options = args.extract_options!
+              record  = args.shift
+              message = args.shift
+              <span class="hljs-keyword">if</span> message.blank? &amp;&amp; record.instance_of?(<span class="hljs-constant">String</span>)
+                message = record
+                record  = <span class="hljs-keyword">nil</span>
+              <span class="hljs-keyword">end</span>
+              message = <span class="hljs-string">'AuthorizePhases: '</span> + message
+              <span class="hljs-keyword">super</span>(record, message, options)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_phase_assignment</span><span class="hljs-params">(phase)</span>;</span> <span class="hljs-variable">@_phase_assignment</span> ||= phase.thinkspace_casespace_assignment; <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_peer_review?</span><span class="hljs-params">(phase)</span>;</span>   <span class="hljs-variable">@_phase_is_peer_review</span>   ||= phase.peer_review?; <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_collaboration?</span><span class="hljs-params">(phase)</span>;</span> <span class="hljs-variable">@_phase_is_collaboration</span> ||= phase.collaboration?; <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">can_read_all?</span>;</span> can_update_phase? &amp;&amp; is_read?; <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_is_team_ownerable?</span><span class="hljs-params">(phase)</span>;</span> phase.team_ownerable?; <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">can_update_phase?</span>;</span> <span class="hljs-variable">@can_update_phase</span>; <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">record_carry_forward_scope_hash</span></span>
+              names       = params[<span class="hljs-symbol">:names</span>]
+              user_ids    = params[<span class="hljs-symbol">:view_ids</span>]
+              phase_id    = params[<span class="hljs-symbol">:phase_id</span>] <span class="hljs-comment"># This is the phase requesting it, so need to expand to any phase in the assignment.</span>
+              phase       = authable_record_class.find(phase_id)
+              assignment  = get_phase_assignment(phase)
+              phase_ids   = assignment.thinkspace_casespace_phases.pluck(<span class="hljs-symbol">:id</span>)
+              {<span class="hljs-symbol">phase_id:</span> phase_ids, <span class="hljs-symbol">name:</span> names}
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_ownerable_abilities_for_user</span><span class="hljs-params">(user)</span></span>
+              is_current_user = is_same_record?(current_user, user)
+              set_ownerable_ability(<span class="hljs-symbol">create:</span> is_current_user, <span class="hljs-symbol">update:</span> is_current_user, <span class="hljs-symbol">destroy:</span> is_current_user)
+            <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

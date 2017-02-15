@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/helpers/processor/auto_score</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/helpers/processor/auto_score"><meta name="groc-project-path" content="thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/helpers/processor/auto_score.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/helpers/processor/auto_score.rb">thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/helpers/processor/auto_score.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Casespace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PhaseActions</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Helpers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Processor</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">AutoScore</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auto_score</span><span class="hljs-params">(ownerable, phase=current_phase)</span></span>
+    phase_score = get_phase_score(ownerable, phase)
+    klass       = get_score_class
+    debug <span class="hljs-string">"Score class <span class="hljs-subst">#{klass.name.inspect}</span>"</span>, ownerable  <span class="hljs-keyword">if</span> debug?
+    score = klass.new(<span class="hljs-keyword">self</span>, ownerable, get_action_auto_score).process
+    debug <span class="hljs-string">"Phase score=<span class="hljs-subst">#{score.inspect}</span>"</span>, ownerable <span class="hljs-keyword">if</span> debug?
+    phase_score.score = score
+    raise <span class="hljs-constant">SaveError</span>, <span class="hljs-string">"Error saving phase score for phase [id: <span class="hljs-subst">#{phase.id}</span>] ownerable [id: <span class="hljs-subst">#{ownerable.id}</span> type: <span class="hljs-subst">#{ownerable.<span class="hljs-keyword">class</span>.name}</span>]."</span> <span class="hljs-keyword">unless</span> phase_score.save
+  <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_score_class</span></span>
+    <span class="hljs-keyword">return</span> score_class <span class="hljs-keyword">if</span> score_class.present?
+    config = get_action_auto_score || <span class="hljs-constant">Hash</span>.new
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> config == <span class="hljs-keyword">false</span>
+    score_with = config.is_a?(<span class="hljs-constant">Hash</span>) ? (config[<span class="hljs-symbol">:score_with</span>] || <span class="hljs-symbol">:default</span>) <span class="hljs-symbol">:</span> <span class="hljs-symbol">:default</span>
+    class_name = score_with.to_s.match(<span class="hljs-string">'/'</span>) ? score_with.to_s.camelize <span class="hljs-symbol">:</span> <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name.deconstantize + <span class="hljs-string">"::Score::<span class="hljs-subst">#{score_with.to_s.camelize}</span>"</span>
+    klass = class_name.safe_constantize
+    raise <span class="hljs-constant">InvalidClassError</span>, <span class="hljs-string">"Score class name <span class="hljs-subst">#{class_name.inspect}</span> cannot be constantized."</span> <span class="hljs-keyword">if</span> klass.blank?
+    klass
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InvalidClassError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>;
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SaveError</span>         <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>;
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

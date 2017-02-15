@@ -16,9 +16,8 @@ e.g. /users/select?ids=# would be interpreted as /users/:id with id: &#39;select
         <span class="hljs-keyword">end</span>
 
         resources <span class="hljs-symbol">:phases</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:destroy</span>] <span class="hljs-keyword">do</span>
-          get  <span class="hljs-symbol">:templates</span>,       <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:collection</span>
-          post <span class="hljs-symbol">:clone</span>,           <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:collection</span>
-          post <span class="hljs-symbol">:bulk_reset_date</span>, <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:collection</span>
+          get  <span class="hljs-symbol">:templates</span>,      <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:collection</span>
+          post <span class="hljs-symbol">:clone</span>,          <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:collection</span>
           member <span class="hljs-keyword">do</span>
             put <span class="hljs-symbol">:activate</span>
             put <span class="hljs-symbol">:archive</span>

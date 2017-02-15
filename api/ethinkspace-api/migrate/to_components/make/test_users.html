@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><title>migrate/to_components/make/test_users</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="migrate/to_components/make/test_users"><meta name="groc-project-path" content="migrate/to_components/make/test_users.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/migrate/to_components/make/test_users.rb">migrate/to_components/make/test_users.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Migrate</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ToComponents</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Make</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestUsers</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Totem::DbMigrate</span></span>::<span class="hljs-title">BaseHelper</span></span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>destroy_users</p></div></div><div class="code"><div class="wrapper">      created_users  = <span class="hljs-constant">Array</span>.new
+      existing_users = <span class="hljs-constant">Array</span>.new
+      get_user_attributes.each <span class="hljs-keyword">do</span> |hash|
+        attrs = hash.except(<span class="hljs-symbol">:role</span>)
+        user  = new_user_class.find_by(attrs)
+        <span class="hljs-keyword">if</span> user.present?
+          existing_users.push(hash)
+        <span class="hljs-keyword">else</span>
+          user = new_user_class.create(attrs)
+          raise_error <span class="hljs-string">"User creation validation errors <span class="hljs-subst">#{attrs.inspect}</span> <span class="hljs-subst">#{user.errors.messages}</span>"</span>  <span class="hljs-keyword">if</span> user.errors.present?
+          created_users.push(hash)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      add_space_users(created_users)
+      <span class="hljs-keyword">if</span> existing_users.present?
+        puts <span class="hljs-string">"Users already existing (did not create):"</span>
+        existing_users.each <span class="hljs-keyword">do</span> |hash|
+          puts <span class="hljs-string">"  <span class="hljs-subst">#{hash.inspect}</span>"</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">if</span> created_users.present?
+        puts <span class="hljs-string">"User created:"</span>
+        created_users.each <span class="hljs-keyword">do</span> |hash|
+          puts <span class="hljs-string">"  <span class="hljs-subst">#{hash.inspect}</span>"</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">else</span>
+        puts <span class="hljs-string">"No new users created."</span>
+      <span class="hljs-keyword">end</span>
+      puts <span class="hljs-string">"\n"</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">destroy_users</span></span>
+      get_user_attributes.each <span class="hljs-keyword">do</span> |hash|
+        attrs = hash.except(<span class="hljs-symbol">:role</span>)
+        user  = new_user_class.find_by(attrs)
+        user.destroy
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user_attributes</span></span>
+      [
+        {<span class="hljs-symbol">email:</span> <span class="hljs-string">"read_1@sixthedge.com"</span>,   <span class="hljs-symbol">first_name:</span> <span class="hljs-string">'read_1'</span>,   <span class="hljs-symbol">last_name:</span> <span class="hljs-string">'Doe'</span>, <span class="hljs-symbol">role:</span> <span class="hljs-symbol">:read</span>},
+        {<span class="hljs-symbol">email:</span> <span class="hljs-string">"owner_1@sixthedge.com"</span>,  <span class="hljs-symbol">first_name:</span> <span class="hljs-string">'owner_1'</span>,  <span class="hljs-symbol">last_name:</span> <span class="hljs-string">'Doe'</span>, <span class="hljs-symbol">role:</span> <span class="hljs-symbol">:owner</span>},
+        {<span class="hljs-symbol">email:</span> <span class="hljs-string">"update_1@sixthedge.com"</span>, <span class="hljs-symbol">first_name:</span> <span class="hljs-string">'update_1'</span>, <span class="hljs-symbol">last_name:</span> <span class="hljs-string">'Doe'</span>, <span class="hljs-symbol">role:</span> <span class="hljs-symbol">:update</span>},
+      ]
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_space_users</span><span class="hljs-params">(users)</span></span>
+      users.each <span class="hljs-keyword">do</span> |hash|
+        role = hash.delete(<span class="hljs-symbol">:role</span>) || <span class="hljs-symbol">:read</span>
+        user = new_user_class.find_by(hash)
+        raise_error <span class="hljs-string">"User defined with <span class="hljs-subst">#{hash.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> user.blank?
+        new_space_class.all.each <span class="hljs-keyword">do</span> |space|
+          create_space_user(space, user, role)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_space_user</span><span class="hljs-params">(space, user, role)</span></span>
+      new_space_user_class.create(
+        <span class="hljs-symbol">space_id:</span> space.id,
+        <span class="hljs-symbol">user_id:</span>  user.id,
+        <span class="hljs-symbol">role:</span>     role.to_s,
+      )
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_space_class</span>;</span>               get_new_model_class(<span class="hljs-string">'thinkspace/common/space'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_space_user_class</span>;</span>          get_new_model_class(<span class="hljs-string">'thinkspace/common/space_user'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_user_class</span>;</span>                get_new_model_class(<span class="hljs-string">'thinkspace/common/user'</span>); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+  
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-team/app/controllers/thinkspace/team/concerns/clone/teams</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace-team/app/controllers/thinkspace/team/concerns/clone/teams"><meta name="groc-project-path" content="thinkspace-team/app/controllers/thinkspace/team/concerns/clone/teams.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-team/app/controllers/thinkspace/team/concerns/clone/teams.rb">thinkspace-team/app/controllers/thinkspace/team/concerns/clone/teams.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Team</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Concerns</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Clone</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Teams</span></span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_record_teams</span><span class="hljs-params">(record, dictionary, options={})</span></span>
+            space = options[<span class="hljs-symbol">:space</span>] || record.get_space
+            raise_clone_exception(<span class="hljs-string">"Clone teams space not found [record: <span class="hljs-subst">#{record.inspect}</span>]."</span>) <span class="hljs-keyword">if</span> space.blank?
+            record.thinkspace_team_teams.each <span class="hljs-keyword">do</span> |team|
+              cloned_team          = team.deep_clone <span class="hljs-symbol">include:</span> [], <span class="hljs-symbol">dictionary:</span> dictionary
+              cloned_team.title    = <span class="hljs-string">'clone: '</span> + cloned_team.title  <span class="hljs-keyword">if</span> cloned_team.authable == space
+              cloned_team.authable = space
+              clone_save_record(cloned_team)
+              team.thinkspace_team_team_teamables.each <span class="hljs-keyword">do</span> |teamable|
+                <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> teamable.teamable.present?
+                cloned_teamable = teamable.deep_clone <span class="hljs-symbol">include:</span> [<span class="hljs-symbol">:teamable</span>, <span class="hljs-symbol">:thinkspace_team_team</span>], <span class="hljs-symbol">dictionary:</span> dictionary
+                clone_save_record(cloned_teamable)
+              <span class="hljs-keyword">end</span>
+              team.thinkspace_team_team_viewers.each <span class="hljs-keyword">do</span> |team_viewer|
+                cloned_team_viewer = team_viewer.deep_clone <span class="hljs-symbol">include:</span> [<span class="hljs-symbol">:viewerable</span>, <span class="hljs-symbol">:thinkspace_team_team</span>], <span class="hljs-symbol">dictionary:</span> dictionary
+                clone_save_record(cloned_team_viewer)
+              <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">unless</span> is_full_clone?(options) <span class="hljs-comment"># Do not do for assignment/space clones, only phase level.</span>
+                team.thinkspace_team_team_users.each <span class="hljs-keyword">do</span> |team_user|
+                  cloned_team_user = team_user.deep_clone <span class="hljs-symbol">include:</span> [<span class="hljs-symbol">:thinkspace_team_team</span>], <span class="hljs-symbol">dictionary:</span> dictionary
+                  clone_save_record(cloned_team_user)
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+          
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-observation-list/app/controllers/thinkspace/observation_list/api/lists_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-observation-list/app/controllers/thinkspace/observation_list/api/lists_controller"><meta name="groc-project-path" content="thinkspace-observation-list/app/controllers/thinkspace/observation_list/api/lists_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-observation-list/app/controllers/thinkspace/observation_list/api/lists_controller.rb">thinkspace-observation-list/app/controllers/thinkspace/observation_list/api/lists_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ObservationList</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ListsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+        totem_action_authorize!
+        totem_action_serializer_options
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
+          controller_render(<span class="hljs-variable">@list</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">select</span></span>
+          controller_render(<span class="hljs-variable">@lists</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">view</span></span>
+          lists = <span class="hljs-variable">@list</span>.thinkspace_observation_list_lists
+          controller_render_view(lists)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">observation_order</span></span>
+          update_observation_positions
+          controller_render_no_content
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_observation_positions</span></span>
+          ownerable = serializer_options.params_ownerable
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ownerable.blank?
+          changes = params[<span class="hljs-symbol">:order</span>]
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> changes.blank?
+          access_denied <span class="hljs-string">"Observation position changes must an array."</span>  <span class="hljs-keyword">unless</span> changes.is_a?(<span class="hljs-constant">Array</span>)
+          changes.each {|c| access_denied <span class="hljs-string">"Observation position changes must be an array of hashes <span class="hljs-subst">#{c.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> c.is_a?(<span class="hljs-constant">Hash</span>)}
+          changes.each {|c| access_denied <span class="hljs-string">"Observation position changes must have an id <span class="hljs-subst">#{c.inspect}</span>."</span>  <span class="hljs-keyword">if</span> c[<span class="hljs-symbol">:id</span>].blank?}
+          list_ids        = <span class="hljs-variable">@list</span>.thinkspace_observation_list_lists.pluck(<span class="hljs-symbol">:id</span>)
+          ids             = changes.map {|c| c[<span class="hljs-symbol">:id</span>]}
+          change_list_ids = observation_class.where(<span class="hljs-symbol">ownerable:</span> ownerable, <span class="hljs-symbol">id:</span> ids).pluck(<span class="hljs-symbol">:list_id</span>)
+          access_denied <span class="hljs-string">"Observation list mismatch for ownerable."</span>  <span class="hljs-keyword">unless</span> (change_list_ids - list_ids).blank?
+          changes.each <span class="hljs-keyword">do</span> |hash|
+            id  = hash[<span class="hljs-symbol">:id</span>]
+            pos = hash[<span class="hljs-symbol">:position</span>]
+            access_denied <span class="hljs-string">"Observation position change id is blank <span class="hljs-subst">#{hash.inspect}</span>."</span>  <span class="hljs-keyword">if</span> id.blank?
+            access_denied <span class="hljs-string">"Observation position position is blank <span class="hljs-subst">#{hash.inspect}</span>."</span>   <span class="hljs-keyword">if</span> pos.blank?
+            access_denied <span class="hljs-string">"Observation position position is invalid <span class="hljs-subst">#{hash.inspect}</span>."</span> <span class="hljs-keyword">unless</span> pos.to_s.match(<span class="hljs-regexp">/^\d+$/</span>)
+            observation = observation_class.find_by(<span class="hljs-symbol">id:</span> id, <span class="hljs-symbol">list_id:</span> list_ids, <span class="hljs-symbol">ownerable:</span> ownerable)
+            access_denied <span class="hljs-string">"Observation with [id: <span class="hljs-subst">#{id}</span>] and ownerable [id: <span class="hljs-subst">#{ownerable.id}</span>] not found."</span> <span class="hljs-keyword">if</span> observation.blank?
+            observation.update_columns(<span class="hljs-symbol">position:</span> pos)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">observation_class</span>;</span> <span class="hljs-constant">Thinkspace::ObservationList::Observation</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(message, user_message=<span class="hljs-string">''</span>)</span></span>
+          action = (<span class="hljs-keyword">self</span>.action_name || <span class="hljs-string">''</span>).to_sym
+          raise_access_denied_exception(message, action, <span class="hljs-variable">@list</span>,  <span class="hljs-symbol">user_message:</span> user_message)
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

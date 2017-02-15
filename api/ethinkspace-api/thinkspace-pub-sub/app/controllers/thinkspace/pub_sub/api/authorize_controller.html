@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-pub-sub/app/controllers/thinkspace/pub_sub/api/authorize_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-pub-sub/app/controllers/thinkspace/pub_sub/api/authorize_controller"><meta name="groc-project-path" content="thinkspace-pub-sub/app/controllers/thinkspace/pub_sub/api/authorize_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-pub-sub/app/controllers/thinkspace/pub_sub/api/authorize_controller.rb">thinkspace-pub-sub/app/controllers/thinkspace/pub_sub/api/authorize_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PubSub</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthorizeController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize</span></span>
+          params.permit!</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>params.permit(:auth, :auth_key, :rooms, :room_type)
+sleep 5 # TESTING ONLY for timeout</p></div></div><div class="code"><div class="wrapper">          validate_authorize
+          validate_rooms(get_rooms, get_room_type)
+          controller_render_json({<span class="hljs-symbol">can:</span> <span class="hljs-keyword">true</span>})
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">PubSub::AuthorizeHelpers</span>
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">PubSub::AuthHelpers</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_authorize</span></span>
+          <span class="hljs-keyword">if</span> has_authable?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>taa = new_totem_action_authorize
+taa.process
+TODO: What should the rules be here? Note: rooms available via get_rooms.</p>
+<pre><code>  - e.g. how validate if user on team for a team room?
+  - e.g. user can access a room?</code></pre>
+<p>TODO: Can some convention be used for team room name?</p>
+<pre><code>  - e.g. team room match ownerable?</code></pre></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">else</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: What should the rules be here?  e.g. for a space, assignment, etc.</p>
+<pre><code>  - e.g. how validate if can access a space room?</code></pre></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-observation-list/app/models/thinkspace/observation_list/observation</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-observation-list/app/models/thinkspace/observation_list/observation"><meta name="groc-project-path" content="thinkspace-observation-list/app/models/thinkspace/observation_list/observation.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-observation-list/app/models/thinkspace/observation_list/observation.rb">thinkspace-observation-list/app/models/thinkspace/observation_list/observation.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ObservationList</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Observation</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
+      totem_associations
+      has_paper_trail
+      validates_presence_of <span class="hljs-symbol">:thinkspace_common_user</span>, <span class="hljs-symbol">:thinkspace_observation_list_list</span>
+      validates_presence_of <span class="hljs-symbol">:ownerable</span>
+
+      before_destroy <span class="hljs-symbol">:migrate_data_to_path_items</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">migrate_data_to_path_items</span></span>
+        path_items = <span class="hljs-constant">Thinkspace::DiagnosticPath::PathItem</span>.where(<span class="hljs-symbol">path_itemable:</span> <span class="hljs-keyword">self</span>)
+        path_items.each <span class="hljs-keyword">do</span> |path_item|
+          path_item.path_itemable = <span class="hljs-keyword">nil</span>
+          path_item.description   = <span class="hljs-keyword">self</span>.value
+          category                = <span class="hljs-keyword">self</span>.thinkspace_observation_list_list.category
+          path_item.category      = category <span class="hljs-keyword">if</span> category.present?
+          path_item.save
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

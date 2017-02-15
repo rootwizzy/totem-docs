@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/app/controllers/thinkspace/weather_forecaster/api/responses_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/app/controllers/thinkspace/weather_forecaster/api/responses_controller"><meta name="groc-project-path" content="thinkspace-weather-forecaster/app/controllers/thinkspace/weather_forecaster/api/responses_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-weather-forecaster/app/controllers/thinkspace/weather_forecaster/api/responses_controller.rb">thinkspace-weather-forecaster/app/controllers/thinkspace/weather_forecaster/api/responses_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">WeatherForecaster</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ResponsesController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+        totem_action_authorize!
+        totem_action_serializer_options
+        before_action <span class="hljs-symbol">:authorize_change</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span>
+          <span class="hljs-variable">@response</span>.value = get_params_response_value
+          controller_save_record(<span class="hljs-variable">@response</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
+          <span class="hljs-variable">@response</span>.value = get_params_response_value
+          controller_save_record(<span class="hljs-variable">@response</span>)
+        <span class="hljs-keyword">end</span>
+
+        private</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The params value must be a hash with an &#39;input&#39; key e.g. {input: &#39;some-value&#39;}.
+The &#39;input&#39; value can be a string, array, hash, etc.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_params_response_value</span></span>
+          value = params_root[<span class="hljs-symbol">:value</span>]
+          access_denied <span class="hljs-string">"Response value is not a hash <span class="hljs-subst">#{value.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> value.kind_of?(<span class="hljs-constant">Hash</span>)
+          access_denied <span class="hljs-string">"Response value hash does not have an input key <span class="hljs-subst">#{value.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> value.has_key?(<span class="hljs-symbol">:input</span>)
+          value
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_change</span></span>
+          forecast        = <span class="hljs-variable">@response</span>.thinkspace_weather_forecaster_forecast
+          assessment_item = <span class="hljs-variable">@response</span>.thinkspace_weather_forecaster_assessment_item
+          access_denied <span class="hljs-string">"Response forecast is blank."</span>         <span class="hljs-keyword">if</span> forecast.blank?
+          access_denied <span class="hljs-string">"Response assessment item is blank."</span>  <span class="hljs-keyword">if</span> assessment_item.blank?
+          access_denied <span class="hljs-string">"Response forecast is locked."</span>        <span class="hljs-keyword">if</span> forecast.is_locked?
+          authorize_assessment_item(forecast, assessment_item)
+          authorize_ownerable(forecast)
+          authorize_create_not_duplicate(forecast, assessment_item)  <span class="hljs-keyword">if</span> totem_action_authorize.is_create?
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_assessment_item</span><span class="hljs-params">(forecast, assessment_item)</span></span>
+          is_for_forecast = forecast.thinkspace_weather_forecaster_assessment_items.where(<span class="hljs-symbol">id:</span> assessment_item.id).exists?
+          access_denied <span class="hljs-string">"Response assessment item does not belong to the forecast."</span>  <span class="hljs-keyword">unless</span> is_for_forecast
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_ownerable</span><span class="hljs-params">(forecast)</span></span>
+          params_ownerable   = totem_action_authorize.params_ownerable
+          forecast_ownerable = forecast.ownerable
+          access_denied <span class="hljs-string">"Response params ownerable does not match the forecast ownerable."</span>  <span class="hljs-keyword">unless</span> params_ownerable == forecast_ownerable
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_create_not_duplicate</span><span class="hljs-params">(forecast, assessment_item)</span></span>
+          id     = assessment_item.id
+          exists = forecast.thinkspace_weather_forecaster_responses.where(<span class="hljs-symbol">assessment_item_id:</span> id).exists?
+          access_denied <span class="hljs-string">"Response is a duplicate for the assessment item [id: <span class="hljs-subst">#{id}</span>]."</span>  <span class="hljs-keyword">if</span> exists
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(message)</span></span>
+          raise_access_denied_exception(message, totem_action_authorize.action, <span class="hljs-variable">@response</span>)
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

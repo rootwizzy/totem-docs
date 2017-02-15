@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/ability/routes_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/ability/routes_test"><meta name="groc-project-path" content="thinkspace-casespace/test/ability/routes_test.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/ability/routes_test.rb">thinkspace-casespace/test/ability/routes_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'ability_helper'</span>
+<span class="hljs-constant">Test::Casespace::Seed</span>.load(<span class="hljs-symbol">config:</span> <span class="hljs-symbol">:ability</span>)
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Ability</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Routes</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActionController::TestCase</span></span></span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::All</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Ability::Dictionary</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>set<em>test<em>ability_classes File.expand_path(&#39;../ability_files&#39;, __FILE</em></em>)</p></div></div><div class="code"><div class="wrapper">  co = new_route_config_options
+  co.controller_helper_namespace = <span class="hljs-string">'Test::Ability::Controllers'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>co.only :common, :invitations, :fetch_state
+co.only :artifact, :files, :create
+co.only :casespace, :assignments, :view
+co.only_users readers: :read_1
+co.only_users updaters: :update_1
+co.only_users readers: :read_1, updaters: :update_1
+co.only_users unauthorized_readers: :read_2
+co.only_users updaters: :update_1, unauthorized_updaters: :update_2
+co.only_users unauthorized_updaters: :update_2</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h2 id="">#</h2>
+<h3 id="todo-how-handle-the-following-exceptions-so-tests-will-pass">TODO: How handle the following exceptions so tests will pass?</h3></div></div><div class="code"><div class="wrapper">  co.except <span class="hljs-symbol">:artifact</span>, <span class="hljs-symbol">:files</span>, <span class="hljs-symbol">:create</span>
+  co.except <span class="hljs-symbol">:common</span>, <span class="hljs-symbol">:discourse</span>
+  co.except <span class="hljs-symbol">:common</span>, <span class="hljs-symbol">:invitations</span>, <span class="hljs-symbol">:resend</span>
+  co.except <span class="hljs-symbol">:common</span>, <span class="hljs-symbol">:spaces</span>, <span class="hljs-symbol">:invite</span>
+  co.except <span class="hljs-symbol">:markup</span>
+  co.except <span class="hljs-symbol">:resource</span>
+  co.except <span class="hljs-symbol">:team</span>
+  co.except <span class="hljs-symbol">:simulation</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h2 id="">#</h2>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  get_controller_route_configs(co).each <span class="hljs-keyword">do</span> |config|
+    describe config.controller_class <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@config</span> = config
+      before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@routes</span> = config.engine_routes; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="base-models">Base Models:</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">        let(<span class="hljs-symbol">:space</span>)        {get_space(<span class="hljs-symbol">:ability_space_1</span>)}
+        let(<span class="hljs-symbol">:assignment</span>)   {get_assignment(<span class="hljs-symbol">:ability_assignment_1_1</span>)}
+        let(<span class="hljs-symbol">:phase</span>)        {get_phase(<span class="hljs-symbol">:ability_phase_1_1_A</span>)}
+        let(<span class="hljs-symbol">:authable</span>)     {phase}
+        let(<span class="hljs-symbol">:base_models</span>)  {[space, assignment, phase]}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="print-options">Print Options:</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">        let(<span class="hljs-symbol">:report_failures_by_count</span>)  {<span class="hljs-keyword">true</span>}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>let(:report_failures)           {true}
+let(:print_params)              {true}
+let(:print_json)                {true}
+let(:print_params_on_failure)   {true}
+let(:print_dictionary)          {true}
+let(:print_dictionary_ids)      {true}</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">TestRoutes</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

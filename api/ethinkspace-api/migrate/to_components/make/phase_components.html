@@ -1,0 +1,323 @@
+<!DOCTYPE html><html lang="en"><head><title>migrate/to_components/make/phase_components</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="migrate/to_components/make/phase_components"><meta name="groc-project-path" content="migrate/to_components/make/phase_components.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/migrate/to_components/make/phase_components.rb">migrate/to_components/make/phase_components.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Migrate</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ToComponents</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Make</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PhaseComponents</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Totem::DbMigrate</span></span>::<span class="hljs-title">BaseHelper</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Phase Templates Required:</p>
+<ol>
+<li>count:   140 -&gt; section: 2 r-1-c-1  tools: [:bucket]             submit: true   phase_template: 1</li>
+<li>count:    16 -&gt; section: 2 r-1-c-1  tools: [:content, :bucket]   submit: true   phase_template: 1</li>
+<li>count:     3 -&gt; section: 2 r-1-c-1  tools: [:content]            submit: false  phase_template: 1</li>
+<li>count:   502 -&gt; section: 2 r-1-c-1  tools: [:content]            submit: true   phase_template: 1</li>
+<li>count:   464 -&gt; section: 4 r-1-c-1  tools: [:content] section: 5 r-1-c-2  tools: [:content]  submit: true   phase_template: 2</li>
+<li>count:    13 -&gt; section: 4 r-1-c-1  tools: [:content] section: 5 r-1-c-2  tools: [:list]     submit: true   phase_template: 2</li>
+<li>count:     6 -&gt; section: 4 r-1-c-1  tools: [:path]    section: 5 r-1-c-2  tools: [:list]     submit: true   phase_template: 2</li>
+</ol>
+<pre><code>       -----</code></pre>
+<p>total:      1144</p>
+<p>header    = 1144 (all)
+html      = 534 (16 + 3 + 502 + 13)
+submit    = 1141 (1144 - 3 with submit=false)
+obs-list  = 19 (13 + 6)
+html-1    = 464
+html-2    = 464
+artifact  = 156 (140 + 16)
+diag_path = 6</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">require</span> <span class="hljs-string">'nokogiri'</span>
+
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:phase_template_component_map</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span>
+      delete_all_new_class_records!(new_common_component_class)
+      delete_all_new_class_records!(new_phase_component_class)
+      create_all_common_components
+      <span class="hljs-variable">@comp_counts</span> = <span class="hljs-constant">Hash</span>.new(<span class="hljs-number">0</span>)
+      map_phase_template_components
+      add_phase_components
+      puts <span class="hljs-string">"\n"</span>
+      puts <span class="hljs-string">"Phase template section's phase components created:"</span>
+      pp <span class="hljs-variable">@comp_counts</span>
+      puts <span class="hljs-string">"\n"</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">map_phase_template_components</span></span>
+      <span class="hljs-variable">@phase_template_component_map</span> = <span class="hljs-constant">Hash</span>.new
+      new_phase_template_class.all.each <span class="hljs-keyword">do</span> |phase_template|
+        phase_template_component_map[phase_template.id] = parse_phase_template(phase_template)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_phase_components</span></span>
+      new_phase_class.all.each <span class="hljs-keyword">do</span> |phase|
+        sections = phase_template_component_map[phase.phase_template_id]
+        raise_error <span class="hljs-string">"Phase template sections blank."</span>, phase <span class="hljs-keyword">if</span> sections.blank?
+        sections.each <span class="hljs-keyword">do</span> |section, attrs|
+          add_phase_component_for_section(phase, section, attrs)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_phase_component_for_section</span><span class="hljs-params">(phase, section, attrs)</span></span>
+      <span class="hljs-keyword">case</span> section
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'header'</span>                       <span class="hljs-keyword">then</span> create_phase_componentable_component(phase, section, attrs)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'html'</span>, <span class="hljs-string">'html-1'</span>, <span class="hljs-string">'html-2'</span>     <span class="hljs-keyword">then</span> create_html_component(phase, section, attrs)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'artifact'</span>                     <span class="hljs-keyword">then</span> create_artifact_component(phase, section, attrs)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'obs-list'</span>                     <span class="hljs-keyword">then</span> create_observation_list_component(phase, section, attrs)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'diag-path'</span>                    <span class="hljs-keyword">then</span> create_diagnostic_path_component(phase, section, attrs)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'submit'</span>                       <span class="hljs-keyword">then</span> create_phase_componentable_component(phase, section, attrs)
+      <span class="hljs-keyword">else</span>
+        raise_error <span class="hljs-string">"Unknown section name <span class="hljs-subst">#{section.inspect}</span> in phase_template id <span class="hljs-subst">#{phase.phase_template_id}</span>."</span>, phase
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="componentables">Componentables.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_phase_componentable_component</span><span class="hljs-params">(phase, section, attrs)</span></span>
+      create_phase_component(phase, section, phase, attrs)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_html_component</span><span class="hljs-params">(phase, section, attrs)</span></span>
+      scope  = new_html_content_class.where(<span class="hljs-symbol">authable:</span> phase).order(<span class="hljs-symbol">:id</span>)
+      scopes = []
+      scope.each <span class="hljs-keyword">do</span> |html|
+        phase_tool                = old_phase_tool_class.find_by(<span class="hljs-symbol">toolable_id:</span> html.id, <span class="hljs-symbol">toolable_type:</span> polymorphic_type(old_html_content_class))
+        puts <span class="hljs-string">"[ERROR] No phase tool found for toolable: <span class="hljs-subst">#{polymorphic_type(old_html_content_class)}</span>"</span> <span class="hljs-keyword">unless</span> phase_tool.present?
+        phase_template_section_id = phase_tool.phase_template_section_id
+        phase_template_section    = old_phase_template_section_class.find_by(<span class="hljs-symbol">id:</span> phase_template_section_id)
+        order                     = phase_template_section.template_section_order
+        scopes[order]             = html
+      <span class="hljs-keyword">end</span>
+      scopes.compact!
+      count = scopes.length
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> count == <span class="hljs-number">1</span> &amp;&amp; section == <span class="hljs-string">'html'</span>
+        create_phase_component(phase, section, scopes.first, attrs)
+      <span class="hljs-keyword">when</span> count == <span class="hljs-number">2</span> &amp;&amp; section == <span class="hljs-string">'html-1'</span>
+        create_phase_component(phase, section, scopes.first, attrs)
+      <span class="hljs-keyword">when</span> count == <span class="hljs-number">2</span> &amp;&amp; section == <span class="hljs-string">'html-2'</span>
+        create_phase_component(phase, section, scopes.last, attrs)
+      <span class="hljs-keyword">else</span>
+        raise_error <span class="hljs-string">"Unknown section <span class="hljs-subst">#{section.inspect}</span> with html content count <span class="hljs-subst">#{count}</span>."</span>, phase
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_artifact_component</span><span class="hljs-params">(phase, section, attrs)</span></span>
+      scope = new_artifact_bucket_class.where(<span class="hljs-symbol">authable:</span> phase).order(<span class="hljs-symbol">:id</span>)
+      count = scope.count
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> count == <span class="hljs-number">1</span>
+        create_phase_component(phase, section, scope.first, attrs)
+      <span class="hljs-keyword">else</span>
+        raise_error <span class="hljs-string">"Unknown section <span class="hljs-subst">#{section.inspect}</span> with artifact bucket count <span class="hljs-subst">#{count}</span>."</span>, phase
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_observation_list_component</span><span class="hljs-params">(phase, section, attrs)</span></span>
+      scope = new_observation_list_class.where(<span class="hljs-symbol">authable:</span> phase).order(<span class="hljs-symbol">:id</span>)
+      count = scope.count
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> count == <span class="hljs-number">1</span>
+        create_phase_component(phase, section, scope.first, attrs)
+      <span class="hljs-keyword">else</span>
+        raise_error <span class="hljs-string">"Unknown section <span class="hljs-subst">#{section.inspect}</span> with observation list count <span class="hljs-subst">#{count}</span>."</span>, phase
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_diagnostic_path_component</span><span class="hljs-params">(phase, section, attrs)</span></span>
+      scope = new_diagnostic_path_class.where(<span class="hljs-symbol">authable:</span> phase).order(<span class="hljs-symbol">:id</span>)
+      count = scope.count
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> count == <span class="hljs-number">1</span>
+        create_phase_component(phase, section, scope.first, attrs)
+      <span class="hljs-keyword">else</span>
+        raise_error <span class="hljs-string">"Unknown section <span class="hljs-subst">#{section.inspect}</span> with diagnostic path count <span class="hljs-subst">#{count}</span>."</span>, phase
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_phase_component</span><span class="hljs-params">(phase, section, componentable, attrs)</span></span>
+      <span class="hljs-variable">@comp_counts</span>[section] += <span class="hljs-number">1</span>
+      comp            = get_common_component(attrs[<span class="hljs-string">'title'</span>])
+      phase_component = new_phase_component_class.create(
+        <span class="hljs-symbol">phase_id:</span>      phase.id,
+        <span class="hljs-symbol">section:</span>       section,
+        <span class="hljs-symbol">component_id:</span>  comp.id,
+        <span class="hljs-symbol">componentable:</span> componentable
+      )
+      raise_error <span class="hljs-string">"Create phase component error <span class="hljs-subst">#{attrs.inspect}</span>.  Phase component is blank."</span> <span class="hljs-keyword">if</span> phase_component.blank?
+      raise_error <span class="hljs-string">"Create phase component error <span class="hljs-subst">#{attrs.inspect}</span>.  Validation errors: <span class="hljs-subst">#{phase_component.errors.messages}</span>."</span> <span class="hljs-keyword">if</span> phase_component.errors.present?
+      phase_component
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_common_component</span><span class="hljs-params">(title)</span></span>
+      raise_error <span class="hljs-string">"Component <span class="hljs-subst">#{new_common_component_class.name.inspect}</span> title blank."</span>  <span class="hljs-keyword">if</span> title.blank?
+      component = new_common_component_class.find_by(<span class="hljs-symbol">title:</span> title)
+      raise_error <span class="hljs-string">"Component <span class="hljs-subst">#{new_common_component_class.name.inspect}</span> with title <span class="hljs-subst">#{title.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> component.blank?
+      component
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="new-model-classes">NEW Model Classes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_common_component_class</span>;</span>    get_new_model_class(<span class="hljs-string">'thinkspace/common/component'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_phase_class</span>;</span>               get_new_model_class(<span class="hljs-string">'thinkspace/casespace/phase'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_phase_component_class</span>;</span>     get_new_model_class(<span class="hljs-string">'thinkspace/casespace/phase_component'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_phase_template_class</span>;</span>      get_new_model_class(<span class="hljs-string">'thinkspace/casespace/phase_template'</span>); <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_artifact_bucket_class</span>;</span>     get_new_model_class(<span class="hljs-string">'thinkspace/artifact/bucket'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_html_content_class</span>;</span>        get_new_model_class(<span class="hljs-string">'thinkspace/html/content'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_diagnostic_path_class</span>;</span>     get_new_model_class(<span class="hljs-string">'thinkspace/diagnostic_path/path'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_observation_list_class</span>;</span>    get_new_model_class(<span class="hljs-string">'thinkspace/observation_list/list'</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_phase_template</span><span class="hljs-params">(phase_template)</span></span>
+      hash       = <span class="hljs-constant">Hash</span>.new
+      html       = <span class="hljs-constant">Nokogiri::HTML</span>.fragment(phase_template.template)
+      components = html.css(<span class="hljs-string">'component'</span>)
+      components.each <span class="hljs-keyword">do</span> |component|
+        comp          = <span class="hljs-constant">Hash</span>.from_xml(component.to_s)[<span class="hljs-string">'component'</span>] || <span class="hljs-constant">Hash</span>.new
+        section       = comp[<span class="hljs-string">'section'</span>] || comp[<span class="hljs-string">'title'</span>]  <span class="hljs-comment"># totem-template-manager will default the section to the title</span>
+        hash[section] = comp
+      <span class="hljs-keyword">end</span>
+      hash
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_error</span><span class="hljs-params">(message, phase=<span class="hljs-keyword">nil</span>)</span></span>
+      <span class="hljs-keyword">super</span> message  <span class="hljs-keyword">if</span> phase.blank?
+      message = <span class="hljs-string">"Phase id: <span class="hljs-subst">#{phase.id.to_s.rjust(<span class="hljs-number">5</span>)}</span> - "</span> + message
+      debug_errors(phase)
+      <span class="hljs-keyword">super</span> message
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_errors</span><span class="hljs-params">(phase)</span></span>
+      old_phase_tools   = old_phase_tool_class.where(<span class="hljs-symbol">phase_id:</span> phase.id)
+      phase_tool_ids    = old_phase_tools.map(&amp;<span class="hljs-symbol">:id</span>)
+      old_phase_helpers = old_phase_tool_helper_class.where(<span class="hljs-symbol">phase_tool_id:</span> phase_tool_ids)
+      pp old_phase_tools
+      pp old_phase_helpers
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_class</span>;</span>                    get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_template_class</span>;</span>           get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_template'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_template_section_class</span>;</span>   get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_template_section'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_tool_class</span>;</span>               get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_tool'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_phase_tool_helper_class</span>;</span>        get_old_model_class(<span class="hljs-string">'thinkspace/wips/casespace/phase_tool_helper'</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">old_html_content_class</span>;</span>             get_old_model_class(<span class="hljs-string">'thinkspace/tools/html/content'</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">####################################################</h6>
+<h3 id="common-components-seed-">Common Components Seed ###############################</h3>
+<h6 id="">####################################################</h6></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_all_common_components</span></span>
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'artifact-bucket'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">''</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:artifact</span>, <span class="hljs-symbol">:bucket</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'casespace-phase-header'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">''</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:phase</span>, <span class="hljs-symbol">:header</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'casespace-phase-submit'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">''</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:phase</span>, <span class="hljs-symbol">:submit</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'diagnostic-path-viewer'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">''</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:diagnostic_path_viewer</span>, <span class="hljs-symbol">:viewer</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'diagnostic-path-viewer-ownerable'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">''</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:diagnostic_path_viewer</span>, <span class="hljs-symbol">:viewer_ownerable</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'diagnostic-path'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">''</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:diagnostic_path</span>, <span class="hljs-symbol">:path</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'html'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">''</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:html</span>, <span class="hljs-symbol">:html</span>]
+        },
+        <span class="hljs-symbol">preprocessors:</span> input_element_html_preprocessors(<span class="hljs-symbol">responses:</span> <span class="hljs-keyword">true</span>, <span class="hljs-symbol">carry_forward:</span> <span class="hljs-keyword">true</span>)
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'html-only'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">''</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:html</span>, <span class="hljs-symbol">:html_only</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'html-select-text'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">''</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:html</span>, <span class="hljs-symbol">:html_select_text</span>]
+        },
+        <span class="hljs-symbol">preprocessors:</span> input_element_html_preprocessors(<span class="hljs-symbol">responses:</span> <span class="hljs-keyword">true</span>, <span class="hljs-symbol">carry_forward:</span> <span class="hljs-keyword">true</span>)
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'lab'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">''</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:lab</span>, <span class="hljs-symbol">:lab</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>      <span class="hljs-string">'observation-list'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">''</span>,
+        <span class="hljs-symbol">value:</span>      {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:observation_list</span>, <span class="hljs-symbol">:list</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'weather-forecaster'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">'Weather Forecaster Assessment'</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:weather_forecaster</span>, <span class="hljs-symbol">:assessment</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'peer-assessment'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">'Peer Assessment'</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:peer_assessment</span>, <span class="hljs-symbol">:assessment</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'peer-assessment-overview'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">'Anonymized peer assessment overviews.'</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:peer_assessment</span>, <span class="hljs-symbol">:overview</span>]
+        },
+      )
+      create_common_component(
+        <span class="hljs-symbol">title:</span>       <span class="hljs-string">'simulation'</span>,
+        <span class="hljs-symbol">description:</span> <span class="hljs-string">'Simulation Render'</span>,
+        <span class="hljs-symbol">value:</span>       {
+          <span class="hljs-symbol">path:</span> [<span class="hljs-symbol">:simulation</span>, <span class="hljs-symbol">:simulation</span>]
+        },
+      )
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">input_element_html_preprocessors</span><span class="hljs-params">(*args)</span></span>
+      options   = args.extract_options!
+      attribute = options[<span class="hljs-symbol">:attribute</span>] || <span class="hljs-string">'html_content'</span>
+      paths     = <span class="hljs-constant">Array</span>.new
+      paths.push [<span class="hljs-symbol">:input_element</span>, <span class="hljs-symbol">:preprocessors</span>, <span class="hljs-symbol">:responses</span>]      <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:responses</span>] == <span class="hljs-keyword">true</span>
+      paths.push [<span class="hljs-symbol">:input_element</span>, <span class="hljs-symbol">:preprocessors</span>, <span class="hljs-symbol">:carry_forward</span>]  <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:carry_forward</span>] == <span class="hljs-keyword">true</span>
+      [{<span class="hljs-symbol">attribute:</span> attribute, <span class="hljs-symbol">paths:</span> paths}]
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_common_component</span><span class="hljs-params">(hash)</span></span>
+      comp = new_common_component_class.create(hash)
+      raise_error <span class="hljs-string">"Create common component error <span class="hljs-subst">#{hash.inspect}</span>.  Component is blank."</span> <span class="hljs-keyword">if</span> comp.blank?
+      raise_error <span class="hljs-string">"Create common component error <span class="hljs-subst">#{hash.inspect}</span>.  Validation errors: <span class="hljs-subst">#{comp.errors.messages}</span>."</span> <span class="hljs-keyword">if</span> comp.errors.present?
+      comp
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+  
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

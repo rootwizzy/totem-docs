@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/concerns/thinkspace/common/deep_clone_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-common/app/concerns/thinkspace/common/deep_clone_helper"><meta name="groc-project-path" content="thinkspace-common/app/concerns/thinkspace/common/deep_clone_helper.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-common/app/concerns/thinkspace/common/deep_clone_helper.rb">thinkspace-common/app/concerns/thinkspace/common/deep_clone_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Common</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">DeepCloneHelper</span></span>
+
+      public
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_clone_dictionary</span><span class="hljs-params">(options={})</span>;</span> options[<span class="hljs-symbol">:dictionary</span>] || <span class="hljs-constant">Hash</span>.new; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_record_dictionary_key</span><span class="hljs-params">(record)</span>;</span> record.<span class="hljs-keyword">class</span>.name.underscore.pluralize.to_sym; <span class="hljs-keyword">end</span>
+
+      private
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_self</span><span class="hljs-params">(options={}, include_associations=[], id_columns=<span class="hljs-keyword">nil</span>)</span></span>
+        clone_record(<span class="hljs-keyword">self</span>, options, include_associations, id_columns)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_record</span><span class="hljs-params">(record, options, include_associations=[], id_columns=<span class="hljs-keyword">nil</span>)</span></span>
+        dictionary = get_clone_dictionary(options)
+        id_columns = [id_columns].flatten.compact
+        cloned_record = record.deep_clone <span class="hljs-symbol">include:</span> include_associations, <span class="hljs-symbol">dictionary:</span> dictionary <span class="hljs-keyword">do</span> |original, kopy|
+          clone_block(original, kopy, options)
+          clone_id_columns(id_columns, original, kopy, options)  <span class="hljs-keyword">if</span> id_columns.present?
+        <span class="hljs-keyword">end</span>
+        cloned_record
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_block</span><span class="hljs-params">(original, kopy, options)</span></span>
+        clone_block_replace_authable(kopy, options)
+        clone_block_replace_ownerable(kopy, options)
+        clone_block_replace_user_id(kopy, options)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_block_replace_authable</span><span class="hljs-params">(kopy, options)</span></span>
+        dictionary = get_clone_dictionary(options)
+        <span class="hljs-keyword">if</span> kopy.<span class="hljs-keyword">class</span>.reflect_on_association(<span class="hljs-symbol">:authable</span>)
+          authable        = options[<span class="hljs-symbol">:authable</span>] || <span class="hljs-keyword">self</span>
+          cloned_authable = get_cloned_record_from_dictionary(authable, dictionary)
+          raise_clone_exception(<span class="hljs-string">"Cloned authable <span class="hljs-subst">#{authable.<span class="hljs-keyword">class</span>.name.inspect}</span> not found in dictionary [id: <span class="hljs-subst">#{authable.id}</span>]."</span>) <span class="hljs-keyword">if</span> cloned_authable.blank?
+          kopy.authable = cloned_authable
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_block_replace_ownerable</span><span class="hljs-params">(kopy, options)</span></span>
+        ownerable = options[<span class="hljs-symbol">:ownerable</span>]
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ownerable.blank?
+        <span class="hljs-keyword">if</span> kopy.<span class="hljs-keyword">class</span>.reflect_on_association(<span class="hljs-symbol">:ownerable</span>)
+          kopy.ownerable = ownerable
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_block_replace_user_id</span><span class="hljs-params">(kopy, options)</span></span>
+        user    = options[<span class="hljs-symbol">:user</span>]
+        user_id = options[<span class="hljs-symbol">:user_id</span>]
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> user.blank? &amp;&amp; user_id.blank?
+        user_id = user.id  <span class="hljs-keyword">if</span> user_id.blank?
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> user_id.blank?
+        <span class="hljs-keyword">if</span> kopy.<span class="hljs-keyword">class</span>.column_names.<span class="hljs-keyword">include</span>?(<span class="hljs-string">'user_id'</span>)
+          kopy.user_id = user_id
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_id_columns</span><span class="hljs-params">(id_columns, original, kopy, options)</span></span>
+        dictionary = get_clone_dictionary(options)
+        id_columns.each <span class="hljs-keyword">do</span> |id_column|
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> original.respond_to?(id_column)
+          id = original.send(id_column)
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> id.blank?
+          original_record_for_id = original.<span class="hljs-keyword">class</span>.find_by(<span class="hljs-symbol">id:</span> id)
+          raise_clone_exception(<span class="hljs-string">"Clone <span class="hljs-subst">#{original.<span class="hljs-keyword">class</span>.name.inspect}</span> not found [id: <span class="hljs-subst">#{original.id}</span>]."</span>) <span class="hljs-keyword">if</span> original_record_for_id.blank?
+          cloned_record_id = <span class="hljs-keyword">nil</span>
+          cloned_record    = get_cloned_record_from_dictionary(original_record_for_id, dictionary)
+          cloned_record_id = cloned_record.id  <span class="hljs-keyword">if</span> cloned_record.present?
+          kopy.send(<span class="hljs-string">"<span class="hljs-subst">#{id_column}</span>="</span>, cloned_record_id)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_save_record</span><span class="hljs-params">(record, message=<span class="hljs-string">'Save error:'</span>)</span></span>
+        <span class="hljs-keyword">unless</span> record.save
+          message += <span class="hljs-string">" <span class="hljs-subst">#{record.<span class="hljs-keyword">class</span>.name.inspect}</span>:\n<span class="hljs-subst">#{record.inspect}</span>\nValidation errors: <span class="hljs-subst">#{record.errors.full_messages.inspect}</span>."</span>
+          raise_clone_exception(message)
+        <span class="hljs-keyword">end</span>
+        record
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_cloned_record_from_dictionary</span><span class="hljs-params">(record, dictionary)</span></span>
+        key  = get_record_dictionary_key(record)
+        hash = dictionary[key]
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> hash.blank?
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> hash.is_a?(<span class="hljs-constant">Hash</span>)
+        hash[record]
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_clone_title</span><span class="hljs-params">(title, options={})</span></span>
+        <span class="hljs-keyword">if</span> is_full_clone?(options) || options[<span class="hljs-symbol">:keep_title</span>].present?
+          title
+        <span class="hljs-keyword">elsif</span> options[<span class="hljs-symbol">:title</span>].present?
+          options[<span class="hljs-symbol">:title</span>]
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-string">'clone: '</span> + (title || <span class="hljs-string">''</span>)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_include?</span><span class="hljs-params">(key, options, default=<span class="hljs-keyword">true</span>)</span></span>
+        options.has_key?(key) ? options[key] == <span class="hljs-keyword">true</span> <span class="hljs-symbol">:</span> default
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_full_clone?</span><span class="hljs-params">(options)</span>;</span> options[<span class="hljs-symbol">:is_full_clone</span>] == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_clone_exception</span><span class="hljs-params">(message)</span></span>
+        raise <span class="hljs-constant">CloneError</span>, message
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CloneError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

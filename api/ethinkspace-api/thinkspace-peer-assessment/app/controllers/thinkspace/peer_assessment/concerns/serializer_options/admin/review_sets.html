@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/concerns/serializer_options/admin/review_sets</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/concerns/serializer_options/admin/review_sets"><meta name="groc-project-path" content="thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/concerns/serializer_options/admin/review_sets.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/concerns/serializer_options/admin/review_sets.rb">thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/concerns/serializer_options/admin/review_sets.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Concerns</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">SerializerOptions</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Admin</span></span>
+          <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReviewSets</span></span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve</span><span class="hljs-params">(serializer_options)</span>;</span> state_change(serializer_options); <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unapprove</span><span class="hljs-params">(serializer_options)</span>;</span> state_change(serializer_options); <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">notify</span><span class="hljs-params">(serializer_options)</span>;</span> <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">state_change</span><span class="hljs-params">(serializer_options)</span></span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_peer_assessment_reviews</span>
+            <span class="hljs-keyword">end</span>
+            
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

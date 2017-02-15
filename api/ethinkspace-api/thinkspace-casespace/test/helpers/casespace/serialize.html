@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/helpers/casespace/serialize</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/helpers/casespace/serialize"><meta name="groc-project-path" content="thinkspace-casespace/test/helpers/casespace/serialize.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/helpers/casespace/serialize.rb">thinkspace-casespace/test/helpers/casespace/serialize.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::Casespace::Serialize</span></span>
+  extend <span class="hljs-constant">ActiveSupport::Concern</span>
+  included <span class="hljs-keyword">do</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_serializer_options</span></span>
+      <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">class</span>.totem.serializer_options.new
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_serializer_scope</span><span class="hljs-params">(serializer_options, username)</span></span>
+      scope                    = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+      scope.current_ability    = get_ability(username)
+      scope.current_user       = get_user(username)
+      scope.serializer_options = serializer_options
+      scope
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">serialize_records</span><span class="hljs-params">(records, scope)</span></span>
+      record     = records.respond_to?(<span class="hljs-symbol">:to_a</span>) ? records.to_a.first <span class="hljs-symbol">:</span> records
+      serializer = record.active_model_serializer
+      serializer.totem_serialize_as_json(records, <span class="hljs-symbol">scope:</span> scope)
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Debug options:<br>  debug:         [true|FALSE]  # debug all
+  debug_hash:    [true|FALSE]  # print the result serialized hash
+  debug_options: [true|FALSE]  # print serializer run option values e.g. include_association, etc.
+  debug_run:     [true|FALSE]  # print serializer log as they happen during the run (use if get errors during serialization)
+  debug_log:     [true|FALSE]  # print serializer log after serialization completed (assumes serialization was successful)</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">serialize_as_json</span><span class="hljs-params">(records, username, serializer_options, options={})</span></span>
+      debug         = options[<span class="hljs-symbol">:debug</span>]         || <span class="hljs-keyword">false</span>
+      debug_run     = options[<span class="hljs-symbol">:debug_run</span>]     || <span class="hljs-keyword">false</span>
+      debug_log     = options[<span class="hljs-symbol">:debug_log</span>]     || <span class="hljs-keyword">false</span>
+      debug_hash    = options[<span class="hljs-symbol">:debug_hash</span>]    || <span class="hljs-keyword">false</span>
+      debug_options = options[<span class="hljs-symbol">:debug_options</span>] || <span class="hljs-keyword">false</span>
+      debug_on      = debug || debug_run || debug_log
+      scope         = get_scope(serializer_options, username)
+      puts <span class="hljs-string">"\n***** Debug Test: <span class="hljs-subst">#{method_name.inspect}</span> *****\n\n"</span>  <span class="hljs-keyword">if</span> debug_on || debug_hash
+      serializer_options.debug_on             <span class="hljs-keyword">if</span> debug_on
+      serializer_options.debug_run_on         <span class="hljs-keyword">if</span> debug || debug_run
+      serializer_options.print_debug_options  <span class="hljs-keyword">if</span> debug || debug_options
+      puts <span class="hljs-string">'--Debug Run:-- ("class" [record-id] :action :association-name)'</span>   <span class="hljs-keyword">if</span> debug || debug_run
+      hash = serialize_records(records, scope)
+      puts <span class="hljs-string">"--Serialized Hash:--"</span>           <span class="hljs-keyword">if</span> debug || debug_hash
+      pp hash                               <span class="hljs-keyword">if</span> debug || debug_hash
+      puts <span class="hljs-string">"\n--Debug Log:-- (sorted by: \"class\" [record-id] :action :association-name [count-of-times-called-via-association])"</span>   <span class="hljs-keyword">if</span> debug || debug_log
+      serializer_options.print_debug_log_sorted(<span class="hljs-symbol">unique:</span> <span class="hljs-keyword">true</span>)  <span class="hljs-keyword">if</span> debug || debug_log
+      hash
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">serializer_attributes</span><span class="hljs-params">(object)</span></span>
+      serializer_class  = object.kind_of?(<span class="hljs-constant">Class</span>) ? object.name <span class="hljs-symbol">:</span> object.<span class="hljs-keyword">class</span>.name
+      serializer_class += <span class="hljs-string">'Serializer'</span>
+      klass = serializer_class.safe_constantize
+      klass._attributes.keys
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># included</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

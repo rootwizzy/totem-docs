@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/db/migrate/20160824000000_add_sandbox_space_id_to_thinkspace_common_spaces</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-common/db/migrate/20160824000000_add_sandbox_space_id_to_thinkspace_common_spaces"><meta name="groc-project-path" content="thinkspace-common/db/migrate/20160824000000_add_sandbox_space_id_to_thinkspace_common_spaces.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-common/db/migrate/20160824000000_add_sandbox_space_id_to_thinkspace_common_spaces.rb">thinkspace-common/db/migrate/20160824000000_add_sandbox_space_id_to_thinkspace_common_spaces.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AddSandboxSpaceIdToThinkspaceCommonSpaces</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Migration</span></span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">up</span></span>
+    change_table <span class="hljs-symbol">:thinkspace_common_spaces</span> <span class="hljs-keyword">do</span> |t|
+      t.references  <span class="hljs-symbol">:sandbox_space</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-constant">Thinkspace::Common::Space</span>.reset_column_information <span class="hljs-comment"># reset columns if seeding as well</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">down</span></span>
+    change_table <span class="hljs-symbol">:thinkspace_common_spaces</span> <span class="hljs-keyword">do</span> |t|
+      t.remove <span class="hljs-symbol">:sandbox_space_id</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

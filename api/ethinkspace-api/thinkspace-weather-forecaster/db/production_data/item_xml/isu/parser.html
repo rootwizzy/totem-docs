@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/db/production_data/item_xml/isu/parser</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/db/production_data/item_xml/isu/parser"><meta name="groc-project-path" content="thinkspace-weather-forecaster/db/production_data/item_xml/isu/parser.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-weather-forecaster/db/production_data/item_xml/isu/parser.rb">thinkspace-weather-forecaster/db/production_data/item_xml/isu/parser.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">WeatherForecaster</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ItemXml</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Isu</span></span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(xml)</span></span>
+          doc = parse_xml(xml)
+          set_default_id_key(<span class="hljs-string">'ident'</span>)
+          extract_items(doc)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extract_items</span><span class="hljs-params">(doc)</span></span>
+          items = doc.css(<span class="hljs-string">'item'</span>)
+          items.each <span class="hljs-keyword">do</span> |item|
+            title = get_attr(item, <span class="hljs-symbol">:title</span>)
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> title.match(<span class="hljs-regexp">/reporting station/i</span>)
+            result       = new_item
+            result.title = title
+            result.id    = get_id(item)
+            presentation = item.css(<span class="hljs-string">'presentation'</span>)
+            add_item(result, presentation)
+            add_processing(result, item)
+            add_response(result, presentation)
+            parser_items.push result
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_item</span><span class="hljs-params">(result, presentation)</span></span>
+          material = presentation.css(<span class="hljs-string">'material'</span>).first
+          item     = material.css(<span class="hljs-string">'mattext'</span>)
+          content  = item.present? ? sanitize_string(item.text) <span class="hljs-symbol">:</span> <span class="hljs-string">''</span>
+          header   = <span class="hljs-keyword">nil</span>
+          help_tip = <span class="hljs-keyword">nil</span>
+
+          <span class="hljs-keyword">if</span> content.match(<span class="hljs-string">'&lt;h'</span>)
+            names           = [<span class="hljs-string">'h1'</span>, <span class="hljs-string">'h2'</span>, <span class="hljs-string">'h3'</span>, <span class="hljs-string">'h4'</span>, <span class="hljs-string">'h5'</span>, <span class="hljs-string">'h6'</span>]
+            content, header = extract_content_and_name_text(content, names)
+            content         = content.gsub(<span class="hljs-regexp">/&lt;br&gt;/i</span>, <span class="hljs-string">''</span>)
+          <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">if</span> content.match(<span class="hljs-string">'&lt;a'</span>)
+            names            = [<span class="hljs-string">'a'</span>]
+            content, anchors = extract_content_and_name_text(content, names)
+            html             = parse_html(anchors)
+            html.children.each <span class="hljs-keyword">do</span> |child|
+              result.add_help_tip_html <span class="hljs-string">"&lt;h4&gt;<span class="hljs-subst">#{child.text}</span>&lt;/h4&gt;"</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+          result.content  = content</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>result.header   = header</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">known_outcome_keys</span>;</span> [<span class="hljs-symbol">:vartype</span>, <span class="hljs-symbol">:defaultval</span>, <span class="hljs-symbol">:varname</span>, <span class="hljs-symbol">:maxvalue</span>, <span class="hljs-symbol">:minvalue</span>]; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">known_condition_names</span>;</span> [<span class="hljs-symbol">:conditionvar</span>, <span class="hljs-symbol">:text</span>, <span class="hljs-symbol">:setvar</span>]; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_processing</span><span class="hljs-params">(result, item)</span></span>
+          processing   = item.css(<span class="hljs-string">'resprocessing'</span>)
+          outcome      = processing.css(<span class="hljs-string">'outcomes decvar'</span>).first
+          conditions   = processing.css(<span class="hljs-string">'respcondition'</span>)
+          processor    = result.processor
+          unknown_keys = (outcome.keys.map {|k| k.to_sym}) - known_outcome_keys
+          raise <span class="hljs-constant">XMLError</span>, <span class="hljs-string">"Unknown process outcome keys <span class="hljs-subst">#{unknown_keys}</span> in \n<span class="hljs-subst">#{outcome.to_xml}</span>"</span>  <span class="hljs-keyword">if</span> unknown_keys.present?
+          default_value = get_attr(outcome, <span class="hljs-symbol">:defaultval</span>, <span class="hljs-number">0</span>).to_i
+          unknown_names = (conditions.children.map {|c| c.name.to_sym}) - known_condition_names
+          raise <span class="hljs-constant">XMLError</span>, <span class="hljs-string">"Unknown process condition names <span class="hljs-subst">#{unknown_names}</span> in \n<span class="hljs-subst">#{conditions.to_xml}</span>"</span>  <span class="hljs-keyword">if</span> unknown_names.present?
+          condition_var = conditions.css(<span class="hljs-string">'conditionvar'</span>)
+          set_var       = conditions.css(<span class="hljs-string">'setvar'</span>)
+          condition_var.children.each <span class="hljs-keyword">do</span> |child|
+            <span class="hljs-keyword">case</span> child.name.downcase
+            <span class="hljs-keyword">when</span> <span class="hljs-string">'varequal'</span>
+              id    = get_id(child, <span class="hljs-string">'respident'</span>)
+              value = condition_text_to_hash(child.text)
+              processor.var(value.var)
+              processor.response_qid(value.site)
+            <span class="hljs-keyword">when</span> <span class="hljs-string">'text'</span>
+              raise <span class="hljs-constant">XMLError</span>, <span class="hljs-string">"Unknown condition text value <span class="hljs-subst">#{child.name.inspect}</span> in \n<span class="hljs-subst">#{child.to_xml}</span>"</span>  <span class="hljs-keyword">unless</span> sanitize_string(child.text).blank?
+            <span class="hljs-keyword">else</span>
+              raise <span class="hljs-constant">XMLError</span>, <span class="hljs-string">"Unknown condition <span class="hljs-subst">#{child.name.inspect}</span> in \n<span class="hljs-subst">#{child.to_xml}</span>"</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+          add_value = <span class="hljs-number">0</span>
+          set_var.each <span class="hljs-keyword">do</span> |var|
+            name   = get_attr(var, <span class="hljs-symbol">:varname</span>)
+            action = get_attr(var, <span class="hljs-symbol">:action</span>)
+            value  = var.text
+            <span class="hljs-keyword">case</span> action.downcase
+            <span class="hljs-keyword">when</span> <span class="hljs-string">'add'</span>
+              raise <span class="hljs-constant">XMLError</span>, <span class="hljs-string">"Duplicate add value <span class="hljs-subst">#{value.inspect}</span> for var <span class="hljs-subst">#{var.to_s.inspect}</span>"</span>  <span class="hljs-keyword">if</span> add_value &gt; <span class="hljs-number">0</span>
+              raise <span class="hljs-constant">XMLError</span>, <span class="hljs-string">"Add value <span class="hljs-subst">#{value.inspect}</span> for var <span class="hljs-subst">#{var.to_s.inspect}</span> is not an integer."</span>  <span class="hljs-keyword">unless</span> is_integer?(value)
+              add_value = value.to_i
+            <span class="hljs-keyword">else</span>
+              raise <span class="hljs-constant">XMLError</span>, <span class="hljs-string">"Unknown action <span class="hljs-subst">#{name.inspect}</span> in \n<span class="hljs-subst">#{var.to_s}</span>"</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+          processor.incorrect(default_value)
+          processor.correct(default_value + add_value)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">condition_text_to_hash</span><span class="hljs-params">(text)</span></span>
+          hash = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+          <span class="hljs-keyword">return</span> hash <span class="hljs-keyword">if</span> text.blank?
+          var_str = text.sub(<span class="hljs-regexp">/^\{/</span>, <span class="hljs-string">''</span>).sub(<span class="hljs-regexp">/\}$/</span>, <span class="hljs-string">''</span>)
+          vars    = var_str.split(<span class="hljs-string">','</span>).map {|v| v.strip}
+          vars.each <span class="hljs-keyword">do</span> |var|
+            key, value = var.split(<span class="hljs-string">'='</span>, <span class="hljs-number">2</span>)
+            <span class="hljs-keyword">if</span> value.match(<span class="hljs-string">';'</span>)
+              value = value.split(<span class="hljs-string">';'</span>)
+            <span class="hljs-keyword">end</span>
+            hash[key.to_sym] = value
+          <span class="hljs-keyword">end</span>
+          hash
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_response</span><span class="hljs-params">(result, presentation)</span></span>
+          var             = result.processing.value.var
+          response        = presentation.children.select {|node| node.name.start_with?(<span class="hljs-string">'response'</span>)}.first
+          response_id     = get_id(response)
+          response_timing = get_attr(response, <span class="hljs-symbol">:rtiming</span>).downcase
+
+          <span class="hljs-keyword">case</span> response.name.downcase
+
+          <span class="hljs-keyword">when</span> <span class="hljs-string">'response_str'</span>
+            input = result.input(response_id)
+            input.timing(response_timing)
+            render = response.css(<span class="hljs-string">'render_fib'</span>)
+            label  = render.css(<span class="hljs-string">'response_label'</span>).first
+            input.type    get_attr(render, <span class="hljs-symbol">:fibtype</span>).downcase
+            input.columns get_attr(render, <span class="hljs-symbol">:columns</span>)
+            input.value   get_attr(render, <span class="hljs-symbol">:value</span>)
+            input.label   get_id(label), label.text
+            <span class="hljs-keyword">case</span>
+            <span class="hljs-keyword">when</span> is_temperature?(var)
+              input.validation_temperature
+            <span class="hljs-keyword">when</span> is_wind_speed?(var)
+              input.validation_wind_speed
+            <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">when</span> <span class="hljs-string">'response_lid'</span>
+            cardinality = get_attr(response, <span class="hljs-string">'rcardinality'</span>).downcase
+            <span class="hljs-keyword">case</span> cardinality
+            <span class="hljs-keyword">when</span> <span class="hljs-string">'single'</span>
+              radio = result.radio(response_id)
+              radio.timing(response_timing)
+              labels = response.css(<span class="hljs-string">'response_label'</span>)
+              labels.each <span class="hljs-keyword">do</span> |label|
+                qid    = get_id(label)
+                id     = get_id_from_qid(qid)
+                label  = label.css(<span class="hljs-string">'mattext'</span>).text
+                choice = {<span class="hljs-symbol">id:</span> id, <span class="hljs-symbol">label:</span> label, <span class="hljs-symbol">qid:</span> qid}
+                add_choice_actual_id(var, choice)
+                radio.add_choice(choice)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">when</span> <span class="hljs-string">'multiple'</span>
+              checkbox = result.checkbox(response_id)
+              checkbox.timing(response_timing)
+              labels   = response.css(<span class="hljs-string">'response_label'</span>)
+              labels.each <span class="hljs-keyword">do</span> |label|
+                qid    = get_id(label)
+                id     = get_id_from_qid(qid)
+                label  = label.css(<span class="hljs-string">'mattext'</span>).text
+                choice = {<span class="hljs-symbol">id:</span> id, <span class="hljs-symbol">label:</span> label, <span class="hljs-symbol">qid:</span> qid}
+                add_choice_actual_id(var, choice)
+                checkbox.add_choice(choice)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">else</span>
+              raise <span class="hljs-constant">XMLError</span>, <span class="hljs-string">"Unknown response cardinality <span class="hljs-subst">#{cardinality.inspect}</span> in \n<span class="hljs-subst">#{response.to_xml}</span>"</span>
+            <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_choice_actual_id</span><span class="hljs-params">(var, choice)</span></span>
+          <span class="hljs-keyword">if</span> is_wind_direction?(var)
+            prev_id            = choice[<span class="hljs-symbol">:id</span>]
+            choice[<span class="hljs-symbol">:id</span>]        = choice[<span class="hljs-symbol">:label</span>]
+            choice[<span class="hljs-symbol">:actual_id</span>] = prev_id
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_wind_speed?</span><span class="hljs-params">(var)</span>;</span>     var.match(<span class="hljs-regexp">/^WSPD/i</span>); <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_wind_direction?</span><span class="hljs-params">(var)</span>;</span> var.match(<span class="hljs-regexp">/^WDIR/i</span>); <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_temperature?</span><span class="hljs-params">(var)</span>;</span>    var.match(<span class="hljs-regexp">/^TEMP/i</span>); <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

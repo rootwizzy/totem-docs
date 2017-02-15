@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/timetable/model/associations_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/timetable/model/associations_test"><meta name="groc-project-path" content="thinkspace-casespace/test/timetable/model/associations_test.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/timetable/model/associations_test.rb">thinkspace-casespace/test/timetable/model/associations_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'timetable_helper'</span>
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Timetable</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Model</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AssociationHashTest</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActionController::TestCase</span></span></span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Timetable::Helpers::All</span>
+
+describe <span class="hljs-string">'phases'</span> <span class="hljs-keyword">do</span>
+  let (<span class="hljs-symbol">:current_user</span>)    {get_user(<span class="hljs-symbol">:read_1</span>)}
+  let (<span class="hljs-symbol">:ownerable</span>)       {current_user}
+  let (<span class="hljs-symbol">:timeable</span>)        {get_phase(<span class="hljs-symbol">:timetable_phase_1_A</span>)}
+  let (<span class="hljs-symbol">:assignment</span>)      {get_assignment(<span class="hljs-symbol">:timetable_assignment_1</span>)}
+  let (<span class="hljs-symbol">:space</span>)           {get_space(<span class="hljs-symbol">:timetable_space</span>)}
+  let (<span class="hljs-symbol">:phases</span>)          {assignment.thinkspace_casespace_phases}
+
+  describe <span class="hljs-string">'hash'</span> <span class="hljs-keyword">do</span>
+    it <span class="hljs-string">'no ownerable - phase gets space timetable'</span> <span class="hljs-keyword">do</span>
+      expect = <span class="hljs-constant">Time</span>.parse(<span class="hljs-string">'1111-11-11'</span>)
+      create_timetable(<span class="hljs-symbol">timeable:</span> space, <span class="hljs-symbol">due_at:</span> expect)
+      timetable_class.where(<span class="hljs-symbol">timeable:</span> assignment).delete_all
+      tts    = timetable_scope_class.new(timeable.<span class="hljs-keyword">class</span>, <span class="hljs-keyword">nil</span>, assignment_class, {<span class="hljs-symbol">on:</span> assignment_class, <span class="hljs-symbol">for:</span> space.<span class="hljs-keyword">class</span>})
+      actual = tts.select_virtual(<span class="hljs-symbol">:due_at</span>).with_scope.where(<span class="hljs-symbol">id:</span> timeable.id).map(&amp;<span class="hljs-symbol">:v_due_at</span>)
+      assert_equal [expect], actual, <span class="hljs-string">"get the space timetable due at '<span class="hljs-subst">#{expect}</span>'"</span>
+    <span class="hljs-keyword">end</span>
+    it <span class="hljs-string">'ownerable - phase gets space timetable'</span> <span class="hljs-keyword">do</span>
+      expect = <span class="hljs-constant">Time</span>.parse(<span class="hljs-string">'1111-11-11'</span>)
+      create_timetable(<span class="hljs-symbol">timeable:</span> space)
+      create_ownerable_timetable(<span class="hljs-symbol">timeable:</span> space, <span class="hljs-symbol">due_at:</span> expect)
+      timetable_class.where(<span class="hljs-symbol">timeable:</span> assignment).delete_all
+      tts    = timetable_scope_class.new(timeable.<span class="hljs-keyword">class</span>, ownerable, assignment_class, {<span class="hljs-symbol">on:</span> assignment_class, <span class="hljs-symbol">for:</span> space.<span class="hljs-keyword">class</span>})
+      actual = tts.select_virtual(<span class="hljs-symbol">:due_at</span>).with_scope.where(<span class="hljs-symbol">id:</span> timeable.id).map(&amp;<span class="hljs-symbol">:v_due_at</span>)
+      assert_equal [expect], actual, <span class="hljs-string">"get the space ownerable timetable due at '<span class="hljs-subst">#{expect}</span>'"</span>
+    <span class="hljs-keyword">end</span>
+    it <span class="hljs-string">'ownerable - string association class names'</span> <span class="hljs-keyword">do</span>
+      expect = <span class="hljs-constant">Time</span>.parse(<span class="hljs-string">'1111-11-11'</span>)
+      create_timetable(<span class="hljs-symbol">timeable:</span> space)
+      create_ownerable_timetable(<span class="hljs-symbol">timeable:</span> space, <span class="hljs-symbol">due_at:</span> expect)
+      timetable_class.where(<span class="hljs-symbol">timeable:</span> assignment).delete_all
+      tts    = timetable_scope_class.new(timeable.<span class="hljs-keyword">class</span>, ownerable, assignment_class.name, {<span class="hljs-symbol">on:</span> assignment_class.name, <span class="hljs-symbol">for:</span> space.<span class="hljs-keyword">class</span>.name})
+      actual = tts.select_virtual(<span class="hljs-symbol">:due_at</span>).with_scope.where(<span class="hljs-symbol">id:</span> timeable.id).map(&amp;<span class="hljs-symbol">:v_due_at</span>)
+      assert_equal [expect], actual, <span class="hljs-string">"get the space ownerable timetable due at '<span class="hljs-subst">#{expect}</span>'"</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'association classes'</span> <span class="hljs-keyword">do</span>
+    it <span class="hljs-string">'no ownerable - strings'</span> <span class="hljs-keyword">do</span>
+      expect = <span class="hljs-constant">Time</span>.parse(<span class="hljs-string">'1111-11-11'</span>)
+      create_timetable(<span class="hljs-symbol">due_at:</span> expect)
+      tts    = timetable_scope_class.new(timeable.<span class="hljs-keyword">class</span>, <span class="hljs-keyword">nil</span>, assignment_class.name, {<span class="hljs-symbol">on:</span> assignment_class.name, <span class="hljs-symbol">for:</span> space.<span class="hljs-keyword">class</span>.name})
+      actual = tts.select_virtual(<span class="hljs-symbol">:due_at</span>).with_scope.where(<span class="hljs-symbol">id:</span> timeable.id).map(&amp;<span class="hljs-symbol">:v_due_at</span>)
+      assert_equal [expect], actual, <span class="hljs-string">"get same result when use stings class names instead of classes"</span>
+    <span class="hljs-keyword">end</span>
+    it <span class="hljs-string">'ownerable - strings - includes slash format'</span> <span class="hljs-keyword">do</span>
+      expect = <span class="hljs-constant">Time</span>.parse(<span class="hljs-string">'1212-12-12'</span>)
+      create_ownerable_timetable(<span class="hljs-symbol">due_at:</span> expect)
+      tts    = timetable_scope_class.new(timeable.<span class="hljs-keyword">class</span>, ownerable, assignment_class.name, {<span class="hljs-symbol">on:</span> assignment_class.name.underscore, <span class="hljs-symbol">for:</span> space.<span class="hljs-keyword">class</span>.name})
+      actual = tts.select_virtual(<span class="hljs-symbol">:due_at</span>).with_scope.where(<span class="hljs-symbol">id:</span> timeable.id).map(&amp;<span class="hljs-symbol">:v_due_at</span>)
+      assert_equal [expect], actual, <span class="hljs-string">"get same result when use stings class names instead of classes"</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

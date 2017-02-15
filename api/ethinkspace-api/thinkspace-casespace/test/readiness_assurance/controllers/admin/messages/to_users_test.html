@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/readiness_assurance/controllers/admin/messages/to_users_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/readiness_assurance/controllers/admin/messages/to_users_test"><meta name="groc-project-path" content="thinkspace-casespace/test/readiness_assurance/controllers/admin/messages/to_users_test.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/readiness_assurance/controllers/admin/messages/to_users_test.rb">thinkspace-casespace/test/readiness_assurance/controllers/admin/messages/to_users_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'readiness_assurance_helper'</span>
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controller</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReadinessAssuranceAdminMessagesToUsersTest</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActionController::TestCase</span></span></span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::Helpers::All</span>
+
+  add_test(<span class="hljs-constant">Proc</span>.new <span class="hljs-keyword">do</span> |route|
+    describe <span class="hljs-string">'to users'</span> <span class="hljs-keyword">do</span>
+      before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@route</span> = route; <span class="hljs-keyword">end</span>
+      let(<span class="hljs-symbol">:authable</span>) {assignment}
+      let(<span class="hljs-symbol">:params</span>)   {<span class="hljs-constant">Hash</span>(<span class="hljs-symbol">message:</span> {<span class="hljs-symbol">message:</span> default_message, <span class="hljs-symbol">user_ids:</span> [read_1.id, read_2.id]})}
+      it <span class="hljs-string">'user ids only'</span> <span class="hljs-keyword">do</span>
+        assert_authorized(send_route_request)
+        assert_server_event_message
+        assert_admin_server_event_message
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>) <span class="hljs-comment"># proc</span>
+
+  add_test(<span class="hljs-constant">Proc</span>.new <span class="hljs-keyword">do</span> |route|
+    describe <span class="hljs-string">'to users'</span> <span class="hljs-keyword">do</span>
+      before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@route</span> = route; <span class="hljs-keyword">end</span>
+      let(<span class="hljs-symbol">:authable</span>) {assignment}
+      let(<span class="hljs-symbol">:params</span>)   {<span class="hljs-constant">Hash</span>(<span class="hljs-symbol">message:</span> {<span class="hljs-symbol">message:</span> default_message, <span class="hljs-symbol">team_ids:</span> [team_1.id]})}
+      it <span class="hljs-string">'team ids only'</span> <span class="hljs-keyword">do</span>
+        assert_authorized(send_route_request)
+        assert_server_event_message
+        assert_admin_server_event_message
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>) <span class="hljs-comment"># proc</span>
+
+  add_test(<span class="hljs-constant">Proc</span>.new <span class="hljs-keyword">do</span> |route|
+    describe <span class="hljs-string">'to users'</span> <span class="hljs-keyword">do</span>
+      before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@route</span> = route; <span class="hljs-keyword">end</span>
+      let(<span class="hljs-symbol">:authable</span>)   {assignment}
+      let(<span class="hljs-symbol">:ownerables</span>) {[read_1] + team_2_users}
+      let(<span class="hljs-symbol">:params</span>)     {<span class="hljs-constant">Hash</span>(<span class="hljs-symbol">message:</span> {<span class="hljs-symbol">message:</span> default_message, <span class="hljs-symbol">user_ids:</span> [read_1.id], <span class="hljs-symbol">team_ids:</span> [team_2.id]})}
+      it <span class="hljs-string">'user_ids and team ids'</span> <span class="hljs-keyword">do</span>
+        assert_authorized(send_route_request)
+        assert_server_event_message
+        assert_admin_server_event_message
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>) <span class="hljs-comment"># proc</span>
+
+  <span class="hljs-variable">@co</span> = new_route_config_options(<span class="hljs-symbol">tests:</span> get_tests, <span class="hljs-symbol">test_action:</span> <span class="hljs-symbol">:to_users</span>)
+  <span class="hljs-variable">@co</span>.only <span class="hljs-symbol">:readiness_assurance</span>, <span class="hljs-symbol">:messages</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::Helpers::Route::Irats</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

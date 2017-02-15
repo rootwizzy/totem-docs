@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-casespace/test/serializer/models/space_cache_key_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-casespace/test/serializer/models/space_cache_key_test"><meta name="groc-project-path" content="thinkspace-casespace/test/serializer/models/space_cache_key_test.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-casespace/test/serializer/models/space_cache_key_test.rb">thinkspace-casespace/test/serializer/models/space_cache_key_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'serializer_helper'</span>
+<span class="hljs-constant">Test::Casespace::Seed</span>.load(<span class="hljs-symbol">config:</span> <span class="hljs-symbol">:serializer</span>)
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Serializer</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ModelsSpaceCacheKey</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActionController::TestCase</span></span></span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Controller</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Model</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Assert</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ModuleMethods</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cache_key</span>;</span> action_name(action); <span class="hljs-variable">@controller</span>.send(<span class="hljs-symbol">:controller_cache_key</span>, record, {}); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cache_digest</span><span class="hljs-params">(key)</span>;</span> <span class="hljs-variable">@controller</span>.send(<span class="hljs-symbol">:controller_cache_key_digest</span>, key); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_cache_key</span></span>
+    puts <span class="hljs-string">"\n\n"</span>
+    key    = cache_key
+    digest = cache_digest(key).inspect
+    puts <span class="hljs-string">"KEY (<span class="hljs-subst">#{key.length}</span>)"</span>, key.inspect
+    puts <span class="hljs-string">"DIGEST (<span class="hljs-subst">#{digest.length}</span>)"</span>, digest
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-variable">@spaces_controller</span> <span class="hljs-keyword">do</span>
+    let(<span class="hljs-symbol">:user</span>)   {serializer_update_user}
+    describe <span class="hljs-string">'models..space.all..index cache key'</span> <span class="hljs-keyword">do</span>
+      let(<span class="hljs-symbol">:record</span>) {all_serializer_spaces}
+      let(<span class="hljs-symbol">:action</span>) {<span class="hljs-symbol">:index</span>}
+      it <span class="hljs-string">'cache..module_ability..module metadata..no ownerable'</span> <span class="hljs-keyword">do</span>
+        serializer_options.ability_actions <span class="hljs-symbol">:update</span>
+        serializer_options.include_ability <span class="hljs-symbol">ability:</span> <span class="hljs-keyword">true</span>
+        serializer_options.include_metadata
+        serializer_options.include_module_ability  spaces_module_ability_hash
+        serializer_options.include_module_metadata spaces_module_metadata_hash
+        serializer_options.cache <span class="hljs-symbol">metadata:</span> <span class="hljs-keyword">false</span>
+        set_space_cache_serializer_options</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>print_cache_key</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    describe <span class="hljs-string">'cache key for phase without associations..should not error'</span> <span class="hljs-keyword">do</span>
+      let(<span class="hljs-symbol">:record</span>) {phase_class.create(<span class="hljs-symbol">title:</span> <span class="hljs-string">'test phase without associations'</span>)}
+      let(<span class="hljs-symbol">:action</span>) {<span class="hljs-symbol">:index</span>}
+      it <span class="hljs-string">'no phase associations'</span> <span class="hljs-keyword">do</span>
+        serializer_options.cache
+        serializer_options.cache_query_key <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:phase</span>
+        serializer_options.cache_query_key <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:phase_template</span>,   <span class="hljs-symbol">pluck:</span> <span class="hljs-symbol">:thinkspace_casespace_phase_template</span>
+        serializer_options.cache_query_key <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:configuration</span>,    <span class="hljs-symbol">pluck:</span> <span class="hljs-symbol">:thinkspace_common_configuration</span>
+        serializer_options.cache_query_key <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:phase_components</span>, <span class="hljs-symbol">maximum:</span> <span class="hljs-symbol">:thinkspace_casespace_phase_components</span>
+        cache_key</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>print_cache_key</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

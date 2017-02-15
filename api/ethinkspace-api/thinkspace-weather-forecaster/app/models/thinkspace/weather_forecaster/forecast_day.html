@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/forecast_day</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/forecast_day"><meta name="groc-project-path" content="thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/forecast_day.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/forecast_day.rb">thinkspace-weather-forecaster/app/models/thinkspace/weather_forecaster/forecast_day.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">WeatherForecaster</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ForecastDay</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span>        </span>
+      totem_associations
+
+      validates <span class="hljs-symbol">:forecast_at</span>, <span class="hljs-symbol">presence:</span> <span class="hljs-keyword">true</span>, <span class="hljs-symbol">uniqueness:</span> <span class="hljs-keyword">true</span>
+
+      <span class="hljs-constant">STATE_DEFAULT</span>  = <span class="hljs-string">'unlocked'</span>
+      <span class="hljs-constant">STATE_UNLOCKED</span> = <span class="hljs-string">'unlocked'</span>
+      <span class="hljs-constant">STATE_LOCKED</span>   = <span class="hljs-string">'locked'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="scopes">Scopes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_between_days</span><span class="hljs-params">(start_day, end_day)</span>;</span> where(<span class="hljs-symbol">forecast_at:</span> (start_day..end_day)); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_days</span><span class="hljs-params">(days)</span>;</span> where(<span class="hljs-symbol">forecast_at:</span> days); <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">find_day</span> <span class="hljs-params">(day)</span>;</span>   find_by(<span class="hljs-symbol">forecast_at:</span> day); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">find_current_day</span>;</span> find_day(get_current_day); <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">previous_forecast_days</span><span class="hljs-params">(number_of_days=<span class="hljs-number">1</span>)</span></span>
+        current_day = get_current_day
+        scope_between_days(current_day - number_of_days.days, current_day - <span class="hljs-number">1</span>.day)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">find_or_create_current_forecast_day</span>;</span> find_or_create_forecast_day(get_current_day); <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">find_or_create_forecast_day</span><span class="hljs-params">(time)</span></span>
+        day          = get_day(time)
+        forecast_day = find_day(day)
+        <span class="hljs-keyword">if</span> forecast_day.present?
+          <span class="hljs-keyword">if</span> !forecast_day.locked? &amp;&amp; lock_day?(day)
+            forecast_day.state = <span class="hljs-constant">STATE_LOCKED</span>
+            raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Error saving locked forecast day [errors: <span class="hljs-subst">#{forecast_day.errors.messages}</span>] [date: <span class="hljs-subst">#{day}</span>]."</span>  <span class="hljs-keyword">unless</span> forecast_day.save
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">else</span>
+          state = lock_day?(day) ? <span class="hljs-constant">STATE_LOCKED</span> <span class="hljs-symbol">:</span> <span class="hljs-constant">STATE_DEFAULT</span>
+          forecast_day = <span class="hljs-keyword">self</span>.create(<span class="hljs-symbol">forecast_at:</span> day, <span class="hljs-symbol">state:</span> state)
+          raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Could not find or create forecast day [errors: <span class="hljs-subst">#{forecast_day.errors.messages}</span>] [date: <span class="hljs-subst">#{day}</span>]."</span>  <span class="hljs-keyword">if</span> forecast_day.errors.present?
+        <span class="hljs-keyword">end</span>
+        raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Could not find or create forecast day [date: <span class="hljs-subst">#{day}</span>]."</span>  <span class="hljs-keyword">if</span> forecast_day.blank?
+        forecast_day
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">get_current_day</span>;</span> get_day(<span class="hljs-constant">Time</span>.now.in_time_zone(<span class="hljs-string">'America/Chicago'</span>)); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">get_day</span><span class="hljs-params">(time)</span></span>
+        parsed = time.strftime(<span class="hljs-string">'%Y-%m-%d'</span>)
+        time   = <span class="hljs-constant">Time</span>.parse(parsed)
+        time.utc.end_of_day
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">lock_day?</span><span class="hljs-params">(day)</span>;</span> day + <span class="hljs-number">1</span>.second &lt; get_current_day; <span class="hljs-keyword">end</span>  <span class="hljs-comment"># add 1 second since the record's datetime has less precision than a Time object</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="instance-methods">Instance Methods.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>&#39;locked?&#39;    means the forecast_day.state == &#39;locked&#39;.
+&#39;is_locked?&#39; means the forecast_day has a locked state OR is locked due to the forecast date
+             being in the past e.g. the auto-score job has not yet been run to lock it.
+             Code (other than this model) should use &#39;is_locked?&#39;.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">locked?</span>;</span>      <span class="hljs-keyword">self</span>.state == <span class="hljs-constant">STATE_LOCKED</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_locked</span>;</span>   <span class="hljs-keyword">self</span>.state = <span class="hljs-constant">STATE_LOCKED</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_locked?</span>;</span>   locked? || <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.lock_day?(<span class="hljs-keyword">self</span>.forecast_at); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_unlocked?</span>;</span> !is_locked?; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">default_state</span>;</span> <span class="hljs-constant">STATE_DEFAULT</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FindOrCreateError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

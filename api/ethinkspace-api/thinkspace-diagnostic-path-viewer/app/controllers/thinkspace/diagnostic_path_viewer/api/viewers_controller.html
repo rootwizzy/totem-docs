@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-diagnostic-path-viewer/app/controllers/thinkspace/diagnostic_path_viewer/api/viewers_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-diagnostic-path-viewer/app/controllers/thinkspace/diagnostic_path_viewer/api/viewers_controller"><meta name="groc-project-path" content="thinkspace-diagnostic-path-viewer/app/controllers/thinkspace/diagnostic_path_viewer/api/viewers_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-diagnostic-path-viewer/app/controllers/thinkspace/diagnostic_path_viewer/api/viewers_controller.rb">thinkspace-diagnostic-path-viewer/app/controllers/thinkspace/diagnostic_path_viewer/api/viewers_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">DiagnosticPathViewer</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ViewersController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+        totem_action_authorize! <span class="hljs-symbol">record_ownerable:</span> <span class="hljs-keyword">false</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
+          serializer_options.remove_association  <span class="hljs-symbol">:thinkspace_common_user</span>, <span class="hljs-symbol">:ownerable</span>, <span class="hljs-symbol">:authable</span>, <span class="hljs-symbol">:thinkspace_diagnostic_path_path</span>
+          controller_render(<span class="hljs-variable">@viewer</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">view</span></span>
+          serializer_options.remove_association <span class="hljs-symbol">:ownerable</span>, <span class="hljs-symbol">:authable</span>
+          serializer_options.authorize_action   <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">:thinkspace_common_user</span>
+          serializer_options.include_association(
+            <span class="hljs-symbol">:thinkspace_common_user</span>,
+            <span class="hljs-symbol">:thinkspace_diagnostic_path_path</span>,
+            <span class="hljs-symbol">:thinkspace_diagnostic_path_parent</span>,
+            <span class="hljs-symbol">:thinkspace_diagnostic_path_path_items</span>,
+            <span class="hljs-symbol">:path_itemable</span>,
+            <span class="hljs-symbol">:thinkspace_observation_list_list</span>,
+            <span class="hljs-symbol">:thinkspace_observation_list_lists</span>
+          )
+          sub_action = totem_action_authorize.sub_action
+          <span class="hljs-keyword">case</span> sub_action
+          <span class="hljs-keyword">when</span> <span class="hljs-symbol">:ownerable</span>
+            ownerable  = totem_action_authorize.params_ownerable
+            access_denied <span class="hljs-string">"Params ownerable is not the current user."</span>  <span class="hljs-keyword">unless</span> ownerable == current_user
+            serializer_options.scope_association <span class="hljs-symbol">:thinkspace_diagnostic_path_path_items</span>, <span class="hljs-symbol">:thinkspace_observation_list_observations</span>,
+              <span class="hljs-symbol">where:</span> {<span class="hljs-symbol">ownerable:</span> ownerable}
+          <span class="hljs-keyword">else</span>
+            serializer_options.scope_association <span class="hljs-symbol">:thinkspace_diagnostic_path_path_items</span>, <span class="hljs-symbol">:thinkspace_observation_list_observations</span>,
+              <span class="hljs-symbol">where:</span> {<span class="hljs-symbol">ownerable:</span> <span class="hljs-variable">@viewer</span>.ownerable}
+          <span class="hljs-keyword">end</span>
+
+          json       = controller_as_json(<span class="hljs-variable">@viewer</span>)
+          ids        = (json[<span class="hljs-string">'thinkspace/observation_list/observations'</span>] || []).map { |item| item[<span class="hljs-symbol">:id</span>] }
+          key        = <span class="hljs-string">'thinkspace/observation_list/observation_ids'</span>
+          lists      = json[<span class="hljs-string">'thinkspace/observation_list/lists'</span>] || []
+          lists.each <span class="hljs-keyword">do</span> |list|
+            list[key] = list[key] &amp; ids
+          <span class="hljs-keyword">end</span>
+
+          controller_render_json(json)
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(message)</span></span>
+          raise_access_denied_exception(message, totem_action_authorize.action, <span class="hljs-variable">@assessment</span>)
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-resource/app/controllers/thinkspace/resource/api/files_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-resource/app/controllers/thinkspace/resource/api/files_controller"><meta name="groc-project-path" content="thinkspace-resource/app/controllers/thinkspace/resource/api/files_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-resource/app/controllers/thinkspace/resource/api/files_controller.rb">thinkspace-resource/app/controllers/thinkspace/resource/api/files_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Resource</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FilesController</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Totem::Settings</span></span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+        totem_action_serializer_options
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span>
+          resourceable = current_ability.get_record_by_model_type_and_model_id_from_params(params)
+          authorize!(<span class="hljs-symbol">:update</span>, resourceable)
+
+          files = params[<span class="hljs-symbol">:files</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Should probably return error JSON for all returns.
+return error(default_error_text) if not resourceable_type or not resourceable_id or not files</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">return</span> error(default_error_text) <span class="hljs-keyword">unless</span> files.present?
+
+          created_files = []
+          files.each <span class="hljs-keyword">do</span> |file|
+            ts_file = <span class="hljs-constant">Thinkspace::Resource::File</span>.new(<span class="hljs-symbol">file:</span> file, <span class="hljs-symbol">thinkspace_common_user:</span> current_user, <span class="hljs-symbol">resourceable:</span> resourceable)
+            <span class="hljs-keyword">if</span> ts_file.save
+              created_files &lt;&lt; ts_file
+            <span class="hljs-keyword">else</span>
+              <span class="hljs-keyword">return</span> error(ts_file.errors)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+          controller_render(created_files)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
+          controller_render(<span class="hljs-variable">@file</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">select</span></span>
+          <span class="hljs-variable">@files</span> = <span class="hljs-variable">@files</span>.find(params[<span class="hljs-symbol">:ids</span>])
+          controller_render(<span class="hljs-variable">@files</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
+          authorize!(<span class="hljs-symbol">:update</span>, <span class="hljs-variable">@file</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Authorize tag ids belong to resourceable</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">if</span> params_root[<span class="hljs-symbol">:new_tags</span>].present?
+            <span class="hljs-variable">@file</span>.thinkspace_resource_tag_ids = params_root[<span class="hljs-symbol">:new_tags</span>]
+          <span class="hljs-keyword">end</span>
+          controller_render(<span class="hljs-variable">@file</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">destroy</span></span>
+          authorize!(<span class="hljs-symbol">:destroy</span>, <span class="hljs-variable">@file</span>)
+          controller_destroy_record(<span class="hljs-variable">@file</span>)
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">error</span><span class="hljs-params">(errors)</span></span>
+          options          = {}
+          options[<span class="hljs-symbol">:status</span>] = <span class="hljs-number">422</span>
+          options[<span class="hljs-symbol">:json</span>]   = {<span class="hljs-symbol">:errors</span> =&gt; errors}
+          render options
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">default_error_text</span></span>
+          <span class="hljs-string">'Invalid request for uploading a file.'</span>
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

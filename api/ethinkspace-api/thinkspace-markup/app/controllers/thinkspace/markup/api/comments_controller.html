@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-markup/app/controllers/thinkspace/markup/api/comments_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace-markup/app/controllers/thinkspace/markup/api/comments_controller"><meta name="groc-project-path" content="thinkspace-markup/app/controllers/thinkspace/markup/api/comments_controller.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-markup/app/controllers/thinkspace/markup/api/comments_controller.rb">thinkspace-markup/app/controllers/thinkspace/markup/api/comments_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Markup</span></span>
+		<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+		  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CommentsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+				load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+				before_action <span class="hljs-symbol">:set_parent_in_params</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:update</span>]
+				totem_action_authorize! <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:destroy</span>, <span class="hljs-symbol">:update</span>], <span class="hljs-symbol">ownerable_ability_action:</span> <span class="hljs-symbol">:view</span>, <span class="hljs-class"><span class="hljs-keyword">module</span>: :<span class="hljs-title">action_authorize_markup</span>,  <span class="hljs-title">allow_blank_associations</span>: {<span class="hljs-title">create</span>: [:<span class="hljs-title">parent_id</span>], <span class="hljs-title">update</span>: [:<span class="hljs-title">parent_id</span>]}</span>
+				totem_action_authorize! <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:fetch</span>], <span class="hljs-symbol">read:</span> [<span class="hljs-symbol">:fetch</span>]
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Authorize discussion.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-variable">@comment</span>.discussion_id = params_association_id(<span class="hljs-symbol">:discussion_id</span>)
+          <span class="hljs-variable">@comment</span>.comment       = params_root[<span class="hljs-symbol">:comment</span>]
+          <span class="hljs-variable">@comment</span>.commenterable = current_ability.get_record_by_model_type_and_model_id(params_root[<span class="hljs-symbol">:commenterable_type</span>], params_root[<span class="hljs-symbol">:commenterable_id</span>])
+          <span class="hljs-variable">@comment</span>.user_id       = current_user.id
+          controller_save_record(<span class="hljs-variable">@comment</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fetch</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>params[:auth] values:
+  authable:    e.g. phase
+  ownerable:   current team/user
+  commentable: artifact being commented on (e.g. file)
+  view_ids:    ids of user/team to view (e.g. get the comments for this team/user)
+  view_type:   class of what to scope view_ids to (team/user)</p></div></div><div class="code"><div class="wrapper">          totem_action_authorize.process_view_action
+          commentable     = current_ability.get_record_by_model_type_and_model_id(params[<span class="hljs-symbol">:auth</span>][<span class="hljs-symbol">:commentable_type</span>], params[<span class="hljs-symbol">:auth</span>][<span class="hljs-symbol">:commentable_id</span>])
+          authable        = totem_action_authorize.params_authable
+          view_ids        = totem_action_authorize.params_view_ids
+          view_class_name = totem_action_authorize.params_view_class_name
+          <span class="hljs-keyword">case</span>
+          <span class="hljs-keyword">when</span> current_ability.can?(<span class="hljs-symbol">:update</span>, authable)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Instructor role, show all</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-variable">@comments</span> = controller_model_class.where(
+              <span class="hljs-symbol">authable:</span>       authable,
+              <span class="hljs-symbol">ownerable_id:</span>   view_ids,
+              <span class="hljs-symbol">ownerable_type:</span> view_class_name
+            )
+          <span class="hljs-keyword">when</span> is_viewing_self? || is_viewing_team?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Viewing self, show all.</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-variable">@comments</span> = controller_model_class.where(
+              <span class="hljs-symbol">authable:</span>       authable,
+              <span class="hljs-symbol">ownerable_id:</span>   view_ids,
+              <span class="hljs-symbol">ownerable_type:</span> view_class_name
+            )
+          <span class="hljs-keyword">else</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Viewing someone else, scope to comments current_user left.</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-variable">@comments</span> = controller_model_class.where(
+              <span class="hljs-symbol">authable:</span>       authable,
+              <span class="hljs-symbol">commenterable:</span>  current_user,
+              <span class="hljs-symbol">ownerable_id:</span>   view_ids,
+              <span class="hljs-symbol">ownerable_type:</span> view_class_name
+            )
+          <span class="hljs-keyword">end</span>
+          serializer_options.authorize_action    <span class="hljs-symbol">:read_commenterable</span>, <span class="hljs-symbol">:commenterable</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span> <span class="hljs-comment"># allow the `commenterable` user to be serialized</span>
+          serializer_options.include_association <span class="hljs-symbol">:commenterable</span>
+          serializer_options.remove_association  <span class="hljs-symbol">:ownerable</span>      <span class="hljs-comment"># instead are return as type &amp; id attributes</span>
+          serializer_options.remove_association  <span class="hljs-symbol">:authable</span>       <span class="hljs-comment"># instead are return as type &amp; id attributes</span>
+          serializer_options.remove_association  <span class="hljs-symbol">:commentable</span>    <span class="hljs-comment"># instead are return as type &amp; id attributes</span>
+          serializer_options.remove_association  <span class="hljs-symbol">:thinkspace_common_user</span>
+          serializer_options.remove_association  <span class="hljs-symbol">:thinkspace_common_spaces</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:thinkspace_common_user</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Need to include the :commenterable association to include the users in the json, but do not want it in each rendered &#39;comment&#39; json.</p></div></div><div class="code"><div class="wrapper">          hash = controller_as_json(<span class="hljs-variable">@comments</span>)
+          hash[controller_plural_path].each {|h| h.delete(<span class="hljs-symbol">:commenterable</span>)}
+          controller_render_json(hash)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
+          <span class="hljs-variable">@comment</span>.comment = params_root[<span class="hljs-symbol">:comment</span>]
+          <span class="hljs-variable">@comment</span>.save
+          <span class="hljs-comment">#controller_save_record(<span class="hljs-doctag">@comment</span>)</span>
+          controller_render_no_content
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">destroy</span></span>
+          controller_destroy_record(<span class="hljs-variable">@comment</span>)
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_parent_in_params</span></span>
+          <span class="hljs-variable">@comment</span>.parent_id = params_association_id(<span class="hljs-string">'parent_id'</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(message, action, records)</span></span>
+          raise_access_denied_exception(message, action, records)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_viewing_self?</span></span>
+          klass    = get_view_class
+          view_ids = totem_action_authorize.params_view_ids
+          id       = view_ids.first
+          klass.find(id) == current_user
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_viewing_team?</span></span>
+          team_class = <span class="hljs-constant">Thinkspace::Team::Team</span>
+          klass      = get_view_class
+          authable   = totem_action_authorize.params_authable
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> klass == team_class
+          view_ids = totem_action_authorize.params_view_ids
+          id       = view_ids.first
+          team     = klass.find(id)
+          team_class.users_on_teams?(authable, current_user, team)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_view_class</span></span>
+          view_ids        = totem_action_authorize.params_view_ids
+          view_class_name = totem_action_authorize.params_view_class_name
+          access_denied(<span class="hljs-string">"Cannot view more than one record at a time."</span>, <span class="hljs-symbol">:fetch</span>, <span class="hljs-keyword">nil</span>) <span class="hljs-keyword">if</span> view_ids.length &gt; <span class="hljs-number">1</span>
+          view_class = view_class_name.safe_constantize
+          access_denied(<span class="hljs-string">"View class [<span class="hljs-subst">#{view_class_name}</span>] is invalid."</span>, <span class="hljs-symbol">:fetch</span>, <span class="hljs-keyword">nil</span>) <span class="hljs-keyword">unless</span> view_class.present?
+          view_class
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>
