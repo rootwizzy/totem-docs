@@ -22,6 +22,7 @@ To start a comment to be parsed simply start the line with `#` anything followin
 
 
 ### Multi line comments
+#### Coffeescript
 Comment blocks are wrapped in `###` such as
 
 ```ruby
@@ -32,6 +33,14 @@ Comment blocks are wrapped in `###` such as
 
 Inside a comment block a preceding `#` is not required for each line but will be parsed out if it is the chosen style. Inside the comment block each line is parsed like a normal markdown line.
 
+#### Ruby
+In ruby multi-line comments are generated with a `#` on each line, the `=begin` and `=end` designators do not parse within groc.
+
+```ruby
+  #
+  # Foo Bar Comment Block
+  #
+```
 
 ### Markdown style
 Currently we are using [Github Flavored Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) rendered through [Marked](https://github.com/chjj/marked). The code is highlighted via [highlight.js](http://highlightjs.org/).

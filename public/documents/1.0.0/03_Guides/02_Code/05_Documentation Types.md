@@ -1,5 +1,5 @@
 # Source Documentation Guidelines
-
+*See [Comment Guide](/1.0.0/guides/code/comments.html) for more about how Groc parses comments*
 
 ## General
 ### Source Header
