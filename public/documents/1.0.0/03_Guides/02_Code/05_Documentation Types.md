@@ -31,6 +31,7 @@
   c. Component/Partial Paths
   d. Internal Properties
   e. Computed Properties
+
 4. Events/Hooks
 5. Helpers
 6. Actions
@@ -48,6 +49,7 @@
   b. Component/Partial Paths
   c. Internal Properties
   d. Computed Properties
+
 5. Helpers
 
 ### Services
@@ -59,6 +61,9 @@
   c. Internal Properties
   d. Computed Properties
 
+4. Public Methods
+5. Private Methods
+
 ### Mixins
 1. Imports
 2. Header
@@ -67,6 +72,7 @@
   b. Component/Partial Paths
   c. Internal Properties
   d. Computed Properties
+
 4. Helpers
 
 ### Models
@@ -78,6 +84,7 @@
   b. Component/Partial Paths
   c. Internal Properties
   d. Computed Properties
+
 4. Methods
 5. Helpers
 
@@ -90,6 +97,7 @@
   a. Authorization
   b. Hooks
   c. Includes
+
 5. Public Methods
 6. Private Methods
 
@@ -103,6 +111,7 @@
   c. Hooks
   d. Validations
   e. States
+
 5. Public Methods
 6. Private Methods
 
@@ -120,12 +129,13 @@
   a. includes
   b. layout
   c. defaults
+
 5. Methods
 
 ### Tasks
 1. Requires
 2. Namespace
-3. Header.
+3. Header
 4. Tasks
 
 ### Tests
@@ -134,4 +144,5 @@
 3. Header
 4. Test Setup
   a. includes
+
 5. Tests
