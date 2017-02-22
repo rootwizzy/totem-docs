@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-peer-assessment/addon/components/overview</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-peer-assessment/addon/components/overview"><meta name="groc-project-path" content="thinkspace-peer-assessment/addon/components/overview.coffee"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/development/thinkspace-peer-assessment/addon/components/overview.coffee">thinkspace-peer-assessment/addon/components/overview.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+import ta    from <span class="hljs-string">'totem/ds/associations'</span>
+import tc    from <span class="hljs-string">'totem/cache'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">server_events</span>: ember.inject.service()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>totem_data_config: ability: true, metadata: {ajax_source: true}  # require metadata so completed count will be updated after a submit</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">all_phases_completed</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">is_in_progress</span>:       <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">resume_phase</span>:         <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">team</span>:                 <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">phase_states_loaded</span>:  <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">is_on_team</span>: ember.computed.notEmpty <span class="hljs-string">'team'</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set_phase_progress</span>()
+    <span class="hljs-property">@init_assignment_type</span>()
+    <span class="hljs-property">@init_team_set</span>().<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@init_team</span>()
+      <span class="hljs-property">@init_assessment_phase</span>()
+      assignment = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      <span class="hljs-keyword">if</span> assignment.get(<span class="hljs-string">'is_pubsub'</span>)
+        <span class="hljs-property">@totem_scope</span>.authable(assignment)
+        se = <span class="hljs-property">@get</span>(<span class="hljs-string">'server_events'</span>)
+        se.join_assignment_with_current_user()
+
+  <span class="hljs-attribute">init_assignment_type</span>: <span class="hljs-function">-&gt;</span>
+    model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    model.get(ta.to_p(<span class="hljs-string">'assignment_type'</span>)).<span class="hljs-keyword">then</span> (assignment_type) =&gt;
+      <span class="hljs-property">@set</span>(<span class="hljs-string">'assignment_type'</span>, assignment_type)
+
+  <span class="hljs-attribute">init_assessment_phase</span>: <span class="hljs-function">-&gt;</span>
+    model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    model.get(ta.to_p(<span class="hljs-string">'phases'</span>)).<span class="hljs-keyword">then</span> (phases) =&gt;
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[init_assessment_phase] phases are '</span>, phases)
+
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(phases)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> phases.get(<span class="hljs-string">'length'</span>) &gt; <span class="hljs-number">1</span>
+      <span class="hljs-property">@set</span>(<span class="hljs-string">'phase'</span>, phases.get(<span class="hljs-string">'firstObject'</span>))
+
+  <span class="hljs-attribute">init_team_set</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      model.get(ta.to_p(<span class="hljs-string">'space'</span>)).<span class="hljs-keyword">then</span> (space) =&gt;
+        <span class="hljs-property">@set</span>(<span class="hljs-string">'space'</span>, space)
+        space.get_team_sets().<span class="hljs-keyword">then</span> (team_sets) =&gt;
+          <span class="hljs-property">@set</span>(<span class="hljs-string">'team_set'</span>, team_sets.get(<span class="hljs-string">'firstObject'</span>))
+          resolve()
+            
+  <span class="hljs-attribute">init_team</span>: <span class="hljs-function">-&gt;</span>
+    team_set = <span class="hljs-property">@get</span>(<span class="hljs-string">'team_set'</span>)
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'team_set is '</span>, team_set, ta.to_p(<span class="hljs-string">'team'</span>))
+
+    query =
+      <span class="hljs-attribute">id</span>: team_set.get(<span class="hljs-string">'id'</span>)
+
+    options =
+      <span class="hljs-attribute">action</span>: <span class="hljs-string">'teams'</span>
+      <span class="hljs-attribute">model</span>: ta.to_p(<span class="hljs-string">'team'</span>)
+
+    tc.query_action(ta.to_p(<span class="hljs-string">'team_set'</span>), query, options).<span class="hljs-keyword">then</span> (teams) =&gt;
+      team = teams.filterBy <span class="hljs-string">'is_member'</span>, <span class="hljs-literal">true</span>
+      <span class="hljs-property">@set</span>(<span class="hljs-string">'team'</span>, team.get(<span class="hljs-string">'firstObject'</span>))
+
+  <span class="hljs-attribute">set_phase_progress</span>: <span class="hljs-function">-&gt;</span>
+    assignment = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    assignment.get(ns.to_p <span class="hljs-string">'phases'</span> ).<span class="hljs-keyword">then</span> (phases) =&gt;
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'[SET_PHASE_PROGRESS] phases are '</span>, phases)
+      phase_promises = phases.getEach(ns.to_p(<span class="hljs-string">'phase_states'</span>))
+      ember.RSVP.Promise.all(phase_promises).<span class="hljs-keyword">then</span> =&gt;
+        sorted_phases = phases.sortBy(<span class="hljs-string">'position'</span>)
+        resume_phase  = sorted_phases.find (phase) -&gt; phase.get(<span class="hljs-string">'is_unlocked'</span>)
+        <span class="hljs-keyword">if</span> resume_phase
+          <span class="hljs-property">@set</span> <span class="hljs-string">'resume_phase'</span>, resume_phase
+          <span class="hljs-property">@set</span> <span class="hljs-string">'is_in_progress'</span>, <span class="hljs-literal">true</span>  <span class="hljs-keyword">if</span> resume_phase != sorted_phases.get(<span class="hljs-string">'firstObject'</span>)
+        uncompleted_phase = phases.find (phase) -&gt; phase.get(<span class="hljs-string">'is_completed'</span>) != <span class="hljs-literal">true</span>
+        <span class="hljs-property">@set</span> <span class="hljs-string">'all_phases_completed'</span>, <span class="hljs-literal">true</span> <span class="hljs-keyword">unless</span> uncompleted_phase
+        <span class="hljs-property">@set</span> <span class="hljs-string">'phase_states_loaded'</span>, <span class="hljs-literal">true</span>
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: ns.to_p(<span class="hljs-string">'phase_states'</span>)
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+      <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: ns.to_p(<span class="hljs-string">'phases'</span>)</div></div></div></div></body></html>

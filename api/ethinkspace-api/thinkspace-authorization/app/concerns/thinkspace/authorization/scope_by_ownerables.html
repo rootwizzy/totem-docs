@@ -1,42 +1,26 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace-authorization/app/concerns/thinkspace/authorization/scope_by_ownerables</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-authorization/app/concerns/thinkspace/authorization/scope_by_ownerables"><meta name="groc-project-path" content="thinkspace-authorization/app/concerns/thinkspace/authorization/scope_by_ownerables.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-authorization/app/concerns/thinkspace/authorization/scope_by_ownerables.rb">thinkspace-authorization/app/concerns/thinkspace/authorization/scope_by_ownerables.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
-  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authorization</span></span>
-    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ScopeByOwnerables</span></span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-authorization/app/concerns/thinkspace/authorization/scope_by_ownerables</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-authorization/app/concerns/thinkspace/authorization/scope_by_ownerables"><meta name="groc-project-path" content="thinkspace-authorization/app/concerns/thinkspace/authorization/scope_by_ownerables.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-authorization/app/concerns/thinkspace/authorization/scope_by_ownerables.rb">thinkspace-authorization/app/concerns/thinkspace/authorization/scope_by_ownerables.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authorization</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ScopeByOwnerables</span></span>
 
-      extend <span class="hljs-constant">::ActiveSupport::Concern</span>
+extend <span class="hljs-constant">::ActiveSupport::Concern</span>
 
-      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ClassMethods</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Rails 4.2 changed the return string from scope.where_sql by referencing
-any variables by &#39;?&#39;.  Variables need to then be passed in a &#39;where&#39; scope.
-Previously (e.g. 4.1), the return string used &#39;$&#39; type references so common variables were shared (e.g. phase_id).
-Removed &#39;where_sql&#39; call and create the user and team sql strings manually (compatible with Rals 4.1 and 4.2).</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scope_by_ownerables</span><span class="hljs-params">(user, record=<span class="hljs-keyword">nil</span>)</span></span>
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ClassMethods</span></span>
 
-            scope = scope_ownerable_table_sql(user.<span class="hljs-keyword">class</span>.name, user.id)
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scope_by_ownerables</span><span class="hljs-params">(users, record=<span class="hljs-keyword">nil</span>)</span></span>
 
-            <span class="hljs-keyword">return</span> where(scope)  <span class="hljs-keyword">if</span> record.blank?
+    scope = <span class="hljs-keyword">self</span>.where(<span class="hljs-symbol">ownerable:</span> users)
+    <span class="hljs-keyword">return</span> scope <span class="hljs-keyword">if</span> record.blank?
 
-            teamable = <span class="hljs-keyword">nil</span>
-            <span class="hljs-keyword">if</span> record.respond_to?(<span class="hljs-symbol">:thinkspace_team_teams</span>)
-              teamable = record
-            <span class="hljs-keyword">else</span>
-              teamable = record.authable  <span class="hljs-keyword">if</span> record.respond_to?(<span class="hljs-symbol">:authable</span>)
-            <span class="hljs-keyword">end</span>
-
-            <span class="hljs-keyword">if</span> teamable.present? &amp;&amp; teamable.respond_to?(<span class="hljs-symbol">:thinkspace_team_teams</span>)
-              team_ids = teamable.thinkspace_team_teams.scope_by_users(user).pluck(<span class="hljs-symbol">:id</span>)
-              <span class="hljs-keyword">if</span> team_ids.present?
-                scope += <span class="hljs-string">' OR '</span> + scope_ownerable_table_sql(teamable.thinkspace_team_teams.klass.name, team_ids) 
-              <span class="hljs-keyword">end</span>
-            <span class="hljs-keyword">end</span>
-
-            where(scope)
-          <span class="hljs-keyword">end</span>
-
-          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scope_ownerable_table_sql</span><span class="hljs-params">(type, ids)</span></span>
-            scope  = <span class="hljs-string">'("'</span> + <span class="hljs-keyword">self</span>.table_name + <span class="hljs-string">'"."ownerable_type" = '</span> + <span class="hljs-string">"'<span class="hljs-subst">#{type}</span>'"</span> + <span class="hljs-string">' AND '</span> + <span class="hljs-string">'"'</span> + <span class="hljs-keyword">self</span>.table_name + <span class="hljs-string">'"."ownerable_id"'</span>
-            ids.instance_of?(<span class="hljs-constant">Array</span>) ? scope + <span class="hljs-string">' IN ('</span> + ids.join(<span class="hljs-string">', '</span>) + <span class="hljs-string">'))'</span> <span class="hljs-symbol">:</span> scope + <span class="hljs-string">' = '</span> + ids.to_s + <span class="hljs-string">')'</span>
-          <span class="hljs-keyword">end</span>
-
-      <span class="hljs-keyword">end</span>
-
+    teamable = <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">if</span> record.respond_to?(<span class="hljs-symbol">:thinkspace_team_teams</span>)
+      teamable = record
+    <span class="hljs-keyword">else</span>
+      teamable = record.authable  <span class="hljs-keyword">if</span> record.respond_to?(<span class="hljs-symbol">:authable</span>)
+      teamable = <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> teamable.respond_to?(<span class="hljs-symbol">:thinkspace_team_teams</span>)
     <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">return</span> scope <span class="hljs-keyword">if</span> teamable.blank?
+
+    teams = teamable.thinkspace_team_teams.scope_by_users(users)
+    scope.<span class="hljs-keyword">or</span>(<span class="hljs-keyword">self</span>.where(<span class="hljs-symbol">ownerable:</span> teams))
+
   <span class="hljs-keyword">end</span>
-<span class="hljs-keyword">end</span></div></div></div></div></body></html>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

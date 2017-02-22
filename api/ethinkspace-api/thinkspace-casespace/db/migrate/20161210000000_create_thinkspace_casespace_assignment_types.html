@@ -4,6 +4,8 @@
     create_table <span class="hljs-symbol">:thinkspace_casespace_assignment_types</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
       t.string <span class="hljs-symbol">:title</span>
       t.string <span class="hljs-symbol">:path</span> <span class="hljs-comment"># What the route is mounted as in the client (e.g. 'cases' for thinkspace-case).</span>
+      t.string <span class="hljs-symbol">:description</span>
+      t.string <span class="hljs-symbol">:img_src</span>
       t.timestamps
     <span class="hljs-keyword">end</span>
     

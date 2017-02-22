@@ -19,7 +19,41 @@
       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ra_type</span>;</span>  get_settings[<span class="hljs-string">'ra_type'</span>]; <span class="hljs-keyword">end</span>
 
       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">irat?</span>;</span> get_ra_type == <span class="hljs-string">'irat'</span>; <span class="hljs-keyword">end</span>
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">trat?</span>;</span> get_ra_type == <span class="hljs-string">'trat'</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return an array of merged question settings.
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">trat?</span>;</span> get_ra_type == <span class="hljs-string">'trat'</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ifat?</span>;</span> get_settings[<span class="hljs-string">'questions'</span>][<span class="hljs-string">'ifat'</span>] == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="question-helpers">Question Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">answer_for_question_id</span><span class="hljs-params">(id)</span>;</span> answers.dig(<span class="hljs-string">'correct'</span>, id); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">choices_for_question_id</span><span class="hljs-params">(id)</span></span>
+        question = question_for_id(id)
+        <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">unless</span> question.present?
+        question[<span class="hljs-string">'choices'</span>]
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">order_for_question_id</span><span class="hljs-params">(id)</span></span>
+        question = question_for_id(id)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">unless</span> question.present?
+        questions.index(question)
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">question_for_id</span><span class="hljs-params">(id)</span>;</span> questions.find { |x| x[<span class="hljs-string">'id'</span>] == id }; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">order_for_choice_for_question_id</span><span class="hljs-params">(id, choice)</span></span>
+        choices = choices_for_question_id(id)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> choices.empty?
+        choice = choices.find { |x| x[<span class="hljs-string">'id'</span>] == choice }
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">unless</span> choice.present?
+        choices.index(choice)
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">label_for_choice_for_question_id</span><span class="hljs-params">(id, choice)</span></span>
+        choices = choices_for_question_id(id)
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> choices.empty?
+        choice = choices.find { |x| x[<span class="hljs-string">'id'</span>] == choice }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> choice.present?
+        choice[<span class="hljs-string">'label'</span>]
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">question_for_question_id</span><span class="hljs-params">(id)</span></span>
+        question = question_for_id(id)
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> question.present?
+        question[<span class="hljs-string">'question'</span>]
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return an array of merged question settings.
 The settings are a merged copy of the question and assessment settings.
 This allows settings to be specified at the assessment level or at each question level.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">merged_question_settings</span></span>
         assessment_settings = get_settings
@@ -71,7 +105,9 @@ This allows settings to be specified at the assessment level or at each question
         response
       <span class="hljs-keyword">end</span>
 
-      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FindOrCreateError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FindOrCreateError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-"> </h3>
+<h3 id="progress-reports">Progress Reports</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">progress_report</span>;</span> <span class="hljs-constant">Thinkspace::ReadinessAssurance::ProgressReports::Report</span>.new(<span class="hljs-keyword">self</span>).process; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
 <h3 id="clone-path">Clone Path.</h3>
 <h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>include ::Totem::Settings.module.thinkspace.deep_clone_helper</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def cyclone(options={})
   self.transaction do

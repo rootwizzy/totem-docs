@@ -33,8 +33,8 @@
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> admin?
     can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:phase_states</span>], assignment, admin_assignment 
     can [<span class="hljs-symbol">:create</span>], assignment
-    can [<span class="hljs-symbol">:templates</span>, <span class="hljs-symbol">:clone</span>, <span class="hljs-symbol">:delete</span>, <span class="hljs-symbol">:load</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">:roster</span>, <span class="hljs-symbol">:phase_order</span>, <span class="hljs-symbol">:phase_componentables</span>, <span class="hljs-symbol">:activate</span>, <span class="hljs-symbol">:inactivate</span>], assignment, admin_assignment 
-    can [<span class="hljs-symbol">:gradebook</span>, <span class="hljs-symbol">:manage_resources</span>], assignment, admin_assignment
+    can [<span class="hljs-symbol">:templates</span>, <span class="hljs-symbol">:clone</span>, <span class="hljs-symbol">:delete</span>, <span class="hljs-symbol">:load</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">:roster</span>, <span class="hljs-symbol">:phase_order</span>, <span class="hljs-symbol">:phase_componentables</span>, <span class="hljs-symbol">:activate</span>, <span class="hljs-symbol">:inactivate</span>, <span class="hljs-symbol">:archive</span>], assignment, admin_assignment 
+    can [<span class="hljs-symbol">:gradebook</span>, <span class="hljs-symbol">:manage_resources</span>, <span class="hljs-symbol">:report</span>], assignment, admin_assignment
   <span class="hljs-keyword">end</span>
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assignment_types</span></span>
@@ -50,8 +50,8 @@
     can [<span class="hljs-symbol">:read</span>], phase_state, read_phase_association
     can [<span class="hljs-symbol">:read</span>], phase_score, read_phase_score
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> admin?
-    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:load</span>, <span class="hljs-symbol">:submit</span>], phase, admin_phase 
-    can [<span class="hljs-symbol">:templates</span>, <span class="hljs-symbol">:clone</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:destroy</span>, <span class="hljs-symbol">:componentables</span>, <span class="hljs-symbol">:activate</span>, <span class="hljs-symbol">:archive</span>, <span class="hljs-symbol">:inactivate</span>, <span class="hljs-symbol">:delete_ownerable_data</span>], phase, admin_phase 
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:load</span>, <span class="hljs-symbol">:submit</span>, <span class="hljs-symbol">:report</span>], phase, admin_phase 
+    can [<span class="hljs-symbol">:templates</span>, <span class="hljs-symbol">:clone</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:bulk_reset_date</span>, <span class="hljs-symbol">:destroy</span>, <span class="hljs-symbol">:componentables</span>, <span class="hljs-symbol">:activate</span>, <span class="hljs-symbol">:archive</span>, <span class="hljs-symbol">:inactivate</span>, <span class="hljs-symbol">:delete_ownerable_data</span>], phase, admin_phase 
     can [<span class="hljs-symbol">:create</span>], [phase_state, phase_score]
     can [<span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:roster_update</span>, <span class="hljs-symbol">:gradebook</span>], phase_state, admin_phase_association
     can [<span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:gradebook</span>], phase_score, admin_phase_score
@@ -107,20 +107,22 @@
   <span class="hljs-keyword">end</span>
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">peer_assessment</span></span>
-    assessment = <span class="hljs-constant">Thinkspace::PeerAssessment::Assessment</span>
-    review_set = <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>
-    team_set   = <span class="hljs-constant">Thinkspace::PeerAssessment::TeamSet</span>
-    review     = <span class="hljs-constant">Thinkspace::PeerAssessment::Review</span>
-    overview   = <span class="hljs-constant">Thinkspace::PeerAssessment::Overview</span>
-    can [<span class="hljs-symbol">:read</span>], assessment
+    assessment          = <span class="hljs-constant">Thinkspace::PeerAssessment::Assessment</span>
+    review_set          = <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>
+    team_set            = <span class="hljs-constant">Thinkspace::PeerAssessment::TeamSet</span>
+    review              = <span class="hljs-constant">Thinkspace::PeerAssessment::Review</span>
+    overview            = <span class="hljs-constant">Thinkspace::PeerAssessment::Overview</span>
+    assessment_template = <span class="hljs-constant">Thinkspace::PeerAssessment::AssessmentTemplate</span>
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:user_templates</span>, <span class="hljs-symbol">:create</span>], assessment_template
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:fetch</span>], assessment
     can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:submit</span>], review_set
     can [<span class="hljs-symbol">:crud</span>], review
     can [<span class="hljs-symbol">:read</span>], overview
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> admin?
-    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:teams</span>, <span class="hljs-symbol">:fetch</span>, <span class="hljs-symbol">:review_sets</span>, <span class="hljs-symbol">:team_sets</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:activate</span>], assessment 
+    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:teams</span>, <span class="hljs-symbol">:review_sets</span>, <span class="hljs-symbol">:team_sets</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:activate</span>], assessment 
     can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:unapprove</span>], review
     can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:unapprove</span>, <span class="hljs-symbol">:notify</span>], review_set
-    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:unapprove</span>], team_set
+    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:unapprove</span>, <span class="hljs-symbol">:approve_all</span>, <span class="hljs-symbol">:unapprove_all</span>], team_set
     can [<span class="hljs-symbol">:update</span>], overview
   <span class="hljs-keyword">end</span>
 

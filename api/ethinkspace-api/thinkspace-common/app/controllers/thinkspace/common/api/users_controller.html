@@ -26,8 +26,10 @@
             <span class="hljs-keyword">end</span>
             permission_denied(parse_s2s_errors(response[<span class="hljs-string">'errors'</span>])) <span class="hljs-keyword">unless</span> response[<span class="hljs-string">'valid'</span>] <span class="hljs-comment"># Invalid creation from S2S</span>
 
-            oauth_user_id       = response[<span class="hljs-string">'id'</span>]
-            <span class="hljs-variable">@user</span>.oauth_user_id = oauth_user_id
+            oauth_user_id           = response[<span class="hljs-string">'id'</span>]
+            <span class="hljs-variable">@user</span>.oauth_user_id     = oauth_user_id
+            
+            update_terms_accepted_at
             set_user_values
 
             <span class="hljs-keyword">if</span> <span class="hljs-variable">@user</span>.save
@@ -39,6 +41,23 @@
             <span class="hljs-keyword">end</span>
 
           <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">avatar</span></span>
+          attachment   = params[<span class="hljs-symbol">:files</span>].first
+          <span class="hljs-variable">@user</span>.avatar = attachment
+          controller_save_record(<span class="hljs-variable">@user</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
+          set_user_values
+          process_updates
+          controller_save_record(<span class="hljs-variable">@user</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_tos</span></span>
+          update_terms_accepted_at
+          controller_save_record(<span class="hljs-variable">@user</span>)
         <span class="hljs-keyword">end</span>
 
         <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.session_user_actions
@@ -76,9 +95,26 @@
           raise_access_denied_exception(message, <span class="hljs-symbol">:create</span>, <span class="hljs-keyword">nil</span>, options)
         <span class="hljs-keyword">end</span>
 
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_terms_accepted_at</span></span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> user</span></p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">end</span>
+
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_user_values</span></span>
-          <span class="hljs-variable">@user</span>.first_name = params_root[<span class="hljs-symbol">:first_name</span>]
-          <span class="hljs-variable">@user</span>.last_name  = params_root[<span class="hljs-symbol">:last_name</span>]
+          <span class="hljs-variable">@user</span>.first_name        = params_root[<span class="hljs-symbol">:first_name</span>]
+          <span class="hljs-variable">@user</span>.last_name         = params_root[<span class="hljs-symbol">:last_name</span>]
+          <span class="hljs-variable">@user</span>.email_optin       = params_root[<span class="hljs-symbol">:email_optin</span>]
+          <span class="hljs-variable">@user</span>.profile           = params_root[<span class="hljs-symbol">:profile</span>]
+
+          <span class="hljs-variable">@user</span>.thinkspace_common_discipline_ids = params_root[<span class="hljs-string">'thinkspace/common/disciplines'</span>]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_updates</span></span>
+          updates = params_root[<span class="hljs-symbol">:updates</span>]
+          <span class="hljs-keyword">if</span> updates.present?
+            <span class="hljs-keyword">if</span> updates.has_key?(<span class="hljs-symbol">:disciplines</span>)
+              discipline_change = updates[<span class="hljs-symbol">:disciplines</span>]
+              ids = discipline_change
+              <span class="hljs-variable">@user</span>.thinkspace_common_discipline_ids = ids
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
         <span class="hljs-keyword">end</span>
 
       <span class="hljs-keyword">end</span>

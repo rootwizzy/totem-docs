@@ -19,6 +19,7 @@
           <span class="hljs-keyword">else</span>
             controller_render(<span class="hljs-variable">@response</span>)
           <span class="hljs-keyword">end</span>
+          publish_progress_report
         <span class="hljs-keyword">end</span>
 
         private
@@ -52,6 +53,18 @@
             room(pubsub_room).
             room_event(<span class="hljs-symbol">:response</span>).
             value(json).
+            publish
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish_progress_report</span></span>
+          <span class="hljs-variable">@assessment</span>     = <span class="hljs-variable">@response</span>.thinkspace_readiness_assurance_assessment
+          assignment      = <span class="hljs-variable">@assessment</span>.authable.thinkspace_casespace_assignment
+          room            = pubsub.room_for(assignment, <span class="hljs-string">'admin'</span>)
+          progress_report = <span class="hljs-variable">@assessment</span>.progress_report
+          pubsub.data.
+            room(room).
+            room_event(<span class="hljs-symbol">:progress_report</span>).
+            value(progress_report).
             publish
         <span class="hljs-keyword">end</span>
 

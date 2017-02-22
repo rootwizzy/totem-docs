@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/sixthedge/totem-lodestar
-  revision: e334d4e196325301879a932664cb44e77b0d7d1f
+  revision: 640c4b7545a742497cf3bfeecebaea4106cc9aab
   branch: master
   specs:
     totem-lodestar (0.5.6)

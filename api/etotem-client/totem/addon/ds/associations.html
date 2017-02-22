@@ -8,7 +8,9 @@ import totem_data_mixin from <span class="hljs-string">'totem/mixins/data'</span
 
   <span class="hljs-property">@totem_data</span>: totem_data_mixin
 
-  <span class="hljs-property">@Model</span>: ds.Model
+  <span class="hljs-property">@Model</span>: ds.Model.extend
+    <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@constructor</span>.modelName}</span>:<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'id'</span>)}</span>:<span class="hljs-subst">#{ember.guidFor(@)}</span>"</span>
+
   <span class="hljs-property">@attr</span>: <span class="hljs-function"><span class="hljs-params">(type, options)</span> -&gt;</span> ds.attr(type, options)
 
   <span class="hljs-property">@PromiseArray</span>:  ds.PromiseArray

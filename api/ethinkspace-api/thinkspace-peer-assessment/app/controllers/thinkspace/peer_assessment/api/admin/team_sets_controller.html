@@ -11,12 +11,30 @@
 
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve</span></span>
             access_denied_state_error <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@team_set</span>.may_approve?
-            <span class="hljs-variable">@team_set</span>.approve_all!
+            <span class="hljs-variable">@team_set</span>.transaction <span class="hljs-keyword">do</span>
+              <span class="hljs-variable">@team_set</span>.approve!
+            <span class="hljs-keyword">end</span>
             controller_render(<span class="hljs-variable">@team_set</span>)
           <span class="hljs-keyword">end</span>
 
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unapprove</span></span>
             access_denied_state_error <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@team_set</span>.may_unapprove?
+            <span class="hljs-variable">@team_set</span>.transaction <span class="hljs-keyword">do</span>
+              <span class="hljs-variable">@team_set</span>.unapprove!
+            <span class="hljs-keyword">end</span>
+            controller_render(<span class="hljs-variable">@team_set</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve_all</span></span>
+            access_denied_state_error <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@team_set</span>.may_approve_all?
+            <span class="hljs-variable">@team_set</span>.transaction <span class="hljs-keyword">do</span>
+              <span class="hljs-variable">@team_set</span>.approve_all!
+            <span class="hljs-keyword">end</span>
+            controller_render(<span class="hljs-variable">@team_set</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unapprove_all</span></span>
+            access_denied_state_error <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@team_set</span>.may_unapprove_all?
             <span class="hljs-variable">@team_set</span>.transaction <span class="hljs-keyword">do</span>
               <span class="hljs-variable">@team_set</span>.unapprove_all!
             <span class="hljs-keyword">end</span>

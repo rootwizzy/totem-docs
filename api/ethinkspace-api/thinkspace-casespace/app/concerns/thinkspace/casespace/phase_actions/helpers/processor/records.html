@@ -26,7 +26,9 @@
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">complete_phase_state</span><span class="hljs-params">(ownerable, phase=current_phase)</span>;</span> send_event_to_phase_state(ownerable, <span class="hljs-symbol">:complete_phase</span>, phase); <span class="hljs-keyword">end</span>
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">lock_phase_state</span><span class="hljs-params">(ownerable, phase=current_phase)</span>;</span>     send_event_to_phase_state(ownerable, <span class="hljs-symbol">:lock_phase</span>, phase); <span class="hljs-keyword">end</span>
-  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock_phase_state</span><span class="hljs-params">(ownerable, phase=current_phase)</span>;</span>   send_event_to_phase_state(ownerable, <span class="hljs-symbol">:unlock_phase</span>, phase); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock_phase_state</span><span class="hljs-params">(ownerable, phase=current_phase)</span>   </span>
+    send_event_to_phase_state(ownerable, <span class="hljs-symbol">:unlock_phase</span>, phase) <span class="hljs-keyword">unless</span> phase.unlock_at(ownerable).present? <span class="hljs-comment"># prevent unlock for phases which have an unlock date set</span>
+  <span class="hljs-keyword">end</span>
 
   private
 

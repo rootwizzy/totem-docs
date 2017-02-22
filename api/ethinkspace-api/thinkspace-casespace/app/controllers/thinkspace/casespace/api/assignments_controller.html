@@ -6,7 +6,7 @@
         totem_action_authorize! <span class="hljs-symbol">only:</span> <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">params_authable_required:</span> <span class="hljs-keyword">true</span>
         totem_action_authorize! <span class="hljs-symbol">only:</span> <span class="hljs-symbol">:phase_states</span>, <span class="hljs-class"><span class="hljs-keyword">module</span>: <span class="hljs-title">false</span></span>
         totem_action_serializer_options
-      
+
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
           controller_render(<span class="hljs-variable">@assignment</span>)
         <span class="hljs-keyword">end</span>
@@ -82,10 +82,8 @@
           teams  = <span class="hljs-constant">Array</span>.new
           phases = assignment_phases
           phases.each {|phase| teams.push phase.get_teams}
-          teams  = [teams].flatten.compact
-          hash   = controller_as_json(teams)
-          hash[controller_plural_path] = []
-          controller_render_json(hash)
+          teams = [teams].flatten.compact
+          controller_render(teams)
         <span class="hljs-keyword">end</span>
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assignment_phases</span>;</span> <span class="hljs-variable">@assignment_phases</span> ||= <span class="hljs-variable">@assignment</span>.thinkspace_casespace_phases.accessible_by(current_ability, <span class="hljs-symbol">:read</span>); <span class="hljs-keyword">end</span>

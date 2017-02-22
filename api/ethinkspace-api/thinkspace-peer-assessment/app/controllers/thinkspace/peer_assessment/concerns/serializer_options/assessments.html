@@ -13,12 +13,19 @@
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">view</span><span class="hljs-params">(serializer_options)</span></span>
             <span class="hljs-keyword">case</span> serializer_options.sub_action
             <span class="hljs-keyword">when</span> <span class="hljs-symbol">:teams</span>
-              serializer_options.remove_all
+              serializer_options.remove_all_except <span class="hljs-symbol">:thinkspace_common_users</span>
+              serializer_options.authorize_action <span class="hljs-symbol">:read_teammates</span>, <span class="hljs-symbol">:thinkspace_common_users</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_common_users</span>
+              serializer_options.only_attributes <span class="hljs-symbol">:id</span>, <span class="hljs-symbol">:first_name</span>, <span class="hljs-symbol">:last_name</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:thinkspace_common_users</span>
             <span class="hljs-keyword">when</span> <span class="hljs-symbol">:review_sets</span>
               serializer_options.include_association <span class="hljs-symbol">:thinkspace_peer_assessment_reviews</span>
             <span class="hljs-keyword">end</span>
           <span class="hljs-keyword">end</span>
 
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fetch</span><span class="hljs-params">(serializer_options)</span></span>
+            serializer_options.remove_association <span class="hljs-symbol">:thinkspace_peer_assessment_review_sets</span>
+          <span class="hljs-keyword">end</span>
+            
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_members</span><span class="hljs-params">(serializer_options)</span>;</span> <span class="hljs-keyword">end</span>
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reviews</span><span class="hljs-params">(serializer_options)</span>;</span> <span class="hljs-keyword">end</span>
 

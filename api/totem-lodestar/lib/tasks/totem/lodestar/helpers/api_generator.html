@@ -37,15 +37,20 @@
           sh <span class="hljs-string">"cp ~/Desktop/ember20/repos/<span class="hljs-subst">#{repo.name}</span> <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd}</span> -r"</span>
         <span class="hljs-keyword">else</span>
           sh <span class="hljs-string">"git clone -b <span class="hljs-subst">#{repo.branch}</span> <span class="hljs-subst">#{repo.url}</span>"</span>
-        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>sh &quot;curl -H &#39;Authorization: token #{ENV[&#39;GITHUB_TOKEN&#39;]}&#39; -L <a href="https://api.github.com/repos/sixthedge/#{repo.name}/tarball">https://api.github.com/repos/sixthedge/#{repo.name}/tarball</a> &gt; #{repo.name}.tar.gz&quot;
-sh &quot;tar -xvzf #{repo.name}.tar.gz&quot;
-sh &quot;rm #{repo.name}.tar.gz&quot;
-Dir.foreach(Dir.pwd) do |dir|
-  if dir.include?(repo.name)
-    sh &quot;cp #{Dir.pwd + &#39;/&#39; + dir} #{Dir.pwd + &#39;/&#39; + repo.name} -r&quot;
-    sh &quot;rm #{Dir.pwd + &#39;/&#39; + dir} -r&quot;
-  end
-end</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_repo_with_token</span><span class="hljs-params">(repo)</span></span>
+        sh <span class="hljs-string">"curl -H 'Authorization: token <span class="hljs-subst">#{<span class="hljs-constant">ENV</span>[<span class="hljs-string">'GITHUB_TOKEN'</span>]}</span>' -L https://api.github.com/repos/sixthedge/<span class="hljs-subst">#{repo.name}</span>/tarball &gt; <span class="hljs-subst">#{repo.name}</span>.tar.gz"</span>
+        sh <span class="hljs-string">"tar -xvzf <span class="hljs-subst">#{repo.name}</span>.tar.gz"</span>
+        sh <span class="hljs-string">"rm <span class="hljs-subst">#{repo.name}</span>.tar.gz"</span>
+        <span class="hljs-constant">Dir</span>.foreach(<span class="hljs-constant">Dir</span>.pwd) <span class="hljs-keyword">do</span> |dir|
+          <span class="hljs-keyword">if</span> dir.<span class="hljs-keyword">include</span>?(repo.name)
+            sh <span class="hljs-string">"cp <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/'</span> + dir}</span> <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/'</span> + repo.name}</span> -r"</span>
+            sh <span class="hljs-string">"rm <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/'</span> + dir}</span> -r"</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
 
       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_groc_cli</span><span class="hljs-params">(repo)</span></span>
         <span class="hljs-constant">Dir</span>.chdir(repo.name)
@@ -134,17 +139,11 @@ end</p></div></div><div class="code"><div class="wrapper">      <span class="hlj
               <span class="hljs-keyword">end</span>
             <span class="hljs-keyword">end</span>
 
-
-
             toc_lines.pop
             toc_lines.shift
 
             toc_lines.pop
             toc_lines.push(<span class="hljs-string">"    },\n"</span>)
-
-            <span class="hljs-constant">File</span>.open(<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/OUT.txt'</span>, <span class="hljs-string">"w+"</span>) <span class="hljs-keyword">do</span> |file|
-              file.write(toc_lines)
-            <span class="hljs-keyword">end</span>
 
             files.push(toc_lines)
           <span class="hljs-keyword">end</span>
@@ -158,7 +157,6 @@ end</p></div></div><div class="code"><div class="wrapper">      <span class="hlj
 
         <span class="hljs-constant">File</span>.open(<span class="hljs-string">'behavior.js'</span>, <span class="hljs-string">"a"</span>) <span class="hljs-keyword">do</span> |f|
           files.each <span class="hljs-keyword">do</span> |toc_lines|
-            p <span class="hljs-string">"Writing TOCLINE: <span class="hljs-subst">#{toc_lines}</span>"</span>
             toc_lines.each { |l| f.write(l) }
           <span class="hljs-keyword">end</span>
         <span class="hljs-keyword">end</span>

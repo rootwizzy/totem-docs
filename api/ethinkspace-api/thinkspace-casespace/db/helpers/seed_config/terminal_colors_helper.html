@@ -37,6 +37,8 @@
   <span class="hljs-symbol">on_white:</span>         <span class="hljs-string">"\e[107m"</span>,
 }
 
+public
+
 <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_line</span><span class="hljs-params">(line, color=<span class="hljs-keyword">nil</span>, bold=<span class="hljs-keyword">nil</span>)</span>;</span> <span class="hljs-variable">$stdout</span>.print color_line(line, color, bold) + <span class="hljs-string">"\n"</span>; <span class="hljs-keyword">end</span>
 
 <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_inline</span><span class="hljs-params">(line, color=<span class="hljs-keyword">nil</span>, bold=<span class="hljs-keyword">nil</span>)</span>;</span> <span class="hljs-variable">$stdout</span>.print color_line(line, color, bold); <span class="hljs-keyword">end</span>
@@ -46,6 +48,10 @@
 <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">color_line</span><span class="hljs-params">(line, color=<span class="hljs-constant">DEFAULT_COLOR</span>, bold=<span class="hljs-keyword">nil</span>)</span></span>
   <span class="hljs-keyword">return</span> line <span class="hljs-keyword">if</span> <span class="hljs-variable">@no_color</span>
   <span class="hljs-keyword">return</span> line <span class="hljs-keyword">unless</span> color
+  <span class="hljs-keyword">if</span> color == <span class="hljs-symbol">:bold</span>
+    color = <span class="hljs-constant">DEFAULT_COLOR</span>
+    bold  = <span class="hljs-symbol">:bold</span>
+  <span class="hljs-keyword">end</span>
   line = bold_line + line  <span class="hljs-keyword">if</span> bold == <span class="hljs-symbol">:bold</span>
   prt_color = <span class="hljs-constant">PRINT_COLORS</span>[color]
   print_error <span class="hljs-string">"Print color '<span class="hljs-subst">#{color.inspect}</span>' is not supported."</span> <span class="hljs-keyword">if</span> prt_color.blank?

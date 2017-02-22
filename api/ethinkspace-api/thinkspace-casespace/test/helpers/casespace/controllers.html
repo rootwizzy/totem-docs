@@ -108,7 +108,7 @@
     <span class="hljs-keyword">end</span>
 
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_request</span><span class="hljs-params">(action, verb, params)</span></span>
-      process(action, verb, params)
+      process(action, <span class="hljs-symbol">method:</span> verb, <span class="hljs-symbol">params:</span> params)
       response_json(<span class="hljs-variable">@response</span>)
     <span class="hljs-keyword">end</span>
 

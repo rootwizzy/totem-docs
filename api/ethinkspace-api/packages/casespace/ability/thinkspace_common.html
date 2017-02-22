@@ -47,14 +47,26 @@
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">users</span></span>
     user           = <span class="hljs-constant">Thinkspace::Common::User</span>
     password_reset = <span class="hljs-constant">Thinkspace::Common::PasswordReset</span>
-    can [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:sign_in</span>, <span class="hljs-symbol">:sign_out</span>, <span class="hljs-symbol">:stay_alive</span>, <span class="hljs-symbol">:validate</span>, <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">:switch</span>], user
+    can [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:sign_in</span>, <span class="hljs-symbol">:sign_out</span>, <span class="hljs-symbol">:stay_alive</span>, <span class="hljs-symbol">:validate</span>, <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">:switch</span>, <span class="hljs-symbol">:avatar</span>, <span class="hljs-symbol">:update_tos</span>], user
+    can [<span class="hljs-symbol">:update</span>], user, {<span class="hljs-symbol">id:</span> current_user.id}
     can [<span class="hljs-symbol">:read</span>], user, {<span class="hljs-symbol">id:</span> current_user.id}
     can [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:update</span>], password_reset
     can [<span class="hljs-symbol">:read_space_owners</span>, <span class="hljs-symbol">:read_commenterable</span>], user, read_space_association
+    can [<span class="hljs-symbol">:read_teammates</span>], user
     cannot [<span class="hljs-symbol">:select</span>], user
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> admin?
     can [<span class="hljs-symbol">:select</span>, <span class="hljs-symbol">:gradebook</span>, <span class="hljs-symbol">:refresh</span>], user, admin_space_association
     can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:select</span>, <span class="hljs-symbol">:refresh</span>], user, { <span class="hljs-symbol">thinkspace_common_spaces:</span> { <span class="hljs-symbol">id:</span> admin_space_ids } }
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">disciplines</span></span>
+    discipline = <span class="hljs-constant">Thinkspace::Common::Discipline</span>
+    can [<span class="hljs-symbol">:read</span>], discipline
+  <span class="hljs-keyword">end</span>
+  
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">agreements</span></span>
+    agreement = <span class="hljs-constant">Thinkspace::Common::Agreement</span>
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:latest_for</span>], agreement
   <span class="hljs-keyword">end</span>
 
 <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

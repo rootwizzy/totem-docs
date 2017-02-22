@@ -34,7 +34,7 @@ included <span class="hljs-keyword">do</span>
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assignment</span>;</span> irat_phase.thinkspace_casespace_assignment; <span class="hljs-keyword">end</span>
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assessment</span></span>
-    authable.thinkspace_casespace_phase_components.where(<span class="hljs-symbol">componentable_type:</span> assessment_class).first.componentable
+    authable.thinkspace_casespace_phase_components.where(<span class="hljs-symbol">componentable_type:</span> assessment_class.name).first.componentable
   <span class="hljs-keyword">end</span>
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_server_events</span><span class="hljs-params">(options={})</span></span>

@@ -29,72 +29,69 @@
           class_hash   = (hash[controller_class] ||= <span class="hljs-constant">Hash</span>.new)
           class_routes = (class_hash[<span class="hljs-symbol">:controller_routes</span>] ||= <span class="hljs-constant">Array</span>.new)
           class_hash[<span class="hljs-symbol">:engine_routes</span>] ||= engine.routes
-          required_parts = route.required_parts || []
-          type           = required_parts.<span class="hljs-keyword">include</span>?(<span class="hljs-symbol">:id</span>) ? <span class="hljs-symbol">:member</span> <span class="hljs-symbol">:</span> <span class="hljs-symbol">:collection</span>
-          constraints    = route.instance_variable_get(<span class="hljs-symbol">:</span><span class="hljs-variable">@constraints</span>) || {}
-          request_method = constraints[<span class="hljs-symbol">:request_method</span>] || <span class="hljs-string">''</span>
-          verb_match     = request_method.inspect.match /[<span class="hljs-constant">A</span>-<span class="hljs-constant">Z</span>]+<span class="hljs-regexp">/
-          verb           = verb_match.to_s
-          helper         = route.instance_variable_get(:@name)
-          test_it_name   = "..&lt;#<span class="hljs-subst">#{action}</span>&gt;..<span class="hljs-subst">#{verb.downcase}</span>..<span class="hljs-subst">#{type}</span>"
+          required_parts       = route.required_parts || []
+          type                 = required_parts.<span class="hljs-keyword">include</span>?(<span class="hljs-symbol">:id</span>) ? <span class="hljs-symbol">:member</span> <span class="hljs-symbol">:</span> <span class="hljs-symbol">:collection</span>
+          request_method_match = route.instance_variable_get(<span class="hljs-symbol">:</span><span class="hljs-variable">@request_method_match</span>).first
+          verb                 = request_method_match.blank? ? <span class="hljs-string">''</span> <span class="hljs-symbol">:</span> request_method_match.verb
+          helper               = route.instance_variable_get(<span class="hljs-symbol">:</span><span class="hljs-variable">@name</span>)
+          test_it_name         = <span class="hljs-string">"..&lt;#<span class="hljs-subst">#{action}</span>&gt;..<span class="hljs-subst">#{verb.downcase}</span>..<span class="hljs-subst">#{type}</span>"</span>
           class_routes.push(
-            action:          action,
-            verb:            verb,
-            type:            type,
-            helper:          helper,
-            controller_path: controller_path,
-            test_it_name:    test_it_name,
-            options:         config.options,
+            <span class="hljs-symbol">action:</span>          action,
+            <span class="hljs-symbol">verb:</span>            verb,
+            <span class="hljs-symbol">type:</span>            type,
+            <span class="hljs-symbol">helper:</span>          helper,
+            <span class="hljs-symbol">controller_path:</span> controller_path,
+            <span class="hljs-symbol">test_it_name:</span>    test_it_name,
+            <span class="hljs-symbol">options:</span>         config.options,
           )
-        end
-      end
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
       hash
-    end
+    <span class="hljs-keyword">end</span>
 
-    def route_config_options_class; ::Test::Casespace::RoutesConfigOptions; end
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">route_config_options_class</span>;</span> <span class="hljs-constant">::Test::Casespace::RoutesConfigOptions</span>; <span class="hljs-keyword">end</span>
 
-    def get_route_config_options(options); options.is_a?(route_config_options_class) ? options : new_route_config_options(options); end
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_route_config_options</span><span class="hljs-params">(options)</span>;</span> options.is_a?(route_config_options_class) ? options <span class="hljs-symbol">:</span> new_route_config_options(options); <span class="hljs-keyword">end</span>
 
-    def default_route_options
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">default_route_options</span></span>
       {
-        admin_match:           route_admin_matches,
-        not_admin_match:       route_not_admin_matches,
-        readers:               :read_1,
-        updaters:              :update_1,
-        owners:                :owner_1,
-        unauthorized_readers:  :read_2,
-        unauthorized_updaters: :update_2,
-        unauthorized_owners:   :owner_2,
+        <span class="hljs-symbol">admin_match:</span>           route_admin_matches,
+        <span class="hljs-symbol">not_admin_match:</span>       route_not_admin_matches,
+        <span class="hljs-symbol">readers:</span>               <span class="hljs-symbol">:read_1</span>,
+        <span class="hljs-symbol">updaters:</span>              <span class="hljs-symbol">:update_1</span>,
+        <span class="hljs-symbol">owners:</span>                <span class="hljs-symbol">:owner_1</span>,
+        <span class="hljs-symbol">unauthorized_readers:</span>  <span class="hljs-symbol">:read_2</span>,
+        <span class="hljs-symbol">unauthorized_updaters:</span> <span class="hljs-symbol">:update_2</span>,
+        <span class="hljs-symbol">unauthorized_owners:</span>   <span class="hljs-symbol">:owner_2</span>,
       }
-    end
+    <span class="hljs-keyword">end</span>
 
-    def route_admin_matches
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">route_admin_matches</span></span>
       [
-        {controller: :assignments,      actions: [:roster, :view]},
-        {controller: :peer_assessment,  actions: [:create, :view]},
-        {controller: :contents,         actions: [:validate, :update]},
-        :phase_states,
-        :phase_scores,
+        {<span class="hljs-symbol">controller:</span> <span class="hljs-symbol">:assignments</span>,      <span class="hljs-symbol">actions:</span> [<span class="hljs-symbol">:roster</span>, <span class="hljs-symbol">:view</span>]},
+        {<span class="hljs-symbol">controller:</span> <span class="hljs-symbol">:peer_assessment</span>,  <span class="hljs-symbol">actions:</span> [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:view</span>]},
+        {<span class="hljs-symbol">controller:</span> <span class="hljs-symbol">:contents</span>,         <span class="hljs-symbol">actions:</span> [<span class="hljs-symbol">:validate</span>, <span class="hljs-symbol">:update</span>]},
+        <span class="hljs-symbol">:phase_states</span>,
+        <span class="hljs-symbol">:phase_scores</span>,
       ]
-    end
+    <span class="hljs-keyword">end</span>
 
-    def route_not_admin_matches
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">route_not_admin_matches</span></span>
       [
-        {controller: :spaces,      actions: [:create]},
-        {controller: :users,       actions: [:create]},
-        {controller: :invitations, actions: [:fetch_state]},
+        {<span class="hljs-symbol">controller:</span> <span class="hljs-symbol">:spaces</span>,      <span class="hljs-symbol">actions:</span> [<span class="hljs-symbol">:create</span>]},
+        {<span class="hljs-symbol">controller:</span> <span class="hljs-symbol">:users</span>,       <span class="hljs-symbol">actions:</span> [<span class="hljs-symbol">:create</span>]},
+        {<span class="hljs-symbol">controller:</span> <span class="hljs-symbol">:invitations</span>, <span class="hljs-symbol">actions:</span> [<span class="hljs-symbol">:fetch_state</span>]},
       ]
-    end
+    <span class="hljs-keyword">end</span>
 
-  end
+  <span class="hljs-keyword">end</span>
 
-  class_methods do
-    include GetRouteConfigs
-  end
+  class_methods <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">GetRouteConfigs</span>
+  <span class="hljs-keyword">end</span>
 
-  included do
-    include GetRouteConfigs
-</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Process of controller helper methods called:</p>
+  included <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">GetRouteConfigs</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Process of controller helper methods called:</p>
 <ul>
 <li>route.setup  # note: options are not created yet</li>
 <li>test calls &#39;send_route_request&#39;</li>

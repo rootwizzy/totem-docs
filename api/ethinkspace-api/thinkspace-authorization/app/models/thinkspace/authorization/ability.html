@@ -11,6 +11,7 @@
       <span class="hljs-keyword">case</span>
       <span class="hljs-keyword">when</span> user.blank?
         cannot <span class="hljs-symbol">:manage</span>, <span class="hljs-symbol">:all</span>
+        can <span class="hljs-symbol">:latest_for</span>, <span class="hljs-constant">Thinkspace::Common::Agreement</span>
       <span class="hljs-keyword">when</span> user.superuser?
         can <span class="hljs-symbol">:manage</span>, <span class="hljs-symbol">:all</span>
       <span class="hljs-keyword">else</span>

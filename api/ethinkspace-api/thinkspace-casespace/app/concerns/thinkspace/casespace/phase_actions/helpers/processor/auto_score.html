@@ -3,6 +3,7 @@
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auto_score</span><span class="hljs-params">(ownerable, phase=current_phase)</span></span>
     phase_score = get_phase_score(ownerable, phase)
     klass       = get_score_class
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> klass.blank?
     debug <span class="hljs-string">"Score class <span class="hljs-subst">#{klass.name.inspect}</span>"</span>, ownerable  <span class="hljs-keyword">if</span> debug?
     score = klass.new(<span class="hljs-keyword">self</span>, ownerable, get_action_auto_score).process
     debug <span class="hljs-string">"Phase score=<span class="hljs-subst">#{score.inspect}</span>"</span>, ownerable <span class="hljs-keyword">if</span> debug?
@@ -15,9 +16,16 @@
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_score_class</span></span>
     <span class="hljs-keyword">return</span> score_class <span class="hljs-keyword">if</span> score_class.present?
     config = get_action_auto_score || <span class="hljs-constant">Hash</span>.new
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> config == <span class="hljs-keyword">false</span>
-    score_with = config.is_a?(<span class="hljs-constant">Hash</span>) ? (config[<span class="hljs-symbol">:score_with</span>] || <span class="hljs-symbol">:default</span>) <span class="hljs-symbol">:</span> <span class="hljs-symbol">:default</span>
-    class_name = score_with.to_s.match(<span class="hljs-string">'/'</span>) ? score_with.to_s.camelize <span class="hljs-symbol">:</span> <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name.deconstantize + <span class="hljs-string">"::Score::<span class="hljs-subst">#{score_with.to_s.camelize}</span>"</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> config == <span class="hljs-keyword">false</span>
+    score_with = config.is_a?(<span class="hljs-constant">Hash</span>) ? config[<span class="hljs-symbol">:score_with</span>] <span class="hljs-symbol">:</span> <span class="hljs-symbol">:default</span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> score_with.blank? || score_with.to_sym == <span class="hljs-symbol">:default</span>
+      class_name = <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name.deconstantize + <span class="hljs-string">"::Score::Default"</span>
+    <span class="hljs-keyword">when</span> totem_settings_class?(score_with)
+      <span class="hljs-keyword">return</span> get_totem_settings_class(score_with)
+    <span class="hljs-keyword">else</span>
+      class_name = <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name.deconstantize + <span class="hljs-string">"::Score::<span class="hljs-subst">#{score_with.to_s.camelize}</span>"</span>
+    <span class="hljs-keyword">end</span>
     klass = class_name.safe_constantize
     raise <span class="hljs-constant">InvalidClassError</span>, <span class="hljs-string">"Score class name <span class="hljs-subst">#{class_name.inspect}</span> cannot be constantized."</span> <span class="hljs-keyword">if</span> klass.blank?
     klass

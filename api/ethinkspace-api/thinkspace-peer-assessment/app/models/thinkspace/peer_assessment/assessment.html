@@ -190,6 +190,18 @@
 
       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">notify_overview_unlocked_for_user</span><span class="hljs-params">(user)</span></span>
         <span class="hljs-constant">Thinkspace::PeerAssessment::AssessmentMailer</span>.notify_overview_unlocked(<span class="hljs-keyword">self</span>, user).deliver_now
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-comment">## Serialized method to determine whether the current state of the 'value' column differs from the assessment template's.</span>
+      <span class="hljs-comment">## Used to prompt the user to create a new assessment template if they've made changes to their existing template.</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">modified_template</span></span>
+        <span class="hljs-keyword">if</span> assessment_template_id.present?
+          assessment_template = <span class="hljs-constant">Thinkspace::PeerAssessment::AssessmentTemplate</span>.find(assessment_template_id)
+
+          <span class="hljs-keyword">return</span> !(assessment_template.value == <span class="hljs-keyword">self</span>.value)
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>
+        <span class="hljs-keyword">end</span>
       <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
 <h3 id="clone-assessment">Clone Assessment.</h3>
 <h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.deep_clone_helper

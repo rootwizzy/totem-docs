@@ -1,7 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><title>thinkspace-common/app/models/thinkspace/common/user</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-common/app/models/thinkspace/common/user"><meta name="groc-project-path" content="thinkspace-common/app/models/thinkspace/common/user.rb"><meta name="groc-branch-path" content="development"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-api"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-api/blob/development/thinkspace-common/app/models/thinkspace/common/user.rb">thinkspace-common/app/models/thinkspace/common/user.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
   <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Common</span></span>
     <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
-      <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.session_user_model</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+      <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.session_user_model
+      <span class="hljs-keyword">include</span> <span class="hljs-constant">Thinkspace::Common::Avatar</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
 <h3 id="validations">Validations</h3>
 <h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      validates <span class="hljs-symbol">:email</span>, <span class="hljs-symbol">presence:</span> <span class="hljs-keyword">true</span>, <span class="hljs-symbol">uniqueness:</span> { <span class="hljs-symbol">case_sensitive:</span> <span class="hljs-keyword">false</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
 <h3 id="aasm">AASM</h3>
@@ -40,6 +41,8 @@
         save
       <span class="hljs-keyword">end</span>
 
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_activated?</span>;</span> activated_at.present?; <span class="hljs-keyword">end</span>
+
       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sync_sso</span></span>
         host                = <span class="hljs-constant">Rails</span>.application.secrets.discourse[<span class="hljs-string">'host'</span>]
         api_key             = <span class="hljs-constant">Rails</span>.application.secrets.discourse[<span class="hljs-string">'key'</span>]
@@ -71,23 +74,27 @@
       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">title</span>;</span>                          <span class="hljs-string">"<span class="hljs-subst">#{last_name}</span>, <span class="hljs-subst">#{first_name}</span>"</span>;                                              <span class="hljs-keyword">end</span>
       </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: implement</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_sandbox</span></span>
         puts <span class="hljs-string">"TODO: Implement user.create_sandbox"</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="terms">Terms</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tos_current</span></span>
+        tos_type      = <span class="hljs-string">'terms_of_service'</span>
+        terms         = <span class="hljs-constant">Thinkspace::Common::Agreement</span>.where(<span class="hljs-string">"doc_type = ? and effective_at IS NOT NULL"</span>, tos_type).order(<span class="hljs-string">'effective_at'</span>)
+        current_terms = terms.last
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> terms_accepted_at.present?
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> current_terms.present?
+        terms_accepted_at &gt;= current_terms.effective_at ? <span class="hljs-keyword">true</span> <span class="hljs-symbol">:</span> <span class="hljs-keyword">false</span>
       <span class="hljs-keyword">end</span>
-
-      <span class="hljs-comment">### Scoped attributes</span>
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">profile</span><span class="hljs-params">(scope)</span></span>
-        <span class="hljs-keyword">return</span> {} <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span> == scope.current_user
-        configuration = thinkspace_common_configuration
-        <span class="hljs-keyword">return</span> {} <span class="hljs-keyword">unless</span> configuration.present?
-        configuration.settings
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">profile_has_role?</span><span class="hljs-params">(role)</span></span>
-        configuration = thinkspace_common_configuration
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> configuration.present?
-        settings = configuration.settings.with_indifferent_access
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> settings.has_key?(<span class="hljs-symbol">:roles</span>)
-        settings[<span class="hljs-symbol">:roles</span>].<span class="hljs-keyword">include</span>?(role)
-      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="callbacks">Callbacks</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">callback_new_api_session</span>;</span> <span class="hljs-keyword">self</span>.touch(<span class="hljs-symbol">:last_sign_in_at</span>); <span class="hljs-keyword">end</span>
+        </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="avatar">Avatar</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_default_avatar_path</span>;</span> <span class="hljs-string">'/assets/images/_default_user.png'</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="scoped-attributes">Scoped attributes</h3>
+<p>def profile(scope)
+  return {} unless self == scope.current_user
+  configuration = thinkspace_common_configuration
+  return {} unless configuration.present?
+  configuration.settings
+end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def profile_has_role?(role)
+  configuration = thinkspace_common_configuration
+  return nil unless configuration.present?
+  settings = configuration.settings.with_indifferent_access
+  return nil unless settings.has_key?(:roles)
+  settings[:roles].include?(role)
+end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="callbacks">Callbacks</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">callback_new_api_session</span>;</span> <span class="hljs-keyword">self</span>.touch(<span class="hljs-symbol">:last_sign_in_at</span>); <span class="hljs-keyword">end</span>
 
       totem_associations
     <span class="hljs-keyword">end</span>

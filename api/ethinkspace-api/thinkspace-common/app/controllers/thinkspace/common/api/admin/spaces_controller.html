@@ -26,6 +26,7 @@
             <span class="hljs-variable">@user</span> = user_class.find_by(<span class="hljs-symbol">email:</span> email)
 
             <span class="hljs-keyword">if</span> <span class="hljs-variable">@user</span>.present?
+              <span class="hljs-variable">@user</span>.refresh_activation <span class="hljs-keyword">unless</span> <span class="hljs-variable">@user</span>.is_activated?
               <span class="hljs-variable">@space_user</span> = space_user_class.find_by(<span class="hljs-symbol">user_id:</span> <span class="hljs-variable">@user</span>.id, <span class="hljs-symbol">space_id:</span> <span class="hljs-variable">@space</span>.id)
               <span class="hljs-keyword">if</span> <span class="hljs-variable">@space_user</span>.present?
                 permission_denied(<span class="hljs-string">"<span class="hljs-subst">#{email}</span> is already on the roster."</span>)

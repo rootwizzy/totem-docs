@@ -4,8 +4,9 @@
       totem_associations
 
       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">totem_cache_query_key_index</span><span class="hljs-params">(scope, ownerable, options={})</span></span>
-        ats = scope.joins(<span class="hljs-symbol">:thinkspace_casespace_assignments</span>).merge(<span class="hljs-constant">Thinkspace::Casespace::Assignment</span>.open_updated_ats(ownerable))
-        [<span class="hljs-symbol">:assignments</span>] + ats.map(&amp;<span class="hljs-symbol">:v_updated_at</span>)
+        updated_ats = scope.joins(<span class="hljs-symbol">:thinkspace_casespace_assignments</span>).merge(<span class="hljs-constant">Thinkspace::Casespace::Assignment</span>.open_updated_ats(ownerable))
+        dates_ats   = scope.joins(<span class="hljs-symbol">:thinkspace_casespace_assignments</span>).merge(<span class="hljs-constant">Thinkspace::Casespace::Assignment</span>.open_times(ownerable))
+        [<span class="hljs-symbol">:assignments</span>] + updated_ats.map(&amp;<span class="hljs-symbol">:v_updated_at</span>) + dates_ats.map(&amp;<span class="hljs-symbol">:v_release_at</span>)
       <span class="hljs-keyword">end</span>
 
       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">serializer_metadata</span><span class="hljs-params">(ownerable, so)</span></span>

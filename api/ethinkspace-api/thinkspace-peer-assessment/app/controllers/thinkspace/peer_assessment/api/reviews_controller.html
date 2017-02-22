@@ -6,7 +6,7 @@
         totem_action_authorize! <span class="hljs-symbol">allow_blank_associations:</span> { <span class="hljs-symbol">create:</span> [<span class="hljs-symbol">:review_set_id</span>] }
         totem_action_serializer_options
         before_action <span class="hljs-symbol">:find_review_set</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:update</span>]
-        before_action <span class="hljs-symbol">:authorize_ownerable</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:update</span>]
+        <span class="hljs-comment">#before_action :authorize_ownerable, only: [:update]</span>
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span>
           reviewable_type         = params_root[<span class="hljs-symbol">:reviewable_type</span>]
@@ -37,7 +37,6 @@
           <span class="hljs-keyword">else</span>
             process_updates
           <span class="hljs-keyword">end</span>
-            
         <span class="hljs-keyword">end</span>
 
         private

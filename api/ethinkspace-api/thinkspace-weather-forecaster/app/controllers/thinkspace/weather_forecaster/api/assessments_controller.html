@@ -30,7 +30,7 @@ forecasts          = @assessment.
           ownerable = totem_action_authorize.params_ownerable
           forecast  = <span class="hljs-variable">@assessment</span>.find_or_create_current_day_forecast(ownerable, current_user)
           access_denied <span class="hljs-string">"Forecast for current day not available."</span>  <span class="hljs-keyword">if</span> forecast.blank?
-          controller_render_view(forecast)
+          controller_render(forecast)
         <span class="hljs-keyword">end</span>
 
         private

@@ -26,6 +26,11 @@
             controller_render_no_content
           <span class="hljs-keyword">end</span>
 
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">progress_report</span></span>
+            set_irat_assessment
+            controller_render_json(<span class="hljs-variable">@assessment</span>.progress_report)
+          <span class="hljs-keyword">end</span>
+
           private
 
           <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::ControllerHelpers::Base</span>

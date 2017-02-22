@@ -49,6 +49,9 @@
     raise <span class="hljs-constant">InvalidClassError</span>, <span class="hljs-string">"Is not a class: <span class="hljs-subst">#{klass}</span>."</span> <span class="hljs-keyword">unless</span> klass.is_a?(<span class="hljs-constant">Class</span>)
   <span class="hljs-keyword">end</span>
 
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_totem_settings_class</span><span class="hljs-params">(name)</span>;</span> <span class="hljs-constant">::Totem::Settings</span>.classes.thinkspace.get_class(name.to_sym);  <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_settings_class?</span><span class="hljs-params">(name)</span>;</span>    <span class="hljs-constant">::Totem::Settings</span>.classes.thinkspace.has_class?(name.to_sym); <span class="hljs-keyword">end</span>
+
   <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ArgsError</span>         <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>;
   <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InvalidClassError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>;
 

@@ -5,8 +5,7 @@
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize</span></span>
           params.permit!</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>params.permit(:auth, :auth_key, :rooms, :room_type)
-sleep 5 # TESTING ONLY for timeout</p></div></div><div class="code"><div class="wrapper">          validate_authorize
-          validate_rooms(get_rooms, get_room_type)
+sleep 5 # TESTING ONLY for timeout</p></div></div><div class="code"><div class="wrapper">          validate <span class="hljs-keyword">unless</span> current_user.superuser?
           controller_render_json({<span class="hljs-symbol">can:</span> <span class="hljs-keyword">true</span>})
         <span class="hljs-keyword">end</span>
 
@@ -14,6 +13,12 @@ sleep 5 # TESTING ONLY for timeout</p></div></div><div class="code"><div class="
 
         <span class="hljs-keyword">include</span> <span class="hljs-constant">PubSub::AuthorizeHelpers</span>
         <span class="hljs-keyword">include</span> <span class="hljs-constant">PubSub::AuthHelpers</span>
+
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate</span></span>
+          validate_authorize
+          validate_rooms(get_rooms, get_room_type)
+        <span class="hljs-keyword">end</span>
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_authorize</span></span>
           <span class="hljs-keyword">if</span> has_authable?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>taa = new_totem_action_authorize

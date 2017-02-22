@@ -27,25 +27,12 @@
           <span class="hljs-keyword">end</span>
 
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span>
-            builder_version = params_root[<span class="hljs-symbol">:builder_version</span>]
-            <span class="hljs-keyword">if</span> builder_version.present?
-              bundle_type = params_root[<span class="hljs-symbol">:bundle_type</span>]
-              <span class="hljs-keyword">case</span> bundle_type.to_sym
-              <span class="hljs-keyword">when</span> <span class="hljs-symbol">:casespace</span>
-                create_casespace
-              <span class="hljs-keyword">when</span> <span class="hljs-symbol">:assessment</span>
-                create_assessment
-              <span class="hljs-keyword">end</span>
-            <span class="hljs-keyword">else</span>
-              <span class="hljs-variable">@assignment</span> = <span class="hljs-variable">@assignment_class</span>.new <span class="hljs-comment"># Allow AASM to property set columns, CanCan avoids this somehow.</span>
-              space_id    = params_root[<span class="hljs-string">'thinkspace/common/space_id'</span>]
-              space       = <span class="hljs-constant">Thinkspace::Common::Space</span>.find(space_id)
-              authorize! <span class="hljs-symbol">:update</span>, space
-              <span class="hljs-variable">@assignment</span>.state                   = <span class="hljs-string">'inactive'</span>
-              <span class="hljs-variable">@assignment</span>.thinkspace_common_space = space
-              <span class="hljs-variable">@assignment</span>.title = <span class="hljs-string">"New Case - <span class="hljs-subst">#{<span class="hljs-constant">Time</span>.now.to_formatted_s(<span class="hljs-symbol">:db</span>)}</span>"</span>
-              controller_save_record(<span class="hljs-variable">@assignment</span>)
-            <span class="hljs-keyword">end</span>
+            assignment_type_id = params_association_id(<span class="hljs-symbol">:assignment_type_id</span>)
+            assignment_type    = <span class="hljs-constant">Thinkspace::Casespace::AssignmentType</span>.find(assignment_type_id)
+            creator_class      = assignment_type.get_creator_class
+            creator            = creator_class.new(params)
+            <span class="hljs-variable">@assignment</span>        = creator.generate
+            controller_render(<span class="hljs-variable">@assignment</span>)
           <span class="hljs-keyword">end</span>
 
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Transaction wrap?</p></div></div><div class="code"><div class="wrapper">            template_id = params_root[<span class="hljs-symbol">:template_id</span>]
@@ -66,7 +53,12 @@
 
               controller_render(<span class="hljs-variable">@assignment</span>)
             <span class="hljs-keyword">else</span>
-              controller_save_record(<span class="hljs-variable">@assignment</span>)
+              <span class="hljs-keyword">if</span> <span class="hljs-variable">@assignment</span>.neutral? || <span class="hljs-variable">@assignment</span>.inactive?
+                <span class="hljs-variable">@assignment</span>.save(<span class="hljs-symbol">validate:</span> <span class="hljs-keyword">false</span>) <span class="hljs-comment"># ignore validations if neutral or inactive</span>
+                controller_render(<span class="hljs-variable">@assignment</span>)
+              <span class="hljs-keyword">else</span>
+                controller_save_record(<span class="hljs-variable">@assignment</span>)
+              <span class="hljs-keyword">end</span>
             <span class="hljs-keyword">end</span>
 
           <span class="hljs-keyword">end</span>
@@ -112,8 +104,13 @@
           <span class="hljs-keyword">end</span>
 
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">activate</span></span>
-            <span class="hljs-variable">@assignment</span>.activate!
-            controller_render(<span class="hljs-variable">@assignment</span>)
+            <span class="hljs-variable">@assignment</span>.activate
+            controller_save_record(<span class="hljs-variable">@assignment</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">archive</span></span>
+            <span class="hljs-variable">@assignment</span>.archive
+            controller_save_record(<span class="hljs-variable">@assignment</span>)
           <span class="hljs-keyword">end</span>
 
           private

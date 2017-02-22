@@ -5,7 +5,6 @@
           get  <span class="hljs-symbol">:teams</span>,       <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:member</span>
           get  <span class="hljs-symbol">:review_sets</span>, <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:member</span>
           get  <span class="hljs-symbol">:team_sets</span>,   <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:member</span>
-          get  <span class="hljs-symbol">:fetch</span>,       <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:collection</span>
           put  <span class="hljs-symbol">:approve</span>,     <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:member</span>
           put  <span class="hljs-symbol">:activate</span>,    <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:member</span>
         <span class="hljs-keyword">end</span>
@@ -31,10 +30,18 @@
           member <span class="hljs-keyword">do</span>
             put <span class="hljs-symbol">:approve</span>
             put <span class="hljs-symbol">:unapprove</span>
+            put <span class="hljs-symbol">:approve_all</span>
+            put <span class="hljs-symbol">:unapprove_all</span>
           <span class="hljs-keyword">end</span>
         <span class="hljs-keyword">end</span>
-      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Non-admin</p></div></div><div class="code"><div class="wrapper">      resources <span class="hljs-symbol">:assessments</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:show</span>] <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Non-admin</p></div></div><div class="code"><div class="wrapper">      resources <span class="hljs-symbol">:assessment_templates</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:index</span>, <span class="hljs-symbol">:show</span>, <span class="hljs-symbol">:create</span>] <span class="hljs-keyword">do</span>
+        get <span class="hljs-symbol">:select</span>, <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:collection</span>
+        get <span class="hljs-symbol">:user_templates</span>, <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:collection</span>
+      <span class="hljs-keyword">end</span>
+
+      resources <span class="hljs-symbol">:assessments</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:show</span>] <span class="hljs-keyword">do</span>
         get <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:member</span>
+        get <span class="hljs-symbol">:fetch</span>, <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:collection</span>
       <span class="hljs-keyword">end</span>
       resources <span class="hljs-symbol">:overviews</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:show</span>] <span class="hljs-keyword">do</span>
         get <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:member</span>

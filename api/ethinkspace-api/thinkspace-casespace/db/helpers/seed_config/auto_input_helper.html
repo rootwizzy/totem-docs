@@ -13,7 +13,7 @@ The class .rb files should be in the &#39;test_data/auto_input&#39; folder (but 
 </ul></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_add_auto_input</span><span class="hljs-params">(config)</span></span>
   auto_input = config[<span class="hljs-symbol">:auto_input</span>]
   <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> auto_input.blank?
-  casespace_seed_config_message(<span class="hljs-string">'--Auto input.'</span>, config)
+  <span class="hljs-variable">@seed</span>.message color_line(<span class="hljs-string">"--Auto input (<span class="hljs-subst">#{casespace_seed_config_name(config)}</span>)."</span>, <span class="hljs-symbol">:green</span>, <span class="hljs-symbol">:bold</span>)
   auto_input.keys.each <span class="hljs-keyword">do</span> |key|
     class_name = <span class="hljs-string">"AutoInput<span class="hljs-subst">#{key.to_s.camelize}</span>"</span>
     klass      = class_name.safe_constantize

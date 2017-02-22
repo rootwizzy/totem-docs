@@ -7,6 +7,8 @@
 
             <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve</span><span class="hljs-params">(serializer_options)</span>;</span> state_change(serializer_options); <span class="hljs-keyword">end</span>
             <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unapprove</span><span class="hljs-params">(serializer_options)</span>;</span> state_change(serializer_options); <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve_all</span><span class="hljs-params">(serializer_options)</span>;</span> state_change(serializer_options); <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unapprove_all</span><span class="hljs-params">(serializer_options)</span>;</span> state_change(serializer_options); <span class="hljs-keyword">end</span>
 
             <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">state_change</span><span class="hljs-params">(serializer_options)</span></span>
               serializer_options.include_association <span class="hljs-symbol">:thinkspace_peer_assessment_review_sets</span>

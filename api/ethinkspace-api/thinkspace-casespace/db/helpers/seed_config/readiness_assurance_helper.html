@@ -5,7 +5,7 @@
   <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> array.blank?
   ra_hash = (<span class="hljs-variable">@_readiness_assurance_assessments_</span> ||= <span class="hljs-constant">Hash</span>.new)
   [array].flatten.compact.each <span class="hljs-keyword">do</span> |options|
-    <span class="hljs-constant">CreateReadinessAssuranceAssessments</span>.new(<span class="hljs-keyword">self</span>, <span class="hljs-variable">@seed</span>, ra_hash, options)
+    <span class="hljs-constant">CreateReadinessAssuranceAssessments</span>.new(<span class="hljs-keyword">self</span>, <span class="hljs-variable">@seed</span>, ra_hash, config, options)
   <span class="hljs-keyword">end</span>
 <span class="hljs-keyword">end</span>
 
@@ -24,10 +24,11 @@
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CreateReadinessAssuranceAssessments</span></span>
 
-  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(caller, seed, ra_hash, options={})</span></span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(caller, seed, ra_hash, config, options={})</span></span>
     <span class="hljs-variable">@caller</span>  = caller
     <span class="hljs-variable">@seed</span>    = seed
     <span class="hljs-variable">@ra_hash</span> = ra_hash
+    <span class="hljs-variable">@config</span>  = config
     process(options)
   <span class="hljs-keyword">end</span>
 
@@ -48,30 +49,37 @@
       hash[<span class="hljs-symbol">:state</span>]       = <span class="hljs-symbol">:active</span>  <span class="hljs-keyword">unless</span> hash.has_key?(<span class="hljs-symbol">:state</span>)
       assessment         = create_assessment(hash)
       <span class="hljs-variable">@ra_hash</span>[phase.id] = assessment
+      <span class="hljs-variable">@caller</span>.casespace_config_models.add(<span class="hljs-variable">@config</span>, assessment)
     <span class="hljs-keyword">end</span>
   <span class="hljs-keyword">end</span>
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_assessment</span><span class="hljs-params">(hash)</span></span>
+    questions = hash[<span class="hljs-symbol">:questions</span>] || []
+    questions = questions.flatten
+    answers   = hash[<span class="hljs-symbol">:answers</span>] || {}
+    answers   = (answers.first || {}) <span class="hljs-keyword">if</span> answers.is_a?(<span class="hljs-constant">Array</span>)
+    hash[<span class="hljs-symbol">:questions</span>] = questions
+    hash[<span class="hljs-symbol">:answers</span>]   = answers
     <span class="hljs-variable">@caller</span>.send <span class="hljs-symbol">:create_readiness_assurance_assessment</span>, hash
   <span class="hljs-keyword">end</span>
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_space</span><span class="hljs-params">(title)</span></span>
     <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Readiness assurance assessments auto-input requires a space."</span>  <span class="hljs-keyword">if</span> title.blank?
-    space = <span class="hljs-variable">@caller</span>.send <span class="hljs-symbol">:find_casespace_space</span>, <span class="hljs-symbol">title:</span> title
+    space = <span class="hljs-variable">@caller</span>.find_casespace_space(<span class="hljs-symbol">title:</span> title)
     <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Readiness assurance space <span class="hljs-subst">#{title.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> space.blank?
     space
   <span class="hljs-keyword">end</span>
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assignment</span><span class="hljs-params">(space, title)</span></span>
     <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Readiness assurance assessments auto-input requires an assignment."</span>  <span class="hljs-keyword">if</span> title.blank?
-    assignment = <span class="hljs-variable">@caller</span>.send <span class="hljs-symbol">:find_casespace_assignment</span>, <span class="hljs-symbol">title:</span> title, <span class="hljs-symbol">space_id:</span> space.id
+    assignment = <span class="hljs-variable">@caller</span>.find_casespace_assignment(<span class="hljs-symbol">title:</span> title, <span class="hljs-symbol">space_id:</span> space.id)
     <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Readiness assurance assignment <span class="hljs-subst">#{title.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> assignment.blank?
     assignment
   <span class="hljs-keyword">end</span>
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user</span><span class="hljs-params">(name)</span></span>
     <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Readiness assurance assessments auto-input requires a user."</span>  <span class="hljs-keyword">if</span> name.blank?
-    user = <span class="hljs-variable">@caller</span>.send <span class="hljs-symbol">:find_casespace_user</span>, <span class="hljs-symbol">first_name:</span> name
+    user = <span class="hljs-variable">@caller</span>.find_casespace_user(<span class="hljs-symbol">first_name:</span> name)
     <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Readiness assurance user <span class="hljs-subst">#{name.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> user.blank?
     user
   <span class="hljs-keyword">end</span>
@@ -80,7 +88,7 @@
     <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Readiness assurance assessments auto-input requires phases."</span>  <span class="hljs-keyword">if</span> titles.blank?
     phases = <span class="hljs-constant">Array</span>.new
     [titles].flatten.compact.each <span class="hljs-keyword">do</span> |title|
-      phase = <span class="hljs-variable">@caller</span>.send <span class="hljs-symbol">:find_casespace_phase</span>, <span class="hljs-symbol">title:</span> title, <span class="hljs-symbol">assignment_id:</span> assignment.id
+      phase = <span class="hljs-variable">@caller</span>.find_casespace_phase(<span class="hljs-symbol">title:</span> title, <span class="hljs-symbol">assignment_id:</span> assignment.id)
       <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Readiness assurance phase <span class="hljs-subst">#{title.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> phase.blank?
       phases.push(phase)
     <span class="hljs-keyword">end</span>

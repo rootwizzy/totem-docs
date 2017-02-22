@@ -4,6 +4,8 @@
       totem_associations
       has_paper_trail
 
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_ownerables</span><span class="hljs-params">(ownerables)</span>;</span> where(<span class="hljs-symbol">ownerable:</span> ownerables); <span class="hljs-keyword">end</span>
+
       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_status</span></span>
         status = <span class="hljs-keyword">self</span>.thinkspace_readiness_assurance_status
         <span class="hljs-keyword">if</span> status.blank?

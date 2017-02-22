@@ -37,14 +37,14 @@
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_action_class</span></span>
     <span class="hljs-keyword">return</span> action_class <span class="hljs-keyword">if</span> action_class.present?
-    as_class = action_settings[<span class="hljs-symbol">:class</span>]
+    name = action_settings[<span class="hljs-symbol">:class</span>]
     <span class="hljs-keyword">case</span>
-    <span class="hljs-keyword">when</span> as_class.blank?
+    <span class="hljs-keyword">when</span> name.blank?
       class_name = <span class="hljs-string">"Thinkspace::Casespace::PhaseActions::Action::<span class="hljs-subst">#{action.to_s.camelize}</span>"</span>
-    <span class="hljs-keyword">when</span> as_class.to_s.match(<span class="hljs-string">'/'</span>)
-      class_name = as_class.to_s.camelize
+    <span class="hljs-keyword">when</span> totem_settings_class?(name)
+      <span class="hljs-keyword">return</span> get_totem_settings_class(name)
     <span class="hljs-keyword">else</span>
-      class_name = <span class="hljs-string">"Thinkspace::Casespace::PhaseActions::Action::<span class="hljs-subst">#{as_class.to_s.camelize}</span>"</span>
+      class_name = <span class="hljs-string">"Thinkspace::Casespace::PhaseActions::Action::<span class="hljs-subst">#{name.to_s.camelize}</span>"</span>
     <span class="hljs-keyword">end</span>
     klass = class_name.safe_constantize
     raise <span class="hljs-constant">InvalidClassError</span>, <span class="hljs-string">"Action class name <span class="hljs-subst">#{class_name.inspect}</span> cannot be constantized."</span> <span class="hljs-keyword">if</span> klass.blank?

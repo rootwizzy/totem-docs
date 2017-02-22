@@ -8,20 +8,20 @@
         state <span class="hljs-symbol">:approved</span>
         state <span class="hljs-symbol">:sent</span>
 
-        event <span class="hljs-symbol">:approve_all</span> <span class="hljs-keyword">do</span>
-          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:approved</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:approve_all_review_sets</span>
-        <span class="hljs-keyword">end</span>
-
         event <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">do</span>
           transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:approved</span>
         <span class="hljs-keyword">end</span>
 
-        event <span class="hljs-symbol">:unapprove_all</span> <span class="hljs-keyword">do</span>
-          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">:approved</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:unapprove_all_review_sets</span>
-        <span class="hljs-keyword">end</span>
-
         event <span class="hljs-symbol">:unapprove</span> <span class="hljs-keyword">do</span>
           transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">:approved</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:neutral</span>
+        <span class="hljs-keyword">end</span>
+
+        event <span class="hljs-symbol">:approve_all</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">:approved</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:approved</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:approve_all_review_sets</span>
+        <span class="hljs-keyword">end</span>
+
+        event <span class="hljs-symbol">:unapprove_all</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">:approved</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:unapprove_all_review_sets</span>
         <span class="hljs-keyword">end</span>
 
         event <span class="hljs-symbol">:mark_as_sent</span> <span class="hljs-keyword">do</span>

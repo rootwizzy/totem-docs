@@ -4,7 +4,7 @@
       <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Admin</span></span>
         <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UsersController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
           load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
-          totem_action_serializer_options
+          totem_action_serializer_options <span class="hljs-symbol">except:</span> <span class="hljs-symbol">:is_superuser</span>
 
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">select</span></span>
             <span class="hljs-variable">@users</span> = <span class="hljs-variable">@users</span>.where(<span class="hljs-symbol">id:</span> params[<span class="hljs-symbol">:ids</span>])
@@ -24,6 +24,11 @@
             hash         = controller_as_json(user)
             hash[<span class="hljs-symbol">:token</span>] = api_session.authentication_token
             controller_render_json(hash)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_superuser</span></span>
+            access_denied <span class="hljs-string">"Unauthorized request."</span> <span class="hljs-keyword">unless</span> current_user.superuser?
+            controller_render_no_content
           <span class="hljs-keyword">end</span>
 
           private

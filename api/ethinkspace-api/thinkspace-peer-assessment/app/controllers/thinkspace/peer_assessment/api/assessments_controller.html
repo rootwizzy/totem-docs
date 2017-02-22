@@ -3,7 +3,7 @@
     <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
       <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AssessmentsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
         load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
-        totem_action_authorize!
+        totem_action_authorize! <span class="hljs-symbol">except:</span> [<span class="hljs-symbol">:fetch</span>]
         totem_action_serializer_options
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
@@ -22,25 +22,36 @@
             teams
           <span class="hljs-keyword">when</span> <span class="hljs-symbol">:review_sets</span>
             review_sets
+          <span class="hljs-keyword">when</span> <span class="hljs-symbol">:overview</span>
+            overview
           <span class="hljs-keyword">else</span>
             access_denied <span class="hljs-string">"Unknown assessment view sub action <span class="hljs-subst">#{sub_action.inspect}</span>"</span>
           <span class="hljs-keyword">end</span>
         <span class="hljs-keyword">end</span>
 
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fetch</span></span>
+          assignment_id = params[<span class="hljs-symbol">:assignment_id</span>]
+          assignment    = <span class="hljs-constant">Thinkspace::Casespace::Assignment</span>.find(assignment_id)
+          phase_ids     = assignment.thinkspace_casespace_phases.scope_active.pluck(<span class="hljs-symbol">:id</span>)
+          assessments   = <span class="hljs-constant">Thinkspace::PeerAssessment::Assessment</span>.where(<span class="hljs-symbol">authable_type:</span> <span class="hljs-string">'Thinkspace::Casespace::Phase'</span>, <span class="hljs-symbol">authable_id:</span> phase_ids).limit(<span class="hljs-number">1</span>)
+          assessments.empty? ? controller_render([]) <span class="hljs-symbol">:</span> controller_render(assessments.first)
+        <span class="hljs-keyword">end</span>
+          
         private
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">teams</span></span>
+          serializer_options.authorize_action    <span class="hljs-symbol">:read_teammate</span>, <span class="hljs-symbol">:commenterable</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span> <span class="hljs-comment"># allow the `commenterable` user to be serialized</span>
+
           ownerable = totem_action_authorize.params_ownerable
           phase     = <span class="hljs-variable">@assessment</span>.authable
           teams     = <span class="hljs-constant">Thinkspace::Team::Team</span>.users_teams(phase, ownerable)
           access_denied <span class="hljs-string">"No teams found on phase for ownerable."</span>, <span class="hljs-symbol">user_message:</span> <span class="hljs-string">"You are not assigned to a team for this phase."</span> <span class="hljs-keyword">unless</span> teams.present?
-          team      = teams.first
-          access_denied <span class="hljs-string">"No team found on phase for ownerable."</span> <span class="hljs-keyword">unless</span> team.present?
-          user_ids  = team.thinkspace_common_users.pluck(<span class="hljs-symbol">:id</span>)
-          json      = controller_as_json(team)
-          json[<span class="hljs-string">'thinkspace/team/team'</span>][<span class="hljs-string">'thinkspace/common/user_ids'</span>] = user_ids
-          json.merge! controller_as_json(team.thinkspace_common_users)
-          controller_render_json(json)
+          team = teams.first
+          user_ids  = team.thinkspace_common_users.pluck(<span class="hljs-symbol">:id</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>json      = controller_as_json(team)
+json[:data][:relationships] = {}
+json[:data][:relationships][&#39;thinkspace/common/users&#39;] = {}
+json[:data][:relationships][&#39;thinkspace/common/users&#39;][:data] = team.thinkspace_common_users
+controller_render_json(json)</p></div></div><div class="code"><div class="wrapper">          controller_render(team)
         <span class="hljs-keyword">end</span>
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">review_sets</span></span>
@@ -53,6 +64,22 @@
           review_set = <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>.find_or_create_by(<span class="hljs-symbol">ownerable:</span> ownerable, <span class="hljs-symbol">team_set_id:</span> team_set.id)
           review_set.create_reviews
           controller_render(review_set)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">overview</span></span>
+          ownerable  = totem_action_authorize.params_ownerable
+          phase      = <span class="hljs-variable">@assessment</span>.authable
+          teams      = <span class="hljs-constant">Thinkspace::Team::Team</span>.users_teams(phase, ownerable)
+          access_denied <span class="hljs-string">"No teams found on phase for ownerable."</span> <span class="hljs-keyword">unless</span> teams.present?
+          team      = teams.first
+          access_denied <span class="hljs-string">"No team found on phase for ownerable."</span> <span class="hljs-keyword">unless</span> team.present?
+          team_set =  <span class="hljs-constant">Thinkspace::PeerAssessment::TeamSet</span>.find_by(<span class="hljs-symbol">team_id:</span> team.id, <span class="hljs-symbol">assessment_id:</span> <span class="hljs-variable">@assessment</span>.id)
+          access_denied <span class="hljs-string">"No team set found for team_id [<span class="hljs-subst">#{team.id}</span>] and assessment_id [<span class="hljs-subst">#{<span class="hljs-variable">@assessment</span>.id}</span>]"</span> <span class="hljs-keyword">unless</span> team_set.present?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Ownerable_type and ID needed because of: <a href="https://github.com/rails/rails/issues/16983">https://github.com/rails/rails/issues/16983</a></p></div></div><div class="code"><div class="wrapper">          review_sets = <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>.where(<span class="hljs-symbol">team_set_id:</span> team_set.id, <span class="hljs-symbol">ownerable_type:</span> ownerable.<span class="hljs-keyword">class</span>.name).scope_where_not_ownerable_ids(ownerable).scope_sent
+          access_denied <span class="hljs-string">"No review sets found for team_set_id [<span class="hljs-subst">#{team_set.id}</span>]"</span> <span class="hljs-keyword">unless</span> review_sets.present?
+          review_set_ids = review_sets.pluck(<span class="hljs-symbol">:id</span>)
+          reviews        = <span class="hljs-constant">Thinkspace::PeerAssessment::Review</span>.where(<span class="hljs-symbol">review_set_id:</span> review_set_ids, <span class="hljs-symbol">reviewable:</span> ownerable)
+          json           = <span class="hljs-constant">Thinkspace::PeerAssessment::Review</span>.generate_anonymized_review_json(<span class="hljs-variable">@assessment</span>, reviews)
+          controller_render_json(json)
         <span class="hljs-keyword">end</span>
 
         private

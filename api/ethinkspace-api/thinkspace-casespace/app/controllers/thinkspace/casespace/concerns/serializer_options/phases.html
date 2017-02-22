@@ -17,6 +17,7 @@
     serializer_options.cache
     common_cache_serializer_options(serializer_options)
 
+    serializer_options.remove_association  <span class="hljs-symbol">:thinkspace_casespace_phase_states</span>
     serializer_options.remove_association  <span class="hljs-symbol">:componentable</span>
     serializer_options.remove_association  <span class="hljs-symbol">:thinkspace_casespace_phases</span>,           <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:thinkspace_casespace_phase_template</span>
     serializer_options.remove_association  <span class="hljs-symbol">:thinkspace_casespace_phase_components</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:thinkspace_casespace_phase_template</span>
@@ -27,7 +28,6 @@
     serializer_options.remove_association  <span class="hljs-symbol">:thinkspace_common_user</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:thinkspace_casespace_phase_states</span>
 
     serializer_options.blank_association   <span class="hljs-symbol">:thinkspace_casespace_phase_scores</span>
-    serializer_options.blank_association   <span class="hljs-symbol">:thinkspace_casespace_phase_states</span>
 
     serializer_options.include_association <span class="hljs-symbol">:thinkspace_common_configuration</span>
     serializer_options.include_association <span class="hljs-symbol">:thinkspace_casespace_phase_template</span>
@@ -51,6 +51,8 @@ A select action with multiple ids will return the combined abilities - not what 
         <span class="hljs-symbol">peer_review_teams:</span> serializer_options.authable_ability[<span class="hljs-symbol">:peer_review_teams</span>],
         <span class="hljs-symbol">modify_assignment:</span> serializer_options.authable_ability[<span class="hljs-symbol">:modify_assignment</span>],
         <span class="hljs-symbol">modify_phase:</span>      serializer_options.authable_ability[<span class="hljs-symbol">:modify_phase</span>],
+        <span class="hljs-symbol">read_assignment:</span>   serializer_options.authable_ability[<span class="hljs-symbol">:read_assignment</span>],
+        <span class="hljs-symbol">read_phase:</span>        serializer_options.authable_ability[<span class="hljs-symbol">:read_phase</span>]
       )
   <span class="hljs-keyword">end</span>
 

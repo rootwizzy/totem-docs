@@ -28,7 +28,8 @@
 
     serializer_options.remove_all <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:thinkspace_common_user</span>
 
-    serializer_options.include_association <span class="hljs-symbol">:thinkspace_common_space_types</span>, <span class="hljs-symbol">:thinkspace_common_owners</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
+    serializer_options.include_association <span class="hljs-symbol">:thinkspace_common_owners</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
+    serializer_options.include_association <span class="hljs-symbol">:thinkspace_common_space_types</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
 
     serializer_options.authorize_action <span class="hljs-symbol">:read_space_owners</span>, <span class="hljs-symbol">:thinkspace_common_owners</span>,      <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
     serializer_options.authorize_action <span class="hljs-symbol">:read_space_owners</span>, <span class="hljs-symbol">:thinkspace_common_space_users</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>

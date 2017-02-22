@@ -7,13 +7,16 @@
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span><span class="hljs-params">(serializer_options)</span></span>
             serializer_options.remove_association <span class="hljs-symbol">:thinkspace_common_spaces</span>
           <span class="hljs-keyword">end</span>
-
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span><span class="hljs-params">(serializer_options)</span></span>
+            serializer_options.remove_association <span class="hljs-symbol">:thinkspace_common_spaces</span>
+          <span class="hljs-keyword">end</span>
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sign_in</span><span class="hljs-params">(serializer_options)</span>;</span> show(serializer_options); <span class="hljs-keyword">end</span>
-
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sign_out</span>;</span>   <span class="hljs-keyword">end</span>;
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">stay_alive</span>;</span> <span class="hljs-keyword">end</span>;
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate</span>;</span>   <span class="hljs-keyword">end</span>;
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span>;</span> <span class="hljs-keyword">end</span>;
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">avatar</span>;</span> <span class="hljs-keyword">end</span>;
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_tos</span>;</span> <span class="hljs-keyword">end</span>;
 
         <span class="hljs-keyword">end</span>
       <span class="hljs-keyword">end</span>

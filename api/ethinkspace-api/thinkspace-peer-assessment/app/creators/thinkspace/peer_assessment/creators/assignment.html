@@ -12,7 +12,6 @@
         <span class="hljs-variable">@assignment</span>      = create_assignment_from_params
         phase            = create_assessment_phase
         <span class="hljs-variable">@assessment</span>      = create_assessment(phase)
-        phase_components = create_phase_components(phase)
       <span class="hljs-keyword">end</span>
 
       <span class="hljs-variable">@assignment</span>
@@ -28,13 +27,6 @@
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_assessment_phase</span></span>
       options = get_assessment_phase_options
       create_phase(options)
-    <span class="hljs-keyword">end</span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_phase_components</span><span class="hljs-params">(phase)</span></span>
-      components = <span class="hljs-constant">Array</span>.new
-      components &lt;&lt; create_header_component(phase)
-      components &lt;&lt; create_phase_component(phase, <span class="hljs-variable">@assessment</span>, <span class="hljs-string">'peer-assessment'</span>, <span class="hljs-string">'assessment'</span>)
-      components
     <span class="hljs-keyword">end</span>
 
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assessment_phase_options</span></span>

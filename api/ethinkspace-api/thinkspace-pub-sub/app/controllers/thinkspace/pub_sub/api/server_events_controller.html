@@ -9,33 +9,54 @@
           validate_rooms(get_rooms)
           server_events = controller_model_class.scope_messages(get_rooms, get_start_time, get_end_time).order(<span class="hljs-symbol">created_at:</span> <span class="hljs-symbol">:desc</span>)
           serializer_options.remove_all
-          hash = controller_as_json(server_events)
-          controller_render_json({<span class="hljs-symbol">messages:</span> hash[controller_plural_path]})
+          controller_render(server_events)
         <span class="hljs-keyword">end</span>
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tracker</span></span>
-          access_denied <span class="hljs-string">"Unauthorized tracker request."</span> <span class="hljs-keyword">unless</span> can?(<span class="hljs-symbol">:update</span>, authable)
-          rooms = get_rooms
-          validate_rooms(rooms)
-          sid = pubsub.channel_name + <span class="hljs-string">'#'</span> + (get_params[<span class="hljs-symbol">:sid</span>] || <span class="hljs-string">''</span>)
+          <span class="hljs-keyword">unless</span> current_user.superuser?
+            access_denied <span class="hljs-string">"Unauthorized tracker request."</span> <span class="hljs-keyword">unless</span> can?(<span class="hljs-symbol">:update</span>, authable)
+          <span class="hljs-keyword">end</span>
+          rooms     = get_rooms
+          room_type = get_room_type || <span class="hljs-string">'tracker'</span>
+          sid       = pubsub.channel_name + <span class="hljs-string">'#'</span> + (get_params[<span class="hljs-symbol">:sid</span>] || <span class="hljs-string">''</span>)
+          access_denied <span class="hljs-string">"Unauthorized tracker request. Socketio id is blank."</span> <span class="hljs-keyword">if</span> sid.blank?
+          value = {<span class="hljs-symbol">sid:</span> sid, <span class="hljs-symbol">room_type:</span> room_type}
+          <span class="hljs-keyword">if</span> current_user.superuser?
+            tracker_authable = current_user
+            value[<span class="hljs-symbol">:all_rooms</span>] = <span class="hljs-keyword">true</span>
+          <span class="hljs-keyword">else</span>
+            tracker_authable = authable
+            validate_rooms(rooms, room_type)
+          <span class="hljs-keyword">end</span>
           server_event_record_class.new
             .origin(<span class="hljs-keyword">self</span>)
-            .authable(authable)
+            .authable(tracker_authable)
             .user(current_user)
             .rooms(rooms)
             .event(<span class="hljs-symbol">:tracker</span>)
             .room_event(<span class="hljs-symbol">:tracker</span>)
             .action(<span class="hljs-symbol">:tracker</span>)
-            .value(<span class="hljs-symbol">sid:</span> sid, <span class="hljs-symbol">room_type:</span> <span class="hljs-symbol">:tracker</span>)
+            .value(value)
             .publish
+          controller_render_no_content
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">timer_cancel</span></span>
+          access_denied <span class="hljs-string">"Unauthorized timer cancel request."</span> <span class="hljs-keyword">unless</span> current_user.superuser?
+          id = get_params[<span class="hljs-symbol">:id</span>]
+          access_denied <span class="hljs-string">"Timer cancel id is blank in params."</span> <span class="hljs-keyword">if</span> id.blank?
+          se = get_timer_server_event(id)
+          access_denied <span class="hljs-string">"Server event record with id <span class="hljs-subst">#{se_id.inspect}</span> not found."</span> <span class="hljs-keyword">if</span> se.blank?
+          publish_timer_cancel(se, id)
           controller_render_no_content
         <span class="hljs-keyword">end</span>
 
         private
 
         <span class="hljs-keyword">include</span> <span class="hljs-constant">PubSub::AuthorizeHelpers</span>
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">PubSub::TimerHelpers</span>
 
-        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_params</span>;</span> params.permit!.to_h[action_name] || <span class="hljs-constant">Hash</span>.new; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_params</span>;</span> <span class="hljs-variable">@_permited_params</span> ||= params.permit!.to_h[action_name] || <span class="hljs-constant">Hash</span>.new; <span class="hljs-keyword">end</span>
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_room_type</span>;</span> get_params[<span class="hljs-symbol">:room_type</span>]; <span class="hljs-keyword">end</span>
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_rooms</span>;</span>     <span class="hljs-variable">@server_event_rooms</span> ||= [get_params[<span class="hljs-symbol">:rooms</span>]].flatten.compact; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Add team based validation rules.

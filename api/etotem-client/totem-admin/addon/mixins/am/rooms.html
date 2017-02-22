@@ -12,9 +12,33 @@ export default ember.Mixin.create
   <span class="hljs-attribute">room_list_callback</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> <span class="hljs-property">@emit_room_list</span>(options.component)
 
   <span class="hljs-attribute">emit_room_list</span>: <span class="hljs-function"><span class="hljs-params">(source, callback=<span class="hljs-string">'handle_room_list'</span>)</span> -&gt;</span>
-    event = <span class="hljs-string">'room_list'</span>
+    event  = <span class="hljs-string">'room_list'</span>
     socket = <span class="hljs-property">@pubsub</span>.get_socket()
     cevent = <span class="hljs-property">@pubsub</span>.client_event(event)
     sevent = <span class="hljs-property">@pubsub</span>.server_event(event)
-    <span class="hljs-property">@pubsub</span>.<span class="hljs-literal">on</span>(socket, sevent, source, callback) 
-    socket.emit(cevent)</div></div></div></div></body></html>
+    <span class="hljs-property">@pubsub</span>.<span class="hljs-literal">on</span>(socket, sevent, source, callback)
+    socket.emit(cevent)
+
+  <span class="hljs-attribute">room_counts</span>: <span class="hljs-function"><span class="hljs-params">(component)</span> -&gt;</span>
+    options =
+      <span class="hljs-attribute">after_authenticate_callback</span>: <span class="hljs-string">'room_counts_callback'</span>
+      <span class="hljs-attribute">source</span>:                      @
+      <span class="hljs-attribute">component</span>:                   component
+    <span class="hljs-property">@pubsub</span>.get_socket(options) <span class="hljs-comment"># authenticate the user</span>
+
+  <span class="hljs-attribute">room_counts_callback</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> <span class="hljs-property">@emit_room_counts</span>(options.component)
+
+  <span class="hljs-attribute">emit_room_counts</span>: <span class="hljs-function"><span class="hljs-params">(source, callback=<span class="hljs-string">'handle_room_counts'</span>)</span> -&gt;</span>
+    event  = <span class="hljs-string">'room_counts'</span>
+    socket = <span class="hljs-property">@pubsub</span>.get_socket()
+    cevent = <span class="hljs-property">@pubsub</span>.client_event(event)
+    sevent = <span class="hljs-property">@pubsub</span>.server_event(event)
+    <span class="hljs-property">@pubsub</span>.<span class="hljs-literal">on</span>(socket, sevent, source, callback)
+    socket.emit(cevent)
+
+  <span class="hljs-attribute">emit_room_count_reset</span>: <span class="hljs-function"><span class="hljs-params">(hash)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(hash.room)
+    event  = <span class="hljs-string">'room_counts_reset'</span>
+    socket = <span class="hljs-property">@pubsub</span>.get_socket()
+    cevent = <span class="hljs-property">@pubsub</span>.client_event(event)
+    socket.emit(cevent, hash)</div></div></div></div></body></html>
