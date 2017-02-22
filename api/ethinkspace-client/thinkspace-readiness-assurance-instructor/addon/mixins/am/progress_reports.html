@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-instructor/addon/mixins/am/progress_reports</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-instructor/addon/mixins/am/progress_reports"><meta name="groc-project-path" content="thinkspace-readiness-assurance-instructor/addon/mixins/am/progress_reports.coffee"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-readiness-assurance-instructor/addon/mixins/am/progress_reports.coffee">thinkspace-readiness-assurance-instructor/addon/mixins/am/progress_reports.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import ns          from <span class="hljs-string">'totem/ns'</span>
+import ajax        from <span class="hljs-string">'totem/ajax'</span>
+
+export default ember.Mixin.create
+  <span class="hljs-attribute">set_trat_progress_report</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      url = <span class="hljs-property">@get_trat_url</span>(<span class="hljs-string">'progress_report'</span>)
+      <span class="hljs-property">@set_progress_report</span>(url).<span class="hljs-keyword">then</span> (payload) =&gt;
+        resolve(payload)
+
+  <span class="hljs-attribute">set_irat_progress_report</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      url = <span class="hljs-property">@get_irat_url</span>(<span class="hljs-string">'progress_report'</span>)
+      <span class="hljs-property">@set_progress_report</span>(url).<span class="hljs-keyword">then</span> (payload) =&gt;
+        resolve(payload)
+
+  <span class="hljs-attribute">set_progress_report</span>: <span class="hljs-function"><span class="hljs-params">(url)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      query = <span class="hljs-property">@get_auth_query</span>(url)
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        <span class="hljs-property">@set_data_value</span>(<span class="hljs-string">'progress_report'</span>, payload)
+        resolve(payload)
+
+  <span class="hljs-attribute">join_rat_progress_report_room</span>: <span class="hljs-function">-&gt;</span>
+    options = 
+      <span class="hljs-attribute">room</span>:       <span class="hljs-property">@se</span>.get_admin_room()
+      <span class="hljs-attribute">source</span>:     @
+      <span class="hljs-attribute">callback</span>:   <span class="hljs-string">'handle_progress_report'</span>
+      <span class="hljs-attribute">room_event</span>: <span class="hljs-string">'progress_report'</span>
+    <span class="hljs-property">@se</span>.pubsub.join(options)
+
+  <span class="hljs-attribute">handle_progress_report</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    progress_report = data.value
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[am:progress_reports] handle_progress_report: "</span>, progress_report
+    <span class="hljs-property">@set_data_value</span>(<span class="hljs-string">'progress_report'</span>, progress_report)
+
+  <span class="hljs-attribute">get_progress_report_data_for_question_id</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span>
+    pr     = <span class="hljs-property">@get_data_value</span>(<span class="hljs-string">'progress_report'</span>)
+    result = pr.results.findBy(<span class="hljs-string">'id'</span>, id)
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[am:progress_reports] Question for [<span class="hljs-subst">#{id}</span>]: "</span>, result
+    result</div></div></div></div></body></html>

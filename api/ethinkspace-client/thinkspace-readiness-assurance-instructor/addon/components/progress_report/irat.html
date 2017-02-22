@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-readiness-assurance-instructor/addon/components/progress_report/irat</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-readiness-assurance-instructor/addon/components/progress_report/irat"><meta name="groc-project-path" content="thinkspace-readiness-assurance-instructor/addon/components/progress_report/irat.coffee"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-readiness-assurance-instructor/addon/components/progress_report/irat.coffee">thinkspace-readiness-assurance-instructor/addon/components/progress_report/irat.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import base        from <span class="hljs-string">'thinkspace-readiness-assurance-instructor/components/base'</span>
+import m_data_rows from <span class="hljs-string">'thinkspace-readiness-assurance/mixins/data_rows'</span>
+
+export default base.extend m_data_rows,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="services">Services</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">thinkspace</span>: ember.inject.service()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="properties">Properties</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">qms_rows</span>:        <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">assessment</span>:      <span class="hljs-literal">null</span>
+  
+  <span class="hljs-attribute">progress_report</span>: ember.computed.reads <span class="hljs-string">'am.data_values.progress_report'</span>
+  <span class="hljs-attribute">is_ifat</span>:         ember.computed.reads <span class="hljs-string">'assessment.is_ifat'</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span> 
+    <span class="hljs-property">@am</span>.set_model <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+
+  <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@setup</span>()
+
+  <span class="hljs-attribute">setup</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@am</span>.get_irat_assessment().<span class="hljs-keyword">then</span> (assessment) =&gt;
+      <span class="hljs-property">@set</span>(<span class="hljs-string">'assessment'</span>, assessment)
+      <span class="hljs-property">@am</span>.set_irat_progress_report().<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@am</span>.join_rat_progress_report_room()
+        <span class="hljs-property">@set_ready_on</span>() <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> Refactor this to not rely on data_rows mixin.</span></div></div></div></div></body></html>

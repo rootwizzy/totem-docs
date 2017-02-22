@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><title>styles/thinkspace-casespace/shared/layout</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="styles/thinkspace-casespace/shared/layout"><meta name="groc-project-path" content="thinkspace-assets/styles/thinkspace-casespace/shared/layout.scss"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-assets/styles/thinkspace-casespace/shared/layout.scss">thinkspace-assets/styles/thinkspace-casespace/shared/layout.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$right-pocket-width</span><span class="hljs-value">: <span class="hljs-number">15%</span>;</span>
+<span class="hljs-variable">$num-right-pockets</span><span class="hljs-value">:  <span class="hljs-number">10</span>;</span>
+
+<span class="hljs-variable">$content-wrapper-margin-top</span><span class="hljs-value">:    <span class="hljs-number">60px</span>;</span>
+<span class="hljs-variable">$content-wrapper-margin-right</span><span class="hljs-value">:  <span class="hljs-number">50px</span>;</span>
+
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">mixin</span><span class="hljs-preprocessor"> mixin-right-pocket</span> (<span class="hljs-variable">$n</span>:<span class="hljs-preprocessor"> 1</span>) {</span>
+  <span class="hljs-id">#content</span> {<span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-variable">$right-pocket-width</span> * <span class="hljs-variable">$n</span>;</span>}
+  <span class="hljs-id">#right-pocket</span> {
+    <span class="hljs-attribute">width</span><span class="hljs-value">:    <span class="hljs-variable">$right-pocket-width</span> * <span class="hljs-variable">$n</span>;</span>
+    <span class="hljs-attribute">top</span><span class="hljs-value">:      <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">right</span><span class="hljs-value">:    <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">position</span><span class="hljs-value">: fixed;</span>
+    <span class="hljs-class">.right-pocket_addon</span> {
+      <span class="hljs-attribute">border-right</span><span class="hljs-value">: <span class="hljs-number">2px</span> solid white;</span>
+    }
+  }
+}
+
+<span class="hljs-id">#application</span> {
+  <span class="hljs-attribute">width</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+  &amp;<span class="hljs-class">.right-pocket_is-minimized</span> {
+    <span class="hljs-id">#content</span> {<span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-variable">$content-wrapper-margin-right</span>;</span>}
+  }
+  &amp;<span class="hljs-class">.right-pocket_is-expanded</span> {
+    <span class="hljs-at_rule">@<span class="hljs-keyword">for</span> <span class="hljs-variable">$i</span><span class="hljs-preprocessor"> from</span><span class="hljs-preprocessor"> 1</span><span class="hljs-preprocessor"> through</span> <span class="hljs-variable">$num-right-pockets</span> {</span>&amp;<span class="hljs-class">.right-pocket_width-</span>#{<span class="hljs-variable">$i</span>} {<span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> mixin-right-pocket</span>(<span class="hljs-variable">$i</span>)}}
+  }
+  &amp;.top-pocket_is-expanded  {</span>
+    <span class="hljs-id">#content-wrapper</span> {<span class="hljs-attribute">margin-top</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>}
+    <span class="hljs-id">#top-pocket</span>      {<span class="hljs-attribute">margin-top</span><span class="hljs-value">: <span class="hljs-variable">$content-wrapper-margin-top</span>;</span>}
+  }
+}
+
+<span class="hljs-id">#top_pocket</span> {
+  <span class="hljs-attribute">margin-top</span><span class="hljs-value">: <span class="hljs-variable">$navbar-height</span>;</span>
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="application-">application {</h1>
+<p>  &amp;.toolbar-is-hidden { </p>
+<pre><code>#content-wrapper, .thinkspace-dock { margin-left: $toolbar-is-hidden-width !important; }
+#toolbar { width: $toolbar-is-hidden-width; z-index: inherit; }</code></pre>
+<p>  }</p>
+<p>  &amp;.right_pocket-is-minimized {</p>
+<pre><code>#content-wrapper { margin-right: $toolbar-is-minimized-width; }</code></pre>
+<p>  }</p>
+<p>  &amp;.right_pocket-is-expanded {
+    &amp;.right_pocket_width-1 { </p>
+<pre><code>  #content-wrapper { margin-right: 15%; } 
+  #right_pocket { 
+    width: 15%; 
+  }
+}
+&amp;.right_pocket_width-2 {
+  #content-wrapper { margin-right: 15% * 2 }
+  #right_pocket { 
+    width: 15% * 2; 
+  }
+}</code></pre>
+<p>  }</p></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">// </span></div></div></div></div></body></html>

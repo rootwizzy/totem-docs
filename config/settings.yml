@@ -30,7 +30,7 @@ modules:
         branch: development
         options:
           out:     "-o ../../api/ethinkspace-client"
-          glob:    "./**/*.coffee README.md"
+          glob:    '"./**/*.coffee" "./**/**/*.scss" "README.md"'
           project: "-p ethinkspace-client"
           url:     "--repository-url 'https://github.com/sixthedge/ethinkspace-client'"
           branch: "-b development"
@@ -50,7 +50,7 @@ modules:
         branch: development
         options:
           out:     "-o ../../api/etotem-client"
-          glob:    "./**/*.coffee README.md"
+          glob:    '"./**/*.coffee" "README.md"'
           project: "-p etotem-client"
           url:     "--repository-url 'https://github.com/sixthedge/etotem-client'"
           branch: "-b development"

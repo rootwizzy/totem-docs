@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><title>styles/addons</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="styles/addons"><meta name="groc-project-path" content="thinkspace-assets/styles/addons.scss"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-assets/styles/addons.scss">thinkspace-assets/styles/addons.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> import &#39;thinkspace-common/master&#39;;  // must do common first since has variables</span></p>
+<p>// # ### thinkspace ### #</p></div></div><div class="code"><div class="wrapper"><span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">'thinkspace-common/shared/variables'</span>;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> import &#39;thinkspace-artifact/master&#39;;, import &#39;thinkspace-builder/master&#39;;, import &#39;thinkspace-casespace/master&#39;;, import &#39;thinkspace-dock/master&#39;;, import &#39;thinkspace-html/master&#39;;, import &#39;thinkspace-indented-list/master&#39;;, import &#39;thinkspace-input-element/master&#39;;, import &#39;thinkspace-intercom/master&#39;;, import &#39;thinkspace-lab/master&#39;;, import &#39;thinkspace-markup/master&#39;;, import &#39;thinkspace-message-pubsub/master&#39;;, import &#39;thinkspace-observation-list/master&#39;;, import &#39;thinkspace-readiness-assurance/master&#39;;, import &#39;thinkspace-resource/master&#39;;, import &#39;thinkspace-simulation/master&#39;;, import &#39;thinkspace-team-manager/master&#39;;, import &#39;thinkspace-weather-forecaster/master&#39;;, and import &#39;sessions/master&#39;;</span></p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>OTBL Purpose starting below</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>CONTENTS</p>
+<p>SETTINGS
+Global...............Globally-available variables and config.
+Colors...............Manage our color palette in isolation.</p>
+<p>TOOLS
+Mixins...............Useful mixins.</p>
+<p>GENERIC
+Normalize.css........A level playing field.
+Box-sizing...........Better default <code>box-sizing</code>.</p>
+<p>BASE
+Headings.............H1–H6 styles.
+Page.................Page-level styles (HTML element).
+Links................Base link styles.
+Type.................Base type styles.</p>
+<p>OBJECTS
+Wrappers.............Wrapping and constraining elements.
+Buttons..............Button styles.
+Grid.................Grid system for columsns and rows.
+Icons................System icons in svg.
+Radio-buttons........Radio button styling.
+Dropdowns............Dropdown stylings.
+Branding.............Logo and other branding classes.
+Dialogue.............Dialogue containers for error messages and notifications.
+Breadcrumbs..........Breadcrumb styles.
+Counter-box..........Bordered box used to display a value with its&#39; label i.e., scores, attempts, slider values, etc.. 
+Avatar...............Styles for avatar pictures.</p>
+<p>COMPONENTS
+Top-bar..............Top bar that you see on all the pages.
+Main-content.........Where the meat is at.
+Exercise-types.......
+Footnote.............Reference section at the bottom of main-content.
+Forms................Form styles.
+Builder-progress.....Progress bar when going through builder.
+Tiles................Case and Exercise list containter tiles.
+Menu-bar.............Secondary and tertiary navigations.
+Menu-panel...........Floating panel with options.
+Bordered-panel.......Bordered panels, i.e., used in builder.
+Login................Styles for login/sign up pages.
+Date-picker..........Styles for date picker input and container.
+Rangeslider..........Sliders used for peer evaluations.
+Questions............Styles for student facing questions.
+Rat-pr...............RAT progress report styling.
+Analytics-panel......Panel used for presenting analytic information on pages. 
+Bar-graph............Styles for bar graph.
+Multiple-choice......Styles for multiple choice items including RAT IF-AT. 
+Secondary-panel......Panels used to compliment main content. Usually on the right side of UI. 
+Chat.................Styling chat portion of the panel. </p>
+<p>HELPERS
+Positioning..........Positioning helpers like floats.
+Spacing..............Space things apart.
+Clearfix.............To do clearfix stuff.
+Text.................Text helpers.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="settings">SETTINGS</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"> <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/settings.colors"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/settings.global"</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="generic">GENERIC</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"> <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/generic.normalize"</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="base">BASE</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"> <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/base.page"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/base.links"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/base.type"</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="objects">OBJECTS</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"> <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/objects.buttons"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/objects.grid"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/objects.icons"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/objects.radio-buttons"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/objects.dropdowns"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/objects.branding"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/objects.dialogue"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/objects.breadcrumbs"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/objects.counter-box"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/objects.avatar"</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="components">COMPONENTS</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"> <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.top-bar"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.main-content"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.exercise-types"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.footnote"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.forms"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.builder-progress"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.tiles"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.menu-bar"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.menu-panel"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.bordered-panel"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.login"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.date-picker"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.rangeslider"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.questions"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.rat-pr"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.analytics-panel"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.bar-graph"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.multiple-choice"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.secondary-panel"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/components.chat"</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="helpers">HELPERS</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"> <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/helpers.positioning"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/helpers.spacing"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/helpers.clearfix"</span>;</span>
+ <span class="hljs-at_rule">@<span class="hljs-keyword">import</span> <span class="hljs-string">"otbl-css/helpers.text"</span>;</span>
+
+
+
+<span class="hljs-comment">//misc</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> import &#39;thinkspace-peer-assessment/ts-rangeslider/modules&#39;;</span></p></div></div></div></div></body></html>

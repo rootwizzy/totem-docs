@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="en"><head><title>styles/thinkspace-common/shared/modules/loading</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="styles/thinkspace-common/shared/modules/loading"><meta name="groc-project-path" content="thinkspace-assets/styles/thinkspace-common/shared/modules/loading.scss"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-assets/styles/thinkspace-common/shared/modules/loading.scss">thinkspace-assets/styles/thinkspace-common/shared/modules/loading.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.loading-container</span> {
+  <span class="hljs-attribute">position</span><span class="hljs-value">:relative;</span>
+  <span class="hljs-attribute">width</span><span class="hljs-value">:<span class="hljs-number">240px</span>;</span>
+  <span class="hljs-attribute">height</span><span class="hljs-value">:<span class="hljs-number">29px</span>;</span>
+  <span class="hljs-attribute">margin-top</span><span class="hljs-value">:<span class="hljs-number">5px</span>;</span>
+  <span class="hljs-attribute">margin-left</span><span class="hljs-value">:auto;</span>
+  <span class="hljs-attribute">margin-right</span><span class="hljs-value">:auto;</span>
+}
+
+<span class="hljs-class">.loading-bars</span> {
+  <span class="hljs-attribute">position</span><span class="hljs-value">:absolute;</span>
+  <span class="hljs-attribute">top</span><span class="hljs-value">:<span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">:<span class="hljs-hexcolor">#4F9CCF</span>;</span>
+  <span class="hljs-attribute">width</span><span class="hljs-value">:<span class="hljs-number">29px</span>;</span>
+  <span class="hljs-attribute">height</span><span class="hljs-value">:<span class="hljs-number">29px</span>;</span>
+  -moz-<span class="hljs-attribute">animation-name</span><span class="hljs-value">:bounce-loading;</span>
+  -moz-<span class="hljs-attribute">animation-duration</span><span class="hljs-value">:<span class="hljs-number">1.3s</span>;</span>
+  -moz-<span class="hljs-attribute">animation-iteration-count</span><span class="hljs-value">:infinite;</span>
+  -moz-<span class="hljs-attribute">animation-direction</span><span class="hljs-value">:linear;</span>
+  -moz-<span class="hljs-attribute">transform</span><span class="hljs-value">:<span class="hljs-function">scale</span>(.<span class="hljs-number">3</span>);</span>
+  -webkit-<span class="hljs-attribute">animation-name</span><span class="hljs-value">:bounce-loading;</span>
+  -webkit-<span class="hljs-attribute">animation-duration</span><span class="hljs-value">:<span class="hljs-number">1.3s</span>;</span>
+  -webkit-<span class="hljs-attribute">animation-iteration-count</span><span class="hljs-value">:infinite;</span>
+  -webkit-<span class="hljs-attribute">animation-direction</span><span class="hljs-value">:linear;</span>
+  -webkit-<span class="hljs-attribute">transform</span><span class="hljs-value">:<span class="hljs-function">scale</span>(.<span class="hljs-number">3</span>);</span>
+  <span class="hljs-attribute">animation-name</span><span class="hljs-value">:bounce-loading;</span>
+  <span class="hljs-attribute">animation-duration</span><span class="hljs-value">:<span class="hljs-number">1.3s</span>;</span>
+  <span class="hljs-attribute">animation-iteration-count</span><span class="hljs-value">:infinite;</span>
+  <span class="hljs-attribute">animation-direction</span><span class="hljs-value">:linear;</span>
+  <span class="hljs-attribute">transform</span><span class="hljs-value">:<span class="hljs-function">scale</span>(.<span class="hljs-number">3</span>);</span>
+}
+
+<span class="hljs-class">.loading-bar-1</span> {
+  <span class="hljs-attribute">left</span><span class="hljs-value">:<span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.52s</span>;</span>
+  -moz-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.52s</span>;</span>
+  -webkit-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.52s</span>;</span>
+}
+
+<span class="hljs-class">.loading-bar-2</span> {
+  <span class="hljs-attribute">left</span><span class="hljs-value">:<span class="hljs-number">30px</span>;</span>
+  <span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.65s</span>;</span>
+  -moz-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.65s</span>;</span>
+  -webkit-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.65s</span>;</span>
+}
+
+<span class="hljs-class">.loading-bar-3</span> {
+  <span class="hljs-attribute">left</span><span class="hljs-value">:<span class="hljs-number">60px</span>;</span>
+  <span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.78s</span>;</span>
+  -moz-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.78s</span>;</span>
+  -webkit-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.78s</span>;</span>
+}
+
+<span class="hljs-class">.loading-bar-4</span> {
+  <span class="hljs-attribute">left</span><span class="hljs-value">:<span class="hljs-number">90px</span>;</span>
+  <span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.91s</span>;</span>
+  -moz-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.91s</span>;</span>
+  -webkit-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">0.91s</span>;</span>
+}
+
+<span class="hljs-class">.loading-bar-5</span> {
+  <span class="hljs-attribute">left</span><span class="hljs-value">:<span class="hljs-number">120px</span>;</span>
+  <span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.04s</span>;</span>
+  -moz-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.04s</span>;</span>
+  -webkit-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.04s</span>;</span>
+}
+
+<span class="hljs-class">.loading-bar-6</span> {
+  <span class="hljs-attribute">left</span><span class="hljs-value">:<span class="hljs-number">150px</span>;</span>
+  <span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.17s</span>;</span>
+  -moz-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.17s</span>;</span>
+  -webkit-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.17s</span>;</span>
+}
+
+<span class="hljs-class">.loading-bar-7</span> {
+  <span class="hljs-attribute">left</span><span class="hljs-value">:<span class="hljs-number">180px</span>;</span>
+  <span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.3s</span>;</span>
+  -moz-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.3s</span>;</span>
+  -webkit-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.3s</span>;</span>
+}
+
+<span class="hljs-class">.loading-bar-8</span> {
+  <span class="hljs-attribute">left</span><span class="hljs-value">:<span class="hljs-number">210px</span>;</span>
+  <span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.43s</span>;</span>
+  -moz-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.43s</span>;</span>
+  -webkit-<span class="hljs-attribute">animation-delay</span><span class="hljs-value">:<span class="hljs-number">1.43s</span>;</span>
+}
+
+<span class="hljs-at_rule">@keyframes<span class="hljs-preprocessor"> bounce-loading</span> {</span>
+  0% {
+    <span class="hljs-attribute">transform</span><span class="hljs-value">:<span class="hljs-function">scale</span>(<span class="hljs-number">1</span>);</span>
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">:<span class="hljs-hexcolor">#4F9CCF</span>;</span>
+  }
+
+  100% {
+    <span class="hljs-attribute">transform</span><span class="hljs-value">:<span class="hljs-function">scale</span>(.<span class="hljs-number">3</span>);</span>
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">:<span class="hljs-hexcolor">#E3F6FF</span>;</span>
+  }
+}
+
+<span class="hljs-at_rule">@-moz-keyframes<span class="hljs-preprocessor"> bounce-loading</span> {</span>
+  0% {
+    -moz-<span class="hljs-attribute">transform</span><span class="hljs-value">:<span class="hljs-function">scale</span>(<span class="hljs-number">1</span>);</span>
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">:<span class="hljs-hexcolor">#4F9CCF</span>;</span>
+  }
+
+  100% {
+    -moz-<span class="hljs-attribute">transform</span><span class="hljs-value">:<span class="hljs-function">scale</span>(.<span class="hljs-number">3</span>);</span>
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">:<span class="hljs-hexcolor">#E3F6FF</span>;</span>
+  }
+}
+
+<span class="hljs-at_rule">@-webkit-keyframes<span class="hljs-preprocessor"> bounce-loading</span> {</span>
+  0% {
+    -webkit-<span class="hljs-attribute">transform</span><span class="hljs-value">:<span class="hljs-function">scale</span>(<span class="hljs-number">1</span>);</span>
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">:<span class="hljs-hexcolor">#4F9CCF</span>;</span>
+  }
+
+  100% {
+    -webkit-<span class="hljs-attribute">transform</span><span class="hljs-value">:<span class="hljs-function">scale</span>(.<span class="hljs-number">3</span>);</span>
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">:<span class="hljs-hexcolor">#E3F6FF</span>;</span>
+  }
+}
+
+<span class="hljs-class">.thinkspace-common_loading</span> {
+  <span class="hljs-attribute">position</span><span class="hljs-value">:         absolute;</span>
+  <span class="hljs-attribute">top</span><span class="hljs-value">:              <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">left</span><span class="hljs-value">:             <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">right</span><span class="hljs-value">:            <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">bottom</span><span class="hljs-value">:           <span class="hljs-number">0</span>;</span>
+
+  <span class="hljs-class">.thinkspace-common_loading-branding</span> {
+    <span class="hljs-attribute">color</span><span class="hljs-value">:      white;</span>
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">:  <span class="hljs-number">120px</span>;</span>
+    <span class="hljs-attribute">text-align</span><span class="hljs-value">: center;</span>
+
+    <span class="hljs-class">.thinkspace-common_loading-branding-think</span> {<span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-number">900</span>;</span>}
+
+  }
+
+  <span class="hljs-class">.thinkspace-common_loading-content</span> {
+
+    <span class="hljs-attribute">position</span><span class="hljs-value">:   absolute;</span>
+    <span class="hljs-attribute">top</span><span class="hljs-value">:        <span class="hljs-number">25%</span>;</span>
+    <span class="hljs-attribute">transform</span><span class="hljs-value">:  <span class="hljs-function">translateY</span>(-<span class="hljs-number">25%</span>);</span>
+    <span class="hljs-attribute">width</span><span class="hljs-value">:      <span class="hljs-number">100%</span>;</span>
+    <span class="hljs-attribute">text-align</span><span class="hljs-value">: center;</span>
+
+    <span class="hljs-class">.thinkspace-common_loading-ship</span> {
+
+      <span class="hljs-attribute">background-image</span><span class="hljs-value">: <span class="hljs-function">url</span>(<span class="hljs-string">'/assets/images/loading-ship.png'</span>);</span>
+      <span class="hljs-attribute">background-size</span><span class="hljs-value">:  <span class="hljs-number">100%</span>;</span>
+      <span class="hljs-attribute">width</span><span class="hljs-value">:            <span class="hljs-number">267px</span>;</span>
+      <span class="hljs-attribute">height</span><span class="hljs-value">:           <span class="hljs-number">132px</span>;</span>
+      <span class="hljs-attribute">display</span><span class="hljs-value">:          inline-block;</span>
+      <span class="hljs-attribute">margin</span><span class="hljs-value">:           <span class="hljs-number">0.25em</span>;</span>
+    }
+
+    <span class="hljs-class">.thinkspace-common_loading-header</span> { <span class="hljs-attribute">text-align</span><span class="hljs-value">: center;</span> <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-variable">$ts-heavy</span>;</span>}
+    <span class="hljs-class">.thinkspace-common_loading-message</span> { <span class="hljs-attribute">text-align</span><span class="hljs-value">: center;</span> }
+  }
+}
+
+<span class="hljs-class">.thinkspace-common_loading-small</span> {
+  <span class="hljs-class">.thinkspace-common_loading-content</span> {
+    <span class="hljs-attribute">width</span><span class="hljs-value">:      <span class="hljs-number">100%</span>;</span>
+    <span class="hljs-attribute">text-align</span><span class="hljs-value">: center;</span>
+
+    <span class="hljs-class">.thinkspace-common_loading-ship</span> {
+
+      <span class="hljs-attribute">background-image</span><span class="hljs-value">: <span class="hljs-function">url</span>(<span class="hljs-string">'/assets/images/loading-ship.png'</span>);</span>
+      <span class="hljs-attribute">background-size</span><span class="hljs-value">:  <span class="hljs-number">100%</span>;</span>
+      <span class="hljs-attribute">width</span><span class="hljs-value">:            <span class="hljs-number">267px</span>;</span>
+      <span class="hljs-attribute">height</span><span class="hljs-value">:           <span class="hljs-number">132px</span>;</span>
+      <span class="hljs-attribute">display</span><span class="hljs-value">:          inline-block;</span>
+      <span class="hljs-attribute">margin</span><span class="hljs-value">:           <span class="hljs-number">0.25em</span>;</span>
+    }
+
+    <span class="hljs-class">.thinkspace-common_loading-header</span> { <span class="hljs-attribute">text-align</span><span class="hljs-value">: center;</span> }
+    <span class="hljs-class">.thinkspace-common_loading-message</span> { <span class="hljs-attribute">text-align</span><span class="hljs-value">: center;</span> }
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Loader animation</p></div></div><div class="code"><div class="wrapper"><span class="hljs-variable">$loop</span><span class="hljs-value">:        <span class="hljs-number">1.5s</span>;</span>
+<span class="hljs-variable">$size</span><span class="hljs-value">:        <span class="hljs-number">200px</span>;</span>
+<span class="hljs-variable">$static_size</span><span class="hljs-value">: <span class="hljs-number">50%</span>;</span>
+<span class="hljs-variable">$ball_size</span><span class="hljs-value">:   <span class="hljs-number">25px</span>;</span>
+<span class="hljs-variable">$ball_scale</span><span class="hljs-value">:  .<span class="hljs-number">5</span>;</span>
+
+<span class="hljs-class">.ts-loader</span> { 
+  <span class="hljs-class">.spinner</span> {
+    <span class="hljs-attribute">margin</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span> 
+  } 
+}
+
+<span class="hljs-class">.ts-loader</span><span class="hljs-class">.ts-loader_center</span> {
+  <span class="hljs-class">.spinner</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">: block;</span>
+    <span class="hljs-attribute">margin</span><span class="hljs-value">:  <span class="hljs-number">0</span> auto;</span>
+  }
+}
+
+<span class="hljs-class">.spinner</span> {
+  <span class="hljs-attribute">width</span><span class="hljs-value">:    <span class="hljs-variable">$size</span>;</span>
+  <span class="hljs-attribute">height</span><span class="hljs-value">:   <span class="hljs-variable">$size</span>;</span>
+  <span class="hljs-attribute">margin</span><span class="hljs-value">:   <span class="hljs-number">50px</span> auto;</span>
+  <span class="hljs-attribute">position</span><span class="hljs-value">: relative;</span>
+}
+
+<span class="hljs-class">.ball-1</span> {
+  <span class="hljs-attribute">height</span><span class="hljs-value">:    <span class="hljs-variable">$static_size</span>;</span>
+  <span class="hljs-attribute">width</span><span class="hljs-value">:     <span class="hljs-variable">$static_size</span>;</span>
+  <span class="hljs-attribute">left</span><span class="hljs-value">:      <span class="hljs-number">50%</span>;</span>
+  <span class="hljs-attribute">top</span><span class="hljs-value">:       <span class="hljs-number">50%</span>;</span>
+  <span class="hljs-attribute">position</span><span class="hljs-value">:  absolute;</span>
+  <span class="hljs-attribute">z-index</span><span class="hljs-value">:   <span class="hljs-number">1</span>;</span>
+  <span class="hljs-attribute">animation</span><span class="hljs-value">: shrink <span class="hljs-number">3</span>*<span class="hljs-variable">$loop</span> infinite linear;</span>
+}
+
+<span class="hljs-class">.ball-1</span><span class="hljs-pseudo">:before</span> {
+  <span class="hljs-attribute">content</span><span class="hljs-value">:       <span class="hljs-string">''</span>;</span>
+  <span class="hljs-attribute">background</span><span class="hljs-value">:    <span class="hljs-variable">$ts-blue-base</span>;</span>
+  <span class="hljs-attribute">border-radius</span><span class="hljs-value">: <span class="hljs-number">50%</span>;</span>
+  <span class="hljs-attribute">height</span><span class="hljs-value">:        <span class="hljs-number">100%</span>;</span>
+  <span class="hljs-attribute">width</span><span class="hljs-value">:         <span class="hljs-number">100%</span>;</span>
+  <span class="hljs-attribute">position</span><span class="hljs-value">:      absolute;</span>
+  <span class="hljs-attribute">top</span><span class="hljs-value">:           -<span class="hljs-number">50%</span>;</span>
+  <span class="hljs-attribute">left</span><span class="hljs-value">:          -<span class="hljs-number">50%</span>;</span>
+}
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">mixin</span><span class="hljs-preprocessor"> electron</span> {</span>
+  <span class="hljs-attribute">position</span><span class="hljs-value">:      absolute;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>background: rgba(0,0,255,.5); </p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">width</span><span class="hljs-value">:         <span class="hljs-number">100%</span>;</span>
+  <span class="hljs-attribute">height</span><span class="hljs-value">:        <span class="hljs-number">100%</span>;</span>
+  <span class="hljs-attribute">z-index</span><span class="hljs-value">:       <span class="hljs-number">0</span>;</span>
+  
+  &amp;<span class="hljs-pseudo">:before</span> {
+    <span class="hljs-attribute">content</span><span class="hljs-value">:       <span class="hljs-string">''</span>;</span>  
+    <span class="hljs-attribute">height</span><span class="hljs-value">:        <span class="hljs-variable">$ball_size</span>;</span>
+    <span class="hljs-attribute">width</span><span class="hljs-value">:         <span class="hljs-variable">$ball_size</span>;</span>
+    <span class="hljs-attribute">border-radius</span><span class="hljs-value">: <span class="hljs-number">50%</span>;</span>
+    <span class="hljs-attribute">background</span><span class="hljs-value">:    <span class="hljs-hexcolor">#333</span>;</span>
+    <span class="hljs-attribute">top</span><span class="hljs-value">:           <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">left</span><span class="hljs-value">:          <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">margin</span><span class="hljs-value">:        <span class="hljs-number">0</span> auto;</span>
+    <span class="hljs-attribute">position</span><span class="hljs-value">:      absolute;</span>
+  }
+}
+
+<span class="hljs-class">.ball-2</span>,
+<span class="hljs-class">.ball-3</span>,
+<span class="hljs-class">.ball-4</span> {
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> electron</span>;</span>
+}
+
+<span class="hljs-class">.ball-2</span> { &amp;<span class="hljs-pseudo">:before</span> { <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-variable">$ts-red-base</span>;</span> } }
+<span class="hljs-class">.ball-3</span> { &amp;<span class="hljs-pseudo">:before</span> { <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-variable">$ts-orange-base</span>;</span> } }
+<span class="hljs-class">.ball-4</span> { &amp;<span class="hljs-pseudo">:before</span> { <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-variable">$ts-purple-base</span>;</span> } }
+
+<span class="hljs-class">.ball-2</span> {
+  <span class="hljs-attribute">animation</span><span class="hljs-value">: zindex <span class="hljs-variable">$loop</span> (<span class="hljs-variable">$loop</span>/<span class="hljs-number">2</span>) infinite <span class="hljs-function">steps</span>(<span class="hljs-number">2</span>, end);</span>
+}
+
+<span class="hljs-variable">$delay_3</span><span class="hljs-value">: <span class="hljs-function">-</span>(<span class="hljs-variable">$loop</span> / <span class="hljs-number">3</span> * <span class="hljs-number">2</span>);</span>
+
+<span class="hljs-class">.ball-3</span> {
+  <span class="hljs-attribute">transform</span><span class="hljs-value">: <span class="hljs-function">rotate</span>(<span class="hljs-number">120deg</span>);</span>  
+  <span class="hljs-attribute">animation</span><span class="hljs-value">: zindex <span class="hljs-variable">$loop</span> (<span class="hljs-variable">$delay_3</span> + (<span class="hljs-variable">$loop</span>/ <span class="hljs-number">2</span>)) infinite <span class="hljs-function">steps</span>(<span class="hljs-number">2</span>, end);</span>
+}
+
+<span class="hljs-variable">$delay_4</span><span class="hljs-value">: <span class="hljs-function">-</span>(<span class="hljs-variable">$loop</span> / <span class="hljs-number">3</span>);</span>
+
+<span class="hljs-class">.ball-4</span> {
+  <span class="hljs-attribute">transform</span><span class="hljs-value">: <span class="hljs-function">rotate</span>(<span class="hljs-number">240deg</span>);</span>   
+  <span class="hljs-attribute">animation</span><span class="hljs-value">: zindex <span class="hljs-variable">$loop</span> (<span class="hljs-variable">$delay_4</span> + (<span class="hljs-variable">$loop</span>/ <span class="hljs-number">2</span>)) infinite <span class="hljs-function">steps</span>(<span class="hljs-number">2</span>, end);</span>
+}
+
+<span class="hljs-class">.ball-2</span><span class="hljs-pseudo">:before</span> {
+  <span class="hljs-attribute">transform</span><span class="hljs-value">: <span class="hljs-function">rotate</span>(<span class="hljs-number">0</span>);</span>
+  <span class="hljs-attribute">animation</span><span class="hljs-value">: position <span class="hljs-variable">$loop</span> infinite ease, size <span class="hljs-variable">$loop</span> <span class="hljs-function">-</span>(<span class="hljs-variable">$loop</span> / <span class="hljs-number">4</span> * <span class="hljs-number">3</span>) infinite ease;</span>
+}
+
+<span class="hljs-class">.ball-3</span><span class="hljs-pseudo">:before</span> {
+  <span class="hljs-attribute">animation</span><span class="hljs-value">: position <span class="hljs-variable">$loop</span> <span class="hljs-variable">$delay_3</span> infinite ease, size <span class="hljs-variable">$loop</span> (<span class="hljs-variable">$delay_3</span> / <span class="hljs-number">4</span> * <span class="hljs-number">3</span>) infinite ease;</span>
+}
+
+<span class="hljs-class">.ball-4</span><span class="hljs-pseudo">:before</span> {
+  <span class="hljs-attribute">animation</span><span class="hljs-value">: position <span class="hljs-variable">$loop</span> <span class="hljs-variable">$delay_4</span> infinite ease, size <span class="hljs-variable">$loop</span> (<span class="hljs-variable">$delay_4</span> / <span class="hljs-number">4</span>) infinite ease;</span>
+}
+
+<span class="hljs-at_rule">@keyframes<span class="hljs-preprocessor"> position</span> {</span>
+  50% {
+    <span class="hljs-attribute">top</span><span class="hljs-value">: <span class="hljs-variable">$size</span> - <span class="hljs-variable">$ball_size</span>;</span>
+    <span class="hljs-attribute">left</span><span class="hljs-value">: <span class="hljs-variable">$size</span> - <span class="hljs-variable">$ball_size</span>;</span>
+  }
+}
+
+<span class="hljs-at_rule">@keyframes<span class="hljs-preprocessor"> size</span> {</span>
+  50% {
+    <span class="hljs-attribute">transform</span><span class="hljs-value">: <span class="hljs-function">scale</span>(<span class="hljs-variable">$ball_scale</span>, <span class="hljs-variable">$ball_scale</span>);</span>
+  }
+}
+
+<span class="hljs-at_rule">@keyframes<span class="hljs-preprocessor"> zindex</span> {</span>
+  100% {
+    <span class="hljs-attribute">z-index</span><span class="hljs-value">: <span class="hljs-number">10</span>;</span>
+  }
+}
+
+<span class="hljs-at_rule">@keyframes<span class="hljs-preprocessor"> shrink</span> {</span>
+  50% {
+    <span class="hljs-attribute">transform</span><span class="hljs-value">: <span class="hljs-function">scale</span>(.<span class="hljs-number">9</span>,.<span class="hljs-number">9</span>)
+  }
+}</span></div></div></div></div></body></html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/phase_manager/map/print</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/phase_manager/map/print"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/phase_manager/map/print.coffee"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-common/addon/mixins/phase_manager/map/print.coffee">thinkspace-common/addon/mixins/phase_manager/map/print.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">print_map</span>: <span class="hljs-function"><span class="hljs-params">(title=<span class="hljs-string">''</span>)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.warn <span class="hljs-string">"Phase Manager Map <span class="hljs-subst">#{title}</span>"</span>
+    map = <span class="hljs-property">@get_map</span>()
+    map.forEach (omap, ownerable) =&gt;
+      <span class="hljs-built_in">console</span>.info <span class="hljs-string">"  ==&gt; <span class="hljs-subst">#{ownerable.toString()}</span> [<span class="hljs-subst">#{ownerable.get(<span class="hljs-string">'full_name'</span>)}</span>]"</span>
+      omap.forEach (rmap, record) =&gt;
+        <span class="hljs-built_in">console</span>.info <span class="hljs-string">"    -&gt; <span class="hljs-subst">#{record.toString()}</span> [<span class="hljs-subst">#{record.get(<span class="hljs-string">'title'</span>)}</span>]"</span>
+        <span class="hljs-property">@print_key</span>          rmap, <span class="hljs-string">'has_phase_states'</span>
+        <span class="hljs-property">@print_phase_states</span> rmap, <span class="hljs-string">'global'</span>
+        <span class="hljs-property">@print_phase_states</span> rmap, <span class="hljs-string">'selected'</span>
+        <span class="hljs-property">@print_phase_states</span> rmap, <span class="hljs-string">'phase_states'</span>
+        <span class="hljs-keyword">if</span> rmap.has(<span class="hljs-string">'phases'</span>)
+          ids = (rmap.get(<span class="hljs-string">'phases'</span>) <span class="hljs-keyword">or</span> []).mapBy(<span class="hljs-string">'id'</span>)
+          <span class="hljs-property">@print_log</span> <span class="hljs-string">"        phase ids: "</span>, ids
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'  &lt;=='</span>)
+
+  <span class="hljs-attribute">print_phase_states</span>: <span class="hljs-function"><span class="hljs-params">(map, key)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> map.has(key)
+    indent = <span class="hljs-string">'        '</span>
+    states = map.get(key)
+    <span class="hljs-keyword">if</span> ember.isArray(states)
+      <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> states
+        <span class="hljs-keyword">if</span> ember.isArray(state)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>for ps in state
+  @print_phase_state(indent + &#39;   &#39;, ps)</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">else</span>
+          line = indent + <span class="hljs-string">'-&gt; phase_state:'</span>
+          <span class="hljs-property">@print_phase_state</span>(line, state)
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(states)
+      <span class="hljs-property">@print_phase_state</span>(indent + <span class="hljs-string">"<span class="hljs-subst">#{key}</span>:"</span>, states)
+
+  <span class="hljs-attribute">print_key</span>: <span class="hljs-function"><span class="hljs-params">(map, key)</span> -&gt;</span> <span class="hljs-property">@print_log</span>(<span class="hljs-string">"        <span class="hljs-subst">#{key}</span>: [<span class="hljs-subst">#{map.get(key)}</span>]"</span>) <span class="hljs-keyword">if</span> map.has(key)
+
+  <span class="hljs-attribute">print_phase_state</span>: <span class="hljs-function"><span class="hljs-params">(line, state)</span> -&gt;</span> <span class="hljs-property">@print_log</span>(line + <span class="hljs-string">" <span class="hljs-subst">#{state.toString()}</span> [<span class="hljs-subst">#{state.get(<span class="hljs-string">'title'</span>)}</span>]"</span>)
+
+  <span class="hljs-attribute">print_log</span>: <span class="hljs-function"><span class="hljs-params">(args...)</span> -&gt;</span> <span class="hljs-built_in">console</span>.log(args...)</div></div></div></div></body></html>

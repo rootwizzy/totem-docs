@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-assets/styles/thinkspace-input-element/modules</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace-assets/styles/thinkspace-input-element/modules"><meta name="groc-project-path" content="thinkspace-assets/styles/thinkspace-input-element/modules.scss"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-assets/styles/thinkspace-input-element/modules.scss">thinkspace-assets/styles/thinkspace-input-element/modules.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.thinkspace-ie</span>, <span class="hljs-class">.thinkspace-ie_checkbox</span> {
+  <span class="hljs-tag">i</span><span class="hljs-class">.checkbox</span><span class="hljs-class">.checked</span>   {<span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-dark</span>;</span>}
+  <span class="hljs-tag">i</span><span class="hljs-class">.checkbox</span><span class="hljs-class">.unchecked</span> {<span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-dark</span>;</span>}
+
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type=checkbox]</span>, <span class="hljs-tag">i</span><span class="hljs-class">.checkbox</span> {
+    <span class="hljs-attribute">margin-top</span><span class="hljs-value">: .<span class="hljs-number">4em</span>;</span>
+  }
+
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type=text]</span><span class="hljs-attr_selector">[readonly=readonly]</span> {
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-med</span>;</span>
+  }
+
+  <span class="hljs-tag">textarea</span><span class="hljs-attr_selector">[readonly=readonly]</span> {
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-med</span>;</span>
+  }
+
+  &amp;<span class="hljs-class">.thinkspace-ie_error</span> {
+    <span class="hljs-tag">input</span>, <span class="hljs-tag">textarea</span> { <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span> }
+    .thinkspace-ie_errors { margin-bottom: <span class="hljs-number">0.875em</span>;</span> } <span class="hljs-comment">// Change the margin bottom to the error instead of the input.</span>
+  }
+
+  <span class="hljs-class">.thinkspace-ie_errors</span> { 
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">:      normal;</span>
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">:        <span class="hljs-function">em-calc</span>(<span class="hljs-number">12px</span>);</span>
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-red-med</span>;</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">:          block;</span>
+    <span class="hljs-attribute">padding</span><span class="hljs-value">:          <span class="hljs-number">0.25em</span> <span class="hljs-number">0.5em</span>;</span>
+
+  }
+
+}
+
+<span class="hljs-class">.thinkspace-ie_checkbox</span>, <span class="hljs-class">.thinkspace-ie_radio</span> { <span class="hljs-attribute">display</span><span class="hljs-value">: inline-block;</span> }
+
+<span class="hljs-class">.thinkspace-ie_mock-input</span> {
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">: white;</span>
+  <span class="hljs-attribute">border</span><span class="hljs-value">:           <span class="hljs-number">2px</span> solid <span class="hljs-variable">$ts-black-med</span>;</span>
+  <span class="hljs-attribute">padding</span><span class="hljs-value">:          <span class="hljs-number">0.4em</span>;</span>
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-radius</span>(<span class="hljs-variable">$border-radius</span>);</span>
+
+  &amp;<span class="hljs-class">.thinkspace-ie_mock-input-expert</span> {
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-green-med</span>;</span>
+    <span class="hljs-attribute">border</span><span class="hljs-value">:           <span class="hljs-number">2px</span> solid <span class="hljs-variable">$ts-green-base</span>;</span>
+    <span class="hljs-attribute">border-top</span><span class="hljs-value">:       none;</span>
+    <span class="hljs-attribute">color</span><span class="hljs-value">:            <span class="hljs-variable">$ts-green-dark</span>;</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-top-left-radius</span>(<span class="hljs-number">0</span>);</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-top-right-radius</span>(<span class="hljs-number">0</span>);</span>
+  }
+
+  &amp;<span class="hljs-class">.centered</span> {
+    <span class="hljs-attribute">text-align</span><span class="hljs-value">: center;</span>
+  }
+
+  <span class="hljs-tag">p</span>, <span class="hljs-tag">ul</span> { <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span> }
+  <span class="hljs-tag">small</span> { <span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">85%</span>;</span> }
+}
+
+<span class="hljs-class">.thinkspace-ie</span><span class="hljs-class">.thinkspace-ie_error</span> {
+  <span class="hljs-tag">input</span>, <span class="hljs-tag">textarea</span> {
+    <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-variable">$ts-red-light</span>;</span>
+    <span class="hljs-comment">//border-color: $ts-red-dark;</span>
+  }
+}
+
+<span class="hljs-class">.tsi</span> {
+
+  &amp;<span class="hljs-class">.tsi-input-element-radio-checked</span> {
+    <span class="hljs-attribute">background-image</span><span class="hljs-value">: <span class="hljs-function">image-url</span>(<span class="hljs-string">'ts-icons/phase-current.png'</span>);</span>
+    <span class="hljs-attribute">background-repeat</span><span class="hljs-value">: no-repeat;</span>
+
+    <span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (-webkit-min-device-pixel-ratio:<span class="hljs-preprocessor"> 2</span>), (min-resolution:<span class="hljs-preprocessor"> 192dpi</span>) {</span> 
+      <span class="hljs-attribute">background-image</span><span class="hljs-value">: <span class="hljs-function">image-url</span>(<span class="hljs-string">'ts-icons/phase-current_2x.png'</span>);</span>
+      <span class="hljs-attribute">background-size</span><span class="hljs-value">: <span class="hljs-number">24px</span>;</span>
+    }
+  }
+
+  &amp;<span class="hljs-class">.tsi-input-element-radio-unchecked</span> {
+    <span class="hljs-attribute">background-image</span><span class="hljs-value">: <span class="hljs-function">image-url</span>(<span class="hljs-string">'ts-icons/phase-incomplete.png'</span>);</span>
+    <span class="hljs-attribute">background-repeat</span><span class="hljs-value">: no-repeat;</span>
+
+    <span class="hljs-at_rule">@<span class="hljs-keyword">media</span> (-webkit-min-device-pixel-ratio:<span class="hljs-preprocessor"> 2</span>), (min-resolution:<span class="hljs-preprocessor"> 192dpi</span>) {</span> 
+      <span class="hljs-attribute">background-image</span><span class="hljs-value">: <span class="hljs-function">image-url</span>(<span class="hljs-string">'ts-icons/phase-incomplete_2x.png'</span>);</span>
+      <span class="hljs-attribute">background-size</span><span class="hljs-value">: <span class="hljs-number">24px</span>;</span>
+    }
+  }
+
+}</div></div></div></div></body></html>

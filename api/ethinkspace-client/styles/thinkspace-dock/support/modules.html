@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><title>styles/thinkspace-dock/support/modules</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="styles/thinkspace-dock/support/modules"><meta name="groc-project-path" content="thinkspace-assets/styles/thinkspace-dock/support/modules.scss"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-assets/styles/thinkspace-dock/support/modules.scss">thinkspace-assets/styles/thinkspace-dock/support/modules.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.dock-support</span> {
+  <span class="hljs-attribute">position</span><span class="hljs-value">:   absolute;</span>
+  <span class="hljs-attribute">left</span><span class="hljs-value">:       <span class="hljs-variable">$toolbar-width</span> + <span class="hljs-number">2</span>;</span>
+  <span class="hljs-attribute">bottom</span><span class="hljs-value">:     <span class="hljs-variable">$thinkspace-dock-bottom</span> + <span class="hljs-number">1</span>;</span> <span class="hljs-comment">//Adds a little padding between the dock and the panel</span>
+  <span class="hljs-attribute">width</span><span class="hljs-value">:      <span class="hljs-variable">$thinkspace-dock-min-width</span> * <span class="hljs-number">1.5</span>;</span>
+  <span class="hljs-attribute">z-index</span><span class="hljs-value">:    <span class="hljs-variable">$thinkspace-dock-z-index</span> + <span class="hljs-number">100</span>;</span>
+  <span class="hljs-attribute">background</span><span class="hljs-value">: white;</span>
+  <span class="hljs-attribute">color</span><span class="hljs-value">:      <span class="hljs-hexcolor">#464646</span>;</span>
+  <span class="hljs-attribute">border</span><span class="hljs-value">:     <span class="hljs-number">2px</span> solid <span class="hljs-variable">$ts-blue-base</span>;</span>
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-radius</span>(<span class="hljs-variable">$border-radius</span>);</span>
+
+  <span class="hljs-class">.dock-support_contact-us</span> {
+    <span class="hljs-attribute">overflow-y</span><span class="hljs-value">:       auto;</span>
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">:    <span class="hljs-number">0.5em</span>;</span>
+    <span class="hljs-attribute">padding</span><span class="hljs-value">: .<span class="hljs-number">5em</span> <span class="hljs-number">0</span>;</span>
+  }
+  &amp;<span class="hljs-class">.dock-support_toolbar-minimized</span> {
+    <span class="hljs-attribute">left</span><span class="hljs-value">: <span class="hljs-variable">$toolbar-is-minimized-width</span> + <span class="hljs-number">2</span>;</span>
+  }
+}
+
+<span class="hljs-class">.support_toolbar-footer</span> {
+  <span class="hljs-attribute">width</span><span class="hljs-value">:        <span class="hljs-variable">$toolbar-width</span>;</span>
+  <span class="hljs-attribute">color</span><span class="hljs-value">:        white;</span>
+  <span class="hljs-attribute">padding</span><span class="hljs-value">:      .<span class="hljs-number">5em</span> <span class="hljs-number">0em</span> .<span class="hljs-number">5em</span> <span class="hljs-number">0em</span>;</span>
+  <span class="hljs-attribute">position</span><span class="hljs-value">:     fixed;</span>
+  <span class="hljs-attribute">bottom</span><span class="hljs-value">:       <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">border-top</span><span class="hljs-value">:   <span class="hljs-number">2px</span> solid <span class="hljs-function">lighten</span>(<span class="hljs-variable">$ts-blue-base</span>, <span class="hljs-number">15%</span>);</span>
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span>     <span class="hljs-preprocessor"> highlight-transition-background</span>;</span>
+
+  <span class="hljs-class">.support_toolbar-footer-icon</span> {
+    <span class="hljs-attribute">margin</span><span class="hljs-value">: <span class="hljs-number">0em</span> <span class="hljs-number">0.5em</span>;</span>
+  }
+
+  &amp;<span class="hljs-pseudo">:hover</span> {
+    <span class="hljs-attribute">cursor</span><span class="hljs-value">: pointer;</span>
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-function">lighten</span>(<span class="hljs-variable">$left-panel-background-color</span>, <span class="hljs-number">8%</span>);</span>
+  }
+
+  &amp;<span class="hljs-class">.support_toolbar-footer-minimized</span> {
+    <span class="hljs-attribute">width</span><span class="hljs-value">: <span class="hljs-variable">$toolbar-is-minimized-width</span>;</span>
+  }
+}</div></div></div></div></body></html>

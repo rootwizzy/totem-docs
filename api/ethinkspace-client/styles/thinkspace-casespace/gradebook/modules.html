@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="en"><head><title>styles/thinkspace-casespace/gradebook/modules</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="styles/thinkspace-casespace/gradebook/modules"><meta name="groc-project-path" content="thinkspace-assets/styles/thinkspace-casespace/gradebook/modules.scss"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-assets/styles/thinkspace-casespace/gradebook/modules.scss">thinkspace-assets/styles/thinkspace-casespace/gradebook/modules.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.pocket-gradebook</span> {
+  <span class="hljs-attribute">position</span><span class="hljs-value">: fixed;</span>
+  <span class="hljs-attribute">top</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">right</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">overflow-y</span><span class="hljs-value">: auto;</span>
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">: white;</span>
+  <span class="hljs-attribute">width</span><span class="hljs-value">: <span class="hljs-number">350px</span>;</span>
+  <span class="hljs-attribute">border-left</span><span class="hljs-value">: <span class="hljs-number">2px</span> solid <span class="hljs-hexcolor">#bcbcbc</span>;</span>
+}
+
+<span class="hljs-class">.gradebook_assignment-overlay</span> {
+  <span class="hljs-attribute">background</span><span class="hljs-value">:       <span class="hljs-function">rgba</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>);</span>
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-dark</span>;</span>
+  <span class="hljs-attribute">position</span><span class="hljs-value">:         fixed;</span>
+  <span class="hljs-attribute">top</span><span class="hljs-value">:              <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">left</span><span class="hljs-value">:             <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">width</span><span class="hljs-value">:            <span class="hljs-number">100%</span>;</span>
+  <span class="hljs-attribute">height</span><span class="hljs-value">:           <span class="hljs-number">100%</span>;</span>
+  <span class="hljs-attribute">z-index</span><span class="hljs-value">:          <span class="hljs-number">8000</span>;</span>
+  <span class="hljs-attribute">opacity</span><span class="hljs-value">:          <span class="hljs-number">1</span>;</span>
+
+  <span class="hljs-class">.gradebook_assignment-scores</span> {
+    <span class="hljs-comment">//margin:     2%;</span>
+    <span class="hljs-attribute">background</span><span class="hljs-value">: white;</span>
+    <span class="hljs-attribute">position</span><span class="hljs-value">:   relative;</span>
+    <span class="hljs-attribute">z-index</span><span class="hljs-value">:    <span class="hljs-number">9000</span>;</span>
+    <span class="hljs-attribute">border</span><span class="hljs-value">:     <span class="hljs-number">10px</span> solid <span class="hljs-variable">$ts-blue-base</span>;</span>
+    <span class="hljs-attribute">max-height</span><span class="hljs-value">: <span class="hljs-number">95%</span>;</span>
+    <span class="hljs-attribute">overflow-y</span><span class="hljs-value">: auto;</span>
+
+    <span class="hljs-class">.gradebook_assignment-score-header</span> {
+      <span class="hljs-attribute">text-align</span><span class="hljs-value">:    right;</span>
+      <span class="hljs-attribute">padding-right</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>
+    }
+
+    <span class="hljs-class">.gradebook_roster-number-decimals</span> {
+      <span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">90%</span>;</span>
+      <span class="hljs-tag">a</span> {
+        <span class="hljs-attribute">padding-left</span><span class="hljs-value">:  .<span class="hljs-number">2em</span>;</span>
+        <span class="hljs-attribute">padding-right</span><span class="hljs-value">: .<span class="hljs-number">2em</span>;</span>
+        &amp;<span class="hljs-pseudo">:hover</span> {<span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-med</span>;</span>}
+      }
+    }
+
+    <span class="hljs-class">.gradebook_roster-toggle-edit-scores</span> {
+      <span class="hljs-attribute">font-size</span><span class="hljs-value">:    <span class="hljs-number">90%</span>;</span>
+      <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>
+      <span class="hljs-tag">a</span> {
+        &amp;<span class="hljs-pseudo">:hover</span> {<span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-med</span>;</span>}
+      }
+    }
+
+    <span class="hljs-class">.gradebook_roster-team-score-change-warning</span> {
+      <span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">70%</span>;</span>
+      <span class="hljs-attribute">color</span><span class="hljs-value">:     red;</span>
+    }
+
+    <span class="hljs-class">.gradebook_assignment-score</span> {
+      <span class="hljs-attribute">text-align</span><span class="hljs-value">:   right;</span>
+    }
+
+    <span class="hljs-class">.gradebook_assignment-roster_scores</span> {
+      <span class="hljs-class">.gradebook_roster-phase-score-value</span> {
+        &amp;<span class="hljs-pseudo">:hover</span> {<span class="hljs-attribute">cursor</span><span class="hljs-value">: help;</span>}
+      }
+    }
+
+    <span class="hljs-class">.gradebook_roster-phase-title-team-icon</span> {
+      <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-dark</span>;</span>
+    }
+
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Phase Score.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-class">.gradebook_roster-phase_score-input</span> {
+      <span class="hljs-attribute">text-align</span><span class="hljs-value">:   right;</span>
+      <span class="hljs-attribute">width</span><span class="hljs-value">:        auto;</span>
+    }
+    <span class="hljs-class">.gradebook_roster-phase-score-input-save</span> {
+      <span class="hljs-attribute">padding-left</span><span class="hljs-value">:  <span class="hljs-number">1em</span>;</span>
+      <span class="hljs-attribute">padding-right</span><span class="hljs-value">: .<span class="hljs-number">5em</span>;</span>
+      <span class="hljs-attribute">color</span><span class="hljs-value">:         green;</span>
+      &amp;<span class="hljs-pseudo">:hover</span> {<span class="hljs-attribute">cursor</span><span class="hljs-value">: pointer;</span> <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-light</span>;</span>}
+    }
+    <span class="hljs-class">.gradebook_roster-phase-score-input-cancel</span> {
+      <span class="hljs-attribute">padding-left</span><span class="hljs-value">:  .<span class="hljs-number">5em</span>;</span>
+      <span class="hljs-attribute">padding-right</span><span class="hljs-value">: .<span class="hljs-number">5em</span>;</span>
+      <span class="hljs-attribute">color</span><span class="hljs-value">:         red;</span>
+      &amp;<span class="hljs-pseudo">:hover</span> {<span class="hljs-attribute">cursor</span><span class="hljs-value">: pointer;</span> <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-light</span>;</span>}
+    }
+
+    <span class="hljs-class">.gradebook_roster-phase-score-edit-icon</span> {
+      <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-dark</span>;</span>
+      &amp;<span class="hljs-pseudo">:hover</span> {<span class="hljs-attribute">cursor</span><span class="hljs-value">: pointer;</span>}
+    }
+  }
+}
+
+<span class="hljs-class">.gradebook</span> {
+  <span class="hljs-class">.gradebook_score-range</span> { <span class="hljs-attribute">text-align</span><span class="hljs-value">: center;</span> }
+  <span class="hljs-class">.gradebook_total-score</span> { 
+    <span class="hljs-attribute">text-align</span><span class="hljs-value">: center;</span>
+    <span class="hljs-attribute">border</span><span class="hljs-value">:     <span class="hljs-number">2px</span> solid <span class="hljs-variable">$ts-black-base</span>;</span>
+    <span class="hljs-attribute">padding</span><span class="hljs-value">:    <span class="hljs-number">0.5em</span> <span class="hljs-number">0</span>;</span>
+    <span class="hljs-at_rule">@<span class="hljs-keyword">include</span>   <span class="hljs-preprocessor"> border-radius</span>(<span class="hljs-variable">$border-radius</span>);</span>
+  }
+  <span class="hljs-class">.gradebook_score-range-headers</span> { <span class="hljs-attribute">text-align</span><span class="hljs-value">: center;</span> }
+  <span class="hljs-class">.gradebook_select-user</span> { 
+    <span class="hljs-attribute">padding-bottom</span><span class="hljs-value">: <span class="hljs-number">0.1em</span>;</span>
+    <span class="hljs-tag">h5</span>, <span class="hljs-tag">h6</span> { <span class="hljs-attribute">font-weight</span><span class="hljs-value">: normal;</span> }
+
+    <span class="hljs-class">.btn-small</span> {
+      <span class="hljs-attribute">padding-left</span><span class="hljs-value">: .<span class="hljs-number">5em</span>;</span>
+      <span class="hljs-attribute">padding-right</span><span class="hljs-value">: .<span class="hljs-number">5em</span>;</span>
+    }
+  }
+}
+
+<span class="hljs-class">.gradebook</span><span class="hljs-class">.ts-menu</span><span class="hljs-class">.is-maximized</span> {
+  <span class="hljs-attribute">height</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+}
+
+<span class="hljs-class">.gradebook_scores-modal</span> {
+  <span class="hljs-tag">table</span> <span class="hljs-tag">tr</span> {
+    &amp;<span class="hljs-pseudo">:hover</span> {
+      <span class="hljs-attribute">background</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-med</span>;</span>
+    }
+  }
+}
+
+<span class="hljs-class">.gradebook_roster-sort-by-link</span><span class="hljs-class">.active</span> {
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-dark</span>;</span>
+  <span class="hljs-tag">a</span> {<span class="hljs-attribute">color</span><span class="hljs-value">: white;</span>}
+}
+
+<span class="hljs-class">.gradebook_roster-sort-by-link</span> {
+  <span class="hljs-attribute">display</span><span class="hljs-value">:      inline-block;</span>
+  <span class="hljs-attribute">margin-left</span><span class="hljs-value">:  .<span class="hljs-number">5em</span>;</span>
+  <span class="hljs-attribute">margin-right</span><span class="hljs-value">: .<span class="hljs-number">5em</span>;</span>
+  <span class="hljs-attribute">font-size</span><span class="hljs-value">:    <span class="hljs-number">90%</span>;</span>
+
+  &amp;<span class="hljs-pseudo">:hover</span> {<span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-med</span>;</span>}
+}
+
+<span class="hljs-class">.gradebook_roster-phase-score-hide-top</span> {
+  <span class="hljs-attribute">float</span><span class="hljs-value">: right;</span>
+}
+
+<span class="hljs-class">.gradebook_phase-score</span> {}
+
+<span class="hljs-class">.gradebook_phase-state</span> {
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#EEEEEE</span>;</span>
+  <span class="hljs-attribute">padding-top</span><span class="hljs-value">:      .<span class="hljs-number">5em</span>;</span>
+  <span class="hljs-attribute">margin-top</span><span class="hljs-value">:       <span class="hljs-number">1em</span>;</span>
+}
+
+<span class="hljs-class">.gradebook_phase-state-heading</span> {
+  <span class="hljs-attribute">display</span><span class="hljs-value">:      inline-table;</span>
+  <span class="hljs-attribute">font-weight</span><span class="hljs-value">:  <span class="hljs-number">500</span>;</span>
+  <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+  <span class="hljs-attribute">float</span><span class="hljs-value">:        left;</span>
+}
+
+<span class="hljs-class">.gradebook_phase-state-action-icons</span> {
+  <span class="hljs-attribute">float</span><span class="hljs-value">: right;</span>
+}
+
+<span class="hljs-class">.gradebook_phase-state-action</span> {
+  <span class="hljs-attribute">display</span><span class="hljs-value">:      inline-table;</span>
+  <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+}
+
+<span class="hljs-class">.gradebook_table-phase-state</span> {}
+<span class="hljs-class">.gradebook_table-phase-title</span>, <span class="hljs-class">.gradebook_table-phase-score</span> {
+  <span class="hljs-attribute">font-size</span><span class="hljs-value">:   <span class="hljs-number">1rem</span>;</span>
+  <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-variable">$ts-medium</span>;</span>
+  <span class="hljs-attribute">line-height</span><span class="hljs-value">: <span class="hljs-number">1.7em</span>;</span>
+  <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$ts-black-dark</span>;</span>
+}
+
+<span class="hljs-class">.gradebook_table-phase-title</span> {
+  <span class="hljs-attribute">padding-right</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">padding-left</span><span class="hljs-value">:  <span class="hljs-number">0</span>;</span>
+}
+<span class="hljs-class">.gradebook_table-phase-score</span> {
+  <span class="hljs-attribute">text-align</span><span class="hljs-value">: right;</span>
+}
+
+<span class="hljs-class">.gradebook_table-current-row</span> {
+  <span class="hljs-attribute">text-align</span><span class="hljs-value">:    right;</span>
+  <span class="hljs-attribute">font-weight</span><span class="hljs-value">:   normal;</span>
+  <span class="hljs-attribute">padding-right</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+}
+
+<span class="hljs-class">.gradebook_phase-state-info</span> {
+  <span class="hljs-attribute">padding-left</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">width</span><span class="hljs-value">: <span class="hljs-number">100%</span>;</span>
+  &gt;<span class="hljs-tag">h1</span> {
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">margin-top</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  }
+  &gt;<span class="hljs-tag">p</span> {
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">: .<span class="hljs-number">875rem</span>;</span>
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  }
+}
+
+<span class="hljs-class">.gradebook-overview_phase-menu</span> {
+
+  &gt;<span class="hljs-tag">li</span> {
+    <span class="hljs-attribute">padding</span><span class="hljs-value">:         .<span class="hljs-number">25rem</span>;</span>
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">:      .<span class="hljs-number">875rem</span>;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">:    <span class="hljs-variable">$ts-bold</span>;</span>
+    <span class="hljs-attribute">letter-spacing</span><span class="hljs-value">: .<span class="hljs-number">5px</span>;</span>
+    <span class="hljs-attribute">cursor</span><span class="hljs-value">:         pointer;</span>
+    <span class="hljs-attribute">transition</span><span class="hljs-value">:     all <span class="hljs-number">0.29s</span> ease-in-out <span class="hljs-number">0s</span>;</span>
+
+    &amp;<span class="hljs-pseudo">:hover</span> {
+      <span class="hljs-attribute">color</span><span class="hljs-value">:            <span class="hljs-variable">$ts-blue-base</span>;</span>
+    }
+  }
+}
+
+<span class="hljs-class">.gradebook_action-bar</span> {
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> clearfix</span>;</span>
+
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Gradebook Phase State</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class">.gradebook_roster-phase-state-edit-icons</span> {
+  <span class="hljs-attribute">display</span><span class="hljs-value">:         inline-table;</span>
+  <span class="hljs-attribute">margin-left</span><span class="hljs-value">:     <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">list-style-type</span><span class="hljs-value">: none;</span>
+}
+
+<span class="hljs-class">.gradebook_roster-phase-state-icon</span> {
+  <span class="hljs-attribute">display</span><span class="hljs-value">:      inline-table;</span>
+  <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+  <span class="hljs-class">.tsi</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">: inline-table;</span>
+  }
+}
+
+
+<span class="hljs-class">.gradebook_roster-phase-state-edit-icon</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: .<span class="hljs-number">5rem</span>;</span>
+  <span class="hljs-attribute">font-weight</span><span class="hljs-value">:   <span class="hljs-variable">$ts-bold</span>;</span>
+  <span class="hljs-attribute">cursor</span><span class="hljs-value">:        pointer;</span>
+
+  &gt;<span class="hljs-tag">a</span> {
+    <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$ts-black-base</span>;</span>
+
+    &amp;<span class="hljs-pseudo">:hover</span> {
+      <span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-base</span>;</span>
+    }
+
+    &gt;<span class="hljs-class">.tsi</span> {
+      <span class="hljs-attribute">margin-right</span><span class="hljs-value">: .<span class="hljs-number">5rem</span>;</span>
+    }
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Supplement Table</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class">.gradebook_roster-supplement</span> {
+  <span class="hljs-tag">tr</span><span class="hljs-pseudo">:last-child</span> {
+    <span class="hljs-tag">td</span> {
+      <span class="hljs-attribute">border-top</span><span class="hljs-value">:     <span class="hljs-number">2px</span> solid <span class="hljs-variable">$ts-black-light</span>;</span>
+      <span class="hljs-attribute">font-weight</span><span class="hljs-value">:    <span class="hljs-variable">$ts-bold</span>;</span>
+      <span class="hljs-attribute">letter-spacing</span><span class="hljs-value">: .<span class="hljs-number">5px</span>;</span>
+      <span class="hljs-attribute">color</span><span class="hljs-value">:          <span class="hljs-variable">$ts-black-dark</span>;</span>
+    }
+  }
+}</div></div></div></div></body></html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><title>styles/thinkspace-html/modules</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="styles/thinkspace-html/modules"><meta name="groc-project-path" content="thinkspace-assets/styles/thinkspace-html/modules.scss"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-assets/styles/thinkspace-html/modules.scss">thinkspace-assets/styles/thinkspace-html/modules.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.html_content</span> { 
+  <span class="hljs-attribute">position</span><span class="hljs-value">:   relative;</span>
+  <span class="hljs-attribute">min-height</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Gets rid of the current HTML (to remove scroll bar and clutter) when editing.</p></div></div><div class="code"><div class="wrapper">  &amp;<span class="hljs-class">.is-content-hidden</span> {
+    <span class="hljs-class">.html_content</span> { <span class="hljs-attribute">display</span><span class="hljs-value">: none;</span> }
+    <span class="hljs-class">.html_admin</span> { <span class="hljs-attribute">bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span> <span class="hljs-attribute">left</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span> }
+  }
+
+  <span class="hljs-class">.columns</span><span class="hljs-pseudo">:first-of-type</span> { <span class="hljs-attribute">padding</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Has the action buttons, positioned absolute to not take up height.
+Edit-toggle reveals when html_content is hovered.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-class">.html_admin</span> {
+    <span class="hljs-attribute">position</span><span class="hljs-value">:         relative;</span>
+    <span class="hljs-attribute">top</span><span class="hljs-value">:              <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">right</span><span class="hljs-value">:            <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">z-index</span><span class="hljs-value">:          <span class="hljs-number">5001</span>;</span>
+
+    <span class="hljs-class">.html_edit-toggle</span> {
+      <span class="hljs-attribute">position</span><span class="hljs-value">: absolute;</span>
+      <span class="hljs-attribute">right</span><span class="hljs-value">:    <span class="hljs-number">0</span>;</span>
+      <span class="hljs-attribute">top</span><span class="hljs-value">:      <span class="hljs-number">15px</span>;</span>
+      <span class="hljs-attribute">display</span><span class="hljs-value">:  none;</span>
+    }
+  }
+
+  <span class="hljs-class">.html_submit</span> {<span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>When a HTML tool is hovered, display the edit button.</p></div></div><div class="code"><div class="wrapper">  &amp;<span class="hljs-pseudo">:hover</span> {
+    <span class="hljs-class">.html_edit-toggle</span> { <span class="hljs-attribute">display</span><span class="hljs-value">: block;</span> }
+  }
+
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add top margin top CKEditor to make it look a bit nicer.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class">.html_html-editor</span> { 
+  <span class="hljs-attribute">margin-top</span><span class="hljs-value">: <span class="hljs-number">1.9em</span>;</span> 
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>
+}
+
+<span class="hljs-tag">table</span><span class="hljs-class">.html_confirm-table</span> {
+  <span class="hljs-class">.delete</span> {<span class="hljs-attribute">color</span><span class="hljs-value">: red}
+}
+
+.html_confirm-save {
+  margin-bottom: <span class="hljs-number">2em</span>;</span>
+}</div></div></div></div></body></html>

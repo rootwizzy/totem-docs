@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="en"><head><title>styles/thinkspace-casespace/case_manager/teams/users</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="styles/thinkspace-casespace/case_manager/teams/users"><meta name="groc-project-path" content="thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/users.scss"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/users.scss">thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/users.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class">.team_users</span> {
+
+  <span class="hljs-class">.team_users-selected-team</span> {
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-med</span>;</span>
+  }
+
+  <span class="hljs-class">.team_users-select_team</span> {<span class="hljs-attribute">float</span><span class="hljs-value">: right;</span>}
+
+  <span class="hljs-class">.team_users-team-list</span> {
+    <span class="hljs-attribute">font-family</span><span class="hljs-value">: <span class="hljs-string">'Times New Roman'</span>;</span>
+    <span class="hljs-attribute">list-style</span><span class="hljs-value">:  decimal inside none;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">: normal;</span>
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">:   <span class="hljs-function">em-calc</span>(<span class="hljs-number">15px</span>);</span>
+  }
+
+  <span class="hljs-class">.team_users-user-list</span> {
+    <span class="hljs-attribute">font-family</span><span class="hljs-value">: <span class="hljs-string">'Times New Roman'</span>;</span>
+    <span class="hljs-attribute">list-style</span><span class="hljs-value">:  decimal inside none;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">: normal;</span>
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">:   <span class="hljs-function">em-calc</span>(<span class="hljs-number">15px</span>);</span>
+    <span class="hljs-attribute">margin</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  }
+
+  <span class="hljs-class">.team_users-select-team-wrapper</span> {
+    <span class="hljs-attribute">margin</span><span class="hljs-value">: <span class="hljs-number">0</span> auto;</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">: table;</span>
+
+    <span class="hljs-class">.team_users-select-team-label</span> {
+      <span class="hljs-attribute">margin-left</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+      <span class="hljs-attribute">color</span><span class="hljs-value">:       <span class="hljs-variable">$ts-blue-dark</span>;</span>
+      <span class="hljs-attribute">font-weight</span><span class="hljs-value">: bold;</span>
+    }
+
+  }
+
+  <span class="hljs-class">.team_users-user-team-action</span> {
+    <span class="hljs-attribute">cursor</span><span class="hljs-value">:       pointer;</span>
+    <span class="hljs-attribute">width</span><span class="hljs-value">:        <span class="hljs-number">1em</span>;</span>
+    <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">5px</span>;</span>
+  }
+
+  <span class="hljs-class">.team_users-user-team-remove</span> {<span class="hljs-attribute">color</span><span class="hljs-value">: red;</span>}
+
+  <span class="hljs-class">.team_users-user-show-teams</span> {<span class="hljs-attribute">color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-dark</span>;</span>}
+
+  <span class="hljs-class">.team_users-selectable-user</span> {
+    <span class="hljs-class">.team_users-user-label</span> {
+      <span class="hljs-attribute">cursor</span><span class="hljs-value">: pointer;</span>
+      &amp;<span class="hljs-pseudo">:hover</span> {
+        <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-blue-dark</span>;</span>
+        <span class="hljs-attribute">color</span><span class="hljs-value">:            white;</span>
+        <span class="hljs-attribute">padding-top</span><span class="hljs-value">:      <span class="hljs-number">3px</span>;</span>
+        <span class="hljs-attribute">padding-bottom</span><span class="hljs-value">:   <span class="hljs-number">3px</span>;</span>
+      }
+    }
+  }
+  
+  <span class="hljs-class">.team_is-unassigned</span> {
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">: normal;</span>
+  }
+
+  <span class="hljs-class">.team_users-team-user-action</span> {
+    <span class="hljs-attribute">cursor</span><span class="hljs-value">:       pointer;</span>
+    <span class="hljs-attribute">width</span><span class="hljs-value">:        <span class="hljs-number">1em</span>;</span>
+    <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">5px</span>;</span>
+    <span class="hljs-attribute">color</span><span class="hljs-value">:        <span class="hljs-variable">$ts-blue-dark</span>;</span>
+  }
+
+  <span class="hljs-class">.team_users-user-team-folder-wrapper</span> {
+    <span class="hljs-attribute">cursor</span><span class="hljs-value">:       pointer;</span>
+    <span class="hljs-attribute">margin-right</span><span class="hljs-value">: .<span class="hljs-number">5em</span>;</span>
+  }
+  
+  <span class="hljs-class">.team_users-user-team-folder</span> {
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1.5em</span>;</span>
+    <span class="hljs-attribute">color</span><span class="hljs-value">:     <span class="hljs-variable">$ts-blue-dark</span>;</span>
+  }
+
+  <span class="hljs-class">.team_users-user-team-folder-count</span> {
+    <span class="hljs-attribute">color</span><span class="hljs-value">:       <span class="hljs-variable">$ts-blue-dark</span>;</span>
+    <span class="hljs-attribute">margin-left</span><span class="hljs-value">: -<span class="hljs-number">1em</span>;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">: bold;</span>
+    <span class="hljs-attribute">position</span><span class="hljs-value">:    fixed;</span>
+  }
+
+  <span class="hljs-class">.team_users-filter-label</span> {
+     <span class="hljs-attribute">margin-left</span><span class="hljs-value">:  <span class="hljs-number">1em</span>;</span>
+     <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+  }
+  <span class="hljs-class">.team_users-filter-action</span> {
+     <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+  }
+
+  <span class="hljs-class">.team_users-user-filter-label</span> {
+     <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+  }
+
+  <span class="hljs-class">.team_users-user-filter-action</span> {
+     <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+  }
+
+  <span class="hljs-class">.team_users-filter-separator</span> {<span class="hljs-attribute">margin</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>}
+
+  <span class="hljs-class">.team_users-heading</span> {
+    <span class="hljs-attribute">margin-top</span><span class="hljs-value">: .<span class="hljs-number">5em</span>;</span>
+  }
+
+  <span class="hljs-class">.team_users-heading-label</span> {
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-number">500</span>;</span>
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1.5em</span>;</span>
+  }
+
+  <span class="hljs-class">.team_users-heading-show-users</span> {
+    <span class="hljs-attribute">cursor</span><span class="hljs-value">:       pointer;</span>
+    <span class="hljs-attribute">color</span><span class="hljs-value">:        <span class="hljs-variable">$ts-blue-dark</span>;</span>
+    <span class="hljs-attribute">margin-right</span><span class="hljs-value">: .<span class="hljs-number">5em</span>;</span>
+  }
+
+  <span class="hljs-class">.team_users-user-list-team</span> {
+    <span class="hljs-attribute">padding-left</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>
+  }
+
+}</div></div></div></div></body></html>

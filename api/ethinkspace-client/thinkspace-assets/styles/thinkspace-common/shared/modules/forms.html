@@ -1,0 +1,256 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-assets/styles/thinkspace-common/shared/modules/forms</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-assets/styles/thinkspace-common/shared/modules/forms"><meta name="groc-project-path" content="thinkspace-assets/styles/thinkspace-common/shared/modules/forms.scss"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-assets/styles/thinkspace-common/shared/modules/forms.scss">thinkspace-assets/styles/thinkspace-common/shared/modules/forms.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-tag">fieldset</span> {
+  <span class="hljs-attribute">border</span><span class="hljs-value">: none;</span>
+  <span class="hljs-attribute">margin</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">padding</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+}
+
+<span class="hljs-class">.ts-forms_form-container</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>
+}
+
+<span class="hljs-class">.ts-forms_field-description</span> {
+  <span class="hljs-attribute">text-indent</span><span class="hljs-value">:   <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">font-size</span><span class="hljs-value">:     <span class="hljs-number">0.85rem</span>;</span>
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Form Heading </p></div></div><div class="code"><div class="wrapper"><span class="hljs-class">.ts-forms_heading</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>
+  <span class="hljs-tag">h4</span> {
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">:   <span class="hljs-variable">$ts-heavy</span>;</span>
+  }
+
+  <span class="hljs-tag">p</span> { <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>}
+
+  &amp;<span class="hljs-pseudo">:after</span> {
+    <span class="hljs-attribute">content</span><span class="hljs-value">: <span class="hljs-string">""</span>;</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">: table;</span>
+    <span class="hljs-attribute">clear</span><span class="hljs-value">: both;</span>
+  }
+}
+
+<span class="hljs-class">.ts-forms_inline-heading</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>
+  <span class="hljs-tag">h4</span> {
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-variable">$ts-heavy</span>;</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">:     inline-block;</span>
+  }
+
+  &amp;<span class="hljs-pseudo">:after</span> {
+    <span class="hljs-attribute">content</span><span class="hljs-value">: <span class="hljs-string">""</span>;</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">: table;</span>
+    <span class="hljs-attribute">clear</span><span class="hljs-value">: both;</span>
+  }
+}
+
+<span class="hljs-class">.ts-forms_heading-actions</span> {
+  <span class="hljs-attribute">float</span><span class="hljs-value">: right;</span>
+  <span class="hljs-attribute">display</span><span class="hljs-value">: inline-block;</span>
+
+  <span class="hljs-class">.btn</span> {
+    <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+
+    &amp;<span class="hljs-pseudo">:last-of-type</span> {
+      <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+    }
+  }
+
+}
+
+
+<span class="hljs-class">.ts-forms_section-container</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">4em</span>;</span>
+  &amp;<span class="hljs-class">.is-disabled</span> { <span class="hljs-attribute">opacity</span><span class="hljs-value">: <span class="hljs-number">0.25</span> }
+  &amp;.is-active { background: none;</span> }
+  &amp;<span class="hljs-pseudo">:after</span> {
+    <span class="hljs-attribute">content</span><span class="hljs-value">: <span class="hljs-string">""</span>;</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">: table;</span>
+    <span class="hljs-attribute">clear</span><span class="hljs-value">: both;</span>
+  }
+}
+
+<span class="hljs-class">.ts-forms_section-heading</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>
+
+  &gt; <span class="hljs-tag">h1</span> {
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1.125em</span>;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-variable">$ts-heavy</span>;</span>
+    <span class="hljs-attribute">letter-spacing</span><span class="hljs-value">: .<span class="hljs-number">5px</span>;</span>
+  }
+}
+
+<span class="hljs-class">.ts-forms_field-container</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+  <span class="hljs-attribute">max-width</span><span class="hljs-value">: <span class="hljs-number">40em</span>;</span>
+
+  &gt; <span class="hljs-tag">h1</span> {
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1.125em</span>;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-variable">$ts-heavy</span>;</span>
+    <span class="hljs-attribute">letter-spacing</span><span class="hljs-value">: .<span class="hljs-number">5px</span>;</span>
+  }
+
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="text"]</span>, <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="number"]</span> {
+    <span class="hljs-attribute">display</span><span class="hljs-value">: block;</span>
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: .<span class="hljs-number">5em</span>;</span>
+  }
+
+  &amp;<span class="hljs-pseudo">:after</span> {
+    <span class="hljs-attribute">content</span><span class="hljs-value">: <span class="hljs-string">""</span>;</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">: table;</span>
+    <span class="hljs-attribute">clear</span><span class="hljs-value">: both;</span>
+  }
+
+  &amp; &gt; <span class="hljs-class">.ts-forms_field-subcontainer</span> {
+    <span class="hljs-attribute">margin-left</span><span class="hljs-value">: <span class="hljs-number">3.5em</span>;</span>
+    <span class="hljs-attribute">margin-top</span><span class="hljs-value">:  <span class="hljs-number">1em</span>;</span>
+  }
+}
+
+<span class="hljs-class">.ts_forms_inline-fields-container</span> {
+  <span class="hljs-attribute">display</span><span class="hljs-value">: block;</span>
+
+  <span class="hljs-class">.ts-forms_field-container</span> { <span class="hljs-attribute">display</span><span class="hljs-value">: inline-block;</span> }
+
+  &amp;<span class="hljs-pseudo">:after</span> {
+    <span class="hljs-attribute">content</span><span class="hljs-value">: <span class="hljs-string">""</span>;</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">: table;</span>
+    <span class="hljs-attribute">clear</span><span class="hljs-value">: both;</span>
+  }
+}
+
+<span class="hljs-class">.ts-forms_field-label-wrapper</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0.875em</span>;</span>
+  <span class="hljs-class">.ts-forms_field-label</span> { <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span> }
+}
+
+<span class="hljs-class">.ts-forms_field-label</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">:  .<span class="hljs-number">875em</span>;</span>
+  <span class="hljs-attribute">font-size</span><span class="hljs-value">:      <span class="hljs-number">1em</span>;</span>
+  <span class="hljs-attribute">font-weight</span><span class="hljs-value">:    <span class="hljs-variable">$ts-bold</span>;</span>
+  <span class="hljs-attribute">display</span><span class="hljs-value">:        inline-block;</span>
+  <span class="hljs-attribute">letter-spacing</span><span class="hljs-value">: .<span class="hljs-number">5px</span>;</span>
+
+
+  &amp;<span class="hljs-class">.ts-forms_field-label-big</span> {
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>
+    <span class="hljs-attribute">letter-spacing</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  }
+
+  &amp;<span class="hljs-class">.ts-forms_field-label-small</span> {
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">: .<span class="hljs-number">875rem</span>;</span>
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">letter-spacing</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  }
+}
+
+<span class="hljs-class">.ts-forms_inline-response</span> {
+  <span class="hljs-attribute">display</span><span class="hljs-value">: inline-block;</span>
+  <span class="hljs-attribute">margin-left</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+}
+
+<span class="hljs-class">.ts-forms_field-label-container</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: .<span class="hljs-number">875em</span>;</span>
+
+  <span class="hljs-class">.ts-forms_field-label</span> {
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: .<span class="hljs-number">25em</span>;</span>
+  }
+  <span class="hljs-class">.ts-forms_fields-label-description</span> {
+    <span class="hljs-attribute">font-size</span><span class="hljs-value">: .<span class="hljs-number">875em</span>;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-variable">$ts-regular</span>;</span>
+  }
+}
+
+
+<span class="hljs-class">.ts-forms_fields-label-actions</span> {
+  <span class="hljs-attribute">display</span><span class="hljs-value">:   inline-block;</span>
+  <span class="hljs-attribute">float</span><span class="hljs-value">:     right;</span>
+  <span class="hljs-attribute">font-size</span><span class="hljs-value">: .<span class="hljs-number">875em</span>;</span>
+}
+
+<span class="hljs-class">.ts-forms_input-notification</span> {
+  <span class="hljs-attribute">font-size</span><span class="hljs-value">:   .<span class="hljs-number">75em</span>;</span>
+  <span class="hljs-attribute">line-height</span><span class="hljs-value">: <span class="hljs-number">1.5em</span>;</span>
+  <span class="hljs-attribute">margin-top</span><span class="hljs-value">:  .<span class="hljs-number">25em</span>;</span>
+}
+
+<span class="hljs-class">.ts-forms_input-small</span> {
+  <span class="hljs-attribute">width</span><span class="hljs-value">: <span class="hljs-number">50%</span> <span class="hljs-important">!important</span>;</span>
+}
+
+<span class="hljs-class">.ts-forms_input-tiny</span> {
+  <span class="hljs-attribute">width</span><span class="hljs-value">: <span class="hljs-number">25%</span> <span class="hljs-important">!important</span>;</span>
+}
+
+<span class="hljs-class">.ts-forms_radio-btn</span>, <span class="hljs-class">.ts-forms_checkbox-btn</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: .<span class="hljs-number">5em</span>;</span>
+
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="radio"]</span>, <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="checkbox"]</span> {
+    <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">1.5em</span>;</span>
+    <span class="hljs-attribute">cursor</span><span class="hljs-value">: pointer;</span>
+  }
+
+  &amp;<span class="hljs-pseudo">:after</span> {
+    <span class="hljs-attribute">content</span><span class="hljs-value">: <span class="hljs-string">""</span>;</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">: table;</span>
+    <span class="hljs-attribute">clear</span><span class="hljs-value">: both;</span>
+  }
+}
+
+<span class="hljs-class">.ts-forms_actions</span> {
+  <span class="hljs-class">.btn</span> {
+    <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">1em</span>;</span>
+
+    &amp;<span class="hljs-pseudo">:last-of-type</span>{
+      <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+    }
+  }
+}
+
+<span class="hljs-class">.ts-forms_sub-choices-container</span> {
+  <span class="hljs-attribute">padding-left</span><span class="hljs-value">: <span class="hljs-number">2.8125em</span>;</span>
+  <span class="hljs-attribute">padding-top</span><span class="hljs-value">: <span class="hljs-variable">$content-padding</span> / <span class="hljs-number">2</span>;</span>
+}
+
+<span class="hljs-class">.ts-forms_action-btns-container</span> {
+  <span class="hljs-attribute">padding-top</span><span class="hljs-value">: <span class="hljs-number">3em</span>;</span>
+  <span class="hljs-attribute">padding-bottom</span><span class="hljs-value">: <span class="hljs-number">2em</span>;</span>
+}
+
+<span class="hljs-class">.ts-forms_description-warning</span> {
+  <span class="hljs-attribute">margin-top</span><span class="hljs-value">: .<span class="hljs-number">65em</span>;</span>
+  <span class="hljs-attribute">font-style</span><span class="hljs-value">: italic;</span>
+  <span class="hljs-attribute">font-size</span><span class="hljs-value">:  .<span class="hljs-number">875em</span>;</span>
+
+  <span class="hljs-class">.tsi</span> {
+    <span class="hljs-attribute">margin-right</span><span class="hljs-value">: .<span class="hljs-number">75em</span>;</span>
+  }
+}
+
+<span class="hljs-class">.ts-forms_field-container-overlay</span> {
+  <span class="hljs-attribute">top</span><span class="hljs-value">:              <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">bottom</span><span class="hljs-value">:           <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">left</span><span class="hljs-value">:             <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">right</span><span class="hljs-value">:            <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">position</span><span class="hljs-value">:         fixed;</span>
+  <span class="hljs-attribute">max-width</span><span class="hljs-value">:        <span class="hljs-number">100%</span>;</span>
+  <span class="hljs-attribute">height</span><span class="hljs-value">:           <span class="hljs-number">100%</span>;</span>
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">: white;</span>
+  <span class="hljs-attribute">z-index</span><span class="hljs-value">:          <span class="hljs-number">10</span>;</span>
+  <span class="hljs-attribute">overflow-y</span><span class="hljs-value">:       auto;</span>
+  <span class="hljs-attribute">overflow-x</span><span class="hljs-value">:       auto;</span>
+}
+
+<span class="hljs-class">.ts-forms_field-container-overlay-content</span> {
+  <span class="hljs-attribute">margin-left</span><span class="hljs-value">: <span class="hljs-number">5%</span>;</span>
+  <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">5%</span>;</span>
+}
+
+<span class="hljs-class">.centered-aligned</span> {
+  <span class="hljs-attribute">text-align</span><span class="hljs-value">:     center;</span>
+  <span class="hljs-attribute">vertical-align</span><span class="hljs-value">: middle;</span>
+  <span class="hljs-attribute">margin</span><span class="hljs-value">:         .<span class="hljs-number">5em</span> <span class="hljs-number">0</span>;</span>
+}
+
+<span class="hljs-tag">input</span><span class="hljs-pseudo">:disabled</span> {
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#E0E0E0</span>;</span>
+}</div></div></div></div></body></html>

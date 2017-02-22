@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-peer-assessment-pe/addon/managers/evaluation/user_data</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace-peer-assessment-pe/addon/managers/evaluation/user_data"><meta name="groc-project-path" content="thinkspace-peer-assessment-pe/addon/managers/evaluation/user_data.coffee"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-peer-assessment-pe/addon/managers/evaluation/user_data.coffee">thinkspace-peer-assessment-pe/addon/managers/evaluation/user_data.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+import tc          from <span class="hljs-string">'totem/cache'</span>
+import ta          from <span class="hljs-string">'totem/ds/associations'</span>
+import tm          from <span class="hljs-string">'totem-messages/messages'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="user-data-helpers">User data helpers</h3>
+<h2 id="">#</h2>
+<p>Used to initially set the data for the evaluation manager.</p></div></div><div class="code"><div class="wrapper">export default ember.Mixin.create
+  <span class="hljs-attribute">set_user_data</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set_team</span>().<span class="hljs-keyword">then</span> =&gt; 
+      <span class="hljs-property">@set_reviewables</span>().<span class="hljs-keyword">then</span> =&gt; 
+        <span class="hljs-property">@set_review_set</span>().<span class="hljs-keyword">then</span> =&gt; 
+          <span class="hljs-property">@set_reviews</span>().<span class="hljs-keyword">then</span> =&gt; 
+            <span class="hljs-property">@set_reviewable_from_settings</span>().<span class="hljs-keyword">then</span> =&gt; 
+              <span class="hljs-property">@set_review</span>()
+
+  <span class="hljs-attribute">set_team</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      query   = <span class="hljs-property">@get_sub_action_query_params</span>(<span class="hljs-string">'teams'</span>)
+      options = <span class="hljs-property">@get_sub_action_query_options</span>(<span class="hljs-string">'teams'</span>, ta.to_p(<span class="hljs-string">'team'</span>))
+      <span class="hljs-property">@tc</span>.query_action(ta.to_p(<span class="hljs-string">'tbl:assessment'</span>), query, options).<span class="hljs-keyword">then</span> (teams) =&gt;
+        team = teams.get(<span class="hljs-string">'firstObject'</span>)
+        <span class="hljs-property">@debug</span> <span class="hljs-string">"Team: "</span>, team
+        <span class="hljs-property">@set</span> <span class="hljs-string">'team'</span>, team
+        has_team_members = <span class="hljs-keyword">if</span> team.get(<span class="hljs-string">'users.length'</span>) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">false</span>
+        <span class="hljs-property">@set</span> <span class="hljs-string">'has_team_members'</span>, has_team_members
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> 
+        <span class="hljs-property">@set</span> <span class="hljs-string">'has_team_members'</span>, <span class="hljs-literal">false</span>
+        reject() <span class="hljs-comment"># Send back up to the assessment component so it can set it there, too.</span>
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+
+  <span class="hljs-attribute">set_reviewables</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      team = <span class="hljs-property">@get</span> <span class="hljs-string">'team'</span>
+      team.get(ta.to_p(<span class="hljs-string">'users'</span>)).<span class="hljs-keyword">then</span> (reviewables) =&gt;
+        ownerable   = <span class="hljs-property">@totem_scope</span>.get_ownerable_record()
+        reviewables = reviewables.without(ownerable)
+        <span class="hljs-property">@debug</span> <span class="hljs-string">"Reviewables: "</span>, reviewables
+        <span class="hljs-property">@set</span> <span class="hljs-string">'reviewables'</span>, reviewables
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+
+  <span class="hljs-attribute">set_review_set</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      query         = <span class="hljs-property">@get_sub_action_query_params</span>(<span class="hljs-string">'review_sets'</span>)
+      query.team_id = <span class="hljs-property">@get</span> <span class="hljs-string">'team.id'</span>
+      options       = <span class="hljs-property">@get_sub_action_query_options</span>(<span class="hljs-string">'review_sets'</span>, ta.to_p(<span class="hljs-string">'tbl:review_set'</span>))
+      <span class="hljs-property">@tc</span>.query_action(ta.to_p(<span class="hljs-string">'tbl:assessment'</span>), query, options).<span class="hljs-keyword">then</span> (review_sets) =&gt;
+        review_set = review_sets.get(<span class="hljs-string">'firstObject'</span>)
+        <span class="hljs-property">@debug</span> <span class="hljs-string">"Review set: "</span>, review_set
+        <span class="hljs-property">@set</span> <span class="hljs-string">'review_set'</span>, review_set
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+
+  <span class="hljs-attribute">set_reviews</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      review_set = <span class="hljs-property">@get</span> <span class="hljs-string">'review_set'</span>
+      review_set.get(ta.to_p(<span class="hljs-string">'tbl:reviews'</span>)).<span class="hljs-keyword">then</span> (reviews) =&gt;
+        <span class="hljs-property">@debug</span> <span class="hljs-string">"Reviews: "</span>, reviews
+        <span class="hljs-property">@set</span> <span class="hljs-string">'reviews'</span>, reviews
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> 
+        <span class="hljs-built_in">console</span>.log <span class="hljs-string">"ERROR??:"</span>, error
+        <span class="hljs-property">@error</span>(error)
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+
+  <span class="hljs-attribute">set_reviewable_from_settings</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      phase_settings = <span class="hljs-property">@get</span>(<span class="hljs-string">'phase_settings'</span>) <span class="hljs-keyword">or</span> {}
+      <span class="hljs-property">@debug</span> <span class="hljs-string">"Phase settings: "</span>, phase_settings
+      reviewable_id = phase_settings.reviewable_id
+      reviewable    = <span class="hljs-literal">null</span>
+      <span class="hljs-keyword">switch</span>
+        <span class="hljs-keyword">when</span> reviewable_id == <span class="hljs-string">'confirmation'</span>
+          reviewable = reviewable_id
+        <span class="hljs-keyword">when</span> ember.isPresent(reviewable_id)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>reviewable_id is a string, but ember-data ids are strings so findBy works.</p></div></div><div class="code"><div class="wrapper">          reviewable = <span class="hljs-property">@get</span>(<span class="hljs-string">'reviewables'</span>).findBy(<span class="hljs-string">'id'</span>, reviewable_id)
+        <span class="hljs-keyword">else</span>
+          reviewable = <span class="hljs-property">@get</span>(<span class="hljs-string">'reviewables.firstObject'</span>)
+
+      <span class="hljs-property">@debug</span> <span class="hljs-string">"Reviewable found as: "</span>, reviewable
+      <span class="hljs-property">@set</span> <span class="hljs-string">'reviewable'</span>, reviewable
+      resolve()
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+
+  <span class="hljs-attribute">set_review</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      reviewable = <span class="hljs-property">@get</span> <span class="hljs-string">'reviewable'</span>
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isEqual(reviewable, <span class="hljs-string">'confirmation'</span>)
+      review = <span class="hljs-property">@get_review_for_reviewable</span>(reviewable)
+      <span class="hljs-property">@debug</span> <span class="hljs-string">"Setting review: "</span>, review
+      <span class="hljs-property">@set</span> <span class="hljs-string">'review'</span>, review
+      resolve()
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+
+  <span class="hljs-attribute">set_reviewable_phase_settings</span>: <span class="hljs-function">-&gt;</span>
+    reviewable = <span class="hljs-property">@get</span> <span class="hljs-string">'reviewable'</span>
+    id = <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span> reviewable == <span class="hljs-string">'string'</span> <span class="hljs-keyword">then</span> reviewable <span class="hljs-keyword">else</span> reviewable.get(<span class="hljs-string">'id'</span>)
+    settings = 
+      <span class="hljs-attribute">reviewable_id</span>: id
+    controller = <span class="hljs-property">@get</span>(<span class="hljs-string">'thinkspace'</span>).get_phases_show_controller()
+    controller.set_phase_settings settings
+
+  <span class="hljs-attribute">get_sub_action_query</span>: <span class="hljs-function"><span class="hljs-params">(sub_action, options={})</span> -&gt;</span>
+    model      = <span class="hljs-property">@get</span> <span class="hljs-string">'model'</span>
+    query      = <span class="hljs-property">@totem_scope</span>.get_view_query(model, <span class="hljs-attribute">sub_action</span>: sub_action)
+    query.verb = <span class="hljs-string">'GET'</span>
+    query.id   = model.get <span class="hljs-string">'id'</span>
+    <span class="hljs-property">@totem_scope</span>.add_authable_to_query(query)
+    query
+
+  <span class="hljs-attribute">get_sub_action_query_params</span>: <span class="hljs-function"><span class="hljs-params">(sub_action)</span> -&gt;</span>
+    model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    query = <span class="hljs-property">@totem_scope</span>.get_view_query(model, <span class="hljs-attribute">sub_action</span>: sub_action)[<span class="hljs-string">'data'</span>]
+    query.id = query.id || <span class="hljs-property">@get</span>(<span class="hljs-string">'model.id'</span>)
+    query
+
+  <span class="hljs-attribute">get_sub_action_query_options</span>: <span class="hljs-function"><span class="hljs-params">(sub_action, model_type)</span> -&gt;</span>
+    model         = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    options       = <span class="hljs-property">@totem_scope</span>.get_view_query(model, <span class="hljs-attribute">sub_action</span>: sub_action)
+    options.verb  = <span class="hljs-string">'GET'</span>
+    options.model = model_type
+    <span class="hljs-property">@totem_scope</span>.add_authable_to_query(options)
+    options</div></div></div></div></body></html>

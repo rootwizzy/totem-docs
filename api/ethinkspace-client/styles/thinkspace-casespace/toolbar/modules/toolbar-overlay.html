@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="en"><head><title>styles/thinkspace-casespace/toolbar/modules/toolbar-overlay</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="styles/thinkspace-casespace/toolbar/modules/toolbar-overlay"><meta name="groc-project-path" content="thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar-overlay.scss"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar-overlay.scss">thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar-overlay.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-id">#toolbar-overlay</span> {
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> transition</span>(opacity<span class="hljs-preprocessor"> 0.15s</span>);</span>
+  <span class="hljs-attribute">position</span><span class="hljs-value">:         fixed;</span>
+  <span class="hljs-attribute">top</span><span class="hljs-value">:              <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">bottom</span><span class="hljs-value">:           <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">left</span><span class="hljs-value">:             <span class="hljs-variable">$toolbar-width</span>;</span>
+  <span class="hljs-attribute">right</span><span class="hljs-value">:            <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">z-index</span><span class="hljs-value">:          <span class="hljs-number">4999</span>;</span>
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">: white;</span>
+
+  &amp;<span class="hljs-class">.is-visible</span> {
+    <span class="hljs-attribute">opacity</span><span class="hljs-value">: <span class="hljs-number">0.75</span>;</span>
+  }
+
+  &amp;<span class="hljs-class">.is-hidden</span> {
+    <span class="hljs-attribute">opacity</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+    <span class="hljs-attribute">display</span><span class="hljs-value">: none;</span>
+  }
+
+}</div></div></div></div></body></html>

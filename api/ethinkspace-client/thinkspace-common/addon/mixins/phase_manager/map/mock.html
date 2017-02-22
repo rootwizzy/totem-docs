@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace-common/addon/mixins/phase_manager/map/mock</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace-common/addon/mixins/phase_manager/map/mock"><meta name="groc-project-path" content="thinkspace-common/addon/mixins/phase_manager/map/mock.coffee"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-common/addon/mixins/phase_manager/map/mock.coffee">thinkspace-common/addon/mixins/phase_manager/map/mock.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">get_mock_phase_state</span>: <span class="hljs-function"><span class="hljs-params">(ownerable, phase)</span> -&gt;</span>
+    <span class="hljs-property">@mock_phase_state_object</span>.create
+      <span class="hljs-attribute">ember</span>:          ember
+      <span class="hljs-attribute">ns</span>:             <span class="hljs-property">@ns</span>
+      <span class="hljs-attribute">is_mock</span>:        <span class="hljs-literal">true</span>
+      <span class="hljs-attribute">id</span>:             <span class="hljs-string">'mock'</span>
+      <span class="hljs-attribute">title</span>:          <span class="hljs-string">'mock-phase-state'</span>
+      <span class="hljs-attribute">mock_phase</span>:     phase
+      <span class="hljs-attribute">mock_ownerable</span>: ownerable
+      <span class="hljs-attribute">ownerable_type</span>: <span class="hljs-property">@totem_scope</span>.record_model_name(ownerable)
+      <span class="hljs-attribute">ownerable_id</span>:   ownerable.get(<span class="hljs-string">'id'</span>)
+
+  <span class="hljs-attribute">mock_phase_state_object</span>: ember.Object.extend
+    <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-property">@_super</span>(arguments...)
+      <span class="hljs-property">@ember</span>.defineProperty @, <span class="hljs-string">'ownerable'</span>,       <span class="hljs-property">@ember</span>.computed -&gt; <span class="hljs-property">@get_record</span>(<span class="hljs-string">'mock_ownerable'</span>)
+      <span class="hljs-property">@ember</span>.defineProperty @, <span class="hljs-property">@ns</span>.to_p(<span class="hljs-string">'phase'</span>), <span class="hljs-property">@ember</span>.computed -&gt; <span class="hljs-property">@get_record</span>(<span class="hljs-string">'mock_phase'</span>)
+    <span class="hljs-attribute">get_record</span>: <span class="hljs-function"><span class="hljs-params">(prop)</span> -&gt;</span> <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt; resolve <span class="hljs-property">@get</span>(prop)</div></div></div></div></body></html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="en"><head><title>styles/thinkspace-common/shared/base</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="styles/thinkspace-common/shared/base"><meta name="groc-project-path" content="thinkspace-assets/styles/thinkspace-common/shared/base.scss"><meta name="groc-branch-path" content="feature/rap-analytics-styling"><meta name="groc-github-url" content="https://github.com/sixthedge/ethinkspace-client"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/ethinkspace-client/blob/feature/rap-analytics-styling/thinkspace-assets/styles/thinkspace-common/shared/base.scss">thinkspace-assets/styles/thinkspace-common/shared/base.scss</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-tag">body</span> {
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">: white;</span>
+  <span class="hljs-attribute">bottom</span><span class="hljs-value">:           <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">left</span><span class="hljs-value">:             <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">position</span><span class="hljs-value">:         absolute;</span>
+  <span class="hljs-attribute">right</span><span class="hljs-value">:            <span class="hljs-number">0</span>;</span>
+  <span class="hljs-attribute">top</span><span class="hljs-value">:              <span class="hljs-number">0</span>;</span>
+}
+
+<span class="hljs-tag">li</span><span class="hljs-attr_selector">[draggable=true]</span> {
+  <span class="hljs-attribute">cursor</span><span class="hljs-value">: move;</span>
+}
+
+<span class="hljs-tag">table</span> {
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">:         <span class="hljs-number">1.25em</span>;</span>
+  <span class="hljs-attribute">width</span><span class="hljs-value">:                 <span class="hljs-number">100%</span>;</span>
+  <span class="hljs-attribute">border</span><span class="hljs-value">:                <span class="hljs-number">2px</span> solid <span class="hljs-variable">$ts-black-light</span>;</span>
+  <span class="hljs-attribute">background</span><span class="hljs-value">:            white;</span>
+  <span class="hljs-attribute">font-size</span><span class="hljs-value">:             <span class="hljs-number">1.125em</span>;</span>
+  <span class="hljs-attribute">border-spacing</span><span class="hljs-value">:        <span class="hljs-number">0</span>;</span>
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-radius</span>(<span class="hljs-variable">$border-radius</span>);</span>
+
+  <span class="hljs-tag">th</span> {
+    <span class="hljs-attribute">padding</span><span class="hljs-value">:          .<span class="hljs-number">5em</span>;</span>
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-black-light</span>;</span>
+    <span class="hljs-attribute">text-align</span><span class="hljs-value">:       left;</span>
+    <span class="hljs-attribute">font-weight</span><span class="hljs-value">:      <span class="hljs-number">500</span>;</span> 
+  }
+
+  <span class="hljs-tag">td</span> {
+    <span class="hljs-attribute">padding</span><span class="hljs-value">:        .<span class="hljs-number">5em</span>;</span>
+    <span class="hljs-attribute">vertical-align</span><span class="hljs-value">: top;</span>
+    <span class="hljs-attribute">text-align</span><span class="hljs-value">:     left;</span>
+    <span class="hljs-attribute">line-height</span><span class="hljs-value">:    <span class="hljs-number">1.25em</span>;</span>
+  }
+
+  <span class="hljs-tag">tr</span><span class="hljs-pseudo">:nth-of-type</span>(2n) {
+    <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#f0f8fb</span>;</span> 
+  }
+}
+
+<span class="hljs-tag">select</span>,
+<span class="hljs-tag">textarea</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="text"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="password"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="file"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="datetime"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="datetime-local"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="date"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="month"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="time"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="week"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="number"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="email"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="url"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="search"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="tel"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="color"]</span> {
+  <span class="hljs-attribute">display</span><span class="hljs-value">:        inline-block;</span>
+  <span class="hljs-attribute">padding</span><span class="hljs-value">:        .<span class="hljs-number">4em</span> .<span class="hljs-number">4em</span>;</span>
+  <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">:  .<span class="hljs-number">875em</span>;</span>
+  <span class="hljs-attribute">vertical-align</span><span class="hljs-value">: middle;</span>
+  <span class="hljs-attribute">min-width</span><span class="hljs-value">:      <span class="hljs-number">50px</span>;</span>
+  <span class="hljs-attribute">font-size</span><span class="hljs-value">:      <span class="hljs-number">16px</span>;</span>
+  <span class="hljs-attribute">height</span><span class="hljs-value">:         auto;</span>
+  <span class="hljs-at_rule">@<span class="hljs-keyword">include</span><span class="hljs-preprocessor"> border-radius</span>(<span class="hljs-variable">$border-radius</span>);</span>
+}
+
+<span class="hljs-tag">textarea</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="text"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="password"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="file"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="datetime"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="datetime-local"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="date"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="month"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="time"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="week"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="number"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="email"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="url"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="search"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="tel"]</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="color"]</span> {
+  <span class="hljs-attribute">width</span><span class="hljs-value">:            <span class="hljs-number">100%</span>;</span>
+  <span class="hljs-attribute">min-height</span><span class="hljs-value">:       <span class="hljs-number">1.25em</span>;</span>
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">: white;</span>
+  <span class="hljs-attribute">border</span><span class="hljs-value">:           <span class="hljs-number">2px</span> solid <span class="hljs-variable">$ts-black-med</span>;</span>
+  <span class="hljs-attribute">margin</span><span class="hljs-value">:           <span class="hljs-number">0</span> <span class="hljs-number">0</span> .<span class="hljs-number">875em</span> <span class="hljs-number">0</span>;</span>
+  <span class="hljs-comment">//@include transition(all ease-out 300ms);</span>
+}
+
+<span class="hljs-tag">textarea</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="text"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="password"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="file"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="datetime"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="datetime-local"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="date"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="month"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="time"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="week"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="number"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="email"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="url"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="search"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="tel"]</span><span class="hljs-pseudo">:hover</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="color"]</span><span class="hljs-pseudo">:hover</span> {
+  <span class="hljs-attribute">border-color</span><span class="hljs-value">: <span class="hljs-variable">$ts-black-base</span>;</span> 
+}
+
+<span class="hljs-tag">textarea</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="text"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="password"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="file"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="datetime"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="datetime-local"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="date"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="month"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="time"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="week"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="number"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="email"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="url"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="search"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="tel"]</span><span class="hljs-pseudo">:focus</span>,
+<span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="color"]</span><span class="hljs-pseudo">:focus</span> {
+  <span class="hljs-attribute">border-color</span><span class="hljs-value">:       <span class="hljs-variable">$ts-blue-base</span>;</span>
+}
+
+<span class="hljs-tag">table</span> {
+  <span class="hljs-tag">textarea</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="text"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="password"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="file"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="datetime"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="datetime-local"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="date"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="month"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="time"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="week"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="number"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="email"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="url"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="search"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="tel"]</span>,
+  <span class="hljs-tag">input</span><span class="hljs-attr_selector">[type="color"]</span> {
+    <span class="hljs-attribute">margin-bottom</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+  }
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>hr {
+  border-width: 2px 0 0;
+  border-color: $ts-black-light;</p></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">// </span>
+
+<span class="hljs-tag">body</span><span class="hljs-class">.cke_editable</span> {
+  <span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-hexcolor">#FFFFFF</span>;</span>
+}
+
+<span class="hljs-tag">strong</span>, <span class="hljs-tag">b</span> { <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-number">600</span>;</span> }
+
+<span class="hljs-tag">p</span>&gt;<span class="hljs-tag">a</span> { <span class="hljs-attribute">font-weight</span><span class="hljs-value">: <span class="hljs-variable">$ts-medium</span>;</span>}</div></div></div></div></body></html>
