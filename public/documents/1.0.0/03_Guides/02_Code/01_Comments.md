@@ -7,6 +7,8 @@ It also has the ability to parse more traditional Document tags for structured A
 For both `ruby` and `coffescript` the comments share a common designator which is the `#`.
 
 ### Single line comments
+
+#### Coffeescript and Ruby
 To start a comment to be parsed simply start the line with `#` anything following will be parsed into markdown and can use markdown syntax.
 
 ```ruby
@@ -20,6 +22,15 @@ To start a comment to be parsed simply start the line with `#` anything followin
   #    - List Item
 ```
 
+#### SCSS
+Single line comments in SCSS are invoked with `//`
+
+```css
+  // Foo Bar Comment
+  .class__element {
+    color: white;
+  }
+```
 
 ### Multi line comments
 #### Coffeescript
@@ -34,13 +45,28 @@ Comment blocks are wrapped in `###` such as
 Inside a comment block a preceding `#` is not required for each line but will be parsed out if it is the chosen style. Inside the comment block each line is parsed like a normal markdown line.
 
 #### Ruby
-In ruby multi-line comments are generated with a `#` on each line, the `=begin` and `=end` designators do not parse within groc.
+In ruby multi-line comments are generated with multiple single line comments `#`. This is because the `=begin` and `=end` designators do not parse within groc.
 
 ```ruby
   #
   # Foo Bar Comment Block
   #
 ```
+
+#### SCSS
+Start a comment block with `/*` and close the block with `*/`. These block can span multiple lines and any line within the block can be preceded with a `*` but is not required.
+
+
+```css
+  /*
+  Foo Bar Comment block
+  */
+```
+
+### Ignoring Comments
+If you do not wish to have your comment converted into the markdown column, append the `}` after the comment indicator for single lines or whole blocks. This should work in Ruby, Coffeescript and SCSS
+
+#### Ruby
 
 ### Markdown style
 Currently we are using [Github Flavored Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) rendered through [Marked](https://github.com/chjj/marked). The code is highlighted via [highlight.js](http://highlightjs.org/).
