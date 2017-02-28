@@ -16,6 +16,7 @@ export default ta.Model.extend ta.add(
 
   <span class="hljs-attribute">is_approved</span>:     ember.computed.equal <span class="hljs-string">'state'</span>, <span class="hljs-string">'approved'</span>
   <span class="hljs-attribute">is_sent</span>:         ember.computed.equal <span class="hljs-string">'state'</span>, <span class="hljs-string">'sent'</span>
+  <span class="hljs-attribute">is_neutral</span>:      ember.computed.equal <span class="hljs-string">'state'</span>, <span class="hljs-string">'neutral'</span>
   <span class="hljs-attribute">is_not_approved</span>: ember.computed.<span class="hljs-keyword">not</span>   <span class="hljs-string">'is_approved'</span>
   <span class="hljs-attribute">is_not_sent</span>:     ember.computed.<span class="hljs-keyword">not</span>   <span class="hljs-string">'is_sent'</span>
   <span class="hljs-attribute">is_approvable</span>:   ember.computed.<span class="hljs-keyword">and</span>   <span class="hljs-string">'is_not_approved'</span>, <span class="hljs-string">'is_not_sent'</span></div></div></div></div></body></html>

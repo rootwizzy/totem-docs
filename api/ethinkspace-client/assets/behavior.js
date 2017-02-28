@@ -19,7 +19,7 @@
                         "commentsOnly": true,
                         "name": "Markdown"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/README.md",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/README.md",
                     "projectPath": "README.md",
                     "targetPath": "index",
                     "pageTitle": "index",
@@ -122,7 +122,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-artifact/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-artifact/addon/_config.coffee",
                                     "projectPath": "thinkspace-artifact/addon/_config.coffee",
                                     "targetPath": "thinkspace-artifact/addon/_config",
                                     "pageTitle": "thinkspace-artifact/addon/_config",
@@ -176,7 +176,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-artifact/addon/components/bucket/edit.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-artifact/addon/components/bucket/edit.coffee",
                                                     "projectPath": "thinkspace-artifact/addon/components/bucket/edit.coffee",
                                                     "targetPath": "thinkspace-artifact/addon/components/bucket/edit",
                                                     "pageTitle": "thinkspace-artifact/addon/components/bucket/edit",
@@ -214,7 +214,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-artifact/addon/components/bucket/file.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-artifact/addon/components/bucket/file.coffee",
                                                     "projectPath": "thinkspace-artifact/addon/components/bucket/file.coffee",
                                                     "targetPath": "thinkspace-artifact/addon/components/bucket/file",
                                                     "pageTitle": "thinkspace-artifact/addon/components/bucket/file",
@@ -270,7 +270,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-artifact/addon/components/bucket/file/pdf/comments.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-artifact/addon/components/bucket/file/pdf/comments.coffee",
                                                                     "projectPath": "thinkspace-artifact/addon/components/bucket/file/pdf/comments.coffee",
                                                                     "targetPath": "thinkspace-artifact/addon/components/bucket/file/pdf/comments",
                                                                     "pageTitle": "thinkspace-artifact/addon/components/bucket/file/pdf/comments",
@@ -308,7 +308,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-artifact/addon/components/bucket/file/pdf/file.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-artifact/addon/components/bucket/file/pdf/file.coffee",
                                                                     "projectPath": "thinkspace-artifact/addon/components/bucket/file/pdf/file.coffee",
                                                                     "targetPath": "thinkspace-artifact/addon/components/bucket/file/pdf/file",
                                                                     "pageTitle": "thinkspace-artifact/addon/components/bucket/file/pdf/file",
@@ -392,7 +392,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-artifact/addon/components/bucket/file/pdf/wrapper.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-artifact/addon/components/bucket/file/pdf/wrapper.coffee",
                                                                     "projectPath": "thinkspace-artifact/addon/components/bucket/file/pdf/wrapper.coffee",
                                                                     "targetPath": "thinkspace-artifact/addon/components/bucket/file/pdf/wrapper",
                                                                     "pageTitle": "thinkspace-artifact/addon/components/bucket/file/pdf/wrapper",
@@ -434,7 +434,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-artifact/addon/components/bucket/upload.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-artifact/addon/components/bucket/upload.coffee",
                                                     "projectPath": "thinkspace-artifact/addon/components/bucket/upload.coffee",
                                                     "targetPath": "thinkspace-artifact/addon/components/bucket/upload",
                                                     "pageTitle": "thinkspace-artifact/addon/components/bucket/upload",
@@ -474,7 +474,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-artifact/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-artifact/addon/components/main.coffee",
                                             "projectPath": "thinkspace-artifact/addon/components/main.coffee",
                                             "targetPath": "thinkspace-artifact/addon/components/main",
                                             "pageTitle": "thinkspace-artifact/addon/components/main",
@@ -514,7 +514,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-artifact/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-artifact/addon/engine.coffee",
                                     "projectPath": "thinkspace-artifact/addon/engine.coffee",
                                     "targetPath": "thinkspace-artifact/addon/engine",
                                     "pageTitle": "thinkspace-artifact/addon/engine",
@@ -560,7 +560,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-artifact/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-artifact/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-artifact/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-artifact/addon/initializers/totem",
                                             "pageTitle": "thinkspace-artifact/addon/initializers/totem",
@@ -611,20 +611,17 @@
                                         "foldPrefix": "^",
                                         "name": "SCSS"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/addons.scss",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/addons.scss",
                                     "projectPath": "thinkspace-assets/styles/addons.scss",
                                     "targetPath": "thinkspace-assets/styles/addons",
                                     "pageTitle": "thinkspace-assets/styles/addons",
-                                    "title": "addons"
-                                },
-                                "depth": 3,
-                                "outline": [
-                                    {
+                                    "firstHeader": {
                                         "type": "heading",
                                         "data": {
                                             "level": 1,
                                             "title": "OTBL Styles Contents",
-                                            "slug": "otbl-styles-contents"
+                                            "slug": "otbl-styles-contents",
+                                            "isFileHeader": true
                                         },
                                         "depth": 1,
                                         "children": [
@@ -692,6 +689,73 @@
                                                 "depth": 2
                                             }
                                         ]
+                                    },
+                                    "title": "OTBL Styles Contents"
+                                },
+                                "depth": 3,
+                                "outline": [
+                                    {
+                                        "type": "heading",
+                                        "data": {
+                                            "level": 2,
+                                            "title": "TOOLS",
+                                            "slug": "tools"
+                                        },
+                                        "depth": 2
+                                    },
+                                    {
+                                        "type": "heading",
+                                        "data": {
+                                            "level": 2,
+                                            "title": "SETTINGS",
+                                            "slug": "settings"
+                                        },
+                                        "depth": 2
+                                    },
+                                    {
+                                        "type": "heading",
+                                        "data": {
+                                            "level": 2,
+                                            "title": "GENERIC",
+                                            "slug": "generic"
+                                        },
+                                        "depth": 2
+                                    },
+                                    {
+                                        "type": "heading",
+                                        "data": {
+                                            "level": 2,
+                                            "title": "BASE",
+                                            "slug": "base"
+                                        },
+                                        "depth": 2
+                                    },
+                                    {
+                                        "type": "heading",
+                                        "data": {
+                                            "level": 2,
+                                            "title": "OBJECTS",
+                                            "slug": "objects"
+                                        },
+                                        "depth": 2
+                                    },
+                                    {
+                                        "type": "heading",
+                                        "data": {
+                                            "level": 2,
+                                            "title": "COMPONENTS",
+                                            "slug": "components"
+                                        },
+                                        "depth": 2
+                                    },
+                                    {
+                                        "type": "heading",
+                                        "data": {
+                                            "level": 2,
+                                            "title": "HELPERS",
+                                            "slug": "helpers"
+                                        },
+                                        "depth": 2
                                     }
                                 ]
                             },
@@ -715,7 +779,7 @@
                                         "foldPrefix": "^",
                                         "name": "SCSS"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/master.scss",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/master.scss",
                                     "projectPath": "thinkspace-assets/styles/master.scss",
                                     "targetPath": "thinkspace-assets/styles/master",
                                     "pageTitle": "thinkspace-assets/styles/master",
@@ -772,7 +836,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_base.links.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_base.links.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_base.links.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_base.links",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_base.links",
@@ -811,7 +875,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_base.lists.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_base.lists.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_base.lists.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_base.lists",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_base.lists",
@@ -850,7 +914,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_base.page.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_base.page.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_base.page.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_base.page",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_base.page",
@@ -889,7 +953,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_base.type.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_base.type.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_base.type.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_base.type",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_base.type",
@@ -928,7 +992,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.analytics-panel.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.analytics-panel.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.analytics-panel.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.analytics-panel",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.analytics-panel",
@@ -967,7 +1031,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.bar-graph.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.bar-graph.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.bar-graph.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.bar-graph",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.bar-graph",
@@ -1006,7 +1070,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.bordered-panel.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.bordered-panel.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.bordered-panel.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.bordered-panel",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.bordered-panel",
@@ -1045,7 +1109,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.builder-progress.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.builder-progress.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.builder-progress.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.builder-progress",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.builder-progress",
@@ -1084,7 +1148,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.chat.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.chat.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.chat.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.chat",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.chat",
@@ -1123,7 +1187,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.date-picker.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.date-picker.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.date-picker.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.date-picker",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.date-picker",
@@ -1162,7 +1226,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.exercise-types.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.exercise-types.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.exercise-types.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.exercise-types",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.exercise-types",
@@ -1201,7 +1265,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.footnote.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.footnote.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.footnote.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.footnote",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.footnote",
@@ -1240,7 +1304,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.forms.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.forms.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.forms.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.forms",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.forms",
@@ -1279,7 +1343,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.login.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.login.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.login.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.login",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.login",
@@ -1318,7 +1382,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.main-content.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.main-content.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.main-content.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.main-content",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.main-content",
@@ -1357,7 +1421,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.menu-bar.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.menu-bar.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.menu-bar.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.menu-bar",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.menu-bar",
@@ -1396,7 +1460,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.menu-panel.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.menu-panel.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.menu-panel.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.menu-panel",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.menu-panel",
@@ -1435,7 +1499,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.multiple-choice.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.multiple-choice.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.multiple-choice.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.multiple-choice",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.multiple-choice",
@@ -1474,7 +1538,46 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.questions.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.panel-table.scss",
+                                            "projectPath": "thinkspace-assets/styles/otbl-css/_components.panel-table.scss",
+                                            "targetPath": "thinkspace-assets/styles/otbl-css/_components.panel-table",
+                                            "pageTitle": "thinkspace-assets/styles/otbl-css/_components.panel-table",
+                                            "title": "_components.panel-table"
+                                        },
+                                        "depth": 4,
+                                        "outline": [
+                                            {
+                                                "type": "heading",
+                                                "data": {
+                                                    "level": 1,
+                                                    "title": "PANEL-TABLE",
+                                                    "slug": "panel-table"
+                                                },
+                                                "depth": 1
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "file",
+                                        "data": {
+                                            "language": {
+                                                "nameMatchers": [
+                                                    ".scss"
+                                                ],
+                                                "pygmentsLexer": "scss",
+                                                "multiLineComment": [
+                                                    "/*",
+                                                    "*",
+                                                    "*/"
+                                                ],
+                                                "singleLineComment": [
+                                                    "//"
+                                                ],
+                                                "ignorePrefix": "}",
+                                                "foldPrefix": "^",
+                                                "name": "SCSS"
+                                            },
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.questions.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.questions.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.questions",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.questions",
@@ -1522,7 +1625,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.rangeslider.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.rangeslider.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.rangeslider.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.rangeslider",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.rangeslider",
@@ -1561,7 +1664,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.rat-pr.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.rat-pr.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.rat-pr.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.rat-pr",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.rat-pr",
@@ -1600,7 +1703,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.secondary-panel.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.secondary-panel.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.secondary-panel.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.secondary-panel",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.secondary-panel",
@@ -1639,7 +1742,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.tiles.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.tiles.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.tiles.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.tiles",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.tiles",
@@ -1678,7 +1781,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.top-bar.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_components.top-bar.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_components.top-bar.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_components.top-bar",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_components.top-bar",
@@ -1726,7 +1829,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_generic.normalize.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_generic.normalize.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_generic.normalize.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_generic.normalize",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_generic.normalize",
@@ -1837,7 +1940,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_helpers.clearfix.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_helpers.clearfix.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_helpers.clearfix.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_helpers.clearfix",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_helpers.clearfix",
@@ -1876,7 +1979,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_helpers.positioning.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_helpers.positioning.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_helpers.positioning.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_helpers.positioning",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_helpers.positioning",
@@ -1915,7 +2018,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_helpers.spacing.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_helpers.spacing.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_helpers.spacing.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_helpers.spacing",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_helpers.spacing",
@@ -1954,7 +2057,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_helpers.text.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_helpers.text.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_helpers.text.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_helpers.text",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_helpers.text",
@@ -1993,7 +2096,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.avatar.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.avatar.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_objects.avatar.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_objects.avatar",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_objects.avatar",
@@ -2032,7 +2135,46 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.branding.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.basic-list.scss",
+                                            "projectPath": "thinkspace-assets/styles/otbl-css/_objects.basic-list.scss",
+                                            "targetPath": "thinkspace-assets/styles/otbl-css/_objects.basic-list",
+                                            "pageTitle": "thinkspace-assets/styles/otbl-css/_objects.basic-list",
+                                            "title": "_objects.basic-list"
+                                        },
+                                        "depth": 4,
+                                        "outline": [
+                                            {
+                                                "type": "heading",
+                                                "data": {
+                                                    "level": 1,
+                                                    "title": "BASIC-LIST",
+                                                    "slug": "basic-list"
+                                                },
+                                                "depth": 1
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "file",
+                                        "data": {
+                                            "language": {
+                                                "nameMatchers": [
+                                                    ".scss"
+                                                ],
+                                                "pygmentsLexer": "scss",
+                                                "multiLineComment": [
+                                                    "/*",
+                                                    "*",
+                                                    "*/"
+                                                ],
+                                                "singleLineComment": [
+                                                    "//"
+                                                ],
+                                                "ignorePrefix": "}",
+                                                "foldPrefix": "^",
+                                                "name": "SCSS"
+                                            },
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.branding.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_objects.branding.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_objects.branding",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_objects.branding",
@@ -2071,7 +2213,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.breadcrumbs.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.breadcrumbs.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_objects.breadcrumbs.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_objects.breadcrumbs",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_objects.breadcrumbs",
@@ -2110,7 +2252,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.buttons.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.buttons.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_objects.buttons.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_objects.buttons",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_objects.buttons",
@@ -2167,7 +2309,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.counter-box.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.counter-box.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_objects.counter-box.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_objects.counter-box",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_objects.counter-box",
@@ -2206,7 +2348,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.dialogue.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.dialogue.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_objects.dialogue.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_objects.dialogue",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_objects.dialogue",
@@ -2245,7 +2387,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.dropdowns.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.dropdowns.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_objects.dropdowns.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_objects.dropdowns",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_objects.dropdowns",
@@ -2284,7 +2426,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.grid.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.grid.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_objects.grid.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_objects.grid",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_objects.grid",
@@ -2323,7 +2465,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.icons.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.icons.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_objects.icons.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_objects.icons",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_objects.icons",
@@ -2362,7 +2504,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.radio-buttons.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_objects.radio-buttons.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_objects.radio-buttons.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_objects.radio-buttons",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_objects.radio-buttons",
@@ -2401,7 +2543,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_settings.colors.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_settings.colors.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_settings.colors.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_settings.colors",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_settings.colors",
@@ -2440,7 +2582,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/otbl-css/_settings.global.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/otbl-css/_settings.global.scss",
                                             "projectPath": "thinkspace-assets/styles/otbl-css/_settings.global.scss",
                                             "targetPath": "thinkspace-assets/styles/otbl-css/_settings.global",
                                             "pageTitle": "thinkspace-assets/styles/otbl-css/_settings.global",
@@ -2498,7 +2640,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/sessions/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/sessions/master.scss",
                                             "projectPath": "thinkspace-assets/styles/sessions/master.scss",
                                             "targetPath": "thinkspace-assets/styles/sessions/master",
                                             "pageTitle": "thinkspace-assets/styles/sessions/master",
@@ -2535,7 +2677,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/sessions/thinkspace/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/sessions/thinkspace/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/sessions/thinkspace/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/sessions/thinkspace/modules",
                                                     "pageTitle": "thinkspace-assets/styles/sessions/thinkspace/modules",
@@ -2584,7 +2726,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-artifact/bucket/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-artifact/bucket/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-artifact/bucket/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-artifact/bucket/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-artifact/bucket/modules",
@@ -2623,7 +2765,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-artifact/file/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-artifact/file/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-artifact/file/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-artifact/file/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-artifact/file/modules",
@@ -2654,7 +2796,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-artifact/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-artifact/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-artifact/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-artifact/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-artifact/master",
@@ -2693,7 +2835,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-builder/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-builder/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-builder/master",
@@ -2730,7 +2872,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/modules/builder.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/modules/builder.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-builder/modules/builder.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-builder/modules/builder",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-builder/modules/builder",
@@ -2759,7 +2901,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/modules/header.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/modules/header.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-builder/modules/header.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-builder/modules/header",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-builder/modules/header",
@@ -2788,7 +2930,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/modules/new.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/modules/new.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-builder/modules/new.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-builder/modules/new",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-builder/modules/new",
@@ -2817,7 +2959,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/modules/progress.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/modules/progress.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-builder/modules/progress.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-builder/modules/progress",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-builder/modules/progress",
@@ -2856,7 +2998,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/pe/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/pe/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-builder/pe/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-builder/pe/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-builder/pe/modules",
@@ -2895,7 +3037,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/rat/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-builder/rat/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-builder/rat/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-builder/rat/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-builder/rat/modules",
@@ -2944,7 +3086,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/adime/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/adime/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/adime/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/adime/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/adime/modules",
@@ -2973,7 +3115,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/adime/variables.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/adime/variables.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/adime/variables.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/adime/variables",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/adime/variables",
@@ -3012,7 +3154,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/assignments/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/assignments/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/assignments/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/assignments/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/assignments/modules",
@@ -3041,7 +3183,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/assignments/variables.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/assignments/variables.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/assignments/variables.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/assignments/variables",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/assignments/variables",
@@ -3080,7 +3222,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/base.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/base.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/base.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/base",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/case_manager/base",
@@ -3109,7 +3251,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/roster_uploader.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/roster_uploader.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/roster_uploader.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/roster_uploader",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/case_manager/roster_uploader",
@@ -3138,7 +3280,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams",
@@ -3167,7 +3309,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/assign.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/assign.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/assign.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/assign",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/assign",
@@ -3196,7 +3338,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/dashboard.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/dashboard.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/dashboard.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/dashboard",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/dashboard",
@@ -3225,7 +3367,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/index.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/index.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/index.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/index",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/index",
@@ -3254,7 +3396,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/users.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/users.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/users.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/users",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/users",
@@ -3283,7 +3425,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/view.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/view.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/view.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/view",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/view",
@@ -3312,7 +3454,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/viewers.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/viewers.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/viewers.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/viewers",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/case_manager/teams/viewers",
@@ -3353,7 +3495,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/dock/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/dock/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/dock/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/dock/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/dock/modules",
@@ -3392,7 +3534,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/gradebook/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/gradebook/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/gradebook/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/gradebook/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/gradebook/modules",
@@ -3423,7 +3565,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/master",
@@ -3468,7 +3610,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/ownerable/bar/modules.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/ownerable/bar/modules.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/ownerable/bar/modules.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/ownerable/bar/modules",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/ownerable/bar/modules",
@@ -3507,7 +3649,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/ownerable/selector/modules.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/ownerable/selector/modules.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/ownerable/selector/modules.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/ownerable/selector/modules",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/ownerable/selector/modules",
@@ -3556,7 +3698,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/phases/content/modules.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/phases/content/modules.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/phases/content/modules.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/phases/content/modules",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/phases/content/modules",
@@ -3595,7 +3737,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/phases/header/modules.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/phases/header/modules.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/phases/header/modules.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/phases/header/modules",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/phases/header/modules",
@@ -3626,7 +3768,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/phases/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/phases/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/phases/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/phases/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/phases/modules",
@@ -3665,7 +3807,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/shared/layout.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/shared/layout.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/shared/layout.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/shared/layout",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/shared/layout",
@@ -3714,7 +3856,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/animations.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/animations.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/animations.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/animations",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/toolbar/animations",
@@ -3751,7 +3893,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/docked.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/docked.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/docked.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/docked",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/docked",
@@ -3780,7 +3922,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar",
@@ -3828,7 +3970,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar-overlay.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar-overlay.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar-overlay.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar-overlay",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/toolbar/modules/toolbar-overlay",
@@ -3859,7 +4001,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/states.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/states.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/states.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/states",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/toolbar/states",
@@ -3888,7 +4030,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/variables.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/toolbar/variables.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/variables.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/toolbar/variables",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/toolbar/variables",
@@ -3927,7 +4069,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/ts-menu/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/ts-menu/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/ts-menu/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/ts-menu/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/ts-menu/modules",
@@ -3956,7 +4098,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/ts-menu/variables.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-casespace/ts-menu/variables.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-casespace/ts-menu/variables.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-casespace/ts-menu/variables",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-casespace/ts-menu/variables",
@@ -4013,7 +4155,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/branding/modules/ts-branding.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/branding/modules/ts-branding.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/branding/modules/ts-branding.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/branding/modules/ts-branding",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/branding/modules/ts-branding",
@@ -4044,7 +4186,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/branding/variables.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/branding/variables.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/branding/variables.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/branding/variables",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/branding/variables",
@@ -4083,7 +4225,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/foundation/master.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/foundation/master.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/foundation/master.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/foundation/master",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/foundation/master",
@@ -4120,7 +4262,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/foundation/overrides/styles.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/foundation/overrides/styles.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/foundation/overrides/styles.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/foundation/overrides/styles",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/foundation/overrides/styles",
@@ -4149,7 +4291,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/foundation/overrides/variables.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/foundation/overrides/variables.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/foundation/overrides/variables.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/foundation/overrides/variables",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/foundation/overrides/variables",
@@ -4272,7 +4414,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ico-font/styles.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ico-font/styles.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/ico-font/styles.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/ico-font/styles",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/ico-font/styles",
@@ -4301,7 +4443,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ico-font/variables.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ico-font/variables.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/ico-font/variables.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/ico-font/variables",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/ico-font/variables",
@@ -4332,7 +4474,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/master",
@@ -4369,7 +4511,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/animations.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/animations.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/animations.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/animations",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/animations",
@@ -4398,7 +4540,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/base.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/base.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/base.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/base",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/base",
@@ -4427,7 +4569,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/layout.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/layout.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/layout.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/layout",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/layout",
@@ -4456,7 +4598,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/mixins.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/mixins.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/mixins.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/mixins",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/mixins",
@@ -4493,7 +4635,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/action-header-imgs.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/action-header-imgs.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/action-header-imgs.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/action-header-imgs",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/action-header-imgs",
@@ -4522,7 +4664,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/activity-feed.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/activity-feed.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/activity-feed.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/activity-feed",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/activity-feed",
@@ -4551,7 +4693,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/basic-list.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/basic-list.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/basic-list.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/basic-list",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/basic-list",
@@ -4580,7 +4722,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/btn.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/btn.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/btn.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/btn",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/btn",
@@ -4609,7 +4751,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/callout.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/callout.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/callout.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/callout",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/callout",
@@ -4638,7 +4780,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/checkbox.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/checkbox.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/checkbox.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/checkbox",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/checkbox",
@@ -4667,7 +4809,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/confirmation.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/confirmation.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/confirmation.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/confirmation",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/confirmation",
@@ -4696,7 +4838,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/date-picker.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/date-picker.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/date-picker.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/date-picker",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/date-picker",
@@ -4725,7 +4867,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/dialogue.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/dialogue.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/dialogue.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/dialogue",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/dialogue",
@@ -4754,7 +4896,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/dropdown.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/dropdown.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/dropdown.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/dropdown",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/dropdown",
@@ -4783,7 +4925,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/file-upload.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/file-upload.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/file-upload.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/file-upload",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/file-upload",
@@ -4812,7 +4954,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/forms.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/forms.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/forms.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/forms",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/forms",
@@ -4841,7 +4983,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/label.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/label.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/label.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/label",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/label",
@@ -4870,7 +5012,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/loading.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/loading.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/loading.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/loading",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/loading",
@@ -4899,7 +5041,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/password.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/password.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/password.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/password",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/password",
@@ -4928,7 +5070,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/primary-list.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/primary-list.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/primary-list.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/primary-list",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/primary-list",
@@ -4957,7 +5099,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/public_user.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/public_user.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/public_user.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/public_user",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/public_user",
@@ -4986,7 +5128,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/radio-checkbox-inputs.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/radio-checkbox-inputs.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/radio-checkbox-inputs.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/radio-checkbox-inputs",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/radio-checkbox-inputs",
@@ -5015,7 +5157,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/time-picker.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/time-picker.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/time-picker.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/time-picker",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/time-picker",
@@ -5044,7 +5186,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/title-region.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/title-region.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/title-region.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/title-region",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/title-region",
@@ -5073,7 +5215,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/tooltip.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/tooltip.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/tooltip.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/tooltip",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/tooltip",
@@ -5102,7 +5244,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/ts-action-bar.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/ts-action-bar.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/ts-action-bar.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/ts-action-bar",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/ts-action-bar",
@@ -5131,7 +5273,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/ts-destroy-msg.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/ts-destroy-msg.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/ts-destroy-msg.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/ts-destroy-msg",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/ts-destroy-msg",
@@ -5160,7 +5302,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/ts-full-page.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/ts-full-page.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/ts-full-page.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/ts-full-page",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/ts-full-page",
@@ -5189,7 +5331,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/validated.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/modules/validated.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/validated.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/modules/validated",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/modules/validated",
@@ -5220,7 +5362,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/states.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/states.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/states.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/states",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/states",
@@ -5249,7 +5391,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/ts-grid.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/ts-grid.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/ts-grid.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/ts-grid",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/ts-grid",
@@ -5278,7 +5420,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/variables.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/shared/variables.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/shared/variables.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/shared/variables",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/shared/variables",
@@ -5325,7 +5467,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/spaces/modules/content-heading.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/spaces/modules/content-heading.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/spaces/modules/content-heading.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/spaces/modules/content-heading",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/spaces/modules/content-heading",
@@ -5354,7 +5496,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/spaces/modules/recent-activity-list.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/spaces/modules/recent-activity-list.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-common/spaces/modules/recent-activity-list.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-common/spaces/modules/recent-activity-list",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-common/spaces/modules/recent-activity-list",
@@ -5395,7 +5537,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/icons.data.png.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/icons.data.png.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.data.png.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.data.png",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.data.png",
@@ -5424,7 +5566,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/icons.data.svg.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/icons.data.svg.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.data.svg.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.data.svg",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.data.svg",
@@ -5453,7 +5595,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/icons.fallback.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/icons.fallback.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.fallback.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.fallback",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.fallback",
@@ -5482,7 +5624,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/icons.std.svg.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/icons.std.svg.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.std.svg.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.std.svg",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/ts-icons/icons.std.svg",
@@ -5511,7 +5653,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/mixins.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/mixins.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/mixins.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/mixins",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/ts-icons/mixins",
@@ -5540,7 +5682,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/ts-icons/modules",
@@ -5569,7 +5711,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/states.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/ts-icons/states.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/states.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/ts-icons/states",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/ts-icons/states",
@@ -5608,7 +5750,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/users/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/users/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/users/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/users/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/users/modules",
@@ -5637,7 +5779,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/users/variables.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-common/users/variables.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-common/users/variables.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-common/users/variables",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-common/users/variables",
@@ -5678,7 +5820,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-dock/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-dock/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-dock/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-dock/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-dock/master",
@@ -5715,7 +5857,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-dock/messages/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-dock/messages/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-dock/messages/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-dock/messages/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-dock/messages/modules",
@@ -5754,7 +5896,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-dock/shared/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-dock/shared/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-dock/shared/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-dock/shared/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-dock/shared/modules",
@@ -5783,7 +5925,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-dock/shared/variables.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-dock/shared/variables.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-dock/shared/variables.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-dock/shared/variables",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-dock/shared/variables",
@@ -5822,7 +5964,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-dock/support/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-dock/support/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-dock/support/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-dock/support/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-dock/support/modules",
@@ -5871,7 +6013,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-html/html-editor/states.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-html/html-editor/states.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-html/html-editor/states.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-html/html-editor/states",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-html/html-editor/states",
@@ -5902,7 +6044,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-html/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-html/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-html/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-html/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-html/master",
@@ -5931,7 +6073,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-html/modules.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-html/modules.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-html/modules.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-html/modules",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-html/modules",
@@ -5968,7 +6110,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-html/views/inputs.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-html/views/inputs.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-html/views/inputs.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-html/views/inputs",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-html/views/inputs",
@@ -6009,7 +6151,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-indented-list/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-indented-list/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-indented-list/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-indented-list/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-indented-list/master",
@@ -6038,7 +6180,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-indented-list/modules.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-indented-list/modules.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-indented-list/modules.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-indented-list/modules",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-indented-list/modules",
@@ -6075,7 +6217,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-indented-list/themes/standard.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-indented-list/themes/standard.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-indented-list/themes/standard.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-indented-list/themes/standard",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-indented-list/themes/standard",
@@ -6135,7 +6277,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-input-element/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-input-element/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-input-element/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-input-element/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-input-element/master",
@@ -6164,7 +6306,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-input-element/modules.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-input-element/modules.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-input-element/modules.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-input-element/modules",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-input-element/modules",
@@ -6203,7 +6345,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-intercom/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-intercom/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-intercom/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-intercom/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-intercom/master",
@@ -6240,7 +6382,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-intercom/overrides/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-intercom/overrides/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-intercom/overrides/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-intercom/overrides/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-intercom/overrides/modules",
@@ -6289,7 +6431,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-lab/chart/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-lab/chart/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-lab/chart/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-lab/chart/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-lab/chart/modules",
@@ -6320,7 +6462,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-lab/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-lab/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-lab/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-lab/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-lab/master",
@@ -6359,7 +6501,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-markup/layout.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-markup/layout.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-markup/layout.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-markup/layout",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-markup/layout",
@@ -6396,7 +6538,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-markup/library/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-markup/library/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-markup/library/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-markup/library/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-markup/library/modules",
@@ -6437,7 +6579,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-markup/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-markup/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-markup/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-markup/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-markup/master",
@@ -6466,7 +6608,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-markup/right_pocket.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-markup/right_pocket.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-markup/right_pocket.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-markup/right_pocket",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-markup/right_pocket",
@@ -6505,7 +6647,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-message-pubsub/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-message-pubsub/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-message-pubsub/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-message-pubsub/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-message-pubsub/master",
@@ -6542,7 +6684,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-message-pubsub/themes/messages.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-message-pubsub/themes/messages.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-message-pubsub/themes/messages.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-message-pubsub/themes/messages",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-message-pubsub/themes/messages",
@@ -6571,7 +6713,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-message-pubsub/themes/timers.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-message-pubsub/themes/timers.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-message-pubsub/themes/timers.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-message-pubsub/themes/timers",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-message-pubsub/themes/timers",
@@ -6620,7 +6762,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-observation-list/list/mixins.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-observation-list/list/mixins.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-observation-list/list/mixins.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-observation-list/list/mixins",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-observation-list/list/mixins",
@@ -6657,7 +6799,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-observation-list/list/modules/obs-list.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-observation-list/list/modules/obs-list.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-observation-list/list/modules/obs-list.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-observation-list/list/modules/obs-list",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-observation-list/list/modules/obs-list",
@@ -6690,7 +6832,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-observation-list/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-observation-list/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-observation-list/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-observation-list/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-observation-list/master",
@@ -6737,7 +6879,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/balance/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/balance/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/balance/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/balance/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/balance/modules",
@@ -6776,7 +6918,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/builder/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/builder/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/builder/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/builder/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/builder/modules",
@@ -6815,7 +6957,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/categories/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/categories/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/categories/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/categories/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/categories/modules",
@@ -6854,7 +6996,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/confirmation/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/confirmation/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/confirmation/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/confirmation/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/confirmation/modules",
@@ -6891,7 +7033,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/confirmation/review/modules.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/confirmation/review/modules.scss",
                                                             "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/confirmation/review/modules.scss",
                                                             "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/confirmation/review/modules",
                                                             "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/confirmation/review/modules",
@@ -6932,7 +7074,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/instructor/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/instructor/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/instructor/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/instructor/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/instructor/modules",
@@ -6963,7 +7105,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/master",
@@ -7000,7 +7142,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/overview/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/overview/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/overview/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/overview/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/overview/modules",
@@ -7039,7 +7181,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/qualitative/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/qualitative/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/qualitative/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/qualitative/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/qualitative/modules",
@@ -7078,7 +7220,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/shared/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/shared/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/shared/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/shared/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/shared/modules",
@@ -7109,7 +7251,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/team-members.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/team-members.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/team-members.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/team-members",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/team-members",
@@ -7138,7 +7280,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/team-members/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/team-members/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/team-members/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/team-members/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/team-members/modules",
@@ -7177,7 +7319,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/ts-rangeslider/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-peer-assessment/ts-rangeslider/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-peer-assessment/ts-rangeslider/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-peer-assessment/ts-rangeslider/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-peer-assessment/ts-rangeslider/modules",
@@ -7218,7 +7360,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-readiness-assurance/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-readiness-assurance/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-readiness-assurance/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-readiness-assurance/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-readiness-assurance/master",
@@ -7255,7 +7397,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-readiness-assurance/themes/admin.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-readiness-assurance/themes/admin.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-readiness-assurance/themes/admin.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-readiness-assurance/themes/admin",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-readiness-assurance/themes/admin",
@@ -7284,7 +7426,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-readiness-assurance/themes/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-readiness-assurance/themes/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-readiness-assurance/themes/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-readiness-assurance/themes/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-readiness-assurance/themes/modules",
@@ -7325,7 +7467,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-resource/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-resource/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-resource/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-resource/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-resource/master",
@@ -7354,7 +7496,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-resource/modules.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-resource/modules.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-resource/modules.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-resource/modules",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-resource/modules",
@@ -7383,7 +7525,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-resource/variables.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-resource/variables.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-resource/variables.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-resource/variables",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-resource/variables",
@@ -7422,7 +7564,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-simulation/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-simulation/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-simulation/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-simulation/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-simulation/master",
@@ -7451,7 +7593,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-simulation/simulation.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-simulation/simulation.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-simulation/simulation.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-simulation/simulation",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-simulation/simulation",
@@ -7488,7 +7630,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-simulation/simulations/budget-sim.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-simulation/simulations/budget-sim.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-simulation/simulations/budget-sim.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-simulation/simulations/budget-sim",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-simulation/simulations/budget-sim",
@@ -7517,7 +7659,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-simulation/simulations/mountain-sim.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-simulation/simulations/mountain-sim.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-simulation/simulations/mountain-sim.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-simulation/simulations/mountain-sim",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-simulation/simulations/mountain-sim",
@@ -7546,7 +7688,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-simulation/simulations/radiation-sim.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-simulation/simulations/radiation-sim.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-simulation/simulations/radiation-sim.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-simulation/simulations/radiation-sim",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-simulation/simulations/radiation-sim",
@@ -7587,7 +7729,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-team-manager/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-team-manager/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-team-manager/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-team-manager/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-team-manager/master",
@@ -7624,7 +7766,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "SCSS"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-team-manager/teams/modules.scss",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-team-manager/teams/modules.scss",
                                                     "projectPath": "thinkspace-assets/styles/thinkspace-team-manager/teams/modules.scss",
                                                     "targetPath": "thinkspace-assets/styles/thinkspace-team-manager/teams/modules",
                                                     "pageTitle": "thinkspace-assets/styles/thinkspace-team-manager/teams/modules",
@@ -7665,7 +7807,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-weather-forecaster/master.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-weather-forecaster/master.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-weather-forecaster/master.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-weather-forecaster/master",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-weather-forecaster/master",
@@ -7694,7 +7836,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-assets/styles/thinkspace-weather-forecaster/modules.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-assets/styles/thinkspace-weather-forecaster/modules.scss",
                                             "projectPath": "thinkspace-assets/styles/thinkspace-weather-forecaster/modules.scss",
                                             "targetPath": "thinkspace-assets/styles/thinkspace-weather-forecaster/modules",
                                             "pageTitle": "thinkspace-assets/styles/thinkspace-weather-forecaster/modules",
@@ -7762,7 +7904,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-base/addon/components/base.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-base/addon/components/base.coffee",
                                             "projectPath": "thinkspace-base/addon/components/base.coffee",
                                             "targetPath": "thinkspace-base/addon/components/base",
                                             "pageTitle": "thinkspace-base/addon/components/base",
@@ -7810,7 +7952,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-base/addon/controllers/base.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-base/addon/controllers/base.coffee",
                                             "projectPath": "thinkspace-base/addon/controllers/base.coffee",
                                             "targetPath": "thinkspace-base/addon/controllers/base",
                                             "pageTitle": "thinkspace-base/addon/controllers/base",
@@ -7858,7 +8000,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-base/addon/objects/base.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-base/addon/objects/base.coffee",
                                             "projectPath": "thinkspace-base/addon/objects/base.coffee",
                                             "targetPath": "thinkspace-base/addon/objects/base",
                                             "pageTitle": "thinkspace-base/addon/objects/base",
@@ -7906,7 +8048,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-base/addon/routes/base.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-base/addon/routes/base.coffee",
                                             "projectPath": "thinkspace-base/addon/routes/base.coffee",
                                             "targetPath": "thinkspace-base/addon/routes/base",
                                             "pageTitle": "thinkspace-base/addon/routes/base",
@@ -7954,7 +8096,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-base/addon/services/base.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-base/addon/services/base.coffee",
                                             "projectPath": "thinkspace-base/addon/services/base.coffee",
                                             "targetPath": "thinkspace-base/addon/services/base",
                                             "pageTitle": "thinkspace-base/addon/services/base",
@@ -8014,7 +8156,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/_config.coffee",
                                     "projectPath": "thinkspace-builder-pe/addon/_config.coffee",
                                     "targetPath": "thinkspace-builder-pe/addon/_config",
                                     "pageTitle": "thinkspace-builder-pe/addon/_config",
@@ -8060,7 +8202,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/components/confirmation.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/components/confirmation",
                                             "pageTitle": "thinkspace-builder-pe/addon/components/confirmation",
@@ -8128,7 +8270,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/content.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/content.coffee",
                                                     "projectPath": "thinkspace-builder-pe/addon/components/confirmation/content.coffee",
                                                     "targetPath": "thinkspace-builder-pe/addon/components/confirmation/content",
                                                     "pageTitle": "thinkspace-builder-pe/addon/components/confirmation/content",
@@ -8176,7 +8318,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/details.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/details.coffee",
                                                     "projectPath": "thinkspace-builder-pe/addon/components/confirmation/details.coffee",
                                                     "targetPath": "thinkspace-builder-pe/addon/components/confirmation/details",
                                                     "pageTitle": "thinkspace-builder-pe/addon/components/confirmation/details",
@@ -8240,7 +8382,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/items/qual/qual.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/items/qual/qual.coffee",
                                                                     "projectPath": "thinkspace-builder-pe/addon/components/confirmation/items/qual/qual.coffee",
                                                                     "targetPath": "thinkspace-builder-pe/addon/components/confirmation/items/qual/qual",
                                                                     "pageTitle": "thinkspace-builder-pe/addon/components/confirmation/items/qual/qual",
@@ -8288,7 +8430,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/items/qual/section.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/items/qual/section.coffee",
                                                                     "projectPath": "thinkspace-builder-pe/addon/components/confirmation/items/qual/section.coffee",
                                                                     "targetPath": "thinkspace-builder-pe/addon/components/confirmation/items/qual/section",
                                                                     "pageTitle": "thinkspace-builder-pe/addon/components/confirmation/items/qual/section",
@@ -8346,7 +8488,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/items/quant/quant.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/items/quant/quant.coffee",
                                                                     "projectPath": "thinkspace-builder-pe/addon/components/confirmation/items/quant/quant.coffee",
                                                                     "targetPath": "thinkspace-builder-pe/addon/components/confirmation/items/quant/quant",
                                                                     "pageTitle": "thinkspace-builder-pe/addon/components/confirmation/items/quant/quant",
@@ -8394,7 +8536,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/items/quant/section.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/items/quant/section.coffee",
                                                                     "projectPath": "thinkspace-builder-pe/addon/components/confirmation/items/quant/section.coffee",
                                                                     "targetPath": "thinkspace-builder-pe/addon/components/confirmation/items/quant/section",
                                                                     "pageTitle": "thinkspace-builder-pe/addon/components/confirmation/items/quant/section",
@@ -8446,7 +8588,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/settings.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/confirmation/settings.coffee",
                                                     "projectPath": "thinkspace-builder-pe/addon/components/confirmation/settings.coffee",
                                                     "targetPath": "thinkspace-builder-pe/addon/components/confirmation/settings",
                                                     "pageTitle": "thinkspace-builder-pe/addon/components/confirmation/settings",
@@ -8496,7 +8638,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/components/content.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/components/content",
                                             "pageTitle": "thinkspace-builder-pe/addon/components/content",
@@ -8544,7 +8686,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment.coffee",
                                                     "projectPath": "thinkspace-builder-pe/addon/components/content/assessment.coffee",
                                                     "targetPath": "thinkspace-builder-pe/addon/components/content/assessment",
                                                     "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment",
@@ -8600,7 +8742,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/item.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/item.coffee",
                                                                     "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/item.coffee",
                                                                     "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/item",
                                                                     "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/qual/item",
@@ -8648,7 +8790,7 @@
                                                                                 "foldPrefix": "^",
                                                                                 "name": "CoffeeScript"
                                                                             },
-                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit.coffee",
+                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit.coffee",
                                                                             "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit.coffee",
                                                                             "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit",
                                                                             "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/edit",
@@ -8696,7 +8838,7 @@
                                                                                 "foldPrefix": "^",
                                                                                 "name": "CoffeeScript"
                                                                             },
-                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/item/preview.coffee",
+                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/item/preview.coffee",
                                                                             "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/preview.coffee",
                                                                             "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/preview",
                                                                             "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/preview",
@@ -8800,7 +8942,7 @@
                                                                                 "foldPrefix": "^",
                                                                                 "name": "CoffeeScript"
                                                                             },
-                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/item/settings.coffee",
+                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/item/settings.coffee",
                                                                             "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/settings.coffee",
                                                                             "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/settings",
                                                                             "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/settings",
@@ -8886,7 +9028,7 @@
                                                                                 "foldPrefix": "^",
                                                                                 "name": "CoffeeScript"
                                                                             },
-                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/item/show.coffee",
+                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/item/show.coffee",
                                                                             "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/show.coffee",
                                                                             "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/show",
                                                                             "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/qual/item/show",
@@ -8956,7 +9098,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/section.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/qual/section.coffee",
                                                                     "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/section.coffee",
                                                                     "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/qual/section",
                                                                     "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/qual/section",
@@ -9014,7 +9156,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/item.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/item.coffee",
                                                                     "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/item.coffee",
                                                                     "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/item",
                                                                     "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/quant/item",
@@ -9062,7 +9204,7 @@
                                                                                 "foldPrefix": "^",
                                                                                 "name": "CoffeeScript"
                                                                             },
-                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/item/edit.coffee",
+                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/item/edit.coffee",
                                                                             "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/edit.coffee",
                                                                             "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/edit",
                                                                             "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/edit",
@@ -9110,7 +9252,7 @@
                                                                                 "foldPrefix": "^",
                                                                                 "name": "CoffeeScript"
                                                                             },
-                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/item/preview.coffee",
+                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/item/preview.coffee",
                                                                             "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/preview.coffee",
                                                                             "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/preview",
                                                                             "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/preview",
@@ -9205,7 +9347,7 @@
                                                                                 "foldPrefix": "^",
                                                                                 "name": "CoffeeScript"
                                                                             },
-                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/item/settings.coffee",
+                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/item/settings.coffee",
                                                                             "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/settings.coffee",
                                                                             "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/settings",
                                                                             "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/settings",
@@ -9282,7 +9424,7 @@
                                                                                 "foldPrefix": "^",
                                                                                 "name": "CoffeeScript"
                                                                             },
-                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/item/show.coffee",
+                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/item/show.coffee",
                                                                             "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/show.coffee",
                                                                             "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/show",
                                                                             "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/quant/item/show",
@@ -9370,7 +9512,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/section.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/assessment/quant/section.coffee",
                                                                     "projectPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/section.coffee",
                                                                     "targetPath": "thinkspace-builder-pe/addon/components/content/assessment/quant/section",
                                                                     "pageTitle": "thinkspace-builder-pe/addon/components/content/assessment/quant/section",
@@ -9422,7 +9564,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/modified_template.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/modified_template.coffee",
                                                     "projectPath": "thinkspace-builder-pe/addon/components/content/modified_template.coffee",
                                                     "targetPath": "thinkspace-builder-pe/addon/components/content/modified_template",
                                                     "pageTitle": "thinkspace-builder-pe/addon/components/content/modified_template",
@@ -9470,7 +9612,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/content/templates.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/content/templates.coffee",
                                                     "projectPath": "thinkspace-builder-pe/addon/components/content/templates.coffee",
                                                     "targetPath": "thinkspace-builder-pe/addon/components/content/templates",
                                                     "pageTitle": "thinkspace-builder-pe/addon/components/content/templates",
@@ -9520,7 +9662,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/details.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/details.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/components/details.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/components/details",
                                             "pageTitle": "thinkspace-builder-pe/addon/components/details",
@@ -9568,7 +9710,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/details/content.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/details/content.coffee",
                                                     "projectPath": "thinkspace-builder-pe/addon/components/details/content.coffee",
                                                     "targetPath": "thinkspace-builder-pe/addon/components/details/content",
                                                     "pageTitle": "thinkspace-builder-pe/addon/components/details/content",
@@ -9618,7 +9760,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/progress.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/progress.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/components/progress.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/components/progress",
                                             "pageTitle": "thinkspace-builder-pe/addon/components/progress",
@@ -9666,7 +9808,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/progress/step.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/progress/step.coffee",
                                                     "projectPath": "thinkspace-builder-pe/addon/components/progress/step.coffee",
                                                     "targetPath": "thinkspace-builder-pe/addon/components/progress/step",
                                                     "pageTitle": "thinkspace-builder-pe/addon/components/progress/step",
@@ -9716,7 +9858,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/settings.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/settings.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/components/settings.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/components/settings",
                                             "pageTitle": "thinkspace-builder-pe/addon/components/settings",
@@ -9764,7 +9906,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/components/settings/content.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/components/settings/content.coffee",
                                                     "projectPath": "thinkspace-builder-pe/addon/components/settings/content.coffee",
                                                     "targetPath": "thinkspace-builder-pe/addon/components/settings/content",
                                                     "pageTitle": "thinkspace-builder-pe/addon/components/settings/content",
@@ -9816,7 +9958,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/engine.coffee",
                                     "projectPath": "thinkspace-builder-pe/addon/engine.coffee",
                                     "targetPath": "thinkspace-builder-pe/addon/engine",
                                     "pageTitle": "thinkspace-builder-pe/addon/engine",
@@ -9862,7 +10004,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/initializers/totem",
                                             "pageTitle": "thinkspace-builder-pe/addon/initializers/totem",
@@ -9920,7 +10062,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/items/qual.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/items/qual.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/items/qual.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/items/qual",
                                             "pageTitle": "thinkspace-builder-pe/addon/items/qual",
@@ -9997,7 +10139,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/items/quant.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/items/quant.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/items/quant.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/items/quant",
                                             "pageTitle": "thinkspace-builder-pe/addon/items/quant",
@@ -10076,7 +10218,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/routes.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/routes.coffee",
                                     "projectPath": "thinkspace-builder-pe/addon/routes.coffee",
                                     "targetPath": "thinkspace-builder-pe/addon/routes",
                                     "pageTitle": "thinkspace-builder-pe/addon/routes",
@@ -10114,7 +10256,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/routes/application.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/routes/application.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/routes/application.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/routes/application",
                                             "pageTitle": "thinkspace-builder-pe/addon/routes/application",
@@ -10152,7 +10294,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/routes/confirmation.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/routes/confirmation.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/routes/confirmation.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/routes/confirmation",
                                             "pageTitle": "thinkspace-builder-pe/addon/routes/confirmation",
@@ -10220,7 +10362,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/routes/content.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/routes/content.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/routes/content.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/routes/content",
                                             "pageTitle": "thinkspace-builder-pe/addon/routes/content",
@@ -10288,7 +10430,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/routes/details.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/routes/details.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/routes/details.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/routes/details",
                                             "pageTitle": "thinkspace-builder-pe/addon/routes/details",
@@ -10356,7 +10498,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/routes/settings.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/routes/settings.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/routes/settings.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/routes/settings",
                                             "pageTitle": "thinkspace-builder-pe/addon/routes/settings",
@@ -10434,7 +10576,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/services/builder.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/services/builder.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/services/builder.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/services/builder",
                                             "pageTitle": "thinkspace-builder-pe/addon/services/builder",
@@ -10502,7 +10644,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/services/builder/initialize.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/services/builder/initialize.coffee",
                                                     "projectPath": "thinkspace-builder-pe/addon/services/builder/initialize.coffee",
                                                     "targetPath": "thinkspace-builder-pe/addon/services/builder/initialize",
                                                     "pageTitle": "thinkspace-builder-pe/addon/services/builder/initialize",
@@ -10550,7 +10692,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/services/builder/navigate.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/services/builder/navigate.coffee",
                                                     "projectPath": "thinkspace-builder-pe/addon/services/builder/navigate.coffee",
                                                     "targetPath": "thinkspace-builder-pe/addon/services/builder/navigate",
                                                     "pageTitle": "thinkspace-builder-pe/addon/services/builder/navigate",
@@ -10638,7 +10780,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/services/manager.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/services/manager.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/services/manager.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/services/manager",
                                             "pageTitle": "thinkspace-builder-pe/addon/services/manager",
@@ -10770,7 +10912,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/steps/confirmation.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/steps/confirmation.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/steps/confirmation.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/steps/confirmation",
                                             "pageTitle": "thinkspace-builder-pe/addon/steps/confirmation",
@@ -10818,7 +10960,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/steps/content.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/steps/content.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/steps/content.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/steps/content",
                                             "pageTitle": "thinkspace-builder-pe/addon/steps/content",
@@ -10866,7 +11008,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/steps/details.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/steps/details.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/steps/details.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/steps/details",
                                             "pageTitle": "thinkspace-builder-pe/addon/steps/details",
@@ -10914,7 +11056,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/steps/settings.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/steps/settings.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/steps/settings.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/steps/settings",
                                             "pageTitle": "thinkspace-builder-pe/addon/steps/settings",
@@ -10962,7 +11104,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder-pe/addon/steps/step.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder-pe/addon/steps/step.coffee",
                                             "projectPath": "thinkspace-builder-pe/addon/steps/step.coffee",
                                             "targetPath": "thinkspace-builder-pe/addon/steps/step",
                                             "pageTitle": "thinkspace-builder-pe/addon/steps/step",
@@ -11032,7 +11174,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder/addon/_config.coffee",
                                     "projectPath": "thinkspace-builder/addon/_config.coffee",
                                     "targetPath": "thinkspace-builder/addon/_config",
                                     "pageTitle": "thinkspace-builder/addon/_config",
@@ -11078,7 +11220,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder/addon/components/assignment_type.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder/addon/components/assignment_type.coffee",
                                             "projectPath": "thinkspace-builder/addon/components/assignment_type.coffee",
                                             "targetPath": "thinkspace-builder/addon/components/assignment_type",
                                             "pageTitle": "thinkspace-builder/addon/components/assignment_type",
@@ -11116,7 +11258,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder/addon/components/new.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder/addon/components/new.coffee",
                                             "projectPath": "thinkspace-builder/addon/components/new.coffee",
                                             "targetPath": "thinkspace-builder/addon/components/new",
                                             "pageTitle": "thinkspace-builder/addon/components/new",
@@ -11201,7 +11343,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder/addon/controllers/new.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder/addon/controllers/new.coffee",
                                             "projectPath": "thinkspace-builder/addon/controllers/new.coffee",
                                             "targetPath": "thinkspace-builder/addon/controllers/new",
                                             "pageTitle": "thinkspace-builder/addon/controllers/new",
@@ -11241,7 +11383,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder/addon/engine.coffee",
                                     "projectPath": "thinkspace-builder/addon/engine.coffee",
                                     "targetPath": "thinkspace-builder/addon/engine",
                                     "pageTitle": "thinkspace-builder/addon/engine",
@@ -11287,7 +11429,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-builder/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-builder/addon/initializers/totem",
                                             "pageTitle": "thinkspace-builder/addon/initializers/totem",
@@ -11327,7 +11469,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder/addon/routes.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder/addon/routes.coffee",
                                     "projectPath": "thinkspace-builder/addon/routes.coffee",
                                     "targetPath": "thinkspace-builder/addon/routes",
                                     "pageTitle": "thinkspace-builder/addon/routes",
@@ -11365,7 +11507,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-builder/addon/routes/new.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-builder/addon/routes/new.coffee",
                                             "projectPath": "thinkspace-builder/addon/routes/new.coffee",
                                             "targetPath": "thinkspace-builder/addon/routes/new",
                                             "pageTitle": "thinkspace-builder/addon/routes/new",
@@ -11425,7 +11567,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/_config.coffee",
                                     "projectPath": "thinkspace-case/addon/_config.coffee",
                                     "targetPath": "thinkspace-case/addon/_config",
                                     "pageTitle": "thinkspace-case/addon/_config",
@@ -11471,7 +11613,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/components/phase.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/components/phase.coffee",
                                             "projectPath": "thinkspace-case/addon/components/phase.coffee",
                                             "targetPath": "thinkspace-case/addon/components/phase",
                                             "pageTitle": "thinkspace-case/addon/components/phase",
@@ -11509,7 +11651,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/components/progress_report.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/components/progress_report.coffee",
                                             "projectPath": "thinkspace-case/addon/components/progress_report.coffee",
                                             "targetPath": "thinkspace-case/addon/components/progress_report",
                                             "pageTitle": "thinkspace-case/addon/components/progress_report",
@@ -11547,7 +11689,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/components/reports.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/components/reports.coffee",
                                             "projectPath": "thinkspace-case/addon/components/reports.coffee",
                                             "targetPath": "thinkspace-case/addon/components/reports",
                                             "pageTitle": "thinkspace-case/addon/components/reports",
@@ -11585,7 +11727,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/components/scores.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/components/scores.coffee",
                                             "projectPath": "thinkspace-case/addon/components/scores.coffee",
                                             "targetPath": "thinkspace-case/addon/components/scores",
                                             "pageTitle": "thinkspace-case/addon/components/scores",
@@ -11623,7 +11765,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/components/show.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/components/show.coffee",
                                             "projectPath": "thinkspace-case/addon/components/show.coffee",
                                             "targetPath": "thinkspace-case/addon/components/show",
                                             "pageTitle": "thinkspace-case/addon/components/show",
@@ -11661,7 +11803,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/components/show/date_modal.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/components/show/date_modal.coffee",
                                                     "projectPath": "thinkspace-case/addon/components/show/date_modal.coffee",
                                                     "targetPath": "thinkspace-case/addon/components/show/date_modal",
                                                     "pageTitle": "thinkspace-case/addon/components/show/date_modal",
@@ -11699,7 +11841,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/components/show/states.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/components/show/states.coffee",
                                                     "projectPath": "thinkspace-case/addon/components/show/states.coffee",
                                                     "targetPath": "thinkspace-case/addon/components/show/states",
                                                     "pageTitle": "thinkspace-case/addon/components/show/states",
@@ -11741,7 +11883,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/engine.coffee",
                                     "projectPath": "thinkspace-case/addon/engine.coffee",
                                     "targetPath": "thinkspace-case/addon/engine",
                                     "pageTitle": "thinkspace-case/addon/engine",
@@ -11787,7 +11929,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-case/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-case/addon/initializers/totem",
                                             "pageTitle": "thinkspace-case/addon/initializers/totem",
@@ -11827,7 +11969,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/routes.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/routes.coffee",
                                     "projectPath": "thinkspace-case/addon/routes.coffee",
                                     "targetPath": "thinkspace-case/addon/routes",
                                     "pageTitle": "thinkspace-case/addon/routes",
@@ -11865,7 +12007,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/routes/application.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/routes/application.coffee",
                                             "projectPath": "thinkspace-case/addon/routes/application.coffee",
                                             "targetPath": "thinkspace-case/addon/routes/application",
                                             "pageTitle": "thinkspace-case/addon/routes/application",
@@ -11903,7 +12045,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/routes/progress_report.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/routes/progress_report.coffee",
                                             "projectPath": "thinkspace-case/addon/routes/progress_report.coffee",
                                             "targetPath": "thinkspace-case/addon/routes/progress_report",
                                             "pageTitle": "thinkspace-case/addon/routes/progress_report",
@@ -11941,7 +12083,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/routes/reports.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/routes/reports.coffee",
                                             "projectPath": "thinkspace-case/addon/routes/reports.coffee",
                                             "targetPath": "thinkspace-case/addon/routes/reports",
                                             "pageTitle": "thinkspace-case/addon/routes/reports",
@@ -11979,7 +12121,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/routes/scores.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/routes/scores.coffee",
                                             "projectPath": "thinkspace-case/addon/routes/scores.coffee",
                                             "targetPath": "thinkspace-case/addon/routes/scores",
                                             "pageTitle": "thinkspace-case/addon/routes/scores",
@@ -12017,7 +12159,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-case/addon/routes/show.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-case/addon/routes/show.coffee",
                                             "projectPath": "thinkspace-case/addon/routes/show.coffee",
                                             "targetPath": "thinkspace-case/addon/routes/show",
                                             "pageTitle": "thinkspace-case/addon/routes/show",
@@ -12077,7 +12219,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/_config.coffee",
                                     "projectPath": "thinkspace-common/addon/_config.coffee",
                                     "targetPath": "thinkspace-common/addon/_config",
                                     "pageTitle": "thinkspace-common/addon/_config",
@@ -12123,7 +12265,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/locales/en.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/locales/en.coffee",
                                             "projectPath": "thinkspace-common/addon/locales/en.coffee",
                                             "targetPath": "thinkspace-common/addon/locales/en",
                                             "pageTitle": "thinkspace-common/addon/locales/en",
@@ -12179,7 +12321,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/addons/addons.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/addons/addons.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/addons/addons.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/addons/addons",
                                                     "pageTitle": "thinkspace-common/addon/mixins/addons/addons",
@@ -12217,7 +12359,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/addons/base.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/addons/base.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/addons/base.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/addons/base",
                                                     "pageTitle": "thinkspace-common/addon/mixins/addons/base",
@@ -12255,7 +12397,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/addons/config.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/addons/config.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/addons/config.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/addons/config",
                                                     "pageTitle": "thinkspace-common/addon/mixins/addons/config",
@@ -12293,7 +12435,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/addons/dock.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/addons/dock.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/addons/dock.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/addons/dock",
                                                     "pageTitle": "thinkspace-common/addon/mixins/addons/dock",
@@ -12331,7 +12473,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/addons/initialize.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/addons/initialize.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/addons/initialize.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/addons/initialize",
                                                     "pageTitle": "thinkspace-common/addon/mixins/addons/initialize",
@@ -12369,7 +12511,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/addons/right_pocket.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/addons/right_pocket.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/addons/right_pocket.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/addons/right_pocket",
                                                     "pageTitle": "thinkspace-common/addon/mixins/addons/right_pocket",
@@ -12407,7 +12549,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/addons/top_pocket.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/addons/top_pocket.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/addons/top_pocket.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/addons/top_pocket",
                                                     "pageTitle": "thinkspace-common/addon/mixins/addons/top_pocket",
@@ -12463,7 +12605,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/all.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/all.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/helpers/common/all.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/helpers/common/all",
                                                             "pageTitle": "thinkspace-common/addon/mixins/helpers/common/all",
@@ -12501,7 +12643,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/array.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/array.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/helpers/common/array.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/helpers/common/array",
                                                             "pageTitle": "thinkspace-common/addon/mixins/helpers/common/array",
@@ -12539,7 +12681,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/general.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/general.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/helpers/common/general.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/helpers/common/general",
                                                             "pageTitle": "thinkspace-common/addon/mixins/helpers/common/general",
@@ -12577,7 +12719,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/model.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/model.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/helpers/common/model.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/helpers/common/model",
                                                             "pageTitle": "thinkspace-common/addon/mixins/helpers/common/model",
@@ -12615,7 +12757,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/object.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/object.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/helpers/common/object.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/helpers/common/object",
                                                             "pageTitle": "thinkspace-common/addon/mixins/helpers/common/object",
@@ -12653,7 +12795,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/promise.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/helpers/common/promise.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/helpers/common/promise.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/helpers/common/promise",
                                                             "pageTitle": "thinkspace-common/addon/mixins/helpers/common/promise",
@@ -12703,7 +12845,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/addons.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/addons.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/phase_manager/addons.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/phase_manager/addons",
                                                     "pageTitle": "thinkspace-common/addon/mixins/phase_manager/addons",
@@ -12741,7 +12883,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/base.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/base.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/phase_manager/base.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/phase_manager/base",
                                                     "pageTitle": "thinkspace-common/addon/mixins/phase_manager/base",
@@ -12779,7 +12921,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/debug.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/debug.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/phase_manager/debug.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/phase_manager/debug",
                                                     "pageTitle": "thinkspace-common/addon/mixins/phase_manager/debug",
@@ -12817,7 +12959,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/generate_view.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/generate_view.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/phase_manager/generate_view.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/phase_manager/generate_view",
                                                     "pageTitle": "thinkspace-common/addon/mixins/phase_manager/generate_view",
@@ -12855,7 +12997,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/initialize.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/initialize.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/phase_manager/initialize.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/phase_manager/initialize",
                                                     "pageTitle": "thinkspace-common/addon/mixins/phase_manager/initialize",
@@ -12901,7 +13043,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/base.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/base.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/phase_manager/map/base.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/phase_manager/map/base",
                                                             "pageTitle": "thinkspace-common/addon/mixins/phase_manager/map/base",
@@ -12939,7 +13081,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/finders.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/finders.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/phase_manager/map/finders.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/phase_manager/map/finders",
                                                             "pageTitle": "thinkspace-common/addon/mixins/phase_manager/map/finders",
@@ -12977,7 +13119,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/initialize.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/initialize.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/phase_manager/map/initialize.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/phase_manager/map/initialize",
                                                             "pageTitle": "thinkspace-common/addon/mixins/phase_manager/map/initialize",
@@ -13015,7 +13157,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/map.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/map.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/phase_manager/map/map.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/phase_manager/map/map",
                                                             "pageTitle": "thinkspace-common/addon/mixins/phase_manager/map/map",
@@ -13053,7 +13195,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/mock.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/mock.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/phase_manager/map/mock.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/phase_manager/map/mock",
                                                             "pageTitle": "thinkspace-common/addon/mixins/phase_manager/map/mock",
@@ -13091,7 +13233,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/phase_states.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/phase_states.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/phase_manager/map/phase_states.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/phase_manager/map/phase_states",
                                                             "pageTitle": "thinkspace-common/addon/mixins/phase_manager/map/phase_states",
@@ -13129,7 +13271,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/print.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/map/print.coffee",
                                                             "projectPath": "thinkspace-common/addon/mixins/phase_manager/map/print.coffee",
                                                             "targetPath": "thinkspace-common/addon/mixins/phase_manager/map/print",
                                                             "pageTitle": "thinkspace-common/addon/mixins/phase_manager/map/print",
@@ -13169,7 +13311,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/ownerable.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/ownerable.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/phase_manager/ownerable.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/phase_manager/ownerable",
                                                     "pageTitle": "thinkspace-common/addon/mixins/phase_manager/ownerable",
@@ -13207,7 +13349,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/phase_states.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/phase_states.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/phase_manager/phase_states.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/phase_manager/phase_states",
                                                     "pageTitle": "thinkspace-common/addon/mixins/phase_manager/phase_states",
@@ -13245,7 +13387,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/view_ability.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/phase_manager/view_ability.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/phase_manager/view_ability.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/phase_manager/view_ability",
                                                     "pageTitle": "thinkspace-common/addon/mixins/phase_manager/view_ability",
@@ -13293,7 +13435,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/server_events/base.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/server_events/base.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/server_events/base.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/server_events/base",
                                                     "pageTitle": "thinkspace-common/addon/mixins/server_events/base",
@@ -13331,7 +13473,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/server_events/events.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/server_events/events.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/server_events/events.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/server_events/events",
                                                     "pageTitle": "thinkspace-common/addon/mixins/server_events/events",
@@ -13428,7 +13570,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/server_events/helpers.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/server_events/helpers.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/server_events/helpers.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/server_events/helpers",
                                                     "pageTitle": "thinkspace-common/addon/mixins/server_events/helpers",
@@ -13466,7 +13608,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/server_events/initialize.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/server_events/initialize.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/server_events/initialize.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/server_events/initialize",
                                                     "pageTitle": "thinkspace-common/addon/mixins/server_events/initialize",
@@ -13504,7 +13646,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/server_events/messages.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/server_events/messages.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/server_events/messages.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/server_events/messages",
                                                     "pageTitle": "thinkspace-common/addon/mixins/server_events/messages",
@@ -13542,7 +13684,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/server_events/rooms.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/server_events/rooms.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/server_events/rooms.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/server_events/rooms",
                                                     "pageTitle": "thinkspace-common/addon/mixins/server_events/rooms",
@@ -13755,7 +13897,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/server_events/routes.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/server_events/routes.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/server_events/routes.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/server_events/routes",
                                                     "pageTitle": "thinkspace-common/addon/mixins/server_events/routes",
@@ -13793,7 +13935,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/server_events/timer.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/server_events/timer.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/server_events/timer.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/server_events/timer",
                                                     "pageTitle": "thinkspace-common/addon/mixins/server_events/timer",
@@ -13831,7 +13973,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/server_events/tracker.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/server_events/tracker.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/server_events/tracker.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/server_events/tracker",
                                                     "pageTitle": "thinkspace-common/addon/mixins/server_events/tracker",
@@ -13869,7 +14011,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/server_events/tracker_sio.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/server_events/tracker_sio.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/server_events/tracker_sio.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/server_events/tracker_sio",
                                                     "pageTitle": "thinkspace-common/addon/mixins/server_events/tracker_sio",
@@ -13917,7 +14059,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/base.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/base.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/thinkspace/base.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/thinkspace/base",
                                                     "pageTitle": "thinkspace-common/addon/mixins/thinkspace/base",
@@ -13955,7 +14097,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/current_models.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/current_models.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/thinkspace/current_models.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/thinkspace/current_models",
                                                     "pageTitle": "thinkspace-common/addon/mixins/thinkspace/current_models",
@@ -13993,7 +14135,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/initialize.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/initialize.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/thinkspace/initialize.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/thinkspace/initialize",
                                                     "pageTitle": "thinkspace-common/addon/mixins/thinkspace/initialize",
@@ -14031,7 +14173,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/layout.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/layout.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/thinkspace/layout.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/thinkspace/layout",
                                                     "pageTitle": "thinkspace-common/addon/mixins/thinkspace/layout",
@@ -14079,7 +14221,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/phase_settings.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/phase_settings.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/thinkspace/phase_settings.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/thinkspace/phase_settings",
                                                     "pageTitle": "thinkspace-common/addon/mixins/thinkspace/phase_settings",
@@ -14127,7 +14269,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/transition.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/transition.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/thinkspace/transition.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/thinkspace/transition",
                                                     "pageTitle": "thinkspace-common/addon/mixins/thinkspace/transition",
@@ -14165,7 +14307,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/wizard.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/addon/mixins/thinkspace/wizard.coffee",
                                                     "projectPath": "thinkspace-common/addon/mixins/thinkspace/wizard.coffee",
                                                     "targetPath": "thinkspace-common/addon/mixins/thinkspace/wizard",
                                                     "pageTitle": "thinkspace-common/addon/mixins/thinkspace/wizard",
@@ -14225,7 +14367,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/--checkbox.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/--checkbox.coffee",
                                             "projectPath": "thinkspace-common/app/components/--checkbox.coffee",
                                             "targetPath": "thinkspace-common/app/components/--checkbox",
                                             "pageTitle": "thinkspace-common/app/components/--checkbox",
@@ -14263,7 +14405,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/--file-upload.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/--file-upload.coffee",
                                             "projectPath": "thinkspace-common/app/components/--file-upload.coffee",
                                             "targetPath": "thinkspace-common/app/components/--file-upload",
                                             "pageTitle": "thinkspace-common/app/components/--file-upload",
@@ -14301,7 +14443,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/--loader.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/--loader.coffee",
                                             "projectPath": "thinkspace-common/app/components/--loader.coffee",
                                             "targetPath": "thinkspace-common/app/components/--loader",
                                             "pageTitle": "thinkspace-common/app/components/--loader",
@@ -14339,7 +14481,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/--radio.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/--radio.coffee",
                                             "projectPath": "thinkspace-common/app/components/--radio.coffee",
                                             "targetPath": "thinkspace-common/app/components/--radio",
                                             "pageTitle": "thinkspace-common/app/components/--radio",
@@ -14377,7 +14519,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/--time_zone_picker.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/--time_zone_picker.coffee",
                                             "projectPath": "thinkspace-common/app/components/--time_zone_picker.coffee",
                                             "targetPath": "thinkspace-common/app/components/--time_zone_picker",
                                             "pageTitle": "thinkspace-common/app/components/--time_zone_picker",
@@ -14469,7 +14611,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/bar/select_team.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/bar/select_team.coffee",
                                                     "projectPath": "thinkspace-common/app/components/bar/select_team.coffee",
                                                     "targetPath": "thinkspace-common/app/components/bar/select_team",
                                                     "pageTitle": "thinkspace-common/app/components/bar/select_team",
@@ -14507,7 +14649,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/bar/select_teams.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/bar/select_teams.coffee",
                                                     "projectPath": "thinkspace-common/app/components/bar/select_teams.coffee",
                                                     "targetPath": "thinkspace-common/app/components/bar/select_teams",
                                                     "pageTitle": "thinkspace-common/app/components/bar/select_teams",
@@ -14555,7 +14697,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/bar/select_user.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/bar/select_user.coffee",
                                                     "projectPath": "thinkspace-common/app/components/bar/select_user.coffee",
                                                     "targetPath": "thinkspace-common/app/components/bar/select_user",
                                                     "pageTitle": "thinkspace-common/app/components/bar/select_user",
@@ -14593,7 +14735,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/bar/select_users.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/bar/select_users.coffee",
                                                     "projectPath": "thinkspace-common/app/components/bar/select_users.coffee",
                                                     "targetPath": "thinkspace-common/app/components/bar/select_users",
                                                     "pageTitle": "thinkspace-common/app/components/bar/select_users",
@@ -14651,7 +14793,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/changeset/checkbox.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/changeset/checkbox.coffee",
                                                     "projectPath": "thinkspace-common/app/components/changeset/checkbox.coffee",
                                                     "targetPath": "thinkspace-common/app/components/changeset/checkbox",
                                                     "pageTitle": "thinkspace-common/app/components/changeset/checkbox",
@@ -14689,7 +14831,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/changeset/errors.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/changeset/errors.coffee",
                                                     "projectPath": "thinkspace-common/app/components/changeset/errors.coffee",
                                                     "targetPath": "thinkspace-common/app/components/changeset/errors",
                                                     "pageTitle": "thinkspace-common/app/components/changeset/errors",
@@ -14727,7 +14869,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/changeset/input.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/changeset/input.coffee",
                                                     "projectPath": "thinkspace-common/app/components/changeset/input.coffee",
                                                     "targetPath": "thinkspace-common/app/components/changeset/input",
                                                     "pageTitle": "thinkspace-common/app/components/changeset/input",
@@ -14765,7 +14907,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/changeset/radio.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/changeset/radio.coffee",
                                                     "projectPath": "thinkspace-common/app/components/changeset/radio.coffee",
                                                     "targetPath": "thinkspace-common/app/components/changeset/radio",
                                                     "pageTitle": "thinkspace-common/app/components/changeset/radio",
@@ -14803,7 +14945,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/changeset/text_area.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/changeset/text_area.coffee",
                                                     "projectPath": "thinkspace-common/app/components/changeset/text_area.coffee",
                                                     "targetPath": "thinkspace-common/app/components/changeset/text_area",
                                                     "pageTitle": "thinkspace-common/app/components/changeset/text_area",
@@ -14841,7 +14983,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/changeset/text_field.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/changeset/text_field.coffee",
                                                     "projectPath": "thinkspace-common/app/components/changeset/text_field.coffee",
                                                     "targetPath": "thinkspace-common/app/components/changeset/text_field",
                                                     "pageTitle": "thinkspace-common/app/components/changeset/text_field",
@@ -14889,7 +15031,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/confirmation/modal.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/confirmation/modal.coffee",
                                                     "projectPath": "thinkspace-common/app/components/confirmation/modal.coffee",
                                                     "targetPath": "thinkspace-common/app/components/confirmation/modal",
                                                     "pageTitle": "thinkspace-common/app/components/confirmation/modal",
@@ -14929,7 +15071,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/date_picker.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/date_picker.coffee",
                                             "projectPath": "thinkspace-common/app/components/date_picker.coffee",
                                             "targetPath": "thinkspace-common/app/components/date_picker",
                                             "pageTitle": "thinkspace-common/app/components/date_picker",
@@ -15031,7 +15173,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/datetime_picker.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/datetime_picker.coffee",
                                             "projectPath": "thinkspace-common/app/components/datetime_picker.coffee",
                                             "targetPath": "thinkspace-common/app/components/datetime_picker",
                                             "pageTitle": "thinkspace-common/app/components/datetime_picker",
@@ -15079,7 +15221,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/dock_engine_mount.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/dock_engine_mount.coffee",
                                             "projectPath": "thinkspace-common/app/components/dock_engine_mount.coffee",
                                             "targetPath": "thinkspace-common/app/components/dock_engine_mount",
                                             "pageTitle": "thinkspace-common/app/components/dock_engine_mount",
@@ -15117,7 +15259,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/dropdown.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/dropdown.coffee",
                                             "projectPath": "thinkspace-common/app/components/dropdown.coffee",
                                             "targetPath": "thinkspace-common/app/components/dropdown",
                                             "pageTitle": "thinkspace-common/app/components/dropdown",
@@ -15194,7 +15336,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/dropdown_link.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/dropdown_link.coffee",
                                             "projectPath": "thinkspace-common/app/components/dropdown_link.coffee",
                                             "targetPath": "thinkspace-common/app/components/dropdown_link",
                                             "pageTitle": "thinkspace-common/app/components/dropdown_link",
@@ -15232,7 +15374,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/dropdown_split_button.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/dropdown_split_button.coffee",
                                             "projectPath": "thinkspace-common/app/components/dropdown_split_button.coffee",
                                             "targetPath": "thinkspace-common/app/components/dropdown_split_button",
                                             "pageTitle": "thinkspace-common/app/components/dropdown_split_button",
@@ -15316,7 +15458,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/input.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/input.coffee",
                                             "projectPath": "thinkspace-common/app/components/input.coffee",
                                             "targetPath": "thinkspace-common/app/components/input",
                                             "pageTitle": "thinkspace-common/app/components/input",
@@ -15354,7 +15496,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/layout.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/layout.coffee",
                                             "projectPath": "thinkspace-common/app/components/layout.coffee",
                                             "targetPath": "thinkspace-common/app/components/layout",
                                             "pageTitle": "thinkspace-common/app/components/layout",
@@ -15400,7 +15542,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/loader/default.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/loader/default.coffee",
                                                     "projectPath": "thinkspace-common/app/components/loader/default.coffee",
                                                     "targetPath": "thinkspace-common/app/components/loader/default",
                                                     "pageTitle": "thinkspace-common/app/components/loader/default",
@@ -15438,7 +15580,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/loader/small.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/loader/small.coffee",
                                                     "projectPath": "thinkspace-common/app/components/loader/small.coffee",
                                                     "targetPath": "thinkspace-common/app/components/loader/small",
                                                     "pageTitle": "thinkspace-common/app/components/loader/small",
@@ -15478,7 +15620,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/radio.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/radio.coffee",
                                             "projectPath": "thinkspace-common/app/components/radio.coffee",
                                             "targetPath": "thinkspace-common/app/components/radio",
                                             "pageTitle": "thinkspace-common/app/components/radio",
@@ -15516,7 +15658,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/radio/item.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/radio/item.coffee",
                                                     "projectPath": "thinkspace-common/app/components/radio/item.coffee",
                                                     "targetPath": "thinkspace-common/app/components/radio/item",
                                                     "pageTitle": "thinkspace-common/app/components/radio/item",
@@ -15556,7 +15698,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/route_tabs.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/route_tabs.coffee",
                                             "projectPath": "thinkspace-common/app/components/route_tabs.coffee",
                                             "targetPath": "thinkspace-common/app/components/route_tabs",
                                             "pageTitle": "thinkspace-common/app/components/route_tabs",
@@ -15594,7 +15736,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/text_area.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/text_area.coffee",
                                             "projectPath": "thinkspace-common/app/components/text_area.coffee",
                                             "targetPath": "thinkspace-common/app/components/text_area",
                                             "pageTitle": "thinkspace-common/app/components/text_area",
@@ -15632,7 +15774,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/time_picker.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/time_picker.coffee",
                                             "projectPath": "thinkspace-common/app/components/time_picker.coffee",
                                             "targetPath": "thinkspace-common/app/components/time_picker",
                                             "pageTitle": "thinkspace-common/app/components/time_picker",
@@ -15734,7 +15876,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/components/validated_input.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/components/validated_input.coffee",
                                             "projectPath": "thinkspace-common/app/components/validated_input.coffee",
                                             "targetPath": "thinkspace-common/app/components/validated_input",
                                             "pageTitle": "thinkspace-common/app/components/validated_input",
@@ -15782,7 +15924,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/helpers/phase-progress-icon.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/helpers/phase-progress-icon.coffee",
                                             "projectPath": "thinkspace-common/app/helpers/phase-progress-icon.coffee",
                                             "targetPath": "thinkspace-common/app/helpers/phase-progress-icon",
                                             "pageTitle": "thinkspace-common/app/helpers/phase-progress-icon",
@@ -15820,7 +15962,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/helpers/phase-state-icon.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/helpers/phase-state-icon.coffee",
                                             "projectPath": "thinkspace-common/app/helpers/phase-state-icon.coffee",
                                             "targetPath": "thinkspace-common/app/helpers/phase-state-icon",
                                             "pageTitle": "thinkspace-common/app/helpers/phase-state-icon",
@@ -15884,7 +16026,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/instance-initializers/thinkspace/common/route_transition.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/instance-initializers/thinkspace/common/route_transition.coffee",
                                                             "projectPath": "thinkspace-common/app/instance-initializers/thinkspace/common/route_transition.coffee",
                                                             "targetPath": "thinkspace-common/app/instance-initializers/thinkspace/common/route_transition",
                                                             "pageTitle": "thinkspace-common/app/instance-initializers/thinkspace/common/route_transition",
@@ -15936,7 +16078,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/services/addons.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/services/addons.coffee",
                                             "projectPath": "thinkspace-common/app/services/addons.coffee",
                                             "targetPath": "thinkspace-common/app/services/addons",
                                             "pageTitle": "thinkspace-common/app/services/addons",
@@ -15974,7 +16116,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/services/phase_manager.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/services/phase_manager.coffee",
                                             "projectPath": "thinkspace-common/app/services/phase_manager.coffee",
                                             "targetPath": "thinkspace-common/app/services/phase_manager",
                                             "pageTitle": "thinkspace-common/app/services/phase_manager",
@@ -16012,7 +16154,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/services/server_events.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/services/server_events.coffee",
                                             "projectPath": "thinkspace-common/app/services/server_events.coffee",
                                             "targetPath": "thinkspace-common/app/services/server_events",
                                             "pageTitle": "thinkspace-common/app/services/server_events",
@@ -16050,7 +16192,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-common/app/services/thinkspace.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-common/app/services/thinkspace.coffee",
                                             "projectPath": "thinkspace-common/app/services/thinkspace.coffee",
                                             "targetPath": "thinkspace-common/app/services/thinkspace",
                                             "pageTitle": "thinkspace-common/app/services/thinkspace",
@@ -16110,7 +16252,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/_config.coffee",
                                     "projectPath": "thinkspace-diagnostic-expert-path/addon/_config.coffee",
                                     "targetPath": "thinkspace-diagnostic-expert-path/addon/_config",
                                     "pageTitle": "thinkspace-diagnostic-expert-path/addon/_config",
@@ -16156,7 +16298,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/components/main.coffee",
                                             "projectPath": "thinkspace-diagnostic-expert-path/addon/components/main.coffee",
                                             "targetPath": "thinkspace-diagnostic-expert-path/addon/components/main",
                                             "pageTitle": "thinkspace-diagnostic-expert-path/addon/components/main",
@@ -16196,7 +16338,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/engine.coffee",
                                     "projectPath": "thinkspace-diagnostic-expert-path/addon/engine.coffee",
                                     "targetPath": "thinkspace-diagnostic-expert-path/addon/engine",
                                     "pageTitle": "thinkspace-diagnostic-expert-path/addon/engine",
@@ -16242,7 +16384,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-diagnostic-expert-path/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-diagnostic-expert-path/addon/initializers/totem",
                                             "pageTitle": "thinkspace-diagnostic-expert-path/addon/initializers/totem",
@@ -16290,7 +16432,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/sources/mechanism.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/sources/mechanism.coffee",
                                             "projectPath": "thinkspace-diagnostic-expert-path/addon/sources/mechanism.coffee",
                                             "targetPath": "thinkspace-diagnostic-expert-path/addon/sources/mechanism",
                                             "pageTitle": "thinkspace-diagnostic-expert-path/addon/sources/mechanism",
@@ -16328,7 +16470,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/sources/observation.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-expert-path/addon/sources/observation.coffee",
                                             "projectPath": "thinkspace-diagnostic-expert-path/addon/sources/observation.coffee",
                                             "targetPath": "thinkspace-diagnostic-expert-path/addon/sources/observation",
                                             "pageTitle": "thinkspace-diagnostic-expert-path/addon/sources/observation",
@@ -16388,7 +16530,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-path/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-path/addon/_config.coffee",
                                     "projectPath": "thinkspace-diagnostic-path/addon/_config.coffee",
                                     "targetPath": "thinkspace-diagnostic-path/addon/_config",
                                     "pageTitle": "thinkspace-diagnostic-path/addon/_config",
@@ -16434,7 +16576,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-path/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-path/addon/components/main.coffee",
                                             "projectPath": "thinkspace-diagnostic-path/addon/components/main.coffee",
                                             "targetPath": "thinkspace-diagnostic-path/addon/components/main",
                                             "pageTitle": "thinkspace-diagnostic-path/addon/components/main",
@@ -16562,7 +16704,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-path/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-path/addon/engine.coffee",
                                     "projectPath": "thinkspace-diagnostic-path/addon/engine.coffee",
                                     "targetPath": "thinkspace-diagnostic-path/addon/engine",
                                     "pageTitle": "thinkspace-diagnostic-path/addon/engine",
@@ -16608,7 +16750,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-path/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-path/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-diagnostic-path/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-diagnostic-path/addon/initializers/totem",
                                             "pageTitle": "thinkspace-diagnostic-path/addon/initializers/totem",
@@ -16656,7 +16798,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-path/addon/sources/mechanism.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-path/addon/sources/mechanism.coffee",
                                             "projectPath": "thinkspace-diagnostic-path/addon/sources/mechanism.coffee",
                                             "targetPath": "thinkspace-diagnostic-path/addon/sources/mechanism",
                                             "pageTitle": "thinkspace-diagnostic-path/addon/sources/mechanism",
@@ -16694,7 +16836,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-diagnostic-path/addon/sources/observation.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-diagnostic-path/addon/sources/observation.coffee",
                                             "projectPath": "thinkspace-diagnostic-path/addon/sources/observation.coffee",
                                             "targetPath": "thinkspace-diagnostic-path/addon/sources/observation",
                                             "pageTitle": "thinkspace-diagnostic-path/addon/sources/observation",
@@ -16754,7 +16896,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-dock/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-dock/addon/_config.coffee",
                                     "projectPath": "thinkspace-dock/addon/_config.coffee",
                                     "targetPath": "thinkspace-dock/addon/_config",
                                     "pageTitle": "thinkspace-dock/addon/_config",
@@ -16800,7 +16942,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-dock/addon/components/addon.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-dock/addon/components/addon.coffee",
                                             "projectPath": "thinkspace-dock/addon/components/addon.coffee",
                                             "targetPath": "thinkspace-dock/addon/components/addon",
                                             "pageTitle": "thinkspace-dock/addon/components/addon",
@@ -16848,7 +16990,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-dock/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-dock/addon/components/main.coffee",
                                             "projectPath": "thinkspace-dock/addon/components/main.coffee",
                                             "targetPath": "thinkspace-dock/addon/components/main",
                                             "pageTitle": "thinkspace-dock/addon/components/main",
@@ -16888,7 +17030,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-dock/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-dock/addon/engine.coffee",
                                     "projectPath": "thinkspace-dock/addon/engine.coffee",
                                     "targetPath": "thinkspace-dock/addon/engine",
                                     "pageTitle": "thinkspace-dock/addon/engine",
@@ -16934,7 +17076,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-dock/addon/mixins/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-dock/addon/mixins/main.coffee",
                                             "projectPath": "thinkspace-dock/addon/mixins/main.coffee",
                                             "targetPath": "thinkspace-dock/addon/mixins/main",
                                             "pageTitle": "thinkspace-dock/addon/mixins/main",
@@ -17024,7 +17166,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/_config.coffee",
                                     "projectPath": "thinkspace-gradebook/addon/_config.coffee",
                                     "targetPath": "thinkspace-gradebook/addon/_config",
                                     "pageTitle": "thinkspace-gradebook/addon/_config",
@@ -17070,7 +17212,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/components/main.coffee",
                                             "projectPath": "thinkspace-gradebook/addon/components/main.coffee",
                                             "targetPath": "thinkspace-gradebook/addon/components/main",
                                             "pageTitle": "thinkspace-gradebook/addon/components/main",
@@ -17108,7 +17250,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/components/overview.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/components/overview.coffee",
                                             "projectPath": "thinkspace-gradebook/addon/components/overview.coffee",
                                             "targetPath": "thinkspace-gradebook/addon/components/overview",
                                             "pageTitle": "thinkspace-gradebook/addon/components/overview",
@@ -17146,7 +17288,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/components/overview_score.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/components/overview_score.coffee",
                                             "projectPath": "thinkspace-gradebook/addon/components/overview_score.coffee",
                                             "targetPath": "thinkspace-gradebook/addon/components/overview_score",
                                             "pageTitle": "thinkspace-gradebook/addon/components/overview_score",
@@ -17203,7 +17345,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/components/phase.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/components/phase.coffee",
                                             "projectPath": "thinkspace-gradebook/addon/components/phase.coffee",
                                             "targetPath": "thinkspace-gradebook/addon/components/phase",
                                             "pageTitle": "thinkspace-gradebook/addon/components/phase",
@@ -17241,7 +17383,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/components/score.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/components/score.coffee",
                                             "projectPath": "thinkspace-gradebook/addon/components/score.coffee",
                                             "targetPath": "thinkspace-gradebook/addon/components/score",
                                             "pageTitle": "thinkspace-gradebook/addon/components/score",
@@ -17279,7 +17421,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/components/state.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/components/state.coffee",
                                             "projectPath": "thinkspace-gradebook/addon/components/state.coffee",
                                             "targetPath": "thinkspace-gradebook/addon/components/state",
                                             "pageTitle": "thinkspace-gradebook/addon/components/state",
@@ -17319,7 +17461,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/engine.coffee",
                                     "projectPath": "thinkspace-gradebook/addon/engine.coffee",
                                     "targetPath": "thinkspace-gradebook/addon/engine",
                                     "pageTitle": "thinkspace-gradebook/addon/engine",
@@ -17365,7 +17507,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-gradebook/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-gradebook/addon/initializers/totem",
                                             "pageTitle": "thinkspace-gradebook/addon/initializers/totem",
@@ -17413,7 +17555,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/managers/calc.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/managers/calc.coffee",
                                             "projectPath": "thinkspace-gradebook/addon/managers/calc.coffee",
                                             "targetPath": "thinkspace-gradebook/addon/managers/calc",
                                             "pageTitle": "thinkspace-gradebook/addon/managers/calc",
@@ -17451,7 +17593,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/managers/common_helpers.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/managers/common_helpers.coffee",
                                             "projectPath": "thinkspace-gradebook/addon/managers/common_helpers.coffee",
                                             "targetPath": "thinkspace-gradebook/addon/managers/common_helpers",
                                             "pageTitle": "thinkspace-gradebook/addon/managers/common_helpers",
@@ -17587,7 +17729,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-gradebook/addon/services/gradebook.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-gradebook/addon/services/gradebook.coffee",
                                             "projectPath": "thinkspace-gradebook/addon/services/gradebook.coffee",
                                             "targetPath": "thinkspace-gradebook/addon/services/gradebook",
                                             "pageTitle": "thinkspace-gradebook/addon/services/gradebook",
@@ -17822,7 +17964,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/_config.coffee",
                                     "projectPath": "thinkspace-html/addon/_config.coffee",
                                     "targetPath": "thinkspace-html/addon/_config",
                                     "pageTitle": "thinkspace-html/addon/_config",
@@ -17868,7 +18010,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/components/html.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/components/html.coffee",
                                             "projectPath": "thinkspace-html/addon/components/html.coffee",
                                             "targetPath": "thinkspace-html/addon/components/html",
                                             "pageTitle": "thinkspace-html/addon/components/html",
@@ -17906,7 +18048,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/components/html_only.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/components/html_only.coffee",
                                             "projectPath": "thinkspace-html/addon/components/html_only.coffee",
                                             "targetPath": "thinkspace-html/addon/components/html_only",
                                             "pageTitle": "thinkspace-html/addon/components/html_only",
@@ -17944,7 +18086,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/components/html_select_text.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/components/html_select_text.coffee",
                                             "projectPath": "thinkspace-html/addon/components/html_select_text.coffee",
                                             "targetPath": "thinkspace-html/addon/components/html_select_text",
                                             "pageTitle": "thinkspace-html/addon/components/html_select_text",
@@ -17990,7 +18132,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_base.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_base.coffee",
                                                     "projectPath": "thinkspace-html/addon/components/input_elements/standard_base.coffee",
                                                     "targetPath": "thinkspace-html/addon/components/input_elements/standard_base",
                                                     "pageTitle": "thinkspace-html/addon/components/input_elements/standard_base",
@@ -18028,7 +18170,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_carry_forward.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_carry_forward.coffee",
                                                     "projectPath": "thinkspace-html/addon/components/input_elements/standard_carry_forward.coffee",
                                                     "targetPath": "thinkspace-html/addon/components/input_elements/standard_carry_forward",
                                                     "pageTitle": "thinkspace-html/addon/components/input_elements/standard_carry_forward",
@@ -18066,7 +18208,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_checkbox.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_checkbox.coffee",
                                                     "projectPath": "thinkspace-html/addon/components/input_elements/standard_checkbox.coffee",
                                                     "targetPath": "thinkspace-html/addon/components/input_elements/standard_checkbox",
                                                     "pageTitle": "thinkspace-html/addon/components/input_elements/standard_checkbox",
@@ -18104,7 +18246,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_input.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_input.coffee",
                                                     "projectPath": "thinkspace-html/addon/components/input_elements/standard_input.coffee",
                                                     "targetPath": "thinkspace-html/addon/components/input_elements/standard_input",
                                                     "pageTitle": "thinkspace-html/addon/components/input_elements/standard_input",
@@ -18142,7 +18284,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_radio.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_radio.coffee",
                                                     "projectPath": "thinkspace-html/addon/components/input_elements/standard_radio.coffee",
                                                     "targetPath": "thinkspace-html/addon/components/input_elements/standard_radio",
                                                     "pageTitle": "thinkspace-html/addon/components/input_elements/standard_radio",
@@ -18180,7 +18322,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_radio_errors.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_radio_errors.coffee",
                                                     "projectPath": "thinkspace-html/addon/components/input_elements/standard_radio_errors.coffee",
                                                     "targetPath": "thinkspace-html/addon/components/input_elements/standard_radio_errors",
                                                     "pageTitle": "thinkspace-html/addon/components/input_elements/standard_radio_errors",
@@ -18218,7 +18360,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_textarea.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/components/input_elements/standard_textarea.coffee",
                                                     "projectPath": "thinkspace-html/addon/components/input_elements/standard_textarea.coffee",
                                                     "targetPath": "thinkspace-html/addon/components/input_elements/standard_textarea",
                                                     "pageTitle": "thinkspace-html/addon/components/input_elements/standard_textarea",
@@ -18258,7 +18400,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/components/main.coffee",
                                             "projectPath": "thinkspace-html/addon/components/main.coffee",
                                             "targetPath": "thinkspace-html/addon/components/main",
                                             "pageTitle": "thinkspace-html/addon/components/main",
@@ -18298,7 +18440,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/engine.coffee",
                                     "projectPath": "thinkspace-html/addon/engine.coffee",
                                     "targetPath": "thinkspace-html/addon/engine",
                                     "pageTitle": "thinkspace-html/addon/engine",
@@ -18344,7 +18486,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-html/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-html/addon/initializers/totem",
                                             "pageTitle": "thinkspace-html/addon/initializers/totem",
@@ -18392,7 +18534,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/preprocessors/carry_forward.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/preprocessors/carry_forward.coffee",
                                             "projectPath": "thinkspace-html/addon/preprocessors/carry_forward.coffee",
                                             "targetPath": "thinkspace-html/addon/preprocessors/carry_forward",
                                             "pageTitle": "thinkspace-html/addon/preprocessors/carry_forward",
@@ -18430,7 +18572,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-html/addon/preprocessors/responses.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-html/addon/preprocessors/responses.coffee",
                                             "projectPath": "thinkspace-html/addon/preprocessors/responses.coffee",
                                             "targetPath": "thinkspace-html/addon/preprocessors/responses",
                                             "pageTitle": "thinkspace-html/addon/preprocessors/responses",
@@ -18490,7 +18632,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/_config.coffee",
                                     "projectPath": "thinkspace-indented-list/addon/_config.coffee",
                                     "targetPath": "thinkspace-indented-list/addon/_config",
                                     "pageTitle": "thinkspace-indented-list/addon/_config",
@@ -18544,7 +18686,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/list/all_visible.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/list/all_visible.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/components/list/all_visible.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/components/list/all_visible",
                                                     "pageTitle": "thinkspace-indented-list/addon/components/list/all_visible",
@@ -18582,7 +18724,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/list/edit.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/list/edit.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/components/list/edit.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/components/list/edit",
                                                     "pageTitle": "thinkspace-indented-list/addon/components/list/edit",
@@ -18620,7 +18762,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/list/new_bottom.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/list/new_bottom.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/components/list/new_bottom.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/components/list/new_bottom",
                                                     "pageTitle": "thinkspace-indented-list/addon/components/list/new_bottom",
@@ -18658,7 +18800,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/list/new_top.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/list/new_top.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/components/list/new_top.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/components/list/new_top",
                                                     "pageTitle": "thinkspace-indented-list/addon/components/list/new_top",
@@ -18696,7 +18838,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/list/test_only.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/list/test_only.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/components/list/test_only.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/components/list/test_only",
                                                     "pageTitle": "thinkspace-indented-list/addon/components/list/test_only",
@@ -18736,7 +18878,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/main.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/components/main.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/components/main",
                                             "pageTitle": "thinkspace-indented-list/addon/components/main",
@@ -18790,7 +18932,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/response/item/confirm_remove.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/response/item/confirm_remove.coffee",
                                                             "projectPath": "thinkspace-indented-list/addon/components/response/item/confirm_remove.coffee",
                                                             "targetPath": "thinkspace-indented-list/addon/components/response/item/confirm_remove",
                                                             "pageTitle": "thinkspace-indented-list/addon/components/response/item/confirm_remove",
@@ -18828,7 +18970,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/response/item/edit.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/response/item/edit.coffee",
                                                             "projectPath": "thinkspace-indented-list/addon/components/response/item/edit.coffee",
                                                             "targetPath": "thinkspace-indented-list/addon/components/response/item/edit",
                                                             "pageTitle": "thinkspace-indented-list/addon/components/response/item/edit",
@@ -18866,7 +19008,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/response/item/show.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/response/item/show.coffee",
                                                             "projectPath": "thinkspace-indented-list/addon/components/response/item/show.coffee",
                                                             "targetPath": "thinkspace-indented-list/addon/components/response/item/show",
                                                             "pageTitle": "thinkspace-indented-list/addon/components/response/item/show",
@@ -19099,7 +19241,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/response/items.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/response/items.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/components/response/items.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/components/response/items",
                                                     "pageTitle": "thinkspace-indented-list/addon/components/response/items",
@@ -19137,7 +19279,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/response/layout.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/response/layout.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/components/response/layout.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/components/response/layout",
                                                     "pageTitle": "thinkspace-indented-list/addon/components/response/layout",
@@ -19177,7 +19319,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/responses.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/responses.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/components/responses.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/components/responses",
                                             "pageTitle": "thinkspace-indented-list/addon/components/responses",
@@ -19223,7 +19365,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/source/existing.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/source/existing.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/components/source/existing.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/components/source/existing",
                                                     "pageTitle": "thinkspace-indented-list/addon/components/source/existing",
@@ -19261,7 +19403,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/components/source/new.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/components/source/new.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/components/source/new.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/components/source/new",
                                                     "pageTitle": "thinkspace-indented-list/addon/components/source/new",
@@ -19303,7 +19445,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/engine.coffee",
                                     "projectPath": "thinkspace-indented-list/addon/engine.coffee",
                                     "targetPath": "thinkspace-indented-list/addon/engine",
                                     "pageTitle": "thinkspace-indented-list/addon/engine",
@@ -19349,7 +19491,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/initializers/totem",
                                             "pageTitle": "thinkspace-indented-list/addon/initializers/totem",
@@ -19397,7 +19539,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/locales/en.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/locales/en.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/locales/en.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/locales/en",
                                             "pageTitle": "thinkspace-indented-list/addon/locales/en",
@@ -19445,7 +19587,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/managers/response.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/managers/response.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/managers/response.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/managers/response",
                                             "pageTitle": "thinkspace-indented-list/addon/managers/response",
@@ -19493,7 +19635,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/configuration.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/configuration.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/mixins/configuration.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/mixins/configuration",
                                             "pageTitle": "thinkspace-indented-list/addon/mixins/configuration",
@@ -19550,7 +19692,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/dragula.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/dragula.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/mixins/dragula.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/mixins/dragula",
                                             "pageTitle": "thinkspace-indented-list/addon/mixins/dragula",
@@ -19752,7 +19894,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/handle_events.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/handle_events.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/mixins/handle_events.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/mixins/handle_events",
                                             "pageTitle": "thinkspace-indented-list/addon/mixins/handle_events",
@@ -19790,7 +19932,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/helpers.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/helpers.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/mixins/helpers.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/mixins/helpers",
                                             "pageTitle": "thinkspace-indented-list/addon/mixins/helpers",
@@ -19828,7 +19970,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/initialize.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/initialize.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/mixins/initialize.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/mixins/initialize",
                                             "pageTitle": "thinkspace-indented-list/addon/mixins/initialize",
@@ -19874,7 +20016,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/actions.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/actions.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/mixins/item/actions.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/mixins/item/actions",
                                                     "pageTitle": "thinkspace-indented-list/addon/mixins/item/actions",
@@ -19912,7 +20054,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/change.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/change.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/mixins/item/change.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/mixins/item/change",
                                                     "pageTitle": "thinkspace-indented-list/addon/mixins/item/change",
@@ -20009,7 +20151,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/component.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/component.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/mixins/item/component.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/mixins/item/component",
                                                     "pageTitle": "thinkspace-indented-list/addon/mixins/item/component",
@@ -20066,7 +20208,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/helpers.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/helpers.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/mixins/item/helpers.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/mixins/item/helpers",
                                                     "pageTitle": "thinkspace-indented-list/addon/mixins/item/helpers",
@@ -20104,7 +20246,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/itemable.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/itemable.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/mixins/item/itemable.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/mixins/item/itemable",
                                                     "pageTitle": "thinkspace-indented-list/addon/mixins/item/itemable",
@@ -20142,7 +20284,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/itemable_change.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/itemable_change.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/mixins/item/itemable_change.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/mixins/item/itemable_change",
                                                     "pageTitle": "thinkspace-indented-list/addon/mixins/item/itemable_change",
@@ -20210,7 +20352,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/new.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/new.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/mixins/item/new.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/mixins/item/new",
                                                     "pageTitle": "thinkspace-indented-list/addon/mixins/item/new",
@@ -20248,7 +20390,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/selected.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/item/selected.coffee",
                                                     "projectPath": "thinkspace-indented-list/addon/mixins/item/selected.coffee",
                                                     "targetPath": "thinkspace-indented-list/addon/mixins/item/selected",
                                                     "pageTitle": "thinkspace-indented-list/addon/mixins/item/selected",
@@ -20416,7 +20558,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/register.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/register.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/mixins/register.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/mixins/register",
                                             "pageTitle": "thinkspace-indented-list/addon/mixins/register",
@@ -20464,7 +20606,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-indented-list/addon/mixins/save_response.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-indented-list/addon/mixins/save_response.coffee",
                                             "projectPath": "thinkspace-indented-list/addon/mixins/save_response.coffee",
                                             "targetPath": "thinkspace-indented-list/addon/mixins/save_response",
                                             "pageTitle": "thinkspace-indented-list/addon/mixins/save_response",
@@ -20534,7 +20676,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-intercom/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-intercom/addon/_config.coffee",
                                     "projectPath": "thinkspace-intercom/addon/_config.coffee",
                                     "targetPath": "thinkspace-intercom/addon/_config",
                                     "pageTitle": "thinkspace-intercom/addon/_config",
@@ -20580,7 +20722,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-intercom/addon/mixins/boot.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-intercom/addon/mixins/boot.coffee",
                                             "projectPath": "thinkspace-intercom/addon/mixins/boot.coffee",
                                             "targetPath": "thinkspace-intercom/addon/mixins/boot",
                                             "pageTitle": "thinkspace-intercom/addon/mixins/boot",
@@ -20618,7 +20760,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-intercom/addon/mixins/track_event.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-intercom/addon/mixins/track_event.coffee",
                                             "projectPath": "thinkspace-intercom/addon/mixins/track_event.coffee",
                                             "targetPath": "thinkspace-intercom/addon/mixins/track_event",
                                             "pageTitle": "thinkspace-intercom/addon/mixins/track_event",
@@ -20692,7 +20834,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-intercom/app/instance-initializers/thinkspace/intercom/router.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-intercom/app/instance-initializers/thinkspace/intercom/router.coffee",
                                                             "projectPath": "thinkspace-intercom/app/instance-initializers/thinkspace/intercom/router.coffee",
                                                             "targetPath": "thinkspace-intercom/app/instance-initializers/thinkspace/intercom/router",
                                                             "pageTitle": "thinkspace-intercom/app/instance-initializers/thinkspace/intercom/router",
@@ -20756,7 +20898,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab-vet-med/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab-vet-med/addon/_config.coffee",
                                     "projectPath": "thinkspace-lab-vet-med/addon/_config.coffee",
                                     "targetPath": "thinkspace-lab-vet-med/addon/_config",
                                     "pageTitle": "thinkspace-lab-vet-med/addon/_config",
@@ -20802,7 +20944,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab-vet-med/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab-vet-med/addon/components/main.coffee",
                                             "projectPath": "thinkspace-lab-vet-med/addon/components/main.coffee",
                                             "targetPath": "thinkspace-lab-vet-med/addon/components/main",
                                             "pageTitle": "thinkspace-lab-vet-med/addon/components/main",
@@ -20842,7 +20984,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab-vet-med/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab-vet-med/addon/engine.coffee",
                                     "projectPath": "thinkspace-lab-vet-med/addon/engine.coffee",
                                     "targetPath": "thinkspace-lab-vet-med/addon/engine",
                                     "pageTitle": "thinkspace-lab-vet-med/addon/engine",
@@ -20900,7 +21042,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/_config.coffee",
                                     "projectPath": "thinkspace-lab/addon/_config.coffee",
                                     "targetPath": "thinkspace-lab/addon/_config",
                                     "pageTitle": "thinkspace-lab/addon/_config",
@@ -20946,7 +21088,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/components/category.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/components/category.coffee",
                                             "projectPath": "thinkspace-lab/addon/components/category.coffee",
                                             "targetPath": "thinkspace-lab/addon/components/category",
                                             "pageTitle": "thinkspace-lab/addon/components/category",
@@ -20992,7 +21134,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/components/input_types/correctable.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/components/input_types/correctable.coffee",
                                                     "projectPath": "thinkspace-lab/addon/components/input_types/correctable.coffee",
                                                     "targetPath": "thinkspace-lab/addon/components/input_types/correctable",
                                                     "pageTitle": "thinkspace-lab/addon/components/input_types/correctable",
@@ -21030,7 +21172,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/components/input_types/input.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/components/input_types/input.coffee",
                                                     "projectPath": "thinkspace-lab/addon/components/input_types/input.coffee",
                                                     "targetPath": "thinkspace-lab/addon/components/input_types/input",
                                                     "pageTitle": "thinkspace-lab/addon/components/input_types/input",
@@ -21098,7 +21240,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/components/input_types/select.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/components/input_types/select.coffee",
                                                     "projectPath": "thinkspace-lab/addon/components/input_types/select.coffee",
                                                     "targetPath": "thinkspace-lab/addon/components/input_types/select",
                                                     "pageTitle": "thinkspace-lab/addon/components/input_types/select",
@@ -21157,7 +21299,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/components/main.coffee",
                                             "projectPath": "thinkspace-lab/addon/components/main.coffee",
                                             "targetPath": "thinkspace-lab/addon/components/main",
                                             "pageTitle": "thinkspace-lab/addon/components/main",
@@ -21195,7 +21337,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/components/observation.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/components/observation.coffee",
                                             "projectPath": "thinkspace-lab/addon/components/observation.coffee",
                                             "targetPath": "thinkspace-lab/addon/components/observation",
                                             "pageTitle": "thinkspace-lab/addon/components/observation",
@@ -21233,7 +21375,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/components/result.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/components/result.coffee",
                                             "projectPath": "thinkspace-lab/addon/components/result.coffee",
                                             "targetPath": "thinkspace-lab/addon/components/result",
                                             "pageTitle": "thinkspace-lab/addon/components/result",
@@ -21281,7 +21423,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/components/select_category.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/components/select_category.coffee",
                                             "projectPath": "thinkspace-lab/addon/components/select_category.coffee",
                                             "targetPath": "thinkspace-lab/addon/components/select_category",
                                             "pageTitle": "thinkspace-lab/addon/components/select_category",
@@ -21321,7 +21463,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/engine.coffee",
                                     "projectPath": "thinkspace-lab/addon/engine.coffee",
                                     "targetPath": "thinkspace-lab/addon/engine",
                                     "pageTitle": "thinkspace-lab/addon/engine",
@@ -21367,7 +21509,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/helpers/result-range.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/helpers/result-range.coffee",
                                             "projectPath": "thinkspace-lab/addon/helpers/result-range.coffee",
                                             "targetPath": "thinkspace-lab/addon/helpers/result-range",
                                             "pageTitle": "thinkspace-lab/addon/helpers/result-range",
@@ -21405,7 +21547,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/helpers/result-value.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/helpers/result-value.coffee",
                                             "projectPath": "thinkspace-lab/addon/helpers/result-value.coffee",
                                             "targetPath": "thinkspace-lab/addon/helpers/result-value",
                                             "pageTitle": "thinkspace-lab/addon/helpers/result-value",
@@ -21453,7 +21595,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/managers/lab.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/managers/lab.coffee",
                                             "projectPath": "thinkspace-lab/addon/managers/lab.coffee",
                                             "targetPath": "thinkspace-lab/addon/managers/lab",
                                             "pageTitle": "thinkspace-lab/addon/managers/lab",
@@ -21666,7 +21808,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/managers/labs.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/managers/labs.coffee",
                                             "projectPath": "thinkspace-lab/addon/managers/labs.coffee",
                                             "targetPath": "thinkspace-lab/addon/managers/labs",
                                             "pageTitle": "thinkspace-lab/addon/managers/labs",
@@ -21704,7 +21846,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/managers/observation.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/managers/observation.coffee",
                                             "projectPath": "thinkspace-lab/addon/managers/observation.coffee",
                                             "targetPath": "thinkspace-lab/addon/managers/observation",
                                             "pageTitle": "thinkspace-lab/addon/managers/observation",
@@ -21946,7 +22088,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/managers/result.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/managers/result.coffee",
                                             "projectPath": "thinkspace-lab/addon/managers/result.coffee",
                                             "targetPath": "thinkspace-lab/addon/managers/result",
                                             "pageTitle": "thinkspace-lab/addon/managers/result",
@@ -22040,7 +22182,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-lab/addon/services/admin.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-lab/addon/services/admin.coffee",
                                             "projectPath": "thinkspace-lab/addon/services/admin.coffee",
                                             "targetPath": "thinkspace-lab/addon/services/admin",
                                             "pageTitle": "thinkspace-lab/addon/services/admin",
@@ -22458,7 +22600,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/_config.coffee",
                                     "projectPath": "thinkspace-markup/addon/_config.coffee",
                                     "targetPath": "thinkspace-markup/addon/_config",
                                     "pageTitle": "thinkspace-markup/addon/_config",
@@ -22520,7 +22662,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/discussion/markers/default.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/discussion/markers/default.coffee",
                                                             "projectPath": "thinkspace-markup/addon/components/discussion/markers/default.coffee",
                                                             "targetPath": "thinkspace-markup/addon/components/discussion/markers/default",
                                                             "pageTitle": "thinkspace-markup/addon/components/discussion/markers/default",
@@ -22625,7 +22767,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/library/edit.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/library/edit.coffee",
                                                     "projectPath": "thinkspace-markup/addon/components/library/edit.coffee",
                                                     "targetPath": "thinkspace-markup/addon/components/library/edit",
                                                     "pageTitle": "thinkspace-markup/addon/components/library/edit",
@@ -22663,7 +22805,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager.coffee",
                                                             "projectPath": "thinkspace-markup/addon/components/library/edit/manager.coffee",
                                                             "targetPath": "thinkspace-markup/addon/components/library/edit/manager",
                                                             "pageTitle": "thinkspace-markup/addon/components/library/edit/manager",
@@ -22701,7 +22843,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager/comment.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager/comment.coffee",
                                                                     "projectPath": "thinkspace-markup/addon/components/library/edit/manager/comment.coffee",
                                                                     "targetPath": "thinkspace-markup/addon/components/library/edit/manager/comment",
                                                                     "pageTitle": "thinkspace-markup/addon/components/library/edit/manager/comment",
@@ -22739,7 +22881,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager/comments.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager/comments.coffee",
                                                                     "projectPath": "thinkspace-markup/addon/components/library/edit/manager/comments.coffee",
                                                                     "targetPath": "thinkspace-markup/addon/components/library/edit/manager/comments",
                                                                     "pageTitle": "thinkspace-markup/addon/components/library/edit/manager/comments",
@@ -22777,7 +22919,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager/marker.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager/marker.coffee",
                                                                     "projectPath": "thinkspace-markup/addon/components/library/edit/manager/marker.coffee",
                                                                     "targetPath": "thinkspace-markup/addon/components/library/edit/manager/marker",
                                                                     "pageTitle": "thinkspace-markup/addon/components/library/edit/manager/marker",
@@ -22815,7 +22957,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager/tag.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager/tag.coffee",
                                                                     "projectPath": "thinkspace-markup/addon/components/library/edit/manager/tag.coffee",
                                                                     "targetPath": "thinkspace-markup/addon/components/library/edit/manager/tag",
                                                                     "pageTitle": "thinkspace-markup/addon/components/library/edit/manager/tag",
@@ -22853,7 +22995,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager/tags.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/library/edit/manager/tags.coffee",
                                                                     "projectPath": "thinkspace-markup/addon/components/library/edit/manager/tags.coffee",
                                                                     "targetPath": "thinkspace-markup/addon/components/library/edit/manager/tags",
                                                                     "pageTitle": "thinkspace-markup/addon/components/library/edit/manager/tags",
@@ -22897,7 +23039,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/main.coffee",
                                             "projectPath": "thinkspace-markup/addon/components/main.coffee",
                                             "targetPath": "thinkspace-markup/addon/components/main",
                                             "pageTitle": "thinkspace-markup/addon/components/main",
@@ -22943,7 +23085,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/discussion.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/discussion.coffee",
                                                     "projectPath": "thinkspace-markup/addon/components/right_pocket/discussion.coffee",
                                                     "targetPath": "thinkspace-markup/addon/components/right_pocket/discussion",
                                                     "pageTitle": "thinkspace-markup/addon/components/right_pocket/discussion",
@@ -23063,7 +23205,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/discussion/comment.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/discussion/comment.coffee",
                                                             "projectPath": "thinkspace-markup/addon/components/right_pocket/discussion/comment.coffee",
                                                             "targetPath": "thinkspace-markup/addon/components/right_pocket/discussion/comment",
                                                             "pageTitle": "thinkspace-markup/addon/components/right_pocket/discussion/comment",
@@ -23158,7 +23300,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/discussions.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/discussions.coffee",
                                                     "projectPath": "thinkspace-markup/addon/components/right_pocket/discussions.coffee",
                                                     "targetPath": "thinkspace-markup/addon/components/right_pocket/discussions",
                                                     "pageTitle": "thinkspace-markup/addon/components/right_pocket/discussions",
@@ -23251,7 +23393,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/library.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/library.coffee",
                                                     "projectPath": "thinkspace-markup/addon/components/right_pocket/library.coffee",
                                                     "targetPath": "thinkspace-markup/addon/components/right_pocket/library",
                                                     "pageTitle": "thinkspace-markup/addon/components/right_pocket/library",
@@ -23344,7 +23486,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/library/comment.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/library/comment.coffee",
                                                             "projectPath": "thinkspace-markup/addon/components/right_pocket/library/comment.coffee",
                                                             "targetPath": "thinkspace-markup/addon/components/right_pocket/library/comment",
                                                             "pageTitle": "thinkspace-markup/addon/components/right_pocket/library/comment",
@@ -23428,7 +23570,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/library/marker.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/library/marker.coffee",
                                                             "projectPath": "thinkspace-markup/addon/components/right_pocket/library/marker.coffee",
                                                             "targetPath": "thinkspace-markup/addon/components/right_pocket/library/marker",
                                                             "pageTitle": "thinkspace-markup/addon/components/right_pocket/library/marker",
@@ -23466,7 +23608,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/library/tag.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/components/right_pocket/library/tag.coffee",
                                                             "projectPath": "thinkspace-markup/addon/components/right_pocket/library/tag.coffee",
                                                             "targetPath": "thinkspace-markup/addon/components/right_pocket/library/tag",
                                                             "pageTitle": "thinkspace-markup/addon/components/right_pocket/library/tag",
@@ -23510,7 +23652,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/engine.coffee",
                                     "projectPath": "thinkspace-markup/addon/engine.coffee",
                                     "targetPath": "thinkspace-markup/addon/engine",
                                     "pageTitle": "thinkspace-markup/addon/engine",
@@ -23556,7 +23698,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-markup/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-markup/addon/initializers/totem",
                                             "pageTitle": "thinkspace-markup/addon/initializers/totem",
@@ -23604,7 +23746,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/services/manager.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/services/manager.coffee",
                                             "projectPath": "thinkspace-markup/addon/services/manager.coffee",
                                             "targetPath": "thinkspace-markup/addon/services/manager",
                                             "pageTitle": "thinkspace-markup/addon/services/manager",
@@ -23832,7 +23974,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/controller.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/controller.coffee",
                                                     "projectPath": "thinkspace-markup/addon/thinkspace/markup/controller.coffee",
                                                     "targetPath": "thinkspace-markup/addon/thinkspace/markup/controller",
                                                     "pageTitle": "thinkspace-markup/addon/thinkspace/markup/controller",
@@ -23878,7 +24020,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/libraries/controller.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/libraries/controller.coffee",
                                                             "projectPath": "thinkspace-markup/addon/thinkspace/markup/libraries/controller.coffee",
                                                             "targetPath": "thinkspace-markup/addon/thinkspace/markup/libraries/controller",
                                                             "pageTitle": "thinkspace-markup/addon/thinkspace/markup/libraries/controller",
@@ -23924,7 +24066,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/libraries/edit/controller.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/libraries/edit/controller.coffee",
                                                                     "projectPath": "thinkspace-markup/addon/thinkspace/markup/libraries/edit/controller.coffee",
                                                                     "targetPath": "thinkspace-markup/addon/thinkspace/markup/libraries/edit/controller",
                                                                     "pageTitle": "thinkspace-markup/addon/thinkspace/markup/libraries/edit/controller",
@@ -23962,7 +24104,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/libraries/edit/route.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/libraries/edit/route.coffee",
                                                                     "projectPath": "thinkspace-markup/addon/thinkspace/markup/libraries/edit/route.coffee",
                                                                     "targetPath": "thinkspace-markup/addon/thinkspace/markup/libraries/edit/route",
                                                                     "pageTitle": "thinkspace-markup/addon/thinkspace/markup/libraries/edit/route",
@@ -24002,7 +24144,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/libraries/route.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/libraries/route.coffee",
                                                             "projectPath": "thinkspace-markup/addon/thinkspace/markup/libraries/route.coffee",
                                                             "targetPath": "thinkspace-markup/addon/thinkspace/markup/libraries/route",
                                                             "pageTitle": "thinkspace-markup/addon/thinkspace/markup/libraries/route",
@@ -24042,7 +24184,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/route.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-markup/addon/thinkspace/markup/route.coffee",
                                                     "projectPath": "thinkspace-markup/addon/thinkspace/markup/route.coffee",
                                                     "targetPath": "thinkspace-markup/addon/thinkspace/markup/route",
                                                     "pageTitle": "thinkspace-markup/addon/thinkspace/markup/route",
@@ -24104,7 +24246,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-message-pubsub/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-message-pubsub/addon/_config.coffee",
                                     "projectPath": "thinkspace-message-pubsub/addon/_config.coffee",
                                     "targetPath": "thinkspace-message-pubsub/addon/_config",
                                     "pageTitle": "thinkspace-message-pubsub/addon/_config",
@@ -24150,7 +24292,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-message-pubsub/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-message-pubsub/addon/components/main.coffee",
                                             "projectPath": "thinkspace-message-pubsub/addon/components/main.coffee",
                                             "targetPath": "thinkspace-message-pubsub/addon/components/main",
                                             "pageTitle": "thinkspace-message-pubsub/addon/components/main",
@@ -24188,7 +24330,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-message-pubsub/addon/components/messages.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-message-pubsub/addon/components/messages.coffee",
                                             "projectPath": "thinkspace-message-pubsub/addon/components/messages.coffee",
                                             "targetPath": "thinkspace-message-pubsub/addon/components/messages",
                                             "pageTitle": "thinkspace-message-pubsub/addon/components/messages",
@@ -24226,7 +24368,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-message-pubsub/addon/components/timer_reminders.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-message-pubsub/addon/components/timer_reminders.coffee",
                                             "projectPath": "thinkspace-message-pubsub/addon/components/timer_reminders.coffee",
                                             "targetPath": "thinkspace-message-pubsub/addon/components/timer_reminders",
                                             "pageTitle": "thinkspace-message-pubsub/addon/components/timer_reminders",
@@ -24266,7 +24408,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-message-pubsub/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-message-pubsub/addon/engine.coffee",
                                     "projectPath": "thinkspace-message-pubsub/addon/engine.coffee",
                                     "targetPath": "thinkspace-message-pubsub/addon/engine",
                                     "pageTitle": "thinkspace-message-pubsub/addon/engine",
@@ -24312,7 +24454,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-message-pubsub/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-message-pubsub/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-message-pubsub/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-message-pubsub/addon/initializers/totem",
                                             "pageTitle": "thinkspace-message-pubsub/addon/initializers/totem",
@@ -24372,7 +24514,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-message/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-message/addon/_config.coffee",
                                     "projectPath": "thinkspace-message/addon/_config.coffee",
                                     "targetPath": "thinkspace-message/addon/_config",
                                     "pageTitle": "thinkspace-message/addon/_config",
@@ -24418,7 +24560,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-message/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-message/addon/components/main.coffee",
                                             "projectPath": "thinkspace-message/addon/components/main.coffee",
                                             "targetPath": "thinkspace-message/addon/components/main",
                                             "pageTitle": "thinkspace-message/addon/components/main",
@@ -24484,7 +24626,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-message/addon/components/message.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-message/addon/components/message.coffee",
                                             "projectPath": "thinkspace-message/addon/components/message.coffee",
                                             "targetPath": "thinkspace-message/addon/components/message",
                                             "pageTitle": "thinkspace-message/addon/components/message",
@@ -24579,7 +24721,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-message/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-message/addon/engine.coffee",
                                     "projectPath": "thinkspace-message/addon/engine.coffee",
                                     "targetPath": "thinkspace-message/addon/engine",
                                     "pageTitle": "thinkspace-message/addon/engine",
@@ -24625,7 +24767,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-message/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-message/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-message/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-message/addon/initializers/totem",
                                             "pageTitle": "thinkspace-message/addon/initializers/totem",
@@ -24709,7 +24851,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/_config/thinkspace/models/_config.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/_config/thinkspace/models/_config.coffee",
                                                             "projectPath": "thinkspace-model/app/_config/thinkspace/models/_config.coffee",
                                                             "targetPath": "thinkspace-model/app/_config/thinkspace/models/_config",
                                                             "pageTitle": "thinkspace-model/app/_config/thinkspace/models/_config",
@@ -25012,7 +25154,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/initializers/thinkspace/authorization/metadata.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/initializers/thinkspace/authorization/metadata.coffee",
                                                             "projectPath": "thinkspace-model/app/initializers/thinkspace/authorization/metadata.coffee",
                                                             "targetPath": "thinkspace-model/app/initializers/thinkspace/authorization/metadata",
                                                             "pageTitle": "thinkspace-model/app/initializers/thinkspace/authorization/metadata",
@@ -25080,7 +25222,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/artifact/bucket.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/artifact/bucket.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/artifact/bucket.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/artifact/bucket",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/artifact/bucket",
@@ -25118,7 +25260,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/artifact/file.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/artifact/file.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/artifact/file.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/artifact/file",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/artifact/file",
@@ -25166,7 +25308,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/authorization/ability.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/authorization/ability.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/authorization/ability.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/authorization/ability",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/authorization/ability",
@@ -25204,7 +25346,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/authorization/metadata.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/authorization/metadata.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/authorization/metadata.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/authorization/metadata",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/authorization/metadata",
@@ -25252,7 +25394,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/assignment.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/assignment.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/casespace/assignment.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/casespace/assignment",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/casespace/assignment",
@@ -25336,7 +25478,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/assignment_type.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/assignment_type.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/casespace/assignment_type.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/casespace/assignment_type",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/casespace/assignment_type",
@@ -25402,7 +25544,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/case_manager_template.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/case_manager_template.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/casespace/case_manager_template.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/casespace/case_manager_template",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/casespace/case_manager_template",
@@ -25440,7 +25582,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/message.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/message.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/casespace/message.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/casespace/message",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/casespace/message",
@@ -25478,7 +25620,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/phase.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/phase.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/casespace/phase.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/casespace/phase",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/casespace/phase",
@@ -25544,7 +25686,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/phase_component.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/phase_component.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/casespace/phase_component.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/casespace/phase_component",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/casespace/phase_component",
@@ -25582,7 +25724,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/phase_score.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/phase_score.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/casespace/phase_score.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/casespace/phase_score",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/casespace/phase_score",
@@ -25620,7 +25762,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/phase_state.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/phase_state.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/casespace/phase_state.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/casespace/phase_state",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/casespace/phase_state",
@@ -25658,7 +25800,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/phase_template.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/casespace/phase_template.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/casespace/phase_template.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/casespace/phase_template",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/casespace/phase_template",
@@ -25706,7 +25848,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/component.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/component.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/common/component.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/common/component",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/common/component",
@@ -25754,7 +25896,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/componentable.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/componentable.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/common/componentable.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/common/componentable",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/common/componentable",
@@ -25792,7 +25934,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/configurable.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/configurable.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/common/configurable.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/common/configurable",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/common/configurable",
@@ -25830,7 +25972,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/configuration.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/configuration.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/common/configuration.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/common/configuration",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/common/configuration",
@@ -25868,7 +26010,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/invitation.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/invitation.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/common/invitation.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/common/invitation",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/common/invitation",
@@ -25906,7 +26048,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/password_reset.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/password_reset.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/common/password_reset.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/common/password_reset",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/common/password_reset",
@@ -25944,7 +26086,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/space.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/space.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/common/space.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/common/space",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/common/space",
@@ -25982,7 +26124,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/space_type.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/space_type.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/common/space_type.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/common/space_type",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/common/space_type",
@@ -26020,7 +26162,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/space_user.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/space_user.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/common/space_user.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/common/space_user",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/common/space_user",
@@ -26058,7 +26200,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/user.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/common/user.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/common/user.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/common/user",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/common/user",
@@ -26116,7 +26258,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/html/content.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/html/content.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/html/content.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/html/content",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/html/content",
@@ -26164,7 +26306,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/indented_list/expert_response.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/indented_list/expert_response.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/indented_list/expert_response.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/indented_list/expert_response",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/indented_list/expert_response",
@@ -26202,7 +26344,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/indented_list/list.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/indented_list/list.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/indented_list/list.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/indented_list/list",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/indented_list/list",
@@ -26240,7 +26382,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/indented_list/response.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/indented_list/response.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/indented_list/response.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/indented_list/response",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/indented_list/response",
@@ -26288,7 +26430,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/input_element/element.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/input_element/element.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/input_element/element.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/input_element/element",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/input_element/element",
@@ -26326,7 +26468,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/input_element/response.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/input_element/response.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/input_element/response.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/input_element/response",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/input_element/response",
@@ -26374,7 +26516,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/lab/category.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/lab/category.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/lab/category.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/lab/category",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/lab/category",
@@ -26412,7 +26554,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/lab/chart.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/lab/chart.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/lab/chart.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/lab/chart",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/lab/chart",
@@ -26450,7 +26592,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/lab/observation.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/lab/observation.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/lab/observation.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/lab/observation",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/lab/observation",
@@ -26488,7 +26630,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/lab/result.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/lab/result.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/lab/result.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/lab/result",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/lab/result",
@@ -26536,7 +26678,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/markup/comment.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/markup/comment.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/markup/comment.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/markup/comment",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/markup/comment",
@@ -26574,7 +26716,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/markup/discussion.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/markup/discussion.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/markup/discussion.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/markup/discussion",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/markup/discussion",
@@ -26640,7 +26782,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/markup/library.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/markup/library.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/markup/library.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/markup/library",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/markup/library",
@@ -26678,7 +26820,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/markup/library_comment.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/markup/library_comment.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/markup/library_comment.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/markup/library_comment",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/markup/library_comment",
@@ -26726,7 +26868,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/observation_list/group.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/observation_list/group.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/observation_list/group.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/observation_list/group",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/observation_list/group",
@@ -26764,7 +26906,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/observation_list/list.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/observation_list/list.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/observation_list/list.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/observation_list/list",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/observation_list/list",
@@ -26802,7 +26944,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/observation_list/observation.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/observation_list/observation.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/observation_list/observation.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/observation_list/observation",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/observation_list/observation",
@@ -26868,7 +27010,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/observation_list/observation_note.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/observation_list/observation_note.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/observation_list/observation_note.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/observation_list/observation_note",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/observation_list/observation_note",
@@ -26916,7 +27058,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/assessment.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/assessment.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/peer_assessment/assessment.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/peer_assessment/assessment",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/peer_assessment/assessment",
@@ -26991,7 +27133,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/assessment_template.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/assessment_template.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/peer_assessment/assessment_template.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/peer_assessment/assessment_template",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/peer_assessment/assessment_template",
@@ -27029,7 +27171,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/overview.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/overview.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/peer_assessment/overview.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/peer_assessment/overview",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/peer_assessment/overview",
@@ -27067,7 +27209,73 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/review.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/progress_report.coffee",
+                                                            "projectPath": "thinkspace-model/app/models/thinkspace/peer_assessment/progress_report.coffee",
+                                                            "targetPath": "thinkspace-model/app/models/thinkspace/peer_assessment/progress_report",
+                                                            "pageTitle": "thinkspace-model/app/models/thinkspace/peer_assessment/progress_report",
+                                                            "title": "progress_report"
+                                                        },
+                                                        "depth": 6,
+                                                        "outline": [
+                                                            {
+                                                                "type": "heading",
+                                                                "data": {
+                                                                    "level": 3,
+                                                                    "title": "Attributes",
+                                                                    "slug": "attributes"
+                                                                },
+                                                                "depth": 3
+                                                            },
+                                                            {
+                                                                "type": "heading",
+                                                                "data": {
+                                                                    "level": 3,
+                                                                    "title": "Computed Properties",
+                                                                    "slug": "computed-properties"
+                                                                },
+                                                                "depth": 3
+                                                            },
+                                                            {
+                                                                "type": "heading",
+                                                                "data": {
+                                                                    "level": 3,
+                                                                    "title": "Methods",
+                                                                    "slug": "methods"
+                                                                },
+                                                                "depth": 3
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "file",
+                                                        "data": {
+                                                            "language": {
+                                                                "nameMatchers": [
+                                                                    ".coffee",
+                                                                    "Cakefile"
+                                                                ],
+                                                                "pygmentsLexer": "coffee-script",
+                                                                "highlightJS": "coffeescript",
+                                                                "multiLineComment": [
+                                                                    "###*",
+                                                                    " *",
+                                                                    " ###",
+                                                                    "###",
+                                                                    "#",
+                                                                    "###",
+                                                                    "###*",
+                                                                    "#",
+                                                                    "###"
+                                                                ],
+                                                                "strictMultiLineEnd": false,
+                                                                "singleLineComment": [
+                                                                    "#"
+                                                                ],
+                                                                "ignorePrefix": "}",
+                                                                "foldPrefix": "^",
+                                                                "name": "CoffeeScript"
+                                                            },
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/review.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/peer_assessment/review.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/peer_assessment/review",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/peer_assessment/review",
@@ -27105,14 +27313,42 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/review_set.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/review_set.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/peer_assessment/review_set.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/peer_assessment/review_set",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/peer_assessment/review_set",
                                                             "title": "review_set"
                                                         },
                                                         "depth": 6,
-                                                        "outline": []
+                                                        "outline": [
+                                                            {
+                                                                "type": "heading",
+                                                                "data": {
+                                                                    "level": 3,
+                                                                    "title": "Attributes",
+                                                                    "slug": "attributes"
+                                                                },
+                                                                "depth": 3
+                                                            },
+                                                            {
+                                                                "type": "heading",
+                                                                "data": {
+                                                                    "level": 3,
+                                                                    "title": "State Properties",
+                                                                    "slug": "state-properties"
+                                                                },
+                                                                "depth": 3
+                                                            },
+                                                            {
+                                                                "type": "heading",
+                                                                "data": {
+                                                                    "level": 3,
+                                                                    "title": "Status Properties",
+                                                                    "slug": "status-properties"
+                                                                },
+                                                                "depth": 3
+                                                            }
+                                                        ]
                                                     },
                                                     {
                                                         "type": "file",
@@ -27143,7 +27379,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/team_set.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/peer_assessment/team_set.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/peer_assessment/team_set.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/peer_assessment/team_set",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/peer_assessment/team_set",
@@ -27191,7 +27427,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/readiness_assurance/assessment.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/readiness_assurance/assessment.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/readiness_assurance/assessment.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/readiness_assurance/assessment",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/readiness_assurance/assessment",
@@ -27229,7 +27465,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/readiness_assurance/chat.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/readiness_assurance/chat.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/readiness_assurance/chat.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/readiness_assurance/chat",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/readiness_assurance/chat",
@@ -27267,7 +27503,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/readiness_assurance/response.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/readiness_assurance/response.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/readiness_assurance/response.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/readiness_assurance/response",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/readiness_assurance/response",
@@ -27305,7 +27541,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/readiness_assurance/server_event.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/readiness_assurance/server_event.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/readiness_assurance/server_event.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/readiness_assurance/server_event",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/readiness_assurance/server_event",
@@ -27343,7 +27579,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/readiness_assurance/status.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/readiness_assurance/status.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/readiness_assurance/status.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/readiness_assurance/status",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/readiness_assurance/status",
@@ -27391,7 +27627,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/report/file.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/report/file.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/report/file.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/report/file",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/report/file",
@@ -27429,7 +27665,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/report/report.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/report/report.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/report/report.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/report/report",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/report/report",
@@ -27477,7 +27713,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/resource/file.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/resource/file.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/resource/file.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/resource/file",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/resource/file",
@@ -27515,7 +27751,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/resource/link.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/resource/link.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/resource/link.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/resource/link",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/resource/link",
@@ -27553,7 +27789,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/resource/tag.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/resource/tag.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/resource/tag.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/resource/tag",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/resource/tag",
@@ -27601,7 +27837,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/team/team.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/team/team",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/team/team",
@@ -27639,7 +27875,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team_category.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team_category.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/team/team_category.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/team/team_category",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/team/team_category",
@@ -27677,7 +27913,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team_set.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team_set.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/team/team_set.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/team/team_set",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/team/team_set",
@@ -27725,7 +27961,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team_teamable.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team_teamable.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/team/team_teamable.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/team/team_teamable",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/team/team_teamable",
@@ -27763,7 +27999,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team_user.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team_user.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/team/team_user.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/team/team_user",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/team/team_user",
@@ -27801,7 +28037,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team_viewer.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/team/team_viewer.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/team/team_viewer.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/team/team_viewer",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/team/team_viewer",
@@ -27849,7 +28085,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/assessment.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/assessment.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/assessment.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/assessment",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/weather_forecaster/assessment",
@@ -27887,7 +28123,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/assessment_item.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/assessment_item.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/assessment_item.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/assessment_item",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/weather_forecaster/assessment_item",
@@ -27925,7 +28161,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/forecast.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/forecast.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/forecast.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/forecast",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/weather_forecaster/forecast",
@@ -27963,7 +28199,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/item.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/item.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/item.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/item",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/weather_forecaster/item",
@@ -28001,7 +28237,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/response.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/response.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/response.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/response",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/weather_forecaster/response",
@@ -28039,7 +28275,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/station.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-model/app/models/thinkspace/weather_forecaster/station.coffee",
                                                             "projectPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/station.coffee",
                                                             "targetPath": "thinkspace-model/app/models/thinkspace/weather_forecaster/station",
                                                             "pageTitle": "thinkspace-model/app/models/thinkspace/weather_forecaster/station",
@@ -28103,7 +28339,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/_config.coffee",
                                     "projectPath": "thinkspace-observation-list/addon/_config.coffee",
                                     "targetPath": "thinkspace-observation-list/addon/_config",
                                     "pageTitle": "thinkspace-observation-list/addon/_config",
@@ -28157,7 +28393,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/components/list/category_radio.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/components/list/category_radio.coffee",
                                                     "projectPath": "thinkspace-observation-list/addon/components/list/category_radio.coffee",
                                                     "targetPath": "thinkspace-observation-list/addon/components/list/category_radio",
                                                     "pageTitle": "thinkspace-observation-list/addon/components/list/category_radio",
@@ -28195,7 +28431,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/components/list/edit.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/components/list/edit.coffee",
                                                     "projectPath": "thinkspace-observation-list/addon/components/list/edit.coffee",
                                                     "targetPath": "thinkspace-observation-list/addon/components/list/edit",
                                                     "pageTitle": "thinkspace-observation-list/addon/components/list/edit",
@@ -28235,7 +28471,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/components/main.coffee",
                                             "projectPath": "thinkspace-observation-list/addon/components/main.coffee",
                                             "targetPath": "thinkspace-observation-list/addon/components/main",
                                             "pageTitle": "thinkspace-observation-list/addon/components/main",
@@ -28281,7 +28517,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/components/observation/edit.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/components/observation/edit.coffee",
                                                     "projectPath": "thinkspace-observation-list/addon/components/observation/edit.coffee",
                                                     "targetPath": "thinkspace-observation-list/addon/components/observation/edit",
                                                     "pageTitle": "thinkspace-observation-list/addon/components/observation/edit",
@@ -28319,7 +28555,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/components/observation/new.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/components/observation/new.coffee",
                                                     "projectPath": "thinkspace-observation-list/addon/components/observation/new.coffee",
                                                     "targetPath": "thinkspace-observation-list/addon/components/observation/new",
                                                     "pageTitle": "thinkspace-observation-list/addon/components/observation/new",
@@ -28357,7 +28593,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/components/observation/show.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/components/observation/show.coffee",
                                                     "projectPath": "thinkspace-observation-list/addon/components/observation/show.coffee",
                                                     "targetPath": "thinkspace-observation-list/addon/components/observation/show",
                                                     "pageTitle": "thinkspace-observation-list/addon/components/observation/show",
@@ -28435,7 +28671,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/components/observation_note/edit.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/components/observation_note/edit.coffee",
                                                     "projectPath": "thinkspace-observation-list/addon/components/observation_note/edit.coffee",
                                                     "targetPath": "thinkspace-observation-list/addon/components/observation_note/edit",
                                                     "pageTitle": "thinkspace-observation-list/addon/components/observation_note/edit",
@@ -28473,7 +28709,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/components/observation_note/new.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/components/observation_note/new.coffee",
                                                     "projectPath": "thinkspace-observation-list/addon/components/observation_note/new.coffee",
                                                     "targetPath": "thinkspace-observation-list/addon/components/observation_note/new",
                                                     "pageTitle": "thinkspace-observation-list/addon/components/observation_note/new",
@@ -28511,7 +28747,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/components/observation_note/show.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/components/observation_note/show.coffee",
                                                     "projectPath": "thinkspace-observation-list/addon/components/observation_note/show.coffee",
                                                     "targetPath": "thinkspace-observation-list/addon/components/observation_note/show",
                                                     "pageTitle": "thinkspace-observation-list/addon/components/observation_note/show",
@@ -28553,7 +28789,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/engine.coffee",
                                     "projectPath": "thinkspace-observation-list/addon/engine.coffee",
                                     "targetPath": "thinkspace-observation-list/addon/engine",
                                     "pageTitle": "thinkspace-observation-list/addon/engine",
@@ -28599,7 +28835,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-observation-list/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-observation-list/addon/initializers/totem",
                                             "pageTitle": "thinkspace-observation-list/addon/initializers/totem",
@@ -28647,7 +28883,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/mixins/dragula.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/mixins/dragula.coffee",
                                             "projectPath": "thinkspace-observation-list/addon/mixins/dragula.coffee",
                                             "targetPath": "thinkspace-observation-list/addon/mixins/dragula",
                                             "pageTitle": "thinkspace-observation-list/addon/mixins/dragula",
@@ -28802,7 +29038,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-observation-list/addon/mixins/sort_order.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-observation-list/addon/mixins/sort_order.coffee",
                                             "projectPath": "thinkspace-observation-list/addon/mixins/sort_order.coffee",
                                             "targetPath": "thinkspace-observation-list/addon/mixins/sort_order",
                                             "pageTitle": "thinkspace-observation-list/addon/mixins/sort_order",
@@ -28892,7 +29128,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/_config.coffee",
                                     "projectPath": "thinkspace-peer-assessment-instructor/addon/_config.coffee",
                                     "targetPath": "thinkspace-peer-assessment-instructor/addon/_config",
                                     "pageTitle": "thinkspace-peer-assessment-instructor/addon/_config",
@@ -28938,7 +29174,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment.coffee",
                                             "projectPath": "thinkspace-peer-assessment-instructor/addon/components/assessment.coffee",
                                             "targetPath": "thinkspace-peer-assessment-instructor/addon/components/assessment",
                                             "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/assessment",
@@ -28952,6 +29188,33 @@
                                                     "level": 3,
                                                     "title": "Properties",
                                                     "slug": "properties"
+                                                },
+                                                "depth": 3
+                                            },
+                                            {
+                                                "type": "heading",
+                                                "data": {
+                                                    "level": 3,
+                                                    "title": "Intialization",
+                                                    "slug": "intialization"
+                                                },
+                                                "depth": 3
+                                            },
+                                            {
+                                                "type": "heading",
+                                                "data": {
+                                                    "level": 3,
+                                                    "title": "Helpers",
+                                                    "slug": "helpers"
+                                                },
+                                                "depth": 3
+                                            },
+                                            {
+                                                "type": "heading",
+                                                "data": {
+                                                    "level": 3,
+                                                    "title": "Actions",
+                                                    "slug": "actions"
                                                 },
                                                 "depth": 3
                                             }
@@ -28994,14 +29257,33 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index.coffee",
                                                             "projectPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index.coffee",
                                                             "targetPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index",
                                                             "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index",
                                                             "title": "index"
                                                         },
                                                         "depth": 6,
-                                                        "outline": [],
+                                                        "outline": [
+                                                            {
+                                                                "type": "heading",
+                                                                "data": {
+                                                                    "level": 3,
+                                                                    "title": "Intialization",
+                                                                    "slug": "intialization"
+                                                                },
+                                                                "depth": 3
+                                                            },
+                                                            {
+                                                                "type": "heading",
+                                                                "data": {
+                                                                    "level": 3,
+                                                                    "title": "Actions",
+                                                                    "slug": "actions"
+                                                                },
+                                                                "depth": 3
+                                                            }
+                                                        ],
                                                         "children": [
                                                             {
                                                                 "type": "file",
@@ -29032,14 +29314,73 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/review_set.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/review_set.coffee",
                                                                     "projectPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/review_set.coffee",
                                                                     "targetPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/review_set",
                                                                     "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/review_set",
                                                                     "title": "review_set"
                                                                 },
                                                                 "depth": 7,
-                                                                "outline": []
+                                                                "outline": [],
+                                                                "children": [
+                                                                    {
+                                                                        "type": "file",
+                                                                        "data": {
+                                                                            "language": {
+                                                                                "nameMatchers": [
+                                                                                    ".coffee",
+                                                                                    "Cakefile"
+                                                                                ],
+                                                                                "pygmentsLexer": "coffee-script",
+                                                                                "highlightJS": "coffeescript",
+                                                                                "multiLineComment": [
+                                                                                    "###*",
+                                                                                    " *",
+                                                                                    " ###",
+                                                                                    "###",
+                                                                                    "#",
+                                                                                    "###",
+                                                                                    "###*",
+                                                                                    "#",
+                                                                                    "###"
+                                                                                ],
+                                                                                "strictMultiLineEnd": false,
+                                                                                "singleLineComment": [
+                                                                                    "#"
+                                                                                ],
+                                                                                "ignorePrefix": "}",
+                                                                                "foldPrefix": "^",
+                                                                                "name": "CoffeeScript"
+                                                                            },
+                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/review_set/status.coffee",
+                                                                            "projectPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/review_set/status.coffee",
+                                                                            "targetPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/review_set/status",
+                                                                            "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/review_set/status",
+                                                                            "title": "status"
+                                                                        },
+                                                                        "depth": 8,
+                                                                        "outline": [
+                                                                            {
+                                                                                "type": "heading",
+                                                                                "data": {
+                                                                                    "level": 3,
+                                                                                    "title": "Properties",
+                                                                                    "slug": "properties"
+                                                                                },
+                                                                                "depth": 3
+                                                                            },
+                                                                            {
+                                                                                "type": "heading",
+                                                                                "data": {
+                                                                                    "level": 3,
+                                                                                    "title": "Computed Properties",
+                                                                                    "slug": "computed-properties"
+                                                                                },
+                                                                                "depth": 3
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
                                                             },
                                                             {
                                                                 "type": "file",
@@ -29070,14 +29411,42 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/team_set.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/team_set.coffee",
                                                                     "projectPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/team_set.coffee",
                                                                     "targetPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/team_set",
                                                                     "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/index/team_set",
                                                                     "title": "team_set"
                                                                 },
                                                                 "depth": 7,
-                                                                "outline": []
+                                                                "outline": [
+                                                                    {
+                                                                        "type": "heading",
+                                                                        "data": {
+                                                                            "level": 3,
+                                                                            "title": "Computed Properties",
+                                                                            "slug": "computed-properties"
+                                                                        },
+                                                                        "depth": 3
+                                                                    },
+                                                                    {
+                                                                        "type": "heading",
+                                                                        "data": {
+                                                                            "level": 3,
+                                                                            "title": "Helpers",
+                                                                            "slug": "helpers"
+                                                                        },
+                                                                        "depth": 3
+                                                                    },
+                                                                    {
+                                                                        "type": "heading",
+                                                                        "data": {
+                                                                            "level": 3,
+                                                                            "title": "Actions",
+                                                                            "slug": "actions"
+                                                                        },
+                                                                        "depth": 3
+                                                                    }
+                                                                ]
                                                             }
                                                         ]
                                                     },
@@ -29110,14 +29479,42 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show.coffee",
                                                             "projectPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show.coffee",
                                                             "targetPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show",
                                                             "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show",
                                                             "title": "show"
                                                         },
                                                         "depth": 6,
-                                                        "outline": [],
+                                                        "outline": [
+                                                            {
+                                                                "type": "heading",
+                                                                "data": {
+                                                                    "level": 3,
+                                                                    "title": "Intialization",
+                                                                    "slug": "intialization"
+                                                                },
+                                                                "depth": 3
+                                                            },
+                                                            {
+                                                                "type": "heading",
+                                                                "data": {
+                                                                    "level": 3,
+                                                                    "title": "Helpers",
+                                                                    "slug": "helpers"
+                                                                },
+                                                                "depth": 3
+                                                            },
+                                                            {
+                                                                "type": "heading",
+                                                                "data": {
+                                                                    "level": 3,
+                                                                    "title": "Actions",
+                                                                    "slug": "actions"
+                                                                },
+                                                                "depth": 3
+                                                            }
+                                                        ],
                                                         "children": [
                                                             {
                                                                 "type": "file",
@@ -29148,14 +29545,185 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review.coffee",
                                                                     "projectPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review.coffee",
                                                                     "targetPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review",
                                                                     "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review",
                                                                     "title": "review"
                                                                 },
                                                                 "depth": 7,
-                                                                "outline": []
+                                                                "outline": [
+                                                                    {
+                                                                        "type": "heading",
+                                                                        "data": {
+                                                                            "level": 3,
+                                                                            "title": "Initialization",
+                                                                            "slug": "initialization"
+                                                                        },
+                                                                        "depth": 3
+                                                                    },
+                                                                    {
+                                                                        "type": "heading",
+                                                                        "data": {
+                                                                            "level": 3,
+                                                                            "title": "Helpers",
+                                                                            "slug": "helpers"
+                                                                        },
+                                                                        "depth": 3
+                                                                    },
+                                                                    {
+                                                                        "type": "heading",
+                                                                        "data": {
+                                                                            "level": 3,
+                                                                            "title": "Actions",
+                                                                            "slug": "actions"
+                                                                        },
+                                                                        "depth": 3
+                                                                    }
+                                                                ],
+                                                                "children": [
+                                                                    {
+                                                                        "type": "file",
+                                                                        "data": {
+                                                                            "language": {
+                                                                                "nameMatchers": [
+                                                                                    ".coffee",
+                                                                                    "Cakefile"
+                                                                                ],
+                                                                                "pygmentsLexer": "coffee-script",
+                                                                                "highlightJS": "coffeescript",
+                                                                                "multiLineComment": [
+                                                                                    "###*",
+                                                                                    " *",
+                                                                                    " ###",
+                                                                                    "###",
+                                                                                    "#",
+                                                                                    "###",
+                                                                                    "###*",
+                                                                                    "#",
+                                                                                    "###"
+                                                                                ],
+                                                                                "strictMultiLineEnd": false,
+                                                                                "singleLineComment": [
+                                                                                    "#"
+                                                                                ],
+                                                                                "ignorePrefix": "}",
+                                                                                "foldPrefix": "^",
+                                                                                "name": "CoffeeScript"
+                                                                            },
+                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review/qual.coffee",
+                                                                            "projectPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review/qual.coffee",
+                                                                            "targetPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review/qual",
+                                                                            "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review/qual",
+                                                                            "title": "qual"
+                                                                        },
+                                                                        "depth": 8,
+                                                                        "outline": [
+                                                                            {
+                                                                                "type": "heading",
+                                                                                "data": {
+                                                                                    "level": 3,
+                                                                                    "title": "Properties",
+                                                                                    "slug": "properties"
+                                                                                },
+                                                                                "depth": 3
+                                                                            },
+                                                                            {
+                                                                                "type": "heading",
+                                                                                "data": {
+                                                                                    "level": 3,
+                                                                                    "title": "Computed properties",
+                                                                                    "slug": "computed-properties"
+                                                                                },
+                                                                                "depth": 3
+                                                                            },
+                                                                            {
+                                                                                "type": "heading",
+                                                                                "data": {
+                                                                                    "level": 3,
+                                                                                    "title": "Initialization",
+                                                                                    "slug": "initialization"
+                                                                                },
+                                                                                "depth": 3
+                                                                            },
+                                                                            {
+                                                                                "type": "heading",
+                                                                                "data": {
+                                                                                    "level": 3,
+                                                                                    "title": "Hooks",
+                                                                                    "slug": "hooks"
+                                                                                },
+                                                                                "depth": 3
+                                                                            }
+                                                                        ]
+                                                                    },
+                                                                    {
+                                                                        "type": "file",
+                                                                        "data": {
+                                                                            "language": {
+                                                                                "nameMatchers": [
+                                                                                    ".coffee",
+                                                                                    "Cakefile"
+                                                                                ],
+                                                                                "pygmentsLexer": "coffee-script",
+                                                                                "highlightJS": "coffeescript",
+                                                                                "multiLineComment": [
+                                                                                    "###*",
+                                                                                    " *",
+                                                                                    " ###",
+                                                                                    "###",
+                                                                                    "#",
+                                                                                    "###",
+                                                                                    "###*",
+                                                                                    "#",
+                                                                                    "###"
+                                                                                ],
+                                                                                "strictMultiLineEnd": false,
+                                                                                "singleLineComment": [
+                                                                                    "#"
+                                                                                ],
+                                                                                "ignorePrefix": "}",
+                                                                                "foldPrefix": "^",
+                                                                                "name": "CoffeeScript"
+                                                                            },
+                                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review/quant.coffee",
+                                                                            "projectPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review/quant.coffee",
+                                                                            "targetPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review/quant",
+                                                                            "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review/quant",
+                                                                            "title": "quant"
+                                                                        },
+                                                                        "depth": 8,
+                                                                        "outline": [
+                                                                            {
+                                                                                "type": "heading",
+                                                                                "data": {
+                                                                                    "level": 3,
+                                                                                    "title": "Properties",
+                                                                                    "slug": "properties"
+                                                                                },
+                                                                                "depth": 3
+                                                                            },
+                                                                            {
+                                                                                "type": "heading",
+                                                                                "data": {
+                                                                                    "level": 3,
+                                                                                    "title": "Computed properties",
+                                                                                    "slug": "computed-properties"
+                                                                                },
+                                                                                "depth": 3
+                                                                            },
+                                                                            {
+                                                                                "type": "heading",
+                                                                                "data": {
+                                                                                    "level": 3,
+                                                                                    "title": "Initialization",
+                                                                                    "slug": "initialization"
+                                                                                },
+                                                                                "depth": 3
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
                                                             },
                                                             {
                                                                 "type": "file",
@@ -29186,14 +29754,99 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review_set.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review_set.coffee",
                                                                     "projectPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review_set.coffee",
                                                                     "targetPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review_set",
                                                                     "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/review_set",
                                                                     "title": "review_set"
                                                                 },
                                                                 "depth": 7,
-                                                                "outline": []
+                                                                "outline": [
+                                                                    {
+                                                                        "type": "heading",
+                                                                        "data": {
+                                                                            "level": 3,
+                                                                            "title": "Computed Properties",
+                                                                            "slug": "computed-properties"
+                                                                        },
+                                                                        "depth": 3
+                                                                    },
+                                                                    {
+                                                                        "type": "heading",
+                                                                        "data": {
+                                                                            "level": 3,
+                                                                            "title": "Intialization",
+                                                                            "slug": "intialization"
+                                                                        },
+                                                                        "depth": 3
+                                                                    },
+                                                                    {
+                                                                        "type": "heading",
+                                                                        "data": {
+                                                                            "level": 3,
+                                                                            "title": "Helpers",
+                                                                            "slug": "helpers"
+                                                                        },
+                                                                        "depth": 3
+                                                                    },
+                                                                    {
+                                                                        "type": "heading",
+                                                                        "data": {
+                                                                            "level": 3,
+                                                                            "title": "Actions",
+                                                                            "slug": "actions"
+                                                                        },
+                                                                        "depth": 3
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "file",
+                                                                "data": {
+                                                                    "language": {
+                                                                        "nameMatchers": [
+                                                                            ".coffee",
+                                                                            "Cakefile"
+                                                                        ],
+                                                                        "pygmentsLexer": "coffee-script",
+                                                                        "highlightJS": "coffeescript",
+                                                                        "multiLineComment": [
+                                                                            "###*",
+                                                                            " *",
+                                                                            " ###",
+                                                                            "###",
+                                                                            "#",
+                                                                            "###",
+                                                                            "###*",
+                                                                            "#",
+                                                                            "###"
+                                                                        ],
+                                                                        "strictMultiLineEnd": false,
+                                                                        "singleLineComment": [
+                                                                            "#"
+                                                                        ],
+                                                                        "ignorePrefix": "}",
+                                                                        "foldPrefix": "^",
+                                                                        "name": "CoffeeScript"
+                                                                    },
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/team_member.coffee",
+                                                                    "projectPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/team_member.coffee",
+                                                                    "targetPath": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/team_member",
+                                                                    "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/assessment/team_set/show/team_member",
+                                                                    "title": "team_member"
+                                                                },
+                                                                "depth": 7,
+                                                                "outline": [
+                                                                    {
+                                                                        "type": "heading",
+                                                                        "data": {
+                                                                            "level": 3,
+                                                                            "title": "Intialization",
+                                                                            "slug": "intialization"
+                                                                        },
+                                                                        "depth": 3
+                                                                    }
+                                                                ]
                                                             }
                                                         ]
                                                     }
@@ -29230,7 +29883,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/components/main.coffee",
                                             "projectPath": "thinkspace-peer-assessment-instructor/addon/components/main.coffee",
                                             "targetPath": "thinkspace-peer-assessment-instructor/addon/components/main",
                                             "pageTitle": "thinkspace-peer-assessment-instructor/addon/components/main",
@@ -29270,7 +29923,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/engine.coffee",
                                     "projectPath": "thinkspace-peer-assessment-instructor/addon/engine.coffee",
                                     "targetPath": "thinkspace-peer-assessment-instructor/addon/engine",
                                     "pageTitle": "thinkspace-peer-assessment-instructor/addon/engine",
@@ -29316,7 +29969,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-instructor/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-peer-assessment-instructor/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-peer-assessment-instructor/addon/initializers/totem",
                                             "pageTitle": "thinkspace-peer-assessment-instructor/addon/initializers/totem",
@@ -29376,7 +30029,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/_config.coffee",
                                     "projectPath": "thinkspace-peer-assessment-pe/addon/_config.coffee",
                                     "targetPath": "thinkspace-peer-assessment-pe/addon/_config",
                                     "pageTitle": "thinkspace-peer-assessment-pe/addon/_config",
@@ -29422,7 +30075,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment.coffee",
                                             "projectPath": "thinkspace-peer-assessment-pe/addon/components/assessment.coffee",
                                             "targetPath": "thinkspace-peer-assessment-pe/addon/components/assessment",
                                             "pageTitle": "thinkspace-peer-assessment-pe/addon/components/assessment",
@@ -29479,7 +30132,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/item.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/item.coffee",
                                                     "projectPath": "thinkspace-peer-assessment-pe/addon/components/assessment/item.coffee",
                                                     "targetPath": "thinkspace-peer-assessment-pe/addon/components/assessment/item",
                                                     "pageTitle": "thinkspace-peer-assessment-pe/addon/components/assessment/item",
@@ -29517,7 +30170,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/item/qualitative.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/item/qualitative.coffee",
                                                             "projectPath": "thinkspace-peer-assessment-pe/addon/components/assessment/item/qualitative.coffee",
                                                             "targetPath": "thinkspace-peer-assessment-pe/addon/components/assessment/item/qualitative",
                                                             "pageTitle": "thinkspace-peer-assessment-pe/addon/components/assessment/item/qualitative",
@@ -29565,7 +30218,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/item/quantitative.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/item/quantitative.coffee",
                                                             "projectPath": "thinkspace-peer-assessment-pe/addon/components/assessment/item/quantitative.coffee",
                                                             "targetPath": "thinkspace-peer-assessment-pe/addon/components/assessment/item/quantitative",
                                                             "pageTitle": "thinkspace-peer-assessment-pe/addon/components/assessment/item/quantitative",
@@ -29643,7 +30296,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/review/summary.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/review/summary.coffee",
                                                             "projectPath": "thinkspace-peer-assessment-pe/addon/components/assessment/review/summary.coffee",
                                                             "targetPath": "thinkspace-peer-assessment-pe/addon/components/assessment/review/summary",
                                                             "pageTitle": "thinkspace-peer-assessment-pe/addon/components/assessment/review/summary",
@@ -29683,7 +30336,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/team.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/team.coffee",
                                                     "projectPath": "thinkspace-peer-assessment-pe/addon/components/assessment/team.coffee",
                                                     "targetPath": "thinkspace-peer-assessment-pe/addon/components/assessment/team",
                                                     "pageTitle": "thinkspace-peer-assessment-pe/addon/components/assessment/team",
@@ -29731,7 +30384,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/team/member.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/team/member.coffee",
                                                             "projectPath": "thinkspace-peer-assessment-pe/addon/components/assessment/team/member.coffee",
                                                             "targetPath": "thinkspace-peer-assessment-pe/addon/components/assessment/team/member",
                                                             "pageTitle": "thinkspace-peer-assessment-pe/addon/components/assessment/team/member",
@@ -29816,7 +30469,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/type/base.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/assessment/type/base.coffee",
                                                             "projectPath": "thinkspace-peer-assessment-pe/addon/components/assessment/type/base.coffee",
                                                             "targetPath": "thinkspace-peer-assessment-pe/addon/components/assessment/type/base",
                                                             "pageTitle": "thinkspace-peer-assessment-pe/addon/components/assessment/type/base",
@@ -29886,7 +30539,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/components/main.coffee",
                                             "projectPath": "thinkspace-peer-assessment-pe/addon/components/main.coffee",
                                             "targetPath": "thinkspace-peer-assessment-pe/addon/components/main",
                                             "pageTitle": "thinkspace-peer-assessment-pe/addon/components/main",
@@ -29926,7 +30579,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/engine.coffee",
                                     "projectPath": "thinkspace-peer-assessment-pe/addon/engine.coffee",
                                     "targetPath": "thinkspace-peer-assessment-pe/addon/engine",
                                     "pageTitle": "thinkspace-peer-assessment-pe/addon/engine",
@@ -29972,7 +30625,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-peer-assessment-pe/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-peer-assessment-pe/addon/initializers/totem",
                                             "pageTitle": "thinkspace-peer-assessment-pe/addon/initializers/totem",
@@ -30020,7 +30673,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/managers/evaluation.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/managers/evaluation.coffee",
                                             "projectPath": "thinkspace-peer-assessment-pe/addon/managers/evaluation.coffee",
                                             "targetPath": "thinkspace-peer-assessment-pe/addon/managers/evaluation",
                                             "pageTitle": "thinkspace-peer-assessment-pe/addon/managers/evaluation",
@@ -30142,7 +30795,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/managers/evaluation/balance.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/managers/evaluation/balance.coffee",
                                                     "projectPath": "thinkspace-peer-assessment-pe/addon/managers/evaluation/balance.coffee",
                                                     "targetPath": "thinkspace-peer-assessment-pe/addon/managers/evaluation/balance",
                                                     "pageTitle": "thinkspace-peer-assessment-pe/addon/managers/evaluation/balance",
@@ -30232,7 +30885,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/managers/evaluation/qualitative.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/managers/evaluation/qualitative.coffee",
                                                     "projectPath": "thinkspace-peer-assessment-pe/addon/managers/evaluation/qualitative.coffee",
                                                     "targetPath": "thinkspace-peer-assessment-pe/addon/managers/evaluation/qualitative",
                                                     "pageTitle": "thinkspace-peer-assessment-pe/addon/managers/evaluation/qualitative",
@@ -30338,7 +30991,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/managers/evaluation/reviews.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/managers/evaluation/reviews.coffee",
                                                     "projectPath": "thinkspace-peer-assessment-pe/addon/managers/evaluation/reviews.coffee",
                                                     "targetPath": "thinkspace-peer-assessment-pe/addon/managers/evaluation/reviews",
                                                     "pageTitle": "thinkspace-peer-assessment-pe/addon/managers/evaluation/reviews",
@@ -30406,7 +31059,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-pe/addon/managers/evaluation/user_data.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-pe/addon/managers/evaluation/user_data.coffee",
                                                     "projectPath": "thinkspace-peer-assessment-pe/addon/managers/evaluation/user_data.coffee",
                                                     "targetPath": "thinkspace-peer-assessment-pe/addon/managers/evaluation/user_data",
                                                     "pageTitle": "thinkspace-peer-assessment-pe/addon/managers/evaluation/user_data",
@@ -30498,7 +31151,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-results/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-results/addon/_config.coffee",
                                     "projectPath": "thinkspace-peer-assessment-results/addon/_config.coffee",
                                     "targetPath": "thinkspace-peer-assessment-results/addon/_config",
                                     "pageTitle": "thinkspace-peer-assessment-results/addon/_config",
@@ -30544,7 +31197,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-results/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-results/addon/components/main.coffee",
                                             "projectPath": "thinkspace-peer-assessment-results/addon/components/main.coffee",
                                             "targetPath": "thinkspace-peer-assessment-results/addon/components/main",
                                             "pageTitle": "thinkspace-peer-assessment-results/addon/components/main",
@@ -30582,7 +31235,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-results/addon/components/results.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-results/addon/components/results.coffee",
                                             "projectPath": "thinkspace-peer-assessment-results/addon/components/results.coffee",
                                             "targetPath": "thinkspace-peer-assessment-results/addon/components/results",
                                             "pageTitle": "thinkspace-peer-assessment-results/addon/components/results",
@@ -30656,7 +31309,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-results/addon/components/type/base.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-results/addon/components/type/base.coffee",
                                                     "projectPath": "thinkspace-peer-assessment-results/addon/components/type/base.coffee",
                                                     "targetPath": "thinkspace-peer-assessment-results/addon/components/type/base",
                                                     "pageTitle": "thinkspace-peer-assessment-results/addon/components/type/base",
@@ -30717,7 +31370,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-results/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-results/addon/engine.coffee",
                                     "projectPath": "thinkspace-peer-assessment-results/addon/engine.coffee",
                                     "targetPath": "thinkspace-peer-assessment-results/addon/engine",
                                     "pageTitle": "thinkspace-peer-assessment-results/addon/engine",
@@ -30763,7 +31416,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment-results/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment-results/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-peer-assessment-results/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-peer-assessment-results/addon/initializers/totem",
                                             "pageTitle": "thinkspace-peer-assessment-results/addon/initializers/totem",
@@ -30823,7 +31476,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/_config.coffee",
                                     "projectPath": "thinkspace-peer-assessment/addon/_config.coffee",
                                     "targetPath": "thinkspace-peer-assessment/addon/_config",
                                     "pageTitle": "thinkspace-peer-assessment/addon/_config",
@@ -30869,7 +31522,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/components/overview.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/components/overview.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/components/overview.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/components/overview",
                                             "pageTitle": "thinkspace-peer-assessment/addon/components/overview",
@@ -30907,7 +31560,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/components/overview/date_modal.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/components/overview/date_modal.coffee",
                                                     "projectPath": "thinkspace-peer-assessment/addon/components/overview/date_modal.coffee",
                                                     "targetPath": "thinkspace-peer-assessment/addon/components/overview/date_modal",
                                                     "pageTitle": "thinkspace-peer-assessment/addon/components/overview/date_modal",
@@ -30945,7 +31598,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/components/overview/states.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/components/overview/states.coffee",
                                                     "projectPath": "thinkspace-peer-assessment/addon/components/overview/states.coffee",
                                                     "targetPath": "thinkspace-peer-assessment/addon/components/overview/states",
                                                     "pageTitle": "thinkspace-peer-assessment/addon/components/overview/states",
@@ -30985,7 +31638,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/components/progress_report.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/components/progress_report.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/components/progress_report.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/components/progress_report",
                                             "pageTitle": "thinkspace-peer-assessment/addon/components/progress_report",
@@ -31023,7 +31676,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/components/reports.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/components/reports.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/components/reports.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/components/reports",
                                             "pageTitle": "thinkspace-peer-assessment/addon/components/reports",
@@ -31061,7 +31714,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/components/results.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/components/results.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/components/results.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/components/results",
                                             "pageTitle": "thinkspace-peer-assessment/addon/components/results",
@@ -31099,7 +31752,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/components/scores.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/components/scores.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/components/scores.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/components/scores",
                                             "pageTitle": "thinkspace-peer-assessment/addon/components/scores",
@@ -31139,7 +31792,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/engine.coffee",
                                     "projectPath": "thinkspace-peer-assessment/addon/engine.coffee",
                                     "targetPath": "thinkspace-peer-assessment/addon/engine",
                                     "pageTitle": "thinkspace-peer-assessment/addon/engine",
@@ -31185,7 +31838,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/initializers/totem",
                                             "pageTitle": "thinkspace-peer-assessment/addon/initializers/totem",
@@ -31225,7 +31878,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/routes.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/routes.coffee",
                                     "projectPath": "thinkspace-peer-assessment/addon/routes.coffee",
                                     "targetPath": "thinkspace-peer-assessment/addon/routes",
                                     "pageTitle": "thinkspace-peer-assessment/addon/routes",
@@ -31263,7 +31916,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/routes/application.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/routes/application.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/routes/application.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/routes/application",
                                             "pageTitle": "thinkspace-peer-assessment/addon/routes/application",
@@ -31301,7 +31954,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/routes/overview.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/routes/overview.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/routes/overview.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/routes/overview",
                                             "pageTitle": "thinkspace-peer-assessment/addon/routes/overview",
@@ -31339,7 +31992,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/routes/progress_report.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/routes/progress_report.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/routes/progress_report.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/routes/progress_report",
                                             "pageTitle": "thinkspace-peer-assessment/addon/routes/progress_report",
@@ -31377,7 +32030,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/routes/reports.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/routes/reports.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/routes/reports.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/routes/reports",
                                             "pageTitle": "thinkspace-peer-assessment/addon/routes/reports",
@@ -31415,7 +32068,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/routes/results.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/routes/results.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/routes/results.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/routes/results",
                                             "pageTitle": "thinkspace-peer-assessment/addon/routes/results",
@@ -31453,7 +32106,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-assessment/addon/routes/scores.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-assessment/addon/routes/scores.coffee",
                                             "projectPath": "thinkspace-peer-assessment/addon/routes/scores.coffee",
                                             "targetPath": "thinkspace-peer-assessment/addon/routes/scores",
                                             "pageTitle": "thinkspace-peer-assessment/addon/routes/scores",
@@ -31513,7 +32166,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-review/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-review/addon/_config.coffee",
                                     "projectPath": "thinkspace-peer-review/addon/_config.coffee",
                                     "targetPath": "thinkspace-peer-review/addon/_config",
                                     "pageTitle": "thinkspace-peer-review/addon/_config",
@@ -31559,7 +32212,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-review/addon/components/bar.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-review/addon/components/bar.coffee",
                                             "projectPath": "thinkspace-peer-review/addon/components/bar.coffee",
                                             "targetPath": "thinkspace-peer-review/addon/components/bar",
                                             "pageTitle": "thinkspace-peer-review/addon/components/bar",
@@ -31607,7 +32260,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-review/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-review/addon/components/main.coffee",
                                             "projectPath": "thinkspace-peer-review/addon/components/main.coffee",
                                             "targetPath": "thinkspace-peer-review/addon/components/main",
                                             "pageTitle": "thinkspace-peer-review/addon/components/main",
@@ -31647,7 +32300,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-review/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-review/addon/engine.coffee",
                                     "projectPath": "thinkspace-peer-review/addon/engine.coffee",
                                     "targetPath": "thinkspace-peer-review/addon/engine",
                                     "pageTitle": "thinkspace-peer-review/addon/engine",
@@ -31693,7 +32346,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-review/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-review/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-peer-review/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-peer-review/addon/initializers/totem",
                                             "pageTitle": "thinkspace-peer-review/addon/initializers/totem",
@@ -31741,7 +32394,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-peer-review/addon/services/peer_review.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-peer-review/addon/services/peer_review.coffee",
                                             "projectPath": "thinkspace-peer-review/addon/services/peer_review.coffee",
                                             "targetPath": "thinkspace-peer-review/addon/services/peer_review",
                                             "pageTitle": "thinkspace-peer-review/addon/services/peer_review",
@@ -31889,7 +32542,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/_config.coffee",
                                     "projectPath": "thinkspace-phase/addon/_config.coffee",
                                     "targetPath": "thinkspace-phase/addon/_config",
                                     "pageTitle": "thinkspace-phase/addon/_config",
@@ -31935,7 +32588,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/components/header.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/components/header.coffee",
                                             "projectPath": "thinkspace-phase/addon/components/header.coffee",
                                             "targetPath": "thinkspace-phase/addon/components/header",
                                             "pageTitle": "thinkspace-phase/addon/components/header",
@@ -31973,7 +32626,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/components/header/phase_state.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/components/header/phase_state.coffee",
                                                     "projectPath": "thinkspace-phase/addon/components/header/phase_state.coffee",
                                                     "targetPath": "thinkspace-phase/addon/components/header/phase_state",
                                                     "pageTitle": "thinkspace-phase/addon/components/header/phase_state",
@@ -32011,7 +32664,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/components/header/progress.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/components/header/progress.coffee",
                                                     "projectPath": "thinkspace-phase/addon/components/header/progress.coffee",
                                                     "targetPath": "thinkspace-phase/addon/components/header/progress",
                                                     "pageTitle": "thinkspace-phase/addon/components/header/progress",
@@ -32051,7 +32704,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/components/layout.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/components/layout.coffee",
                                             "projectPath": "thinkspace-phase/addon/components/layout.coffee",
                                             "targetPath": "thinkspace-phase/addon/components/layout",
                                             "pageTitle": "thinkspace-phase/addon/components/layout",
@@ -32089,7 +32742,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/components/show.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/components/show.coffee",
                                             "projectPath": "thinkspace-phase/addon/components/show.coffee",
                                             "targetPath": "thinkspace-phase/addon/components/show",
                                             "pageTitle": "thinkspace-phase/addon/components/show",
@@ -32127,7 +32780,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/components/submit.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/components/submit.coffee",
                                             "projectPath": "thinkspace-phase/addon/components/submit.coffee",
                                             "targetPath": "thinkspace-phase/addon/components/submit",
                                             "pageTitle": "thinkspace-phase/addon/components/submit",
@@ -32205,7 +32858,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/controllers/show.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/controllers/show.coffee",
                                             "projectPath": "thinkspace-phase/addon/controllers/show.coffee",
                                             "targetPath": "thinkspace-phase/addon/controllers/show",
                                             "pageTitle": "thinkspace-phase/addon/controllers/show",
@@ -32245,7 +32898,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/engine.coffee",
                                     "projectPath": "thinkspace-phase/addon/engine.coffee",
                                     "targetPath": "thinkspace-phase/addon/engine",
                                     "pageTitle": "thinkspace-phase/addon/engine",
@@ -32291,7 +32944,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-phase/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-phase/addon/initializers/totem",
                                             "pageTitle": "thinkspace-phase/addon/initializers/totem",
@@ -32331,7 +32984,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/routes.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/routes.coffee",
                                     "projectPath": "thinkspace-phase/addon/routes.coffee",
                                     "targetPath": "thinkspace-phase/addon/routes",
                                     "pageTitle": "thinkspace-phase/addon/routes",
@@ -32369,7 +33022,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/routes/application.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/routes/application.coffee",
                                             "projectPath": "thinkspace-phase/addon/routes/application.coffee",
                                             "targetPath": "thinkspace-phase/addon/routes/application",
                                             "pageTitle": "thinkspace-phase/addon/routes/application",
@@ -32407,7 +33060,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-phase/addon/routes/show.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-phase/addon/routes/show.coffee",
                                             "projectPath": "thinkspace-phase/addon/routes/show.coffee",
                                             "targetPath": "thinkspace-phase/addon/routes/show",
                                             "pageTitle": "thinkspace-phase/addon/routes/show",
@@ -32526,7 +33179,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/_config.coffee",
                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/_config.coffee",
                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/_config",
                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/_config",
@@ -32572,7 +33225,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/base.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/base.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/base.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/base",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/base",
@@ -32610,7 +33263,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/dashboard.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/dashboard.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/dashboard.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/dashboard",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/dashboard",
@@ -32666,7 +33319,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/menu.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/menu.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/menu.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/menu",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/irat/menu",
@@ -32714,7 +33367,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/menu_to_trat.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/menu_to_trat.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/menu_to_trat.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/menu_to_trat",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/irat/menu_to_trat",
@@ -32762,7 +33415,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/phase_states.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/phase_states.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/phase_states.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/phase_states",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/irat/phase_states",
@@ -32800,7 +33453,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_after.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_after.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_after.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_after",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_after",
@@ -32838,7 +33491,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_due_at.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_due_at.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_due_at.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_due_at",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_due_at",
@@ -32876,7 +33529,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_now.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_now.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_now.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_now",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/irat/to_trat_now",
@@ -32924,7 +33577,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/messages/send.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/messages/send.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/messages/send.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/messages/send",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/messages/send",
@@ -32962,7 +33615,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/messages/view.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/messages/view.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/messages/view.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/messages/view",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/messages/view",
@@ -33018,7 +33671,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat",
@@ -33075,7 +33728,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat/percentages.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat/percentages.coffee",
                                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat/percentages.coffee",
                                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat/percentages",
                                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat/percentages",
@@ -33123,7 +33776,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat/question.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat/question.coffee",
                                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat/question.coffee",
                                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat/question",
                                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/ifat/question",
@@ -33191,7 +33844,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard",
@@ -33248,7 +33901,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard/percentages.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard/percentages.coffee",
                                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard/percentages.coffee",
                                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard/percentages",
                                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard/percentages",
@@ -33296,7 +33949,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard/question.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard/question.coffee",
                                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard/question.coffee",
                                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard/question",
                                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/analytics/standard/question",
@@ -33366,7 +34019,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/index.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/index.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/index.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/index",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/index",
@@ -33404,7 +34057,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/irat.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/irat.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/irat.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/irat",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/irat",
@@ -33461,7 +34114,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/trat.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/progress_report/trat.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/trat.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/trat",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/progress_report/trat",
@@ -33528,7 +34181,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/error.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/error.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/error.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/error",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/error",
@@ -33566,7 +34219,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/menu.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/menu.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/menu.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/menu",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/menu",
@@ -33604,7 +34257,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/menu/clear.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/menu/clear.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/menu/clear.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/menu/clear",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/menu/clear",
@@ -33644,7 +34297,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/message.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/message.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/message.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/message",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/message",
@@ -33682,7 +34335,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/phase_states.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/phase_states.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/phase_states.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/phase_states",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/phase_states",
@@ -33728,7 +34381,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/radio/button.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/radio/button.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/radio/button.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/radio/button",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/radio/button",
@@ -33766,7 +34419,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/radio/buttons.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/radio/buttons.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/radio/buttons.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/radio/buttons",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/radio/buttons",
@@ -33814,7 +34467,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/select.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/select.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/select.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/select",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/select",
@@ -33852,7 +34505,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/team.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/team.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/team.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/team",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/team",
@@ -33890,7 +34543,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/user.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/user.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/user.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/user",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/team_users/user",
@@ -33938,7 +34591,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/teams/select.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/teams/select.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/teams/select.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/teams/select",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/teams/select",
@@ -33976,7 +34629,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/teams/team.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/teams/team.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/teams/team.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/teams/team",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/teams/team",
@@ -34024,7 +34677,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/time/after.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/time/after.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/time/after.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/time/after",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/time/after",
@@ -34062,7 +34715,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/time/at.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/time/at.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/time/at.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/time/at",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/time/at",
@@ -34110,7 +34763,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/timer/interval.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/timer/interval.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/timer/interval.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/timer/interval",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/timer/interval",
@@ -34148,7 +34801,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/timer/reminders.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/timer/reminders.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/timer/reminders.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/timer/reminders",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/timer/reminders",
@@ -34186,7 +34839,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/timer/show.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/timer/show.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/timer/show.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/timer/show",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/timer/show",
@@ -34226,7 +34879,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/toggle_select.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/toggle_select.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/toggle_select.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/toggle_select",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/toggle_select",
@@ -34272,7 +34925,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/users/select.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/users/select.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/users/select.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/users/select",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/users/select",
@@ -34310,7 +34963,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/users/user.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/shared/users/user.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/users/user.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/shared/users/user",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/shared/users/user",
@@ -34360,7 +35013,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/timers/timers.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/timers/timers.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/timers/timers.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/timers/timers",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/timers/timers",
@@ -34408,7 +35061,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/tracker/tracker.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/tracker/tracker.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/tracker/tracker.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/tracker/tracker",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/tracker/tracker",
@@ -34446,7 +35099,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/tracker/user.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/tracker/user.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/tracker/user.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/tracker/user",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/tracker/user",
@@ -34494,7 +35147,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/menu.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/menu.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/menu.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/menu",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/trat/menu",
@@ -34532,7 +35185,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/menu_summary.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/menu_summary.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/menu_summary.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/menu_summary",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/trat/menu_summary",
@@ -34570,7 +35223,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/phase_states.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/phase_states.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/phase_states.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/phase_states",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/trat/phase_states",
@@ -34616,7 +35269,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/summary/answers.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/summary/answers.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/answers.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/answers",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/answers",
@@ -34654,7 +35307,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/summary/answers/answer.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/summary/answers/answer.coffee",
                                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/answers/answer.coffee",
                                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/answers/answer",
                                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/answers/answer",
@@ -34694,7 +35347,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams",
@@ -34732,7 +35385,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams/team.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams/team.coffee",
                                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams/team.coffee",
                                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams/team",
                                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams/team",
@@ -34770,7 +35423,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams/team_qm.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams/team_qm.coffee",
                                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams/team_qm.coffee",
                                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams/team_qm",
                                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/trat/summary/teams/team_qm",
@@ -34820,7 +35473,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/teams/teams.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/teams/teams.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/teams/teams.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/teams/teams",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/trat/teams/teams",
@@ -34858,7 +35511,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/teams/users.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/components/trat/teams/users.coffee",
                                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/teams/users.coffee",
                                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/components/trat/teams/users",
                                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/components/trat/teams/users",
@@ -34902,7 +35555,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/engine.coffee",
                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/engine.coffee",
                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/engine",
                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/engine",
@@ -34948,7 +35601,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/initializers/totem",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/initializers/totem",
@@ -34996,7 +35649,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/managers/rad.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/managers/rad.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/managers/rad.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/managers/rad",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/managers/rad",
@@ -35082,7 +35735,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/base.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/base.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/base.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/base",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/am/base",
@@ -35120,7 +35773,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/data.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/data.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/data.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/data",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/am/data",
@@ -35158,7 +35811,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/helpers.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/helpers.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/helpers.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/helpers",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/am/helpers",
@@ -35226,7 +35879,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/initialize.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/initialize.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/initialize.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/initialize",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/am/initialize",
@@ -35264,7 +35917,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/irat.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/irat.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/irat.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/irat",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/am/irat",
@@ -35302,7 +35955,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/menu_configs.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/menu_configs.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/menu_configs.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/menu_configs",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/am/menu_configs",
@@ -35399,7 +36052,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/messages.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/messages.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/messages.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/messages",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/am/messages",
@@ -35437,7 +36090,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/progress_reports.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/progress_reports.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/progress_reports.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/progress_reports",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/am/progress_reports",
@@ -35475,7 +36128,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/timers.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/timers.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/timers.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/timers",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/am/timers",
@@ -35513,7 +36166,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/tracker.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/tracker.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/tracker.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/tracker",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/am/tracker",
@@ -35551,7 +36204,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/trat.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/am/trat.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/trat.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/am/trat",
                                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/am/trat",
@@ -35591,7 +36244,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/menu.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/menu.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/menu.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/menu",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/menu",
@@ -35629,7 +36282,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/to_trat.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/mixins/to_trat.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/mixins/to_trat.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/mixins/to_trat",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/mixins/to_trat",
@@ -35699,7 +36352,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes.coffee",
                                     "projectPath": "thinkspace-readiness-assurance-instructor/addon/routes.coffee",
                                     "targetPath": "thinkspace-readiness-assurance-instructor/addon/routes",
                                     "pageTitle": "thinkspace-readiness-assurance-instructor/addon/routes",
@@ -35737,7 +36390,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes/application.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes/application.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/routes/application.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/routes/application",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/routes/application",
@@ -35775,7 +36428,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes/dashboard.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes/dashboard.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/routes/dashboard.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/routes/dashboard",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/routes/dashboard",
@@ -35813,7 +36466,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes/irat.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes/irat.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/routes/irat.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/routes/irat",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/routes/irat",
@@ -35851,7 +36504,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes/progress_report.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes/progress_report.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/routes/progress_report.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/routes/progress_report",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/routes/progress_report",
@@ -35889,7 +36542,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes/trat.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/routes/trat.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/routes/trat.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/routes/trat",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/routes/trat",
@@ -35937,7 +36590,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/services/admin.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/services/admin.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/services/admin.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/services/admin",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/services/admin",
@@ -35975,7 +36628,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/services/ra.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-instructor/addon/services/ra.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-instructor/addon/services/ra.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-instructor/addon/services/ra",
                                             "pageTitle": "thinkspace-readiness-assurance-instructor/addon/services/ra",
@@ -36035,7 +36688,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/_config.coffee",
                                     "projectPath": "thinkspace-readiness-assurance-irat/addon/_config.coffee",
                                     "targetPath": "thinkspace-readiness-assurance-irat/addon/_config",
                                     "pageTitle": "thinkspace-readiness-assurance-irat/addon/_config",
@@ -36081,7 +36734,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/justification.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/justification.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-irat/addon/components/justification.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-irat/addon/components/justification",
                                             "pageTitle": "thinkspace-readiness-assurance-irat/addon/components/justification",
@@ -36119,7 +36772,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/main.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-irat/addon/components/main.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-irat/addon/components/main",
                                             "pageTitle": "thinkspace-readiness-assurance-irat/addon/components/main",
@@ -36157,7 +36810,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/question.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/question.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-irat/addon/components/question.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-irat/addon/components/question",
                                             "pageTitle": "thinkspace-readiness-assurance-irat/addon/components/question",
@@ -36195,7 +36848,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/questions.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/questions.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-irat/addon/components/questions.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-irat/addon/components/questions",
                                             "pageTitle": "thinkspace-readiness-assurance-irat/addon/components/questions",
@@ -36241,7 +36894,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/radio/button.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/radio/button.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-irat/addon/components/radio/button.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-irat/addon/components/radio/button",
                                                     "pageTitle": "thinkspace-readiness-assurance-irat/addon/components/radio/button",
@@ -36279,7 +36932,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/radio/buttons.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/radio/buttons.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-irat/addon/components/radio/buttons.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-irat/addon/components/radio/buttons",
                                                     "pageTitle": "thinkspace-readiness-assurance-irat/addon/components/radio/buttons",
@@ -36317,7 +36970,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/radio/ifat_button.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/radio/ifat_button.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-irat/addon/components/radio/ifat_button.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-irat/addon/components/radio/ifat_button",
                                                     "pageTitle": "thinkspace-readiness-assurance-irat/addon/components/radio/ifat_button",
@@ -36355,7 +37008,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/radio/ifat_buttons.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/components/radio/ifat_buttons.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-irat/addon/components/radio/ifat_buttons.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-irat/addon/components/radio/ifat_buttons",
                                                     "pageTitle": "thinkspace-readiness-assurance-irat/addon/components/radio/ifat_buttons",
@@ -36397,7 +37050,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/engine.coffee",
                                     "projectPath": "thinkspace-readiness-assurance-irat/addon/engine.coffee",
                                     "targetPath": "thinkspace-readiness-assurance-irat/addon/engine",
                                     "pageTitle": "thinkspace-readiness-assurance-irat/addon/engine",
@@ -36443,7 +37096,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-irat/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-irat/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-irat/addon/initializers/totem",
                                             "pageTitle": "thinkspace-readiness-assurance-irat/addon/initializers/totem",
@@ -36503,7 +37156,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/_config.coffee",
                                     "projectPath": "thinkspace-readiness-assurance-trat/addon/_config.coffee",
                                     "targetPath": "thinkspace-readiness-assurance-trat/addon/_config",
                                     "pageTitle": "thinkspace-readiness-assurance-trat/addon/_config",
@@ -36549,7 +37202,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/chat.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/chat.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-trat/addon/components/chat.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-trat/addon/components/chat",
                                             "pageTitle": "thinkspace-readiness-assurance-trat/addon/components/chat",
@@ -36587,7 +37240,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/chats.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/chats.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-trat/addon/components/chats.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-trat/addon/components/chats",
                                             "pageTitle": "thinkspace-readiness-assurance-trat/addon/components/chats",
@@ -36625,7 +37278,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/justification.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/justification.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-trat/addon/components/justification.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-trat/addon/components/justification",
                                             "pageTitle": "thinkspace-readiness-assurance-trat/addon/components/justification",
@@ -36663,7 +37316,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/main.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-trat/addon/components/main.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-trat/addon/components/main",
                                             "pageTitle": "thinkspace-readiness-assurance-trat/addon/components/main",
@@ -36701,7 +37354,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/question.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/question.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-trat/addon/components/question.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-trat/addon/components/question",
                                             "pageTitle": "thinkspace-readiness-assurance-trat/addon/components/question",
@@ -36739,7 +37392,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/questions.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/questions.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-trat/addon/components/questions.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-trat/addon/components/questions",
                                             "pageTitle": "thinkspace-readiness-assurance-trat/addon/components/questions",
@@ -36785,7 +37438,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/radio/button.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/radio/button.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-trat/addon/components/radio/button.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-trat/addon/components/radio/button",
                                                     "pageTitle": "thinkspace-readiness-assurance-trat/addon/components/radio/button",
@@ -36823,7 +37476,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/radio/buttons.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/radio/buttons.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-trat/addon/components/radio/buttons.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-trat/addon/components/radio/buttons",
                                                     "pageTitle": "thinkspace-readiness-assurance-trat/addon/components/radio/buttons",
@@ -36861,7 +37514,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/radio/ifat_button.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/radio/ifat_button.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-trat/addon/components/radio/ifat_button.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-trat/addon/components/radio/ifat_button",
                                                     "pageTitle": "thinkspace-readiness-assurance-trat/addon/components/radio/ifat_button",
@@ -36899,7 +37552,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/radio/ifat_buttons.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/radio/ifat_buttons.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance-trat/addon/components/radio/ifat_buttons.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance-trat/addon/components/radio/ifat_buttons",
                                                     "pageTitle": "thinkspace-readiness-assurance-trat/addon/components/radio/ifat_buttons",
@@ -36939,7 +37592,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/users.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/components/users.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-trat/addon/components/users.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-trat/addon/components/users",
                                             "pageTitle": "thinkspace-readiness-assurance-trat/addon/components/users",
@@ -36979,7 +37632,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/engine.coffee",
                                     "projectPath": "thinkspace-readiness-assurance-trat/addon/engine.coffee",
                                     "targetPath": "thinkspace-readiness-assurance-trat/addon/engine",
                                     "pageTitle": "thinkspace-readiness-assurance-trat/addon/engine",
@@ -37025,7 +37678,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance-trat/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-readiness-assurance-trat/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-readiness-assurance-trat/addon/initializers/totem",
                                             "pageTitle": "thinkspace-readiness-assurance-trat/addon/initializers/totem",
@@ -37085,7 +37738,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/_config.coffee",
                                     "projectPath": "thinkspace-readiness-assurance/addon/_config.coffee",
                                     "targetPath": "thinkspace-readiness-assurance/addon/_config",
                                     "pageTitle": "thinkspace-readiness-assurance/addon/_config",
@@ -37131,7 +37784,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/components/main.coffee",
                                             "projectPath": "thinkspace-readiness-assurance/addon/components/main.coffee",
                                             "targetPath": "thinkspace-readiness-assurance/addon/components/main",
                                             "pageTitle": "thinkspace-readiness-assurance/addon/components/main",
@@ -37190,7 +37843,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/engine.coffee",
                                     "projectPath": "thinkspace-readiness-assurance/addon/engine.coffee",
                                     "targetPath": "thinkspace-readiness-assurance/addon/engine",
                                     "pageTitle": "thinkspace-readiness-assurance/addon/engine",
@@ -37236,7 +37889,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-readiness-assurance/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-readiness-assurance/addon/initializers/totem",
                                             "pageTitle": "thinkspace-readiness-assurance/addon/initializers/totem",
@@ -37284,7 +37937,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/locales/en.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/locales/en.coffee",
                                             "projectPath": "thinkspace-readiness-assurance/addon/locales/en.coffee",
                                             "targetPath": "thinkspace-readiness-assurance/addon/locales/en",
                                             "pageTitle": "thinkspace-readiness-assurance/addon/locales/en",
@@ -37332,7 +37985,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/managers/chat.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/managers/chat.coffee",
                                             "projectPath": "thinkspace-readiness-assurance/addon/managers/chat.coffee",
                                             "targetPath": "thinkspace-readiness-assurance/addon/managers/chat",
                                             "pageTitle": "thinkspace-readiness-assurance/addon/managers/chat",
@@ -37370,7 +38023,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/managers/question.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/managers/question.coffee",
                                             "projectPath": "thinkspace-readiness-assurance/addon/managers/question.coffee",
                                             "targetPath": "thinkspace-readiness-assurance/addon/managers/question",
                                             "pageTitle": "thinkspace-readiness-assurance/addon/managers/question",
@@ -37408,7 +38061,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/managers/response.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/managers/response.coffee",
                                             "projectPath": "thinkspace-readiness-assurance/addon/managers/response.coffee",
                                             "targetPath": "thinkspace-readiness-assurance/addon/managers/response",
                                             "pageTitle": "thinkspace-readiness-assurance/addon/managers/response",
@@ -37464,7 +38117,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/cm/base.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/cm/base.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/cm/base.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/cm/base",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/cm/base",
@@ -37502,7 +38155,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/cm/helpers.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/cm/helpers.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/cm/helpers.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/cm/helpers",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/cm/helpers",
@@ -37540,7 +38193,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/cm/initialize.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/cm/initialize.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/cm/initialize.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/cm/initialize",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/cm/initialize",
@@ -37578,7 +38231,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/cm/values.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/cm/values.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/cm/values.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/cm/values",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/cm/values",
@@ -37618,7 +38271,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/data_rows.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/data_rows.coffee",
                                             "projectPath": "thinkspace-readiness-assurance/addon/mixins/data_rows.coffee",
                                             "targetPath": "thinkspace-readiness-assurance/addon/mixins/data_rows",
                                             "pageTitle": "thinkspace-readiness-assurance/addon/mixins/data_rows",
@@ -37664,7 +38317,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/base.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/base.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/qm/base.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/qm/base",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/qm/base",
@@ -37702,7 +38355,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/helpers.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/helpers.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/qm/helpers.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/qm/helpers",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/qm/helpers",
@@ -37740,7 +38393,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/initialize.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/initialize.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/qm/initialize.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/qm/initialize",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/qm/initialize",
@@ -37778,7 +38431,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/rooms.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/rooms.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/qm/rooms.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/qm/rooms",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/qm/rooms",
@@ -37816,7 +38469,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/status.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/status.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/qm/status.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/qm/status",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/qm/status",
@@ -37854,7 +38507,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/values.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/qm/values.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/qm/values.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/qm/values",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/qm/values",
@@ -37961,7 +38614,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/base.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/base.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/rm/base.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/rm/base",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/rm/base",
@@ -37999,7 +38652,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/chat.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/chat.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/rm/chat.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/rm/chat",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/rm/chat",
@@ -38037,7 +38690,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/events.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/events.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/rm/events.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/rm/events",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/rm/events",
@@ -38075,7 +38728,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/helpers.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/helpers.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/rm/helpers.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/rm/helpers",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/rm/helpers",
@@ -38113,7 +38766,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/initialize.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/initialize.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/rm/initialize.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/rm/initialize",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/rm/initialize",
@@ -38268,7 +38921,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/response.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/response.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/rm/response.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/rm/response",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/rm/response",
@@ -38306,7 +38959,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/rooms.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/rooms.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/rm/rooms.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/rm/rooms",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/rm/rooms",
@@ -38344,7 +38997,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/status.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/rm/status.coffee",
                                                     "projectPath": "thinkspace-readiness-assurance/addon/mixins/rm/status.coffee",
                                                     "targetPath": "thinkspace-readiness-assurance/addon/mixins/rm/status",
                                                     "pageTitle": "thinkspace-readiness-assurance/addon/mixins/rm/status",
@@ -38384,7 +39037,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/user_list.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-readiness-assurance/addon/mixins/user_list.coffee",
                                             "projectPath": "thinkspace-readiness-assurance/addon/mixins/user_list.coffee",
                                             "targetPath": "thinkspace-readiness-assurance/addon/mixins/user_list",
                                             "pageTitle": "thinkspace-readiness-assurance/addon/mixins/user_list",
@@ -38444,7 +39097,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-report/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-report/addon/_config.coffee",
                                     "projectPath": "thinkspace-report/addon/_config.coffee",
                                     "targetPath": "thinkspace-report/addon/_config",
                                     "pageTitle": "thinkspace-report/addon/_config",
@@ -38490,7 +39143,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-report/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-report/addon/components/main.coffee",
                                             "projectPath": "thinkspace-report/addon/components/main.coffee",
                                             "targetPath": "thinkspace-report/addon/components/main",
                                             "pageTitle": "thinkspace-report/addon/components/main",
@@ -38528,7 +39181,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-report/addon/components/show.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-report/addon/components/show.coffee",
                                             "projectPath": "thinkspace-report/addon/components/show.coffee",
                                             "targetPath": "thinkspace-report/addon/components/show",
                                             "pageTitle": "thinkspace-report/addon/components/show",
@@ -38568,7 +39221,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-report/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-report/addon/engine.coffee",
                                     "projectPath": "thinkspace-report/addon/engine.coffee",
                                     "targetPath": "thinkspace-report/addon/engine",
                                     "pageTitle": "thinkspace-report/addon/engine",
@@ -38614,7 +39267,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-report/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-report/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-report/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-report/addon/initializers/totem",
                                             "pageTitle": "thinkspace-report/addon/initializers/totem",
@@ -38654,7 +39307,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-report/addon/routes.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-report/addon/routes.coffee",
                                     "projectPath": "thinkspace-report/addon/routes.coffee",
                                     "targetPath": "thinkspace-report/addon/routes",
                                     "pageTitle": "thinkspace-report/addon/routes",
@@ -38692,7 +39345,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-report/addon/routes/application.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-report/addon/routes/application.coffee",
                                             "projectPath": "thinkspace-report/addon/routes/application.coffee",
                                             "targetPath": "thinkspace-report/addon/routes/application",
                                             "pageTitle": "thinkspace-report/addon/routes/application",
@@ -38730,7 +39383,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-report/addon/routes/show.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-report/addon/routes/show.coffee",
                                             "projectPath": "thinkspace-report/addon/routes/show.coffee",
                                             "targetPath": "thinkspace-report/addon/routes/show",
                                             "pageTitle": "thinkspace-report/addon/routes/show",
@@ -38780,7 +39433,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-report/report/file.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-report/report/file.coffee",
                                     "projectPath": "thinkspace-report/report/file.coffee",
                                     "targetPath": "thinkspace-report/report/file",
                                     "pageTitle": "thinkspace-report/report/file",
@@ -38818,7 +39471,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-report/report/report.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-report/report/report.coffee",
                                     "projectPath": "thinkspace-report/report/report.coffee",
                                     "targetPath": "thinkspace-report/report/report",
                                     "pageTitle": "thinkspace-report/report/report",
@@ -38876,7 +39529,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/_config.coffee",
                                     "projectPath": "thinkspace-resource/addon/_config.coffee",
                                     "targetPath": "thinkspace-resource/addon/_config",
                                     "pageTitle": "thinkspace-resource/addon/_config",
@@ -38922,7 +39575,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/main.coffee",
                                             "projectPath": "thinkspace-resource/addon/components/main.coffee",
                                             "targetPath": "thinkspace-resource/addon/components/main",
                                             "pageTitle": "thinkspace-resource/addon/components/main",
@@ -38968,7 +39621,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/manage/file.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/manage/file.coffee",
                                                     "projectPath": "thinkspace-resource/addon/components/manage/file.coffee",
                                                     "targetPath": "thinkspace-resource/addon/components/manage/file",
                                                     "pageTitle": "thinkspace-resource/addon/components/manage/file",
@@ -39006,7 +39659,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/manage/files.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/manage/files.coffee",
                                                     "projectPath": "thinkspace-resource/addon/components/manage/files.coffee",
                                                     "targetPath": "thinkspace-resource/addon/components/manage/files",
                                                     "pageTitle": "thinkspace-resource/addon/components/manage/files",
@@ -39044,7 +39697,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/manage/link.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/manage/link.coffee",
                                                     "projectPath": "thinkspace-resource/addon/components/manage/link.coffee",
                                                     "targetPath": "thinkspace-resource/addon/components/manage/link",
                                                     "pageTitle": "thinkspace-resource/addon/components/manage/link",
@@ -39082,7 +39735,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/manage/link/edit.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/manage/link/edit.coffee",
                                                             "projectPath": "thinkspace-resource/addon/components/manage/link/edit.coffee",
                                                             "targetPath": "thinkspace-resource/addon/components/manage/link/edit",
                                                             "pageTitle": "thinkspace-resource/addon/components/manage/link/edit",
@@ -39120,7 +39773,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/manage/link/new.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/manage/link/new.coffee",
                                                             "projectPath": "thinkspace-resource/addon/components/manage/link/new.coffee",
                                                             "targetPath": "thinkspace-resource/addon/components/manage/link/new",
                                                             "pageTitle": "thinkspace-resource/addon/components/manage/link/new",
@@ -39170,7 +39823,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/manage/links.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/manage/links.coffee",
                                                     "projectPath": "thinkspace-resource/addon/components/manage/links.coffee",
                                                     "targetPath": "thinkspace-resource/addon/components/manage/links",
                                                     "pageTitle": "thinkspace-resource/addon/components/manage/links",
@@ -39208,7 +39861,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/manage/tag.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/manage/tag.coffee",
                                                     "projectPath": "thinkspace-resource/addon/components/manage/tag.coffee",
                                                     "targetPath": "thinkspace-resource/addon/components/manage/tag",
                                                     "pageTitle": "thinkspace-resource/addon/components/manage/tag",
@@ -39246,7 +39899,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/manage/tag/edit.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/manage/tag/edit.coffee",
                                                             "projectPath": "thinkspace-resource/addon/components/manage/tag/edit.coffee",
                                                             "targetPath": "thinkspace-resource/addon/components/manage/tag/edit",
                                                             "pageTitle": "thinkspace-resource/addon/components/manage/tag/edit",
@@ -39284,7 +39937,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/manage/tag/new.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/manage/tag/new.coffee",
                                                             "projectPath": "thinkspace-resource/addon/components/manage/tag/new.coffee",
                                                             "targetPath": "thinkspace-resource/addon/components/manage/tag/new",
                                                             "pageTitle": "thinkspace-resource/addon/components/manage/tag/new",
@@ -39324,7 +39977,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/manage/tags.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/manage/tags.coffee",
                                                     "projectPath": "thinkspace-resource/addon/components/manage/tags.coffee",
                                                     "targetPath": "thinkspace-resource/addon/components/manage/tags",
                                                     "pageTitle": "thinkspace-resource/addon/components/manage/tags",
@@ -39364,7 +40017,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/pane.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/pane.coffee",
                                             "projectPath": "thinkspace-resource/addon/components/pane.coffee",
                                             "targetPath": "thinkspace-resource/addon/components/pane",
                                             "pageTitle": "thinkspace-resource/addon/components/pane",
@@ -39402,7 +40055,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/pane/file.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/pane/file.coffee",
                                                     "projectPath": "thinkspace-resource/addon/components/pane/file.coffee",
                                                     "targetPath": "thinkspace-resource/addon/components/pane/file",
                                                     "pageTitle": "thinkspace-resource/addon/components/pane/file",
@@ -39440,7 +40093,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/components/pane/link.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/components/pane/link.coffee",
                                                     "projectPath": "thinkspace-resource/addon/components/pane/link.coffee",
                                                     "targetPath": "thinkspace-resource/addon/components/pane/link",
                                                     "pageTitle": "thinkspace-resource/addon/components/pane/link",
@@ -39482,7 +40135,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/engine.coffee",
                                     "projectPath": "thinkspace-resource/addon/engine.coffee",
                                     "targetPath": "thinkspace-resource/addon/engine",
                                     "pageTitle": "thinkspace-resource/addon/engine",
@@ -39528,7 +40181,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-resource/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-resource/addon/initializers/totem",
                                             "pageTitle": "thinkspace-resource/addon/initializers/totem",
@@ -39576,7 +40229,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-resource/addon/mixins/resources.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-resource/addon/mixins/resources.coffee",
                                             "projectPath": "thinkspace-resource/addon/mixins/resources.coffee",
                                             "targetPath": "thinkspace-resource/addon/mixins/resources",
                                             "pageTitle": "thinkspace-resource/addon/mixins/resources",
@@ -39636,7 +40289,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/_config.coffee",
                                     "projectPath": "thinkspace-space/addon/_config.coffee",
                                     "targetPath": "thinkspace-space/addon/_config",
                                     "pageTitle": "thinkspace-space/addon/_config",
@@ -39682,7 +40335,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/components/case.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/components/case.coffee",
                                             "projectPath": "thinkspace-space/addon/components/case.coffee",
                                             "targetPath": "thinkspace-space/addon/components/case",
                                             "pageTitle": "thinkspace-space/addon/components/case",
@@ -39720,7 +40373,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/components/cases.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/components/cases.coffee",
                                             "projectPath": "thinkspace-space/addon/components/cases.coffee",
                                             "targetPath": "thinkspace-space/addon/components/cases",
                                             "pageTitle": "thinkspace-space/addon/components/cases",
@@ -39758,7 +40411,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/components/header.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/components/header.coffee",
                                             "projectPath": "thinkspace-space/addon/components/header.coffee",
                                             "targetPath": "thinkspace-space/addon/components/header",
                                             "pageTitle": "thinkspace-space/addon/components/header",
@@ -39796,7 +40449,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/components/index.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/components/index.coffee",
                                             "projectPath": "thinkspace-space/addon/components/index.coffee",
                                             "targetPath": "thinkspace-space/addon/components/index",
                                             "pageTitle": "thinkspace-space/addon/components/index",
@@ -39834,7 +40487,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/components/show.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/components/show.coffee",
                                             "projectPath": "thinkspace-space/addon/components/show.coffee",
                                             "targetPath": "thinkspace-space/addon/components/show",
                                             "pageTitle": "thinkspace-space/addon/components/show",
@@ -39872,7 +40525,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/components/space.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/components/space.coffee",
                                             "projectPath": "thinkspace-space/addon/components/space.coffee",
                                             "targetPath": "thinkspace-space/addon/components/space",
                                             "pageTitle": "thinkspace-space/addon/components/space",
@@ -39912,7 +40565,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/engine.coffee",
                                     "projectPath": "thinkspace-space/addon/engine.coffee",
                                     "targetPath": "thinkspace-space/addon/engine",
                                     "pageTitle": "thinkspace-space/addon/engine",
@@ -39958,7 +40611,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-space/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-space/addon/initializers/totem",
                                             "pageTitle": "thinkspace-space/addon/initializers/totem",
@@ -39998,7 +40651,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/routes.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/routes.coffee",
                                     "projectPath": "thinkspace-space/addon/routes.coffee",
                                     "targetPath": "thinkspace-space/addon/routes",
                                     "pageTitle": "thinkspace-space/addon/routes",
@@ -40036,7 +40689,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/routes/application.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/routes/application.coffee",
                                             "projectPath": "thinkspace-space/addon/routes/application.coffee",
                                             "targetPath": "thinkspace-space/addon/routes/application",
                                             "pageTitle": "thinkspace-space/addon/routes/application",
@@ -40074,7 +40727,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/routes/index.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/routes/index.coffee",
                                             "projectPath": "thinkspace-space/addon/routes/index.coffee",
                                             "targetPath": "thinkspace-space/addon/routes/index",
                                             "pageTitle": "thinkspace-space/addon/routes/index",
@@ -40112,7 +40765,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-space/addon/routes/show.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-space/addon/routes/show.coffee",
                                             "projectPath": "thinkspace-space/addon/routes/show.coffee",
                                             "targetPath": "thinkspace-space/addon/routes/show",
                                             "pageTitle": "thinkspace-space/addon/routes/show",
@@ -40172,7 +40825,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-support-intercom/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-support-intercom/addon/_config.coffee",
                                     "projectPath": "thinkspace-support-intercom/addon/_config.coffee",
                                     "targetPath": "thinkspace-support-intercom/addon/_config",
                                     "pageTitle": "thinkspace-support-intercom/addon/_config",
@@ -40218,7 +40871,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-support-intercom/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-support-intercom/addon/components/main.coffee",
                                             "projectPath": "thinkspace-support-intercom/addon/components/main.coffee",
                                             "targetPath": "thinkspace-support-intercom/addon/components/main",
                                             "pageTitle": "thinkspace-support-intercom/addon/components/main",
@@ -40258,7 +40911,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-support-intercom/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-support-intercom/addon/engine.coffee",
                                     "projectPath": "thinkspace-support-intercom/addon/engine.coffee",
                                     "targetPath": "thinkspace-support-intercom/addon/engine",
                                     "pageTitle": "thinkspace-support-intercom/addon/engine",
@@ -40304,7 +40957,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-support-intercom/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-support-intercom/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-support-intercom/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-support-intercom/addon/initializers/totem",
                                             "pageTitle": "thinkspace-support-intercom/addon/initializers/totem",
@@ -40364,7 +41017,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-toolbar/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-toolbar/addon/_config.coffee",
                                     "projectPath": "thinkspace-toolbar/addon/_config.coffee",
                                     "targetPath": "thinkspace-toolbar/addon/_config",
                                     "pageTitle": "thinkspace-toolbar/addon/_config",
@@ -40410,7 +41063,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-toolbar/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-toolbar/addon/components/main.coffee",
                                             "projectPath": "thinkspace-toolbar/addon/components/main.coffee",
                                             "targetPath": "thinkspace-toolbar/addon/components/main",
                                             "pageTitle": "thinkspace-toolbar/addon/components/main",
@@ -40467,7 +41120,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-toolbar/addon/components/switch_user.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-toolbar/addon/components/switch_user.coffee",
                                             "projectPath": "thinkspace-toolbar/addon/components/switch_user.coffee",
                                             "targetPath": "thinkspace-toolbar/addon/components/switch_user",
                                             "pageTitle": "thinkspace-toolbar/addon/components/switch_user",
@@ -40507,7 +41160,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-toolbar/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-toolbar/addon/engine.coffee",
                                     "projectPath": "thinkspace-toolbar/addon/engine.coffee",
                                     "targetPath": "thinkspace-toolbar/addon/engine",
                                     "pageTitle": "thinkspace-toolbar/addon/engine",
@@ -40553,7 +41206,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-toolbar/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-toolbar/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-toolbar/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-toolbar/addon/initializers/totem",
                                             "pageTitle": "thinkspace-toolbar/addon/initializers/totem",
@@ -40613,7 +41266,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/_config.coffee",
                                     "projectPath": "thinkspace-user/addon/_config.coffee",
                                     "targetPath": "thinkspace-user/addon/_config",
                                     "pageTitle": "thinkspace-user/addon/_config",
@@ -40659,7 +41312,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/avatar.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/avatar.coffee",
                                             "projectPath": "thinkspace-user/addon/components/avatar.coffee",
                                             "targetPath": "thinkspace-user/addon/components/avatar",
                                             "pageTitle": "thinkspace-user/addon/components/avatar",
@@ -40705,7 +41358,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/invitation/new.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/invitation/new.coffee",
                                                     "projectPath": "thinkspace-user/addon/components/invitation/new.coffee",
                                                     "targetPath": "thinkspace-user/addon/components/invitation/new",
                                                     "pageTitle": "thinkspace-user/addon/components/invitation/new",
@@ -40743,7 +41396,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/invitation/row.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/invitation/row.coffee",
                                                     "projectPath": "thinkspace-user/addon/components/invitation/row.coffee",
                                                     "targetPath": "thinkspace-user/addon/components/invitation/row",
                                                     "pageTitle": "thinkspace-user/addon/components/invitation/row",
@@ -40781,7 +41434,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/invitation/table.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/invitation/table.coffee",
                                                     "projectPath": "thinkspace-user/addon/components/invitation/table.coffee",
                                                     "targetPath": "thinkspace-user/addon/components/invitation/table",
                                                     "pageTitle": "thinkspace-user/addon/components/invitation/table",
@@ -40821,7 +41474,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/new.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/new.coffee",
                                             "projectPath": "thinkspace-user/addon/components/new.coffee",
                                             "targetPath": "thinkspace-user/addon/components/new",
                                             "pageTitle": "thinkspace-user/addon/components/new",
@@ -40867,7 +41520,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/password/confirmation.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/password/confirmation.coffee",
                                                     "projectPath": "thinkspace-user/addon/components/password/confirmation.coffee",
                                                     "targetPath": "thinkspace-user/addon/components/password/confirmation",
                                                     "pageTitle": "thinkspace-user/addon/components/password/confirmation",
@@ -40905,7 +41558,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/password/fail.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/password/fail.coffee",
                                                     "projectPath": "thinkspace-user/addon/components/password/fail.coffee",
                                                     "targetPath": "thinkspace-user/addon/components/password/fail",
                                                     "pageTitle": "thinkspace-user/addon/components/password/fail",
@@ -40943,7 +41596,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/password/new.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/password/new.coffee",
                                                     "projectPath": "thinkspace-user/addon/components/password/new.coffee",
                                                     "targetPath": "thinkspace-user/addon/components/password/new",
                                                     "pageTitle": "thinkspace-user/addon/components/password/new",
@@ -40981,7 +41634,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/password/show.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/password/show.coffee",
                                                     "projectPath": "thinkspace-user/addon/components/password/show.coffee",
                                                     "targetPath": "thinkspace-user/addon/components/password/show",
                                                     "pageTitle": "thinkspace-user/addon/components/password/show",
@@ -41019,7 +41672,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/password/success.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/password/success.coffee",
                                                     "projectPath": "thinkspace-user/addon/components/password/success.coffee",
                                                     "targetPath": "thinkspace-user/addon/components/password/success",
                                                     "pageTitle": "thinkspace-user/addon/components/password/success",
@@ -41059,7 +41712,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/sign_in.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/sign_in.coffee",
                                             "projectPath": "thinkspace-user/addon/components/sign_in.coffee",
                                             "targetPath": "thinkspace-user/addon/components/sign_in",
                                             "pageTitle": "thinkspace-user/addon/components/sign_in",
@@ -41097,7 +41750,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/components/sign_up.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/components/sign_up.coffee",
                                             "projectPath": "thinkspace-user/addon/components/sign_up.coffee",
                                             "targetPath": "thinkspace-user/addon/components/sign_up",
                                             "pageTitle": "thinkspace-user/addon/components/sign_up",
@@ -41137,7 +41790,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/engine.coffee",
                                     "projectPath": "thinkspace-user/addon/engine.coffee",
                                     "targetPath": "thinkspace-user/addon/engine",
                                     "pageTitle": "thinkspace-user/addon/engine",
@@ -41183,7 +41836,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-user/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-user/addon/initializers/totem",
                                             "pageTitle": "thinkspace-user/addon/initializers/totem",
@@ -41223,7 +41876,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/routes.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/routes.coffee",
                                     "projectPath": "thinkspace-user/addon/routes.coffee",
                                     "targetPath": "thinkspace-user/addon/routes",
                                     "pageTitle": "thinkspace-user/addon/routes",
@@ -41269,7 +41922,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/routes/invitations/show.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/routes/invitations/show.coffee",
                                                     "projectPath": "thinkspace-user/addon/routes/invitations/show.coffee",
                                                     "targetPath": "thinkspace-user/addon/routes/invitations/show",
                                                     "pageTitle": "thinkspace-user/addon/routes/invitations/show",
@@ -41317,7 +41970,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/routes/password/new.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/routes/password/new.coffee",
                                                     "projectPath": "thinkspace-user/addon/routes/password/new.coffee",
                                                     "targetPath": "thinkspace-user/addon/routes/password/new",
                                                     "pageTitle": "thinkspace-user/addon/routes/password/new",
@@ -41355,7 +42008,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-user/addon/routes/password/show.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-user/addon/routes/password/show.coffee",
                                                     "projectPath": "thinkspace-user/addon/routes/password/show.coffee",
                                                     "targetPath": "thinkspace-user/addon/routes/password/show",
                                                     "pageTitle": "thinkspace-user/addon/routes/password/show",
@@ -41417,7 +42070,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/_config.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/_config.coffee",
                                     "projectPath": "thinkspace-weather-forecaster/addon/_config.coffee",
                                     "targetPath": "thinkspace-weather-forecaster/addon/_config",
                                     "pageTitle": "thinkspace-weather-forecaster/addon/_config",
@@ -41463,7 +42116,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment.coffee",
                                             "projectPath": "thinkspace-weather-forecaster/addon/components/assessment.coffee",
                                             "targetPath": "thinkspace-weather-forecaster/addon/components/assessment",
                                             "pageTitle": "thinkspace-weather-forecaster/addon/components/assessment",
@@ -41509,7 +42162,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment/attempt/show.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment/attempt/show.coffee",
                                                             "projectPath": "thinkspace-weather-forecaster/addon/components/assessment/attempt/show.coffee",
                                                             "targetPath": "thinkspace-weather-forecaster/addon/components/assessment/attempt/show",
                                                             "pageTitle": "thinkspace-weather-forecaster/addon/components/assessment/attempt/show",
@@ -41549,7 +42202,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment/attempts.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment/attempts.coffee",
                                                     "projectPath": "thinkspace-weather-forecaster/addon/components/assessment/attempts.coffee",
                                                     "targetPath": "thinkspace-weather-forecaster/addon/components/assessment/attempts",
                                                     "pageTitle": "thinkspace-weather-forecaster/addon/components/assessment/attempts",
@@ -41587,7 +42240,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment/help_tip.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment/help_tip.coffee",
                                                     "projectPath": "thinkspace-weather-forecaster/addon/components/assessment/help_tip.coffee",
                                                     "targetPath": "thinkspace-weather-forecaster/addon/components/assessment/help_tip",
                                                     "pageTitle": "thinkspace-weather-forecaster/addon/components/assessment/help_tip",
@@ -41625,7 +42278,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment/top_forecasts.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment/top_forecasts.coffee",
                                                     "projectPath": "thinkspace-weather-forecaster/addon/components/assessment/top_forecasts.coffee",
                                                     "targetPath": "thinkspace-weather-forecaster/addon/components/assessment/top_forecasts",
                                                     "pageTitle": "thinkspace-weather-forecaster/addon/components/assessment/top_forecasts",
@@ -41665,7 +42318,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment_item.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/assessment_item.coffee",
                                             "projectPath": "thinkspace-weather-forecaster/addon/components/assessment_item.coffee",
                                             "targetPath": "thinkspace-weather-forecaster/addon/components/assessment_item",
                                             "pageTitle": "thinkspace-weather-forecaster/addon/components/assessment_item",
@@ -41703,7 +42356,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/forecast.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/forecast.coffee",
                                             "projectPath": "thinkspace-weather-forecaster/addon/components/forecast.coffee",
                                             "targetPath": "thinkspace-weather-forecaster/addon/components/forecast",
                                             "pageTitle": "thinkspace-weather-forecaster/addon/components/forecast",
@@ -41741,7 +42394,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/main.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/main.coffee",
                                             "projectPath": "thinkspace-weather-forecaster/addon/components/main.coffee",
                                             "targetPath": "thinkspace-weather-forecaster/addon/components/main",
                                             "pageTitle": "thinkspace-weather-forecaster/addon/components/main",
@@ -41787,7 +42440,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/checkbox.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/checkbox.coffee",
                                                     "projectPath": "thinkspace-weather-forecaster/addon/components/response/checkbox.coffee",
                                                     "targetPath": "thinkspace-weather-forecaster/addon/components/response/checkbox",
                                                     "pageTitle": "thinkspace-weather-forecaster/addon/components/response/checkbox",
@@ -41825,7 +42478,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/checkbox/item.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/checkbox/item.coffee",
                                                             "projectPath": "thinkspace-weather-forecaster/addon/components/response/checkbox/item.coffee",
                                                             "targetPath": "thinkspace-weather-forecaster/addon/components/response/checkbox/item",
                                                             "pageTitle": "thinkspace-weather-forecaster/addon/components/response/checkbox/item",
@@ -41865,7 +42518,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/error.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/error.coffee",
                                                     "projectPath": "thinkspace-weather-forecaster/addon/components/response/error.coffee",
                                                     "targetPath": "thinkspace-weather-forecaster/addon/components/response/error",
                                                     "pageTitle": "thinkspace-weather-forecaster/addon/components/response/error",
@@ -41903,7 +42556,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/input.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/input.coffee",
                                                     "projectPath": "thinkspace-weather-forecaster/addon/components/response/input.coffee",
                                                     "targetPath": "thinkspace-weather-forecaster/addon/components/response/input",
                                                     "pageTitle": "thinkspace-weather-forecaster/addon/components/response/input",
@@ -41941,7 +42594,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "CoffeeScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/radio.coffee",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/radio.coffee",
                                                     "projectPath": "thinkspace-weather-forecaster/addon/components/response/radio.coffee",
                                                     "targetPath": "thinkspace-weather-forecaster/addon/components/response/radio",
                                                     "pageTitle": "thinkspace-weather-forecaster/addon/components/response/radio",
@@ -41979,7 +42632,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/radio/item.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/components/response/radio/item.coffee",
                                                             "projectPath": "thinkspace-weather-forecaster/addon/components/response/radio/item.coffee",
                                                             "targetPath": "thinkspace-weather-forecaster/addon/components/response/radio/item",
                                                             "pageTitle": "thinkspace-weather-forecaster/addon/components/response/radio/item",
@@ -42023,7 +42676,7 @@
                                         "foldPrefix": "^",
                                         "name": "CoffeeScript"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/engine.coffee",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/engine.coffee",
                                     "projectPath": "thinkspace-weather-forecaster/addon/engine.coffee",
                                     "targetPath": "thinkspace-weather-forecaster/addon/engine",
                                     "pageTitle": "thinkspace-weather-forecaster/addon/engine",
@@ -42069,7 +42722,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/ethinkspace-client/thinkspace-weather-forecaster/addon/initializers/totem.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/ethinkspace-client/thinkspace-weather-forecaster/addon/initializers/totem.coffee",
                                             "projectPath": "thinkspace-weather-forecaster/addon/initializers/totem.coffee",
                                             "targetPath": "thinkspace-weather-forecaster/addon/initializers/totem",
                                             "pageTitle": "thinkspace-weather-forecaster/addon/initializers/totem",

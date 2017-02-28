@@ -70,7 +70,7 @@ modules:
         branch: master
         options:
           out: "-o ../../api/totem-lodestar"
-          glob: '"./**/*.rb" "./**/*.coffee" "./**/*.scss" "./**/*.js" "README.md"'
+          glob: '"./**/*.rb" "./**/*.rake" "./**/*.coffee" "./**/*.scss" "./**/*.js" "README.md"'
           except: '--except "./node_modules/**" --except "./lib/generators/totem/lodestar/install/templates/**"'
 
           project: "-p totem-lodestar"

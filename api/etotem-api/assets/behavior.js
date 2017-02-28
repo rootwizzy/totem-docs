@@ -19,7 +19,7 @@
                         "commentsOnly": true,
                         "name": "Markdown"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/etotem-api/README.md",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/etotem-api/README.md",
                     "projectPath": "README.md",
                     "targetPath": "index",
                     "pageTitle": "index",
@@ -100,7 +100,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -110,7 +111,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/etotem-api/totem-authentication-session/lib/totem-authentication-session.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/etotem-api/totem-authentication-session/lib/totem-authentication-session.rb",
                                     "projectPath": "totem-authentication-session/lib/totem-authentication-session.rb",
                                     "targetPath": "totem-authentication-session/lib/totem-authentication-session",
                                     "pageTitle": "totem-authentication-session/lib/totem-authentication-session",
@@ -146,7 +147,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -156,7 +158,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/etotem-api/totem-authorization-cancan/lib/totem-authorization-cancan.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/etotem-api/totem-authorization-cancan/lib/totem-authorization-cancan.rb",
                                     "projectPath": "totem-authorization-cancan/lib/totem-authorization-cancan.rb",
                                     "targetPath": "totem-authorization-cancan/lib/totem-authorization-cancan",
                                     "pageTitle": "totem-authorization-cancan/lib/totem-authorization-cancan",
@@ -192,7 +194,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -202,7 +205,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/etotem-api/totem-core/lib/totem-core.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/etotem-api/totem-core/lib/totem-core.rb",
                                     "projectPath": "totem-core/lib/totem-core.rb",
                                     "targetPath": "totem-core/lib/totem-core",
                                     "pageTitle": "totem-core/lib/totem-core",
@@ -228,7 +231,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -238,7 +242,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/etotem-api/totem-core/test/test_helper.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/etotem-api/totem-core/test/test_helper.rb",
                                     "projectPath": "totem-core/test/test_helper.rb",
                                     "targetPath": "totem-core/test/test_helper",
                                     "pageTitle": "totem-core/test/test_helper",
@@ -274,7 +278,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -284,7 +289,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/etotem-api/totem-db-migrate/lib/totem-db-migrate.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/etotem-api/totem-db-migrate/lib/totem-db-migrate.rb",
                                     "projectPath": "totem-db-migrate/lib/totem-db-migrate.rb",
                                     "targetPath": "totem-db-migrate/lib/totem-db-migrate",
                                     "pageTitle": "totem-db-migrate/lib/totem-db-migrate",
@@ -320,7 +325,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -330,7 +336,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/etotem-api/totem-performance/lib/totem-performance.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/etotem-api/totem-performance/lib/totem-performance.rb",
                                     "projectPath": "totem-performance/lib/totem-performance.rb",
                                     "targetPath": "totem-performance/lib/totem-performance",
                                     "pageTitle": "totem-performance/lib/totem-performance",
@@ -366,7 +372,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -376,7 +383,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/etotem-api/totem-pub-sub/lib/totem-pub-sub.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/etotem-api/totem-pub-sub/lib/totem-pub-sub.rb",
                                     "projectPath": "totem-pub-sub/lib/totem-pub-sub.rb",
                                     "targetPath": "totem-pub-sub/lib/totem-pub-sub",
                                     "pageTitle": "totem-pub-sub/lib/totem-pub-sub",

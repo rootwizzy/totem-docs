@@ -17,15 +17,14 @@ modal actions:<br>  confirm:                         action to send confirmation
 
 
 export default base.extend
-  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
-  <span class="hljs-attribute">modal_id</span>: ember.computed -&gt; <span class="hljs-string">"ts-confirmation-modal-<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'elementId'</span>)}</span>"</span>
+  <span class="hljs-attribute">modal_id</span>: ember.computed <span class="hljs-string">'elementId'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-string">"ts-confirmation-modal-<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'elementId'</span>)}</span>"</span>
 
   <span class="hljs-attribute">title</span>:        <span class="hljs-string">'Are you sure?'</span>
   <span class="hljs-attribute">confirm_text</span>: <span class="hljs-string">'Yes'</span>
   <span class="hljs-attribute">deny_text</span>:    <span class="hljs-string">'Cancel'</span>
 
   <span class="hljs-attribute">modal_class_names</span>:         <span class="hljs-string">''</span>
-  <span class="hljs-attribute">default_modal_class_names</span>: <span class="hljs-string">'ts-confirmation-modal reveal-modal'</span>
+  <span class="hljs-attribute">default_modal_class_names</span>: <span class="hljs-string">'ts-confirmation-modal reveal'</span>
   <span class="hljs-attribute">all_modal_class_names</span>:     ember.computed <span class="hljs-string">'modal_class_names'</span>, <span class="hljs-function">-&gt;</span> 
     class_names = <span class="hljs-property">@get</span>(<span class="hljs-string">'default_modal_class_names'</span>)
     <span class="hljs-keyword">unless</span> ember.isEmpty <span class="hljs-property">@get</span>(<span class="hljs-string">'modal_class_names'</span>)
@@ -34,8 +33,11 @@ export default base.extend
 
   <span class="hljs-attribute">get_$modal</span>: <span class="hljs-function">-&gt;</span> $(<span class="hljs-string">"#<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'modal_id'</span>)}</span>"</span>)
 
+  <span class="hljs-attribute">set_modal</span>: <span class="hljs-function"><span class="hljs-params">(modal)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'modal'</span>, modal
+  <span class="hljs-attribute">get_modal</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'modal'</span>
+
   <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span>
-    $(<span class="hljs-built_in">document</span>).foundation <span class="hljs-string">'reveal'</span>
+    <span class="hljs-property">@set_modal</span> <span class="hljs-keyword">new</span> Foundation.Reveal(<span class="hljs-property">@get_$modal</span>())
 
   <span class="hljs-attribute">actions</span>:
 
@@ -48,4 +50,4 @@ export default base.extend
       <span class="hljs-property">@sendAction</span> <span class="hljs-string">'deny'</span>
 
     <span class="hljs-attribute">close</span>: <span class="hljs-function">-&gt;</span>
-      <span class="hljs-property">@get_$modal</span>().foundation <span class="hljs-string">'reveal'</span>, <span class="hljs-string">'close'</span></div></div></div></div></body></html>
+      <span class="hljs-property">@get_modal</span>().close()</div></div></div></div></body></html>

@@ -19,7 +19,7 @@
                         "commentsOnly": true,
                         "name": "Markdown"
                     },
-                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/README.md",
+                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/README.md",
                     "projectPath": "README.md",
                     "targetPath": "index",
                     "pageTitle": "index",
@@ -113,7 +113,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "JavaScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/config/totem_lodestar_manifest.js",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/config/totem_lodestar_manifest.js",
                                             "projectPath": "app/assets/config/totem_lodestar_manifest.js",
                                             "targetPath": "app/assets/config/totem_lodestar_manifest",
                                             "pageTitle": "app/assets/config/totem_lodestar_manifest",
@@ -161,7 +161,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "CoffeeScript"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/javascripts/totem-lodestar.coffee",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/javascripts/totem-lodestar.coffee",
                                             "projectPath": "app/assets/javascripts/totem-lodestar.coffee",
                                             "targetPath": "app/assets/javascripts/totem-lodestar",
                                             "pageTitle": "app/assets/javascripts/totem-lodestar",
@@ -215,7 +215,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "CoffeeScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/javascripts/totem/lodestar/loader.coffee",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/javascripts/totem/lodestar/loader.coffee",
                                                             "projectPath": "app/assets/javascripts/totem/lodestar/loader.coffee",
                                                             "targetPath": "app/assets/javascripts/totem/lodestar/loader",
                                                             "pageTitle": "app/assets/javascripts/totem/lodestar/loader",
@@ -261,7 +261,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/javascripts/totem/lodestar/modules/api.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/javascripts/totem/lodestar/modules/api.coffee",
                                                                     "projectPath": "app/assets/javascripts/totem/lodestar/modules/api.coffee",
                                                                     "targetPath": "app/assets/javascripts/totem/lodestar/modules/api",
                                                                     "pageTitle": "app/assets/javascripts/totem/lodestar/modules/api",
@@ -299,7 +299,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/javascripts/totem/lodestar/modules/layout.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/javascripts/totem/lodestar/modules/layout.coffee",
                                                                     "projectPath": "app/assets/javascripts/totem/lodestar/modules/layout.coffee",
                                                                     "targetPath": "app/assets/javascripts/totem/lodestar/modules/layout",
                                                                     "pageTitle": "app/assets/javascripts/totem/lodestar/modules/layout",
@@ -337,7 +337,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/javascripts/totem/lodestar/modules/side_bar.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/javascripts/totem/lodestar/modules/side_bar.coffee",
                                                                     "projectPath": "app/assets/javascripts/totem/lodestar/modules/side_bar.coffee",
                                                                     "targetPath": "app/assets/javascripts/totem/lodestar/modules/side_bar",
                                                                     "pageTitle": "app/assets/javascripts/totem/lodestar/modules/side_bar",
@@ -375,7 +375,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "CoffeeScript"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/javascripts/totem/lodestar/modules/table_of_content.coffee",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/javascripts/totem/lodestar/modules/table_of_content.coffee",
                                                                     "projectPath": "app/assets/javascripts/totem/lodestar/modules/table_of_content.coffee",
                                                                     "targetPath": "app/assets/javascripts/totem/lodestar/modules/table_of_content",
                                                                     "pageTitle": "app/assets/javascripts/totem/lodestar/modules/table_of_content",
@@ -418,7 +418,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "JavaScript"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/javascripts/vendor/js-cookie.js",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/javascripts/vendor/js-cookie.js",
                                                     "projectPath": "app/assets/javascripts/vendor/js-cookie.js",
                                                     "targetPath": "app/assets/javascripts/vendor/js-cookie",
                                                     "pageTitle": "app/assets/javascripts/vendor/js-cookie",
@@ -459,7 +459,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "SCSS"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem-lodestar.scss",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem-lodestar.scss",
                                             "projectPath": "app/assets/stylesheets/totem-lodestar.scss",
                                             "targetPath": "app/assets/stylesheets/totem-lodestar",
                                             "pageTitle": "app/assets/stylesheets/totem-lodestar",
@@ -504,7 +504,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/_foundation_and_overrides.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/_foundation_and_overrides.scss",
                                                             "projectPath": "app/assets/stylesheets/totem/lodestar/_foundation_and_overrides.scss",
                                                             "targetPath": "app/assets/stylesheets/totem/lodestar/_foundation_and_overrides",
                                                             "pageTitle": "app/assets/stylesheets/totem/lodestar/_foundation_and_overrides",
@@ -533,7 +533,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/_settings.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/_settings.scss",
                                                             "projectPath": "app/assets/stylesheets/totem/lodestar/_settings.scss",
                                                             "targetPath": "app/assets/stylesheets/totem/lodestar/_settings",
                                                             "pageTitle": "app/assets/stylesheets/totem/lodestar/_settings",
@@ -913,7 +913,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "SCSS"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/api/_codestyles.scss",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/api/_codestyles.scss",
                                                                     "projectPath": "app/assets/stylesheets/totem/lodestar/api/_codestyles.scss",
                                                                     "targetPath": "app/assets/stylesheets/totem/lodestar/api/_codestyles",
                                                                     "pageTitle": "app/assets/stylesheets/totem/lodestar/api/_codestyles",
@@ -942,7 +942,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "SCSS"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/api/_codestyles-highlight.scss",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/api/_codestyles-highlight.scss",
                                                                     "projectPath": "app/assets/stylesheets/totem/lodestar/api/_codestyles-highlight.scss",
                                                                     "targetPath": "app/assets/stylesheets/totem/lodestar/api/_codestyles-highlight",
                                                                     "pageTitle": "app/assets/stylesheets/totem/lodestar/api/_codestyles-highlight",
@@ -971,7 +971,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "SCSS"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/api/groc.scss",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/api/groc.scss",
                                                                     "projectPath": "app/assets/stylesheets/totem/lodestar/api/groc.scss",
                                                                     "targetPath": "app/assets/stylesheets/totem/lodestar/api/groc",
                                                                     "pageTitle": "app/assets/stylesheets/totem/lodestar/api/groc",
@@ -1144,7 +1144,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "SCSS"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/base.scss",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/base.scss",
                                                             "projectPath": "app/assets/stylesheets/totem/lodestar/base.scss",
                                                             "targetPath": "app/assets/stylesheets/totem/lodestar/base",
                                                             "pageTitle": "app/assets/stylesheets/totem/lodestar/base",
@@ -1181,7 +1181,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "SCSS"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/article.scss",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/article.scss",
                                                                     "projectPath": "app/assets/stylesheets/totem/lodestar/modules/article.scss",
                                                                     "targetPath": "app/assets/stylesheets/totem/lodestar/modules/article",
                                                                     "pageTitle": "app/assets/stylesheets/totem/lodestar/modules/article",
@@ -1210,7 +1210,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "SCSS"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/code_ray.scss",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/code_ray.scss",
                                                                     "projectPath": "app/assets/stylesheets/totem/lodestar/modules/code_ray.scss",
                                                                     "targetPath": "app/assets/stylesheets/totem/lodestar/modules/code_ray",
                                                                     "pageTitle": "app/assets/stylesheets/totem/lodestar/modules/code_ray",
@@ -1239,7 +1239,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "SCSS"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/markdown.scss",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/markdown.scss",
                                                                     "projectPath": "app/assets/stylesheets/totem/lodestar/modules/markdown.scss",
                                                                     "targetPath": "app/assets/stylesheets/totem/lodestar/modules/markdown",
                                                                     "pageTitle": "app/assets/stylesheets/totem/lodestar/modules/markdown",
@@ -1268,7 +1268,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "SCSS"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/setting_actions.scss",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/setting_actions.scss",
                                                                     "projectPath": "app/assets/stylesheets/totem/lodestar/modules/setting_actions.scss",
                                                                     "targetPath": "app/assets/stylesheets/totem/lodestar/modules/setting_actions",
                                                                     "pageTitle": "app/assets/stylesheets/totem/lodestar/modules/setting_actions",
@@ -1297,7 +1297,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "SCSS"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/side_nav.scss",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/side_nav.scss",
                                                                     "projectPath": "app/assets/stylesheets/totem/lodestar/modules/side_nav.scss",
                                                                     "targetPath": "app/assets/stylesheets/totem/lodestar/modules/side_nav",
                                                                     "pageTitle": "app/assets/stylesheets/totem/lodestar/modules/side_nav",
@@ -1326,7 +1326,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "SCSS"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/toc.scss",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/toc.scss",
                                                                     "projectPath": "app/assets/stylesheets/totem/lodestar/modules/toc.scss",
                                                                     "targetPath": "app/assets/stylesheets/totem/lodestar/modules/toc",
                                                                     "pageTitle": "app/assets/stylesheets/totem/lodestar/modules/toc",
@@ -1355,7 +1355,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "SCSS"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/top_nav.scss",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/modules/top_nav.scss",
                                                                     "projectPath": "app/assets/stylesheets/totem/lodestar/modules/top_nav.scss",
                                                                     "targetPath": "app/assets/stylesheets/totem/lodestar/modules/top_nav",
                                                                     "pageTitle": "app/assets/stylesheets/totem/lodestar/modules/top_nav",
@@ -1394,7 +1394,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "SCSS"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/assets/stylesheets/totem/lodestar/variables/_modules.scss",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/assets/stylesheets/totem/lodestar/variables/_modules.scss",
                                                                     "projectPath": "app/assets/stylesheets/totem/lodestar/variables/_modules.scss",
                                                                     "targetPath": "app/assets/stylesheets/totem/lodestar/variables/_modules",
                                                                     "pageTitle": "app/assets/stylesheets/totem/lodestar/variables/_modules",
@@ -1444,7 +1444,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1454,7 +1455,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/controllers/totem/lodestar/api_controller.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/controllers/totem/lodestar/api_controller.rb",
                                                     "projectPath": "app/controllers/totem/lodestar/api_controller.rb",
                                                     "targetPath": "app/controllers/totem/lodestar/api_controller",
                                                     "pageTitle": "app/controllers/totem/lodestar/api_controller",
@@ -1470,7 +1471,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1480,7 +1482,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/controllers/totem/lodestar/application_controller.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/controllers/totem/lodestar/application_controller.rb",
                                                     "projectPath": "app/controllers/totem/lodestar/application_controller.rb",
                                                     "targetPath": "app/controllers/totem/lodestar/application_controller",
                                                     "pageTitle": "app/controllers/totem/lodestar/application_controller",
@@ -1496,7 +1498,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1506,7 +1509,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/controllers/totem/lodestar/documents_controller.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/controllers/totem/lodestar/documents_controller.rb",
                                                     "projectPath": "app/controllers/totem/lodestar/documents_controller.rb",
                                                     "targetPath": "app/controllers/totem/lodestar/documents_controller",
                                                     "pageTitle": "app/controllers/totem/lodestar/documents_controller",
@@ -1522,7 +1525,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1532,7 +1536,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/controllers/totem/lodestar/guides_controller.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/controllers/totem/lodestar/guides_controller.rb",
                                                     "projectPath": "app/controllers/totem/lodestar/guides_controller.rb",
                                                     "targetPath": "app/controllers/totem/lodestar/guides_controller",
                                                     "pageTitle": "app/controllers/totem/lodestar/guides_controller",
@@ -1548,7 +1552,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1558,7 +1563,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/controllers/totem/lodestar/sections_controller.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/controllers/totem/lodestar/sections_controller.rb",
                                                     "projectPath": "app/controllers/totem/lodestar/sections_controller.rb",
                                                     "targetPath": "app/controllers/totem/lodestar/sections_controller",
                                                     "pageTitle": "app/controllers/totem/lodestar/sections_controller",
@@ -1574,7 +1579,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1584,7 +1590,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/controllers/totem/lodestar/versions_controller.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/controllers/totem/lodestar/versions_controller.rb",
                                                     "projectPath": "app/controllers/totem/lodestar/versions_controller.rb",
                                                     "targetPath": "app/controllers/totem/lodestar/versions_controller",
                                                     "pageTitle": "app/controllers/totem/lodestar/versions_controller",
@@ -1630,7 +1636,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1640,7 +1647,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/helpers/totem/lodestar/application_helper.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/helpers/totem/lodestar/application_helper.rb",
                                                     "projectPath": "app/helpers/totem/lodestar/application_helper.rb",
                                                     "targetPath": "app/helpers/totem/lodestar/application_helper",
                                                     "pageTitle": "app/helpers/totem/lodestar/application_helper",
@@ -1656,7 +1663,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1666,7 +1674,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/helpers/totem/lodestar/guides_helper.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/helpers/totem/lodestar/guides_helper.rb",
                                                     "projectPath": "app/helpers/totem/lodestar/guides_helper.rb",
                                                     "targetPath": "app/helpers/totem/lodestar/guides_helper",
                                                     "pageTitle": "app/helpers/totem/lodestar/guides_helper",
@@ -1712,7 +1720,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1722,7 +1731,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/jobs/totem/lodestar/application_job.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/jobs/totem/lodestar/application_job.rb",
                                                     "projectPath": "app/jobs/totem/lodestar/application_job.rb",
                                                     "targetPath": "app/jobs/totem/lodestar/application_job",
                                                     "pageTitle": "app/jobs/totem/lodestar/application_job",
@@ -1768,7 +1777,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1778,7 +1788,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/mailers/totem/lodestar/application_mailer.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/mailers/totem/lodestar/application_mailer.rb",
                                                     "projectPath": "app/mailers/totem/lodestar/application_mailer.rb",
                                                     "targetPath": "app/mailers/totem/lodestar/application_mailer",
                                                     "pageTitle": "app/mailers/totem/lodestar/application_mailer",
@@ -1824,7 +1834,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1834,7 +1845,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/models/totem/lodestar/api.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/models/totem/lodestar/api.rb",
                                                     "projectPath": "app/models/totem/lodestar/api.rb",
                                                     "targetPath": "app/models/totem/lodestar/api",
                                                     "pageTitle": "app/models/totem/lodestar/api",
@@ -1850,7 +1861,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1860,7 +1872,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/models/totem/lodestar/application_record.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/models/totem/lodestar/application_record.rb",
                                                     "projectPath": "app/models/totem/lodestar/application_record.rb",
                                                     "targetPath": "app/models/totem/lodestar/application_record",
                                                     "pageTitle": "app/models/totem/lodestar/application_record",
@@ -1876,7 +1888,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1886,7 +1899,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/models/totem/lodestar/document.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/models/totem/lodestar/document.rb",
                                                     "projectPath": "app/models/totem/lodestar/document.rb",
                                                     "targetPath": "app/models/totem/lodestar/document",
                                                     "pageTitle": "app/models/totem/lodestar/document",
@@ -1902,7 +1915,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1912,7 +1926,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/models/totem/lodestar/section.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/models/totem/lodestar/section.rb",
                                                     "projectPath": "app/models/totem/lodestar/section.rb",
                                                     "targetPath": "app/models/totem/lodestar/section",
                                                     "pageTitle": "app/models/totem/lodestar/section",
@@ -1928,7 +1942,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -1938,7 +1953,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/app/models/totem/lodestar/version.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/app/models/totem/lodestar/version.rb",
                                                     "projectPath": "app/models/totem/lodestar/version.rb",
                                                     "targetPath": "app/models/totem/lodestar/version",
                                                     "pageTitle": "app/models/totem/lodestar/version",
@@ -1970,7 +1985,8 @@
                                 "nameMatchers": [
                                     ".rb",
                                     ".ru",
-                                    ".gemspec"
+                                    ".gemspec",
+                                    ".rake"
                                 ],
                                 "pygmentsLexer": "ruby",
                                 "singleLineComment": [
@@ -1980,7 +1996,7 @@
                                 "foldPrefix": "^",
                                 "name": "Ruby"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/config/routes.rb",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/config/routes.rb",
                             "projectPath": "config/routes.rb",
                             "targetPath": "config/routes",
                             "pageTitle": "config/routes",
@@ -2014,7 +2030,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -2024,7 +2041,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/db/migrate/01_create_totem_lodestar_versions.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/db/migrate/01_create_totem_lodestar_versions.rb",
                                     "projectPath": "db/migrate/01_create_totem_lodestar_versions.rb",
                                     "targetPath": "db/migrate/01_create_totem_lodestar_versions",
                                     "pageTitle": "db/migrate/01_create_totem_lodestar_versions",
@@ -2040,7 +2057,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -2050,7 +2068,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/db/migrate/02_create_totem_lodestar_sections.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/db/migrate/02_create_totem_lodestar_sections.rb",
                                     "projectPath": "db/migrate/02_create_totem_lodestar_sections.rb",
                                     "targetPath": "db/migrate/02_create_totem_lodestar_sections",
                                     "pageTitle": "db/migrate/02_create_totem_lodestar_sections",
@@ -2066,7 +2084,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -2076,7 +2095,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/db/migrate/03_create_totem_lodestar_documents.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/db/migrate/03_create_totem_lodestar_documents.rb",
                                     "projectPath": "db/migrate/03_create_totem_lodestar_documents.rb",
                                     "targetPath": "db/migrate/03_create_totem_lodestar_documents",
                                     "pageTitle": "db/migrate/03_create_totem_lodestar_documents",
@@ -2092,7 +2111,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -2102,7 +2122,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/db/migrate/04_create_totem_lodestar_api.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/db/migrate/04_create_totem_lodestar_api.rb",
                                     "projectPath": "db/migrate/04_create_totem_lodestar_api.rb",
                                     "targetPath": "db/migrate/04_create_totem_lodestar_api",
                                     "pageTitle": "db/migrate/04_create_totem_lodestar_api",
@@ -2162,7 +2182,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2172,7 +2193,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/generators/totem/lodestar/install/configs_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/generators/totem/lodestar/install/configs_generator.rb",
                                                             "projectPath": "lib/generators/totem/lodestar/install/configs_generator.rb",
                                                             "targetPath": "lib/generators/totem/lodestar/install/configs_generator",
                                                             "pageTitle": "lib/generators/totem/lodestar/install/configs_generator",
@@ -2188,7 +2209,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2198,7 +2220,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/generators/totem/lodestar/install/databases_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/generators/totem/lodestar/install/databases_generator.rb",
                                                             "projectPath": "lib/generators/totem/lodestar/install/databases_generator.rb",
                                                             "targetPath": "lib/generators/totem/lodestar/install/databases_generator",
                                                             "pageTitle": "lib/generators/totem/lodestar/install/databases_generator",
@@ -2214,7 +2236,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2224,7 +2247,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/generators/totem/lodestar/install/documents_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/generators/totem/lodestar/install/documents_generator.rb",
                                                             "projectPath": "lib/generators/totem/lodestar/install/documents_generator.rb",
                                                             "targetPath": "lib/generators/totem/lodestar/install/documents_generator",
                                                             "pageTitle": "lib/generators/totem/lodestar/install/documents_generator",
@@ -2240,7 +2263,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2250,7 +2274,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/generators/totem/lodestar/install/images_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/generators/totem/lodestar/install/images_generator.rb",
                                                             "projectPath": "lib/generators/totem/lodestar/install/images_generator.rb",
                                                             "targetPath": "lib/generators/totem/lodestar/install/images_generator",
                                                             "pageTitle": "lib/generators/totem/lodestar/install/images_generator",
@@ -2266,7 +2290,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2276,7 +2301,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/generators/totem/lodestar/install/install_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/generators/totem/lodestar/install/install_generator.rb",
                                                             "projectPath": "lib/generators/totem/lodestar/install/install_generator.rb",
                                                             "targetPath": "lib/generators/totem/lodestar/install/install_generator",
                                                             "pageTitle": "lib/generators/totem/lodestar/install/install_generator",
@@ -2292,7 +2317,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2302,7 +2328,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/generators/totem/lodestar/install/javascripts_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/generators/totem/lodestar/install/javascripts_generator.rb",
                                                             "projectPath": "lib/generators/totem/lodestar/install/javascripts_generator.rb",
                                                             "targetPath": "lib/generators/totem/lodestar/install/javascripts_generator",
                                                             "pageTitle": "lib/generators/totem/lodestar/install/javascripts_generator",
@@ -2318,7 +2344,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2328,7 +2355,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/generators/totem/lodestar/install/routes_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/generators/totem/lodestar/install/routes_generator.rb",
                                                             "projectPath": "lib/generators/totem/lodestar/install/routes_generator.rb",
                                                             "targetPath": "lib/generators/totem/lodestar/install/routes_generator",
                                                             "pageTitle": "lib/generators/totem/lodestar/install/routes_generator",
@@ -2344,7 +2371,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2354,7 +2382,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/generators/totem/lodestar/install/stylesheets_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/generators/totem/lodestar/install/stylesheets_generator.rb",
                                                             "projectPath": "lib/generators/totem/lodestar/install/stylesheets_generator.rb",
                                                             "targetPath": "lib/generators/totem/lodestar/install/stylesheets_generator",
                                                             "pageTitle": "lib/generators/totem/lodestar/install/stylesheets_generator",
@@ -2370,7 +2398,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2380,7 +2409,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/generators/totem/lodestar/install/travis_ci_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/generators/totem/lodestar/install/travis_ci_generator.rb",
                                                             "projectPath": "lib/generators/totem/lodestar/install/travis_ci_generator.rb",
                                                             "targetPath": "lib/generators/totem/lodestar/install/travis_ci_generator",
                                                             "pageTitle": "lib/generators/totem/lodestar/install/travis_ci_generator",
@@ -2396,7 +2425,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2406,7 +2436,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/generators/totem/lodestar/install/views_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/generators/totem/lodestar/install/views_generator.rb",
                                                             "projectPath": "lib/generators/totem/lodestar/install/views_generator.rb",
                                                             "targetPath": "lib/generators/totem/lodestar/install/views_generator",
                                                             "pageTitle": "lib/generators/totem/lodestar/install/views_generator",
@@ -2448,6 +2478,43 @@
                                         "depth": 4,
                                         "children": [
                                             {
+                                                "type": "file",
+                                                "data": {
+                                                    "language": {
+                                                        "nameMatchers": [
+                                                            ".rb",
+                                                            ".ru",
+                                                            ".gemspec",
+                                                            ".rake"
+                                                        ],
+                                                        "pygmentsLexer": "ruby",
+                                                        "singleLineComment": [
+                                                            "#"
+                                                        ],
+                                                        "ignorePrefix": "}",
+                                                        "foldPrefix": "^",
+                                                        "name": "Ruby"
+                                                    },
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/tasks/totem/lodestar/generate.rake",
+                                                    "projectPath": "lib/tasks/totem/lodestar/generate.rake",
+                                                    "targetPath": "lib/tasks/totem/lodestar/generate",
+                                                    "pageTitle": "lib/tasks/totem/lodestar/generate",
+                                                    "title": "generate"
+                                                },
+                                                "depth": 5,
+                                                "outline": [
+                                                    {
+                                                        "type": "heading",
+                                                        "data": {
+                                                            "level": 1,
+                                                            "title": "Totem Lodestar Tasks",
+                                                            "slug": "totem-lodestar-tasks"
+                                                        },
+                                                        "depth": 1
+                                                    }
+                                                ]
+                                            },
+                                            {
                                                 "type": "folder",
                                                 "data": {
                                                     "path": "lib/tasks/totem/lodestar/helpers",
@@ -2462,7 +2529,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2472,7 +2540,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/tasks/totem/lodestar/helpers/api_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/tasks/totem/lodestar/helpers/api_generator.rb",
                                                             "projectPath": "lib/tasks/totem/lodestar/helpers/api_generator.rb",
                                                             "targetPath": "lib/tasks/totem/lodestar/helpers/api_generator",
                                                             "pageTitle": "lib/tasks/totem/lodestar/helpers/api_generator",
@@ -2488,7 +2556,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2498,7 +2567,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/tasks/totem/lodestar/helpers/guides_generator.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/tasks/totem/lodestar/helpers/guides_generator.rb",
                                                             "projectPath": "lib/tasks/totem/lodestar/helpers/guides_generator.rb",
                                                             "targetPath": "lib/tasks/totem/lodestar/helpers/guides_generator",
                                                             "pageTitle": "lib/tasks/totem/lodestar/helpers/guides_generator",
@@ -2540,7 +2609,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -2550,7 +2620,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/totem/lodestar.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/totem/lodestar.rb",
                                     "projectPath": "lib/totem/lodestar.rb",
                                     "targetPath": "lib/totem/lodestar",
                                     "pageTitle": "lib/totem/lodestar",
@@ -2566,7 +2636,8 @@
                                                 "nameMatchers": [
                                                     ".rb",
                                                     ".ru",
-                                                    ".gemspec"
+                                                    ".gemspec",
+                                                    ".rake"
                                                 ],
                                                 "pygmentsLexer": "ruby",
                                                 "singleLineComment": [
@@ -2576,7 +2647,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "Ruby"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/totem/lodestar/engine.rb",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/totem/lodestar/engine.rb",
                                             "projectPath": "lib/totem/lodestar/engine.rb",
                                             "targetPath": "lib/totem/lodestar/engine",
                                             "pageTitle": "lib/totem/lodestar/engine",
@@ -2592,7 +2663,8 @@
                                                 "nameMatchers": [
                                                     ".rb",
                                                     ".ru",
-                                                    ".gemspec"
+                                                    ".gemspec",
+                                                    ".rake"
                                                 ],
                                                 "pygmentsLexer": "ruby",
                                                 "singleLineComment": [
@@ -2602,7 +2674,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "Ruby"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/lib/totem/lodestar/version.rb",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/lib/totem/lodestar/version.rb",
                                             "projectPath": "lib/totem/lodestar/version.rb",
                                             "targetPath": "lib/totem/lodestar/version",
                                             "pageTitle": "lib/totem/lodestar/version",
@@ -2656,7 +2728,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -2666,7 +2739,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/controllers/totem/lodestar/documents_controller_test.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/controllers/totem/lodestar/documents_controller_test.rb",
                                                     "projectPath": "test/controllers/totem/lodestar/documents_controller_test.rb",
                                                     "targetPath": "test/controllers/totem/lodestar/documents_controller_test",
                                                     "pageTitle": "test/controllers/totem/lodestar/documents_controller_test",
@@ -2682,7 +2755,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -2692,7 +2766,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/controllers/totem/lodestar/sections_controller_test.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/controllers/totem/lodestar/sections_controller_test.rb",
                                                     "projectPath": "test/controllers/totem/lodestar/sections_controller_test.rb",
                                                     "targetPath": "test/controllers/totem/lodestar/sections_controller_test",
                                                     "pageTitle": "test/controllers/totem/lodestar/sections_controller_test",
@@ -2708,7 +2782,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -2718,7 +2793,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/controllers/totem/lodestar/versions_controller_test.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/controllers/totem/lodestar/versions_controller_test.rb",
                                                     "projectPath": "test/controllers/totem/lodestar/versions_controller_test.rb",
                                                     "targetPath": "test/controllers/totem/lodestar/versions_controller_test",
                                                     "pageTitle": "test/controllers/totem/lodestar/versions_controller_test",
@@ -2785,7 +2860,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "JavaScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/app/assets/config/manifest.js",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/app/assets/config/manifest.js",
                                                             "projectPath": "test/dummy/app/assets/config/manifest.js",
                                                             "targetPath": "test/dummy/app/assets/config/manifest",
                                                             "pageTitle": "test/dummy/app/assets/config/manifest",
@@ -2824,7 +2899,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "JavaScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/app/assets/javascripts/application.js",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/app/assets/javascripts/application.js",
                                                             "projectPath": "test/dummy/app/assets/javascripts/application.js",
                                                             "targetPath": "test/dummy/app/assets/javascripts/application",
                                                             "pageTitle": "test/dummy/app/assets/javascripts/application",
@@ -2853,7 +2928,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "JavaScript"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/app/assets/javascripts/cable.js",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/app/assets/javascripts/cable.js",
                                                             "projectPath": "test/dummy/app/assets/javascripts/cable.js",
                                                             "targetPath": "test/dummy/app/assets/javascripts/cable",
                                                             "pageTitle": "test/dummy/app/assets/javascripts/cable",
@@ -2889,7 +2964,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2899,7 +2975,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/app/channels/application_cable/channel.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/app/channels/application_cable/channel.rb",
                                                             "projectPath": "test/dummy/app/channels/application_cable/channel.rb",
                                                             "targetPath": "test/dummy/app/channels/application_cable/channel",
                                                             "pageTitle": "test/dummy/app/channels/application_cable/channel",
@@ -2915,7 +2991,8 @@
                                                                 "nameMatchers": [
                                                                     ".rb",
                                                                     ".ru",
-                                                                    ".gemspec"
+                                                                    ".gemspec",
+                                                                    ".rake"
                                                                 ],
                                                                 "pygmentsLexer": "ruby",
                                                                 "singleLineComment": [
@@ -2925,7 +3002,7 @@
                                                                 "foldPrefix": "^",
                                                                 "name": "Ruby"
                                                             },
-                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/app/channels/application_cable/connection.rb",
+                                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/app/channels/application_cable/connection.rb",
                                                             "projectPath": "test/dummy/app/channels/application_cable/connection.rb",
                                                             "targetPath": "test/dummy/app/channels/application_cable/connection",
                                                             "pageTitle": "test/dummy/app/channels/application_cable/connection",
@@ -2953,7 +3030,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -2963,7 +3041,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/app/controllers/application_controller.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/app/controllers/application_controller.rb",
                                                     "projectPath": "test/dummy/app/controllers/application_controller.rb",
                                                     "targetPath": "test/dummy/app/controllers/application_controller",
                                                     "pageTitle": "test/dummy/app/controllers/application_controller",
@@ -2989,7 +3067,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -2999,7 +3078,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/app/helpers/application_helper.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/app/helpers/application_helper.rb",
                                                     "projectPath": "test/dummy/app/helpers/application_helper.rb",
                                                     "targetPath": "test/dummy/app/helpers/application_helper",
                                                     "pageTitle": "test/dummy/app/helpers/application_helper",
@@ -3025,7 +3104,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3035,7 +3115,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/app/jobs/application_job.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/app/jobs/application_job.rb",
                                                     "projectPath": "test/dummy/app/jobs/application_job.rb",
                                                     "targetPath": "test/dummy/app/jobs/application_job",
                                                     "pageTitle": "test/dummy/app/jobs/application_job",
@@ -3061,7 +3141,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3071,7 +3152,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/app/mailers/application_mailer.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/app/mailers/application_mailer.rb",
                                                     "projectPath": "test/dummy/app/mailers/application_mailer.rb",
                                                     "targetPath": "test/dummy/app/mailers/application_mailer",
                                                     "pageTitle": "test/dummy/app/mailers/application_mailer",
@@ -3097,7 +3178,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3107,7 +3189,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/app/models/application_record.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/app/models/application_record.rb",
                                                     "projectPath": "test/dummy/app/models/application_record.rb",
                                                     "targetPath": "test/dummy/app/models/application_record",
                                                     "pageTitle": "test/dummy/app/models/application_record",
@@ -3135,7 +3217,8 @@
                                                 "nameMatchers": [
                                                     ".rb",
                                                     ".ru",
-                                                    ".gemspec"
+                                                    ".gemspec",
+                                                    ".rake"
                                                 ],
                                                 "pygmentsLexer": "ruby",
                                                 "singleLineComment": [
@@ -3145,7 +3228,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "Ruby"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/application.rb",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/application.rb",
                                             "projectPath": "test/dummy/config/application.rb",
                                             "targetPath": "test/dummy/config/application",
                                             "pageTitle": "test/dummy/config/application",
@@ -3161,7 +3244,8 @@
                                                 "nameMatchers": [
                                                     ".rb",
                                                     ".ru",
-                                                    ".gemspec"
+                                                    ".gemspec",
+                                                    ".rake"
                                                 ],
                                                 "pygmentsLexer": "ruby",
                                                 "singleLineComment": [
@@ -3171,7 +3255,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "Ruby"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/boot.rb",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/boot.rb",
                                             "projectPath": "test/dummy/config/boot.rb",
                                             "targetPath": "test/dummy/config/boot",
                                             "pageTitle": "test/dummy/config/boot",
@@ -3187,7 +3271,8 @@
                                                 "nameMatchers": [
                                                     ".rb",
                                                     ".ru",
-                                                    ".gemspec"
+                                                    ".gemspec",
+                                                    ".rake"
                                                 ],
                                                 "pygmentsLexer": "ruby",
                                                 "singleLineComment": [
@@ -3197,7 +3282,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "Ruby"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/environment.rb",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/environment.rb",
                                             "projectPath": "test/dummy/config/environment.rb",
                                             "targetPath": "test/dummy/config/environment",
                                             "pageTitle": "test/dummy/config/environment",
@@ -3221,7 +3306,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3231,7 +3317,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/environments/development.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/environments/development.rb",
                                                     "projectPath": "test/dummy/config/environments/development.rb",
                                                     "targetPath": "test/dummy/config/environments/development",
                                                     "pageTitle": "test/dummy/config/environments/development",
@@ -3247,7 +3333,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3257,7 +3344,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/environments/production.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/environments/production.rb",
                                                     "projectPath": "test/dummy/config/environments/production.rb",
                                                     "targetPath": "test/dummy/config/environments/production",
                                                     "pageTitle": "test/dummy/config/environments/production",
@@ -3273,7 +3360,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3283,7 +3371,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/environments/test.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/environments/test.rb",
                                                     "projectPath": "test/dummy/config/environments/test.rb",
                                                     "targetPath": "test/dummy/config/environments/test",
                                                     "pageTitle": "test/dummy/config/environments/test",
@@ -3309,7 +3397,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3319,7 +3408,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/initializers/application_controller_renderer.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/initializers/application_controller_renderer.rb",
                                                     "projectPath": "test/dummy/config/initializers/application_controller_renderer.rb",
                                                     "targetPath": "test/dummy/config/initializers/application_controller_renderer",
                                                     "pageTitle": "test/dummy/config/initializers/application_controller_renderer",
@@ -3335,7 +3424,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3345,7 +3435,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/initializers/assets.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/initializers/assets.rb",
                                                     "projectPath": "test/dummy/config/initializers/assets.rb",
                                                     "targetPath": "test/dummy/config/initializers/assets",
                                                     "pageTitle": "test/dummy/config/initializers/assets",
@@ -3361,7 +3451,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3371,7 +3462,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/initializers/backtrace_silencers.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/initializers/backtrace_silencers.rb",
                                                     "projectPath": "test/dummy/config/initializers/backtrace_silencers.rb",
                                                     "targetPath": "test/dummy/config/initializers/backtrace_silencers",
                                                     "pageTitle": "test/dummy/config/initializers/backtrace_silencers",
@@ -3387,7 +3478,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3397,7 +3489,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/initializers/cookies_serializer.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/initializers/cookies_serializer.rb",
                                                     "projectPath": "test/dummy/config/initializers/cookies_serializer.rb",
                                                     "targetPath": "test/dummy/config/initializers/cookies_serializer",
                                                     "pageTitle": "test/dummy/config/initializers/cookies_serializer",
@@ -3413,7 +3505,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3423,7 +3516,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/initializers/filter_parameter_logging.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/initializers/filter_parameter_logging.rb",
                                                     "projectPath": "test/dummy/config/initializers/filter_parameter_logging.rb",
                                                     "targetPath": "test/dummy/config/initializers/filter_parameter_logging",
                                                     "pageTitle": "test/dummy/config/initializers/filter_parameter_logging",
@@ -3439,7 +3532,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3449,7 +3543,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/initializers/inflections.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/initializers/inflections.rb",
                                                     "projectPath": "test/dummy/config/initializers/inflections.rb",
                                                     "targetPath": "test/dummy/config/initializers/inflections",
                                                     "pageTitle": "test/dummy/config/initializers/inflections",
@@ -3465,7 +3559,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3475,7 +3570,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/initializers/mime_types.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/initializers/mime_types.rb",
                                                     "projectPath": "test/dummy/config/initializers/mime_types.rb",
                                                     "targetPath": "test/dummy/config/initializers/mime_types",
                                                     "pageTitle": "test/dummy/config/initializers/mime_types",
@@ -3491,7 +3586,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3501,7 +3597,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/initializers/new_framework_defaults.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/initializers/new_framework_defaults.rb",
                                                     "projectPath": "test/dummy/config/initializers/new_framework_defaults.rb",
                                                     "targetPath": "test/dummy/config/initializers/new_framework_defaults",
                                                     "pageTitle": "test/dummy/config/initializers/new_framework_defaults",
@@ -3517,7 +3613,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3527,7 +3624,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/initializers/session_store.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/initializers/session_store.rb",
                                                     "projectPath": "test/dummy/config/initializers/session_store.rb",
                                                     "targetPath": "test/dummy/config/initializers/session_store",
                                                     "pageTitle": "test/dummy/config/initializers/session_store",
@@ -3543,7 +3640,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3553,7 +3651,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/initializers/wrap_parameters.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/initializers/wrap_parameters.rb",
                                                     "projectPath": "test/dummy/config/initializers/wrap_parameters.rb",
                                                     "targetPath": "test/dummy/config/initializers/wrap_parameters",
                                                     "pageTitle": "test/dummy/config/initializers/wrap_parameters",
@@ -3571,7 +3669,8 @@
                                                 "nameMatchers": [
                                                     ".rb",
                                                     ".ru",
-                                                    ".gemspec"
+                                                    ".gemspec",
+                                                    ".rake"
                                                 ],
                                                 "pygmentsLexer": "ruby",
                                                 "singleLineComment": [
@@ -3581,7 +3680,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "Ruby"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/puma.rb",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/puma.rb",
                                             "projectPath": "test/dummy/config/puma.rb",
                                             "targetPath": "test/dummy/config/puma",
                                             "pageTitle": "test/dummy/config/puma",
@@ -3597,7 +3696,8 @@
                                                 "nameMatchers": [
                                                     ".rb",
                                                     ".ru",
-                                                    ".gemspec"
+                                                    ".gemspec",
+                                                    ".rake"
                                                 ],
                                                 "pygmentsLexer": "ruby",
                                                 "singleLineComment": [
@@ -3607,7 +3707,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "Ruby"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/routes.rb",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/routes.rb",
                                             "projectPath": "test/dummy/config/routes.rb",
                                             "targetPath": "test/dummy/config/routes",
                                             "pageTitle": "test/dummy/config/routes",
@@ -3623,7 +3723,8 @@
                                                 "nameMatchers": [
                                                     ".rb",
                                                     ".ru",
-                                                    ".gemspec"
+                                                    ".gemspec",
+                                                    ".rake"
                                                 ],
                                                 "pygmentsLexer": "ruby",
                                                 "singleLineComment": [
@@ -3633,7 +3734,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "Ruby"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/config/spring.rb",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/config/spring.rb",
                                             "projectPath": "test/dummy/config/spring.rb",
                                             "targetPath": "test/dummy/config/spring",
                                             "pageTitle": "test/dummy/config/spring",
@@ -3659,7 +3760,8 @@
                                                 "nameMatchers": [
                                                     ".rb",
                                                     ".ru",
-                                                    ".gemspec"
+                                                    ".gemspec",
+                                                    ".rake"
                                                 ],
                                                 "pygmentsLexer": "ruby",
                                                 "singleLineComment": [
@@ -3669,7 +3771,7 @@
                                                 "foldPrefix": "^",
                                                 "name": "Ruby"
                                             },
-                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/dummy/db/schema.rb",
+                                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/dummy/db/schema.rb",
                                             "projectPath": "test/dummy/db/schema.rb",
                                             "targetPath": "test/dummy/db/schema",
                                             "pageTitle": "test/dummy/db/schema",
@@ -3697,7 +3799,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -3707,7 +3810,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/integration/navigation_test.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/integration/navigation_test.rb",
                                     "projectPath": "test/integration/navigation_test.rb",
                                     "targetPath": "test/integration/navigation_test",
                                     "pageTitle": "test/integration/navigation_test",
@@ -3765,7 +3868,8 @@
                                                                         "nameMatchers": [
                                                                             ".rb",
                                                                             ".ru",
-                                                                            ".gemspec"
+                                                                            ".gemspec",
+                                                                            ".rake"
                                                                         ],
                                                                         "pygmentsLexer": "ruby",
                                                                         "singleLineComment": [
@@ -3775,7 +3879,7 @@
                                                                         "foldPrefix": "^",
                                                                         "name": "Ruby"
                                                                     },
-                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/lib/generators/totem/totem/lodestar/install_generator_test.rb",
+                                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/lib/generators/totem/totem/lodestar/install_generator_test.rb",
                                                                     "projectPath": "test/lib/generators/totem/totem/lodestar/install_generator_test.rb",
                                                                     "targetPath": "test/lib/generators/totem/totem/lodestar/install_generator_test",
                                                                     "pageTitle": "test/lib/generators/totem/totem/lodestar/install_generator_test",
@@ -3825,7 +3929,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3835,7 +3940,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/models/totem/lodestar/document_test.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/models/totem/lodestar/document_test.rb",
                                                     "projectPath": "test/models/totem/lodestar/document_test.rb",
                                                     "targetPath": "test/models/totem/lodestar/document_test",
                                                     "pageTitle": "test/models/totem/lodestar/document_test",
@@ -3851,7 +3956,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3861,7 +3967,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/models/totem/lodestar/section_test.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/models/totem/lodestar/section_test.rb",
                                                     "projectPath": "test/models/totem/lodestar/section_test.rb",
                                                     "targetPath": "test/models/totem/lodestar/section_test",
                                                     "pageTitle": "test/models/totem/lodestar/section_test",
@@ -3877,7 +3983,8 @@
                                                         "nameMatchers": [
                                                             ".rb",
                                                             ".ru",
-                                                            ".gemspec"
+                                                            ".gemspec",
+                                                            ".rake"
                                                         ],
                                                         "pygmentsLexer": "ruby",
                                                         "singleLineComment": [
@@ -3887,7 +3994,7 @@
                                                         "foldPrefix": "^",
                                                         "name": "Ruby"
                                                     },
-                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/models/totem/lodestar/version_test.rb",
+                                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/models/totem/lodestar/version_test.rb",
                                                     "projectPath": "test/models/totem/lodestar/version_test.rb",
                                                     "targetPath": "test/models/totem/lodestar/version_test",
                                                     "pageTitle": "test/models/totem/lodestar/version_test",
@@ -3909,7 +4016,8 @@
                                 "nameMatchers": [
                                     ".rb",
                                     ".ru",
-                                    ".gemspec"
+                                    ".gemspec",
+                                    ".rake"
                                 ],
                                 "pygmentsLexer": "ruby",
                                 "singleLineComment": [
@@ -3919,7 +4027,7 @@
                                 "foldPrefix": "^",
                                 "name": "Ruby"
                             },
-                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/test_helper.rb",
+                            "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/test_helper.rb",
                             "projectPath": "test/test_helper.rb",
                             "targetPath": "test/test_helper",
                             "pageTitle": "test/test_helper",
@@ -3943,7 +4051,8 @@
                                         "nameMatchers": [
                                             ".rb",
                                             ".ru",
-                                            ".gemspec"
+                                            ".gemspec",
+                                            ".rake"
                                         ],
                                         "pygmentsLexer": "ruby",
                                         "singleLineComment": [
@@ -3953,7 +4062,7 @@
                                         "foldPrefix": "^",
                                         "name": "Ruby"
                                     },
-                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170223-55868-1baea1v/totem-lodestar/test/totem/lodestar_test.rb",
+                                    "sourcePath": "/home/wizzy/Desktop/ember20/apps-rails/totem-docs/d20170227-63897-1ck0q6z/totem-lodestar/test/totem/lodestar_test.rb",
                                     "projectPath": "test/totem/lodestar_test.rb",
                                     "targetPath": "test/totem/lodestar_test",
                                     "pageTitle": "test/totem/lodestar_test",
