@@ -19,9 +19,4 @@ export default base.extend
 
   <span class="hljs-attribute">actions</span>:
     <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, id
-
-    <span class="hljs-attribute">toggle_chat</span>: <span class="hljs-function">-&gt;</span>
-      <span class="hljs-keyword">if</span> <span class="hljs-property">@toggleProperty</span> <span class="hljs-string">'qm.chat_displayed'</span>
-        <span class="hljs-property">@sendAction</span> <span class="hljs-string">'chat'</span>, <span class="hljs-property">@qm</span>.qid
-      <span class="hljs-keyword">else</span>
-        <span class="hljs-property">@sendAction</span> <span class="hljs-string">'chat_close'</span>, <span class="hljs-property">@qm</span>.qid</div></div></div></div></body></html>
+    <span class="hljs-attribute">toggle_chat</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'toggle_chat'</span></div></div></div></div></body></html>

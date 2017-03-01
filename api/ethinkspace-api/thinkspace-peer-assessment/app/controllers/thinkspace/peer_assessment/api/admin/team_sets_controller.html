@@ -41,6 +41,14 @@
             controller_render(<span class="hljs-variable">@team_set</span>)
           <span class="hljs-keyword">end</span>
 
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
+            <span class="hljs-variable">@team_set</span>.thinkspace_team_team.thinkspace_common_users.each <span class="hljs-keyword">do</span> |user|
+              review_set = <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>.find_or_create_by(<span class="hljs-symbol">ownerable:</span> user, <span class="hljs-symbol">team_set_id:</span> <span class="hljs-variable">@team_set</span>.id)
+              review_set.create_reviews
+            <span class="hljs-keyword">end</span>
+            controller_render(<span class="hljs-variable">@team_set</span>)
+          <span class="hljs-keyword">end</span>
+
           private
 
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_authable</span></span>

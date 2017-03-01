@@ -6,7 +6,8 @@ import tc    from <span class="hljs-string">'totem/cache'</span>
 
 export default base.extend
 
-  <span class="hljs-attribute">server_events</span>: ember.inject.service()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>totem_data_config: ability: true, metadata: {ajax_source: true}  # require metadata so completed count will be updated after a submit</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">all_phases_completed</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">server_events</span>: ember.inject.service()
+  <span class="hljs-attribute">phase_manager</span>: ember.inject.service()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>totem_data_config: ability: true, metadata: {ajax_source: true}  # require metadata so completed count will be updated after a submit</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">all_phases_completed</span>: <span class="hljs-literal">null</span>
   <span class="hljs-attribute">is_in_progress</span>:       <span class="hljs-literal">null</span>
   <span class="hljs-attribute">resume_phase</span>:         <span class="hljs-literal">null</span>
   <span class="hljs-attribute">team</span>:                 <span class="hljs-literal">null</span>
@@ -15,20 +16,36 @@ export default base.extend
   <span class="hljs-attribute">is_on_team</span>: ember.computed.notEmpty <span class="hljs-string">'team'</span>
 
   <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-property">@set_phase_progress</span>()
-    <span class="hljs-property">@init_assignment_type</span>()
-    <span class="hljs-property">@init_team_set</span>().<span class="hljs-keyword">then</span> =&gt;
-      <span class="hljs-property">@init_team</span>()
-      assignment = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
-      <span class="hljs-keyword">if</span> assignment.get(<span class="hljs-string">'is_pubsub'</span>)
-        <span class="hljs-property">@totem_scope</span>.authable(assignment)
-        se = <span class="hljs-property">@get</span>(<span class="hljs-string">'server_events'</span>)
-        se.join_assignment_with_current_user()
+    <span class="hljs-property">@init_assignment_type</span>().<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@init_phase_states</span>().<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@init_teams</span>().<span class="hljs-keyword">then</span> =&gt;
+          assignment = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+          <span class="hljs-keyword">if</span> assignment.get(<span class="hljs-string">'is_pubsub'</span>)
+            <span class="hljs-property">@totem_scope</span>.authable(assignment)
+            se = <span class="hljs-property">@get</span>(<span class="hljs-string">'server_events'</span>)
+            se.join_assignment_with_current_user()
 
   <span class="hljs-attribute">init_assignment_type</span>: <span class="hljs-function">-&gt;</span>
-    model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
-    model.get(ta.to_p(<span class="hljs-string">'assignment_type'</span>)).<span class="hljs-keyword">then</span> (assignment_type) =&gt;
-      <span class="hljs-property">@set</span>(<span class="hljs-string">'assignment_type'</span>, assignment_type)
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      model = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      model.get(ta.to_p(<span class="hljs-string">'assignment_type'</span>)).<span class="hljs-keyword">then</span> (assignment_type) =&gt;
+        <span class="hljs-property">@set</span>(<span class="hljs-string">'assignment_type'</span>, assignment_type)
+        resolve()
+
+  <span class="hljs-attribute">init_phase_states</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@pm</span>        = <span class="hljs-property">@get</span>(<span class="hljs-string">'phase_manager'</span>)
+      <span class="hljs-property">@pmap</span>      = <span class="hljs-property">@get</span>(<span class="hljs-string">'phase_manager.map'</span>)
+      assignment = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+      ownerable  = <span class="hljs-property">@get_ownerable</span>()
+      <span class="hljs-property">@set</span>(<span class="hljs-string">'phase_states'</span>, <span class="hljs-property">@pmap</span>.get_all(ownerable, assignment))
+      <span class="hljs-property">@set</span>(<span class="hljs-string">'phase_states_loaded'</span>, <span class="hljs-literal">true</span>)
+      resolve()
+
+  <span class="hljs-attribute">get_ownerable</span>: <span class="hljs-function">-&gt;</span>
+    ownerable = <span class="hljs-property">@pm</span>.get_active_addon_ownerable()
+    <span class="hljs-keyword">return</span> ownerable <span class="hljs-keyword">if</span> ember.isPresent(ownerable)
+    <span class="hljs-property">@pm</span>.get_current_user()
 
   <span class="hljs-attribute">init_team_set</span>: <span class="hljs-function">-&gt;</span>
     <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
@@ -38,40 +55,31 @@ export default base.extend
         space.get_team_sets().<span class="hljs-keyword">then</span> (team_sets) =&gt;
           <span class="hljs-property">@set</span>(<span class="hljs-string">'team_set'</span>, team_sets.get(<span class="hljs-string">'firstObject'</span>))
           resolve()
-            
-  <span class="hljs-attribute">init_team</span>: <span class="hljs-function">-&gt;</span>
-    team_set = <span class="hljs-property">@get</span>(<span class="hljs-string">'team_set'</span>)
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'team_set is '</span>, team_set, ta.to_p(<span class="hljs-string">'team'</span>))
 
-    query =
-      <span class="hljs-attribute">id</span>: team_set.get(<span class="hljs-string">'id'</span>)
-
-    options =
-      <span class="hljs-attribute">action</span>: <span class="hljs-string">'teams'</span>
-      <span class="hljs-attribute">model</span>: ta.to_p(<span class="hljs-string">'team'</span>)
-
-    tc.query_action(ta.to_p(<span class="hljs-string">'team_set'</span>), query, options).<span class="hljs-keyword">then</span> (teams) =&gt;
-      <span class="hljs-built_in">console</span>.log <span class="hljs-string">'teams are '</span>, teams
-
-      team = teams.filterBy <span class="hljs-string">'is_member'</span>, <span class="hljs-literal">true</span>
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'team is '</span>, team.get(<span class="hljs-string">'firstObject'</span>))
-
-      <span class="hljs-property">@set</span>(<span class="hljs-string">'team'</span>, team.get(<span class="hljs-string">'firstObject'</span>))
-
-  <span class="hljs-attribute">set_phase_progress</span>: <span class="hljs-function">-&gt;</span>
-    assignment = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
-    assignment.get(ns.to_p <span class="hljs-string">'phases'</span> ).<span class="hljs-keyword">then</span> (phases) =&gt;
-      phase_promises = phases.getEach(ns.to_p(<span class="hljs-string">'phase_states'</span>))
-      ember.RSVP.Promise.all(phase_promises).<span class="hljs-keyword">then</span> =&gt;
-        sorted_phases = phases.sortBy(<span class="hljs-string">'position'</span>)
-        resume_phase  = sorted_phases.find (phase) -&gt; phase.get(<span class="hljs-string">'is_unlocked'</span>)
-        <span class="hljs-keyword">if</span> resume_phase
-          <span class="hljs-property">@set</span> <span class="hljs-string">'resume_phase'</span>, resume_phase
-          <span class="hljs-property">@set</span> <span class="hljs-string">'is_in_progress'</span>, <span class="hljs-literal">true</span>  <span class="hljs-keyword">if</span> resume_phase != sorted_phases.get(<span class="hljs-string">'firstObject'</span>)
-        uncompleted_phase = phases.find (phase) -&gt; phase.get(<span class="hljs-string">'is_completed'</span>) != <span class="hljs-literal">true</span>
-        <span class="hljs-property">@set</span> <span class="hljs-string">'all_phases_completed'</span>, <span class="hljs-literal">true</span> <span class="hljs-keyword">unless</span> uncompleted_phase
-        <span class="hljs-property">@set</span> <span class="hljs-string">'phase_states_loaded'</span>, <span class="hljs-literal">true</span>
-      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
-        <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: ns.to_p(<span class="hljs-string">'phase_states'</span>)
-    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
-      <span class="hljs-property">@totem_messages</span>.api_failure error, <span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">model</span>: ns.to_p(<span class="hljs-string">'phases'</span>)</div></div></div></div></body></html>
+  <span class="hljs-attribute">init_teams</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      options = 
+        <span class="hljs-attribute">verb</span>:   <span class="hljs-string">'post'</span>
+        <span class="hljs-attribute">action</span>: <span class="hljs-string">'teams_view'</span>
+      query =
+        <span class="hljs-attribute">sub_action</span>: <span class="hljs-string">'teams'</span>
+      <span class="hljs-property">@totem_scope</span>.add_authable_to_query(query, <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>))
+      <span class="hljs-property">@tc</span>.query_action(ns.to_p(<span class="hljs-string">'team'</span>), query, options).<span class="hljs-keyword">then</span> (teams) =&gt;
+        <span class="hljs-property">@set</span>(<span class="hljs-string">'teams'</span>, teams)
+        resolve()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>set_phase_progress: -&gt;
+  assignment = @get(&#39;model&#39;)
+  assignment.get(ns.to_p &#39;phases&#39; ).then (phases) =&gt;
+    phase_promises = phases.getEach(ns.to_p(&#39;phase_states&#39;))
+    ember.RSVP.Promise.all(phase_promises).then =&gt;
+      sorted_phases = phases.sortBy(&#39;position&#39;)
+      resume_phase  = sorted_phases.find (phase) -&gt; phase.get(&#39;is_unlocked&#39;)
+      if resume_phase
+        @set &#39;resume_phase&#39;, resume_phase
+        @set &#39;is_in_progress&#39;, true  if resume_phase != sorted_phases.get(&#39;firstObject&#39;)
+      uncompleted_phase = phases.find (phase) -&gt; phase.get(&#39;is_completed&#39;) != true
+      @set &#39;all_phases_completed&#39;, true unless uncompleted_phase
+      @set &#39;phase_states_loaded&#39;, true
+    , (error) =&gt;
+      @totem_messages.api_failure error, source: @, model: ns.to_p(&#39;phase_states&#39;)
+  , (error) =&gt;
+    @totem_messages.api_failure error, source: @, model: ns.to_p(&#39;phases&#39;)</p></div></div></div></div></body></html>

@@ -43,14 +43,12 @@
     serializer_options.include_metadata
     serializer_options.ability_actions <span class="hljs-symbol">:gradebook</span>, <span class="hljs-symbol">:manage_resources</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
     serializer_options.remove_all_except(
-      <span class="hljs-symbol">:thinkspace_casespace_phases</span>,
       <span class="hljs-symbol">:thinkspace_common_space</span>,
       <span class="hljs-symbol">:thinkspace_resource_files</span>,
       <span class="hljs-symbol">:thinkspace_resource_tags</span>,
       <span class="hljs-symbol">:thinkspace_resource_links</span>,
       <span class="hljs-symbol">:thinkspace_casespace_assignment_type</span>
     )
-    serializer_options.blank_association <span class="hljs-symbol">:thinkspace_casespace_phases</span>
   <span class="hljs-keyword">end</span>
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">common_cache_serializer_options</span><span class="hljs-params">(serializer_options)</span></span>

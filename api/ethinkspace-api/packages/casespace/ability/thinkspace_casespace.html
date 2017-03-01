@@ -119,10 +119,10 @@
     can [<span class="hljs-symbol">:crud</span>], review
     can [<span class="hljs-symbol">:read</span>], overview
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> admin?
-    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:teams</span>, <span class="hljs-symbol">:review_sets</span>, <span class="hljs-symbol">:team_sets</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:activate</span>], assessment 
+    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:teams</span>, <span class="hljs-symbol">:review_sets</span>, <span class="hljs-symbol">:team_sets</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:activate</span>, <span class="hljs-symbol">:progress_report</span>, <span class="hljs-symbol">:approve_team_sets</span>], assessment 
     can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:unapprove</span>], review
     can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:unapprove</span>, <span class="hljs-symbol">:notify</span>], review_set
-    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:unapprove</span>, <span class="hljs-symbol">:approve_all</span>, <span class="hljs-symbol">:unapprove_all</span>], team_set
+    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:unapprove</span>, <span class="hljs-symbol">:approve_all</span>, <span class="hljs-symbol">:unapprove_all</span>, <span class="hljs-symbol">:read</span>], team_set
     can [<span class="hljs-symbol">:update</span>], overview
   <span class="hljs-keyword">end</span>
 

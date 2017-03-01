@@ -14,9 +14,8 @@ export default base.extend
     transition.abort()  <span class="hljs-keyword">unless</span> assignment
     <span class="hljs-property">@current_models</span>().set_current_models(<span class="hljs-attribute">assignment</span>: assignment).<span class="hljs-keyword">then</span> =&gt;
       pm = <span class="hljs-property">@get</span>(<span class="hljs-string">'phase_manager'</span>)
-      pm.set_all_phase_states()
-
-      assignment.get(<span class="hljs-string">'assignment_type'</span>).<span class="hljs-keyword">then</span> (assignment_type) =&gt;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(assignment_type)
-        <span class="hljs-keyword">if</span> assignment_type.get(<span class="hljs-string">'is_pe'</span>)
-          <span class="hljs-property">@transitionToExternal</span>(<span class="hljs-string">'thinkspace-peer-assessment.overview'</span>, assignment)</div></div></div></div></body></html>
+      pm.set_all_phase_states().<span class="hljs-keyword">then</span> =&gt;
+        assignment.get(<span class="hljs-string">'assignment_type'</span>).<span class="hljs-keyword">then</span> (assignment_type) =&gt;
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(assignment_type)
+          <span class="hljs-keyword">if</span> assignment_type.get(<span class="hljs-string">'is_pe'</span>)
+            <span class="hljs-property">@transitionToExternal</span>(<span class="hljs-string">'thinkspace-peer-assessment.overview'</span>, assignment)</div></div></div></div></body></html>

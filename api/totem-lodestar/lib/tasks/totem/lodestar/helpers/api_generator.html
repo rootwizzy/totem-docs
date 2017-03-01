@@ -1,195 +1,178 @@
-<!DOCTYPE html><html lang="en"><head><title>lib/tasks/totem/lodestar/helpers/api_generator</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="lib/tasks/totem/lodestar/helpers/api_generator"><meta name="groc-project-path" content="lib/tasks/totem/lodestar/helpers/api_generator.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/lib/tasks/totem/lodestar/helpers/api_generator.rb">lib/tasks/totem/lodestar/helpers/api_generator.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
-  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Lodestar</span></span>
-    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ApiGenerator</span></span>
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">included</span><span class="hljs-params">(base)</span></span>
+<!DOCTYPE html><html lang="en"><head><title>lib/tasks/totem/lodestar/helpers/api_generator</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="lib/tasks/totem/lodestar/helpers/api_generator"><meta name="groc-project-path" content="lib/tasks/totem/lodestar/helpers/api_generator.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/totem-lodestar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/totem-lodestar/blob/master/lib/tasks/totem/lodestar/helpers/api_generator.rb">lib/tasks/totem/lodestar/helpers/api_generator.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Lodestar</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ApiGenerator</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="api-generatorrb">api_generator.rb</h1>
+<ul>
+<li>Type: <strong>Rake Helper</strong></li>
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="public">Public</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">included</span><span class="hljs-params">(base)</span></span>
+  <span class="hljs-keyword">end</span>
+  </div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public method generate_api_documents</span></p>
+<p>Called by the <code>totem:lodestar:api</code> task to initiate the source documentation build process. Without options this does not build any new documents, just create the corresponding API records into the database. With the given options it will build a whole new set of HTML documents from the source.</p>
+<p>Parameters:</p>
+<ul>
+<li><p><strong>build must be a Boolean.</strong><br/>(Runs the Groc to build HTML files)</p>
+</li>
+<li><p><strong>local must be a Boolean.</strong><br/>(Uses local file system instead of github remote)</p>
+</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_api_documents</span><span class="hljs-params">(build, is_local)</span></span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p>Remove all of the current existing API records for a fresh slate so any removed repositories from the settings file will no longer exist.</p>
+<p>TODO: </p></div></div><div class="code"><div class="wrapper">    <span class="hljs-constant">Totem::Lodestar::Api</span>.destroy_all</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>To generate the API records we use the settings.yml as the source, this will be run every time the task is called to regenerate the records using the repo title.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-constant">Settings</span>.modules.api.repositories.each <span class="hljs-keyword">do</span> |repo|
+      create_api_record(repo)
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Invoke the Groc build process if the <code>build</code> flag as been added.</p></div></div><div class="code"><div class="wrapper">    build_groc_documents(is_local) <span class="hljs-keyword">if</span> build
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="private">Private</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">  private</div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method build_groc_documents</span></p>
+<p>Building the groc documents start first by creating a temp directory in the parent application. From this directory we will clone or copy in the repositories that will be parsed through Groc to build the source documentation.</p>
+<p>Parameters:</p>
+<ul>
+<li><strong>is_local must be a Boolean.</strong><br/>(Passed into the clone process to use local file system over github remote)</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_groc_documents</span><span class="hljs-params">(is_local)</span></span>
+    <span class="hljs-constant">Dir</span>.mktmpdir(<span class="hljs-keyword">nil</span>, <span class="hljs-constant">Dir</span>.pwd) <span class="hljs-keyword">do</span> |dir|
+      <span class="hljs-constant">Dir</span>.chdir(dir)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Iterate over each repository in the API block in settings then copy/clone the corresponding repo into the temp directory. After the repo is cloned, process it through the groc CLI and added to the <code>api</code> folder in the parent application.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-constant">Settings</span>.modules.api.repositories.each <span class="hljs-keyword">do</span> |repo|
+        clone_repo(repo, is_local)
+        run_groc_cli(repo)
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>After all the repositories have been generated begin the process of aggregating the behavior file (included javascript) for each repo into a singular javascript file.</p></div></div><div class="code"><div class="wrapper">      build_behavior_file
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method clone_repo</span></p>
+<p>Used to take a given repo path and stage it into a temporary folder for Groc to use for building source documentation.</p>
+<p>Parameters:</p>
+<ul>
+<li><p><strong>repo must be an Object.</strong><br/>(The repo object passed in from the settings.yml)</p>
+</li>
+<li><p><strong>is_local must be a Boolean.</strong><br/>(The flag used to run the copy or clone statements)</p>
+</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_repo</span><span class="hljs-params">(repo, is_local)</span></span>
+    <span class="hljs-keyword">if</span> is_local
+      sh <span class="hljs-string">"cp ~/Desktop/ember20/repos/<span class="hljs-subst">#{repo.name}</span> <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd}</span> -r"</span>
+    <span class="hljs-keyword">else</span>
+      sh <span class="hljs-string">"git clone -b <span class="hljs-subst">#{repo.branch}</span> <span class="hljs-subst">#{repo.url}</span>"</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method clone_repo_with_token deprecated</span></p>
+<p>Alternative clone method that uses a local ENV token to remotely curl a repository without the use of a login/password combination to github.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_repo_with_token</span><span class="hljs-params">(repo)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Using the base OS curl use the authorization key with a locally stored ENV variable to hit a private repo. This github token is generated from their <a href="https://github.com/settings/tokens">Personal Access Tokens</a>. The token must provide &#39;Full control of private repositories&#39;.</p>
+<p>The file that is pulled from the curl is a tarball from the given repository (hard corded to be from the sixthedge org).</p></div></div><div class="code"><div class="wrapper">    sh <span class="hljs-string">"curl -H 'Authorization: token <span class="hljs-subst">#{<span class="hljs-constant">ENV</span>[<span class="hljs-string">'GITHUB_TOKEN'</span>]}</span>' -L https://api.github.com/repos/sixthedge/<span class="hljs-subst">#{repo.name}</span>/tarball &gt; <span class="hljs-subst">#{repo.name}</span>.tar.gz"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Unzip the tarball which is named as the org-repo-commitHash then remove the tarball from the directory for iteration purposes.</p></div></div><div class="code"><div class="wrapper">    sh <span class="hljs-string">"tar -xvzf <span class="hljs-subst">#{repo.name}</span>.tar.gz"</span>
+    sh <span class="hljs-string">"rm <span class="hljs-subst">#{repo.name}</span>.tar.gz"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Now we must find the repo directory in question and copy and rename it to just the base repo name for groc to correctly find it while removing the extracted tarball version.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-constant">Dir</span>.foreach(<span class="hljs-constant">Dir</span>.pwd) <span class="hljs-keyword">do</span> |dir|
+      <span class="hljs-keyword">if</span> dir.<span class="hljs-keyword">include</span>?(repo.name)
+        sh <span class="hljs-string">"cp <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/'</span> + dir}</span> <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/'</span> + repo.name}</span> -r"</span>
+        sh <span class="hljs-string">"rm <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/'</span> + dir}</span> -r"</span>
       <span class="hljs-keyword">end</span>
-        
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_api_documents</span><span class="hljs-params">(build, is_local)</span></span>
-        <span class="hljs-constant">Totem::Lodestar::Api</span>.destroy_all
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method run_groc_cli</span></p>
+<p>Run the groc CLI with a set of options from the settings.yml</p>
+<p>Parameters:</p>
+<ul>
+<li><strong>repo must be an Object.</strong><br/>(The repo object from settings containing corresponding CLI options)</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_groc_cli</span><span class="hljs-params">(repo)</span></span>
+    <span class="hljs-constant">Dir</span>.chdir(repo.name)
+    sh <span class="hljs-string">"<span class="hljs-subst">#{groc_cli(repo.options)}</span>"</span>
+    <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-string">'..'</span>)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method groc_cli</span></p>
+<p>Calls the groc CLI from the installed node_modules folder and passes it the required options.</p>
+<p>Parameters:</p>
+<ul>
+<li><strong>options must be an Object.</strong><br/>(Set of groc cli options)</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">groc_cli</span><span class="hljs-params">(options)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the groc to use the installed node_modules version, this should be the custom groc made of lodestar which handles multiple repos and custom table of contents.</p></div></div><div class="code"><div class="wrapper">    bin = <span class="hljs-string">"../../node_modules/.bin/groc "</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add the options to the command string except for the glob portion which must be added at the end of the string.</p></div></div><div class="code"><div class="wrapper">    options.each <span class="hljs-keyword">do</span> |opt|
+      bin += opt[<span class="hljs-number">1</span>] + <span class="hljs-string">" "</span> <span class="hljs-keyword">unless</span> opt.<span class="hljs-keyword">include</span>?(<span class="hljs-symbol">:glob</span>)
+    <span class="hljs-keyword">end</span>
 
-        <span class="hljs-constant">Settings</span>.modules.api.repositories.each <span class="hljs-keyword">do</span> |repo|
-          create_api_record(repo)
-        <span class="hljs-keyword">end</span>
+    bin += options[<span class="hljs-string">'glob'</span>]
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method build_behavior_File</span></p>
+<p>Create and aggregate the behavior file used by Groc for their ui and table of contents.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_behavior_file</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create the base assets folder and behavior file that will be used to scrape in each individual repos&#39; behavior file and added to this one for the index of each project.</p>
+<p>At this current time this behavior file is only used at the index of each repo because the way groc links its table of contents and assets uses a relative path to their respective folder.</p></div></div><div class="code"><div class="wrapper">    create_file(<span class="hljs-string">"behavior.js"</span>, <span class="hljs-string">"/api/assets"</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Once the file has been created the <code>scrape_header</code> and <code>scrape_groc_helpers</code> are only required to be run once as these will not change between the files. The table of contents contains each individual repo tableOfContents object that must be split and aggregated into a singular array of objects.</p></div></div><div class="code"><div class="wrapper">    scrape_header
+    scrape_table_of_contents
+    scrape_groc_helpers
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method scrape_header</span></p>
+<p>Scan the behavior file for the initial variables and function call prior to the table of contents.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scrape_header</span></span>
+    lines = []
+    scan  = <span class="hljs-keyword">true</span>
 
-        build_groc_documents(is_local) <span class="hljs-keyword">if</span> build
+    <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, primary_repo_path))
+
+    <span class="hljs-constant">File</span>.open(<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/assets/behavior.js'</span>, <span class="hljs-string">"r"</span>) <span class="hljs-keyword">do</span> |file|
+      file.each_line <span class="hljs-keyword">do</span> |l| 
+        lines.push(l) <span class="hljs-keyword">if</span> scan == <span class="hljs-keyword">true</span>
+
+        scan = <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> l.eql?(<span class="hljs-string">"  var MAX_FILTER_SIZE, appendSearchNode, buildNav, buildTOCNode, clearFilter, clearHighlight, currentNode$, currentQuery, fileMap, focusCurrentNode, highlightMatch, moveCurrentNode, nav$, searchNodes, searchableNodes, selectNode, selectNodeByDocumentPath, setCurrentNodeExpanded, setTableOfContentsActive, toc$, toggleTableOfContents, visitCurrentNode;\n"</span>)
       <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
 
-      private
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_groc_documents</span><span class="hljs-params">(is_local)</span></span>
-        <span class="hljs-constant">Dir</span>.mktmpdir(<span class="hljs-keyword">nil</span>, <span class="hljs-constant">Dir</span>.pwd) <span class="hljs-keyword">do</span> |dir|
-          <span class="hljs-constant">Dir</span>.chdir(dir)
-
-          <span class="hljs-constant">Settings</span>.modules.api.repositories.each <span class="hljs-keyword">do</span> |repo|
-            clone_repo(repo, is_local)
-            run_groc_cli(repo)
-          <span class="hljs-keyword">end</span>
-
-          build_behavior_file</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>build_style_file</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">end</span>
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">primary_repo_path</span></span>
-        <span class="hljs-string">"/api/"</span> + <span class="hljs-constant">Settings</span>.modules.api.repositories.first.name
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_repo</span><span class="hljs-params">(repo, is_local)</span></span>
-        <span class="hljs-keyword">if</span> is_local
-          sh <span class="hljs-string">"cp ~/Desktop/ember20/repos/<span class="hljs-subst">#{repo.name}</span> <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd}</span> -r"</span>
-        <span class="hljs-keyword">else</span>
-          sh <span class="hljs-string">"git clone -b <span class="hljs-subst">#{repo.branch}</span> <span class="hljs-subst">#{repo.url}</span>"</span>
-        <span class="hljs-keyword">end</span>
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_repo_with_token</span><span class="hljs-params">(repo)</span></span>
-        sh <span class="hljs-string">"curl -H 'Authorization: token <span class="hljs-subst">#{<span class="hljs-constant">ENV</span>[<span class="hljs-string">'GITHUB_TOKEN'</span>]}</span>' -L https://api.github.com/repos/sixthedge/<span class="hljs-subst">#{repo.name}</span>/tarball &gt; <span class="hljs-subst">#{repo.name}</span>.tar.gz"</span>
-        sh <span class="hljs-string">"tar -xvzf <span class="hljs-subst">#{repo.name}</span>.tar.gz"</span>
-        sh <span class="hljs-string">"rm <span class="hljs-subst">#{repo.name}</span>.tar.gz"</span>
-        <span class="hljs-constant">Dir</span>.foreach(<span class="hljs-constant">Dir</span>.pwd) <span class="hljs-keyword">do</span> |dir|
-          <span class="hljs-keyword">if</span> dir.<span class="hljs-keyword">include</span>?(repo.name)
-            sh <span class="hljs-string">"cp <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/'</span> + dir}</span> <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/'</span> + repo.name}</span> -r"</span>
-            sh <span class="hljs-string">"rm <span class="hljs-subst">#{<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/'</span> + dir}</span> -r"</span>
-          <span class="hljs-keyword">end</span>
-        <span class="hljs-keyword">end</span>
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_groc_cli</span><span class="hljs-params">(repo)</span></span>
-        <span class="hljs-constant">Dir</span>.chdir(repo.name)
-        sh <span class="hljs-string">"<span class="hljs-subst">#{groc_cli(repo.options)}</span>"</span>
-        <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-string">'..'</span>)
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_api_record</span><span class="hljs-params">(repo)</span></span>
-        <span class="hljs-constant">Totem::Lodestar::Api</span>.find_or_create_by(<span class="hljs-symbol">title:</span> repo.name)
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">groc_cli</span><span class="hljs-params">(options)</span></span>
-        bin = <span class="hljs-string">"../../node_modules/.bin/groc "</span>
-
-        options.each <span class="hljs-keyword">do</span> |opt|
-          bin += opt[<span class="hljs-number">1</span>] + <span class="hljs-string">" "</span> <span class="hljs-keyword">unless</span> opt.<span class="hljs-keyword">include</span>?(<span class="hljs-symbol">:glob</span>)
-        <span class="hljs-keyword">end</span>
-
-        bin += options[<span class="hljs-string">'glob'</span>]
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_behavior_file</span></span>
-        create_file(<span class="hljs-string">"behavior.js"</span>, <span class="hljs-string">"/api/assets"</span>)
-        scrape_header
-        scrape_table_of_contents
-        scrape_groc_helpers
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">build_style_file</span></span>
-        create_file(<span class="hljs-string">"style.css"</span>, <span class="hljs-string">"/api/assets"</span>)
-        scrape_styles
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_file</span><span class="hljs-params">(file, path)</span></span>
-        <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, path))
-        <span class="hljs-constant">File</span>.delete(file) <span class="hljs-keyword">if</span> <span class="hljs-constant">File</span>.exists?(file)
-        <span class="hljs-constant">File</span>.open(file, <span class="hljs-string">"w+"</span>)
-        <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">Rails</span>.application.root)
-      <span class="hljs-keyword">end</span>
-   
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scrape_styles</span></span>
-        <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, primary_repo_path))
-
-        lines = []
-        <span class="hljs-constant">File</span>.open(<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/assets/style.css'</span>, <span class="hljs-string">"r"</span>) <span class="hljs-keyword">do</span> |file|
+    write_file(<span class="hljs-string">'behavior.js'</span>, <span class="hljs-string">"a"</span>, lines)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method scrape_table_of_contents</span></p>
+<p>Scan the file for the table of contents block of each repo&#39;s behavior file then add it to the main behavior file with correct separators.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scrape_table_of_contents</span></span>
+    files = []
+    scan  = <span class="hljs-keyword">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Change to the working directory <code>/api</code> where each repo has been cloned into. This way we can iterate over each repo&#39;s behavior.js to grab its tableOfConents object.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, <span class="hljs-string">"/api"</span>))</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This is the main loop that looks into each repo directory, skipping over the directory shortcuts and the generated assets folder to then open, scan and grab the contents of the file between the start and end of the tableOfContents object.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-constant">Dir</span>.foreach(<span class="hljs-constant">Dir</span>.pwd) <span class="hljs-keyword">do</span> |repo|
+      <span class="hljs-keyword">unless</span> repo.eql?(<span class="hljs-string">"."</span>) <span class="hljs-keyword">or</span> repo.eql?(<span class="hljs-string">".."</span>) <span class="hljs-keyword">or</span> repo.eql?(<span class="hljs-string">"assets"</span>)
+        toc_lines = []
+        <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, <span class="hljs-string">'/api/'</span>, repo, <span class="hljs-string">'assets'</span>))
+        <span class="hljs-constant">File</span>.open(<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/behavior.js'</span>, <span class="hljs-string">"r"</span>) <span class="hljs-keyword">do</span> |file|
           file.each_line <span class="hljs-keyword">do</span> |line|
-            lines.push(line) 
+            scan = <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> line.eql?(<span class="hljs-string">"  tableOfContents = [\n"</span>)
+            toc_lines.push(line) <span class="hljs-keyword">if</span> scan
+            scan = <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> line.eql?(<span class="hljs-string">"  ];\n"</span>)
           <span class="hljs-keyword">end</span>
-        <span class="hljs-keyword">end</span>
-
-        write_file(<span class="hljs-string">'style.css'</span>, <span class="hljs-string">"w+"</span>, lines)
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>After the tableOfContents lines have been scanned into the <code>toc_lines</code> array then remove the first and last element of the array which wrap the array.</p></div></div><div class="code"><div class="wrapper">        toc_lines.pop
+        toc_lines.shift</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Remove the first element and add the closing bracket to the collection so when inserted into the aggregated array it remains a proper collection.</p></div></div><div class="code"><div class="wrapper">        toc_lines.pop
+        toc_lines.push(<span class="hljs-string">"    },\n"</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The <code>Files</code> array contains all the scraped modified tableOfConents.</p></div></div><div class="code"><div class="wrapper">        files.push(toc_lines)
       <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Now that we have an 2D array of all the tableOfContents we now add back in the array wrapper that groc uses to build its table.</p></div></div><div class="code"><div class="wrapper">    files.unshift([<span class="hljs-string">"  tableOfContents = [\n"</span>])
+    files.push([<span class="hljs-string">"  ];\n"</span>])</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Change into the api assests directory to begin writing to the global behavior.js.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, <span class="hljs-string">"/api/assets"</span>))
 
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scrape_header</span></span>
-        lines = []
-        scan  = <span class="hljs-keyword">true</span>
-
-        <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, primary_repo_path))
-
-        <span class="hljs-constant">File</span>.open(<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/assets/behavior.js'</span>, <span class="hljs-string">"r"</span>) <span class="hljs-keyword">do</span> |file|
-          file.each_line <span class="hljs-keyword">do</span> |l| 
-            lines.push(l) <span class="hljs-keyword">if</span> scan == <span class="hljs-keyword">true</span>
-
-            scan = <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> l.eql?(<span class="hljs-string">"  var MAX_FILTER_SIZE, appendSearchNode, buildNav, buildTOCNode, clearFilter, clearHighlight, currentNode$, currentQuery, fileMap, focusCurrentNode, highlightMatch, moveCurrentNode, nav$, searchNodes, searchableNodes, selectNode, selectNodeByDocumentPath, setCurrentNodeExpanded, setTableOfContentsActive, toc$, toggleTableOfContents, visitCurrentNode;\n"</span>)
-          <span class="hljs-keyword">end</span>
-        <span class="hljs-keyword">end</span>
-
-        write_file(<span class="hljs-string">'behavior.js'</span>, <span class="hljs-string">"a"</span>, lines)
+    <span class="hljs-constant">File</span>.open(<span class="hljs-string">'behavior.js'</span>, <span class="hljs-string">"a"</span>) <span class="hljs-keyword">do</span> |f|
+      files.each <span class="hljs-keyword">do</span> |toc_lines|
+        toc_lines.each { |l| f.write(l) }
       <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method scrape_groc_helpers</span></p>
+<p>Used to add the javascript methods required by the tableOfContents and other UI functionality by groc. Only required to be added to the global behavior.js once.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scrape_groc_helpers</span></span>
+    scan  = <span class="hljs-keyword">false</span>
+    lines = []
 
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scrape_table_of_contents</span></span>
-        files = []
-        scan  = <span class="hljs-keyword">false</span>
+    <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, primary_repo_path))
 
-        <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, <span class="hljs-string">"/api"</span>))
-
-        <span class="hljs-constant">Dir</span>.foreach(<span class="hljs-constant">Dir</span>.pwd) <span class="hljs-keyword">do</span> |repo|
-          <span class="hljs-keyword">unless</span> repo.eql?(<span class="hljs-string">"."</span>) <span class="hljs-keyword">or</span> repo.eql?(<span class="hljs-string">".."</span>) <span class="hljs-keyword">or</span> repo.eql?(<span class="hljs-string">"assets"</span>)
-            toc_lines = []
-            <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, <span class="hljs-string">'/api/'</span>, repo, <span class="hljs-string">'assets'</span>))
-            <span class="hljs-constant">File</span>.open(<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/behavior.js'</span>, <span class="hljs-string">"r"</span>) <span class="hljs-keyword">do</span> |file|
-              file.each_line <span class="hljs-keyword">do</span> |line|
-                scan = <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> line.eql?(<span class="hljs-string">"  tableOfContents = [\n"</span>)
-                toc_lines.push(line) <span class="hljs-keyword">if</span> scan
-                scan = <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> line.eql?(<span class="hljs-string">"  ];\n"</span>)
-              <span class="hljs-keyword">end</span>
-            <span class="hljs-keyword">end</span>
-
-            toc_lines.pop
-            toc_lines.shift
-
-            toc_lines.pop
-            toc_lines.push(<span class="hljs-string">"    },\n"</span>)
-
-            files.push(toc_lines)
-          <span class="hljs-keyword">end</span>
-        <span class="hljs-keyword">end</span>
-
-
-        files.unshift([<span class="hljs-string">"  tableOfContents = [\n"</span>])
-        files.push([<span class="hljs-string">"  ];\n"</span>])
-
-        <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, <span class="hljs-string">"/api/assets"</span>))
-
-        <span class="hljs-constant">File</span>.open(<span class="hljs-string">'behavior.js'</span>, <span class="hljs-string">"a"</span>) <span class="hljs-keyword">do</span> |f|
-          files.each <span class="hljs-keyword">do</span> |toc_lines|
-            toc_lines.each { |l| f.write(l) }
-          <span class="hljs-keyword">end</span>
-        <span class="hljs-keyword">end</span>
+    <span class="hljs-constant">File</span>.open(<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/assets/behavior.js'</span>, <span class="hljs-string">"r"</span>) <span class="hljs-keyword">do</span> |file|
+      file.each_line <span class="hljs-keyword">do</span> |line|
+        scan = <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> line.eql?(<span class="hljs-string">"  nav$ = null;\n"</span>)
+        lines.push(line) <span class="hljs-keyword">if</span> scan
       <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
 
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scrape_groc_helpers</span></span>
-        scan  = <span class="hljs-keyword">false</span>
-        lines = []
+    write_file(<span class="hljs-string">'behavior.js'</span>, <span class="hljs-string">"a"</span>, lines)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method create_api_record</span></p>
+<p>Helper method to call rails find_or_create_by on an lodestar API record</p>
+<p>Parameters:</p>
+<ul>
+<li><strong>repo must be an Object.</strong><br/>(Repo from settings file used for the title of the record)</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_api_record</span><span class="hljs-params">(repo)</span></span>
+    <span class="hljs-constant">Totem::Lodestar::Api</span>.find_or_create_by(<span class="hljs-symbol">title:</span> repo.name)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method primary_repo_path</span></p>
+<p>Helper method to grab the first repo used by the scrape methods that only require a single instance of the behavior.js</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">primary_repo_path</span></span>
+    <span class="hljs-string">"/api/"</span> + <span class="hljs-constant">Settings</span>.modules.api.repositories.first.name
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method create_file</span></p>
+<p>Helper method used to create a file at a given path with read/write permissions. Deletes the file for a full re-write if it currently exists.</p>
+<p>Parameters:</p>
+<ul>
+<li><p><strong>file must be a String.</strong><br/>(The file name to create with)</p>
+</li>
+<li><p><strong>path must be a String.</strong><br/>(The path to write the file to)</p>
+</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_file</span><span class="hljs-params">(file, path)</span></span>
+    <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, path))
+    <span class="hljs-constant">File</span>.delete(file) <span class="hljs-keyword">if</span> <span class="hljs-constant">File</span>.exists?(file)
+    <span class="hljs-constant">File</span>.open(file, <span class="hljs-string">"w+"</span>)
+    <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">Rails</span>.application.root)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method write_file</span></p>
+<p>Helper method used to write given lines array or string to a file. File must exist before writing. Currently hard coded to write to files only in <code>api/assets</code></p>
+<p>Parameters:</p>
+<ul>
+<li><p><strong>file must be a String.</strong><br/>(File name to write to)</p>
+</li>
+<li><p><strong>mode must be a String.</strong><br/>(File write mode. Defaults to read/write)</p>
+</li>
+<li><p><strong>lines can be an Array or a String.</strong><br/>(Lines to write to the given file)</p>
+</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">write_file</span><span class="hljs-params">(file, mode=<span class="hljs-string">"w+"</span>, lines)</span></span>
+    <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, <span class="hljs-string">"/api/assets"</span>))
 
-        <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, primary_repo_path))
-
-        <span class="hljs-constant">File</span>.open(<span class="hljs-constant">Dir</span>.pwd + <span class="hljs-string">'/assets/behavior.js'</span>, <span class="hljs-string">"r"</span>) <span class="hljs-keyword">do</span> |file|
-          file.each_line <span class="hljs-keyword">do</span> |line|
-            scan = <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> line.eql?(<span class="hljs-string">"  nav$ = null;\n"</span>)
-            lines.push(line) <span class="hljs-keyword">if</span> scan
-          <span class="hljs-keyword">end</span>
-        <span class="hljs-keyword">end</span>
-
-        write_file(<span class="hljs-string">'behavior.js'</span>, <span class="hljs-string">"a"</span>, lines)
+    <span class="hljs-constant">File</span>.open(file, mode) <span class="hljs-keyword">do</span> |f|
+      <span class="hljs-keyword">if</span> lines.kind_of?(<span class="hljs-constant">Array</span>)
+        lines.each {|l| f.write(l)}
+      <span class="hljs-keyword">else</span>
+        f.write(lines)
       <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">write_file</span><span class="hljs-params">(file, mode=<span class="hljs-string">"w+"</span>, lines)</span></span>
-        <span class="hljs-constant">Dir</span>.chdir(<span class="hljs-constant">File</span>.join(<span class="hljs-constant">Rails</span>.application.root, <span class="hljs-string">"/api/assets"</span>))
-
-        <span class="hljs-constant">File</span>.open(file, mode) <span class="hljs-keyword">do</span> |f|
-          <span class="hljs-keyword">if</span> lines.kind_of?(<span class="hljs-constant">Array</span>)
-            lines.each {|l| f.write(l)}
-          <span class="hljs-keyword">else</span>
-            f.write(lines)
-          <span class="hljs-keyword">end</span>
-        <span class="hljs-keyword">end</span>
-      <span class="hljs-keyword">end</span>
-
     <span class="hljs-keyword">end</span>
   <span class="hljs-keyword">end</span>
-<span class="hljs-keyword">end</span></div></div></div></div></body></html>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

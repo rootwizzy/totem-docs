@@ -75,12 +75,13 @@ Note: Query could likely be refined to not require any post-processing.</span></
 Add average number of attempts to get the choice (mainly useful for the correct answer).</p></div></div><div class="code"><div class="wrapper">    total         = choice[<span class="hljs-string">'total'</span>].to_f
     total_choices = choice[<span class="hljs-string">'total_choices'</span>].to_f
     choice[<span class="hljs-string">'attempts'</span>].each <span class="hljs-keyword">do</span> |data|
-      attempt            = data[<span class="hljs-string">'attempt'</span>]
-      count              = data[<span class="hljs-string">'count'</span>]
-      decimal            = count.to_f / total
+      attempt = data[<span class="hljs-string">'attempt'</span>]
+      count   = data[<span class="hljs-string">'count'</span>]
+      total   == <span class="hljs-number">0</span> ? decimal = <span class="hljs-number">0</span>.<span class="hljs-number">0</span> <span class="hljs-symbol">:</span> decimal = count.to_f / total
       data[<span class="hljs-string">'percentages'</span>] = percentages_from_decimal(decimal)
     <span class="hljs-keyword">end</span>
-    choice[<span class="hljs-string">'average'</span>]  = (total_choices / total).round(<span class="hljs-number">2</span>).to_f
+    total             == <span class="hljs-number">0</span> ? average = <span class="hljs-number">0</span>.<span class="hljs-number">0</span> <span class="hljs-symbol">:</span> average = (total_choices / total).round(<span class="hljs-number">2</span>).to_f
+    choice[<span class="hljs-string">'average'</span>] = average
   <span class="hljs-keyword">end</span>
 
   <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_all_attempts_to_choice</span><span class="hljs-params">(id, choice)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Ensure that each choice has all possible attempts.

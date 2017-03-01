@@ -35,6 +35,16 @@
         <span class="hljs-keyword">end</span>
       <span class="hljs-keyword">end</span>
 
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">status</span></span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'complete'</span> <span class="hljs-keyword">if</span> submitted? || approved?
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'ignored'</span> <span class="hljs-keyword">if</span> ignored?
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'in-progress'</span> <span class="hljs-keyword">if</span> in_progress?
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'not started'</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">in_progress?</span>;</span> thinkspace_peer_assessment_reviews.where.<span class="hljs-keyword">not</span>(<span class="hljs-symbol">value:</span> <span class="hljs-keyword">nil</span>).count &gt; <span class="hljs-number">0</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ignored?</span>;</span> thinkspace_peer_assessment_team_set.approved? &amp;&amp; !approved?; <span class="hljs-keyword">end</span>
+
       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve_reviews</span></span>
         thinkspace_peer_assessment_reviews.each { |review| review.approve! <span class="hljs-keyword">if</span> review.may_approve? }
       <span class="hljs-keyword">end</span>

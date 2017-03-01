@@ -36,11 +36,14 @@ export default base.extend
   <span class="hljs-attribute">set_modal</span>: <span class="hljs-function"><span class="hljs-params">(modal)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'modal'</span>, modal
   <span class="hljs-attribute">get_modal</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'modal'</span>
 
-  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-property">@set_modal</span> <span class="hljs-keyword">new</span> Foundation.Reveal(<span class="hljs-property">@get_$modal</span>())
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set_modal</span> <span class="hljs-keyword">new</span> Foundation.Reveal(<span class="hljs-property">@get_$modal</span>())
+
+  <span class="hljs-attribute">willDestroyElement</span>: <span class="hljs-function">-&gt;</span> 
+    $modal = <span class="hljs-property">@get_$modal</span>()
+    $modal.foundation(<span class="hljs-string">'destroy'</span>)
+    $modal.remove() <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> Not sure why 'destroy' doesn't remove it.</span>
 
   <span class="hljs-attribute">actions</span>:
-
     <span class="hljs-attribute">confirm</span>: <span class="hljs-function">-&gt;</span>
       <span class="hljs-property">@send</span> <span class="hljs-string">'close'</span>
       <span class="hljs-property">@sendAction</span> <span class="hljs-string">'confirm'</span>

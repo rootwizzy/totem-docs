@@ -6,6 +6,10 @@ export default base.extend
 
   <span class="hljs-attribute">titleToken</span>: <span class="hljs-function"><span class="hljs-params">(model)</span> -&gt;</span> model.get(<span class="hljs-string">'title'</span>)
 
+  <span class="hljs-attribute">phase_manager</span>: ember.inject.service()
+
   <span class="hljs-attribute">afterModel</span>: <span class="hljs-function"><span class="hljs-params">(assignment, transition)</span> -&gt;</span>
     transition.abort()  <span class="hljs-keyword">unless</span> assignment
-    <span class="hljs-property">@current_models</span>().set_current_models(<span class="hljs-attribute">assignment</span>: assignment)</div></div></div></div></body></html>
+    <span class="hljs-property">@current_models</span>().set_current_models(<span class="hljs-attribute">assignment</span>: assignment).<span class="hljs-keyword">then</span> =&gt;
+      pm = <span class="hljs-property">@get</span>(<span class="hljs-string">'phase_manager'</span>)
+      pm.set_all_phase_states()</div></div></div></div></body></html>
