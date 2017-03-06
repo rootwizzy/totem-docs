@@ -22,8 +22,9 @@
 
         resources <span class="hljs-symbol">:review_sets</span>, <span class="hljs-symbol">only:</span> [] <span class="hljs-keyword">do</span>
           member <span class="hljs-keyword">do</span>
-            put  <span class="hljs-symbol">:approve</span>
-            put  <span class="hljs-symbol">:unapprove</span>
+            put  <span class="hljs-symbol">:ignore</span>
+            put  <span class="hljs-symbol">:unignore</span>
+            put  <span class="hljs-symbol">:unlock</span>
             post <span class="hljs-symbol">:notify</span>
           <span class="hljs-keyword">end</span>
         <span class="hljs-keyword">end</span>

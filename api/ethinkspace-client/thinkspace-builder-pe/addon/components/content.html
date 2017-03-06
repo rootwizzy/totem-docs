@@ -22,4 +22,5 @@ import base  from <span class="hljs-string">'thinkspace-base/components/base'</s
       
     <span class="hljs-attribute">select</span>:  <span class="hljs-function"><span class="hljs-params">(template)</span> -&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'step'</span>).select_template(template) <span class="hljs-keyword">if</span> ember.isPresent(template)
     <span class="hljs-attribute">cancel</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'step'</span>).reset_is_editing_template()
-    <span class="hljs-attribute">confirm</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'step'</span>).confirm_template()</div></div></div></div></body></html>
+    <span class="hljs-attribute">confirm</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'step'</span>).confirm_template()
+    <span class="hljs-attribute">exit</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'builder'</span>).transition_to_cases_show()</div></div></div></div></body></html>

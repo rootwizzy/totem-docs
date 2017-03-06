@@ -29,12 +29,13 @@ else</p></div></div><div class="code"><div class="wrapper">            <span cla
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve</span></span>
             access_denied_state_error <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@assessment</span>.may_approve?
             <span class="hljs-variable">@assessment</span>.approve!
-            controller_render(<span class="hljs-variable">@assessment</span>)
+            controller_render(<span class="hljs-variable">@assessment</span>.thinkspace_peer_assessment_team_sets)
           <span class="hljs-keyword">end</span>
 
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve_team_sets</span></span>
             <span class="hljs-variable">@team_sets</span> = <span class="hljs-variable">@assessment</span>.thinkspace_peer_assessment_team_sets
-            <span class="hljs-variable">@team_sets</span>.update_all(<span class="hljs-symbol">state:</span> <span class="hljs-string">'approved'</span>)
+            <span class="hljs-variable">@team_sets</span>.scope_neutral.update_all(<span class="hljs-symbol">state:</span> <span class="hljs-string">'approved'</span>)
+            <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>.where(<span class="hljs-symbol">team_set_id:</span> <span class="hljs-variable">@team_sets</span>.pluck(<span class="hljs-symbol">:id</span>)).scope_neutral.update_all(<span class="hljs-symbol">state:</span> <span class="hljs-string">'ignored'</span>)
             controller_render(<span class="hljs-variable">@team_sets</span>)
           <span class="hljs-keyword">end</span>
 
@@ -87,7 +88,7 @@ else</p></div></div><div class="code"><div class="wrapper">            <span cla
                 <span class="hljs-symbol">review_sets:</span>  <span class="hljs-constant">Array</span>.new
               }
 
-              team.thinkspace_common_users.each <span class="hljs-keyword">do</span> |user|
+              team.thinkspace_common_users.order(<span class="hljs-symbol">:first_name</span>, <span class="hljs-symbol">:last_name</span>).each <span class="hljs-keyword">do</span> |user|
 
                 review_set = review_sets.find_by(<span class="hljs-symbol">ownerable:</span> user, <span class="hljs-symbol">team_set_id:</span> team_set.id)
                 id         = <span class="hljs-keyword">if</span> review_set.present? <span class="hljs-keyword">then</span> review_set.id     <span class="hljs-keyword">else</span> <span class="hljs-keyword">nil</span>           <span class="hljs-keyword">end</span>
@@ -107,6 +108,7 @@ else</p></div></div><div class="code"><div class="wrapper">            <span cla
 
               data[<span class="hljs-symbol">:team_sets</span>] &lt;&lt; team_set_data
             <span class="hljs-keyword">end</span>
+            data[<span class="hljs-symbol">:team_sets</span>] = data[<span class="hljs-symbol">:team_sets</span>].sort { |a,b| a[<span class="hljs-symbol">:title</span>] &lt;=&gt; b[<span class="hljs-symbol">:title</span>] }
 
             data[<span class="hljs-symbol">:complete</span>] = {
               <span class="hljs-symbol">review_sets:</span> review_sets.to_a.count { |rs| rs.status == <span class="hljs-string">'complete'</span> },

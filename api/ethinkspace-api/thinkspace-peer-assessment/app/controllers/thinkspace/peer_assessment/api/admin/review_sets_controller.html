@@ -9,16 +9,22 @@
 
           <span class="hljs-keyword">include</span> <span class="hljs-constant">Thinkspace::PeerAssessment::Concerns::StateErrors</span>
 
-          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve</span></span>
-            access_denied_state_error <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_approve?
-            <span class="hljs-variable">@review_set</span>.approve_all!
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ignore</span></span>
+            access_denied_state_error <span class="hljs-symbol">:ignore</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_ignore?
+            <span class="hljs-variable">@review_set</span>.ignore!
             controller_render(<span class="hljs-variable">@review_set</span>)
           <span class="hljs-keyword">end</span>
 
-          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unapprove</span></span>
-            access_denied_state_error <span class="hljs-symbol">:unapprove</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_unapprove?
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock</span></span>
+            access_denied_state_error <span class="hljs-symbol">:unlock</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_unlock?
+            <span class="hljs-variable">@review_set</span>.unlock!
+            controller_render(<span class="hljs-variable">@review_set</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unignore</span></span>
+            access_denied_state_error <span class="hljs-symbol">:unignore</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_unignore?
             <span class="hljs-variable">@review_set</span>.transaction <span class="hljs-keyword">do</span>
-              <span class="hljs-variable">@review_set</span>.unapprove_all!
+              <span class="hljs-variable">@review_set</span>.unignore!
             <span class="hljs-keyword">end</span>
             controller_render(<span class="hljs-variable">@review_set</span>)
           <span class="hljs-keyword">end</span>

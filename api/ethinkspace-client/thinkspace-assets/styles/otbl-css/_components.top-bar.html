@@ -113,4 +113,66 @@
 	<span class="hljs-attribute">line-height</span><span class="hljs-value">:    <span class="hljs-number">1.15rem</span>;</span>
 	<span class="hljs-attribute">text-align</span><span class="hljs-value">:     right;</span>
 	<span class="hljs-attribute">margin-right</span><span class="hljs-value">:   .<span class="hljs-number">75rem</span>;</span>
+}
+
+<span class="hljs-class">.account-panel__container</span> {
+	<span class="hljs-attribute">position</span><span class="hljs-value">:          absolute;</span>
+	<span class="hljs-attribute">z-index</span><span class="hljs-value">:           <span class="hljs-number">5000</span>;</span>
+	<span class="hljs-attribute">width</span><span class="hljs-value">:             <span class="hljs-number">300px</span>;</span>
+	<span class="hljs-attribute">top</span><span class="hljs-value">:               <span class="hljs-number">70px</span>;</span>
+	<span class="hljs-attribute">right</span><span class="hljs-value">:             <span class="hljs-variable">$spacing-unit</span>;</span>
+	<span class="hljs-attribute">background-color</span><span class="hljs-value">:  white;</span>
+	<span class="hljs-attribute">border</span><span class="hljs-value">:            <span class="hljs-number">2px</span> solid <span class="hljs-variable">$color-blue-base</span>;</span>
+	<span class="hljs-attribute">box-shadow</span><span class="hljs-value">:        <span class="hljs-variable">$box-shadow--dialogue</span>;</span>
+	<span class="hljs-attribute">border-left-width</span><span class="hljs-value">: <span class="hljs-number">6px</span>;</span>
+
+	<span class="hljs-at_rule">@<span class="hljs-keyword">media</span><span class="hljs-preprocessor"> only</span><span class="hljs-preprocessor"> screen</span><span class="hljs-preprocessor"> and</span> (max-width:<span class="hljs-preprocessor"> 40rem</span>) {</span>
+		<span class="hljs-attribute">width</span><span class="hljs-value">:            <span class="hljs-number">100%</span>;</span>
+		<span class="hljs-attribute">height</span><span class="hljs-value">:           <span class="hljs-number">100%</span>;</span>
+		<span class="hljs-attribute">right</span><span class="hljs-value">:            <span class="hljs-number">0</span>;</span>
+		<span class="hljs-attribute">top</span><span class="hljs-value">:              <span class="hljs-number">0</span>;</span>
+		<span class="hljs-attribute">margin-top</span><span class="hljs-value">:       <span class="hljs-variable">$top-bar-height</span>;</span>
+		<span class="hljs-attribute">border</span><span class="hljs-value">:           none;</span>
+		<span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-function">rgba</span>(<span class="hljs-number">255</span>, <span class="hljs-number">255</span>, <span class="hljs-number">255</span>, .<span class="hljs-number">9</span>);</span>
+		
+  }
+}
+
+<span class="hljs-class">.account-panel</span> {
+	<span class="hljs-at_rule">@<span class="hljs-keyword">media</span><span class="hljs-preprocessor"> only</span><span class="hljs-preprocessor"> screen</span><span class="hljs-preprocessor"> and</span> (max-width:<span class="hljs-preprocessor"> 40rem</span>) {</span>
+		<span class="hljs-attribute">border-bottom</span><span class="hljs-value">: <span class="hljs-variable">$border--thin</span>;</span>
+	}
+}
+
+<span class="hljs-class">.account-panel__item</span> {
+	<span class="hljs-attribute">width</span><span class="hljs-value">:         <span class="hljs-number">100%</span>;</span>
+	<span class="hljs-attribute">border-bottom</span><span class="hljs-value">: <span class="hljs-variable">$border--thin</span>;</span>
+
+	&amp;<span class="hljs-pseudo">:last-of-type</span> {
+		<span class="hljs-attribute">border-bottom</span><span class="hljs-value">: none;</span>
+	}
+}
+
+<span class="hljs-class">.account-panel__link</span> {
+	<span class="hljs-attribute">display</span><span class="hljs-value">:          block;</span>
+	<span class="hljs-attribute">padding</span><span class="hljs-value">:          <span class="hljs-number">1rem</span>;</span>
+	<span class="hljs-attribute">line-height</span><span class="hljs-value">:      inherit;</span>
+	<span class="hljs-attribute">height</span><span class="hljs-value">:           inherit;</span>
+	<span class="hljs-attribute">width</span><span class="hljs-value">:            inherit;</span>
+	<span class="hljs-attribute">font-size</span><span class="hljs-value">:        .<span class="hljs-number">875rem</span>;</span>
+	<span class="hljs-attribute">color</span><span class="hljs-value">:            <span class="hljs-variable">$color-black-base</span>;</span>
+	<span class="hljs-attribute">background-color</span><span class="hljs-value">: white;</span>
+	<span class="hljs-attribute">transition</span><span class="hljs-value">:       <span class="hljs-variable">$transition-animation--background-color</span>;</span>
+
+	&amp;<span class="hljs-pseudo">:hover</span> {
+		<span class="hljs-attribute">background-color</span><span class="hljs-value">: <span class="hljs-variable">$color-gray-med</span>;</span>
+	}
+}
+
+<span class="hljs-class">.account-panel__mobile-close</span> {
+	<span class="hljs-attribute">display</span><span class="hljs-value">: none;</span>
+
+	<span class="hljs-at_rule">@<span class="hljs-keyword">media</span><span class="hljs-preprocessor"> only</span><span class="hljs-preprocessor"> screen</span><span class="hljs-preprocessor"> and</span> (max-width:<span class="hljs-preprocessor"> 40rem</span>) {</span>
+		<span class="hljs-attribute">display</span><span class="hljs-value">: block;</span>
+	}
 }</div></div></div></div></body></html>

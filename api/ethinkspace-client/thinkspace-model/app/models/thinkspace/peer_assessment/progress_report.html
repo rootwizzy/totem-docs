@@ -24,7 +24,8 @@ export default base.extend ta.add(),
     review_sets = ember.makeArray(review_sets) <span class="hljs-keyword">unless</span> ember.isArray(review_sets)
     team_set_data = <span class="hljs-property">@get</span>(<span class="hljs-string">'team_sets'</span>).findBy <span class="hljs-string">'id'</span>, parseInt(team_set.get(<span class="hljs-string">'id'</span>))
     review_sets.forEach (review_set) =&gt;
-      review_set_data = team_set_data.review_sets.findBy <span class="hljs-string">'id'</span>, parseInt(review_set.get(<span class="hljs-string">'id'</span>))
+      review_set_data = team_set_data.review_sets.findBy <span class="hljs-string">'ownerable_id'</span>, parseInt(review_set.get(<span class="hljs-string">'ownerable_id'</span>))
+      ember.set review_set_data, <span class="hljs-string">'id'</span>, review_set.get(<span class="hljs-string">'id'</span>)
       ember.set review_set_data, <span class="hljs-string">'state'</span>, review_set.get(<span class="hljs-string">'state'</span>)
       ember.set review_set_data, <span class="hljs-string">'status'</span>, review_set.get(<span class="hljs-string">'status'</span>)
 

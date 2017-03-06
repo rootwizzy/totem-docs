@@ -10,9 +10,8 @@ import base      from <span class="hljs-string">'thinkspace-base/components/base
   <span class="hljs-attribute">tests</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
 
   <span class="hljs-attribute">selected_value</span>: <span class="hljs-literal">null</span>
-
-  <span class="hljs-attribute">selected_value_obs</span>: ember.observer <span class="hljs-string">'selected_value'</span>, <span class="hljs-function">-&gt;</span>
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'selected_value changed to '</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'selected_value'</span>))
+  <span class="hljs-attribute">is_balance</span>:     <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">is_not_balance</span>: ember.computed.<span class="hljs-keyword">not</span> <span class="hljs-string">'is_balance'</span>
 
   <span class="hljs-attribute">actions</span>: 
     <span class="hljs-attribute">create</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).add_quant_item()

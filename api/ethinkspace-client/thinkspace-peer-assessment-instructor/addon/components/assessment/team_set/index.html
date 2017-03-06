@@ -7,14 +7,18 @@ export default base_component.extend</div></div></div><div class="segment"><div 
     <span class="hljs-attribute">select_team_set</span>: <span class="hljs-function"><span class="hljs-params">(team_set, review_set)</span> -&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select_team_set'</span>, team_set, review_set
 
     <span class="hljs-attribute">send</span>: <span class="hljs-function">-&gt;</span>
-      assessment = <span class="hljs-property">@get</span> <span class="hljs-string">'assessment'</span>
-      params =
+      assessment      = <span class="hljs-property">@get</span> <span class="hljs-string">'assessment'</span>
+      progress_report = <span class="hljs-property">@get</span>(<span class="hljs-string">'progress_report'</span>)
+
+      query =
         <span class="hljs-attribute">id</span>: assessment.get <span class="hljs-string">'id'</span>
       options =
         <span class="hljs-attribute">action</span>: <span class="hljs-string">'approve'</span>
         <span class="hljs-attribute">verb</span>:   <span class="hljs-string">'PUT'</span>
+        <span class="hljs-attribute">model</span>:  ns.to_p(<span class="hljs-string">'tbl:team_set'</span>)
       <span class="hljs-property">@totem_messages</span>.show_loading_outlet()
-      <span class="hljs-property">@tc</span>.query(ns.to_p(<span class="hljs-string">'tbl:assessment'</span>), query, options).<span class="hljs-keyword">then</span> (assessment) =&gt;
+      <span class="hljs-property">@tc</span>.query_action(ns.to_p(<span class="hljs-string">'tbl:assessment'</span>), query, options).<span class="hljs-keyword">then</span> (team_sets) =&gt;
+        progress_report.process_team_sets(team_sets)
         <span class="hljs-property">@totem_messages</span>.hide_loading_outlet()
 
     <span class="hljs-attribute">approve</span>: <span class="hljs-function">-&gt;</span>

@@ -22,14 +22,20 @@ import base            from <span class="hljs-string">'thinkspace-base/component
 
   <span class="hljs-attribute">min</span>: ember.computed <span class="hljs-string">'points_per_member'</span>, <span class="hljs-function">-&gt;</span>
     min = <span class="hljs-keyword">new</span> Array
-    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.<span class="hljs-property">@get</span>(<span class="hljs-string">'points_per_member'</span>)]
-      min.pushObject(i)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.(<span class="hljs-property">@get</span>(<span class="hljs-string">'points_per_member'</span>)*<span class="hljs-number">1.5</span>-<span class="hljs-number">1</span>)]
+      obj = {}
+      obj.value = i
+      obj.is_selected = parseInt(<span class="hljs-property">@get</span>(<span class="hljs-string">'model.points_changeset.min'</span>)) == i
+      min.pushObject(obj)
     min
 
   <span class="hljs-attribute">max</span>: ember.computed <span class="hljs-string">'points_per_member'</span>, <span class="hljs-function">-&gt;</span>
     max = <span class="hljs-keyword">new</span> Array
-    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.<span class="hljs-property">@get</span>(<span class="hljs-string">'points_per_member'</span>)]
-      max.pushObject(i)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.(<span class="hljs-property">@get</span>(<span class="hljs-string">'points_per_member'</span>)*<span class="hljs-number">1.5</span>)]
+      obj = {}
+      obj.value = i
+      obj.is_selected = parseInt(<span class="hljs-property">@get</span>(<span class="hljs-string">'model.points_changeset.max'</span>)) == i
+      max.pushObject(obj)
     max
 
   <span class="hljs-comment">## Temp methods until nested properties are supported by ember-changeset</span>
@@ -43,6 +49,8 @@ import base            from <span class="hljs-string">'thinkspace-base/component
         <span class="hljs-keyword">if</span> validity
           changesets.forEach (changeset) =&gt;
             changeset.save()
+
+          <span class="hljs-comment">#@get('model').create_changeset()</span>
         
         resolve(validity)
 

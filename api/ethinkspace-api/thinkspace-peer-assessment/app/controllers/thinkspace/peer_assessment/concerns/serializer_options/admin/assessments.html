@@ -21,7 +21,10 @@
             <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">progress_report</span><span class="hljs-params">(serializer_options)</span>;</span> <span class="hljs-keyword">end</span>
             <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve_team_sets</span><span class="hljs-params">(serializer_options)</span>;</span> <span class="hljs-keyword">end</span>
 
-            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve</span><span class="hljs-params">(serializer_options)</span>;</span> <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">approve</span><span class="hljs-params">(serializer_options)</span></span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_peer_assessment_team_sets</span>
+            <span class="hljs-keyword">end</span>
+
             <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">activate</span><span class="hljs-params">(serializer_options)</span></span>
               serializer_options.include_association <span class="hljs-symbol">:authable</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
             <span class="hljs-keyword">end</span>

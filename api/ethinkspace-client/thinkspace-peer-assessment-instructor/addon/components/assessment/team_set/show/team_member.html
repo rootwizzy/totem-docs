@@ -8,4 +8,6 @@ export default base_component.extend</div></div></div><div class="segment"><div 
 
   <span class="hljs-attribute">init_ownerable</span>: <span class="hljs-function">-&gt;</span>
     ownerable = <span class="hljs-property">@get</span>(<span class="hljs-string">'team_members'</span>).findBy <span class="hljs-string">'id'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'model.ownerable_id'</span>).toString()
-    <span class="hljs-property">@set</span> <span class="hljs-string">'ownerable'</span>, ownerable</div></div></div></div></body></html>
+    <span class="hljs-property">@set</span> <span class="hljs-string">'ownerable'</span>, ownerable
+
+  <span class="hljs-attribute">click</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span> <span class="hljs-string">'scroll_to'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'model.id'</span>)</div></div></div></div></body></html>
