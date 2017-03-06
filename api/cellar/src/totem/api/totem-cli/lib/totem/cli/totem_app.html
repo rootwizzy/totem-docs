@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-cli/lib/totem/cli/totem_app</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-cli/lib/totem/cli/totem_app"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/totem_app.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/totem_app.rb">src/totem/api/totem-cli/lib/totem/cli/totem_app.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-constant">HELPERS_DIR</span> = <span class="hljs-string">'helpers_platform'</span>
+<span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../helpers/require_all'</span>, __FILE_<span class="hljs-number">_</span>)
+<span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../helpers_app/platform'</span>, __FILE_<span class="hljs-number">_</span>)
+<span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../helpers_app/platform_config'</span>, __FILE_<span class="hljs-number">_</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemApp</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Thor::Group</span></span></span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Thor::Actions</span>
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::RailsApp</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::RunOptions</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::RunHelpers</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Common</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Package</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Doc</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">overview_or_examples?</span>;</span> doc_options; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">prepare_options</span></span>
+    initialize_run_options_and_merge_run_options_file(run_options_key)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">prepare_rails_options</span></span>
+    set_app_path_and_app_name
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_options?</span></span>
+    verify_options_and_gemset  <span class="hljs-keyword">if</span> verify?
+    debug_run_options
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span>
+    do_framework
+    do_platform
+    do_db         <span class="hljs-keyword">if</span> perform?(<span class="hljs-symbol">:db_name_prefix</span>) || perform?(<span class="hljs-symbol">:db_name</span>)
+    do_bundle     <span class="hljs-keyword">if</span> perform?(<span class="hljs-symbol">:bundle</span>)
+  <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_options_key</span>;</span> {<span class="hljs-symbol">key:</span> <span class="hljs-symbol">:app_run_options</span>, <span class="hljs-symbol">app:</span> <span class="hljs-keyword">true</span>}; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">perform?</span><span class="hljs-params">(key)</span></span>
+    run_options[key] || run_options[<span class="hljs-symbol">:all</span>]
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_framework</span></span>
+    framework = get_framework_run_options
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> framework.blank?
+    pkg    = get_merged_standard_framework_package
+    config = get_merged_platform_hash(framework)
+    hash   = run_options.deep_dup.merge(framework)
+    hash[<span class="hljs-symbol">:current_package</span>] = pkg
+    hash[<span class="hljs-symbol">:current_config</span>]  = config
+    say_message <span class="hljs-string">"Installing framework <span class="hljs-subst">#{framework[<span class="hljs-symbol">:platform_name</span>].inspect}</span>."</span>
+    <span class="hljs-constant">HelpersApp::Platform</span>.start(hash)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_platform</span></span>
+    platform = get_platform_run_options
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> platform.blank?
+    pkg    = get_merged_standard_platform_package
+    config = get_merged_platform_hash(platform)
+    hash   = run_options.deep_dup.merge(platform)
+    hash[<span class="hljs-symbol">:current_package</span>] = pkg
+    hash[<span class="hljs-symbol">:current_config</span>]  = config
+    say_message <span class="hljs-string">"Installing platform <span class="hljs-subst">#{platform[<span class="hljs-symbol">:platform_name</span>].inspect}</span>."</span>
+    <span class="hljs-constant">HelpersApp::Platform</span>.start(hash)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_db</span></span>
+    filename = <span class="hljs-string">'config/secrets.yml'</span>
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">if</span> db_name_prefix = run_options[<span class="hljs-symbol">:db_name_prefix</span>]
+        say_message <span class="hljs-string">"Adding database name prefix <span class="hljs-subst">#{db_name_prefix.inspect}</span>."</span>
+        gsub_file filename, <span class="hljs-regexp">/name:\s+development/</span>, <span class="hljs-string">"name: <span class="hljs-subst">#{db_name_prefix}</span>_development"</span>, <span class="hljs-symbol">verbose:</span> verbose_copy?
+        gsub_file filename, <span class="hljs-regexp">/name:\s+test/</span>, <span class="hljs-string">"name: <span class="hljs-subst">#{db_name_prefix}</span>_test"</span>, <span class="hljs-symbol">verbose:</span> verbose_copy?
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">if</span> db_username = run_options[<span class="hljs-symbol">:db_user</span>]
+        say_message <span class="hljs-string">"Changing database username to <span class="hljs-subst">#{db_username.inspect}</span>."</span>
+        gsub_file filename, <span class="hljs-regexp">/username:\s+postgres/</span>, <span class="hljs-string">"username: <span class="hljs-subst">#{db_username}</span>"</span>, <span class="hljs-symbol">verbose:</span> verbose_copy?
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">do_bundle</span></span>
+    say_message <span class="hljs-string">"Doing bundle install for <span class="hljs-subst">#{<span class="hljs-variable">@app_path</span>.inspect}</span> (this may take awhile)..."</span>
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      run <span class="hljs-string">"bundle install"</span>, <span class="hljs-symbol">capture:</span> capture_output?, <span class="hljs-symbol">verbose:</span> verbose_copy?
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">banner</span></span>
+    usage = &lt;&lt;<span class="hljs-constant">USAGE</span>
+
+<span class="hljs-comment">#{basename} APP_PATH [options]</span>
+<span class="hljs-comment">#{doc_banner_run_options}</span>
+<span class="hljs-constant">USAGE</span>
+    usage
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

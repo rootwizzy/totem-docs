@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/app/concerns/totem/core/controllers/api_render/message</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/app/concerns/totem/core/controllers/api_render/message"><meta name="groc-project-path" content="src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render/message.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render/message.rb">src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render/message.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controllers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ApiRender</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Message</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Message option keys:
+  message: message body
+  from:    [string|record|records] (default current user) if string used as-is; if [record|records] will generate from records
+  to:      [string|record|records] if string used as-is; if [record|records] will generate from records
+  users:   [record|records] used to generate &#39;to&#39;
+  teams:   [record|records] used to generate &#39;to&#39;
+  any other key-value: added as-is to message json</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Examples:
+  controller_render_message(message: message) #=&gt; from current_user, time now
+  controller_render_message(message: message, users: users) #=&gt; from current_user, time now, to users (array of user hashes)
+  controller_render_message(message: message, from: user, to: users, teams: teams)    #=&gt; from user, time now, to users &amp; teams
+  controller_render_message(message: message, from: user, users: users, teams: teams) #=&gt; same as above</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_render_message</span><span class="hljs-params">(options={})</span>;</span> controller_render_json(controller_message_json(options)); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_json</span><span class="hljs-params">(options={})</span></span>
+    json = <span class="hljs-constant">Hash</span>.new
+    options.each <span class="hljs-keyword">do</span> |key, value|
+      controller_message_add_to_json(json, key, value)
+    <span class="hljs-keyword">end</span>
+    controller_message_add_custom_values_to_json(json, options)
+    controller_message_finalize_json(json, options)
+    controller_message_debug(json, options)  <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:debug</span>] == <span class="hljs-keyword">true</span>
+    json
+  <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-constant">CONTROLLER_MESSAGE_TO_KEYS</span> = [<span class="hljs-symbol">:to</span>, <span class="hljs-symbol">:users</span>, <span class="hljs-symbol">:teams</span>]  <span class="hljs-comment"># keys to add to the message[:to]</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_finalize_json</span><span class="hljs-params">(json, options)</span></span>
+    json[<span class="hljs-symbol">:time</span>]  ||= controller_message_time
+    json[<span class="hljs-symbol">:from</span>]  ||= controller_message_json_user(current_user)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_add_custom_values_to_json</span><span class="hljs-params">(json, options)</span></span>
+    options_keys = options.symbolize_keys.except(<span class="hljs-symbol">:time</span>, <span class="hljs-symbol">:from</span>, <span class="hljs-symbol">:message</span>, <span class="hljs-symbol">:debug</span>, *<span class="hljs-constant">CONTROLLER_MESSAGE_TO_KEYS</span>).keys
+    custom_keys  = (options_keys - json.keys)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> custom_keys.blank?
+    custom_keys.each <span class="hljs-keyword">do</span> |key|
+      value     = options[key]
+      json[key] = value  <span class="hljs-keyword">unless</span> json.has_key?(key)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="add-key-values-to-json">Add Key Values to JSON.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_add_to_json</span><span class="hljs-params">(json, key, value)</span></span>
+    <span class="hljs-keyword">case</span> key.to_sym
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:message</span>                       <span class="hljs-keyword">then</span> json[<span class="hljs-symbol">:message</span>] = value
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:time</span>                          <span class="hljs-keyword">then</span> json[<span class="hljs-symbol">:time</span>]    = controller_message_time(value)
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:from</span>                          <span class="hljs-keyword">then</span> controller_message_array_value(json, key, value)
+    <span class="hljs-keyword">when</span> *<span class="hljs-constant">CONTROLLER_MESSAGE_TO_KEYS</span>    <span class="hljs-keyword">then</span> controller_message_array_value(json, <span class="hljs-symbol">:to</span>, value)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_array_value</span><span class="hljs-params">(json, key, value)</span></span>
+    json[key] ||= <span class="hljs-constant">Array</span>.new
+    msg_value   = controller_message_value(value)
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> msg_value.blank?
+    <span class="hljs-keyword">when</span> msg_value.is_a?(<span class="hljs-constant">String</span>)   <span class="hljs-keyword">then</span> json[key].push(value) 
+    <span class="hljs-keyword">when</span> msg_value.is_a?(<span class="hljs-constant">Array</span>)    <span class="hljs-keyword">then</span> json[key].push(*msg_value)
+    <span class="hljs-keyword">else</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: raise error</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_value</span><span class="hljs-params">(value)</span></span>
+    <span class="hljs-keyword">return</span> value <span class="hljs-keyword">if</span> value.is_a?(<span class="hljs-constant">String</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span>   <span class="hljs-keyword">if</span> value.blank?
+    array = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-constant">Array</span>.wrap(value).each <span class="hljs-keyword">do</span> |value|
+      array.push controller_message_active_record?(value) ? controller_message_record_json(value) <span class="hljs-symbol">:</span> value
+    <span class="hljs-keyword">end</span>
+    array
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="record-json">Record JSON.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_record_json</span><span class="hljs-params">(record)</span></span>
+    type   = controller_message_record_type(record)
+    method = <span class="hljs-string">'controller_message_json_'</span> + type.to_s</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: raise error if doesn&#39;t respond_to?(method)</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">return</span> {<span class="hljs-symbol">title:</span> <span class="hljs-symbol">:bad</span>} <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span>.respond_to?(method, <span class="hljs-keyword">true</span>)
+    send(method, record)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_record_type</span><span class="hljs-params">(record)</span>;</span> record.blank? ? <span class="hljs-string">''</span> <span class="hljs-symbol">:</span> record.<span class="hljs-keyword">class</span>.name.demodulize.underscore.to_sym; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_active_record?</span><span class="hljs-params">(value)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> value.is_a?(<span class="hljs-constant">Class</span>)
+    value.<span class="hljs-keyword">class</span>.ancestors.<span class="hljs-keyword">include</span>?(<span class="hljs-constant">::ActiveRecord::Base</span>) &amp;&amp; value.respond_to?(<span class="hljs-symbol">:id</span>)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="record-to-json-method-per-model-class">Record-to-JSON (method per model class).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_json_team</span><span class="hljs-params">(team)</span></span>
+    {<span class="hljs-symbol">id:</span> team.id, <span class="hljs-symbol">title:</span> team.title, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:team</span>}
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_json_user</span><span class="hljs-params">(user)</span></span>
+    {<span class="hljs-symbol">id:</span> user.id, <span class="hljs-symbol">first_name:</span> user.first_name, <span class="hljs-symbol">last_name:</span> user.last_name, <span class="hljs-symbol">title:</span> user.title, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:user</span>}
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="time">Time.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_time</span><span class="hljs-params">(value=<span class="hljs-keyword">nil</span>)</span></span>
+    <span class="hljs-keyword">return</span> controller_message_time_now <span class="hljs-keyword">if</span> value.blank?
+    <span class="hljs-keyword">return</span> value <span class="hljs-keyword">if</span> value.is_a?(<span class="hljs-constant">Time</span>)
+    <span class="hljs-keyword">return</span> value <span class="hljs-keyword">if</span> value.is_a?(<span class="hljs-constant">String</span>)
+    controller_message_time_now
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_time_now</span>;</span> <span class="hljs-constant">Time</span>.now.utc; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="debug">Debug</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_message_debug</span><span class="hljs-params">(json, options)</span></span>
+    time     = json[<span class="hljs-symbol">:time</span>]
+    time_str = time.is_a?(<span class="hljs-constant">Time</span>) ? time.to_s(<span class="hljs-symbol">:db</span>) <span class="hljs-symbol">:</span> time.to_s
+    puts <span class="hljs-string">"\n"</span>
+    controller_debug_message (<span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>)
+    controller_debug_message <span class="hljs-string">"Controller: <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name}</span>#<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.action_name}</span>"</span>
+    controller_debug_message <span class="hljs-string">"Time      : <span class="hljs-subst">#{time_str.inspect}</span>"</span>
+    controller_debug_message <span class="hljs-string">"From      : <span class="hljs-subst">#{json[<span class="hljs-symbol">:from</span>].inspect}</span>"</span>
+    controller_debug_message <span class="hljs-string">"To        : <span class="hljs-subst">#{json[<span class="hljs-symbol">:to</span>].inspect}</span>"</span>  <span class="hljs-keyword">if</span> json[<span class="hljs-symbol">:to</span>].present?
+    controller_debug_message <span class="hljs-string">"Message   : <span class="hljs-subst">#{json[<span class="hljs-symbol">:message</span>].inspect}</span>"</span>
+    controller_debug_message <span class="hljs-string">"<span class="hljs-subst">#{(<span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>)}</span>\n\n"</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

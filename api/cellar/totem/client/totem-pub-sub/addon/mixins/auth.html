@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-pub-sub/addon/mixins/auth</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-pub-sub/addon/mixins/auth"><meta name="groc-project-path" content="src/totem/client/totem-pub-sub/addon/mixins/auth.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-pub-sub/addon/mixins/auth.coffee">src/totem/client/totem-pub-sub/addon/mixins/auth.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="public-api">Public API.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return a socket with authenticate and authorize events.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">auth_socket</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@pubsub_active</span>
+    url = <span class="hljs-property">@get_pubsub_url</span>(options)
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"Pubsub url is blank."</span>)  <span class="hljs-keyword">if</span> ember.isBlank(url)
+    socket = <span class="hljs-property">@url_to_socket_map</span>.get(url)
+    <span class="hljs-property">@auth_authenticate_callback</span>(socket, options)
+    <span class="hljs-keyword">return</span> socket <span class="hljs-keyword">if</span> socket
+    socket = <span class="hljs-property">@io</span>.connect(url);
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"Pubsub socket is blank [url: <span class="hljs-subst">#{url}</span>]."</span>)  <span class="hljs-keyword">unless</span> socket
+    <span class="hljs-property">@url_to_socket_map</span>.set(url, socket)
+    <span class="hljs-property">@auth_socket_events</span>(socket)
+    socket</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="private">Private.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The &#39;auth_options_map&#39; should only include options that are needed to authorize (or re-authorize)
+such as strings or an array of strings (e.g. rooms, etc.).  Event specific data such as
+components and callbacks are stored separately in the events map and are not needed to authorize.
+If include event data, cannot match similar authorize requests and will be duplicated.
+A socket.io server authorize request will only return the &#39;auth_key&#39; when present.
+Re-authorize happens if the page is re-loaded or the node socket.io server is re-started.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">url_to_socket_map</span>: ember.Map.create()
+  <span class="hljs-attribute">auth_options_map</span>:  ember.Map.create()
+
+  <span class="hljs-attribute">auth_socket_events</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span>
+    socket.<span class="hljs-literal">on</span> <span class="hljs-string">'connect'</span>, <span class="hljs-function">=&gt;</span>
+      <span class="hljs-property">@set_not_authenticated</span>(socket)
+      auth = <span class="hljs-property">@get_auth_query</span>()
+      socket.emit <span class="hljs-property">@client_event</span>(<span class="hljs-string">'authenticate'</span>), {auth}
+      <span class="hljs-built_in">console</span>.warn <span class="hljs-string">'connect:'</span>, socket.id, socket, auth
+    socket.<span class="hljs-literal">on</span> <span class="hljs-property">@server_event</span>(<span class="hljs-string">'authenticated'</span>),             <span class="hljs-function">=&gt;</span> <span class="hljs-property">@authenticate_success</span>(socket)
+    socket.<span class="hljs-literal">on</span> <span class="hljs-property">@server_event</span>(<span class="hljs-string">'authorized'</span>),         <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span> <span class="hljs-property">@authorize_success</span>(socket, data)
+    socket.<span class="hljs-literal">on</span> <span class="hljs-property">@server_event</span>(<span class="hljs-string">'not_authenticated'</span>),  <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span> <span class="hljs-property">@authenticate_error</span>(socket, data)
+    socket.<span class="hljs-literal">on</span> <span class="hljs-property">@server_event</span>(<span class="hljs-string">'not_authorized'</span>),     <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span> <span class="hljs-property">@authorize_error</span>(socket, data)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="authenticate">Authenticate.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">auth_authenticate_callback</span>: <span class="hljs-function"><span class="hljs-params">(socket, options)</span> -&gt;</span>
+    auth_key = <span class="hljs-property">@get_auth_key_for_options</span>(options)
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@is_authenticated</span>(socket)
+      <span class="hljs-property">@call_auth_callback</span>(options.authenticate_callback, socket, {auth_key})
+      <span class="hljs-property">@call_after_authenticate_callback</span>(options)
+
+  <span class="hljs-attribute">authenticate_success</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span>
+    <span class="hljs-property">@set_is_authenticated</span>(socket)
+    socket.authorized = {}
+    <span class="hljs-property">@auth_options_map</span>.forEach (options, auth_key) =&gt;
+      <span class="hljs-property">@call_auth_callback</span>(options.authenticate_callback, socket, {auth_key})
+      <span class="hljs-property">@call_after_authenticate_callback</span>(options)
+
+  <span class="hljs-attribute">authenticate_error</span>: <span class="hljs-function"><span class="hljs-params">(socket, data)</span> -&gt;</span>
+    <span class="hljs-property">@invalidate_socket</span>(socket)
+    <span class="hljs-property">@error</span> <span class="hljs-string">'=&gt; not authenticated:'</span>, data.message</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="authorize">Authorize.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">authorize_success</span>: <span class="hljs-function"><span class="hljs-params">(socket, data)</span> -&gt;</span>
+    options = <span class="hljs-property">@get_data_auth_key_options</span>(data)
+    <span class="hljs-property">@call_auth_callback</span>(options.authorize_callback, socket, data)
+
+  <span class="hljs-attribute">authorize_error</span>: <span class="hljs-function"><span class="hljs-params">(socket, data)</span> -&gt;</span>
+    <span class="hljs-property">@invalidate_socket</span>(socket)
+    <span class="hljs-built_in">console</span>.error <span class="hljs-string">'=&gt; not authorized:'</span>, data.message</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the options alreay exist in the map, return the key, otherwise save the options with a generated key.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_auth_key_for_options</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    options_key = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@auth_options_map</span>.forEach (opts, key) =&gt;
+      options_key = key  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> options_key <span class="hljs-keyword">and</span> <span class="hljs-property">@objects_equal</span>(options, opts)
+    <span class="hljs-keyword">return</span> options_key  <span class="hljs-keyword">if</span> options_key
+    key = ember.guidFor(options)
+    <span class="hljs-property">@auth_options_map</span>.set(key, options)
+    key
+
+  <span class="hljs-attribute">get_data_auth_key_options</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span> <span class="hljs-keyword">if</span> (key = <span class="hljs-property">@get_data_auth_key</span>(data)) <span class="hljs-keyword">then</span> (<span class="hljs-property">@auth_options_map</span>.get(key) <span class="hljs-keyword">or</span> {}) <span class="hljs-keyword">else</span> {}
+
+  <span class="hljs-attribute">call_auth_callback</span>: <span class="hljs-function"><span class="hljs-params">(callback, args...)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_string</span>(callback)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_function</span>(@[callback])
+    @[callback](args...)
+
+  <span class="hljs-attribute">call_after_authenticate_callback</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    callback = options.after_authenticate_callback
+    source   = options.source
+    <span class="hljs-keyword">if</span> ember.isPresent(callback) <span class="hljs-keyword">and</span> ember.isPresent(source)
+      source[callback](options) <span class="hljs-keyword">if</span> <span class="hljs-property">@is_active</span>(source) <span class="hljs-keyword">and</span> <span class="hljs-property">@is_function</span>(source[callback])
+
+  <span class="hljs-attribute">get_auth_query</span>: <span class="hljs-function">-&gt;</span>
+    query = {}
+    token = <span class="hljs-property">@auth_session_token</span>()
+    email = <span class="hljs-property">@current_user_email</span>()
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"User token is blank."</span>)  <span class="hljs-keyword">if</span> ember.isBlank(token)
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"User email is blank."</span>)  <span class="hljs-keyword">if</span> ember.isBlank(email)
+    query.auth = {token, email}
+    <span class="hljs-property">@add_ownerable_to_query</span>(query)
+    <span class="hljs-property">@add_authable_to_query</span>(query)
+    query.auth
+
+  <span class="hljs-attribute">auth_session_token</span>: <span class="hljs-function">-&gt;</span>
+    session = <span class="hljs-property">@get</span>(<span class="hljs-string">'session'</span>)
+    session <span class="hljs-keyword">and</span> session.get_token()
+
+  <span class="hljs-attribute">is_authenticated</span>:      <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket <span class="hljs-keyword">and</span> socket.authenticated == <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">set_is_authenticated</span>:  <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket <span class="hljs-keyword">and</span> socket.authenticated = <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">set_not_authenticated</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket <span class="hljs-keyword">and</span> socket.authenticated = <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">get_authorized</span>:        <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket.authorized <span class="hljs-keyword">or</span> (socket.authorized = {})</div></div></div></div></body></html>

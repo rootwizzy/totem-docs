@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/test/helpers/ability/dictionary</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/test/helpers/ability/dictionary"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/helpers/ability/dictionary.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/helpers/ability/dictionary.rb">src/thinkspace/api/thinkspace-casespace/test/helpers/ability/dictionary.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::Ability::Dictionary</span></span>
+  extend <span class="hljs-constant">ActiveSupport::Concern</span>
+  included <span class="hljs-keyword">do</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_route_dictionary</span><span class="hljs-params">(dictionary, options={})</span></span>
+      print_route_dictionary_header(options)
+      model_names   = dictionary.keys.map {|c| c.name}.sort
+      nil_id_models = <span class="hljs-constant">Array</span>.new
+      model_names.each <span class="hljs-keyword">do</span> |model_name|
+        model = dictionary.values.find {|m| m.<span class="hljs-keyword">class</span>.name == model_name}
+        <span class="hljs-keyword">if</span> model.id.blank?
+          nil_id_models.push(model)
+          <span class="hljs-keyword">next</span>
+        <span class="hljs-keyword">end</span>
+        print_route_dictionary_model_header(model)
+        pp model
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">if</span> nil_id_models.present?
+        puts <span class="hljs-string">"\n"</span>
+        puts <span class="hljs-string">"Models NOT saved (id == nil)"</span>
+        nil_id_models.each <span class="hljs-keyword">do</span> |model|
+          print_route_dictionary_model_header(model)
+          pp model
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      print_route_dictionary_sep
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_route_dictionary_ids</span><span class="hljs-params">(dictionary, options={})</span></span>
+      print_route_dictionary_header(options)
+      model_names = dictionary.keys.map {|c| c.name}.sort
+      model_names.each <span class="hljs-keyword">do</span> |model_name|
+        model = dictionary.values.find {|m| m.<span class="hljs-keyword">class</span>.name == model_name}
+        print_route_dictionary_model_header(model)
+        attributes = model.attributes
+        max_len    = (attributes.keys.map {|k| k.length}.max || <span class="hljs-number">0</span>) + <span class="hljs-number">2</span>
+        keys       = attributes.keys.sort
+        keys.each <span class="hljs-keyword">do</span> |key|
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> key.end_with?(<span class="hljs-string">'_id'</span>)
+          value      = attributes[key] || <span class="hljs-string">'nil'</span>
+          basename   = key.sub(<span class="hljs-regexp">/_id$/</span>,<span class="hljs-string">''</span>)
+          type_value = attributes[<span class="hljs-string">"<span class="hljs-subst">#{basename}</span>_type"</span>]
+          attr_text  = <span class="hljs-string">"    <span class="hljs-subst">#{key.ljust(max_len,<span class="hljs-string">'.'</span>)}</span><span class="hljs-subst">#{value.to_s.rjust(<span class="hljs-number">5</span>,<span class="hljs-string">'.'</span>)}</span>"</span>
+          attr_text += <span class="hljs-string">"  [<span class="hljs-subst">#{type_value}</span>]"</span>  <span class="hljs-keyword">if</span> type_value.present?
+          puts attr_text
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      print_route_dictionary_sep
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_route_dictionary_sep</span>;</span> puts <span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_route_dictionary_header</span><span class="hljs-params">(options)</span></span>
+      title = options[<span class="hljs-symbol">:title</span>] || name  <span class="hljs-comment"># default to test name</span>
+      print_route_dictionary_sep
+      puts <span class="hljs-string">"DICTIONARY: <span class="hljs-subst">#{title}</span>\n"</span>      
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_route_dictionary_model_header</span><span class="hljs-params">(model)</span></span>
+      puts <span class="hljs-string">"\n"</span>
+      puts <span class="hljs-string">'--'</span> + <span class="hljs-string">"<span class="hljs-subst">#{model.<span class="hljs-keyword">class</span>.name}</span>.<span class="hljs-subst">#{model.id}</span>"</span>.ljust(<span class="hljs-number">80</span>, <span class="hljs-string">'-'</span>)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># included</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

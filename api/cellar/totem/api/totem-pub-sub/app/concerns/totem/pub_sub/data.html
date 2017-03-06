@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-pub-sub/app/concerns/totem/pub_sub/data</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-pub-sub/app/concerns/totem/pub_sub/data"><meta name="groc-project-path" content="src/totem/api/totem-pub-sub/app/concerns/totem/pub_sub/data.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-pub-sub/app/concerns/totem/pub_sub/data.rb">src/totem/api/totem-pub-sub/app/concerns/totem/pub_sub/data.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PubSub</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Data</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>PubSub data methods to standardize the message structure.
+Some methods return &#39;self&#39; so methods can be chained (e.g. pubsub.room(:abc).set(:mykey, :myvalue).publish).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:pubsub</span>, <span class="hljs-symbol">:data</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(pubsub, data)</span></span>
+    <span class="hljs-variable">@pubsub</span>     = pubsub
+    <span class="hljs-variable">@data</span>       = data || <span class="hljs-constant">Hash</span>.new
+    <span class="hljs-variable">@rooms</span>      = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-variable">@room_event</span> = <span class="hljs-keyword">nil</span>
+    <span class="hljs-variable">@timer</span>      = <span class="hljs-keyword">nil</span>
+    <span class="hljs-variable">@value</span>      = <span class="hljs-keyword">nil</span>
+    <span class="hljs-variable">@channel</span>    = <span class="hljs-keyword">nil</span>
+    <span class="hljs-variable">@namespace</span>  = <span class="hljs-keyword">nil</span>
+    raise <span class="hljs-constant">DataError</span>, <span class="hljs-string">"PubSub data must be a hash not <span class="hljs-subst">#{data.<span class="hljs-keyword">class</span>.name.inspect}</span> [<span class="hljs-subst">#{data.inspect}</span>]"</span>  <span class="hljs-keyword">unless</span> data.is_a?(<span class="hljs-constant">Hash</span>)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Update the data based on the methods called and the values supplied.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_data</span></span>
+    data.merge!(<span class="hljs-symbol">nsp:</span> <span class="hljs-variable">@namespace</span>)          <span class="hljs-keyword">if</span> <span class="hljs-variable">@namespace</span>.present?
+    data.merge!(<span class="hljs-symbol">rooms:</span> <span class="hljs-variable">@rooms</span>.uniq)       <span class="hljs-keyword">if</span> <span class="hljs-variable">@rooms</span>.present?
+    data.merge!(<span class="hljs-symbol">room_event:</span> <span class="hljs-variable">@room_event</span>)  <span class="hljs-keyword">if</span> <span class="hljs-variable">@room_event</span>.present?
+    data.merge!(<span class="hljs-symbol">timer:</span> <span class="hljs-variable">@timer</span>)            <span class="hljs-keyword">if</span> <span class="hljs-variable">@timer</span>.present?
+    data.merge!(<span class="hljs-symbol">value:</span> <span class="hljs-variable">@value</span>)            <span class="hljs-keyword">if</span> <span class="hljs-variable">@value</span>.present?
+    data
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_channel</span>;</span> <span class="hljs-variable">@channel</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Convience method to call the Publish instance&#39;s &#39;publish&#39; method so can be the final method in a chain.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish</span>;</span> pubsub.publish(<span class="hljs-keyword">self</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="chainable-methods-some-methods-have-aliases">Chainable Methods (some methods have aliases).</h3>
+<h2 id="">#</h2>
+<h3 id="39timer39-and-39roomstoin39-auto-set-the-action-value-can-be-overriden-by-calling-actionact-last">&#39;timer&#39; and &#39;rooms|to|in&#39; auto-set the action value (can be overriden by calling action(act) last).</h3></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action</span><span class="hljs-params">(act)</span>;</span> data[<span class="hljs-symbol">:action</span>] = act <span class="hljs-keyword">if</span> act.present?; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">timer</span><span class="hljs-params">(val, act=<span class="hljs-symbol">:timer</span>)</span>;</span> action(act) <span class="hljs-keyword">if</span> val.present? &amp;&amp; val.is_a?(<span class="hljs-constant">Hash</span>); <span class="hljs-variable">@timer</span> = val; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">room</span><span class="hljs-params">(r)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span> <span class="hljs-keyword">if</span> r.blank?
+    action(<span class="hljs-symbol">:rooms</span>)
+    r.is_a?(<span class="hljs-constant">Array</span>) ? <span class="hljs-variable">@rooms</span> += r <span class="hljs-symbol">:</span> <span class="hljs-variable">@rooms</span>.push(r)
+    <span class="hljs-keyword">self</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">alias</span> <span class="hljs-symbol">:to</span> <span class="hljs-symbol">:room</span>
+  <span class="hljs-keyword">alias</span> <span class="hljs-symbol">:in</span> <span class="hljs-symbol">:room</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set</span><span class="hljs-params">(key, val)</span>;</span> data[key] = val; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span> <span class="hljs-comment"># Generic 'set' method to add any key/value.</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">value</span><span class="hljs-params">(val)</span>;</span> <span class="hljs-variable">@value</span> = val; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">room_event</span><span class="hljs-params">(event)</span>;</span> <span class="hljs-variable">@room_event</span> = event; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">message</span><span class="hljs-params">(msg)</span>;</span> data[<span class="hljs-symbol">:message</span>] = msg; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">namespace</span><span class="hljs-params">(ns)</span>;</span> <span class="hljs-variable">@namespace</span> = ns; <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">alias</span> <span class="hljs-symbol">:of</span> <span class="hljs-symbol">:namespace</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">room_for</span><span class="hljs-params">(rs, *args)</span>;</span> room pubsub.room_for(rs, *args); <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">channel</span><span class="hljs-params">(name)</span>;</span> <span class="hljs-variable">@channel</span> = name; <span class="hljs-keyword">self</span> <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DataError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

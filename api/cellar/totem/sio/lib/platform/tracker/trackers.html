@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/sio/lib/platform/tracker/trackers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/sio/lib/platform/tracker/trackers"><meta name="groc-project-path" content="src/totem/sio/lib/platform/tracker/trackers.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/sio/lib/platform/tracker/trackers.coffee">src/totem/sio/lib/platform/tracker/trackers.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SocketIOTrackerTrackers</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@tracker</span>)</span> -&gt;</span>
+    <span class="hljs-property">@util</span>        = <span class="hljs-property">@tracker</span>.util
+    <span class="hljs-property">@helpers</span>     = <span class="hljs-property">@tracker</span>.helpers
+    <span class="hljs-property">@debug_color</span> = <span class="hljs-property">@tracker</span>.debug_color
+    <span class="hljs-property">@trackers</span>    = {}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="create-tracker-from-server-redis-pubsub-data">Create Tracker (from server Redis PubSub data).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">process</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    rooms     = <span class="hljs-property">@util</span>.data_rooms(data)
+    value     = data.value <span class="hljs-keyword">or</span> {}
+    room_type = value.room_type
+    sid       = value.sid
+    socket    = <span class="hljs-property">@helpers</span>.get_socket_by_sid(sid)
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@util</span>.is_disconnected(socket)
+      <span class="hljs-property">@delete</span>(socket)
+      <span class="hljs-keyword">return</span>
+    tracker             = <span class="hljs-property">@get_tracker</span>(socket)
+    tracker.rooms[room] = (room_type <span class="hljs-keyword">or</span> <span class="hljs-string">'tracker'</span>) <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> <span class="hljs-property">@util</span>.make_array(rooms)
+    tracker.all_rooms   = value.all_rooms <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>
+    tracker.socket      = socket
+    <span class="hljs-property">@trackers</span>[sid]      = tracker
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@util</span>.debugging
+      for_user     = <span class="hljs-property">@util</span>.get_user_data(socket)
+      redis_data   = data
+      tracker_data = {<span class="hljs-attribute">rooms</span>: tracker.rooms, <span class="hljs-attribute">all_rooms</span>: tracker.all_rooms, <span class="hljs-attribute">sid</span>: sid}
+      <span class="hljs-property">@util</span>.debug <span class="hljs-property">@util</span>.bold_line(<span class="hljs-string">"Redis generated TRACKER:\n"</span>, <span class="hljs-property">@debug_color</span>), {for_user, redis_data, tracker_data}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="emit-show-eg-to-instructors">Emit Show e.g. to instructors.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>User room change (e.g. join/leave) for rooms.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">show_update</span>: <span class="hljs-function"><span class="hljs-params">(rooms)</span> -&gt;</span>
+    sids = <span class="hljs-property">@util</span>.hash_keys(<span class="hljs-property">@trackers</span>)
+    <span class="hljs-keyword">for</span> sid <span class="hljs-keyword">in</span> sids
+      tracker = <span class="hljs-property">@get_tracker_by_sid</span>(sid)
+      <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> <span class="hljs-property">@util</span>.make_array(rooms)
+        room_type = tracker.rooms[room]
+        socket    = <span class="hljs-property">@trackers</span>[sid].socket
+        <span class="hljs-property">@show_emit</span>(socket, room, room_type)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Emit the user room change to the trackers.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">show_emit</span>: <span class="hljs-function"><span class="hljs-params">(socket, rooms, room_type=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    is_superuser = <span class="hljs-property">@util</span>.is_superuser(socket)
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> <span class="hljs-property">@util</span>.make_array(rooms)
+      <span class="hljs-keyword">if</span> is_superuser <span class="hljs-keyword">and</span> <span class="hljs-property">@is_all_rooms</span>(socket)
+        value = <span class="hljs-property">@helpers</span>.get_all_user_values(socket)
+      <span class="hljs-keyword">else</span>
+        value = <span class="hljs-property">@helpers</span>.get_room_user_values(socket, room)
+      event = <span class="hljs-keyword">if</span> room_type <span class="hljs-keyword">then</span> <span class="hljs-property">@util</span>.server_event(room, room_type) <span class="hljs-keyword">else</span> <span class="hljs-property">@util</span>.server_event(room)
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@util</span>.debugging
+        sid = socket.id
+        <span class="hljs-property">@util</span>.debug <span class="hljs-property">@util</span>.bold_line(<span class="hljs-string">"TRACKER SHOW EMIT\n"</span>, <span class="hljs-property">@debug_color</span>), {sid, event}, <span class="hljs-string">"\nvalue:"</span>, value  
+      socket.emit event, {value}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="delete-tracker-and-tracker-room">Delete Tracker and Tracker Room.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">delete</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket <span class="hljs-keyword">and</span> <span class="hljs-keyword">delete</span>(<span class="hljs-property">@trackers</span>[socket.id])
+
+  <span class="hljs-attribute">delete_room</span>: <span class="hljs-function"><span class="hljs-params">(socket, room)</span> -&gt;</span>
+    rooms = <span class="hljs-property">@get_rooms</span>(socket)
+    <span class="hljs-keyword">delete</span>(rooms[room])</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_tracker_by_sid</span>: <span class="hljs-function"><span class="hljs-params">(sid)</span> -&gt;</span>
+    tracker        = <span class="hljs-property">@trackers</span>[sid] <span class="hljs-keyword">or</span> {}
+    tracker.rooms ?= {}
+    tracker
+
+  <span class="hljs-attribute">get_tracker</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> (socket <span class="hljs-keyword">and</span> <span class="hljs-property">@get_tracker_by_sid</span>(socket.id)) <span class="hljs-keyword">or</span> {}
+
+  <span class="hljs-attribute">get_rooms</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> <span class="hljs-property">@get_tracker</span>(socket).rooms
+
+  <span class="hljs-attribute">is_all_rooms</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> <span class="hljs-property">@get_tracker</span>(socket).all_rooms
+
+  <span class="hljs-attribute">to_string</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'SocketIOTrackerTrackers'</span>
+
+<span class="hljs-built_in">module</span>.exports = SocketIOTrackerTrackers</div></div></div></div></body></html>

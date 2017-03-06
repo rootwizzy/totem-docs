@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-application/app/services/taf</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-application/app/services/taf"><meta name="groc-project-path" content="src/totem/client/totem-application/app/services/taf.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-application/app/services/taf.coffee">src/totem/client/totem-application/app/services/taf.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns from <span class="hljs-string">'totem/ns'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="-t-otem-a-synchronous-f-iltering"><strong>T</strong>otem <strong>A</strong>synchronous <strong>F</strong>iltering</h1></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> TODO need a way to specify between AND&#39;d inter-filters and OR&#39;d intra-filters</span></p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="api">API</h2>
+<ul>
+<li><code>query</code></li>
+<li><code>add_filter</code></li>
+<li><code>remove_filter</code></li>
+<li><code>remove_all_filters</code></li>
+<li><code>add_bound_filter</code></li>
+<li><code>remove_bound_filter</code></li>
+<li><code>remove_all_bound_filters</code></li>
+</ul></div></div><div class="code"><div class="wrapper">export default ember.Service.extend
+  <span class="hljs-attribute">filters</span>:       {}
+  <span class="hljs-attribute">bound_filters</span>: {}
+  <span class="hljs-attribute">is_querying</span>: <span class="hljs-literal">false</span> <span class="hljs-comment"># watch this property for the status of the query</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public method query</span></p>
+<p>Requests a payload endpoint with optional filters</p>
+<p>Parameters:</p>
+<ul>
+<li><strong>collection must be an Array.</strong><br/>(set of objects to run the filters on)</li>
+</ul>
+<p><strong>Returns an Array</strong><br/>(results resulting set of objects filtered out)</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">query</span>: <span class="hljs-function"><span class="hljs-params">(collection)</span> -&gt;</span>
+    collection = <span class="hljs-property">@make_array</span> collection
+    <span class="hljs-property">@set_is_querying</span>()
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@process_bound_filters</span>()
+      filters = <span class="hljs-property">@get</span>(<span class="hljs-string">'filters'</span>)
+      resolve collection <span class="hljs-keyword">if</span> ember.isEmpty filters
+      promises = <span class="hljs-property">@make_array</span>()
+      <span class="hljs-keyword">for</span> property, value <span class="hljs-keyword">of</span> filters
+        values = <span class="hljs-property">@make_array</span> value
+        promises.pushObject <span class="hljs-property">@filter_by</span>(collection, property, values)
+      ember.RSVP.Promise.all(promises).<span class="hljs-keyword">then</span> (results) =&gt;
+        results = <span class="hljs-property">@intersection</span> results
+        <span class="hljs-property">@reset_is_querying</span>()
+        resolve results</div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public method add_filter</span></p>
+<p>Adds filter key and options to the pending query</p>
+<p>Parameters:</p>
+<ul>
+<li><p><strong>key must be a String.</strong><br/>(Property to filter against for each member)</p>
+</li>
+<li><p><strong>values must be an Object.</strong><br/>(Value or values for which the filter should return true)</p>
+</li>
+</ul>
+<p><strong>Returns a Hash</strong><br/>(The full set of current filters)</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">add_filter</span>: <span class="hljs-function"><span class="hljs-params">(key, values, options={})</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> key
+    <span class="hljs-property">@clear</span>() <span class="hljs-keyword">if</span> options[<span class="hljs-string">'clear'</span>]
+    filters      = <span class="hljs-property">@get</span>(<span class="hljs-string">'filters'</span>) || {}
+    filters[key] = values
+    <span class="hljs-property">@set</span> <span class="hljs-string">'filters'</span>, filters
+    <span class="hljs-keyword">return</span> filters</div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public method remove_filter</span></p>
+<p>Removes the filter by key from the pending query</p>
+<p>Parameters:</p>
+<ul>
+<li><strong>key must be a String.</strong><br/>(property to filter against for each member)</li>
+</ul>
+<p><strong>Returns a Hash</strong><br/>(The full set of current filters)</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">remove_filter</span>: <span class="hljs-function"><span class="hljs-params">(key)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> key
+    filters = <span class="hljs-property">@get</span>(<span class="hljs-string">'filters'</span>) || {}
+    <span class="hljs-keyword">delete</span> filters[key]
+    <span class="hljs-property">@set</span> <span class="hljs-string">'filters'</span>, filters
+    <span class="hljs-keyword">return</span> filters</div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public method remove_filter is aliased as clear</span></p>
+<p>Removes all filters from the pending query</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">remove_all_filters</span>: <span class="hljs-function">-&gt;</span>
+    filters = <span class="hljs-property">@get</span>(<span class="hljs-string">'filters'</span>)
+    <span class="hljs-keyword">for</span> property, value <span class="hljs-keyword">of</span> filters
+      <span class="hljs-property">@remove_filter</span> property</div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public method clear</span></p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">clear</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@remove_all_filters</span>()</div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public method add_bound_filter</span></p>
+<p>Adds filter with a context that determines if the filter is active</p>
+<p>Parameters:</p>
+<ul>
+<li><p><strong>the must be a String.</strong><br/>(property to filter against for each member)</p>
+</li>
+<li><p><strong>the must be a String.</strong><br/>(name of the property on the context which retrieves the values for which the filter should return true)</p>
+</li>
+<li><p><strong>the must be a String.</strong><br/>(ember object to retrieve the values from, typically a controller/view/component)</p>
+</li>
+</ul>
+<p><strong>Returns a Hash</strong><br/>(The current filter set)</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">add_bound_filter</span>: <span class="hljs-function"><span class="hljs-params">(key, values_property, context)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> key <span class="hljs-keyword">and</span> values_property <span class="hljs-keyword">and</span> context
+    bound_filters = <span class="hljs-property">@get</span>(<span class="hljs-string">'bound_filters'</span>) || {}
+    bound_filters[key] =
+      <span class="hljs-attribute">context</span>: context
+      <span class="hljs-attribute">values_property</span>: values_property
+    <span class="hljs-property">@set</span> <span class="hljs-string">'bound_filters'</span>, bound_filters
+    <span class="hljs-keyword">return</span> bound_filters</div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public method remove_bound_filter</span></p>
+<p>Removes a bound filter from the query</p>
+<p>Parameters:</p>
+<ul>
+<li><strong>the must be a String.</strong><br/>(property to filter against for each member)</li>
+</ul>
+<p><strong>Returns a Hash</strong><br/>(the current filter set)</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">remove_bound_filter</span>: <span class="hljs-function"><span class="hljs-params">(key)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> key
+    bound_filters = <span class="hljs-property">@get</span>(<span class="hljs-string">'bound_filters'</span>) || {}
+    <span class="hljs-keyword">delete</span> bound_filters[key]
+    <span class="hljs-property">@set</span> <span class="hljs-string">'bound_filters'</span>, bound_filters
+    <span class="hljs-keyword">return</span> bound_filters</div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public method remove_all_bound_filters</span></p>
+<p>Removes all bound filters from the query</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">remove_all_bound_filters</span>: <span class="hljs-function">-&gt;</span>
+    bound_filters = <span class="hljs-property">@get</span>(<span class="hljs-string">'bound_filters'</span>)
+    <span class="hljs-keyword">for</span> property, value <span class="hljs-keyword">of</span> bound_filters
+      <span class="hljs-property">@remove_bound_filter</span> property
+
+
+  <span class="hljs-attribute">process_bound_filters</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">for</span> key, bound_filter <span class="hljs-keyword">of</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'bound_filters'</span>)
+      context         = bound_filter.context
+      values_property = bound_filter.values_property
+      values          = context.get(values_property)
+      <span class="hljs-property">@add_filter</span> key, values</div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method filter_by</span></p>
+<p>proxies for filter_by_relationship || filter_by_property depending on the property type</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">filter_by</span>: <span class="hljs-function"><span class="hljs-params">(collection, property, values, options={})</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">if</span> (ember.isEmpty(collection) <span class="hljs-keyword">or</span> ember.isEmpty(values))
+        resolve(collection)
+      <span class="hljs-keyword">else</span>
+        type = <span class="hljs-property">@get_property_type</span> collection, property
+        <span class="hljs-keyword">switch</span> type
+          <span class="hljs-keyword">when</span> <span class="hljs-string">'relationship'</span>
+            <span class="hljs-property">@filter_by_relationship</span>(collection, property, values, options).<span class="hljs-keyword">then</span> (results) =&gt;
+              resolve results
+          <span class="hljs-keyword">when</span> <span class="hljs-string">'property'</span>
+            <span class="hljs-property">@filter_by_property</span>(collection, property, values, options).<span class="hljs-keyword">then</span> (results) =&gt;
+              resolve results
+          <span class="hljs-keyword">else</span>
+            resolve(collection)
+  </div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method filter_by_relationship</span></p>
+<p>Called by filter_by to resolve based on a models relationship</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">filter_by_relationship</span>: <span class="hljs-function"><span class="hljs-params">(collection, relationship, values, options={})</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">if</span> (ember.isEmpty(collection) <span class="hljs-keyword">or</span> ember.isEmpty(values))
+        resolve(collection) 
+      <span class="hljs-keyword">else</span>
+        ember.RSVP.filter(collection, <span class="hljs-function"><span class="hljs-params">(member)</span> =&gt;</span>
+          member.get(relationship).<span class="hljs-keyword">then</span> (related_records) =&gt;
+            related_records = <span class="hljs-property">@make_array</span> related_records
+            <span class="hljs-keyword">return</span> related_records.any (related_record) -&gt;
+              values.contains(related_record)
+        ).<span class="hljs-keyword">then</span> (results) =&gt;
+          resolve results</div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method filter_by_property</span></p>
+<p>Called by filter_by to resolve based on a models property</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">filter_by_property</span>: <span class="hljs-function"><span class="hljs-params">(collection, property, values, options={})</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      resolve collection <span class="hljs-keyword">if</span> ember.isEmpty collection <span class="hljs-keyword">or</span> ember.isEmpty values
+      results = []
+      collection.forEach (member) =&gt;
+        value = member.get(property)
+        results.pushObject(member) <span class="hljs-keyword">if</span> values.contains(value)
+      resolve results</div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method get_property_type</span></p>
+<h2 id="helpers">HELPERS</h2>
+<p>Determines if the member property is indeed a property or an association</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_property_type</span>: <span class="hljs-function"><span class="hljs-params">(collection, property)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(property)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isEmpty collection
+    member = collection.get(<span class="hljs-string">'firstObject'</span>)
+    val    = member.get(property)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(val) <span class="hljs-keyword">or</span> ember.isArray(val)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> val.<span class="hljs-keyword">then</span>? <span class="hljs-keyword">then</span> <span class="hljs-string">'relationship'</span> <span class="hljs-keyword">else</span> <span class="hljs-string">'property'</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method intersection</span></p>
+<p>Gets the intersection of n arrays</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">intersection</span>: <span class="hljs-function"><span class="hljs-params">(arrays)</span> -&gt;</span>
+    result = <span class="hljs-property">@make_array</span>(arrays.get(<span class="hljs-string">'firstObject'</span>))
+    <span class="hljs-keyword">for</span> array <span class="hljs-keyword">in</span> arrays
+      result = ember.EnumerableUtils.intersection result, <span class="hljs-property">@make_array</span>(array)
+    <span class="hljs-keyword">return</span> result</div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method difference</span></p>
+<p>Called by filter_by to resolve based on a models relationship</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">difference</span>: <span class="hljs-function"><span class="hljs-params">(array1, array2)</span> -&gt;</span>
+    array1 = <span class="hljs-property">@make_array</span>(array1)
+    array2 = <span class="hljs-property">@make_array</span>(array2)
+    result = <span class="hljs-property">@make_array</span>(array1)
+    <span class="hljs-keyword">for</span> element1 <span class="hljs-keyword">in</span> array1
+      result.removeObject element1 <span class="hljs-keyword">if</span> array2.contains(element1)
+    <span class="hljs-keyword">return</span> result</div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method flatten</span></p>
+<p>Flattens a two-dimensional array into a single one-dimensional array, duplicates are not removed</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">flatten</span>: <span class="hljs-function"><span class="hljs-params">(arrays)</span> -&gt;</span>
+    result = <span class="hljs-property">@make_array</span>()
+    <span class="hljs-keyword">for</span> array <span class="hljs-keyword">in</span> arrays
+      result = result.concat <span class="hljs-property">@make_array</span>(array)
+    <span class="hljs-keyword">return</span> result</div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method compress</span></p>
+<p>Compacts an array of arrays, removing all undefined and null elements</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">compress</span>: <span class="hljs-function"><span class="hljs-params">(arrays)</span> -&gt;</span>
+    arrays = <span class="hljs-property">@make_array</span>(arrays).compact()
+    <span class="hljs-keyword">for</span> arr, i <span class="hljs-keyword">in</span> arrays
+      arrays[i] = <span class="hljs-property">@make_array</span>(arr).compact()
+    <span class="hljs-keyword">return</span> arrays</div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method shuffle</span></p>
+<p>shuffles an array, randomizing the order of the elements</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">shuffle</span>: <span class="hljs-function"><span class="hljs-params">(array, no_of_swaps=<span class="hljs-number">2</span>)</span> -&gt;</span>
+    array  = <span class="hljs-property">@make_array</span>(array)
+    length = array.get(<span class="hljs-string">'length'</span>)
+    <span class="hljs-keyword">for</span> [<span class="hljs-number">0.</span>.(length * no_of_swaps)]
+      swap_i_1 = Math.round(Math.random()*(length - <span class="hljs-number">1</span>))
+      swap_i_2 = Math.round(Math.random()*(length - <span class="hljs-number">1</span>))
+      <span class="hljs-keyword">unless</span> swap_i_1 == swap_i_2
+        tmp = array.objectAt(swap_i_1)
+        array[swap_i_1] = array[swap_i_2]
+        array[swap_i_2] = tmp
+    <span class="hljs-keyword">return</span> array</div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method make_array</span></p>
+<p>extends the functionality of ember.makeArray to also include transforming DS.ManyArrays</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">make_array</span>: <span class="hljs-function"><span class="hljs-params">(val)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> ember.makeArray() <span class="hljs-keyword">unless</span> ember.isPresent val
+    val = val.toArray() <span class="hljs-keyword">if</span> val.toArray?
+    <span class="hljs-keyword">return</span> ember.makeArray val
+
+  <span class="hljs-attribute">set_is_querying</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set</span> <span class="hljs-string">'is_querying'</span>, <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">reset_is_querying</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set</span> <span class="hljs-string">'is_querying'</span>, <span class="hljs-literal">false</span></div></div></div></div></body></html>

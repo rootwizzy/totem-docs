@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/support/engines/engines_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/support/engines/engines_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/engines/engines_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/engines/engines_test.rb">src/totem/api/totem-core/test/support/engines/engines_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../../support_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">framework_user</span>;</span> path_to_class(<span class="hljs-string">'test/framework/core/user'</span>); <span class="hljs-keyword">end</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">user</span>;</span> path_to_class(<span class="hljs-string">'test/platform/main/user'</span>); <span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_platform_hash</span></span>
+  {
+    <span class="hljs-string">'test_platform_main'</span> =&gt; <span class="hljs-string">'Test::Platform::Main'</span>,
+    <span class="hljs-string">'test_platform_one'</span>  =&gt; <span class="hljs-string">'Test::Platform::One'</span>,
+    <span class="hljs-string">'test_platform_two'</span>  =&gt; <span class="hljs-string">'Test::Platform::Two'</span>,
+  }
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_platform_names</span></span>
+  engine_platform_hash.keys.sort
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_engines_common</span></span>
+  set_environment
+  load_platform_configs
+  <span class="hljs-variable">@platform_engine_main</span> = register_engine
+  <span class="hljs-variable">@platform_engine_one</span>  = register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/one'</span>)
+  <span class="hljs-variable">@platform_engine_two</span>  = register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/two'</span>)
+  <span class="hljs-variable">@engine</span> = <span class="hljs-variable">@env</span>.engine
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_engine_instance_variable</span><span class="hljs-params">(var, value)</span></span>
+  assert <span class="hljs-variable">@engine</span>.instance_variable_defined?(var), <span class="hljs-string">"Instance variable <span class="hljs-subst">#{var.inspect}</span> should be defined."</span>
+  assert_equal value, <span class="hljs-variable">@engine</span>.instance_variable_get(var)
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'engines.rb'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    set_environment
+    load_platform_configs
+    <span class="hljs-variable">@engine</span> = <span class="hljs-variable">@env</span>.engine
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'should be valid'</span> <span class="hljs-keyword">do</span> 
+    assert_kind_of <span class="hljs-constant">Array</span>, <span class="hljs-variable">@engine</span>.engines
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'should be populated'</span> <span class="hljs-keyword">do</span> 
+    register_engine
+    refute_empty <span class="hljs-variable">@engine</span>.engines, <span class="hljs-string">'Engines should be populated.'</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'engines.rb engine instances'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_engines_common
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'registered engines are populated'</span> <span class="hljs-keyword">do</span>
+    expect = [<span class="hljs-variable">@platform_engine_main</span>, <span class="hljs-variable">@platform_engine_one</span>, <span class="hljs-variable">@platform_engine_two</span>]
+    assert_equal expect, <span class="hljs-variable">@engine</span>.engines
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'only registered engines are returned'</span> <span class="hljs-keyword">do</span>
+    register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/three'</span>, <span class="hljs-symbol">register:</span> <span class="hljs-keyword">false</span>)
+    assert_equal <span class="hljs-number">4</span>, <span class="hljs-variable">@engine</span>.engines.length
+    assert_equal <span class="hljs-number">3</span>, <span class="hljs-variable">@env</span>.registered.engines.length
+    expect = [<span class="hljs-variable">@platform_engine_main</span>, <span class="hljs-variable">@platform_engine_one</span>, <span class="hljs-variable">@platform_engine_two</span>]
+    actual = <span class="hljs-variable">@engine</span>.engines.select { |e| <span class="hljs-variable">@engine</span>.is_registered_platform_engine?(e) }
+    assert_equal expect, actual
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'engines_reset!'</span> <span class="hljs-keyword">do</span> 
+    assert_equal <span class="hljs-number">3</span>, <span class="hljs-variable">@engine</span>.engines.length
+    <span class="hljs-variable">@engine</span>.engines_reset!
+    assert_engine_instance_variable(<span class="hljs-string">'@engine_instances'</span>, <span class="hljs-keyword">nil</span>)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'engines.rb instance variables'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_engines_common
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'names'</span> <span class="hljs-keyword">do</span> 
+    assert_equal engine_platform_names, <span class="hljs-variable">@engine</span>.names.sort
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The full engine class name includes class-name::Engine.
+However, the configured &#39;engine name&#39; does not include ::Engine, nor does the table name prefix.</p></div></div><div class="code"><div class="wrapper">  it <span class="hljs-string">'name and engine'</span> <span class="hljs-keyword">do</span> 
+    assert_equal engine_platform_names, <span class="hljs-variable">@engine</span>.name_and_engine.keys.sort
+    engine_platform_hash.each <span class="hljs-keyword">do</span> |name, class_name|
+      assert_equal <span class="hljs-string">"<span class="hljs-subst">#{class_name}</span>::Engine"</span>, <span class="hljs-variable">@engine</span>.name_and_engine[name].<span class="hljs-keyword">class</span>.name
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'name and class'</span> <span class="hljs-keyword">do</span> 
+    assert_equal engine_platform_names, <span class="hljs-variable">@engine</span>.name_and_class.keys.sort
+    engine_platform_hash.each <span class="hljs-keyword">do</span> |name, class_name|
+      assert_equal class_name, <span class="hljs-variable">@engine</span>.name_and_class[name]
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'path and name'</span> <span class="hljs-keyword">do</span> 
+    paths = engine_platform_hash.values.collect {|c| c.underscore }.sort
+    assert_equal paths, <span class="hljs-variable">@engine</span>.path_and_name.keys.sort
+    engine_platform_hash.each <span class="hljs-keyword">do</span> |name, class_name|
+      assert_equal name, <span class="hljs-variable">@engine</span>.path_and_name[class_name.underscore]
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'association paths'</span> <span class="hljs-keyword">do</span> 
+    register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/three'</span>)
+    register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/four'</span>)
+    actual = <span class="hljs-variable">@engine</span>.association_paths.sort
+    assert_kind_of <span class="hljs-constant">Array</span>, actual
+    assert_equal <span class="hljs-number">2</span>, actual.length
+    assert_match(<span class="hljs-string">'test_platform_one'</span>, actual.first)
+    assert_match(<span class="hljs-string">'test_platform_three'</span>, actual.last)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'associations file name blank error'</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@env</span>.option.db_associations_filename = <span class="hljs-keyword">nil</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@engine</span>.association_paths
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/associations file name.*blank/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'reset!'</span> <span class="hljs-keyword">do</span> 
+    <span class="hljs-variable">@engine</span>.names
+    <span class="hljs-variable">@engine</span>.name_and_engine
+    <span class="hljs-variable">@engine</span>.name_and_class
+    <span class="hljs-variable">@engine</span>.path_and_name
+    <span class="hljs-variable">@engine</span>.association_paths
+    <span class="hljs-variable">@engine</span>.reset!
+    assert_engine_instance_variable(<span class="hljs-string">'@engine_names'</span>, <span class="hljs-keyword">nil</span>)
+    assert_engine_instance_variable(<span class="hljs-string">'@engine_name_and_engine'</span>, <span class="hljs-keyword">nil</span>)
+    assert_engine_instance_variable(<span class="hljs-string">'@engine_name_and_class'</span>, <span class="hljs-keyword">nil</span>)
+    assert_engine_instance_variable(<span class="hljs-string">'@engine_path_and_name'</span>, <span class="hljs-keyword">nil</span>)
+    assert_engine_instance_variable(<span class="hljs-string">'@engine_association_paths'</span>, <span class="hljs-keyword">nil</span>)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'engines.rb helpers'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_engines_common
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'loaded?'</span> <span class="hljs-keyword">do</span> 
+    engine_platform_hash.each <span class="hljs-keyword">do</span> |name, class_name|
+      assert <span class="hljs-variable">@engine</span>.loaded?(name), <span class="hljs-string">"Engine <span class="hljs-subst">#{name.inspect}</span> should be loaded."</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'to engine name'</span> <span class="hljs-keyword">do</span>
+    assert_equal <span class="hljs-string">'test_platform_main'</span>, <span class="hljs-variable">@engine</span>.to_engine_name(<span class="hljs-string">'Test::Platform::Main'</span>)
+    assert_equal <span class="hljs-string">'test_platform_main'</span>, <span class="hljs-variable">@engine</span>.to_engine_name(<span class="hljs-string">'test/platform/main'</span>)
+    assert_equal <span class="hljs-string">'test_platform_main'</span>, <span class="hljs-variable">@engine</span>.to_engine_name(<span class="hljs-string">'test_platform_main'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>will not convert:</p></div></div><div class="code"><div class="wrapper">    refute_match <span class="hljs-string">'test_platform_main'</span>, <span class="hljs-variable">@engine</span>.to_engine_name(<span class="hljs-string">'Test.Platform.Main'</span>)
+    assert_nil <span class="hljs-variable">@engine</span>.to_engine_name(<span class="hljs-constant">Test::Platform::Main</span>), <span class="hljs-string">"To engine name with non-string should be nil."</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'engines.rb finders'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_engines_common
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'get by name'</span> <span class="hljs-keyword">do</span>
+    assert_equal <span class="hljs-number">1</span>, <span class="hljs-variable">@engine</span>.get_by_name(<span class="hljs-string">'test_platform_main'</span>).length
+    assert_kind_of <span class="hljs-constant">Test::Platform::Main::Engine</span>, <span class="hljs-variable">@engine</span>.get_by_name(<span class="hljs-string">'test_platform_main'</span>).first
+    assert_equal <span class="hljs-number">1</span>, <span class="hljs-variable">@engine</span>.get_by_name(<span class="hljs-string">'test_platform_one'</span>).length
+    assert_kind_of <span class="hljs-constant">Test::Platform::One::Engine</span>, <span class="hljs-variable">@engine</span>.get_by_name(<span class="hljs-string">'test_platform_one'</span>).first
+    assert_equal <span class="hljs-number">1</span>, <span class="hljs-variable">@engine</span>.get_by_name(<span class="hljs-string">'test_platform_two'</span>).length
+    assert_kind_of <span class="hljs-constant">Test::Platform::Two::Engine</span>, <span class="hljs-variable">@engine</span>.get_by_name(<span class="hljs-string">'test_platform_two'</span>).first
+    assert_equal [], <span class="hljs-variable">@engine</span>.get_by_name(<span class="hljs-string">'test_platform_bad'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'find by name'</span> <span class="hljs-keyword">do</span>
+    engine_platform_names.each <span class="hljs-keyword">do</span> |name|
+      assert_equal [name], <span class="hljs-variable">@engine</span>.find_by_name(name)
+    <span class="hljs-keyword">end</span>
+    assert_equal [], <span class="hljs-variable">@engine</span>.find_by_name(<span class="hljs-string">'test_platform_bad'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'find by starts with'</span> <span class="hljs-keyword">do</span>
+    assert_equal engine_platform_names, <span class="hljs-variable">@engine</span>.find_by_starts_with(<span class="hljs-string">'test'</span>).sort
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'find by starts with new platform'</span> <span class="hljs-keyword">do</span>
+    register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/new_one'</span>)
+    register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/new_two'</span>)
+    assert_equal [<span class="hljs-string">'test_platform_new_one'</span>, <span class="hljs-string">'test_platform_new_two'</span>].sort, <span class="hljs-variable">@engine</span>.find_by_starts_with(<span class="hljs-string">'test_platform_new'</span>).sort
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'find by starts with bad platform'</span> <span class="hljs-keyword">do</span>
+    assert_equal [], <span class="hljs-variable">@engine</span>.find_by_starts_with(<span class="hljs-string">'bad'</span>).sort
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>To get the current platform name, engine.rb first gets the engine name from the
+table name prefix class method, then does a lookup on the engine&#39;s registered platform name.</p></div></div><div class="code"><div class="wrapper">describe <span class="hljs-string">'engines.rb current platform name'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_engines_common
+    register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/framework/core'</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'test_framework'</span>, <span class="hljs-symbol">platform_path:</span> <span class="hljs-string">'test/framework'</span>)
+    <span class="hljs-variable">@current_framework</span> = <span class="hljs-string">'test_framework'</span>
+    <span class="hljs-variable">@current_platform</span>  = <span class="hljs-string">'test_platform'</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'framework from class'</span> <span class="hljs-keyword">do</span>
+    assert_equal <span class="hljs-variable">@current_framework</span>, <span class="hljs-variable">@engine</span>.current_platform_name(framework_user)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'framework from instance'</span> <span class="hljs-keyword">do</span>
+    assert_equal <span class="hljs-variable">@current_framework</span>, <span class="hljs-variable">@engine</span>.current_platform_name(framework_user.new)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'platform from class'</span> <span class="hljs-keyword">do</span>
+    assert_equal <span class="hljs-variable">@current_platform</span>, <span class="hljs-variable">@engine</span>.current_platform_name(user)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'platform from instance'</span> <span class="hljs-keyword">do</span>
+    assert_equal <span class="hljs-variable">@current_platform</span>, <span class="hljs-variable">@engine</span>.current_platform_name(user.new)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

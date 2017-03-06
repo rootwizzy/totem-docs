@@ -1,0 +1,114 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/test/support/registration/registration_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/test/support/registration/registration_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/registration/registration_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/registration/registration_test.rb">src/totem/api/totem-core/test/support/registration/registration_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../../support_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+describe <span class="hljs-string">'registration.rb'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span>
+    set_environment
+    load_platform_configs
+    <span class="hljs-variable">@register</span>         = <span class="hljs-variable">@env</span>.register
+    <span class="hljs-variable">@registered</span>       = <span class="hljs-variable">@env</span>.registered
+    <span class="hljs-variable">@platform_options</span> = {
+      <span class="hljs-symbol">platform_name:</span>     <span class="hljs-string">'test_platform'</span>,
+      <span class="hljs-symbol">platform_path:</span>     <span class="hljs-string">'test/platform'</span>,
+      <span class="hljs-symbol">platform_scope:</span>    <span class="hljs-string">'test_scope'</span>,
+      <span class="hljs-symbol">platform_sub_type:</span> <span class="hljs-string">'common'</span>,
+    }
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'framework register'</span> <span class="hljs-keyword">do</span> 
+    register_framework
+    assert_kind_of <span class="hljs-constant">Array</span>, <span class="hljs-variable">@registered</span>.platforms
+    refute_empty <span class="hljs-variable">@registered</span>.platforms, <span class="hljs-string">'Registered platforms should be populated with framework.'</span>
+    assert_equal <span class="hljs-string">'test_framework'</span>, <span class="hljs-variable">@registered</span>.framework_name
+    assert_equal [<span class="hljs-string">'test_framework'</span>], <span class="hljs-variable">@registered</span>.platforms
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'platform register'</span> <span class="hljs-keyword">do</span>
+    register_framework
+    register_platform
+    assert_kind_of <span class="hljs-constant">Array</span>, <span class="hljs-variable">@registered</span>.platforms
+    refute_empty <span class="hljs-variable">@registered</span>.platforms, <span class="hljs-string">'Registered platforms should be populated with platform.'</span>
+    assert_equal [<span class="hljs-string">'test_framework'</span>, <span class="hljs-string">'test_platform'</span>].sort, <span class="hljs-variable">@registered</span>.platforms.sort
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'engine register'</span> <span class="hljs-keyword">do</span>
+    name = <span class="hljs-string">'test_platform_one'</span>
+    <span class="hljs-variable">@register</span>.engine(name, <span class="hljs-variable">@platform_options</span>)
+    assert_equal <span class="hljs-variable">@platform_options</span>.stringify_keys, <span class="hljs-variable">@registered</span>.engine_configurations[name]
+    assert_equal [name].sort, <span class="hljs-variable">@registered</span>.engines.sort
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'engine register multiple'</span> <span class="hljs-keyword">do</span>
+    registered_engines = <span class="hljs-constant">Array</span>.new
+    name = <span class="hljs-string">'test_platform_one'</span>
+    <span class="hljs-variable">@register</span>.engine(name, <span class="hljs-variable">@platform_options</span>)
+    assert_equal <span class="hljs-variable">@platform_options</span>.stringify_keys, <span class="hljs-variable">@registered</span>.engine_configurations[name]
+    registered_engines.push(name)
+    name = <span class="hljs-string">'test_platform_two'</span>
+    <span class="hljs-variable">@register</span>.engine(name, <span class="hljs-variable">@platform_options</span>)
+    assert_equal <span class="hljs-variable">@platform_options</span>.stringify_keys, <span class="hljs-variable">@registered</span>.engine_configurations[name]
+    registered_engines.push(name)
+    name = <span class="hljs-string">'test_platform_three'</span>
+    <span class="hljs-variable">@register</span>.engine(name, <span class="hljs-variable">@platform_options</span>)
+    assert_equal <span class="hljs-variable">@platform_options</span>.stringify_keys, <span class="hljs-variable">@registered</span>.engine_configurations[name]
+    registered_engines.push(name)
+    assert_equal registered_engines.sort, <span class="hljs-variable">@registered</span>.engines.sort
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'engine get options'</span> <span class="hljs-keyword">do</span>
+    name = <span class="hljs-string">'test_platform_one'</span>
+    <span class="hljs-variable">@register</span>.engine(name, <span class="hljs-variable">@platform_options</span>)
+    assert_equal <span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_name</span>],     <span class="hljs-variable">@registered</span>.engine_platform_name(name)
+    assert_equal <span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_path</span>],     <span class="hljs-variable">@registered</span>.engine_platform_path(name)
+    assert_equal <span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_scope</span>],    <span class="hljs-variable">@registered</span>.engine_platform_scope(name)
+    assert_equal <span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_sub_type</span>], <span class="hljs-variable">@registered</span>.engine_platform_sub_type(name)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'engine options not corrupted with multiple'</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@register</span>.engine(<span class="hljs-string">'test_platform_one'</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'one_bad'</span>, <span class="hljs-symbol">platform_path:</span> <span class="hljs-string">'one/bad'</span>)
+    name = <span class="hljs-string">'test_platform_two'</span>
+    <span class="hljs-variable">@register</span>.engine(name, <span class="hljs-variable">@platform_options</span>)
+    <span class="hljs-variable">@register</span>.engine(<span class="hljs-string">'test_platform_three'</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'three_bad'</span>, <span class="hljs-symbol">platform_path:</span> <span class="hljs-string">'three/bad'</span>)
+    assert_equal <span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_name</span>],     <span class="hljs-variable">@registered</span>.engine_platform_name(name)
+    assert_equal <span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_path</span>],     <span class="hljs-variable">@registered</span>.engine_platform_path(name)
+    assert_equal <span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_scope</span>],    <span class="hljs-variable">@registered</span>.engine_platform_scope(name)
+    assert_equal <span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_sub_type</span>], <span class="hljs-variable">@registered</span>.engine_platform_sub_type(name)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Note: performs &#39;register_engine&#39; helper method to mock engine since requires engine class name from engines.rb.</p></div></div><div class="code"><div class="wrapper">  it <span class="hljs-string">'engine config option with engine class by symbol'</span> <span class="hljs-keyword">do</span>
+    register_engine(<span class="hljs-variable">@platform_options</span>.merge(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/one'</span>))
+    expect = {<span class="hljs-string">'test_platform'</span> =&gt; [<span class="hljs-string">'Test::Platform::One'</span>]}
+    actual = <span class="hljs-variable">@registered</span>.config_value_and_engine_class_names(<span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_path</span>], <span class="hljs-symbol">:platform_name</span>)
+    assert_equal expect, actual
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'engine config option with engine class by string'</span> <span class="hljs-keyword">do</span>
+    register_engine(<span class="hljs-variable">@platform_options</span>.merge(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/one'</span>))
+    expect = {<span class="hljs-string">'test_platform'</span> =&gt; [<span class="hljs-string">'Test::Platform::One'</span>]}
+    actual = <span class="hljs-variable">@registered</span>.config_value_and_engine_class_names(<span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_path</span>], <span class="hljs-string">'platform_name'</span>)
+    assert_equal expect, actual
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'engine config option for multiple engines - platform name'</span> <span class="hljs-keyword">do</span>
+    register_engine(<span class="hljs-variable">@platform_options</span>.merge(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/one'</span>))
+    register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/two'</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'two_platform'</span>, <span class="hljs-symbol">platform_path:</span> <span class="hljs-string">'two/platform'</span>)
+    register_engine(<span class="hljs-variable">@platform_options</span>.merge(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/three'</span>))
+    expect = {<span class="hljs-string">'test_platform'</span> =&gt; [<span class="hljs-string">'Test::Platform::One'</span>, <span class="hljs-string">'Test::Platform::Three'</span>]}
+    actual = <span class="hljs-variable">@registered</span>.config_value_and_engine_class_names(<span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_path</span>], <span class="hljs-symbol">:platform_name</span>)
+    assert_equal expect, actual
+    expect = {<span class="hljs-string">'two_platform'</span> =&gt; [<span class="hljs-string">'Test::Platform::Two'</span>]}
+    actual = <span class="hljs-variable">@registered</span>.config_value_and_engine_class_names(<span class="hljs-string">'two/platform'</span>, <span class="hljs-symbol">:platform_name</span>)
+    assert_equal expect, actual
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'another engine config option for multiple engines - platform_sub_type'</span> <span class="hljs-keyword">do</span>
+    register_engine(<span class="hljs-variable">@platform_options</span>.merge(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/one'</span>))
+    register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/two'</span>, <span class="hljs-symbol">platform_sub_type:</span> <span class="hljs-string">'two_sub_type'</span>, <span class="hljs-symbol">platform_path:</span> <span class="hljs-string">'two/platform'</span>)
+    register_engine(<span class="hljs-variable">@platform_options</span>.merge(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/three'</span>))
+    expect = {<span class="hljs-string">'common'</span> =&gt; [<span class="hljs-string">'Test::Platform::One'</span>, <span class="hljs-string">'Test::Platform::Three'</span>]}
+    actual = <span class="hljs-variable">@registered</span>.config_value_and_engine_class_names(<span class="hljs-variable">@platform_options</span>[<span class="hljs-symbol">:platform_path</span>], <span class="hljs-symbol">:platform_sub_type</span>)
+    assert_equal expect, actual
+    expect = {<span class="hljs-string">'two_sub_type'</span> =&gt; [<span class="hljs-string">'Test::Platform::Two'</span>]}
+    actual = <span class="hljs-variable">@registered</span>.config_value_and_engine_class_names(<span class="hljs-string">'two/platform'</span>, <span class="hljs-symbol">:platform_sub_type</span>)
+    assert_equal expect, actual
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

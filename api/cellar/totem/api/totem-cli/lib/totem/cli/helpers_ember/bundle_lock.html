@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-cli/lib/totem/cli/helpers_ember/bundle_lock</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-cli/lib/totem/cli/helpers_ember/bundle_lock"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_ember/bundle_lock.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers_ember/bundle_lock.rb">src/totem/api/totem-cli/lib/totem/cli/helpers_ember/bundle_lock.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">HelpersEmber</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">BundleLock</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bundle_lock_data</span></span>
+    <span class="hljs-variable">@bundle_lock_data</span> ||= <span class="hljs-keyword">begin</span>
+      <span class="hljs-keyword">if</span> bundle? || bundle_lock_versions?
+        local = get_bundle_lock_data_from_content(read_local_bundle_lock_file)
+        repo  = get_bundle_lock_data_from_content(read_repo_bundle_lock_file)
+        local = local.is_a?(<span class="hljs-constant">Hash</span>) ? local.deep_symbolize_keys <span class="hljs-symbol">:</span> <span class="hljs-constant">Hash</span>.new
+        repo  = repo.is_a?(<span class="hljs-constant">Hash</span>)  ? repo.deep_symbolize_keys  <span class="hljs-symbol">:</span> <span class="hljs-constant">Hash</span>.new
+        data  = local.deep_merge(repo) <span class="hljs-comment"># repo has priority</span>
+      <span class="hljs-keyword">else</span>
+        data = <span class="hljs-constant">Hash</span>.new
+      <span class="hljs-keyword">end</span>
+      data
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_lock_node_packages</span>;</span>  bundle_lock_data[<span class="hljs-symbol">:node</span>]  || <span class="hljs-constant">Hash</span>.new; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_lock_bower_packages</span>;</span> bundle_lock_data[<span class="hljs-symbol">:bower</span>] || <span class="hljs-constant">Hash</span>.new; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_lock_node_package</span><span class="hljs-params">(pkg)</span>;</span>  get_bundle_lock_node_packages[pkg]  || <span class="hljs-constant">Hash</span>.new; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_lock_bower_package</span><span class="hljs-params">(pkg)</span>;</span> get_bundle_lock_bower_packages[pkg] || <span class="hljs-constant">Hash</span>.new; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_package_bundle_lock_node_version</span><span class="hljs-params">(pkg)</span>;</span>  get_bundle_lock_node_package(pkg)[<span class="hljs-symbol">:version</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_package_bundle_lock_bower_version</span><span class="hljs-params">(pkg)</span>;</span> get_bundle_lock_bower_package(pkg)[<span class="hljs-symbol">:version</span>]; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_lock_data_from_content</span><span class="hljs-params">(content)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-constant">Hash</span>.new  <span class="hljs-keyword">if</span> content.blank?
+    <span class="hljs-constant">YAML</span>.load(content)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_lock_filename</span>;</span> <span class="hljs-string">'bundle.lock.yml'</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_lock_file_dir</span></span>
+    dir = <span class="hljs-constant">File</span>.dirname(run_options[<span class="hljs-symbol">:run_options_filename</span>] || <span class="hljs-string">''</span>)
+    stop_run <span class="hljs-string">"Bundle lock file path <span class="hljs-subst">#{dir.inspect}</span> is not a directory."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(dir)
+    dir
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_local_bundle_lock_file</span></span>
+    filename = get_bundle_lock_filename
+    content  = <span class="hljs-keyword">nil</span>
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-constant">File</span>.file?(filename)
+        content = <span class="hljs-constant">File</span>.read(filename)
+        say set_color(<span class="hljs-string">"    Using LOCAL bundle lock file <span class="hljs-subst">#{<span class="hljs-constant">File</span>.join(<span class="hljs-variable">@app_path</span>, filename)}</span>"</span>, <span class="hljs-symbol">:green</span>, <span class="hljs-symbol">:bold</span>)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    content
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_repo_bundle_lock_file</span></span>
+    filename = get_bundle_lock_filename
+    run_file = run_options[<span class="hljs-symbol">:run_options_file</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> run_file.blank?
+    path = <span class="hljs-constant">File</span>.dirname(run_file)
+    file = <span class="hljs-constant">File</span>.join(path, filename)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(file)
+    say set_color(<span class="hljs-string">"    Using REPO  bundle lock file <span class="hljs-subst">#{file}</span>"</span>, <span class="hljs-symbol">:green</span>, <span class="hljs-symbol">:bold</span>)
+    <span class="hljs-constant">File</span>.read(file)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_bundle_lock_file_content</span></span>
+    bower    = <span class="hljs-constant">Hash</span>.new
+    node     = <span class="hljs-constant">Hash</span>.new
+    commands = get_bundle_standardized_run_commands
+    commands.each <span class="hljs-keyword">do</span> |pkg, hash|
+      base = hash.slice(<span class="hljs-symbol">:version</span>, <span class="hljs-symbol">:command_file</span>)
+      ver  = hash[<span class="hljs-symbol">:version</span>]
+      <span class="hljs-keyword">if</span> hash[<span class="hljs-symbol">:installed_node</span>]
+        node[pkg] = base.dup
+        adjust_bundle_lock_command_filename(node[pkg])
+        node[pkg].merge!(<span class="hljs-symbol">version:</span> hash[<span class="hljs-symbol">:installed_node_version</span>])  <span class="hljs-keyword">if</span> ver.blank?
+        (hash[<span class="hljs-symbol">:bower_related</span>] || <span class="hljs-constant">Array</span>.new).each <span class="hljs-keyword">do</span> |bpkg, bhash|
+          bower[bpkg] = base.merge(bhash.slice(<span class="hljs-symbol">:version</span>, <span class="hljs-symbol">:command_file</span>))  <span class="hljs-keyword">unless</span> bower.has_key?(bpkg)
+          adjust_bundle_lock_command_filename(bower[bpkg])
+        <span class="hljs-keyword">end</span>
+        (hash[<span class="hljs-symbol">:node_related</span>] || <span class="hljs-constant">Array</span>.new).each <span class="hljs-keyword">do</span> |npkg, nhash|
+          node[npkg] = base.merge(nhash.slice(<span class="hljs-symbol">:version</span>, <span class="hljs-symbol">:command_file</span>))  <span class="hljs-keyword">unless</span> node.has_key?(npkg)
+          adjust_bundle_lock_command_filename(node[npkg])
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">if</span> hash[<span class="hljs-symbol">:installed_bower</span>]
+        bower[pkg] = base.dup
+        bver       = hash[<span class="hljs-symbol">:installed_bower_version</span>]
+        <span class="hljs-keyword">case</span>
+        <span class="hljs-keyword">when</span> ver.blank?
+          bower[pkg].merge!(<span class="hljs-symbol">version:</span> bver)
+          adjust_bundle_lock_command_filename(bower[pkg])
+        <span class="hljs-keyword">when</span> ver != bver &amp;&amp; ver.match(<span class="hljs-string">'lts'</span>)
+          bower[pkg].merge!(<span class="hljs-symbol">lts_version:</span> ver)
+          bower[pkg].merge!(<span class="hljs-symbol">version:</span> bver)
+          adjust_bundle_lock_command_filename(bower[pkg])
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    sorted_bower = <span class="hljs-constant">Hash</span>.new
+    sorted_node  = <span class="hljs-constant">Hash</span>.new
+    bower.keys.sort.each {|k| sorted_bower[k] = bower[k]}
+    node.keys.sort.each  {|k| sorted_node[k] = node[k]}
+    {<span class="hljs-symbol">node:</span> sorted_node, <span class="hljs-symbol">bower:</span> sorted_bower}
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">adjust_bundle_lock_command_filename</span><span class="hljs-params">(hash)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> hash.is_a?(<span class="hljs-constant">Hash</span>)
+    cmd_file = hash[<span class="hljs-symbol">:command_file</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> cmd_file.blank? || run_dir_pwd.blank?
+    hash[<span class="hljs-symbol">:command_file</span>] = <span class="hljs-constant">File</span>.basename(cmd_file, <span class="hljs-string">'.*'</span>)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

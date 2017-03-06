@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/assessment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/assessment"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/assessment.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/assessment.rb">src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/assessment.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Assessment</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
+      totem_associations</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="states">States</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">AASM</span>
+     
+      aasm <span class="hljs-symbol">column:</span> <span class="hljs-symbol">:state</span> <span class="hljs-keyword">do</span>
+        state <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">initial:</span> <span class="hljs-keyword">true</span>
+        state <span class="hljs-symbol">:approved</span>
+        state <span class="hljs-symbol">:active</span>
+
+        event <span class="hljs-symbol">:activate</span>, <span class="hljs-symbol">before:</span> <span class="hljs-symbol">:activate_assessment</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:active</span>
+        <span class="hljs-keyword">end</span>
+
+        event <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:approved</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:process_assessment</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">create_assessment</span><span class="hljs-params">(assignment, assessment, team_set)</span></span>
+        <span class="hljs-keyword">self</span>.transaction <span class="hljs-keyword">do</span>
+          authable         = assignment.thinkspace_common_space
+          team_set         = team_set.clone_and_lock(authable)
+          phase_assessment = create_assessment_phase(assignment, assessment)
+          phase_overview   = create_assessment_overview_phase(assignment, assessment)
+          team_set.add_teamables([phase_assessment, phase_overview])
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">create_assessment_phase</span><span class="hljs-params">(assignment, assessment)</span></span>
+        phase               = assessment_phase(assignment)
+        assessment.authable = phase
+        assessment.save
+        create_phase_component(phase, assessment, <span class="hljs-string">'peer-assessment'</span>, <span class="hljs-string">'assessment'</span>)
+        create_header_component(phase)
+        phase
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">create_assessment_overview_phase</span><span class="hljs-params">(assignment, assessment)</span></span>
+        phase    = assessment_overview_phase(assignment)
+        overview = create_overview(phase, assessment)
+        create_phase_component(phase, overview, <span class="hljs-string">'peer-assessment-overview'</span>, <span class="hljs-string">'overview'</span>)
+        create_header_component(phase)
+        phase
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">create_overview</span><span class="hljs-params">(phase, assessment)</span></span>
+        <span class="hljs-constant">Thinkspace::PeerAssessment::Overview</span>.create(<span class="hljs-symbol">authable:</span> phase, <span class="hljs-symbol">assessment_id:</span> assessment.id)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">create_phase</span><span class="hljs-params">(options={})</span></span>
+        phase                   = <span class="hljs-constant">Thinkspace::Casespace::Phase</span>.new
+        phase.assignment_id     = options[<span class="hljs-symbol">:assignment_id</span>]
+        phase.phase_template_id = options[<span class="hljs-symbol">:phase_template_id</span>]
+        phase.team_category_id  = options[<span class="hljs-symbol">:team_category_id</span>]
+        phase.title             = options[<span class="hljs-symbol">:title</span>] || <span class="hljs-string">'Peer Assessment Phase'</span>
+        phase.description       = options[<span class="hljs-symbol">:description</span>] || <span class="hljs-string">'Peer assessment description.'</span>
+        phase.state             = options[<span class="hljs-symbol">:state</span>] || <span class="hljs-symbol">:inactive</span>
+        phase.default_state     = options[<span class="hljs-symbol">:default_state</span>] || <span class="hljs-string">'unlocked'</span>
+        phase.position          = options[<span class="hljs-symbol">:position</span>] || <span class="hljs-number">1</span>
+        phase.save
+        phase
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">assessment_overview_phase</span><span class="hljs-params">(assignment)</span></span>
+        options                     = <span class="hljs-constant">Hash</span>.new
+        options[<span class="hljs-symbol">:assignment_id</span>]     = assignment.id
+        options[<span class="hljs-symbol">:phase_template_id</span>] = assessment_overview_phase_template.id
+        options[<span class="hljs-symbol">:team_category_id</span>]  = <span class="hljs-constant">Thinkspace::Team::TeamCategory</span>.assessment.id
+        options[<span class="hljs-symbol">:title</span>]             = <span class="hljs-string">'Peer Assessment Overview'</span> <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> What should title be?</span>
+        options[<span class="hljs-symbol">:description</span>]       = <span class="hljs-string">'See the peer assessment overview here.'</span> <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> What should the description be?</span>
+        options[<span class="hljs-symbol">:state</span>]             = <span class="hljs-symbol">:active</span>
+        options[<span class="hljs-symbol">:default_state</span>]     = <span class="hljs-string">'locked'</span>
+        options[<span class="hljs-symbol">:position</span>]          = <span class="hljs-number">2</span>
+        create_phase(options)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">assessment_phase</span><span class="hljs-params">(assignment)</span></span>
+        options                     = <span class="hljs-constant">Hash</span>.new
+        options[<span class="hljs-symbol">:assignment_id</span>]     = assignment.id
+        options[<span class="hljs-symbol">:phase_template_id</span>] = assessment_phase_template.id
+        options[<span class="hljs-symbol">:team_category_id</span>]  = <span class="hljs-constant">Thinkspace::Team::TeamCategory</span>.assessment.id
+        options[<span class="hljs-symbol">:title</span>]             = <span class="hljs-string">'Peer Assessment'</span> <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> What should title be?</span>
+        options[<span class="hljs-symbol">:description</span>]       = <span class="hljs-string">'Take the peer assessment here.'</span> <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> What should the description be?</span>
+        options[<span class="hljs-symbol">:state</span>]             = <span class="hljs-symbol">:active</span>
+        options[<span class="hljs-symbol">:default_state</span>]     = <span class="hljs-string">'unlocked'</span>
+        options[<span class="hljs-symbol">:position</span>]          = <span class="hljs-number">1</span>
+        create_phase(options)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">create_header_component</span><span class="hljs-params">(phase)</span>;</span> create_phase_component(phase, phase, <span class="hljs-string">'casespace-phase-header'</span>, <span class="hljs-string">'header'</span>); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">create_submit_component</span><span class="hljs-params">(phase)</span>;</span> create_phase_component(phase, phase, <span class="hljs-string">'casespace-phase-submit'</span>, <span class="hljs-string">'submit'</span>); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">create_phase_component</span><span class="hljs-params">(phase, componentable, component_title, section)</span></span>
+        component = <span class="hljs-constant">Thinkspace::Common::Component</span>.find_by(<span class="hljs-symbol">title:</span> component_title)
+        raise <span class="hljs-string">"Component with title <span class="hljs-subst">#{component_title.inspect}</span> not found."</span> <span class="hljs-keyword">if</span> component.blank?
+        phase_component = phase.thinkspace_casespace_phase_components.create(
+          <span class="hljs-symbol">componentable:</span> componentable,
+          <span class="hljs-symbol">component_id:</span>  component.id,
+          <span class="hljs-symbol">section:</span>       section
+        )
+        phase_component
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">common_component</span></span>
+        <span class="hljs-constant">Thinkspace::Common::Component</span>.find_by(<span class="hljs-symbol">title:</span> <span class="hljs-string">'peer-assessment'</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">assessment_phase_template</span></span>
+        <span class="hljs-constant">Thinkspace::Casespace::PhaseTemplate</span>.find_by(<span class="hljs-symbol">name:</span> <span class="hljs-string">'peer_assessment/assessment'</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">assessment_overview_phase_template</span></span>
+        <span class="hljs-constant">Thinkspace::Casespace::PhaseTemplate</span>.find_by(<span class="hljs-symbol">name:</span> <span class="hljs-string">'peer_assessment/overview'</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">quantitative_items</span></span>
+        <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">unless</span> value.has_key?(<span class="hljs-string">'quantitative'</span>)
+        value[<span class="hljs-string">'quantitative'</span>]
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">options</span></span>
+        value[<span class="hljs-string">'options'</span>]
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assessment_type</span></span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> options.present?
+        options[<span class="hljs-string">'type'</span>]
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_points_per_member</span></span>
+        options.with_indifferent_access.dig(<span class="hljs-symbol">:points</span>, <span class="hljs-symbol">:per_member</span>) || <span class="hljs-number">0</span>.<span class="hljs-number">0</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_min_max_score_for_reviews</span><span class="hljs-params">(number_of_reviews=<span class="hljs-number">0</span>.<span class="hljs-number">0</span>)</span></span>
+        min_score = <span class="hljs-number">0</span>.<span class="hljs-number">0</span>
+        max_score = <span class="hljs-number">0</span>.<span class="hljs-number">0</span>
+        quantitative_items.each <span class="hljs-keyword">do</span> |item|
+          dirt   = item.with_indifferent_access
+          min    = dirt.dig(<span class="hljs-symbol">:settings</span>, <span class="hljs-symbol">:points</span>, <span class="hljs-symbol">:min</span>)
+          max    = dirt.dig(<span class="hljs-symbol">:settings</span>, <span class="hljs-symbol">:points</span>, <span class="hljs-symbol">:max</span>)
+          min_score += min
+          max_score += max
+        <span class="hljs-keyword">end</span>
+        max_allocated = get_points_per_member * number_of_reviews
+        max_score     = max_allocated <span class="hljs-keyword">if</span> max_score &gt; max_allocated
+        [min_score, max_score]
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">activate_assessment</span></span>
+        <span class="hljs-keyword">self</span>.transaction <span class="hljs-keyword">do</span>
+          team_set_teamable = authable.thinkspace_team_team_set_teamables.first
+          raise <span class="hljs-string">"Cannot activate assessment [<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.id}</span>] without a valid team set teamble."</span> <span class="hljs-keyword">unless</span> team_set_teamable.present?
+          team_set = team_set_teamable.thinkspace_team_team_set
+          raise <span class="hljs-string">"Cannot activate assessment [<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.id}</span>] without a valid team set."</span> <span class="hljs-keyword">unless</span> team_set.present?
+          authable.unassign_team_set <span class="hljs-comment"># Remove all team sets from the phase.</span>
+          new_team_set  = team_set.clone_and_lock(authable)
+          teamables = thinkspace_peer_assessment_overviews.map(&amp;<span class="hljs-symbol">:authable</span>).uniq
+          teamables.push authable <span class="hljs-comment"># All overview phases and assessment phase.</span>
+          new_team_set.add_teamables teamables
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_assessment</span></span>
+        phase = overview_phase
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> phase.present?
+        team_sets   = thinkspace_peer_assessment_team_sets.scope_approved
+        review_sets = <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>.scope_by_team_sets(team_sets).scope_approved</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: How can we use scopes here to improve this?</p></div></div><div class="code"><div class="wrapper">        ownerables  = review_sets.map(&amp;<span class="hljs-symbol">:ownerable</span>).uniq
+
+        ownerables.each <span class="hljs-keyword">do</span> |ownerable|
+          phase_state = phase.find_or_create_state_for_ownerable(ownerable)
+          <span class="hljs-keyword">if</span> phase_state.may_unlock_phase?
+            phase_state.unlock_phase!
+            notify_overview_unlocked_for_user(ownerable)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        team_sets.each { |team_set| team_set.mark_as_sent! }
+      <span class="hljs-keyword">end</span>
+      handle_asynchronously <span class="hljs-symbol">:process_assessment</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">overview_phase</span></span>
+        phase      = authable
+        assignment = phase.thinkspace_casespace_assignment
+        phase_ids  = assignment.thinkspace_casespace_phases.scope_active.pluck(<span class="hljs-symbol">:id</span>)
+        overview   = <span class="hljs-constant">Thinkspace::PeerAssessment::Overview</span>.find_by(<span class="hljs-symbol">assessment_id:</span> <span class="hljs-keyword">self</span>.id)
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> overview.present?
+        overview_phase = overview.authable
+        raise <span class="hljs-string">"Cannot get a phase that is cross-assignment when unlocked a PeerAssessment::Assessment"</span> <span class="hljs-keyword">unless</span> phase_ids.<span class="hljs-keyword">include</span>?(overview_phase.id)
+        overview_phase
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">notify_overview_unlocked_for_user</span><span class="hljs-params">(user)</span></span>
+        <span class="hljs-constant">Thinkspace::PeerAssessment::AssessmentMailer</span>.notify_overview_unlocked(<span class="hljs-keyword">self</span>, user).deliver_now
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-comment">## Serialized method to determine whether the current state of the 'value' column differs from the assessment template's.</span>
+      <span class="hljs-comment">## Used to prompt the user to create a new assessment template if they've made changes to their existing template.</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">modified_template</span></span>
+        <span class="hljs-keyword">if</span> assessment_template_id.present?
+          assessment_template = <span class="hljs-constant">Thinkspace::PeerAssessment::AssessmentTemplate</span>.find(assessment_template_id)
+
+          <span class="hljs-keyword">return</span> !(assessment_template.value == <span class="hljs-keyword">self</span>.value)
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="clone-assessment">Clone Assessment.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.deep_clone_helper
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cyclone</span><span class="hljs-params">(options={})</span></span>
+        <span class="hljs-keyword">self</span>.transaction <span class="hljs-keyword">do</span>
+          cloned_assessment       = clone_self(options)
+          cloned_assessment.state = <span class="hljs-string">'neutral'</span>
+          clone_save_record(cloned_assessment)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="builder-abilities">Builder Abilities.</h3>
+<h3 id="-"> </h3></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">builder_abilities</span><span class="hljs-params">(abilities)</span></span>
+        <span class="hljs-keyword">if</span> approved? || active?
+          abilities[<span class="hljs-symbol">:team_based</span>]    = <span class="hljs-keyword">false</span>
+          abilities[<span class="hljs-symbol">:team_category</span>] = <span class="hljs-keyword">false</span>
+          abilities[<span class="hljs-symbol">:team_set</span>]      = <span class="hljs-keyword">false</span>
+        <span class="hljs-keyword">end</span>
+        abilities
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

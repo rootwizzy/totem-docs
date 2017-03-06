@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/app/concerns/totem/core/controllers/api_render/cache_query_key</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/app/concerns/totem/core/controllers/api_render/cache_query_key"><meta name="groc-project-path" content="src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render/cache_query_key.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render/cache_query_key.rb">src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render/cache_query_key.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controllers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ApiRender</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">CacheQueryKey</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="see-usage-documentation-at-bottom-of-this-file">See usage documentation at bottom of this file.</h3>
+<h2 id="">#</h2>
+<h3 id="query-cache-key-parts">Query Cache Key Parts.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key</span><span class="hljs-params">(record_or_scope, options)</span></span>
+    parts = <span class="hljs-constant">Array</span>.new
+    array = [serializer_options.cache_query].flatten.compact
+    <span class="hljs-keyword">return</span> parts <span class="hljs-keyword">if</span> array.blank?
+    var = serializer_options.cache_instance_var
+    ros = var.blank? ? record_or_scope <span class="hljs-symbol">:</span> controller_cache_query_key_get_instance_variable(var)
+    array.each <span class="hljs-keyword">do</span> |hash|
+      raise_controller_cache_error <span class="hljs-string">"Cache key query must be an array of hashes not <span class="hljs-subst">#{hash.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> hash.is_a?(<span class="hljs-constant">Hash</span>)
+      name = hash[<span class="hljs-symbol">:name</span>]
+      parts.push(name)  <span class="hljs-keyword">if</span> name.present?
+      part = controller_cache_query_key_apply_hash_method(ros, hash)
+      parts.push part.present? ? part <span class="hljs-symbol">:</span> <span class="hljs-symbol">:none</span>
+    <span class="hljs-keyword">end</span>
+    parts
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_get_instance_variable</span><span class="hljs-params">(var)</span></span>
+    var = <span class="hljs-string">"@<span class="hljs-subst">#{var}</span>"</span>  <span class="hljs-keyword">unless</span> var.to_s.start_with?(<span class="hljs-string">'@'</span>)
+    val = <span class="hljs-keyword">self</span>.instance_variable_get(var.to_sym)
+    raise_controller_cache_error <span class="hljs-string">"Cache key query :instance_var <span class="hljs-subst">#{var.inspect}</span> is blank."</span>  <span class="hljs-keyword">if</span> val.blank?
+    val
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_apply_hash_method</span><span class="hljs-params">(record_or_scope, hash)</span></span>
+    <span class="hljs-keyword">if</span> controller_cache_record_or_scope_is_a_scope?(record_or_scope)
+      controller_cache_query_key_get_value_for_scope(record_or_scope.dup, hash)
+    <span class="hljs-keyword">else</span>
+      controller_cache_query_key_get_value_for_record(record_or_scope, hash)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="scope">Scope.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_get_value_for_scope</span><span class="hljs-params">(scope, hash)</span></span>
+    method      = controller_cache_query_key_get_hash_method(hash)
+    association = hash[method]
+    scope       = scope.joins(association) <span class="hljs-keyword">if</span> association.present?
+    controller_cache_query_key_get_scope_value(scope, method, hash)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="record">Record.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_get_value_for_record</span><span class="hljs-params">(record, hash)</span></span>
+    method      = controller_cache_query_key_get_hash_method(hash)
+    association = hash[method]
+    column      = controller_cache_query_key_get_hash_column(method, hash)
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> association.present?
+      record_or_scope = controller_cache_query_key_get_value(record, association)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> record_or_scope.present?
+      <span class="hljs-keyword">if</span> controller_cache_record_or_scope_is_a_scope?(record_or_scope)
+        controller_cache_query_key_get_scope_value(record_or_scope, method, hash)
+      <span class="hljs-keyword">else</span>
+        controller_cache_query_key_get_value(record_or_scope, column)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">when</span> controller_cache_query_key_get_hash_scope(hash).present?
+      controller_cache_query_key_get_scope_value(record, method, hash)
+    <span class="hljs-keyword">else</span>
+      controller_cache_query_key_get_value(record, column)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_get_value</span><span class="hljs-params">(record_or_scope, method, arg=<span class="hljs-keyword">nil</span>)</span></span>
+    controller_cache_query_key_method_error(record_or_scope, method, arg) <span class="hljs-keyword">unless</span> record_or_scope.respond_to?(method)
+    arg.blank? ? record_or_scope.send(method) <span class="hljs-symbol">:</span> record_or_scope.send(method, arg)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The &#39;scope&#39; can be a record if the first hash[:scope] creates a scope from the record.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_get_scope_value</span><span class="hljs-params">(scope, method, hash)</span></span>
+    scope      = controller_cache_query_key_apply_hash_scopes(scope, hash)
+    scope, arg = controller_cache_query_key_apply_additional_scopes(scope, method, hash)
+    value = controller_cache_query_key_get_value(scope, method, arg)
+    value = value.uniq  <span class="hljs-keyword">if</span> hash[<span class="hljs-symbol">:unique</span>].present? &amp;&amp; value.is_a?(<span class="hljs-constant">Array</span>)
+    controller_cache_query_key_debug(scope, method, hash, arg, value)  <span class="hljs-keyword">if</span> hash[<span class="hljs-symbol">:debug</span>].present?
+    value
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_apply_hash_scopes</span><span class="hljs-params">(scope, hash)</span></span>
+    where  = hash[<span class="hljs-symbol">:where</span>]
+    scope  = scope.where(where) <span class="hljs-keyword">if</span> where.present?
+    <span class="hljs-keyword">if</span> (scopes = controller_cache_query_key_get_hash_scope(hash)).present?
+      args = hash[<span class="hljs-symbol">:scope_args</span>]
+      args = args.blank? ? [] <span class="hljs-symbol">:</span> <span class="hljs-constant">Array</span>(args).dup
+      [scopes].flatten.compact.each <span class="hljs-keyword">do</span> |hash_scope|
+        hash_args = args.shift
+        controller_cache_query_key_method_error(scope, hash_scope, hash_args) <span class="hljs-keyword">unless</span> scope.respond_to?(hash_scope)
+        scope = controller_cache_query_key_get_value(scope, hash_scope, hash_args)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    scope
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_apply_additional_scopes</span><span class="hljs-params">(scope, method, hash)</span></span>
+    association = hash[method]
+    column      = controller_cache_query_key_get_hash_column(method, hash)
+    table       = hash[<span class="hljs-symbol">:table</span>]
+    table       = association.to_s.pluralize  <span class="hljs-keyword">if</span> table.blank? &amp;&amp; association.present?
+    <span class="hljs-keyword">if</span> association.blank? &amp;&amp; table.blank?
+      scope = scope.order(column)  <span class="hljs-keyword">if</span> method == <span class="hljs-symbol">:pluck</span> &amp;&amp; column.present?
+      <span class="hljs-keyword">return</span> [scope, column]
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> (distinct_column = hash[<span class="hljs-symbol">:distinct</span>]).present?
+      arg   = <span class="hljs-keyword">nil</span>
+      col   = <span class="hljs-string">"<span class="hljs-subst">#{table}</span>.<span class="hljs-subst">#{distinct_column}</span>"</span>
+      scope = scope.select(<span class="hljs-string">"distinct <span class="hljs-subst">#{col}</span>"</span>)
+    <span class="hljs-keyword">else</span>
+      col = column.blank? ? <span class="hljs-keyword">nil</span> <span class="hljs-symbol">:</span> <span class="hljs-string">"<span class="hljs-subst">#{table}</span>.<span class="hljs-subst">#{column}</span>"</span>
+      arg = col.blank? ? table <span class="hljs-symbol">:</span> col
+    <span class="hljs-keyword">end</span>
+    scope = scope.order(col)  <span class="hljs-keyword">if</span> method == <span class="hljs-symbol">:pluck</span> &amp;&amp; col.present? 
+    [scope, arg]
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_get_hash_scope</span><span class="hljs-params">(hash)</span>;</span> hash[<span class="hljs-symbol">:scope</span>]; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_get_hash_column</span><span class="hljs-params">(method, hash)</span></span>
+    column = hash[<span class="hljs-symbol">:column</span>]
+    column = <span class="hljs-symbol">:updated_at</span>  <span class="hljs-keyword">if</span> column.blank? &amp;&amp; method != <span class="hljs-symbol">:count</span>
+    column
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_get_hash_method</span><span class="hljs-params">(hash)</span></span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> hash.has_key?(<span class="hljs-symbol">:method</span>)       <span class="hljs-keyword">then</span> hash[<span class="hljs-symbol">:method</span>]
+    <span class="hljs-keyword">when</span> hash.has_key?(<span class="hljs-symbol">:count</span>)        <span class="hljs-keyword">then</span> <span class="hljs-symbol">:count</span>
+    <span class="hljs-keyword">when</span> hash.has_key?(<span class="hljs-symbol">:maximum</span>)      <span class="hljs-keyword">then</span> <span class="hljs-symbol">:maximum</span>
+    <span class="hljs-keyword">when</span> hash.has_key?(<span class="hljs-symbol">:minimum</span>)      <span class="hljs-keyword">then</span> <span class="hljs-symbol">:minimum</span>
+    <span class="hljs-keyword">when</span> hash.has_key?(<span class="hljs-symbol">:pluck</span>)        <span class="hljs-keyword">then</span> <span class="hljs-symbol">:pluck</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-symbol">:maximum</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_debug</span><span class="hljs-params">(scope, method, hash, arg, value)</span></span>
+    puts <span class="hljs-string">"\n"</span>
+    val    = value.is_a?(<span class="hljs-constant">Time</span>) ? value.utc.to_s(<span class="hljs-symbol">:nsec</span>) <span class="hljs-symbol">:</span> value.to_s
+    column = controller_cache_query_key_get_hash_column(method, hash)
+    controller_debug_message (<span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>)
+    controller_debug_message <span class="hljs-string">"Controller : <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name}</span>#<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.action_name}</span>"</span>
+    controller_debug_message <span class="hljs-string">"Method     : <span class="hljs-subst">#{method.inspect}</span>"</span>
+    controller_debug_message <span class="hljs-string">"Column     : <span class="hljs-subst">#{column.inspect}</span>"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>controller_debug_message &quot;Hash       : #{hash.inspect}&quot;</p></div></div><div class="code"><div class="wrapper">    controller_debug_message <span class="hljs-string">"Arg        : <span class="hljs-subst">#{method}</span>(<span class="hljs-subst">#{arg}</span>)"</span>
+    controller_debug_message <span class="hljs-string">"Sql        : <span class="hljs-subst">#{scope.to_sql}</span>"</span>
+    controller_debug_message <span class="hljs-string">"Value      : <span class="hljs-subst">#{val.inspect}</span>"</span>
+    controller_debug_message (<span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>)
+    puts <span class="hljs-string">"\n"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_query_key_method_error</span><span class="hljs-params">(record_or_scope, method, arg=<span class="hljs-keyword">nil</span>)</span></span>
+    <span class="hljs-keyword">if</span> controller_cache_record_or_scope_is_a_scope?(record_or_scope)
+      type    = <span class="hljs-string">'Scope'</span>
+      object  = record_or_scope.first.<span class="hljs-keyword">class</span>.name
+    <span class="hljs-keyword">else</span>
+      type   = <span class="hljs-string">'Record'</span>
+      object = record_or_scope
+    <span class="hljs-keyword">end</span>
+    message = <span class="hljs-string">"\n"</span>
+    message += <span class="hljs-string">"  Does not respond to method <span class="hljs-subst">#{method.inspect}</span> -&gt;\n"</span>
+    message += <span class="hljs-string">"    <span class="hljs-subst">#{type}</span>: <span class="hljs-subst">#{object.inspect}</span>\n"</span>
+    message += <span class="hljs-string">"    Params: <span class="hljs-subst">#{arg.inspect}</span>\n"</span>  <span class="hljs-keyword">if</span> arg.present?
+    raise_controller_cache_error(message)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Implements basic cache query-key functionality in the serializer options e.g. minimum, maximum, count, pluck.</p>
+<p>Allows using the same cache query-key hash for scopes and a single record.
+Values must be symbols (&quot;where&quot; scope values can contain strings).</p>
+<p>Cache query keys can be generated via a model method (class/instance) &#39;totem<em>cache_query_key</em>{action-name}&#39;
+or via the serializer options using this module.</p>
+<p>Serializer Options Cache Key: 
+  name:            [String|Symbol] string/ before the value
+  method:          [:minimum|:maximum|:count|:pluck] default :maximum; sql method to use to get the value
+  scope:           [Symbol|Arrry(Symbols)] scopes to be applied
+  scope_args:      [Array] positionally passed as parameters to the scope
+  minimum:         [Symbol] association name (sets the method to :minimum)
+  maximum:         [Symbol] association name (sets the method to :maximum)
+  count:           [Symbol] association name (sets the method to :count)
+  pluck:           [Symbol] association name (sets the method to :pluck)
+  column:          [Symbol] defaults :updated_at; column to be evaluated by the method
+  table:           [Symbol] table name for the method value (overrides the association name)
+  where:           where-clause for a scope (used as-is); e.g. scope.where(where-clause)</p></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">#:                   - record: applied after a record association</span>
+<span class="hljs-comment">#:                   - scope:  after joins(:association-name) but before additional scopes (e.g. before scope: :active)</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  debug:           [true|false] default false; print sql info for scopes
+  model_query_key: [true|false] default false; adds the model method query keys to the serializer options query keys
+  distinct:        [true|false] default false; if true &#39;select distinct&#39; add to sql query
+  unique:          [true|false] default false; if true and value is an array, returns unique values</p></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">#:                   - unique is done after value array from sql query so should only be used when query returns a small number of values.</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Complex query keys should be performed in a model scope.
+If want to add the model query keys to the serializer options query keys use the cache option: &#39;model_query_key: true&#39;.</p>
+<ul>
+<li>e.g. serialzer_options.cache model_query_key: true</li>
+</ul>
+<p>Method and column values default to the common use case for record(s): method=:maximum, column=:updated_at.
+To override the default method add a &#39;method&#39; option e.g. name: spaces_min, method: :minimum).</p>
+<p>Cache query key value hash(s) can be set by the serializer_options &#39;cache&#39; method or &#39;cache_query_key&#39; method (note: values are additive).
+The &#39;cache_query_key&#39; method can be called multiple times to add query key values.
+The value can be a single hash or an array of hashes.</p>
+<ul>
+<li>serializer_options.cache query_key: {}          e.g. serializer_options.cache query_key: {name: :spaces}</li>
+<li>serializer_options.cache query_key: [{}, {}]    e.g. serializer_options.cache query_key: [{name: :spaces}, {name: :other}, ...]</li>
+<li>serializer_options.cache_query {}               e.g. serializer_options.cache_query_key name: :spaces</li>
+<li>serializer_options.cache_query [{}, {}]         e.g. serializer_options.cache_query_key [{name: :spaces}, {name: :other}, ...]</li>
+</ul>
+<p>The methods minimum, maximum, count and pluck can be used with a record or scope.
+The methods value must be an association name (e.g. maximum: :thinkspace_common_users).
+A &#39;scope&#39; option (single value or array of values) can be applied to the record or scope before getting the query key value.</p>
+<p>If the scope(s) include &#39;joins&#39; to other tables, the &#39;table&#39; option ensures the value is from the correct table.
+By default, when the query key contains an  association, the association name (pluralized) is used as the table name.</p>
+<p>When required, &#39;scope_args&#39; can be supplied and are passed positionally to the scope (if not nil).</p>
+<ul>
+<li>scope:      [scope1, scope2_by_ownerable],
+scope_args: [nil, ownerable]
+table:      :scope2_table_name
+The table name will be prepended to the column e.g. maximum(&#39;thinkspace_common_users.updated_at&#39;).</li>
+</ul>
+<p>If the serialized record-or-scope is not what the query key should be based, add the cache option &#39;instance_var&#39;.
+Set this option to the instance variable name e.g. serializer_options.cache instance_var: :myspace (uses @myspace).
+Be sure to set this instance variable in the controller if it does not already exist (e.g. not set by CanCan).</p>
+<p>Examples &#39;serializer_options.cache query_key: {}&#39; hash (assumes serializing a space record or a space records scope).
+  query_key: [
+    =&gt; maximum(:updated_at) note: method will default to :maximum and column will default to :updated_at
+      {name: :spaces},
+    =&gt; maximum(:updated_at) (same as above)
+      {name: :spaces, column: :updated_at},
+    =&gt; spaces-space_users maximum(:updated_at)
+      {name: :space_users, maximum: :thinkspace_common_space_users},
+    =&gt; space-assignments maximum(:release_at) where release_at &gt; now
+      {name: :release_at,  maximum: :thinkspace_casespace_assignments, where: [&#39;thinkspace_casespace_assignments.release_at &lt; ?&#39;, Time.now], column: :release_at},
+    =&gt; spaces maximum(:updated_at) for only active spaces
+      {name: :active_spaces, scope: :scope_active},
+    =&gt; space ids (e.g. space_ids/[1,2,3])
+      {name: :spaces_ids, method: :pluck, column: :id},
+    =&gt; active space ids (e.g. space_ids/[2,3])
+      {name: :active_spaces_ids, method: :pluck, column: :id, scope: :scope_active},
+    =&gt; spaces count (e.g. spaces_count/2)
+      {name: :spaces_count, method: :count},
+    =&gt; distinct spaces-space_users user_ids count (e.g. space_users_count/5)
+      {name: :space_users_count, count: :thinkspace_common_space_users, distinct: :user_id},
+    =&gt; unique spaces-space_users roles (e.g. space_users_count/[&#39;read&#39;, &#39;update&#39;]) (not very practical example)
+      {name: :space_user_roles, pluck: :thinkspace_common_space_users, column: :role, unique: true},
+  &#39;distinct&#39; is different than &#39;unique&#39;.  Unique only applies to an array of values (e.g. plucked values) and
+   is performed after the query on the returned values.  Distinct is part of the sql query.</p></div></div></div></div></body></html>

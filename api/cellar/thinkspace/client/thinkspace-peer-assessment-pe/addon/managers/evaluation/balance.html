@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-peer-assessment-pe/addon/managers/evaluation/balance</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-peer-assessment-pe/addon/managers/evaluation/balance"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-peer-assessment-pe/addon/managers/evaluation/balance.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-peer-assessment-pe/addon/managers/evaluation/balance.coffee">src/thinkspace/client/thinkspace-peer-assessment-pe/addon/managers/evaluation/balance.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+import tc          from <span class="hljs-string">'totem/cache'</span>
+import ta          from <span class="hljs-string">'totem/ds/associations'</span>
+import tm          from <span class="hljs-string">'totem-messages/messages'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="balance-points-helpers">Balance points helpers</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="computed-properties">Computed properties</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">is_balance</span>:        ember.computed.reads <span class="hljs-string">'model.is_balance'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h4 id="points-computed-properties">Points computed properties</h4></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">points_total</span>: ember.computed <span class="hljs-string">'model.points'</span>, <span class="hljs-string">'reviewables'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_balance'</span>)
+    points_per_member = <span class="hljs-property">@get</span> <span class="hljs-string">'model.points_per_member'</span>
+    reviewables       = <span class="hljs-property">@get</span> <span class="hljs-string">'reviewables.length'</span> || <span class="hljs-number">0</span>
+    points_per_member * reviewables
+  
+  <span class="hljs-attribute">points_remaining</span>: ember.computed <span class="hljs-string">'points_total'</span>, <span class="hljs-string">'points_expended'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_balance'</span>)
+    points_total    = <span class="hljs-property">@get</span> <span class="hljs-string">'points_total'</span>
+    points_expended = <span class="hljs-property">@get</span> <span class="hljs-string">'points_expended'</span>
+    points_total - points_expended
+
+  <span class="hljs-attribute">points_expended</span>: ember.computed <span class="hljs-string">'reviews.@each.value'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_balance'</span>)
+    reviews = <span class="hljs-property">@get</span> <span class="hljs-string">'reviews'</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">unless</span> ember.isPresent(reviews)
+    points  = <span class="hljs-number">0</span>
+    reviews.forEach (review) =&gt; points += review.get_expended_points()
+    points
+
+  <span class="hljs-attribute">points_different</span>: ember.computed <span class="hljs-string">'points_expended'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_balance'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>At least two unique values must be present for the points (e.g. cannot have all team members the same).</p></div></div><div class="code"><div class="wrapper">    reviews = <span class="hljs-property">@get</span> <span class="hljs-string">'reviews'</span> 
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">unless</span> ember.isPresent(reviews)
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> reviews.get(<span class="hljs-string">'length'</span>) == <span class="hljs-number">1</span> <span class="hljs-comment"># Cannot be a points difference error.</span>
+    points  = []
+    reviews.forEach (review) =&gt;
+      points.pushObject review.get_expended_points()
+    points.uniq().get(<span class="hljs-string">'length'</span>)
+
+  <span class="hljs-attribute">has_negative_points_remaining</span>: ember.computed <span class="hljs-string">'points_remaining'</span>, <span class="hljs-function">-&gt;</span>
+    points = <span class="hljs-property">@get</span> <span class="hljs-string">'points_remaining'</span>
+    points &lt; <span class="hljs-number">0</span>
+
+  <span class="hljs-attribute">has_points_remaining_rule</span>: ember.computed <span class="hljs-string">'points_remaining'</span>, <span class="hljs-function">-&gt;</span>
+    points = <span class="hljs-property">@get</span>(<span class="hljs-string">'points_remaining'</span>)
+    !(points == <span class="hljs-number">0</span>)
+
+  <span class="hljs-attribute">has_points_different_rule</span>: ember.computed <span class="hljs-string">'points_different'</span>, <span class="hljs-string">'points_expended'</span>, <span class="hljs-function">-&gt;</span>
+    changeset = <span class="hljs-property">@get</span>(<span class="hljs-string">'changeset'</span>)
+    errors = changeset.get(<span class="hljs-string">'errors'</span>)
+    points_diff = errors.findBy <span class="hljs-string">'key'</span>, <span class="hljs-string">'points_different'</span>
+    <span class="hljs-keyword">return</span> ember.isPresent(points_diff)
+
+  <span class="hljs-attribute">set_changeset_points_remaining</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@get</span>(<span class="hljs-string">'changeset'</span>))
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'changeset'</span>).set(<span class="hljs-string">'points_remaining'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'points_remaining'</span>))
+
+  <span class="hljs-attribute">set_changeset_points_different</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@get</span>(<span class="hljs-string">'changeset'</span>))
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'changeset'</span>).set(<span class="hljs-string">'points_different'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'points_different'</span>))
+
+  <span class="hljs-attribute">changeset_points_remaining</span>: ember.observer <span class="hljs-string">'points_remaining'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@get</span>(<span class="hljs-string">'changeset'</span>))
+      <span class="hljs-property">@set_changeset_points_remaining</span>()
+
+  <span class="hljs-attribute">changeset_points_different</span>: ember.observer <span class="hljs-string">'points_different'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@get</span>(<span class="hljs-string">'changeset'</span>))
+      <span class="hljs-property">@set_changeset_points_different</span>()</div></div></div></div></body></html>

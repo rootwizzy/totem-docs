@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/mixins/util/date_time</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/mixins/util/date_time"><meta name="groc-project-path" content="src/totem/client/totem/addon/mixins/util/date_time.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/mixins/util/date_time.coffee">src/totem/client/totem/addon/mixins/util/date_time.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">current_date</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-keyword">new</span> Date()
+
+  <span class="hljs-attribute">mm_dd_yyyy</span>: <span class="hljs-function"><span class="hljs-params">(d=<span class="hljs-property">@current_date</span>())</span> -&gt;</span>
+    mm   = <span class="hljs-property">@rjust</span>(d.getMonth()+<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-string">'0'</span>)
+    dd   = <span class="hljs-property">@rjust</span>(d.getDate(),<span class="hljs-number">2</span>,<span class="hljs-string">'0'</span>)
+    yyyy = d.getFullYear()
+    <span class="hljs-string">"<span class="hljs-subst">#{mm}</span>/<span class="hljs-subst">#{dd}</span>/<span class="hljs-subst">#{yyyy}</span>"</span>
+
+  <span class="hljs-attribute">hh_ss_mm</span>: <span class="hljs-function"><span class="hljs-params">(d=<span class="hljs-property">@current_date</span>())</span> -&gt;</span>
+    hh = <span class="hljs-property">@rjust</span>(d.getHours(),<span class="hljs-number">2</span>,<span class="hljs-string">'0'</span>)
+    mm = <span class="hljs-property">@rjust</span>(d.getMinutes(),<span class="hljs-number">2</span>,<span class="hljs-string">'0'</span>)
+    ss = <span class="hljs-property">@rjust</span>(d.getSeconds(),<span class="hljs-number">2</span>,<span class="hljs-string">'0'</span>)
+    <span class="hljs-string">"<span class="hljs-subst">#{hh}</span>:<span class="hljs-subst">#{mm}</span>:<span class="hljs-subst">#{ss}</span>"</span>
+
+  <span class="hljs-attribute">date_time</span>: <span class="hljs-function"><span class="hljs-params">(d=<span class="hljs-property">@current_date</span>())</span> -&gt;</span>
+    <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@mm_dd_yyyy</span>(d)}</span> <span class="hljs-subst">#{<span class="hljs-property">@hh_ss_mm</span>(d)}</span>"</span>
+
+  <span class="hljs-attribute">date_time_milliseconds</span>: <span class="hljs-function"><span class="hljs-params">(d=<span class="hljs-property">@current_date</span>())</span> -&gt;</span>
+    <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@date_time</span>(d)}</span>:<span class="hljs-subst">#{<span class="hljs-property">@rjust</span>(d.getMilliseconds(),<span class="hljs-number">3</span>,<span class="hljs-string">'0'</span>)}</span>"</span>
+
+  <span class="hljs-attribute">convert_time_string_to_milliseconds</span>: <span class="hljs-function"><span class="hljs-params">(string)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> string <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(string) == <span class="hljs-string">'string'</span>
+    [number_of, units] = string.split(<span class="hljs-string">'.'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> number_of.match(<span class="hljs-regexp">/\D/</span>)
+    <span class="hljs-keyword">switch</span> units
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'seconds'</span>, <span class="hljs-string">'second'</span>
+        number_of * <span class="hljs-number">1000</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'minutes'</span>, <span class="hljs-string">'minute'</span>
+        number_of * <span class="hljs-number">60000</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'hours'</span>, <span class="hljs-string">'hour'</span>
+        number_of * <span class="hljs-number">3600000</span>
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-literal">null</span></div></div></div></div></body></html>

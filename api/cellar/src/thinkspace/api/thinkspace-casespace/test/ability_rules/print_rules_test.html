@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/test/ability_rules/print_rules_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/test/ability_rules/print_rules_test"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/ability_rules/print_rules_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/ability_rules/print_rules_test.rb">src/thinkspace/api/thinkspace-casespace/test/ability_rules/print_rules_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'ability_helper'</span>
+<span class="hljs-constant">Test::Casespace::Seed</span>.load(<span class="hljs-symbol">config:</span> <span class="hljs-symbol">:ability</span>)
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Ability</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PrintRules</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveSupport::TestCase</span></span></span>
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::TerminalColors</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Ability</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Models</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Utility</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Rules</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>set<em>test<em>ability_classes File.expand_path(&#39;../../ability/ability_files&#39;, __FILE</em></em>)</p></div></div><div class="code"><div class="wrapper">  describe <span class="hljs-string">'ability'</span>  <span class="hljs-keyword">do</span>
+
+    let (<span class="hljs-symbol">:owner</span>)    {get_user(<span class="hljs-symbol">:owner_1</span>)}
+    let (<span class="hljs-symbol">:updater</span>)  {get_user(<span class="hljs-symbol">:update_1</span>)}
+    let (<span class="hljs-symbol">:reader</span>)   {get_user(<span class="hljs-symbol">:read_1</span>)}
+
+    describe <span class="hljs-string">'rules'</span> <span class="hljs-keyword">do</span>
+      it <span class="hljs-string">"print"</span> <span class="hljs-keyword">do</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>print_ability_rules(reader)</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>describe &#39;compare rules&#39; do
+  it &quot;print&quot; do
+    compare_ability_rules(reader, owner)
+  end
+end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>describe &#39;cancan rule objects&#39; do
+  it &quot;print&quot; do
+    print_cancan_rules(phase_class, reader, updater, owner)
+  end
+end</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

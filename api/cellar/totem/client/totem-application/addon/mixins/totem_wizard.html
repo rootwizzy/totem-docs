@@ -1,0 +1,312 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-application/addon/mixins/totem_wizard</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-application/addon/mixins/totem_wizard"><meta name="groc-project-path" content="src/totem/client/totem-application/addon/mixins/totem_wizard.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-application/addon/mixins/totem_wizard.coffee">src/totem/client/totem-application/addon/mixins/totem_wizard.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+
+export default ember.Mixin.create
+  <span class="hljs-comment">##### Public
+  tw_sync: -&gt;
+    @_tw_initialize()
+    new ember.RSVP.Promise (resolve, reject) =&gt;
+      @_tw_get_nested_promise(@_tw_sync_promise).then =&gt;  # ensure the last embed promise is resolved before returning
+        console.log "[tw_sync] Final resolve being called." if @_tw_is_debug()
+        resolve()
+
+  tw_edit: -&gt;
+    @_tw_initialize()
+    @_tw_set_is_edit()
+    new ember.RSVP.Promise (resolve, reject) =&gt;
+      @_tw_get_nested_promise(@_tw_edit_promise).then =&gt;  # ensure the last embed promise is resolved before returning
+        console.log "[tw_edit] Final resolve being called." if @_tw_is_debug()
+        resolve()
+
+  ###</span><span class="hljs-comment">## Private</span>
+  <span class="hljs-attribute">_tw_sync_promise</span>: <span class="hljs-function"><span class="hljs-params">(data, options)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_sync_promise] data, options: "</span>, data, options <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+      instructions = data.mapped_instructions
+      ember.RSVP.hash(data.promises).<span class="hljs-keyword">then</span> (results) =&gt;
+        <span class="hljs-keyword">for</span> key <span class="hljs-keyword">of</span> results
+          instruction = instructions.findBy(<span class="hljs-string">'to'</span>, key)
+          <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_sync_promise] Instruction of: "</span>, instruction <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+          instruction.set(<span class="hljs-string">'resolved_promise'</span>, results[key])
+
+        instructions.forEach (instruction) =&gt;
+          <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_sync_promise] Parsing instruction of: "</span>, instruction <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+
+          is_promise       = instruction.get(<span class="hljs-string">'is_promise'</span>)
+          resolved_promise = instruction.get(<span class="hljs-string">'resolved_promise'</span>)
+          on_obj           = instruction.get(<span class="hljs-string">'on_obj'</span>)
+          to               = instruction.get(<span class="hljs-string">'to'</span>)
+          polymorphic      = instruction.get(<span class="hljs-string">'polymorphic'</span>)
+          prop             = instruction.get(<span class="hljs-string">'prop'</span>)
+          prop_obj         = instruction.get(<span class="hljs-string">'prop_obj'</span>)
+          prop_objs        = ember.makeArray(prop_obj)
+
+          <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_sync_promise] To value to be set [<span class="hljs-subst">#{to}</span>] on: "</span>, on_obj <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pushing onto a resolved promise (e.g. association)</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">if</span> ember.isPresent(to) <span class="hljs-comment"># Ignore instructions without a `to` option.</span>
+            <span class="hljs-keyword">if</span> is_promise <span class="hljs-keyword">and</span> ember.isArray(resolved_promise)
+              resolved_promise.clear()
+              prop_objs.forEach (obj) =&gt;
+                <span class="hljs-property">@_tw_push_unless_contains</span>(resolved_promise, obj)
+            <span class="hljs-keyword">else</span>
+              <span class="hljs-keyword">if</span> polymorphic
+                <span class="hljs-built_in">console</span>.error <span class="hljs-string">"[_tw_sync_promise] Cannot set a polymorphic that doesn't exist: [<span class="hljs-subst">#{prop_obj}</span>] for instruction: "</span>, instruction <span class="hljs-keyword">unless</span> ember.isPresent(prop_obj)
+                id   = <span class="hljs-string">"<span class="hljs-subst">#{to}</span>_id"</span>
+                type = <span class="hljs-string">"<span class="hljs-subst">#{to}</span>_type"</span>
+                <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_sync_promise] Setting polymorphic of: "</span>, to <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+                on_obj.set(id, prop_obj.get(<span class="hljs-string">'id'</span>))
+                on_obj.set(type, <span class="hljs-property">@totem_scope</span>.get_record_path(prop_obj))
+              <span class="hljs-keyword">else</span>
+                on_obj.set(to, prop_obj)
+
+        ember.RSVP.all(<span class="hljs-property">@_tw_map_promise_definitions</span>(data.promise_all)).<span class="hljs-keyword">then</span> =&gt;
+          resolve()
+
+  <span class="hljs-attribute">_tw_edit_promise</span>: <span class="hljs-function"><span class="hljs-params">(data, options)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_edit_promise] data, options: "</span>, data, options <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+      instructions = data.mapped_instructions
+      promises     = data.promises
+
+      ember.RSVP.hash(promises).<span class="hljs-keyword">then</span> (results) =&gt;
+        <span class="hljs-keyword">for</span> key <span class="hljs-keyword">of</span> results
+          instruction = instructions.findBy(<span class="hljs-string">'to'</span>, key)
+          <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_edit_promise] Instruction for [<span class="hljs-subst">#{key}</span>]: "</span>, instruction <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+          instruction.set(<span class="hljs-string">'resolved_promise'</span>, results[key])
+
+        instructions.forEach (instruction) =&gt;
+          prop    = instruction.get(<span class="hljs-string">'prop'</span>)
+          on_prop = instruction.get(<span class="hljs-string">'on'</span>)
+          <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_edit_promise] Parsing prop: [<span class="hljs-subst">#{prop}</span>]"</span>, instruction <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+          <span class="hljs-keyword">if</span> ember.isPresent(prop) <span class="hljs-keyword">and</span> ember.isPresent(on_prop)
+            value = <span class="hljs-property">@_tw_get_instruction_prop_value</span>(instruction)
+            <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_edit_promise] Value found as for prop [<span class="hljs-subst">#{prop}</span>]: "</span>, value <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+            <span class="hljs-property">@set</span>(prop, value)
+        resolve()
+
+  <span class="hljs-attribute">_tw_get_instruction_prop_value</span>: <span class="hljs-function"><span class="hljs-params">(instruction)</span> -&gt;</span>
+    prop = instruction.get(<span class="hljs-string">'prop'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> ember.isPresent(prop)
+    single   = instruction.get(<span class="hljs-string">'single'</span>)
+    generate = instruction.get(<span class="hljs-string">'generate'</span>)
+    to       = instruction.get(<span class="hljs-string">'to'</span>)
+
+    <span class="hljs-keyword">if</span> instruction.get(<span class="hljs-string">'is_promise'</span>)
+      value = instruction.get(<span class="hljs-string">'resolved_promise'</span>)
+      <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_get_instruction_prop_value] Setting on prop, value PROMISE: "</span>, prop, value <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+    <span class="hljs-keyword">else</span>
+      value = instruction.get(<span class="hljs-string">"on_obj.<span class="hljs-subst">#{to}</span>"</span>)
+      <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_get_instruction_prop_value] Setting on prop, value: "</span>, prop, value <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Clone to prevent duplication/modification of relationship arrays.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> ember.isArray(value)
+      values       = ember.makeArray(value)
+      values_clone = []
+      values.forEach (value) =&gt;
+        values_clone.pushObject(value)
+      <span class="hljs-keyword">if</span> single <span class="hljs-keyword">then</span> value = values_clone.get(<span class="hljs-string">'firstObject'</span>) <span class="hljs-keyword">else</span> value = values_clone</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If no record is present and generate is true, create a new instance of the record.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> generate <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> ember.isPresent(value)
+      model_type = ember.Inflector.inflector.singularize(to)
+      new_obj    = <span class="hljs-property">@store</span>.createRecord(model_type)
+      value      = new_obj
+      <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_get_instruction_prop_value] Generating record of and type: "</span>, new_obj, model_type <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_get_instruction_prop_value] VALUE found as for [<span class="hljs-subst">#{prop}</span>]: "</span>, value <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+    value
+
+  <span class="hljs-attribute">_tw_generate_record</span>: <span class="hljs-function"><span class="hljs-params">(instruction, value)</span> -&gt;</span>
+    generate = instruction.get(<span class="hljs-string">'generate'</span>)
+
+    <span class="hljs-keyword">if</span> generate <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> ember.isPresent(prop_obj)
+      model_type = ember.Inflector.inflector.singularize(to)
+      new_obj    = <span class="hljs-property">@store</span>.createRecord(model_type)
+      <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_instruction_map] Generating record of and type: "</span>, new_obj, model_type <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+      instruction.set(<span class="hljs-string">'prop_obj'</span>, new_obj)
+
+
+  <span class="hljs-attribute">_tw_get_nested_promise</span>: <span class="hljs-function"><span class="hljs-params">(map_fn)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      data  = <span class="hljs-property">@_tw_parse_instructions</span>()
+      tasks = data.map =&gt; map_fn
+      resolve(tasks.reduce (cur, next, i) =&gt;
+        <span class="hljs-keyword">return</span> cur.<span class="hljs-keyword">then</span> =&gt;
+          <span class="hljs-keyword">return</span> next.call(@, data[i])
+      , ember.RSVP.resolve())
+
+  <span class="hljs-attribute">_tw_map_promise_definitions</span>: <span class="hljs-function"><span class="hljs-params">(definitions)</span> -&gt;</span>
+    definitions.map (definition) =&gt;
+      fn = definition.get(<span class="hljs-string">'fn'</span>)
+      fn.call(@, definition)
+
+  <span class="hljs-attribute">_tw_before_save_promises</span>: <span class="hljs-function"><span class="hljs-params">(definition)</span> -&gt;</span>
+    record      = definition.get(<span class="hljs-string">'record'</span>)
+    instruction = definition.get(<span class="hljs-string">'instruction'</span>)
+    options     = <span class="hljs-property">@_tw_get_options</span>()
+    fn_names    = ember.makeArray(instruction.before_save)
+    fns         = fn_names.map (name) =&gt; 
+      fn = options.functions[name]
+      <span class="hljs-built_in">console</span>.error <span class="hljs-string">"[_tw_before_save_promises] Cannot call before_save on undefined function of [<span class="hljs-subst">#{name}</span>]"</span> <span class="hljs-keyword">unless</span> ember.isPresent(fn)
+      fn.call(@, record)
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_before_save_promises] Returning promises of: "</span>, fns <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+    fns
+
+  <span class="hljs-attribute">_tw_after_save_promises</span>: <span class="hljs-function"><span class="hljs-params">(definition)</span> -&gt;</span>
+    record      = definition.get(<span class="hljs-string">'record'</span>)
+    instruction = definition.get(<span class="hljs-string">'instruction'</span>)
+    options     = <span class="hljs-property">@_tw_get_options</span>()
+    fn_names    = ember.makeArray(instruction.after_save)
+    fns         = fn_names.map (name) =&gt; 
+      fn = options.functions[name]
+      <span class="hljs-built_in">console</span>.error <span class="hljs-string">"[_tw_after_save_promises] Cannot call after_save on undefined function of [<span class="hljs-subst">#{name}</span>]"</span> <span class="hljs-keyword">unless</span> ember.isPresent(fn)
+      fn.call(@, record)
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_after_save_promises] Returning promises of: "</span>, fns <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+    fns
+
+  <span class="hljs-attribute">_tw_save</span>: <span class="hljs-function"><span class="hljs-params">(definition)</span> -&gt;</span>
+    record      = definition.get(<span class="hljs-string">'record'</span>)
+    instruction = definition.get(<span class="hljs-string">'instruction'</span>)
+    options     = <span class="hljs-property">@_tw_get_options</span>()
+
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      ember.RSVP.all(<span class="hljs-property">@_tw_before_save_promises</span>(definition)).<span class="hljs-keyword">then</span> =&gt;
+        record.save().<span class="hljs-keyword">then</span> (saved_record) =&gt;
+          <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_save] tw saved record: "</span>, saved_record <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+          global_data = options.data
+          data        = instruction.get(<span class="hljs-string">'data'</span>)
+          <span class="hljs-keyword">if</span> ember.isPresent(data) <span class="hljs-keyword">and</span> ember.isPresent(data.set)
+            <span class="hljs-keyword">if</span> ember.isArray(global_data)
+              <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_save] Adding object to data (pushObject) of key [<span class="hljs-subst">#{data.set}</span>]"</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+              global_data.pushObject(saved_record)
+            <span class="hljs-keyword">else</span>
+              <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_save] Adding object to data (single) of key [<span class="hljs-subst">#{data.set}</span>]"</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+              global_data[data.set] = saved_record
+          ember.RSVP.all(<span class="hljs-property">@_tw_after_save_promises</span>(definition)).<span class="hljs-keyword">then</span> =&gt;
+            resolve()
+
+  <span class="hljs-attribute">_tw_prop_fn</span>: <span class="hljs-function"><span class="hljs-params">(definition)</span> -&gt;</span>
+    record        = definition.get(<span class="hljs-string">'record'</span>)
+    instruction   = definition.get(<span class="hljs-string">'instruction'</span>)
+    options       = <span class="hljs-property">@_tw_get_options</span>()
+    prop_fn_names = instruction.get(<span class="hljs-string">'prop_fns'</span>)
+    promises      = []
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ember.isPresent(prop_fn_names)
+
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      prop_fn_names.forEach (name) =&gt; 
+        fn = options.functions[name]
+        <span class="hljs-built_in">console</span>.error <span class="hljs-string">"[_tw_prop_fn] Cannot call prop_fn on undefined function of [<span class="hljs-subst">#{name}</span>]"</span> <span class="hljs-keyword">unless</span> ember.isPresent(fn)
+        promises.pushObject(fn.call(@, record))
+      ember.RSVP.all(promises).<span class="hljs-keyword">then</span> =&gt;
+        resolve()
+
+  <span class="hljs-attribute">_tw_instruction_map</span>: <span class="hljs-function"><span class="hljs-params">(instruction, group_data)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">'[_tw_instruction_map] Instruction mapping, firing gettings: '</span>, instruction <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+    promise_all      = group_data.get(<span class="hljs-string">'promise_all'</span>)
+    on_prop          = instruction.get(<span class="hljs-string">'on'</span>)
+    prop             = instruction.get(<span class="hljs-string">'prop'</span>)
+    save             = instruction.get(<span class="hljs-string">'save'</span>)     <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>
+    use_ns           = instruction.get(<span class="hljs-string">'use_ns'</span>)   <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>
+    generate         = instruction.get(<span class="hljs-string">'generate'</span>) <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>
+    to               = instruction.get(<span class="hljs-string">'to'</span>)
+    prop_fns         = instruction.get(<span class="hljs-string">'prop_fns'</span>)
+    prop_fns_present = ember.isPresent(prop_fns)
+    to               = ns.to_p(to)    <span class="hljs-keyword">if</span> use_ns <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> instruction.get(<span class="hljs-string">'is_mapped'</span>)
+    prop_obj         = <span class="hljs-property">@get</span>(prop)     <span class="hljs-keyword">if</span> ember.isPresent(prop)
+    prop_objs        = ember.makeArray(prop_obj) <span class="hljs-keyword">if</span> ember.isPresent(prop_obj)
+    on_obj           = <span class="hljs-property">@get</span>(on_prop)  <span class="hljs-keyword">if</span> ember.isPresent(on_prop)
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_instruction_map] on_obj found as: "</span>, on_obj <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+    on_obj_promise    = on_obj.get(to) <span class="hljs-keyword">if</span> ember.isPresent(to) <span class="hljs-keyword">and</span> ember.isPresent(on_obj)
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_instruction_map] on_obj [<span class="hljs-subst">#{to}</span>] found as: "</span>, on_obj_promise <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+    on_obj_is_promise = <span class="hljs-keyword">not</span> ember.isNone(on_obj_promise) <span class="hljs-keyword">and</span> on_obj_promise.<span class="hljs-keyword">then</span>?
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_instruction_map] on_obj_is_promise for [<span class="hljs-subst">#{to}</span>] on: "</span>, on_obj, on_obj_is_promise <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_debug</span>()
+
+    instruction.set(<span class="hljs-string">'to'</span>,             to)
+    instruction.set(<span class="hljs-string">'prop_obj'</span>,       prop_obj)
+    instruction.set(<span class="hljs-string">'on_obj'</span>,         on_obj)
+    instruction.set(<span class="hljs-string">'on_obj_promise'</span>, on_obj_promise)
+    instruction.set(<span class="hljs-string">'is_promise'</span>,     on_obj_is_promise)
+    instruction.set(<span class="hljs-string">'is_mapped'</span>,      <span class="hljs-literal">true</span>)
+    instruction.set(<span class="hljs-string">'save'</span>,           save)
+    instruction.set(<span class="hljs-string">'use_ns'</span>,         use_ns)
+    instruction.set(<span class="hljs-string">'generate'</span>,       generate)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add the the RSVP.hash call if there is a promise for the instruction.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> on_obj_is_promise
+      promises     = group_data.get(<span class="hljs-string">'promises'</span>)
+      promises[to] = on_obj_promise</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If a model(s) is to be saved from a given property.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> ember.isPresent(prop_obj) <span class="hljs-keyword">and</span> save
+      prop_objs.forEach (obj) =&gt;
+        <span class="hljs-keyword">if</span> obj.get(<span class="hljs-string">'isDirty'</span>)
+          <span class="hljs-built_in">console</span>.log <span class="hljs-string">"[_tw_instruction_map] Saving value of: "</span>, obj
+          definition = ember.Object.create <span class="hljs-attribute">record</span>: obj, <span class="hljs-attribute">instruction</span>: instruction, <span class="hljs-attribute">fn</span>: <span class="hljs-property">@_tw_save</span>
+          <span class="hljs-property">@_tw_push_unless_contains</span>(promise_all, definition)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If a model(s) is to be saved and not being set to a controller property.
+=&gt; e.g. save a model and set a global value</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> ember.isPresent(on_obj) <span class="hljs-keyword">and</span> save <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> ember.isPresent(prop)
+      definition = ember.Object.create <span class="hljs-attribute">record</span>: on_obj, <span class="hljs-attribute">instruction</span>: instruction, <span class="hljs-attribute">fn</span>: <span class="hljs-property">@_tw_save</span>
+      <span class="hljs-property">@_tw_push_unless_contains</span>(promise_all, definition)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Functions to be called on the prop_obj(s) - different than before/after_save since it may call save within itself.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> prop_fns_present <span class="hljs-keyword">and</span> ember.isPresent(prop_obj)
+      prop_objs.forEach (obj) =&gt;
+        definition = ember.Object.create <span class="hljs-attribute">record</span>: obj, <span class="hljs-attribute">instruction</span>: instruction, <span class="hljs-attribute">fn</span>: <span class="hljs-property">@_tw_prop_fn</span>
+        <span class="hljs-property">@_tw_push_unless_contains</span>(promise_all, definition)
+
+    instruction
+
+  <span class="hljs-attribute">_tw_initialize</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@_tw_is_initialized</span>()
+    options      = <span class="hljs-property">@get</span>(<span class="hljs-string">'tw_options'</span>)
+    options.instructions.forEach (group, index) =&gt;
+      instructions = []
+      group.forEach (raw_instruction) =&gt;
+        instruction = ember.Object.create()
+        <span class="hljs-keyword">for</span> key <span class="hljs-keyword">of</span> raw_instruction
+          instruction.set(key, raw_instruction[key])
+        instructions.pushObject(instruction)
+      options.instructions[index] = instructions
+    <span class="hljs-property">@_tw_set_is_initialized</span>()
+    <span class="hljs-property">@_tw_set_is_not_edit</span>()
+    <span class="hljs-property">@set</span>(<span class="hljs-string">'tw_options'</span>, options)
+
+  <span class="hljs-attribute">_tw_get_new_group_data</span>: <span class="hljs-function">-&gt;</span>
+    ember.Object.create
+      <span class="hljs-attribute">mapped_instructions</span>: []
+      <span class="hljs-attribute">promise_all</span>:         []
+      <span class="hljs-attribute">promises</span>:            {}
+
+  <span class="hljs-attribute">_tw_parse_group_data</span>: <span class="hljs-function"><span class="hljs-params">(group)</span> -&gt;</span>
+      group_data          = <span class="hljs-property">@_tw_get_new_group_data</span>()
+      mapped_instructions = group_data.get(<span class="hljs-string">'mapped_instructions'</span>)
+      group.forEach (instruction) =&gt;
+        mapped_instruction = <span class="hljs-property">@_tw_instruction_map</span>(instruction, group_data)
+        mapped_instructions.pushObject(mapped_instruction)
+      group_data
+
+  <span class="hljs-attribute">_tw_parse_instructions</span>: <span class="hljs-function">-&gt;</span>
+      options      = <span class="hljs-property">@_tw_get_options</span>()
+      instructions = <span class="hljs-property">@_tw_get_instructions</span>()
+      options.data = {}
+      data         = []
+      instructions.forEach (group) =&gt;
+        group_data = <span class="hljs-property">@_tw_parse_group_data</span>(group)
+        data.pushObject(group_data)
+      data
+
+  <span class="hljs-attribute">_tw_push_unless_contains</span>: <span class="hljs-function"><span class="hljs-params">(array, values)</span> -&gt;</span>
+    values = ember.makeArray(values)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isEmpty(values)
+    values.forEach (value) =&gt;
+      array.pushObject(value) <span class="hljs-keyword">unless</span> array.includes(value) <span class="hljs-keyword">or</span> ember.isBlank(value) 
+
+  <span class="hljs-attribute">_tw_is_initialized</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tw_options.is_initialized'</span>)
+
+  <span class="hljs-attribute">_tw_set_is_initialized</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set</span>(<span class="hljs-string">'tw_options.is_initialized'</span>, <span class="hljs-literal">true</span>)
+
+  <span class="hljs-attribute">_tw_is_edit</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tw_options.is_edit'</span>)
+
+  <span class="hljs-attribute">_tw_set_is_edit</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set</span>(<span class="hljs-string">'tw_options.is_edit'</span>, <span class="hljs-literal">true</span>)
+
+  <span class="hljs-attribute">_tw_set_is_not_edit</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set</span>(<span class="hljs-string">'tw_options.is_edit'</span>, <span class="hljs-literal">false</span>)
+    
+  <span class="hljs-attribute">_tw_get_options</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tw_options'</span>)
+
+  <span class="hljs-attribute">_tw_get_global_data</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tw_options.data'</span>)
+
+  <span class="hljs-attribute">_tw_get_instructions</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tw_options.instructions'</span>)
+
+  <span class="hljs-attribute">_tw_is_debug</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'tw_options.debug'</span>)</div></div></div></div></body></html>

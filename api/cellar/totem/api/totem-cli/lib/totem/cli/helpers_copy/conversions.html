@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-cli/lib/totem/cli/helpers_copy/conversions</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-cli/lib/totem/cli/helpers_copy/conversions"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_copy/conversions.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers_copy/conversions.rb">src/totem/api/totem-cli/lib/totem/cli/helpers_copy/conversions.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">HelpersCopy</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Conversions</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>:file_path_conversions will do a gsub on the portion of the destination file path within (e.g. below) the destination directory.
+It will match both the directory path AND the file name (defaults to the conversions in :file_content_conversions).</p>
+<p>File names that include the &#39;from&#39; string are also converted to the &#39;to&#39; string, for example a :file_path_conversion of:
+  totem-core: totem-new-core #=&gt; totem-core.gemspec =&gt; totem-new-core-gemspec
+Note: files listed in :convert_files only have their &#39;content&#39; converted (not their file path or name).</p>
+<p>The directory levels can be changed, but &#39;module&#39; statements in the file content are not added/removed (need
+to do manually).  For example, a :file_path_conversion of:
+  mydir_1/mydir_2/mydir_3: mydir_1/mydir_3 #=&gt; would remove the mydir_2 directory but files will still contain &#39;module MyDir2&#39; statements.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_from</span>;</span> run_options[<span class="hljs-symbol">:from</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_to</span>;</span>   run_options[<span class="hljs-symbol">:to</span>];   <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_content_conversions</span>;</span> <span class="hljs-variable">@_content_conversions</span>   ||= [run_options[<span class="hljs-symbol">:file_content_conversions</span>]].flatten.compact; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_path_conversions</span>;</span>    <span class="hljs-variable">@_file_path_conversions</span> ||= [run_options[<span class="hljs-symbol">:file_path_conversions</span>]].flatten.compact;    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_copy_conversion_options</span></span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> get_from.present? &amp;&amp; get_to.present?
+      content_conversions = default_content_conversions
+      path_conversions    = default_path_conversions
+    <span class="hljs-keyword">when</span> get_content_conversions.present? &amp;&amp; get_path_conversions.present?
+      content_conversions = get_content_conversions
+      path_conversions    = get_path_conversions
+    <span class="hljs-keyword">when</span> get_content_conversions.present?
+      content_conversions = get_content_conversions
+      path_conversions    = get_content_conversions
+    <span class="hljs-keyword">when</span> get_path_conversions.present?
+      content_conversions = get_path_conversions
+      path_conversions    = get_path_conversions
+    <span class="hljs-keyword">else</span>
+      content_conversions = <span class="hljs-keyword">nil</span>
+      path_conversions    = <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">end</span>
+    run_options[<span class="hljs-symbol">:file_content_conversions</span>] = content_conversions
+    run_options[<span class="hljs-symbol">:file_path_conversions</span>]    = path_conversions
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">default_content_conversions</span></span>
+    from  = get_from.to_s
+    to    = get_to.to_s
+    array = <span class="hljs-constant">Array</span>.new
+    array.push(<span class="hljs-string">"<span class="hljs-subst">#{from.downcase}</span>-"</span> =&gt; <span class="hljs-string">"<span class="hljs-subst">#{to.downcase.dasherize}</span>-"</span>)
+    array.push(from                =&gt; to)
+    array.push(from.downcase       =&gt; to.downcase)
+    array.push(from.underscore     =&gt; to.underscore)
+    array.push(from.camelize       =&gt; to.camelize)
+    array.push(from.classify       =&gt; to.classify)
+    array.push(from.upcase         =&gt; to.upcase)
+    array
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">default_path_conversions</span></span>
+    default_content_conversions
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_acronyms</span></span>
+    acronyms = [options[<span class="hljs-symbol">:acronyms</span>]].flatten.compact
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> acronyms.blank?
+    <span class="hljs-constant">ActiveSupport::Inflector</span>.inflections <span class="hljs-keyword">do</span> |inflect|
+      acronyms.each <span class="hljs-keyword">do</span> |acronym|
+        inflect.acronym acronym
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

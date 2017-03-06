@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/test/helpers/casespace/models</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/test/helpers/casespace/models"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/helpers/casespace/models.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/helpers/casespace/models.rb">src/thinkspace/api/thinkspace-casespace/test/helpers/casespace/models.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::Casespace::Models</span></span>
+  extend <span class="hljs-constant">ActiveSupport::Concern</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ModelClasses</span></span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">user_class</span>;</span>           <span class="hljs-constant">Thinkspace::Common::User</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">space_class</span>;</span>          <span class="hljs-constant">Thinkspace::Common::Space</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">space_user_class</span>;</span>     <span class="hljs-constant">Thinkspace::Common::SpaceUser</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assignment_class</span>;</span>     <span class="hljs-constant">Thinkspace::Casespace::Assignment</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_class</span>;</span>          <span class="hljs-constant">Thinkspace::Casespace::Phase</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_template_class</span>;</span> <span class="hljs-constant">Thinkspace::Casespace::PhaseTemplate</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_state_class</span>;</span>    <span class="hljs-constant">Thinkspace::Casespace::PhaseState</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_class</span>;</span>           <span class="hljs-constant">Thinkspace::Team::Team</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_teamable_class</span>;</span>  <span class="hljs-constant">Thinkspace::Team::TeamTeamable</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ModelSave</span></span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save_model</span><span class="hljs-params">(model)</span></span>
+      <span class="hljs-keyword">unless</span> model.save
+        message  = <span class="hljs-string">"\n"</span>
+        message += <span class="hljs-string">"Error saving build model:\n<span class="hljs-subst">#{model.inspect}</span>.\nValidation errors: <span class="hljs-subst">#{model.errors.messages}</span>.\n"</span>
+        model.errors.keys.each <span class="hljs-keyword">do</span> |key|
+          [model.send(key)].flatten.compact.each <span class="hljs-keyword">do</span> |assoc_model|
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> is_active_record?(assoc_model)
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> assoc_model.errors.blank?
+            message += <span class="hljs-string">"\n<span class="hljs-subst">#{assoc_model.inspect}</span>\nValidation errors: <span class="hljs-subst">#{assoc_model.errors.messages}</span>\n"</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+        raise message
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ModelMethods</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="model-getters">Model Getters.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_username</span><span class="hljs-params">(username)</span></span>
+      user = get_user(username)  <span class="hljs-comment"># a username string/sym or user instance is ok</span>
+      user.first_name &amp;&amp; user.first_name.to_sym
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user</span><span class="hljs-params">(username)</span></span>
+      <span class="hljs-keyword">return</span> username <span class="hljs-keyword">if</span> username.is_a?(user_class)
+      user = user_class.find_by(<span class="hljs-symbol">first_name:</span> username)
+      raise <span class="hljs-string">"User name <span class="hljs-subst">#{username.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> user.blank?
+      user
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_users</span><span class="hljs-params">(*args)</span>;</span> [args].flatten.compact.map {|u| get_user(u)}; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user_by_id</span><span class="hljs-params">(id)</span></span>
+      user = user_class.find_by(<span class="hljs-symbol">id:</span> id)
+      raise <span class="hljs-string">"User id <span class="hljs-subst">#{id}</span> not found."</span>  <span class="hljs-keyword">if</span> user.blank?
+      user
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_user_by_space_role</span><span class="hljs-params">(space, role=<span class="hljs-symbol">:read</span>)</span></span>
+      space_user = space_user_class.find_by(<span class="hljs-symbol">space_id:</span> space.id, <span class="hljs-symbol">role:</span> role)
+      raise <span class="hljs-string">"Space User in space <span class="hljs-subst">#{space.id}</span> and role <span class="hljs-subst">#{role}</span> not found."</span>  <span class="hljs-keyword">if</span> space_user.blank?
+      get_user_by_id(space_user.user_id)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_space</span><span class="hljs-params">(title)</span></span>
+      space = space_class.find_by(<span class="hljs-symbol">title:</span> title)
+      raise <span class="hljs-string">"Space title <span class="hljs-subst">#{title.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> space.blank?
+      space
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_space_user</span><span class="hljs-params">(space, user, role=<span class="hljs-keyword">nil</span>)</span></span>
+      options        = {<span class="hljs-symbol">space_id:</span> space.id, <span class="hljs-symbol">user_id:</span> user.id}
+      options[<span class="hljs-symbol">:role</span>] = role  <span class="hljs-keyword">if</span> role.present?
+      space_user     = space_user_class.find_by(options)
+      raise <span class="hljs-string">"Space User <span class="hljs-subst">#{options.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> space_user.blank?
+      space_user
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assignment</span><span class="hljs-params">(title, options={})</span></span>
+      options.merge!(<span class="hljs-symbol">title:</span> title)
+      assignment = assignment_class.find_by(options)
+      raise <span class="hljs-string">"Assignment title <span class="hljs-subst">#{title.inspect}</span> options <span class="hljs-subst">#{options.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> assignment.blank?
+      assignment
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_phase</span><span class="hljs-params">(title, options={})</span></span>
+      options.merge!(<span class="hljs-symbol">title:</span> title)
+      phase = phase_class.find_by(options)
+      raise <span class="hljs-string">"Phase title <span class="hljs-subst">#{title.inspect}</span> options <span class="hljs-subst">#{options.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> phase.blank?
+      phase
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_active_record?</span><span class="hljs-params">(model)</span></span>
+      klass = model.is_a?(<span class="hljs-constant">Class</span>) ? model <span class="hljs-symbol">:</span> model.<span class="hljs-keyword">class</span>
+      klass.ancestors.<span class="hljs-keyword">include</span>?(<span class="hljs-constant">::ActiveRecord::Base</span>)
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="associations">Associations.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_model_association_records_by_class_name</span><span class="hljs-params">(model, class_name)</span></span>
+      assoc_method = get_model_association_method(model, class_name)
+      assoc_method.present? ? model.send(assoc_method) <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_model_association_method</span><span class="hljs-params">(model, class_name)</span></span>
+      assoc = get_model_association_name(class_name).to_sym
+      <span class="hljs-keyword">return</span> assoc <span class="hljs-keyword">if</span> model.respond_to?(assoc)
+      assoc = assoc.to_s.pluralize
+      <span class="hljs-keyword">return</span> assoc <span class="hljs-keyword">if</span> model.respond_to?(assoc)
+      <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_model_association_name</span><span class="hljs-params">(name)</span>;</span> <span class="hljs-string">"<span class="hljs-subst">#{name.underscore.gsub(<span class="hljs-regexp">/\//</span>,<span class="hljs-string">'_'</span>)}</span>"</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># model methods</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Models are somewhat unique as the methods may be used at the class level (e.g. model.each loops, seed loads) or
+at the instance level (e.g. user = get_user(:read_1).
+&#39;include Casespace::Models&#39; will add as both class and instance methods.</p></div></div><div class="code"><div class="wrapper">  class_methods <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">ModelClasses</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">ModelSave</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">ModelMethods</span>
+  <span class="hljs-keyword">end</span>
+
+  included <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">ModelClasses</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">ModelSave</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">ModelMethods</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

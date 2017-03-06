@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-builder-pe/addon/components/content/assessment/qual/item</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-builder-pe/addon/components/content/assessment/qual/item"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-builder-pe/addon/components/content/assessment/qual/item.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-builder-pe/addon/components/content/assessment/qual/item.coffee">src/thinkspace/client/thinkspace-builder-pe/addon/components/content/assessment/qual/item.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember     from <span class="hljs-string">'ember'</span>
+import base      from <span class="hljs-string">'thinkspace-base/components/base'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="itemcoffee">item.coffee</h1>
+<ul>
+<li>Type: <strong>Component</strong></li>
+<li>Package: <strong>ethinkspace-builder-pe</strong></li>
+</ul></div></div><div class="code"><div class="wrapper">export default base.extend
+
+  <span class="hljs-attribute">manager</span>: ember.inject.service()
+
+  <span class="hljs-comment">## The raw json needed by the manager</span>
+  <span class="hljs-attribute">item</span>: ember.computed.reads <span class="hljs-string">'model.model'</span>
+  
+  <span class="hljs-attribute">model</span>:      <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">edit_mode</span>:  <span class="hljs-literal">null</span> <span class="hljs-comment"># content, settings, preview</span>
+  <span class="hljs-attribute">is_editing</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">is_edit_mode_content</span>: ember.computed.equal <span class="hljs-string">'edit_mode'</span>, <span class="hljs-string">'content'</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">edit</span>: <span class="hljs-function"><span class="hljs-params">(bool)</span> -&gt;</span> <span class="hljs-property">@set</span>(<span class="hljs-string">'is_editing'</span>, bool)
+    
+    <span class="hljs-comment">## Bool passed by qual/item/edit component to indicate whether the changeset is </span>
+    <span class="hljs-attribute">update</span>: <span class="hljs-function">-&gt;</span> 
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).save_model()
+      <span class="hljs-property">@send</span>(<span class="hljs-string">'edit'</span>, <span class="hljs-literal">false</span>)
+      
+    <span class="hljs-attribute">duplicate</span>: <span class="hljs-function">-&gt;</span>
+      item = <span class="hljs-property">@get</span>(<span class="hljs-string">'item'</span>)
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).duplicate_item(<span class="hljs-string">'qual'</span>, item.id, item)
+
+    <span class="hljs-attribute">delete</span>: <span class="hljs-function">-&gt;</span>
+      item = <span class="hljs-property">@get</span>(<span class="hljs-string">'item'</span>)
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).delete_item(<span class="hljs-string">'qual'</span>, item)
+
+    <span class="hljs-attribute">reorder</span>: <span class="hljs-function"><span class="hljs-params">(offset)</span> -&gt;</span>
+      item = <span class="hljs-property">@get</span>(<span class="hljs-string">'item'</span>)
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).reorder_qual_item(item, offset)</div></div></div></div></body></html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/mixins/util/array</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/mixins/util/array"><meta name="groc-project-path" content="src/totem/client/totem/addon/mixins/util/array.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/mixins/util/array.coffee">src/totem/client/totem/addon/mixins/util/array.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">flatten_array</span>: <span class="hljs-function"><span class="hljs-params">(array)</span> -&gt;</span>
+    flattened = []
+    <span class="hljs-keyword">for</span> element <span class="hljs-keyword">in</span> array
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@is_array</span>(element)
+        flattened = flattened.concat <span class="hljs-property">@flatten_array</span> element
+      <span class="hljs-keyword">else</span>
+        flattened.push element
+    flattened
+
+  <span class="hljs-attribute">string_array_to_numbers</span>: <span class="hljs-function"><span class="hljs-params">(array)</span> -&gt;</span>
+    array.forEach (string, index) =&gt; array[index] = parseInt(string)
+    array</div></div></div></div></body></html>

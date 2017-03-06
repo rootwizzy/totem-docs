@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-gradebook/addon/components/overview</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-gradebook/addon/components/overview"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-gradebook/addon/components/overview.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-gradebook/addon/components/overview.coffee">src/thinkspace/client/thinkspace-gradebook/addon/components/overview.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">phase_manager</span>: ember.inject.service()
+
+  <span class="hljs-attribute">current_phase</span>: ember.computed.reads <span class="hljs-string">'thinkspace.current_phase'</span>
+
+  <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span>
+    phase = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    map   = <span class="hljs-property">@get</span>(<span class="hljs-string">'phase_manager.map'</span>)
+    <span class="hljs-keyword">if</span> ember.isPresent(map)
+      phase_states = map.get_ownerable_phase_states(phase)
+      <span class="hljs-property">@set</span> <span class="hljs-string">'phase_states'</span>, phase_states
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'phase_states'</span>, <span class="hljs-keyword">new</span> Array
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">save_phase_score</span>: <span class="hljs-function"><span class="hljs-params">(phase, score)</span> -&gt;</span>  <span class="hljs-property">@sendAction</span> <span class="hljs-string">'save'</span>, phase, score  <span class="hljs-comment"># pass-through to phase.coffee</span></div></div></div></div></body></html>

@@ -1,0 +1,884 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-assets/vendor/dragula/dragula</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-assets/vendor/dragula/dragula"><meta name="groc-project-path" content="src/totem/client/totem-assets/vendor/dragula/dragula.js"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-assets/vendor/dragula/dragula.js">src/totem/client/totem-assets/vendor/dragula/dragula.js</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">f</span>)</span>{<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> exports===<span class="hljs-string">"object"</span>&amp;&amp;<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">module</span>!==<span class="hljs-string">"undefined"</span>){<span class="hljs-built_in">module</span>.exports=f()}<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> define===<span class="hljs-string">"function"</span>&amp;&amp;define.amd){define([],f)}<span class="hljs-keyword">else</span>{<span class="hljs-keyword">var</span> g;<span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span>!==<span class="hljs-string">"undefined"</span>){g=<span class="hljs-built_in">window</span>}<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> global!==<span class="hljs-string">"undefined"</span>){g=global}<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> self!==<span class="hljs-string">"undefined"</span>){g=self}<span class="hljs-keyword">else</span>{g=<span class="hljs-keyword">this</span>}g.dragula = f()}})(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{<span class="hljs-keyword">var</span> define,<span class="hljs-built_in">module</span>,exports;<span class="hljs-keyword">return</span> (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">e</span>(<span class="hljs-params">t,n,r</span>)</span>{<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">s</span>(<span class="hljs-params">o,u</span>)</span>{<span class="hljs-keyword">if</span>(!n[o]){<span class="hljs-keyword">if</span>(!t[o]){<span class="hljs-keyword">var</span> a=<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">require</span>==<span class="hljs-string">"function"</span>&amp;&amp;<span class="hljs-built_in">require</span>;<span class="hljs-keyword">if</span>(!u&amp;&amp;a)<span class="hljs-keyword">return</span> a(o,!<span class="hljs-number">0</span>);<span class="hljs-keyword">if</span>(i)<span class="hljs-keyword">return</span> i(o,!<span class="hljs-number">0</span>);<span class="hljs-keyword">var</span> f=<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Cannot find module '"</span>+o+<span class="hljs-string">"'"</span>);<span class="hljs-keyword">throw</span> f.code=<span class="hljs-string">"MODULE_NOT_FOUND"</span>,f}<span class="hljs-keyword">var</span> l=n[o]={exports:{}};t[o][<span class="hljs-number">0</span>].call(l.exports,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{<span class="hljs-keyword">var</span> n=t[o][<span class="hljs-number">1</span>][e];<span class="hljs-keyword">return</span> s(n?n:e)},l,l.exports,e,t,n,r)}<span class="hljs-keyword">return</span> n[o].exports}<span class="hljs-keyword">var</span> i=<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">require</span>==<span class="hljs-string">"function"</span>&amp;&amp;<span class="hljs-built_in">require</span>;<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> o=<span class="hljs-number">0</span>;o&lt;r.length;o++)s(r[o]);<span class="hljs-keyword">return</span> s})({<span class="hljs-number">1</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{
+<span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> cache = {};
+<span class="hljs-keyword">var</span> start = <span class="hljs-string">'(?:^|\\s)'</span>;
+<span class="hljs-keyword">var</span> end = <span class="hljs-string">'(?:\\s|$)'</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">lookupClass</span> (<span class="hljs-params">className</span>) </span>{
+  <span class="hljs-keyword">var</span> cached = cache[className];
+  <span class="hljs-keyword">if</span> (cached) {
+    cached.lastIndex = <span class="hljs-number">0</span>;
+  } <span class="hljs-keyword">else</span> {
+    cache[className] = cached = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(start + className + end, <span class="hljs-string">'g'</span>);
+  }
+  <span class="hljs-keyword">return</span> cached;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addClass</span> (<span class="hljs-params">el, className</span>) </span>{
+  <span class="hljs-keyword">var</span> current = el.className;
+  <span class="hljs-keyword">if</span> (!current.length) {
+    el.className = className;
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!lookupClass(className).test(current)) {
+    el.className += <span class="hljs-string">' '</span> + className;
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">rmClass</span> (<span class="hljs-params">el, className</span>) </span>{
+  el.className = el.className.replace(lookupClass(className), <span class="hljs-string">' '</span>).trim();
+}
+
+<span class="hljs-built_in">module</span>.exports = {
+  add: addClass,
+  rm: rmClass
+};
+
+},{}],<span class="hljs-number">2</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">global</span>)</span>{
+<span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> emitter = <span class="hljs-built_in">require</span>(<span class="hljs-string">'contra/emitter'</span>);
+<span class="hljs-keyword">var</span> crossvent = <span class="hljs-built_in">require</span>(<span class="hljs-string">'crossvent'</span>);
+<span class="hljs-keyword">var</span> classes = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./classes'</span>);
+<span class="hljs-keyword">var</span> doc = <span class="hljs-built_in">document</span>;
+<span class="hljs-keyword">var</span> documentElement = doc.documentElement;
+<span class="hljs-keyword">var</span> body = doc.body;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dragula</span> (<span class="hljs-params">initialContainers, options</span>) </span>{
+  <span class="hljs-keyword">var</span> len = <span class="hljs-built_in">arguments</span>.length;
+  <span class="hljs-keyword">if</span> (len === <span class="hljs-number">1</span> &amp;&amp; <span class="hljs-built_in">Array</span>.isArray(initialContainers) === <span class="hljs-literal">false</span>) {
+    options = initialContainers;
+    initialContainers = [];
+  }
+  <span class="hljs-keyword">var</span> _mirror; <span class="hljs-comment">// mirror image</span>
+  <span class="hljs-keyword">var</span> _source; <span class="hljs-comment">// source container</span>
+  <span class="hljs-keyword">var</span> _item; <span class="hljs-comment">// item being dragged</span>
+  <span class="hljs-keyword">var</span> _offsetX; <span class="hljs-comment">// reference x</span>
+  <span class="hljs-keyword">var</span> _offsetY; <span class="hljs-comment">// reference y</span>
+  <span class="hljs-keyword">var</span> _moveX; <span class="hljs-comment">// reference move x</span>
+  <span class="hljs-keyword">var</span> _moveY; <span class="hljs-comment">// reference move y</span>
+  <span class="hljs-keyword">var</span> _initialSibling; <span class="hljs-comment">// reference sibling when grabbed</span>
+  <span class="hljs-keyword">var</span> _currentSibling; <span class="hljs-comment">// reference sibling now</span>
+  <span class="hljs-keyword">var</span> _copy; <span class="hljs-comment">// item used for copying</span>
+  <span class="hljs-keyword">var</span> _renderTimer; <span class="hljs-comment">// timer for setTimeout renderMirrorImage</span>
+  <span class="hljs-keyword">var</span> _lastDropTarget = <span class="hljs-literal">null</span>; <span class="hljs-comment">// last container item was over</span>
+  <span class="hljs-keyword">var</span> _grabbed; <span class="hljs-comment">// holds mousedown context until first mousemove</span>
+
+  <span class="hljs-keyword">var</span> o = options || {};
+  <span class="hljs-keyword">if</span> (o.moves === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.moves = always; }
+  <span class="hljs-keyword">if</span> (o.accepts === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.accepts = always; }
+  <span class="hljs-keyword">if</span> (o.invalid === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.invalid = invalidTarget; }
+  <span class="hljs-keyword">if</span> (o.containers === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.containers = initialContainers || []; }
+  <span class="hljs-keyword">if</span> (o.isContainer === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.isContainer = never; }
+  <span class="hljs-keyword">if</span> (o.copy === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.copy = <span class="hljs-literal">false</span>; }
+  <span class="hljs-keyword">if</span> (o.copySortSource === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.copySortSource = <span class="hljs-literal">false</span>; }
+  <span class="hljs-keyword">if</span> (o.revertOnSpill === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.revertOnSpill = <span class="hljs-literal">false</span>; }
+  <span class="hljs-keyword">if</span> (o.removeOnSpill === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.removeOnSpill = <span class="hljs-literal">false</span>; }
+  <span class="hljs-keyword">if</span> (o.direction === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.direction = <span class="hljs-string">'vertical'</span>; }
+  <span class="hljs-keyword">if</span> (o.ignoreInputTextSelection === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.ignoreInputTextSelection = <span class="hljs-literal">true</span>; }
+  <span class="hljs-keyword">if</span> (o.mirrorContainer === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { o.mirrorContainer = body; }
+
+  <span class="hljs-keyword">var</span> drake = emitter({
+    containers: o.containers,
+    start: manualStart,
+    end: end,
+    cancel: cancel,
+    remove: remove,
+    destroy: destroy,
+    dragging: <span class="hljs-literal">false</span>
+  });
+
+  <span class="hljs-keyword">if</span> (o.removeOnSpill === <span class="hljs-literal">true</span>) {
+    drake.on(<span class="hljs-string">'over'</span>, spillOver).on(<span class="hljs-string">'out'</span>, spillOut);
+  }
+
+  events();
+
+  <span class="hljs-keyword">return</span> drake;
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isContainer</span> (<span class="hljs-params">el</span>) </span>{
+    <span class="hljs-keyword">return</span> drake.containers.indexOf(el) !== -<span class="hljs-number">1</span> || o.isContainer(el);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">events</span> (<span class="hljs-params">remove</span>) </span>{
+    <span class="hljs-keyword">var</span> op = remove ? <span class="hljs-string">'remove'</span> : <span class="hljs-string">'add'</span>;
+    touchy(documentElement, op, <span class="hljs-string">'mousedown'</span>, grab);
+    touchy(documentElement, op, <span class="hljs-string">'mouseup'</span>, release);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">eventualMovements</span> (<span class="hljs-params">remove</span>) </span>{
+    <span class="hljs-keyword">var</span> op = remove ? <span class="hljs-string">'remove'</span> : <span class="hljs-string">'add'</span>;
+    touchy(documentElement, op, <span class="hljs-string">'mousemove'</span>, startBecauseMouseMoved);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">movements</span> (<span class="hljs-params">remove</span>) </span>{
+    <span class="hljs-keyword">var</span> op = remove ? <span class="hljs-string">'remove'</span> : <span class="hljs-string">'add'</span>;
+    crossvent[op](documentElement, <span class="hljs-string">'selectstart'</span>, preventGrabbed); <span class="hljs-comment">// IE8</span>
+    crossvent[op](documentElement, <span class="hljs-string">'click'</span>, preventGrabbed);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">destroy</span> (<span class="hljs-params"></span>) </span>{
+    events(<span class="hljs-literal">true</span>);
+    release({});
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">preventGrabbed</span> (<span class="hljs-params">e</span>) </span>{
+    <span class="hljs-keyword">if</span> (_grabbed) {
+      e.preventDefault();
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">grab</span> (<span class="hljs-params">e</span>) </span>{
+    _moveX = e.clientX;
+    _moveY = e.clientY;
+
+    <span class="hljs-keyword">var</span> ignore = whichMouseButton(e) !== <span class="hljs-number">1</span> || e.metaKey || e.ctrlKey;
+    <span class="hljs-keyword">if</span> (ignore) {
+      <span class="hljs-keyword">return</span>; <span class="hljs-comment">// we only care about honest-to-god left clicks and touch events</span>
+    }
+    <span class="hljs-keyword">var</span> item = e.target;
+    <span class="hljs-keyword">var</span> context = canStart(item);
+    <span class="hljs-keyword">if</span> (!context) {
+      <span class="hljs-keyword">return</span>;
+    }
+    _grabbed = context;
+    eventualMovements();
+    <span class="hljs-keyword">if</span> (e.type === <span class="hljs-string">'mousedown'</span>) {
+      <span class="hljs-keyword">if</span> (isInput(item)) { <span class="hljs-comment">// see also: https://github.com/bevacqua/dragula/issues/208</span>
+        item.focus(); <span class="hljs-comment">// fixes https://github.com/bevacqua/dragula/issues/176</span>
+      } <span class="hljs-keyword">else</span> {
+        e.preventDefault(); <span class="hljs-comment">// fixes https://github.com/bevacqua/dragula/issues/155</span>
+      }
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startBecauseMouseMoved</span> (<span class="hljs-params">e</span>) </span>{
+    <span class="hljs-keyword">if</span> (!_grabbed) {
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">if</span> (whichMouseButton(e) === <span class="hljs-number">0</span>) {
+      release({});
+      <span class="hljs-keyword">return</span>; <span class="hljs-comment">// when text is selected on an input and then dragged, mouseup doesn't fire. this is our only hope</span>
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>truthy check fixes #239, equality fixes #207</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (e.clientX !== <span class="hljs-keyword">void</span> <span class="hljs-number">0</span> &amp;&amp; e.clientX === _moveX &amp;&amp; e.clientY !== <span class="hljs-keyword">void</span> <span class="hljs-number">0</span> &amp;&amp; e.clientY === _moveY) {
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">if</span> (o.ignoreInputTextSelection) {
+      <span class="hljs-keyword">var</span> clientX = getCoord(<span class="hljs-string">'clientX'</span>, e);
+      <span class="hljs-keyword">var</span> clientY = getCoord(<span class="hljs-string">'clientY'</span>, e);
+      <span class="hljs-keyword">var</span> elementBehindCursor = doc.elementFromPoint(clientX, clientY);
+      <span class="hljs-keyword">if</span> (isInput(elementBehindCursor)) {
+        <span class="hljs-keyword">return</span>;
+      }
+    }
+
+    <span class="hljs-keyword">var</span> grabbed = _grabbed; <span class="hljs-comment">// call to end() unsets _grabbed</span>
+    eventualMovements(<span class="hljs-literal">true</span>);
+    movements();
+    end();
+    start(grabbed);
+
+    <span class="hljs-keyword">var</span> offset = getOffset(_item);
+    _offsetX = getCoord(<span class="hljs-string">'pageX'</span>, e) - offset.left;
+    _offsetY = getCoord(<span class="hljs-string">'pageY'</span>, e) - offset.top;
+
+    classes.add(_copy || _item, <span class="hljs-string">'gu-transit'</span>);
+    renderMirrorImage();
+    drag(e);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">canStart</span> (<span class="hljs-params">item</span>) </span>{
+    <span class="hljs-keyword">if</span> (drake.dragging &amp;&amp; _mirror) {
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">if</span> (isContainer(item)) {
+      <span class="hljs-keyword">return</span>; <span class="hljs-comment">// don't drag container itself</span>
+    }
+    <span class="hljs-keyword">var</span> handle = item;
+    <span class="hljs-keyword">while</span> (getParent(item) &amp;&amp; isContainer(getParent(item)) === <span class="hljs-literal">false</span>) {
+      <span class="hljs-keyword">if</span> (o.invalid(item, handle)) {
+        <span class="hljs-keyword">return</span>;
+      }
+      item = getParent(item); <span class="hljs-comment">// drag target should be a top element</span>
+      <span class="hljs-keyword">if</span> (!item) {
+        <span class="hljs-keyword">return</span>;
+      }
+    }
+    <span class="hljs-keyword">var</span> source = getParent(item);
+    <span class="hljs-keyword">if</span> (!source) {
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">if</span> (o.invalid(item, handle)) {
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-keyword">var</span> movable = o.moves(item, source, handle, nextEl(item));
+    <span class="hljs-keyword">if</span> (!movable) {
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-keyword">return</span> {
+      item: item,
+      source: source
+    };
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">manualStart</span> (<span class="hljs-params">item</span>) </span>{
+    <span class="hljs-keyword">var</span> context = canStart(item);
+    <span class="hljs-keyword">if</span> (context) {
+      start(context);
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">start</span> (<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-keyword">if</span> (isCopy(context.item, context.source)) {
+      _copy = context.item.cloneNode(<span class="hljs-literal">true</span>);
+      drake.emit(<span class="hljs-string">'cloned'</span>, _copy, context.item, <span class="hljs-string">'copy'</span>);
+    }
+
+    _source = context.source;
+    _item = context.item;
+    _initialSibling = _currentSibling = nextEl(context.item);
+
+    drake.dragging = <span class="hljs-literal">true</span>;
+    drake.emit(<span class="hljs-string">'drag'</span>, _item, _source);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">invalidTarget</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">end</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (!drake.dragging) {
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">var</span> item = _copy || _item;
+    drop(item, getParent(item));
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ungrab</span> (<span class="hljs-params"></span>) </span>{
+    _grabbed = <span class="hljs-literal">false</span>;
+    eventualMovements(<span class="hljs-literal">true</span>);
+    movements(<span class="hljs-literal">true</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">release</span> (<span class="hljs-params">e</span>) </span>{
+    ungrab();
+
+    <span class="hljs-keyword">if</span> (!drake.dragging) {
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">var</span> item = _copy || _item;
+    <span class="hljs-keyword">var</span> clientX = getCoord(<span class="hljs-string">'clientX'</span>, e);
+    <span class="hljs-keyword">var</span> clientY = getCoord(<span class="hljs-string">'clientY'</span>, e);
+    <span class="hljs-keyword">var</span> elementBehindCursor = getElementBehindPoint(_mirror, clientX, clientY);
+    <span class="hljs-keyword">var</span> dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
+    <span class="hljs-keyword">if</span> (dropTarget &amp;&amp; ((_copy &amp;&amp; o.copySortSource) || (!_copy || dropTarget !== _source))) {
+      drop(item, dropTarget);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (o.removeOnSpill) {
+      remove();
+    } <span class="hljs-keyword">else</span> {
+      cancel();
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drop</span> (<span class="hljs-params">item, target</span>) </span>{
+    <span class="hljs-keyword">var</span> parent = getParent(item);
+    <span class="hljs-keyword">if</span> (_copy &amp;&amp; o.copySortSource &amp;&amp; target === _source) {
+      parent.removeChild(_item);
+    }
+    <span class="hljs-keyword">if</span> (isInitialPlacement(target)) {
+      drake.emit(<span class="hljs-string">'cancel'</span>, item, _source, _source);
+    } <span class="hljs-keyword">else</span> {
+      drake.emit(<span class="hljs-string">'drop'</span>, item, target, _source, _currentSibling);
+    }
+    cleanup();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (!drake.dragging) {
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">var</span> item = _copy || _item;
+    <span class="hljs-keyword">var</span> parent = getParent(item);
+    <span class="hljs-keyword">if</span> (parent) {
+      parent.removeChild(item);
+    }
+    drake.emit(_copy ? <span class="hljs-string">'cancel'</span> : <span class="hljs-string">'remove'</span>, item, parent, _source);
+    cleanup();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cancel</span> (<span class="hljs-params">revert</span>) </span>{
+    <span class="hljs-keyword">if</span> (!drake.dragging) {
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">var</span> reverts = <span class="hljs-built_in">arguments</span>.length &gt; <span class="hljs-number">0</span> ? revert : o.revertOnSpill;
+    <span class="hljs-keyword">var</span> item = _copy || _item;
+    <span class="hljs-keyword">var</span> parent = getParent(item);
+    <span class="hljs-keyword">if</span> (parent === _source &amp;&amp; _copy) {
+      parent.removeChild(_copy);
+    }
+    <span class="hljs-keyword">var</span> initial = isInitialPlacement(parent);
+    <span class="hljs-keyword">if</span> (initial === <span class="hljs-literal">false</span> &amp;&amp; !_copy &amp;&amp; reverts) {
+      _source.insertBefore(item, _initialSibling);
+    }
+    <span class="hljs-keyword">if</span> (initial || reverts) {
+      drake.emit(<span class="hljs-string">'cancel'</span>, item, _source, _source);
+    } <span class="hljs-keyword">else</span> {
+      drake.emit(<span class="hljs-string">'drop'</span>, item, parent, _source, _currentSibling);
+    }
+    cleanup();
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cleanup</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> item = _copy || _item;
+    ungrab();
+    removeMirrorImage();
+    <span class="hljs-keyword">if</span> (item) {
+      classes.rm(item, <span class="hljs-string">'gu-transit'</span>);
+    }
+    <span class="hljs-keyword">if</span> (_renderTimer) {
+      clearTimeout(_renderTimer);
+    }
+    drake.dragging = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">if</span> (_lastDropTarget) {
+      drake.emit(<span class="hljs-string">'out'</span>, item, _lastDropTarget, _source);
+    }
+    drake.emit(<span class="hljs-string">'dragend'</span>, item);
+    _source = _item = _copy = _initialSibling = _currentSibling = _renderTimer = _lastDropTarget = <span class="hljs-literal">null</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isInitialPlacement</span> (<span class="hljs-params">target, s</span>) </span>{
+    <span class="hljs-keyword">var</span> sibling;
+    <span class="hljs-keyword">if</span> (s !== <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) {
+      sibling = s;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (_mirror) {
+      sibling = _currentSibling;
+    } <span class="hljs-keyword">else</span> {
+      sibling = nextEl(_copy || _item);
+    }
+    <span class="hljs-keyword">return</span> target === _source &amp;&amp; sibling === _initialSibling;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">findDropTarget</span> (<span class="hljs-params">elementBehindCursor, clientX, clientY</span>) </span>{
+    <span class="hljs-keyword">var</span> target = elementBehindCursor;
+    <span class="hljs-keyword">while</span> (target &amp;&amp; !accepted()) {
+      target = getParent(target);
+    }
+    <span class="hljs-keyword">return</span> target;
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">accepted</span> (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">var</span> droppable = isContainer(target);
+      <span class="hljs-keyword">if</span> (droppable === <span class="hljs-literal">false</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+      }
+
+      <span class="hljs-keyword">var</span> immediate = getImmediateChild(target, elementBehindCursor);
+      <span class="hljs-keyword">var</span> reference = getReference(target, immediate, clientX, clientY);
+      <span class="hljs-keyword">var</span> initial = isInitialPlacement(target, reference);
+      <span class="hljs-keyword">if</span> (initial) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// should always be able to drop it right back where it was</span>
+      }
+      <span class="hljs-keyword">return</span> o.accepts(_item, target, _source, reference);
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drag</span> (<span class="hljs-params">e</span>) </span>{
+    <span class="hljs-keyword">if</span> (!_mirror) {
+      <span class="hljs-keyword">return</span>;
+    }
+    e.preventDefault();
+
+    <span class="hljs-keyword">var</span> clientX = getCoord(<span class="hljs-string">'clientX'</span>, e);
+    <span class="hljs-keyword">var</span> clientY = getCoord(<span class="hljs-string">'clientY'</span>, e);
+    <span class="hljs-keyword">var</span> x = clientX - _offsetX;
+    <span class="hljs-keyword">var</span> y = clientY - _offsetY;
+
+    _mirror.style.left = x + <span class="hljs-string">'px'</span>;
+    _mirror.style.top = y + <span class="hljs-string">'px'</span>;
+
+    <span class="hljs-keyword">var</span> item = _copy || _item;
+    <span class="hljs-keyword">var</span> elementBehindCursor = getElementBehindPoint(_mirror, clientX, clientY);
+    <span class="hljs-keyword">var</span> dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
+    <span class="hljs-keyword">var</span> changed = dropTarget !== <span class="hljs-literal">null</span> &amp;&amp; dropTarget !== _lastDropTarget;
+    <span class="hljs-keyword">if</span> (changed || dropTarget === <span class="hljs-literal">null</span>) {
+      out();
+      _lastDropTarget = dropTarget;
+      over();
+    }
+    <span class="hljs-keyword">var</span> parent = getParent(item);
+    <span class="hljs-keyword">if</span> (dropTarget === _source &amp;&amp; _copy &amp;&amp; !o.copySortSource) {
+      <span class="hljs-keyword">if</span> (parent) {
+        parent.removeChild(item);
+      }
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">var</span> reference;
+    <span class="hljs-keyword">var</span> immediate = getImmediateChild(dropTarget, elementBehindCursor);
+    <span class="hljs-keyword">if</span> (immediate !== <span class="hljs-literal">null</span>) {
+      reference = getReference(dropTarget, immediate, clientX, clientY);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (o.revertOnSpill === <span class="hljs-literal">true</span> &amp;&amp; !_copy) {
+      reference = _initialSibling;
+      dropTarget = _source;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">if</span> (_copy &amp;&amp; parent) {
+        parent.removeChild(item);
+      }
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">if</span> (
+      reference === <span class="hljs-literal">null</span> ||
+      reference !== item &amp;&amp;
+      reference !== nextEl(item) &amp;&amp;
+      reference !== _currentSibling
+    ) {
+      _currentSibling = reference;
+      dropTarget.insertBefore(item, reference);
+      drake.emit(<span class="hljs-string">'shadow'</span>, item, dropTarget, _source);
+    }
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">moved</span> (<span class="hljs-params">type</span>) </span>{ drake.emit(type, item, _lastDropTarget, _source); }
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">over</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">if</span> (changed) { moved(<span class="hljs-string">'over'</span>); } }
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">out</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">if</span> (_lastDropTarget) { moved(<span class="hljs-string">'out'</span>); } }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">spillOver</span> (<span class="hljs-params">el</span>) </span>{
+    classes.rm(el, <span class="hljs-string">'gu-hide'</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">spillOut</span> (<span class="hljs-params">el</span>) </span>{
+    <span class="hljs-keyword">if</span> (drake.dragging) { classes.add(el, <span class="hljs-string">'gu-hide'</span>); }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderMirrorImage</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (_mirror) {
+      <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">var</span> rect = _item.getBoundingClientRect();
+    _mirror = _item.cloneNode(<span class="hljs-literal">true</span>);
+    _mirror.style.width = getRectWidth(rect) + <span class="hljs-string">'px'</span>;
+    _mirror.style.height = getRectHeight(rect) + <span class="hljs-string">'px'</span>;
+    classes.rm(_mirror, <span class="hljs-string">'gu-transit'</span>);
+    classes.add(_mirror, <span class="hljs-string">'gu-mirror'</span>);
+    o.mirrorContainer.appendChild(_mirror);
+    touchy(documentElement, <span class="hljs-string">'add'</span>, <span class="hljs-string">'mousemove'</span>, drag);
+    classes.add(o.mirrorContainer, <span class="hljs-string">'gu-unselectable'</span>);
+    drake.emit(<span class="hljs-string">'cloned'</span>, _mirror, _item, <span class="hljs-string">'mirror'</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeMirrorImage</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">if</span> (_mirror) {
+      classes.rm(o.mirrorContainer, <span class="hljs-string">'gu-unselectable'</span>);
+      touchy(documentElement, <span class="hljs-string">'remove'</span>, <span class="hljs-string">'mousemove'</span>, drag);
+      getParent(_mirror).removeChild(_mirror);
+      _mirror = <span class="hljs-literal">null</span>;
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getImmediateChild</span> (<span class="hljs-params">dropTarget, target</span>) </span>{
+    <span class="hljs-keyword">var</span> immediate = target;
+    <span class="hljs-keyword">while</span> (immediate !== dropTarget &amp;&amp; getParent(immediate) !== dropTarget) {
+      immediate = getParent(immediate);
+    }
+    <span class="hljs-keyword">if</span> (immediate === documentElement) {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    }
+    <span class="hljs-keyword">return</span> immediate;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getReference</span> (<span class="hljs-params">dropTarget, target, x, y</span>) </span>{
+    <span class="hljs-keyword">var</span> horizontal = o.direction === <span class="hljs-string">'horizontal'</span>;
+    <span class="hljs-keyword">var</span> reference = target !== dropTarget ? inside() : outside();
+    <span class="hljs-keyword">return</span> reference;
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">outside</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">// slower, but able to figure out any position</span>
+      <span class="hljs-keyword">var</span> len = dropTarget.children.length;
+      <span class="hljs-keyword">var</span> i;
+      <span class="hljs-keyword">var</span> el;
+      <span class="hljs-keyword">var</span> rect;
+      <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+        el = dropTarget.children[i];
+        rect = el.getBoundingClientRect();
+        <span class="hljs-keyword">if</span> (horizontal &amp;&amp; rect.left &gt; x) { <span class="hljs-keyword">return</span> el; }
+        <span class="hljs-keyword">if</span> (!horizontal &amp;&amp; rect.top &gt; y) { <span class="hljs-keyword">return</span> el; }
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inside</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">// faster, but only available if dropped inside a child element</span>
+      <span class="hljs-keyword">var</span> rect = target.getBoundingClientRect();
+      <span class="hljs-keyword">if</span> (horizontal) {
+        <span class="hljs-keyword">return</span> resolve(x &gt; rect.left + getRectWidth(rect) / <span class="hljs-number">2</span>);
+      }
+      <span class="hljs-keyword">return</span> resolve(y &gt; rect.top + getRectHeight(rect) / <span class="hljs-number">2</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resolve</span> (<span class="hljs-params">after</span>) </span>{
+      <span class="hljs-keyword">return</span> after ? nextEl(target) : target;
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isCopy</span> (<span class="hljs-params">item, container</span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> o.copy === <span class="hljs-string">'boolean'</span> ? o.copy : o.copy(item, container);
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">touchy</span> (<span class="hljs-params">el, op, type, fn</span>) </span>{
+  <span class="hljs-keyword">var</span> touch = {
+    mouseup: <span class="hljs-string">'touchend'</span>,
+    mousedown: <span class="hljs-string">'touchstart'</span>,
+    mousemove: <span class="hljs-string">'touchmove'</span>
+  };
+  <span class="hljs-keyword">var</span> pointers = {
+    mouseup: <span class="hljs-string">'pointerup'</span>,
+    mousedown: <span class="hljs-string">'pointerdown'</span>,
+    mousemove: <span class="hljs-string">'pointermove'</span>
+  };
+  <span class="hljs-keyword">var</span> microsoft = {
+    mouseup: <span class="hljs-string">'MSPointerUp'</span>,
+    mousedown: <span class="hljs-string">'MSPointerDown'</span>,
+    mousemove: <span class="hljs-string">'MSPointerMove'</span>
+  };
+  <span class="hljs-keyword">if</span> (global.navigator.pointerEnabled) {
+    crossvent[op](el, pointers[type], fn);
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (global.navigator.msPointerEnabled) {
+    crossvent[op](el, microsoft[type], fn);
+  } <span class="hljs-keyword">else</span> {
+    crossvent[op](el, touch[type], fn);
+    crossvent[op](el, type, fn);
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">whichMouseButton</span> (<span class="hljs-params">e</span>) </span>{
+  <span class="hljs-keyword">if</span> (e.touches !== <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { <span class="hljs-keyword">return</span> e.touches.length; }
+  <span class="hljs-keyword">if</span> (e.buttons !== <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { <span class="hljs-keyword">return</span> e.buttons; }
+  <span class="hljs-keyword">if</span> (e.which !== <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { <span class="hljs-keyword">return</span> e.which; }
+  <span class="hljs-keyword">var</span> button = e.button;
+  <span class="hljs-keyword">if</span> (button !== <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) { <span class="hljs-comment">// see https://github.com/jquery/jquery/blob/99e8ff1baa7ae341e94bb89c3e84570c7c3ad9ea/src/event.js#L573-L575</span>
+    <span class="hljs-keyword">return</span> button &amp; <span class="hljs-number">1</span> ? <span class="hljs-number">1</span> : button &amp; <span class="hljs-number">2</span> ? <span class="hljs-number">3</span> : (button &amp; <span class="hljs-number">4</span> ? <span class="hljs-number">2</span> : <span class="hljs-number">0</span>);
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getOffset</span> (<span class="hljs-params">el</span>) </span>{
+  <span class="hljs-keyword">var</span> rect = el.getBoundingClientRect();
+  <span class="hljs-keyword">return</span> {
+    left: rect.left + getScroll(<span class="hljs-string">'scrollLeft'</span>, <span class="hljs-string">'pageXOffset'</span>),
+    top: rect.top + getScroll(<span class="hljs-string">'scrollTop'</span>, <span class="hljs-string">'pageYOffset'</span>)
+  };
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getScroll</span> (<span class="hljs-params">scrollProp, offsetProp</span>) </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> global[offsetProp] !== <span class="hljs-string">'undefined'</span>) {
+    <span class="hljs-keyword">return</span> global[offsetProp];
+  }
+  <span class="hljs-keyword">if</span> (documentElement.clientHeight) {
+    <span class="hljs-keyword">return</span> documentElement[scrollProp];
+  }
+  <span class="hljs-keyword">return</span> body[scrollProp];
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getElementBehindPoint</span> (<span class="hljs-params">point, x, y</span>) </span>{
+  <span class="hljs-keyword">var</span> p = point || {};
+  <span class="hljs-keyword">var</span> state = p.className;
+  <span class="hljs-keyword">var</span> el;
+  p.className += <span class="hljs-string">' gu-hide'</span>;
+  el = doc.elementFromPoint(x, y);
+  p.className = state;
+  <span class="hljs-keyword">return</span> el;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">never</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; }
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">always</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; }
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRectWidth</span> (<span class="hljs-params">rect</span>) </span>{ <span class="hljs-keyword">return</span> rect.width || (rect.right - rect.left); }
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRectHeight</span> (<span class="hljs-params">rect</span>) </span>{ <span class="hljs-keyword">return</span> rect.height || (rect.bottom - rect.top); }
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getParent</span> (<span class="hljs-params">el</span>) </span>{ <span class="hljs-keyword">return</span> el.parentNode === doc ? <span class="hljs-literal">null</span> : el.parentNode; }
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isInput</span> (<span class="hljs-params">el</span>) </span>{ <span class="hljs-keyword">return</span> el.tagName === <span class="hljs-string">'INPUT'</span> || el.tagName === <span class="hljs-string">'TEXTAREA'</span> || el.tagName === <span class="hljs-string">'SELECT'</span> || isEditable(el); }
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isEditable</span> (<span class="hljs-params">el</span>) </span>{
+  <span class="hljs-keyword">if</span> (!el) { <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; } <span class="hljs-comment">// no parents were editable</span>
+  <span class="hljs-keyword">if</span> (el.contentEditable === <span class="hljs-string">'false'</span>) { <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; } <span class="hljs-comment">// stop the lookup</span>
+  <span class="hljs-keyword">if</span> (el.contentEditable === <span class="hljs-string">'true'</span>) { <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; } <span class="hljs-comment">// found a contentEditable element in the chain</span>
+  <span class="hljs-keyword">return</span> isEditable(getParent(el)); <span class="hljs-comment">// contentEditable is set to 'inherit'</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">nextEl</span> (<span class="hljs-params">el</span>) </span>{
+  <span class="hljs-keyword">return</span> el.nextElementSibling || manually();
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">manually</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> sibling = el;
+    <span class="hljs-keyword">do</span> {
+      sibling = sibling.nextSibling;
+    } <span class="hljs-keyword">while</span> (sibling &amp;&amp; sibling.nodeType !== <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">return</span> sibling;
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getEventHost</span> (<span class="hljs-params">e</span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>on touchend event, we have to use <code>e.changedTouches</code>
+see <a href="http://stackoverflow.com/questions/7192563/touchend-event-properties">http://stackoverflow.com/questions/7192563/touchend-event-properties</a>
+see <a href="https://github.com/bevacqua/dragula/issues/34">https://github.com/bevacqua/dragula/issues/34</a></p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (e.targetTouches &amp;&amp; e.targetTouches.length) {
+    <span class="hljs-keyword">return</span> e.targetTouches[<span class="hljs-number">0</span>];
+  }
+  <span class="hljs-keyword">if</span> (e.changedTouches &amp;&amp; e.changedTouches.length) {
+    <span class="hljs-keyword">return</span> e.changedTouches[<span class="hljs-number">0</span>];
+  }
+  <span class="hljs-keyword">return</span> e;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCoord</span> (<span class="hljs-params">coord, e</span>) </span>{
+  <span class="hljs-keyword">var</span> host = getEventHost(e);
+  <span class="hljs-keyword">var</span> missMap = {
+    pageX: <span class="hljs-string">'clientX'</span>, <span class="hljs-comment">// IE8</span>
+    pageY: <span class="hljs-string">'clientY'</span> <span class="hljs-comment">// IE8</span>
+  };
+  <span class="hljs-keyword">if</span> (coord <span class="hljs-keyword">in</span> missMap &amp;&amp; !(coord <span class="hljs-keyword">in</span> host) &amp;&amp; missMap[coord] <span class="hljs-keyword">in</span> host) {
+    coord = missMap[coord];
+  }
+  <span class="hljs-keyword">return</span> host[coord];
+}
+
+<span class="hljs-built_in">module</span>.exports = dragula;
+
+}).call(<span class="hljs-keyword">this</span>,<span class="hljs-keyword">typeof</span> global !== <span class="hljs-string">"undefined"</span> ? global : <span class="hljs-keyword">typeof</span> self !== <span class="hljs-string">"undefined"</span> ? self : <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> ? <span class="hljs-built_in">window</span> : {})
+
+},{<span class="hljs-string">"./classes"</span>:<span class="hljs-number">1</span>,<span class="hljs-string">"contra/emitter"</span>:<span class="hljs-number">4</span>,<span class="hljs-string">"crossvent"</span>:<span class="hljs-number">8</span>}],<span class="hljs-number">3</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{
+<span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> ticky = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ticky'</span>);
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">debounce</span> (<span class="hljs-params">fn, args, ctx</span>) </span>{
+  <span class="hljs-keyword">if</span> (!fn) { <span class="hljs-keyword">return</span>; }
+  ticky(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span> (<span class="hljs-params"></span>) </span>{
+    fn.apply(ctx || <span class="hljs-literal">null</span>, args || []);
+  });
+};
+
+},{<span class="hljs-string">"ticky"</span>:<span class="hljs-number">6</span>}],<span class="hljs-number">4</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{
+<span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> atoa = <span class="hljs-built_in">require</span>(<span class="hljs-string">'atoa'</span>);
+<span class="hljs-keyword">var</span> debounce = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./debounce'</span>);
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">emitter</span> (<span class="hljs-params">thing, options</span>) </span>{
+  <span class="hljs-keyword">var</span> opts = options || {};
+  <span class="hljs-keyword">var</span> evt = {};
+  <span class="hljs-keyword">if</span> (thing === <span class="hljs-literal">undefined</span>) { thing = {}; }
+  thing.on = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">type, fn</span>) </span>{
+    <span class="hljs-keyword">if</span> (!evt[type]) {
+      evt[type] = [fn];
+    } <span class="hljs-keyword">else</span> {
+      evt[type].push(fn);
+    }
+    <span class="hljs-keyword">return</span> thing;
+  };
+  thing.once = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">type, fn</span>) </span>{
+    fn._once = <span class="hljs-literal">true</span>; <span class="hljs-comment">// thing.off(fn) still works!</span>
+    thing.on(type, fn);
+    <span class="hljs-keyword">return</span> thing;
+  };
+  thing.off = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">type, fn</span>) </span>{
+    <span class="hljs-keyword">var</span> c = <span class="hljs-built_in">arguments</span>.length;
+    <span class="hljs-keyword">if</span> (c === <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">delete</span> evt[type];
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c === <span class="hljs-number">0</span>) {
+      evt = {};
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">var</span> et = evt[type];
+      <span class="hljs-keyword">if</span> (!et) { <span class="hljs-keyword">return</span> thing; }
+      et.splice(et.indexOf(fn), <span class="hljs-number">1</span>);
+    }
+    <span class="hljs-keyword">return</span> thing;
+  };
+  thing.emit = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> args = atoa(<span class="hljs-built_in">arguments</span>);
+    <span class="hljs-keyword">return</span> thing.emitterSnapshot(args.shift()).apply(<span class="hljs-keyword">this</span>, args);
+  };
+  thing.emitterSnapshot = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">type</span>) </span>{
+    <span class="hljs-keyword">var</span> et = (evt[type] || []).slice(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">var</span> args = atoa(<span class="hljs-built_in">arguments</span>);
+      <span class="hljs-keyword">var</span> ctx = <span class="hljs-keyword">this</span> || thing;
+      <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'error'</span> &amp;&amp; opts.throws !== <span class="hljs-literal">false</span> &amp;&amp; !et.length) { <span class="hljs-keyword">throw</span> args.length === <span class="hljs-number">1</span> ? args[<span class="hljs-number">0</span>] : args; }
+      et.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">emitter</span> (<span class="hljs-params">listen</span>) </span>{
+        <span class="hljs-keyword">if</span> (opts.async) { debounce(listen, args, ctx); } <span class="hljs-keyword">else</span> { listen.apply(ctx, args); }
+        <span class="hljs-keyword">if</span> (listen._once) { thing.off(type, listen); }
+      });
+      <span class="hljs-keyword">return</span> thing;
+    };
+  };
+  <span class="hljs-keyword">return</span> thing;
+};
+
+},{<span class="hljs-string">"./debounce"</span>:<span class="hljs-number">3</span>,<span class="hljs-string">"atoa"</span>:<span class="hljs-number">5</span>}],<span class="hljs-number">5</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">atoa</span> (<span class="hljs-params">a, n</span>) </span>{ <span class="hljs-keyword">return</span> <span class="hljs-built_in">Array</span>.prototype.slice.call(a, n); }
+
+},{}],<span class="hljs-number">6</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{
+<span class="hljs-keyword">var</span> si = <span class="hljs-keyword">typeof</span> setImmediate === <span class="hljs-string">'function'</span>, tick;
+<span class="hljs-keyword">if</span> (si) {
+  tick = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">fn</span>) </span>{ setImmediate(fn); };
+} <span class="hljs-keyword">else</span> {
+  tick = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">fn</span>) </span>{ setTimeout(fn, <span class="hljs-number">0</span>); };
+}
+
+<span class="hljs-built_in">module</span>.exports = tick;
+},{}],<span class="hljs-number">7</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">global</span>)</span>{
+
+<span class="hljs-keyword">var</span> NativeCustomEvent = global.CustomEvent;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">useNative</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">try</span> {
+    <span class="hljs-keyword">var</span> p = <span class="hljs-keyword">new</span> NativeCustomEvent(<span class="hljs-string">'cat'</span>, { detail: { foo: <span class="hljs-string">'bar'</span> } });
+    <span class="hljs-keyword">return</span>  <span class="hljs-string">'cat'</span> === p.type &amp;&amp; <span class="hljs-string">'bar'</span> === p.detail.foo;
+  } <span class="hljs-keyword">catch</span> (e) {
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}</div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public</span></p>
+<p>Cross-browser <code>CustomEvent</code> constructor.</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.CustomEvent">https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent.CustomEvent</a></p></div></div><div class="code"><div class="wrapper"><span class="hljs-built_in">module</span>.exports = useNative() ? NativeCustomEvent :</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>IE &gt;= 9</p></div></div><div class="code"><div class="wrapper"><span class="hljs-string">'function'</span> === <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">document</span>.createEvent ? <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">CustomEvent</span> (<span class="hljs-params">type, params</span>) </span>{
+  <span class="hljs-keyword">var</span> e = <span class="hljs-built_in">document</span>.createEvent(<span class="hljs-string">'CustomEvent'</span>);
+  <span class="hljs-keyword">if</span> (params) {
+    e.initCustomEvent(type, params.bubbles, params.cancelable, params.detail);
+  } <span class="hljs-keyword">else</span> {
+    e.initCustomEvent(type, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>);
+  }
+  <span class="hljs-keyword">return</span> e;
+} :</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>IE &lt;= 8</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">CustomEvent</span> (<span class="hljs-params">type, params</span>) </span>{
+  <span class="hljs-keyword">var</span> e = <span class="hljs-built_in">document</span>.createEventObject();
+  e.type = type;
+  <span class="hljs-keyword">if</span> (params) {
+    e.bubbles = <span class="hljs-built_in">Boolean</span>(params.bubbles);
+    e.cancelable = <span class="hljs-built_in">Boolean</span>(params.cancelable);
+    e.detail = params.detail;
+  } <span class="hljs-keyword">else</span> {
+    e.bubbles = <span class="hljs-literal">false</span>;
+    e.cancelable = <span class="hljs-literal">false</span>;
+    e.detail = <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>;
+  }
+  <span class="hljs-keyword">return</span> e;
+}
+
+}).call(<span class="hljs-keyword">this</span>,<span class="hljs-keyword">typeof</span> global !== <span class="hljs-string">"undefined"</span> ? global : <span class="hljs-keyword">typeof</span> self !== <span class="hljs-string">"undefined"</span> ? self : <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> ? <span class="hljs-built_in">window</span> : {})
+
+},{}],<span class="hljs-number">8</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">global</span>)</span>{
+<span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> customEvent = <span class="hljs-built_in">require</span>(<span class="hljs-string">'custom-event'</span>);
+<span class="hljs-keyword">var</span> eventmap = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./eventmap'</span>);
+<span class="hljs-keyword">var</span> doc = global.document;
+<span class="hljs-keyword">var</span> addEvent = addEventEasy;
+<span class="hljs-keyword">var</span> removeEvent = removeEventEasy;
+<span class="hljs-keyword">var</span> hardCache = [];
+
+<span class="hljs-keyword">if</span> (!global.addEventListener) {
+  addEvent = addEventHard;
+  removeEvent = removeEventHard;
+}
+
+<span class="hljs-built_in">module</span>.exports = {
+  add: addEvent,
+  remove: removeEvent,
+  fabricate: fabricateEvent
+};
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addEventEasy</span> (<span class="hljs-params">el, type, fn, capturing</span>) </span>{
+  <span class="hljs-keyword">return</span> el.addEventListener(type, fn, capturing);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addEventHard</span> (<span class="hljs-params">el, type, fn</span>) </span>{
+  <span class="hljs-keyword">return</span> el.attachEvent(<span class="hljs-string">'on'</span> + type, wrap(el, type, fn));
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeEventEasy</span> (<span class="hljs-params">el, type, fn, capturing</span>) </span>{
+  <span class="hljs-keyword">return</span> el.removeEventListener(type, fn, capturing);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeEventHard</span> (<span class="hljs-params">el, type, fn</span>) </span>{
+  <span class="hljs-keyword">var</span> listener = unwrap(el, type, fn);
+  <span class="hljs-keyword">if</span> (listener) {
+    <span class="hljs-keyword">return</span> el.detachEvent(<span class="hljs-string">'on'</span> + type, listener);
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fabricateEvent</span> (<span class="hljs-params">el, type, model</span>) </span>{
+  <span class="hljs-keyword">var</span> e = eventmap.indexOf(type) === -<span class="hljs-number">1</span> ? makeCustomEvent() : makeClassicEvent();
+  <span class="hljs-keyword">if</span> (el.dispatchEvent) {
+    el.dispatchEvent(e);
+  } <span class="hljs-keyword">else</span> {
+    el.fireEvent(<span class="hljs-string">'on'</span> + type, e);
+  }
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeClassicEvent</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> e;
+    <span class="hljs-keyword">if</span> (doc.createEvent) {
+      e = doc.createEvent(<span class="hljs-string">'Event'</span>);
+      e.initEvent(type, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (doc.createEventObject) {
+      e = doc.createEventObject();
+    }
+    <span class="hljs-keyword">return</span> e;
+  }
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeCustomEvent</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> customEvent(type, { detail: model });
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wrapperFactory</span> (<span class="hljs-params">el, type, fn</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wrapper</span> (<span class="hljs-params">originalEvent</span>) </span>{
+    <span class="hljs-keyword">var</span> e = originalEvent || global.event;
+    e.target = e.target || e.srcElement;
+    e.preventDefault = e.preventDefault || <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">preventDefault</span> (<span class="hljs-params"></span>) </span>{ e.returnValue = <span class="hljs-literal">false</span>; };
+    e.stopPropagation = e.stopPropagation || <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stopPropagation</span> (<span class="hljs-params"></span>) </span>{ e.cancelBubble = <span class="hljs-literal">true</span>; };
+    e.which = e.which || e.keyCode;
+    fn.call(el, e);
+  };
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wrap</span> (<span class="hljs-params">el, type, fn</span>) </span>{
+  <span class="hljs-keyword">var</span> wrapper = unwrap(el, type, fn) || wrapperFactory(el, type, fn);
+  hardCache.push({
+    wrapper: wrapper,
+    element: el,
+    type: type,
+    fn: fn
+  });
+  <span class="hljs-keyword">return</span> wrapper;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">unwrap</span> (<span class="hljs-params">el, type, fn</span>) </span>{
+  <span class="hljs-keyword">var</span> i = find(el, type, fn);
+  <span class="hljs-keyword">if</span> (i) {
+    <span class="hljs-keyword">var</span> wrapper = hardCache[i].wrapper;
+    hardCache.splice(i, <span class="hljs-number">1</span>); <span class="hljs-comment">// free up a tad of memory</span>
+    <span class="hljs-keyword">return</span> wrapper;
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">find</span> (<span class="hljs-params">el, type, fn</span>) </span>{
+  <span class="hljs-keyword">var</span> i, item;
+  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; hardCache.length; i++) {
+    item = hardCache[i];
+    <span class="hljs-keyword">if</span> (item.element === el &amp;&amp; item.type === type &amp;&amp; item.fn === fn) {
+      <span class="hljs-keyword">return</span> i;
+    }
+  }
+}
+
+}).call(<span class="hljs-keyword">this</span>,<span class="hljs-keyword">typeof</span> global !== <span class="hljs-string">"undefined"</span> ? global : <span class="hljs-keyword">typeof</span> self !== <span class="hljs-string">"undefined"</span> ? self : <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> ? <span class="hljs-built_in">window</span> : {})
+
+},{<span class="hljs-string">"./eventmap"</span>:<span class="hljs-number">9</span>,<span class="hljs-string">"custom-event"</span>:<span class="hljs-number">7</span>}],<span class="hljs-number">9</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">global</span>)</span>{
+<span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> eventmap = [];
+<span class="hljs-keyword">var</span> eventname = <span class="hljs-string">''</span>;
+<span class="hljs-keyword">var</span> ron = <span class="hljs-regexp">/^on/</span>;
+
+<span class="hljs-keyword">for</span> (eventname <span class="hljs-keyword">in</span> global) {
+  <span class="hljs-keyword">if</span> (ron.test(eventname)) {
+    eventmap.push(eventname.slice(<span class="hljs-number">2</span>));
+  }
+}
+
+<span class="hljs-built_in">module</span>.exports = eventmap;
+
+}).call(<span class="hljs-keyword">this</span>,<span class="hljs-keyword">typeof</span> global !== <span class="hljs-string">"undefined"</span> ? global : <span class="hljs-keyword">typeof</span> self !== <span class="hljs-string">"undefined"</span> ? self : <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">"undefined"</span> ? <span class="hljs-built_in">window</span> : {})
+
+},{}]},{},[<span class="hljs-number">2</span>])(<span class="hljs-number">2</span>)
+});
+<span class="hljs-comment">//# sourceMappingURL=data:application/json;charset:utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm5vZGVfbW9kdWxlcy9icm93c2VyaWZ5L25vZGVfbW9kdWxlcy9icm93c2VyLXBhY2svX3ByZWx1ZGUuanMiLCJjbGFzc2VzLmpzIiwiZHJhZ3VsYS5qcyIsIm5vZGVfbW9kdWxlcy9jb250cmEvZGVib3VuY2UuanMiLCJub2RlX21vZHVsZXMvY29udHJhL2VtaXR0ZXIuanMiLCJub2RlX21vZHVsZXMvY29udHJhL25vZGVfbW9kdWxlcy9hdG9hL2F0b2EuanMiLCJub2RlX21vZHVsZXMvY29udHJhL25vZGVfbW9kdWxlcy90aWNreS90aWNreS1icm93c2VyLmpzIiwibm9kZV9tb2R1bGVzL2Nyb3NzdmVudC9ub2RlX21vZHVsZXMvY3VzdG9tLWV2ZW50L2luZGV4LmpzIiwibm9kZV9tb2R1bGVzL2Nyb3NzdmVudC9zcmMvY3Jvc3N2ZW50LmpzIiwibm9kZV9tb2R1bGVzL2Nyb3NzdmVudC9zcmMvZXZlbnRtYXAuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7QUNBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7O0FDakNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7OztBQzFsQkE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUNWQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUN0REE7QUFDQTs7QUNEQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOzs7QUNQQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7Ozs7QUNoREE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOzs7OztBQ3JHQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBIiwiZmlsZSI6ImdlbmVyYXRlZC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzQ29udGVudCI6WyIoZnVuY3Rpb24gZSh0LG4scil7ZnVuY3Rpb24gcyhvLHUpe2lmKCFuW29dKXtpZighdFtvXSl7dmFyIGE9dHlwZW9mIHJlcXVpcmU9PVwiZnVuY3Rpb25cIiYmcmVxdWlyZTtpZighdSYmYSlyZXR1cm4gYShvLCEwKTtpZihpKXJldHVybiBpKG8sITApO3ZhciBmPW5ldyBFcnJvcihcIkNhbm5vdCBmaW5kIG1vZHVsZSAnXCIrbytcIidcIik7dGhyb3cgZi5jb2RlPVwiTU9EVUxFX05PVF9GT1VORFwiLGZ9dmFyIGw9bltvXT17ZXhwb3J0czp7fX07dFtvXVswXS5jYWxsKGwuZXhwb3J0cyxmdW5jdGlvbihlKXt2YXIgbj10W29dWzFdW2VdO3JldHVybiBzKG4/bjplKX0sbCxsLmV4cG9ydHMsZSx0LG4scil9cmV0dXJuIG5bb10uZXhwb3J0c312YXIgaT10eXBlb2YgcmVxdWlyZT09XCJmdW5jdGlvblwiJiZyZXF1aXJlO2Zvcih2YXIgbz0wO288ci5sZW5ndGg7bysrKXMocltvXSk7cmV0dXJuIHN9KSIsIid1c2Ugc3RyaWN0JztcblxudmFyIGNhY2hlID0ge307XG52YXIgc3RhcnQgPSAnKD86XnxcXFxccyknO1xudmFyIGVuZCA9ICcoPzpcXFxcc3wkKSc7XG5cbmZ1bmN0aW9uIGxvb2t1cENsYXNzIChjbGFzc05hbWUpIHtcbiAgdmFyIGNhY2hlZCA9IGNhY2hlW2NsYXNzTmFtZV07XG4gIGlmIChjYWNoZWQpIHtcbiAgICBjYWNoZWQubGFzdEluZGV4ID0gMDtcbiAgfSBlbHNlIHtcbiAgICBjYWNoZVtjbGFzc05hbWVdID0gY2FjaGVkID0gbmV3IFJlZ0V4cChzdGFydCArIGNsYXNzTmFtZSArIGVuZCwgJ2cnKTtcbiAgfVxuICByZXR1cm4gY2FjaGVkO1xufVxuXG5mdW5jdGlvbiBhZGRDbGFzcyAoZWwsIGNsYXNzTmFtZSkge1xuICB2YXIgY3VycmVudCA9IGVsLmNsYXNzTmFtZTtcbiAgaWYgKCFjdXJyZW50Lmxlbmd0aCkge1xuICAgIGVsLmNsYXNzTmFtZSA9IGNsYXNzTmFtZTtcbiAgfSBlbHNlIGlmICghbG9va3VwQ2xhc3MoY2xhc3NOYW1lKS50ZXN0KGN1cnJlbnQpKSB7XG4gICAgZWwuY2xhc3NOYW1lICs9ICcgJyArIGNsYXNzTmFtZTtcbiAgfVxufVxuXG5mdW5jdGlvbiBybUNsYXNzIChlbCwgY2xhc3NOYW1lKSB7XG4gIGVsLmNsYXNzTmFtZSA9IGVsLmNsYXNzTmFtZS5yZXBsYWNlKGxvb2t1cENsYXNzKGNsYXNzTmFtZSksICcgJykudHJpbSgpO1xufVxuXG5tb2R1bGUuZXhwb3J0cyA9IHtcbiAgYWRkOiBhZGRDbGFzcyxcbiAgcm06IHJtQ2xhc3Ncbn07XG4iLCIndXNlIHN0cmljdCc7XG5cbnZhciBlbWl0dGVyID0gcmVxdWlyZSgnY29udHJhL2VtaXR0ZXInKTtcbnZhciBjcm9zc3ZlbnQgPSByZXF1aXJlKCdjcm9zc3ZlbnQnKTtcbnZhciBjbGFzc2VzID0gcmVxdWlyZSgnLi9jbGFzc2VzJyk7XG52YXIgZG9jID0gZG9jdW1lbnQ7XG52YXIgZG9jdW1lbnRFbGVtZW50ID0gZG9jLmRvY3VtZW50RWxlbWVudDtcbnZhciBib2R5ID0gZG9jLmJvZHk7XG5cbmZ1bmN0aW9uIGRyYWd1bGEgKGluaXRpYWxDb250YWluZXJzLCBvcHRpb25zKSB7XG4gIHZhciBsZW4gPSBhcmd1bWVudHMubGVuZ3RoO1xuICBpZiAobGVuID09PSAxICYmIEFycmF5LmlzQXJyYXkoaW5pdGlhbENvbnRhaW5lcnMpID09PSBmYWxzZSkge1xuICAgIG9wdGlvbnMgPSBpbml0aWFsQ29udGFpbmVycztcbiAgICBpbml0aWFsQ29udGFpbmVycyA9IFtdO1xuICB9XG4gIHZhciBfbWlycm9yOyAvLyBtaXJyb3IgaW1hZ2VcbiAgdmFyIF9zb3VyY2U7IC8vIHNvdXJjZSBjb250YWluZXJcbiAgdmFyIF9pdGVtOyAvLyBpdGVtIGJlaW5nIGRyYWdnZWRcbiAgdmFyIF9vZmZzZXRYOyAvLyByZWZlcmVuY2UgeFxuICB2YXIgX29mZnNldFk7IC8vIHJlZmVyZW5jZSB5XG4gIHZhciBfbW92ZVg7IC8vIHJlZmVyZW5jZSBtb3ZlIHhcbiAgdmFyIF9tb3ZlWTsgLy8gcmVmZXJlbmNlIG1vdmUgeVxuICB2YXIgX2luaXRpYWxTaWJsaW5nOyAvLyByZWZlcmVuY2Ugc2libGluZyB3aGVuIGdyYWJiZWRcbiAgdmFyIF9jdXJyZW50U2libGluZzsgLy8gcmVmZXJlbmNlIHNpYmxpbmcgbm93XG4gIHZhciBfY29weTsgLy8gaXRlbSB1c2VkIGZvciBjb3B5aW5nXG4gIHZhciBfcmVuZGVyVGltZXI7IC8vIHRpbWVyIGZvciBzZXRUaW1lb3V0IHJlbmRlck1pcnJvckltYWdlXG4gIHZhciBfbGFzdERyb3BUYXJnZXQgPSBudWxsOyAvLyBsYXN0IGNvbnRhaW5lciBpdGVtIHdhcyBvdmVyXG4gIHZhciBfZ3JhYmJlZDsgLy8gaG9sZHMgbW91c2Vkb3duIGNvbnRleHQgdW50aWwgZmlyc3QgbW91c2Vtb3ZlXG5cbiAgdmFyIG8gPSBvcHRpb25zIHx8IHt9O1xuICBpZiAoby5tb3ZlcyA9PT0gdm9pZCAwKSB7IG8ubW92ZXMgPSBhbHdheXM7IH1cbiAgaWYgKG8uYWNjZXB0cyA9PT0gdm9pZCAwKSB7IG8uYWNjZXB0cyA9IGFsd2F5czsgfVxuICBpZiAoby5pbnZhbGlkID09PSB2b2lkIDApIHsgby5pbnZhbGlkID0gaW52YWxpZFRhcmdldDsgfVxuICBpZiAoby5jb250YWluZXJzID09PSB2b2lkIDApIHsgby5jb250YWluZXJzID0gaW5pdGlhbENvbnRhaW5lcnMgfHwgW107IH1cbiAgaWYgKG8uaXNDb250YWluZXIgPT09IHZvaWQgMCkgeyBvLmlzQ29udGFpbmVyID0gbmV2ZXI7IH1cbiAgaWYgKG8uY29weSA9PT0gdm9pZCAwKSB7IG8uY29weSA9IGZhbHNlOyB9XG4gIGlmIChvLmNvcHlTb3J0U291cmNlID09PSB2b2lkIDApIHsgby5jb3B5U29ydFNvdXJjZSA9IGZhbHNlOyB9XG4gIGlmIChvLnJldmVydE9uU3BpbGwgPT09IHZvaWQgMCkgeyBvLnJldmVydE9uU3BpbGwgPSBmYWxzZTsgfVxuICBpZiAoby5yZW1vdmVPblNwaWxsID09PSB2b2lkIDApIHsgby5yZW1vdmVPblNwaWxsID0gZmFsc2U7IH1cbiAgaWYgKG8uZGlyZWN0aW9uID09PSB2b2lkIDApIHsgby5kaXJlY3Rpb24gPSAndmVydGljYWwnOyB9XG4gIGlmIChvLmlnbm9yZUlucHV0VGV4dFNlbGVjdGlvbiA9PT0gdm9pZCAwKSB7IG8uaWdub3JlSW5wdXRUZXh0U2VsZWN0aW9uID0gdHJ1ZTsgfVxuICBpZiAoby5taXJyb3JDb250YWluZXIgPT09IHZvaWQgMCkgeyBvLm1pcnJvckNvbnRhaW5lciA9IGJvZHk7IH1cblxuICB2YXIgZHJha2UgPSBlbWl0dGVyKHtcbiAgICBjb250YWluZXJzOiBvLmNvbnRhaW5lcnMsXG4gICAgc3RhcnQ6IG1hbnVhbFN0YXJ0LFxuICAgIGVuZDogZW5kLFxuICAgIGNhbmNlbDogY2FuY2VsLFxuICAgIHJlbW92ZTogcmVtb3ZlLFxuICAgIGRlc3Ryb3k6IGRlc3Ryb3ksXG4gICAgZHJhZ2dpbmc6IGZhbHNlXG4gIH0pO1xuXG4gIGlmIChvLnJlbW92ZU9uU3BpbGwgPT09IHRydWUpIHtcbiAgICBkcmFrZS5vbignb3ZlcicsIHNwaWxsT3Zlcikub24oJ291dCcsIHNwaWxsT3V0KTtcbiAgfVxuXG4gIGV2ZW50cygpO1xuXG4gIHJldHVybiBkcmFrZTtcblxuICBmdW5jdGlvbiBpc0NvbnRhaW5lciAoZWwpIHtcbiAgICByZXR1cm4gZHJha2UuY29udGFpbmVycy5pbmRleE9mKGVsKSAhPT0gLTEgfHwgby5pc0NvbnRhaW5lcihlbCk7XG4gIH1cblxuICBmdW5jdGlvbiBldmVudHMgKHJlbW92ZSkge1xuICAgIHZhciBvcCA9IHJlbW92ZSA/ICdyZW1vdmUnIDogJ2FkZCc7XG4gICAgdG91Y2h5KGRvY3VtZW50RWxlbWVudCwgb3AsICdtb3VzZWRvd24nLCBncmFiKTtcbiAgICB0b3VjaHkoZG9jdW1lbnRFbGVtZW50LCBvcCwgJ21vdXNldXAnLCByZWxlYXNlKTtcbiAgfVxuXG4gIGZ1bmN0aW9uIGV2ZW50dWFsTW92ZW1lbnRzIChyZW1vdmUpIHtcbiAgICB2YXIgb3AgPSByZW1vdmUgPyAncmVtb3ZlJyA6ICdhZGQnO1xuICAgIHRvdWNoeShkb2N1bWVudEVsZW1lbnQsIG9wLCAnbW91c2Vtb3ZlJywgc3RhcnRCZWNhdXNlTW91c2VNb3ZlZCk7XG4gIH1cblxuICBmdW5jdGlvbiBtb3ZlbWVudHMgKHJlbW92ZSkge1xuICAgIHZhciBvcCA9IHJlbW92ZSA/ICdyZW1vdmUnIDogJ2FkZCc7XG4gICAgY3Jvc3N2ZW50W29wXShkb2N1bWVudEVsZW1lbnQsICdzZWxlY3RzdGFydCcsIHByZXZlbnRHcmFiYmVkKTsgLy8gSUU4XG4gICAgY3Jvc3N2ZW50W29wXShkb2N1bWVudEVsZW1lbnQsICdjbGljaycsIHByZXZlbnRHcmFiYmVkKTtcbiAgfVxuXG4gIGZ1bmN0aW9uIGRlc3Ryb3kgKCkge1xuICAgIGV2ZW50cyh0cnVlKTtcbiAgICByZWxlYXNlKHt9KTtcbiAgfVxuXG4gIGZ1bmN0aW9uIHByZXZlbnRHcmFiYmVkIChlKSB7XG4gICAgaWYgKF9ncmFiYmVkKSB7XG4gICAgICBlLnByZXZlbnREZWZhdWx0KCk7XG4gICAgfVxuICB9XG5cbiAgZnVuY3Rpb24gZ3JhYiAoZSkge1xuICAgIF9tb3ZlWCA9IGUuY2xpZW50WDtcbiAgICBfbW92ZVkgPSBlLmNsaWVudFk7XG5cbiAgICB2YXIgaWdub3JlID0gd2hpY2hNb3VzZUJ1dHRvbihlKSAhPT0gMSB8fCBlLm1ldGFLZXkgfHwgZS5jdHJsS2V5O1xuICAgIGlmIChpZ25vcmUpIHtcbiAgICAgIHJldHVybjsgLy8gd2Ugb25seSBjYXJlIGFib3V0IGhvbmVzdC10by1nb2QgbGVmdCBjbGlja3MgYW5kIHRvdWNoIGV2ZW50c1xuICAgIH1cbiAgICB2YXIgaXRlbSA9IGUudGFyZ2V0O1xuICAgIHZhciBjb250ZXh0ID0gY2FuU3RhcnQoaXRlbSk7XG4gICAgaWYgKCFjb250ZXh0KSB7XG4gICAgICByZXR1cm47XG4gICAgfVxuICAgIF9ncmFiYmVkID0gY29udGV4dDtcbiAgICBldmVudHVhbE1vdmVtZW50cygpO1xuICAgIGlmIChlLnR5cGUgPT09ICdtb3VzZWRvd24nKSB7XG4gICAgICBpZiAoaXNJbnB1dChpdGVtKSkgeyAvLyBzZWUgYWxzbzogaHR0cHM6Ly9naXRodWIuY29tL2JldmFjcXVhL2RyYWd1bGEvaXNzdWVzLzIwOFxuICAgICAgICBpdGVtLmZvY3VzKCk7IC8vIGZpeGVzIGh0dHBzOi8vZ2l0aHViLmNvbS9iZXZhY3F1YS9kcmFndWxhL2lzc3Vlcy8xNzZcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIGUucHJldmVudERlZmF1bHQoKTsgLy8gZml4ZXMgaHR0cHM6Ly9naXRodWIuY29tL2JldmFjcXVhL2RyYWd1bGEvaXNzdWVzLzE1NVxuICAgICAgfVxuICAgIH1cbiAgfVxuXG4gIGZ1bmN0aW9uIHN0YXJ0QmVjYXVzZU1vdXNlTW92ZWQgKGUpIHtcbiAgICBpZiAoIV9ncmFiYmVkKSB7XG4gICAgICByZXR1cm47XG4gICAgfVxuICAgIGlmICh3aGljaE1vdXNlQnV0dG9uKGUpID09PSAwKSB7XG4gICAgICByZWxlYXNlKHt9KTtcbiAgICAgIHJldHVybjsgLy8gd2hlbiB0ZXh0IGlzIHNlbGVjdGVkIG9uIGFuIGlucHV0IGFuZCB0aGVuIGRyYWdnZWQsIG1vdXNldXAgZG9lc24ndCBmaXJlLiB0aGlzIGlzIG91ciBvbmx5IGhvcGVcbiAgICB9XG4gICAgLy8gdHJ1dGh5IGNoZWNrIGZpeGVzICMyMzksIGVxdWFsaXR5IGZpeGVzICMyMDdcbiAgICBpZiAoZS5jbGllbnRYICE9PSB2b2lkIDAgJiYgZS5jbGllbnRYID09PSBfbW92ZVggJiYgZS5jbGllbnRZICE9PSB2b2lkIDAgJiYgZS5jbGllbnRZID09PSBfbW92ZVkpIHtcbiAgICAgIHJldHVybjtcbiAgICB9XG4gICAgaWYgKG8uaWdub3JlSW5wdXRUZXh0U2VsZWN0aW9uKSB7XG4gICAgICB2YXIgY2xpZW50WCA9IGdldENvb3JkKCdjbGllbnRYJywgZSk7XG4gICAgICB2YXIgY2xpZW50WSA9IGdldENvb3JkKCdjbGllbnRZJywgZSk7XG4gICAgICB2YXIgZWxlbWVudEJlaGluZEN1cnNvciA9IGRvYy5lbGVtZW50RnJvbVBvaW50KGNsaWVudFgsIGNsaWVudFkpO1xuICAgICAgaWYgKGlzSW5wdXQoZWxlbWVudEJlaGluZEN1cnNvcikpIHtcbiAgICAgICAgcmV0dXJuO1xuICAgICAgfVxuICAgIH1cblxuICAgIHZhciBncmFiYmVkID0gX2dyYWJiZWQ7IC8vIGNhbGwgdG8gZW5kKCkgdW5zZXRzIF9ncmFiYmVkXG4gICAgZXZlbnR1YWxNb3ZlbWVudHModHJ1ZSk7XG4gICAgbW92ZW1lbnRzKCk7XG4gICAgZW5kKCk7XG4gICAgc3RhcnQoZ3JhYmJlZCk7XG5cbiAgICB2YXIgb2Zmc2V0ID0gZ2V0T2Zmc2V0KF9pdGVtKTtcbiAgICBfb2Zmc2V0WCA9IGdldENvb3JkKCdwYWdlWCcsIGUpIC0gb2Zmc2V0LmxlZnQ7XG4gICAgX29mZnNldFkgPSBnZXRDb29yZCgncGFnZVknLCBlKSAtIG9mZnNldC50b3A7XG5cbiAgICBjbGFzc2VzLmFkZChfY29weSB8fCBfaXRlbSwgJ2d1LXRyYW5zaXQnKTtcbiAgICByZW5kZXJNaXJyb3JJbWFnZSgpO1xuICAgIGRyYWcoZSk7XG4gIH1cblxuICBmdW5jdGlvbiBjYW5TdGFydCAoaXRlbSkge1xuICAgIGlmIChkcmFrZS5kcmFnZ2luZyAmJiBfbWlycm9yKSB7XG4gICAgICByZXR1cm47XG4gICAgfVxuICAgIGlmIChpc0NvbnRhaW5lcihpdGVtKSkge1xuICAgICAgcmV0dXJuOyAvLyBkb24ndCBkcmFnIGNvbnRhaW5lciBpdHNlbGZcbiAgICB9XG4gICAgdmFyIGhhbmRsZSA9IGl0ZW07XG4gICAgd2hpbGUgKGdldFBhcmVudChpdGVtKSAmJiBpc0NvbnRhaW5lcihnZXRQYXJlbnQoaXRlbSkpID09PSBmYWxzZSkge1xuICAgICAgaWYgKG8uaW52YWxpZChpdGVtLCBoYW5kbGUpKSB7XG4gICAgICAgIHJldHVybjtcbiAgICAgIH1cbiAgICAgIGl0ZW0gPSBnZXRQYXJlbnQoaXRlbSk7IC8vIGRyYWcgdGFyZ2V0IHNob3VsZCBiZSBhIHRvcCBlbGVtZW50XG4gICAgICBpZiAoIWl0ZW0pIHtcbiAgICAgICAgcmV0dXJuO1xuICAgICAgfVxuICAgIH1cbiAgICB2YXIgc291cmNlID0gZ2V0UGFyZW50KGl0ZW0pO1xuICAgIGlmICghc291cmNlKSB7XG4gICAgICByZXR1cm47XG4gICAgfVxuICAgIGlmIChvLmludmFsaWQoaXRlbSwgaGFuZGxlKSkge1xuICAgICAgcmV0dXJuO1xuICAgIH1cblxuICAgIHZhciBtb3ZhYmxlID0gby5tb3ZlcyhpdGVtLCBzb3VyY2UsIGhhbmRsZSwgbmV4dEVsKGl0ZW0pKTtcbiAgICBpZiAoIW1vdmFibGUpIHtcbiAgICAgIHJldHVybjtcbiAgICB9XG5cbiAgICByZXR1cm4ge1xuICAgICAgaXRlbTogaXRlbSxcbiAgICAgIHNvdXJjZTogc291cmNlXG4gICAgfTtcbiAgfVxuXG4gIGZ1bmN0aW9uIG1hbnVhbFN0YXJ0IChpdGVtKSB7XG4gICAgdmFyIGNvbnRleHQgPSBjYW5TdGFydChpdGVtKTtcbiAgICBpZiAoY29udGV4dCkge1xuICAgICAgc3RhcnQoY29udGV4dCk7XG4gICAgfVxuICB9XG5cbiAgZnVuY3Rpb24gc3RhcnQgKGNvbnRleHQpIHtcbiAgICBpZiAoaXNDb3B5KGNvbnRleHQuaXRlbSwgY29udGV4dC5zb3VyY2UpKSB7XG4gICAgICBfY29weSA9IGNvbnRleHQuaXRlbS5jbG9uZU5vZGUodHJ1ZSk7XG4gICAgICBkcmFrZS5lbWl0KCdjbG9uZWQnLCBfY29weSwgY29udGV4dC5pdGVtLCAnY29weScpO1xuICAgIH1cblxuICAgIF9zb3VyY2UgPSBjb250ZXh0LnNvdXJjZTtcbiAgICBfaXRlbSA9IGNvbnRleHQuaXRlbTtcbiAgICBfaW5pdGlhbFNpYmxpbmcgPSBfY3VycmVudFNpYmxpbmcgPSBuZXh0RWwoY29udGV4dC5pdGVtKTtcblxuICAgIGRyYWtlLmRyYWdnaW5nID0gdHJ1ZTtcbiAgICBkcmFrZS5lbWl0KCdkcmFnJywgX2l0ZW0sIF9zb3VyY2UpO1xuICB9XG5cbiAgZnVuY3Rpb24gaW52YWxpZFRhcmdldCAoKSB7XG4gICAgcmV0dXJuIGZhbHNlO1xuICB9XG5cbiAgZnVuY3Rpb24gZW5kICgpIHtcbiAgICBpZiAoIWRyYWtlLmRyYWdnaW5nKSB7XG4gICAgICByZXR1cm47XG4gICAgfVxuICAgIHZhciBpdGVtID0gX2NvcHkgfHwgX2l0ZW07XG4gICAgZHJvcChpdGVtLCBnZXRQYXJlbnQoaXRlbSkpO1xuICB9XG5cbiAgZnVuY3Rpb24gdW5ncmFiICgpIHtcbiAgICBfZ3JhYmJlZCA9IGZhbHNlO1xuICAgIGV2ZW50dWFsTW92ZW1lbnRzKHRydWUpO1xuICAgIG1vdmVtZW50cyh0cnVlKTtcbiAgfVxuXG4gIGZ1bmN0aW9uIHJlbGVhc2UgKGUpIHtcbiAgICB1bmdyYWIoKTtcblxuICAgIGlmICghZHJha2UuZHJhZ2dpbmcpIHtcbiAgICAgIHJldHVybjtcbiAgICB9XG4gICAgdmFyIGl0ZW0gPSBfY29weSB8fCBfaXRlbTtcbiAgICB2YXIgY2xpZW50WCA9IGdldENvb3JkKCdjbGllbnRYJywgZSk7XG4gICAgdmFyIGNsaWVudFkgPSBnZXRDb29yZCgnY2xpZW50WScsIGUpO1xuICAgIHZhciBlbGVtZW50QmVoaW5kQ3Vyc29yID0gZ2V0RWxlbWVudEJlaGluZFBvaW50KF9taXJyb3IsIGNsaWVudFgsIGNsaWVudFkpO1xuICAgIHZhciBkcm9wVGFyZ2V0ID0gZmluZERyb3BUYXJnZXQoZWxlbWVudEJlaGluZEN1cnNvciwgY2xpZW50WCwgY2xpZW50WSk7XG4gICAgaWYgKGRyb3BUYXJnZXQgJiYgKChfY29weSAmJiBvLmNvcHlTb3J0U291cmNlKSB8fCAoIV9jb3B5IHx8IGRyb3BUYXJnZXQgIT09IF9zb3VyY2UpKSkge1xuICAgICAgZHJvcChpdGVtLCBkcm9wVGFyZ2V0KTtcbiAgICB9IGVsc2UgaWYgKG8ucmVtb3ZlT25TcGlsbCkge1xuICAgICAgcmVtb3ZlKCk7XG4gICAgfSBlbHNlIHtcbiAgICAgIGNhbmNlbCgpO1xuICAgIH1cbiAgfVxuXG4gIGZ1bmN0aW9uIGRyb3AgKGl0ZW0sIHRhcmdldCkge1xuICAgIHZhciBwYXJlbnQgPSBnZXRQYXJlbnQoaXRlbSk7XG4gICAgaWYgKF9jb3B5ICYmIG8uY29weVNvcnRTb3VyY2UgJiYgdGFyZ2V0ID09PSBfc291cmNlKSB7XG4gICAgICBwYXJlbnQucmVtb3ZlQ2hpbGQoX2l0ZW0pO1xuICAgIH1cbiAgICBpZiAoaXNJbml0aWFsUGxhY2VtZW50KHRhcmdldCkpIHtcbiAgICAgIGRyYWtlLmVtaXQoJ2NhbmNlbCcsIGl0ZW0sIF9zb3VyY2UsIF9zb3VyY2UpO1xuICAgIH0gZWxzZSB7XG4gICAgICBkcmFrZS5lbWl0KCdkcm9wJywgaXRlbSwgdGFyZ2V0LCBfc291cmNlLCBfY3VycmVudFNpYmxpbmcpO1xuICAgIH1cbiAgICBjbGVhbnVwKCk7XG4gIH1cblxuICBmdW5jdGlvbiByZW1vdmUgKCkge1xuICAgIGlmICghZHJha2UuZHJhZ2dpbmcpIHtcbiAgICAgIHJldHVybjtcbiAgICB9XG4gICAgdmFyIGl0ZW0gPSBfY29weSB8fCBfaXRlbTtcbiAgICB2YXIgcGFyZW50ID0gZ2V0UGFyZW50KGl0ZW0pO1xuICAgIGlmIChwYXJlbnQpIHtcbiAgICAgIHBhcmVudC5yZW1vdmVDaGlsZChpdGVtKTtcbiAgICB9XG4gICAgZHJha2UuZW1pdChfY29weSA/ICdjYW5jZWwnIDogJ3JlbW92ZScsIGl0ZW0sIHBhcmVudCwgX3NvdXJjZSk7XG4gICAgY2xlYW51cCgpO1xuICB9XG5cbiAgZnVuY3Rpb24gY2FuY2VsIChyZXZlcnQpIHtcbiAgICBpZiAoIWRyYWtlLmRyYWdnaW5nKSB7XG4gICAgICByZXR1cm47XG4gICAgfVxuICAgIHZhciByZXZlcnRzID0gYXJndW1lbnRzLmxlbmd0aCA+IDAgPyByZXZlcnQgOiBvLnJldmVydE9uU3BpbGw7XG4gICAgdmFyIGl0ZW0gPSBfY29weSB8fCBfaXRlbTtcbiAgICB2YXIgcGFyZW50ID0gZ2V0UGFyZW50KGl0ZW0pO1xuICAgIGlmIChwYXJlbnQgPT09IF9zb3VyY2UgJiYgX2NvcHkpIHtcbiAgICAgIHBhcmVudC5yZW1vdmVDaGlsZChfY29weSk7XG4gICAgfVxuICAgIHZhciBpbml0aWFsID0gaXNJbml0aWFsUGxhY2VtZW50KHBhcmVudCk7XG4gICAgaWYgKGluaXRpYWwgPT09IGZhbHNlICYmICFfY29weSAmJiByZXZlcnRzKSB7XG4gICAgICBfc291cmNlLmluc2VydEJlZm9yZShpdGVtLCBfaW5pdGlhbFNpYmxpbmcpO1xuICAgIH1cbiAgICBpZiAoaW5pdGlhbCB8fCByZXZlcnRzKSB7XG4gICAgICBkcmFrZS5lbWl0KCdjYW5jZWwnLCBpdGVtLCBfc291cmNlLCBfc291cmNlKTtcbiAgICB9IGVsc2Uge1xuICAgICAgZHJha2UuZW1pdCgnZHJvcCcsIGl0ZW0sIHBhcmVudCwgX3NvdXJjZSwgX2N1cnJlbnRTaWJsaW5nKTtcbiAgICB9XG4gICAgY2xlYW51cCgpO1xuICB9XG5cbiAgZnVuY3Rpb24gY2xlYW51cCAoKSB7XG4gICAgdmFyIGl0ZW0gPSBfY29weSB8fCBfaXRlbTtcbiAgICB1bmdyYWIoKTtcbiAgICByZW1vdmVNaXJyb3JJbWFnZSgpO1xuICAgIGlmIChpdGVtKSB7XG4gICAgICBjbGFzc2VzLnJtKGl0ZW0sICdndS10cmFuc2l0Jyk7XG4gICAgfVxuICAgIGlmIChfcmVuZGVyVGltZXIpIHtcbiAgICAgIGNsZWFyVGltZW91dChfcmVuZGVyVGltZXIpO1xuICAgIH1cbiAgICBkcmFrZS5kcmFnZ2luZyA9IGZhbHNlO1xuICAgIGlmIChfbGFzdERyb3BUYXJnZXQpIHtcbiAgICAgIGRyYWtlLmVtaXQoJ291dCcsIGl0ZW0sIF9sYXN0RHJvcFRhcmdldCwgX3NvdXJjZSk7XG4gICAgfVxuICAgIGRyYWtlLmVtaXQoJ2RyYWdlbmQnLCBpdGVtKTtcbiAgICBfc291cmNlID0gX2l0ZW0gPSBfY29weSA9IF9pbml0aWFsU2libGluZyA9IF9jdXJyZW50U2libGluZyA9IF9yZW5kZXJUaW1lciA9IF9sYXN0RHJvcFRhcmdldCA9IG51bGw7XG4gIH1cblxuICBmdW5jdGlvbiBpc0luaXRpYWxQbGFjZW1lbnQgKHRhcmdldCwgcykge1xuICAgIHZhciBzaWJsaW5nO1xuICAgIGlmIChzICE9PSB2b2lkIDApIHtcbiAgICAgIHNpYmxpbmcgPSBzO1xuICAgIH0gZWxzZSBpZiAoX21pcnJvcikge1xuICAgICAgc2libGluZyA9IF9jdXJyZW50U2libGluZztcbiAgICB9IGVsc2Uge1xuICAgICAgc2libGluZyA9IG5leHRFbChfY29weSB8fCBfaXRlbSk7XG4gICAgfVxuICAgIHJldHVybiB0YXJnZXQgPT09IF9zb3VyY2UgJiYgc2libGluZyA9PT0gX2luaXRpYWxTaWJsaW5nO1xuICB9XG5cbiAgZnVuY3Rpb24gZmluZERyb3BUYXJnZXQgKGVsZW1lbnRCZWhpbmRDdXJzb3IsIGNsaWVudFgsIGNsaWVudFkpIHtcbiAgICB2YXIgdGFyZ2V0ID0gZWxlbWVudEJlaGluZEN1cnNvcjtcbiAgICB3aGlsZSAodGFyZ2V0ICYmICFhY2NlcHRlZCgpKSB7XG4gICAgICB0YXJnZXQgPSBnZXRQYXJlbnQodGFyZ2V0KTtcbiAgICB9XG4gICAgcmV0dXJuIHRhcmdldDtcblxuICAgIGZ1bmN0aW9uIGFjY2VwdGVkICgpIHtcbiAgICAgIHZhciBkcm9wcGFibGUgPSBpc0NvbnRhaW5lcih0YXJnZXQpO1xuICAgICAgaWYgKGRyb3BwYWJsZSA9PT0gZmFsc2UpIHtcbiAgICAgICAgcmV0dXJuIGZhbHNlO1xuICAgICAgfVxuXG4gICAgICB2YXIgaW1tZWRpYXRlID0gZ2V0SW1tZWRpYXRlQ2hpbGQodGFyZ2V0LCBlbGVtZW50QmVoaW5kQ3Vyc29yKTtcbiAgICAgIHZhciByZWZlcmVuY2UgPSBnZXRSZWZlcmVuY2UodGFyZ2V0LCBpbW1lZGlhdGUsIGNsaWVudFgsIGNsaWVudFkpO1xuICAgICAgdmFyIGluaXRpYWwgPSBpc0luaXRpYWxQbGFjZW1lbnQodGFyZ2V0LCByZWZlcmVuY2UpO1xuICAgICAgaWYgKGluaXRpYWwpIHtcbiAgICAgICAgcmV0dXJuIHRydWU7IC8vIHNob3VsZCBhbHdheXMgYmUgYWJsZSB0byBkcm9wIGl0IHJpZ2h0IGJhY2sgd2hlcmUgaXQgd2FzXG4gICAgICB9XG4gICAgICByZXR1cm4gby5hY2NlcHRzKF9pdGVtLCB0YXJnZXQsIF9zb3VyY2UsIHJlZmVyZW5jZSk7XG4gICAgfVxuICB9XG5cbiAgZnVuY3Rpb24gZHJhZyAoZSkge1xuICAgIGlmICghX21pcnJvcikge1xuICAgICAgcmV0dXJuO1xuICAgIH1cbiAgICBlLnByZXZlbnREZWZhdWx0KCk7XG5cbiAgICB2YXIgY2xpZW50WCA9IGdldENvb3JkKCdjbGllbnRYJywgZSk7XG4gICAgdmFyIGNsaWVudFkgPSBnZXRDb29yZCgnY2xpZW50WScsIGUpO1xuICAgIHZhciB4ID0gY2xpZW50WCAtIF9vZmZzZXRYO1xuICAgIHZhciB5ID0gY2xpZW50WSAtIF9vZmZzZXRZO1xuXG4gICAgX21pcnJvci5zdHlsZS5sZWZ0ID0geCArICdweCc7XG4gICAgX21pcnJvci5zdHlsZS50b3AgPSB5ICsgJ3B4JztcblxuICAgIHZhciBpdGVtID0gX2NvcHkgfHwgX2l0ZW07XG4gICAgdmFyIGVsZW1lbnRCZWhpbmRDdXJzb3IgPSBnZXRFbGVtZW50QmVoaW5kUG9pbnQoX21pcnJvciwgY2xpZW50WCwgY2xpZW50WSk7XG4gICAgdmFyIGRyb3BUYXJnZXQgPSBmaW5kRHJvcFRhcmdldChlbGVtZW50QmVoaW5kQ3Vyc29yLCBjbGllbnRYLCBjbGllbnRZKTtcbiAgICB2YXIgY2hhbmdlZCA9IGRyb3BUYXJnZXQgIT09IG51bGwgJiYgZHJvcFRhcmdldCAhPT0gX2xhc3REcm9wVGFyZ2V0O1xuICAgIGlmIChjaGFuZ2VkIHx8IGRyb3BUYXJnZXQgPT09IG51bGwpIHtcbiAgICAgIG91dCgpO1xuICAgICAgX2xhc3REcm9wVGFyZ2V0ID0gZHJvcFRhcmdldDtcbiAgICAgIG92ZXIoKTtcbiAgICB9XG4gICAgdmFyIHBhcmVudCA9IGdldFBhcmVudChpdGVtKTtcbiAgICBpZiAoZHJvcFRhcmdldCA9PT0gX3NvdXJjZSAmJiBfY29weSAmJiAhby5jb3B5U29ydFNvdXJjZSkge1xuICAgICAgaWYgKHBhcmVudCkge1xuICAgICAgICBwYXJlbnQucmVtb3ZlQ2hpbGQoaXRlbSk7XG4gICAgICB9XG4gICAgICByZXR1cm47XG4gICAgfVxuICAgIHZhciByZWZlcmVuY2U7XG4gICAgdmFyIGltbWVkaWF0ZSA9IGdldEltbWVkaWF0ZUNoaWxkKGRyb3BUYXJnZXQsIGVsZW1lbnRCZWhpbmRDdXJzb3IpO1xuICAgIGlmIChpbW1lZGlhdGUgIT09IG51bGwpIHtcbiAgICAgIHJlZmVyZW5jZSA9IGdldFJlZmVyZW5jZShkcm9wVGFyZ2V0LCBpbW1lZGlhdGUsIGNsaWVudFgsIGNsaWVudFkpO1xuICAgIH0gZWxzZSBpZiAoby5yZXZlcnRPblNwaWxsID09PSB0cnVlICYmICFfY29weSkge1xuICAgICAgcmVmZXJlbmNlID0gX2luaXRpYWxTaWJsaW5nO1xuICAgICAgZHJvcFRhcmdldCA9IF9zb3VyY2U7XG4gICAgfSBlbHNlIHtcbiAgICAgIGlmIChfY29weSAmJiBwYXJlbnQpIHtcbiAgICAgICAgcGFyZW50LnJlbW92ZUNoaWxkKGl0ZW0pO1xuICAgICAgfVxuICAgICAgcmV0dXJuO1xuICAgIH1cbiAgICBpZiAoXG4gICAgICByZWZlcmVuY2UgPT09IG51bGwgfHxcbiAgICAgIHJlZmVyZW5jZSAhPT0gaXRlbSAmJlxuICAgICAgcmVmZXJlbmNlICE9PSBuZXh0RWwoaXRlbSkgJiZcbiAgICAgIHJlZmVyZW5jZSAhPT0gX2N1cnJlbnRTaWJsaW5nXG4gICAgKSB7XG4gICAgICBfY3VycmVudFNpYmxpbmcgPSByZWZlcmVuY2U7XG4gICAgICBkcm9wVGFyZ2V0Lmluc2VydEJlZm9yZShpdGVtLCByZWZlcmVuY2UpO1xuICAgICAgZHJha2UuZW1pdCgnc2hhZG93JywgaXRlbSwgZHJvcFRhcmdldCwgX3NvdXJjZSk7XG4gICAgfVxuICAgIGZ1bmN0aW9uIG1vdmVkICh0eXBlKSB7IGRyYWtlLmVtaXQodHlwZSwgaXRlbSwgX2xhc3REcm9wVGFyZ2V0LCBfc291cmNlKTsgfVxuICAgIGZ1bmN0aW9uIG92ZXIgKCkgeyBpZiAoY2hhbmdlZCkgeyBtb3ZlZCgnb3ZlcicpOyB9IH1cbiAgICBmdW5jdGlvbiBvdXQgKCkgeyBpZiAoX2xhc3REcm9wVGFyZ2V0KSB7IG1vdmVkKCdvdXQnKTsgfSB9XG4gIH1cblxuICBmdW5jdGlvbiBzcGlsbE92ZXIgKGVsKSB7XG4gICAgY2xhc3Nlcy5ybShlbCwgJ2d1LWhpZGUnKTtcbiAgfVxuXG4gIGZ1bmN0aW9uIHNwaWxsT3V0IChlbCkge1xuICAgIGlmIChkcmFrZS5kcmFnZ2luZykgeyBjbGFzc2VzLmFkZChlbCwgJ2d1LWhpZGUnKTsgfVxuICB9XG5cbiAgZnVuY3Rpb24gcmVuZGVyTWlycm9ySW1hZ2UgKCkge1xuICAgIGlmIChfbWlycm9yKSB7XG4gICAgICByZXR1cm47XG4gICAgfVxuICAgIHZhciByZWN0ID0gX2l0ZW0uZ2V0Qm91bmRpbmdDbGllbnRSZWN0KCk7XG4gICAgX21pcnJvciA9IF9pdGVtLmNsb25lTm9kZSh0cnVlKTtcbiAgICBfbWlycm9yLnN0eWxlLndpZHRoID0gZ2V0UmVjdFdpZHRoKHJlY3QpICsgJ3B4JztcbiAgICBfbWlycm9yLnN0eWxlLmhlaWdodCA9IGdldFJlY3RIZWlnaHQocmVjdCkgKyAncHgnO1xuICAgIGNsYXNzZXMucm0oX21pcnJvciwgJ2d1LXRyYW5zaXQnKTtcbiAgICBjbGFzc2VzLmFkZChfbWlycm9yLCAnZ3UtbWlycm9yJyk7XG4gICAgby5taXJyb3JDb250YWluZXIuYXBwZW5kQ2hpbGQoX21pcnJvcik7XG4gICAgdG91Y2h5KGRvY3VtZW50RWxlbWVudCwgJ2FkZCcsICdtb3VzZW1vdmUnLCBkcmFnKTtcbiAgICBjbGFzc2VzLmFkZChvLm1pcnJvckNvbnRhaW5lciwgJ2d1LXVuc2VsZWN0YWJsZScpO1xuICAgIGRyYWtlLmVtaXQoJ2Nsb25lZCcsIF9taXJyb3IsIF9pdGVtLCAnbWlycm9yJyk7XG4gIH1cblxuICBmdW5jdGlvbiByZW1vdmVNaXJyb3JJbWFnZSAoKSB7XG4gICAgaWYgKF9taXJyb3IpIHtcbiAgICAgIGNsYXNzZXMucm0oby5taXJyb3JDb250YWluZXIsICdndS11bnNlbGVjdGFibGUnKTtcbiAgICAgIHRvdWNoeShkb2N1bWVudEVsZW1lbnQsICdyZW1vdmUnLCAnbW91c2Vtb3ZlJywgZHJhZyk7XG4gICAgICBnZXRQYXJlbnQoX21pcnJvcikucmVtb3ZlQ2hpbGQoX21pcnJvcik7XG4gICAgICBfbWlycm9yID0gbnVsbDtcbiAgICB9XG4gIH1cblxuICBmdW5jdGlvbiBnZXRJbW1lZGlhdGVDaGlsZCAoZHJvcFRhcmdldCwgdGFyZ2V0KSB7XG4gICAgdmFyIGltbWVkaWF0ZSA9IHRhcmdldDtcbiAgICB3aGlsZSAoaW1tZWRpYXRlICE9PSBkcm9wVGFyZ2V0ICYmIGdldFBhcmVudChpbW1lZGlhdGUpICE9PSBkcm9wVGFyZ2V0KSB7XG4gICAgICBpbW1lZGlhdGUgPSBnZXRQYXJlbnQoaW1tZWRpYXRlKTtcbiAgICB9XG4gICAgaWYgKGltbWVkaWF0ZSA9PT0gZG9jdW1lbnRFbGVtZW50KSB7XG4gICAgICByZXR1cm4gbnVsbDtcbiAgICB9XG4gICAgcmV0dXJuIGltbWVkaWF0ZTtcbiAgfVxuXG4gIGZ1bmN0aW9uIGdldFJlZmVyZW5jZSAoZHJvcFRhcmdldCwgdGFyZ2V0LCB4LCB5KSB7XG4gICAgdmFyIGhvcml6b250YWwgPSBvLmRpcmVjdGlvbiA9PT0gJ2hvcml6b250YWwnO1xuICAgIHZhciByZWZlcmVuY2UgPSB0YXJnZXQgIT09IGRyb3BUYXJnZXQgPyBpbnNpZGUoKSA6IG91dHNpZGUoKTtcbiAgICByZXR1cm4gcmVmZXJlbmNlO1xuXG4gICAgZnVuY3Rpb24gb3V0c2lkZSAoKSB7IC8vIHNsb3dlciwgYnV0IGFibGUgdG8gZmlndXJlIG91dCBhbnkgcG9zaXRpb25cbiAgICAgIHZhciBsZW4gPSBkcm9wVGFyZ2V0LmNoaWxkcmVuLmxlbmd0aDtcbiAgICAgIHZhciBpO1xuICAgICAgdmFyIGVsO1xuICAgICAgdmFyIHJlY3Q7XG4gICAgICBmb3IgKGkgPSAwOyBpIDwgbGVuOyBpKyspIHtcbiAgICAgICAgZWwgPSBkcm9wVGFyZ2V0LmNoaWxkcmVuW2ldO1xuICAgICAgICByZWN0ID0gZWwuZ2V0Qm91bmRpbmdDbGllbnRSZWN0KCk7XG4gICAgICAgIGlmIChob3Jpem9udGFsICYmIHJlY3QubGVmdCA+IHgpIHsgcmV0dXJuIGVsOyB9XG4gICAgICAgIGlmICghaG9yaXpvbnRhbCAmJiByZWN0LnRvcCA+IHkpIHsgcmV0dXJuIGVsOyB9XG4gICAgICB9XG4gICAgICByZXR1cm4gbnVsbDtcbiAgICB9XG5cbiAgICBmdW5jdGlvbiBpbnNpZGUgKCkgeyAvLyBmYXN0ZXIsIGJ1dCBvbmx5IGF2YWlsYWJsZSBpZiBkcm9wcGVkIGluc2lkZSBhIGNoaWxkIGVsZW1lbnRcbiAgICAgIHZhciByZWN0ID0gdGFyZ2V0LmdldEJvdW5kaW5nQ2xpZW50UmVjdCgpO1xuICAgICAgaWYgKGhvcml6b250YWwpIHtcbiAgICAgICAgcmV0dXJuIHJlc29sdmUoeCA+IHJlY3QubGVmdCArIGdldFJlY3RXaWR0aChyZWN0KSAvIDIpO1xuICAgICAgfVxuICAgICAgcmV0dXJuIHJlc29sdmUoeSA+IHJlY3QudG9wICsgZ2V0UmVjdEhlaWdodChyZWN0KSAvIDIpO1xuICAgIH1cblxuICAgIGZ1bmN0aW9uIHJlc29sdmUgKGFmdGVyKSB7XG4gICAgICByZXR1cm4gYWZ0ZXIgPyBuZXh0RWwodGFyZ2V0KSA6IHRhcmdldDtcbiAgICB9XG4gIH1cblxuICBmdW5jdGlvbiBpc0NvcHkgKGl0ZW0sIGNvbnRhaW5lcikge1xuICAgIHJldHVybiB0eXBlb2Ygby5jb3B5ID09PSAnYm9vbGVhbicgPyBvLmNvcHkgOiBvLmNvcHkoaXRlbSwgY29udGFpbmVyKTtcbiAgfVxufVxuXG5mdW5jdGlvbiB0b3VjaHkgKGVsLCBvcCwgdHlwZSwgZm4pIHtcbiAgdmFyIHRvdWNoID0ge1xuICAgIG1vdXNldXA6ICd0b3VjaGVuZCcsXG4gICAgbW91c2Vkb3duOiAndG91Y2hzdGFydCcsXG4gICAgbW91c2Vtb3ZlOiAndG91Y2htb3ZlJ1xuICB9O1xuICB2YXIgcG9pbnRlcnMgPSB7XG4gICAgbW91c2V1cDogJ3BvaW50ZXJ1cCcsXG4gICAgbW91c2Vkb3duOiAncG9pbnRlcmRvd24nLFxuICAgIG1vdXNlbW92ZTogJ3BvaW50ZXJtb3ZlJ1xuICB9O1xuICB2YXIgbWljcm9zb2Z0ID0ge1xuICAgIG1vdXNldXA6ICdNU1BvaW50ZXJVcCcsXG4gICAgbW91c2Vkb3duOiAnTVNQb2ludGVyRG93bicsXG4gICAgbW91c2Vtb3ZlOiAnTVNQb2ludGVyTW92ZSdcbiAgfTtcbiAgaWYgKGdsb2JhbC5uYXZpZ2F0b3IucG9pbnRlckVuYWJsZWQpIHtcbiAgICBjcm9zc3ZlbnRbb3BdKGVsLCBwb2ludGVyc1t0eXBlXSwgZm4pO1xuICB9IGVsc2UgaWYgKGdsb2JhbC5uYXZpZ2F0b3IubXNQb2ludGVyRW5hYmxlZCkge1xuICAgIGNyb3NzdmVudFtvcF0oZWwsIG1pY3Jvc29mdFt0eXBlXSwgZm4pO1xuICB9IGVsc2Uge1xuICAgIGNyb3NzdmVudFtvcF0oZWwsIHRvdWNoW3R5cGVdLCBmbik7XG4gICAgY3Jvc3N2ZW50W29wXShlbCwgdHlwZSwgZm4pO1xuICB9XG59XG5cbmZ1bmN0aW9uIHdoaWNoTW91c2VCdXR0b24gKGUpIHtcbiAgaWYgKGUudG91Y2hlcyAhPT0gdm9pZCAwKSB7IHJldHVybiBlLnRvdWNoZXMubGVuZ3RoOyB9XG4gIGlmIChlLmJ1dHRvbnMgIT09IHZvaWQgMCkgeyByZXR1cm4gZS5idXR0b25zOyB9XG4gIGlmIChlLndoaWNoICE9PSB2b2lkIDApIHsgcmV0dXJuIGUud2hpY2g7IH1cbiAgdmFyIGJ1dHRvbiA9IGUuYnV0dG9uO1xuICBpZiAoYnV0dG9uICE9PSB2b2lkIDApIHsgLy8gc2VlIGh0dHBzOi8vZ2l0aHViLmNvbS9qcXVlcnkvanF1ZXJ5L2Jsb2IvOTllOGZmMWJhYTdhZTM0MWU5NGJiODljM2U4NDU3MGM3YzNhZDllYS9zcmMvZXZlbnQuanMjTDU3My1MNTc1XG4gICAgcmV0dXJuIGJ1dHRvbiAmIDEgPyAxIDogYnV0dG9uICYgMiA/IDMgOiAoYnV0dG9uICYgNCA/IDIgOiAwKTtcbiAgfVxufVxuXG5mdW5jdGlvbiBnZXRPZmZzZXQgKGVsKSB7XG4gIHZhciByZWN0ID0gZWwuZ2V0Qm91bmRpbmdDbGllbnRSZWN0KCk7XG4gIHJldHVybiB7XG4gICAgbGVmdDogcmVjdC5sZWZ0ICsgZ2V0U2Nyb2xsKCdzY3JvbGxMZWZ0JywgJ3BhZ2VYT2Zmc2V0JyksXG4gICAgdG9wOiByZWN0LnRvcCArIGdldFNjcm9sbCgnc2Nyb2xsVG9wJywgJ3BhZ2VZT2Zmc2V0JylcbiAgfTtcbn1cblxuZnVuY3Rpb24gZ2V0U2Nyb2xsIChzY3JvbGxQcm9wLCBvZmZzZXRQcm9wKSB7XG4gIGlmICh0eXBlb2YgZ2xvYmFsW29mZnNldFByb3BdICE9PSAndW5kZWZpbmVkJykge1xuICAgIHJldHVybiBnbG9iYWxbb2Zmc2V0UHJvcF07XG4gIH1cbiAgaWYgKGRvY3VtZW50RWxlbWVudC5jbGllbnRIZWlnaHQpIHtcbiAgICByZXR1cm4gZG9jdW1lbnRFbGVtZW50W3Njcm9sbFByb3BdO1xuICB9XG4gIHJldHVybiBib2R5W3Njcm9sbFByb3BdO1xufVxuXG5mdW5jdGlvbiBnZXRFbGVtZW50QmVoaW5kUG9pbnQgKHBvaW50LCB4LCB5KSB7XG4gIHZhciBwID0gcG9pbnQgfHwge307XG4gIHZhciBzdGF0ZSA9IHAuY2xhc3NOYW1lO1xuICB2YXIgZWw7XG4gIHAuY2xhc3NOYW1lICs9ICcgZ3UtaGlkZSc7XG4gIGVsID0gZG9jLmVsZW1lbnRGcm9tUG9pbnQoeCwgeSk7XG4gIHAuY2xhc3NOYW1lID0gc3RhdGU7XG4gIHJldHVybiBlbDtcbn1cblxuZnVuY3Rpb24gbmV2ZXIgKCkgeyByZXR1cm4gZmFsc2U7IH1cbmZ1bmN0aW9uIGFsd2F5cyAoKSB7IHJldHVybiB0cnVlOyB9XG5mdW5jdGlvbiBnZXRSZWN0V2lkdGggKHJlY3QpIHsgcmV0dXJuIHJlY3Qud2lkdGggfHwgKHJlY3QucmlnaHQgLSByZWN0LmxlZnQpOyB9XG5mdW5jdGlvbiBnZXRSZWN0SGVpZ2h0IChyZWN0KSB7IHJldHVybiByZWN0LmhlaWdodCB8fCAocmVjdC5ib3R0b20gLSByZWN0LnRvcCk7IH1cbmZ1bmN0aW9uIGdldFBhcmVudCAoZWwpIHsgcmV0dXJuIGVsLnBhcmVudE5vZGUgPT09IGRvYyA/IG51bGwgOiBlbC5wYXJlbnROb2RlOyB9XG5mdW5jdGlvbiBpc0lucHV0IChlbCkgeyByZXR1cm4gZWwudGFnTmFtZSA9PT0gJ0lOUFVUJyB8fCBlbC50YWdOYW1lID09PSAnVEVYVEFSRUEnIHx8IGVsLnRhZ05hbWUgPT09ICdTRUxFQ1QnIHx8IGlzRWRpdGFibGUoZWwpOyB9XG5mdW5jdGlvbiBpc0VkaXRhYmxlIChlbCkge1xuICBpZiAoIWVsKSB7IHJldHVybiBmYWxzZTsgfSAvLyBubyBwYXJlbnRzIHdlcmUgZWRpdGFibGVcbiAgaWYgKGVsLmNvbnRlbnRFZGl0YWJsZSA9PT0gJ2ZhbHNlJykgeyByZXR1cm4gZmFsc2U7IH0gLy8gc3RvcCB0aGUgbG9va3VwXG4gIGlmIChlbC5jb250ZW50RWRpdGFibGUgPT09ICd0cnVlJykgeyByZXR1cm4gdHJ1ZTsgfSAvLyBmb3VuZCBhIGNvbnRlbnRFZGl0YWJsZSBlbGVtZW50IGluIHRoZSBjaGFpblxuICByZXR1cm4gaXNFZGl0YWJsZShnZXRQYXJlbnQoZWwpKTsgLy8gY29udGVudEVkaXRhYmxlIGlzIHNldCB0byAnaW5oZXJpdCdcbn1cblxuZnVuY3Rpb24gbmV4dEVsIChlbCkge1xuICByZXR1cm4gZWwubmV4dEVsZW1lbnRTaWJsaW5nIHx8IG1hbnVhbGx5KCk7XG4gIGZ1bmN0aW9uIG1hbnVhbGx5ICgpIHtcbiAgICB2YXIgc2libGluZyA9IGVsO1xuICAgIGRvIHtcbiAgICAgIHNpYmxpbmcgPSBzaWJsaW5nLm5leHRTaWJsaW5nO1xuICAgIH0gd2hpbGUgKHNpYmxpbmcgJiYgc2libGluZy5ub2RlVHlwZSAhPT0gMSk7XG4gICAgcmV0dXJuIHNpYmxpbmc7XG4gIH1cbn1cblxuZnVuY3Rpb24gZ2V0RXZlbnRIb3N0IChlKSB7XG4gIC8vIG9uIHRvdWNoZW5kIGV2ZW50LCB3ZSBoYXZlIHRvIHVzZSBgZS5jaGFuZ2VkVG91Y2hlc2BcbiAgLy8gc2VlIGh0dHA6Ly9zdGFja292ZXJmbG93LmNvbS9xdWVzdGlvbnMvNzE5MjU2My90b3VjaGVuZC1ldmVudC1wcm9wZXJ0aWVzXG4gIC8vIHNlZSBodHRwczovL2dpdGh1Yi5jb20vYmV2YWNxdWEvZHJhZ3VsYS9pc3N1ZXMvMzRcbiAgaWYgKGUudGFyZ2V0VG91Y2hlcyAmJiBlLnRhcmdldFRvdWNoZXMubGVuZ3RoKSB7XG4gICAgcmV0dXJuIGUudGFyZ2V0VG91Y2hlc1swXTtcbiAgfVxuICBpZiAoZS5jaGFuZ2VkVG91Y2hlcyAmJiBlLmNoYW5nZWRUb3VjaGVzLmxlbmd0aCkge1xuICAgIHJldHVybiBlLmNoYW5nZWRUb3VjaGVzWzBdO1xuICB9XG4gIHJldHVybiBlO1xufVxuXG5mdW5jdGlvbiBnZXRDb29yZCAoY29vcmQsIGUpIHtcbiAgdmFyIGhvc3QgPSBnZXRFdmVudEhvc3QoZSk7XG4gIHZhciBtaXNzTWFwID0ge1xuICAgIHBhZ2VYOiAnY2xpZW50WCcsIC8vIElFOFxuICAgIHBhZ2VZOiAnY2xpZW50WScgLy8gSUU4XG4gIH07XG4gIGlmIChjb29yZCBpbiBtaXNzTWFwICYmICEoY29vcmQgaW4gaG9zdCkgJiYgbWlzc01hcFtjb29yZF0gaW4gaG9zdCkge1xuICAgIGNvb3JkID0gbWlzc01hcFtjb29yZF07XG4gIH1cbiAgcmV0dXJuIGhvc3RbY29vcmRdO1xufVxuXG5tb2R1bGUuZXhwb3J0cyA9IGRyYWd1bGE7XG4iLCIndXNlIHN0cmljdCc7XG5cbnZhciB0aWNreSA9IHJlcXVpcmUoJ3RpY2t5Jyk7XG5cbm1vZHVsZS5leHBvcnRzID0gZnVuY3Rpb24gZGVib3VuY2UgKGZuLCBhcmdzLCBjdHgpIHtcbiAgaWYgKCFmbikgeyByZXR1cm47IH1cbiAgdGlja3koZnVuY3Rpb24gcnVuICgpIHtcbiAgICBmbi5hcHBseShjdHggfHwgbnVsbCwgYXJncyB8fCBbXSk7XG4gIH0pO1xufTtcbiIsIid1c2Ugc3RyaWN0JztcblxudmFyIGF0b2EgPSByZXF1aXJlKCdhdG9hJyk7XG52YXIgZGVib3VuY2UgPSByZXF1aXJlKCcuL2RlYm91bmNlJyk7XG5cbm1vZHVsZS5leHBvcnRzID0gZnVuY3Rpb24gZW1pdHRlciAodGhpbmcsIG9wdGlvbnMpIHtcbiAgdmFyIG9wdHMgPSBvcHRpb25zIHx8IHt9O1xuICB2YXIgZXZ0ID0ge307XG4gIGlmICh0aGluZyA9PT0gdW5kZWZpbmVkKSB7IHRoaW5nID0ge307IH1cbiAgdGhpbmcub24gPSBmdW5jdGlvbiAodHlwZSwgZm4pIHtcbiAgICBpZiAoIWV2dFt0eXBlXSkge1xuICAgICAgZXZ0W3R5cGVdID0gW2ZuXTtcbiAgICB9IGVsc2Uge1xuICAgICAgZXZ0W3R5cGVdLnB1c2goZm4pO1xuICAgIH1cbiAgICByZXR1cm4gdGhpbmc7XG4gIH07XG4gIHRoaW5nLm9uY2UgPSBmdW5jdGlvbiAodHlwZSwgZm4pIHtcbiAgICBmbi5fb25jZSA9IHRydWU7IC8vIHRoaW5nLm9mZihmbikgc3RpbGwgd29ya3MhXG4gICAgdGhpbmcub24odHlwZSwgZm4pO1xuICAgIHJldHVybiB0aGluZztcbiAgfTtcbiAgdGhpbmcub2ZmID0gZnVuY3Rpb24gKHR5cGUsIGZuKSB7XG4gICAgdmFyIGMgPSBhcmd1bWVudHMubGVuZ3RoO1xuICAgIGlmIChjID09PSAxKSB7XG4gICAgICBkZWxldGUgZXZ0W3R5cGVdO1xuICAgIH0gZWxzZSBpZiAoYyA9PT0gMCkge1xuICAgICAgZXZ0ID0ge307XG4gICAgfSBlbHNlIHtcbiAgICAgIHZhciBldCA9IGV2dFt0eXBlXTtcbiAgICAgIGlmICghZXQpIHsgcmV0dXJuIHRoaW5nOyB9XG4gICAgICBldC5zcGxpY2UoZXQuaW5kZXhPZihmbiksIDEpO1xuICAgIH1cbiAgICByZXR1cm4gdGhpbmc7XG4gIH07XG4gIHRoaW5nLmVtaXQgPSBmdW5jdGlvbiAoKSB7XG4gICAgdmFyIGFyZ3MgPSBhdG9hKGFyZ3VtZW50cyk7XG4gICAgcmV0dXJuIHRoaW5nLmVtaXR0ZXJTbmFwc2hvdChhcmdzLnNoaWZ0KCkpLmFwcGx5KHRoaXMsIGFyZ3MpO1xuICB9O1xuICB0aGluZy5lbWl0dGVyU25hcHNob3QgPSBmdW5jdGlvbiAodHlwZSkge1xuICAgIHZhciBldCA9IChldnRbdHlwZV0gfHwgW10pLnNsaWNlKDApO1xuICAgIHJldHVybiBmdW5jdGlvbiAoKSB7XG4gICAgICB2YXIgYXJncyA9IGF0b2EoYXJndW1lbnRzKTtcbiAgICAgIHZhciBjdHggPSB0aGlzIHx8IHRoaW5nO1xuICAgICAgaWYgKHR5cGUgPT09ICdlcnJvcicgJiYgb3B0cy50aHJvd3MgIT09IGZhbHNlICYmICFldC5sZW5ndGgpIHsgdGhyb3cgYXJncy5sZW5ndGggPT09IDEgPyBhcmdzWzBdIDogYXJnczsgfVxuICAgICAgZXQuZm9yRWFjaChmdW5jdGlvbiBlbWl0dGVyIChsaXN0ZW4pIHtcbiAgICAgICAgaWYgKG9wdHMuYXN5bmMpIHsgZGVib3VuY2UobGlzdGVuLCBhcmdzLCBjdHgpOyB9IGVsc2UgeyBsaXN0ZW4uYXBwbHkoY3R4LCBhcmdzKTsgfVxuICAgICAgICBpZiAobGlzdGVuLl9vbmNlKSB7IHRoaW5nLm9mZih0eXBlLCBsaXN0ZW4pOyB9XG4gICAgICB9KTtcbiAgICAgIHJldHVybiB0aGluZztcbiAgICB9O1xuICB9O1xuICByZXR1cm4gdGhpbmc7XG59O1xuIiwibW9kdWxlLmV4cG9ydHMgPSBmdW5jdGlvbiBhdG9hIChhLCBuKSB7IHJldHVybiBBcnJheS5wcm90b3R5cGUuc2xpY2UuY2FsbChhLCBuKTsgfVxuIiwidmFyIHNpID0gdHlwZW9mIHNldEltbWVkaWF0ZSA9PT0gJ2Z1bmN0aW9uJywgdGljaztcbmlmIChzaSkge1xuICB0aWNrID0gZnVuY3Rpb24gKGZuKSB7IHNldEltbWVkaWF0ZShmbik7IH07XG59IGVsc2Uge1xuICB0aWNrID0gZnVuY3Rpb24gKGZuKSB7IHNldFRpbWVvdXQoZm4sIDApOyB9O1xufVxuXG5tb2R1bGUuZXhwb3J0cyA9IHRpY2s7IiwiXG52YXIgTmF0aXZlQ3VzdG9tRXZlbnQgPSBnbG9iYWwuQ3VzdG9tRXZlbnQ7XG5cbmZ1bmN0aW9uIHVzZU5hdGl2ZSAoKSB7XG4gIHRyeSB7XG4gICAgdmFyIHAgPSBuZXcgTmF0aXZlQ3VzdG9tRXZlbnQoJ2NhdCcsIHsgZGV0YWlsOiB7IGZvbzogJ2JhcicgfSB9KTtcbiAgICByZXR1cm4gICdjYXQnID09PSBwLnR5cGUgJiYgJ2JhcicgPT09IHAuZGV0YWlsLmZvbztcbiAgfSBjYXRjaCAoZSkge1xuICB9XG4gIHJldHVybiBmYWxzZTtcbn1cblxuLyoqXG4gKiBDcm9zcy1icm93c2VyIGBDdXN0b21FdmVudGAgY29uc3RydWN0b3IuXG4gKlxuICogaHR0cHM6Ly9kZXZlbG9wZXIubW96aWxsYS5vcmcvZW4tVVMvZG9jcy9XZWIvQVBJL0N1c3RvbUV2ZW50LkN1c3RvbUV2ZW50XG4gKlxuICogQHB1YmxpY1xuICovXG5cbm1vZHVsZS5leHBvcnRzID0gdXNlTmF0aXZlKCkgPyBOYXRpdmVDdXN0b21FdmVudCA6XG5cbi8vIElFID49IDlcbidmdW5jdGlvbicgPT09IHR5cGVvZiBkb2N1bWVudC5jcmVhdGVFdmVudCA/IGZ1bmN0aW9uIEN1c3RvbUV2ZW50ICh0eXBlLCBwYXJhbXMpIHtcbiAgdmFyIGUgPSBkb2N1bWVudC5jcmVhdGVFdmVudCgnQ3VzdG9tRXZlbnQnKTtcbiAgaWYgKHBhcmFtcykge1xuICAgIGUuaW5pdEN1c3RvbUV2ZW50KHR5cGUsIHBhcmFtcy5idWJibGVzLCBwYXJhbXMuY2FuY2VsYWJsZSwgcGFyYW1zLmRldGFpbCk7XG4gIH0gZWxzZSB7XG4gICAgZS5pbml0Q3VzdG9tRXZlbnQodHlwZSwgZmFsc2UsIGZhbHNlLCB2b2lkIDApO1xuICB9XG4gIHJldHVybiBlO1xufSA6XG5cbi8vIElFIDw9IDhcbmZ1bmN0aW9uIEN1c3RvbUV2ZW50ICh0eXBlLCBwYXJhbXMpIHtcbiAgdmFyIGUgPSBkb2N1bWVudC5jcmVhdGVFdmVudE9iamVjdCgpO1xuICBlLnR5cGUgPSB0eXBlO1xuICBpZiAocGFyYW1zKSB7XG4gICAgZS5idWJibGVzID0gQm9vbGVhbihwYXJhbXMuYnViYmxlcyk7XG4gICAgZS5jYW5jZWxhYmxlID0gQm9vbGVhbihwYXJhbXMuY2FuY2VsYWJsZSk7XG4gICAgZS5kZXRhaWwgPSBwYXJhbXMuZGV0YWlsO1xuICB9IGVsc2Uge1xuICAgIGUuYnViYmxlcyA9IGZhbHNlO1xuICAgIGUuY2FuY2VsYWJsZSA9IGZhbHNlO1xuICAgIGUuZGV0YWlsID0gdm9pZCAwO1xuICB9XG4gIHJldHVybiBlO1xufVxuIiwiJ3VzZSBzdHJpY3QnO1xuXG52YXIgY3VzdG9tRXZlbnQgPSByZXF1aXJlKCdjdXN0b20tZXZlbnQnKTtcbnZhciBldmVudG1hcCA9IHJlcXVpcmUoJy4vZXZlbnRtYXAnKTtcbnZhciBkb2MgPSBnbG9iYWwuZG9jdW1lbnQ7XG52YXIgYWRkRXZlbnQgPSBhZGRFdmVudEVhc3k7XG52YXIgcmVtb3ZlRXZlbnQgPSByZW1vdmVFdmVudEVhc3k7XG52YXIgaGFyZENhY2hlID0gW107XG5cbmlmICghZ2xvYmFsLmFkZEV2ZW50TGlzdGVuZXIpIHtcbiAgYWRkRXZlbnQgPSBhZGRFdmVudEhhcmQ7XG4gIHJlbW92ZUV2ZW50ID0gcmVtb3ZlRXZlbnRIYXJkO1xufVxuXG5tb2R1bGUuZXhwb3J0cyA9IHtcbiAgYWRkOiBhZGRFdmVudCxcbiAgcmVtb3ZlOiByZW1vdmVFdmVudCxcbiAgZmFicmljYXRlOiBmYWJyaWNhdGVFdmVudFxufTtcblxuZnVuY3Rpb24gYWRkRXZlbnRFYXN5IChlbCwgdHlwZSwgZm4sIGNhcHR1cmluZykge1xuICByZXR1cm4gZWwuYWRkRXZlbnRMaXN0ZW5lcih0eXBlLCBmbiwgY2FwdHVyaW5nKTtcbn1cblxuZnVuY3Rpb24gYWRkRXZlbnRIYXJkIChlbCwgdHlwZSwgZm4pIHtcbiAgcmV0dXJuIGVsLmF0dGFjaEV2ZW50KCdvbicgKyB0eXBlLCB3cmFwKGVsLCB0eXBlLCBmbikpO1xufVxuXG5mdW5jdGlvbiByZW1vdmVFdmVudEVhc3kgKGVsLCB0eXBlLCBmbiwgY2FwdHVyaW5nKSB7XG4gIHJldHVybiBlbC5yZW1vdmVFdmVudExpc3RlbmVyKHR5cGUsIGZuLCBjYXB0dXJpbmcpO1xufVxuXG5mdW5jdGlvbiByZW1vdmVFdmVudEhhcmQgKGVsLCB0eXBlLCBmbikge1xuICB2YXIgbGlzdGVuZXIgPSB1bndyYXAoZWwsIHR5cGUsIGZuKTtcbiAgaWYgKGxpc3RlbmVyKSB7XG4gICAgcmV0dXJuIGVsLmRldGFjaEV2ZW50KCdvbicgKyB0eXBlLCBsaXN0ZW5lcik7XG4gIH1cbn1cblxuZnVuY3Rpb24gZmFicmljYXRlRXZlbnQgKGVsLCB0eXBlLCBtb2RlbCkge1xuICB2YXIgZSA9IGV2ZW50bWFwLmluZGV4T2YodHlwZSkgPT09IC0xID8gbWFrZUN1c3RvbUV2ZW50KCkgOiBtYWtlQ2xhc3NpY0V2ZW50KCk7XG4gIGlmIChlbC5kaXNwYXRjaEV2ZW50KSB7XG4gICAgZWwuZGlzcGF0Y2hFdmVudChlKTtcbiAgfSBlbHNlIHtcbiAgICBlbC5maXJlRXZlbnQoJ29uJyArIHR5cGUsIGUpO1xuICB9XG4gIGZ1bmN0aW9uIG1ha2VDbGFzc2ljRXZlbnQgKCkge1xuICAgIHZhciBlO1xuICAgIGlmIChkb2MuY3JlYXRlRXZlbnQpIHtcbiAgICAgIGUgPSBkb2MuY3JlYXRlRXZlbnQoJ0V2ZW50Jyk7XG4gICAgICBlLmluaXRFdmVudCh0eXBlLCB0cnVlLCB0cnVlKTtcbiAgICB9IGVsc2UgaWYgKGRvYy5jcmVhdGVFdmVudE9iamVjdCkge1xuICAgICAgZSA9IGRvYy5jcmVhdGVFdmVudE9iamVjdCgpO1xuICAgIH1cbiAgICByZXR1cm4gZTtcbiAgfVxuICBmdW5jdGlvbiBtYWtlQ3VzdG9tRXZlbnQgKCkge1xuICAgIHJldHVybiBuZXcgY3VzdG9tRXZlbnQodHlwZSwgeyBkZXRhaWw6IG1vZGVsIH0pO1xuICB9XG59XG5cbmZ1bmN0aW9uIHdyYXBwZXJGYWN0b3J5IChlbCwgdHlwZSwgZm4pIHtcbiAgcmV0dXJuIGZ1bmN0aW9uIHdyYXBwZXIgKG9yaWdpbmFsRXZlbnQpIHtcbiAgICB2YXIgZSA9IG9yaWdpbmFsRXZlbnQgfHwgZ2xvYmFsLmV2ZW50O1xuICAgIGUudGFyZ2V0ID0gZS50YXJnZXQgfHwgZS5zcmNFbGVtZW50O1xuICAgIGUucHJldmVudERlZmF1bHQgPSBlLnByZXZlbnREZWZhdWx0IHx8IGZ1bmN0aW9uIHByZXZlbnREZWZhdWx0ICgpIHsgZS5yZXR1cm5WYWx1ZSA9IGZhbHNlOyB9O1xuICAgIGUuc3RvcFByb3BhZ2F0aW9uID0gZS5zdG9wUHJvcGFnYXRpb24gfHwgZnVuY3Rpb24gc3RvcFByb3BhZ2F0aW9uICgpIHsgZS5jYW5jZWxCdWJibGUgPSB0cnVlOyB9O1xuICAgIGUud2hpY2ggPSBlLndoaWNoIHx8IGUua2V5Q29kZTtcbiAgICBmbi5jYWxsKGVsLCBlKTtcbiAgfTtcbn1cblxuZnVuY3Rpb24gd3JhcCAoZWwsIHR5cGUsIGZuKSB7XG4gIHZhciB3cmFwcGVyID0gdW53cmFwKGVsLCB0eXBlLCBmbikgfHwgd3JhcHBlckZhY3RvcnkoZWwsIHR5cGUsIGZuKTtcbiAgaGFyZENhY2hlLnB1c2goe1xuICAgIHdyYXBwZXI6IHdyYXBwZXIsXG4gICAgZWxlbWVudDogZWwsXG4gICAgdHlwZTogdHlwZSxcbiAgICBmbjogZm5cbiAgfSk7XG4gIHJldHVybiB3cmFwcGVyO1xufVxuXG5mdW5jdGlvbiB1bndyYXAgKGVsLCB0eXBlLCBmbikge1xuICB2YXIgaSA9IGZpbmQoZWwsIHR5cGUsIGZuKTtcbiAgaWYgKGkpIHtcbiAgICB2YXIgd3JhcHBlciA9IGhhcmRDYWNoZVtpXS53cmFwcGVyO1xuICAgIGhhcmRDYWNoZS5zcGxpY2UoaSwgMSk7IC8vIGZyZWUgdXAgYSB0YWQgb2YgbWVtb3J5XG4gICAgcmV0dXJuIHdyYXBwZXI7XG4gIH1cbn1cblxuZnVuY3Rpb24gZmluZCAoZWwsIHR5cGUsIGZuKSB7XG4gIHZhciBpLCBpdGVtO1xuICBmb3IgKGkgPSAwOyBpIDwgaGFyZENhY2hlLmxlbmd0aDsgaSsrKSB7XG4gICAgaXRlbSA9IGhhcmRDYWNoZVtpXTtcbiAgICBpZiAoaXRlbS5lbGVtZW50ID09PSBlbCAmJiBpdGVtLnR5cGUgPT09IHR5cGUgJiYgaXRlbS5mbiA9PT0gZm4pIHtcbiAgICAgIHJldHVybiBpO1xuICAgIH1cbiAgfVxufVxuIiwiJ3VzZSBzdHJpY3QnO1xuXG52YXIgZXZlbnRtYXAgPSBbXTtcbnZhciBldmVudG5hbWUgPSAnJztcbnZhciByb24gPSAvXm9uLztcblxuZm9yIChldmVudG5hbWUgaW4gZ2xvYmFsKSB7XG4gIGlmIChyb24udGVzdChldmVudG5hbWUpKSB7XG4gICAgZXZlbnRtYXAucHVzaChldmVudG5hbWUuc2xpY2UoMikpO1xuICB9XG59XG5cbm1vZHVsZS5leHBvcnRzID0gZXZlbnRtYXA7XG4iXX0=</span></div></div></div></div></body></html>

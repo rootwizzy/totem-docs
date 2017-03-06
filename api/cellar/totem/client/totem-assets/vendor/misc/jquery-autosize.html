@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-assets/vendor/misc/jquery-autosize</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-assets/vendor/misc/jquery-autosize"><meta name="groc-project-path" content="src/totem/client/totem-assets/vendor/misc/jquery-autosize.js"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-assets/vendor/misc/jquery-autosize.js">src/totem/client/totem-assets/vendor/misc/jquery-autosize.js</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-comment">/*!
+	Autosize v1.18.1 - 2013-11-05
+	Automatically adjust textarea height based on user input.
+	(c) 2013 Jack Moore - http://www.jacklmoore.com/autosize
+	license: http://www.opensource.org/licenses/mit-license.php
+*/</span>
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$</span>) </span>{
+	<span class="hljs-keyword">var</span>
+	defaults = {
+		className: <span class="hljs-string">'autosizejs'</span>,
+		append: <span class="hljs-string">''</span>,
+		callback: <span class="hljs-literal">false</span>,
+		resizeDelay: <span class="hljs-number">10</span>
+	},</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>border:0 is unnecessary, but avoids a bug in Firefox on OSX</p></div></div><div class="code"><div class="wrapper">	copy = <span class="hljs-string">'&lt;textarea tabindex="-1" style="position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; padding: 0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden; transition:none; -webkit-transition:none; -moz-transition:none;"/&gt;'</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>line-height is conditionally included because IE7/IE8/old Opera do not return the correct value.</p></div></div><div class="code"><div class="wrapper">	typographyStyles = [
+		<span class="hljs-string">'fontFamily'</span>,
+		<span class="hljs-string">'fontSize'</span>,
+		<span class="hljs-string">'fontWeight'</span>,
+		<span class="hljs-string">'fontStyle'</span>,
+		<span class="hljs-string">'letterSpacing'</span>,
+		<span class="hljs-string">'textTransform'</span>,
+		<span class="hljs-string">'wordSpacing'</span>,
+		<span class="hljs-string">'textIndent'</span>
+	],</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>to keep track which textarea is being mirrored when adjust() is called.</p></div></div><div class="code"><div class="wrapper">	mirrored,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>the mirror element, which is used to calculate what size the mirrored element should be.</p></div></div><div class="code"><div class="wrapper">	mirror = $(copy).data(<span class="hljs-string">'autosize'</span>, <span class="hljs-literal">true</span>)[<span class="hljs-number">0</span>];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>test that line-height can be accurately copied.</p></div></div><div class="code"><div class="wrapper">	mirror.style.lineHeight = <span class="hljs-string">'99px'</span>;
+	<span class="hljs-keyword">if</span> ($(mirror).css(<span class="hljs-string">'lineHeight'</span>) === <span class="hljs-string">'99px'</span>) {
+		typographyStyles.push(<span class="hljs-string">'lineHeight'</span>);
+	}
+	mirror.style.lineHeight = <span class="hljs-string">''</span>;
+
+	$.fn.autosize = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{
+		<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.length) {
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+		}
+
+		options = $.extend({}, defaults, options || {});
+
+		<span class="hljs-keyword">if</span> (mirror.parentNode !== <span class="hljs-built_in">document</span>.body) {
+			$(<span class="hljs-built_in">document</span>.body).append(mirror);
+		}
+
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.each(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+			<span class="hljs-keyword">var</span>
+			ta = <span class="hljs-keyword">this</span>,
+			$ta = $(ta),
+			maxHeight,
+			minHeight,
+			boxOffset = <span class="hljs-number">0</span>,
+			callback = $.isFunction(options.callback),
+			originalStyles = {
+				height: ta.style.height,
+				overflow: ta.style.overflow,
+				overflowY: ta.style.overflowY,
+				wordWrap: ta.style.wordWrap,
+				resize: ta.style.resize
+			},
+			timeout,
+			width = $ta.width();
+
+			<span class="hljs-keyword">if</span> ($ta.data(<span class="hljs-string">'autosize'</span>)) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>exit if autosize has already been applied, or if the textarea is the mirror element.</p></div></div><div class="code"><div class="wrapper">				<span class="hljs-keyword">return</span>;
+			}
+			$ta.data(<span class="hljs-string">'autosize'</span>, <span class="hljs-literal">true</span>);
+
+			<span class="hljs-keyword">if</span> ($ta.css(<span class="hljs-string">'box-sizing'</span>) === <span class="hljs-string">'border-box'</span> || $ta.css(<span class="hljs-string">'-moz-box-sizing'</span>) === <span class="hljs-string">'border-box'</span> || $ta.css(<span class="hljs-string">'-webkit-box-sizing'</span>) === <span class="hljs-string">'border-box'</span>){
+				boxOffset = $ta.outerHeight() - $ta.height();
+			}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>IE8 and lower return &#39;auto&#39;, which parses to NaN, if no min-height is set.</p></div></div><div class="code"><div class="wrapper">			minHeight = <span class="hljs-built_in">Math</span>.max(<span class="hljs-built_in">parseInt</span>($ta.css(<span class="hljs-string">'minHeight'</span>), <span class="hljs-number">10</span>) - boxOffset || <span class="hljs-number">0</span>, $ta.height());
+
+			$ta.css({
+				overflow: <span class="hljs-string">'hidden'</span>,
+				overflowY: <span class="hljs-string">'hidden'</span>,
+				wordWrap: <span class="hljs-string">'break-word'</span>, <span class="hljs-comment">// horizontal overflow is hidden, so break-word is necessary for handling words longer than the textarea width</span>
+				resize: ($ta.css(<span class="hljs-string">'resize'</span>) === <span class="hljs-string">'none'</span> || $ta.css(<span class="hljs-string">'resize'</span>) === <span class="hljs-string">'vertical'</span>) ? <span class="hljs-string">'none'</span> : <span class="hljs-string">'horizontal'</span>
+			});</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The mirror width must exactly match the textarea width, so using getBoundingClientRect because it doesn&#39;t round the sub-pixel value.</p></div></div><div class="code"><div class="wrapper">			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setWidth</span>(<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">var</span> style, width;
+				
+				<span class="hljs-keyword">if</span> (<span class="hljs-string">'getComputedStyle'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>) {
+					style = <span class="hljs-built_in">window</span>.getComputedStyle(ta, <span class="hljs-literal">null</span>);
+					width = ta.getBoundingClientRect().width;
+
+					$.each([<span class="hljs-string">'paddingLeft'</span>, <span class="hljs-string">'paddingRight'</span>, <span class="hljs-string">'borderLeftWidth'</span>, <span class="hljs-string">'borderRightWidth'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">i,val</span>)</span>{
+						width -= <span class="hljs-built_in">parseInt</span>(style[val],<span class="hljs-number">10</span>);
+					});
+
+					mirror.style.width = width + <span class="hljs-string">'px'</span>;
+				}
+				<span class="hljs-keyword">else</span> {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>window.getComputedStyle, getBoundingClientRect returning a width are unsupported and unneeded in IE8 and lower.</p></div></div><div class="code"><div class="wrapper">					mirror.style.width = <span class="hljs-built_in">Math</span>.max($ta.width(), <span class="hljs-number">0</span>) + <span class="hljs-string">'px'</span>;
+				}
+			}
+
+			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initMirror</span>(<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">var</span> styles = {};
+
+				mirrored = ta;
+				mirror.className = options.className;
+				maxHeight = <span class="hljs-built_in">parseInt</span>($ta.css(<span class="hljs-string">'maxHeight'</span>), <span class="hljs-number">10</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>mirror is a duplicate textarea located off-screen that
+is automatically updated to contain the same text as the
+original textarea.  mirror always has a height of 0.
+This gives a cross-browser supported way getting the actual
+height of the text, through the scrollTop property.</p></div></div><div class="code"><div class="wrapper">				$.each(typographyStyles, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">i,val</span>)</span>{
+					styles[val] = $ta.css(val);
+				});
+				$(mirror).css(styles);
+
+				setWidth();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Chrome-specific fix:
+When the textarea y-overflow is hidden, Chrome doesn&#39;t reflow the text to account for the space
+made available by removing the scrollbar. This workaround triggers the reflow for Chrome.</p></div></div><div class="code"><div class="wrapper">				<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.chrome) {
+					<span class="hljs-keyword">var</span> width = ta.style.width;
+					ta.style.width = <span class="hljs-string">'0px'</span>;
+					<span class="hljs-keyword">var</span> ignore = ta.offsetWidth;
+					ta.style.width = width;
+				}
+			}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Using mainly bare JS in this function because it is going
+to fire very often while typing, and needs to very efficient.</p></div></div><div class="code"><div class="wrapper">			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">adjust</span>(<span class="hljs-params"></span>) </span>{
+				<span class="hljs-keyword">var</span> height, original;
+
+				<span class="hljs-keyword">if</span> (mirrored !== ta) {
+					initMirror();
+				} <span class="hljs-keyword">else</span> {
+					setWidth();
+				}
+
+				mirror.value = ta.value + options.append;
+				mirror.style.overflowY = ta.style.overflowY;
+				original = <span class="hljs-built_in">parseInt</span>(ta.style.height,<span class="hljs-number">10</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Setting scrollTop to zero is needed in IE8 and lower for the next step to be accurately applied</p></div></div><div class="code"><div class="wrapper">				mirror.scrollTop = <span class="hljs-number">0</span>;
+
+				mirror.scrollTop = <span class="hljs-number">9e4</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Using scrollTop rather than scrollHeight because scrollHeight is non-standard and includes padding.</p></div></div><div class="code"><div class="wrapper">				height = mirror.scrollTop;
+
+				<span class="hljs-keyword">if</span> (maxHeight &amp;&amp; height &gt; maxHeight) {
+					ta.style.overflowY = <span class="hljs-string">'scroll'</span>;
+					height = maxHeight;
+				} <span class="hljs-keyword">else</span> {
+					ta.style.overflowY = <span class="hljs-string">'hidden'</span>;
+					<span class="hljs-keyword">if</span> (height &lt; minHeight) {
+						height = minHeight;
+					}
+				}
+
+				height += boxOffset;
+
+				<span class="hljs-keyword">if</span> (original !== height) {
+					ta.style.height = height + <span class="hljs-string">'px'</span>;
+					<span class="hljs-keyword">if</span> (callback) {
+						options.callback.call(ta,ta);
+					}
+				}
+			}
+
+			<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resize</span> (<span class="hljs-params"></span>) </span>{
+				clearTimeout(timeout);
+				timeout = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+					<span class="hljs-keyword">var</span> newWidth = $ta.width();
+
+					<span class="hljs-keyword">if</span> (newWidth !== width) {
+						width = newWidth;
+						adjust();
+					}
+				}, <span class="hljs-built_in">parseInt</span>(options.resizeDelay,<span class="hljs-number">10</span>));
+			}
+
+			<span class="hljs-keyword">if</span> (<span class="hljs-string">'onpropertychange'</span> <span class="hljs-keyword">in</span> ta) {
+				<span class="hljs-keyword">if</span> (<span class="hljs-string">'oninput'</span> <span class="hljs-keyword">in</span> ta) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Detects IE9.  IE9 does not fire onpropertychange or oninput for deletions,
+so binding to onkeyup to catch most of those occasions.  There is no way that I
+know of to detect something like &#39;cut&#39; in IE9.</p></div></div><div class="code"><div class="wrapper">					$ta.on(<span class="hljs-string">'input.autosize keyup.autosize'</span>, adjust);
+				} <span class="hljs-keyword">else</span> {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>IE7 / IE8</p></div></div><div class="code"><div class="wrapper">					$ta.on(<span class="hljs-string">'propertychange.autosize'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+						<span class="hljs-keyword">if</span>(event.propertyName === <span class="hljs-string">'value'</span>){
+							adjust();
+						}
+					});
+				}
+			} <span class="hljs-keyword">else</span> {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Modern Browsers</p></div></div><div class="code"><div class="wrapper">				$ta.on(<span class="hljs-string">'input.autosize'</span>, adjust);
+			}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set options.resizeDelay to false if using fixed-width textarea elements.
+Uses a timeout and width check to reduce the amount of times adjust needs to be called after window resize.</p></div></div><div class="code"><div class="wrapper">			<span class="hljs-keyword">if</span> (options.resizeDelay !== <span class="hljs-literal">false</span>) {
+				$(<span class="hljs-built_in">window</span>).on(<span class="hljs-string">'resize.autosize'</span>, resize);
+			}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Event for manual triggering if needed.
+Should only be needed when the value of the textarea is changed through JavaScript rather than user input.</p></div></div><div class="code"><div class="wrapper">			$ta.on(<span class="hljs-string">'autosize.resize'</span>, adjust);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Event for manual triggering that also forces the styles to update as well.
+Should only be needed if one of typography styles of the textarea change, and the textarea is already the target of the adjust method.</p></div></div><div class="code"><div class="wrapper">			$ta.on(<span class="hljs-string">'autosize.resizeIncludeStyle'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+				mirrored = <span class="hljs-literal">null</span>;
+				adjust();
+			});
+
+			$ta.on(<span class="hljs-string">'autosize.destroy'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+				mirrored = <span class="hljs-literal">null</span>;
+				clearTimeout(timeout);
+				$(<span class="hljs-built_in">window</span>).off(<span class="hljs-string">'resize'</span>, resize);
+				$ta
+					.off(<span class="hljs-string">'autosize'</span>)
+					.off(<span class="hljs-string">'.autosize'</span>)
+					.css(originalStyles)
+					.removeData(<span class="hljs-string">'autosize'</span>);
+			});</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Call adjust in case the textarea already contains text.</p></div></div><div class="code"><div class="wrapper">			adjust();
+		});
+	};
+}(<span class="hljs-built_in">window</span>.jQuery || <span class="hljs-built_in">window</span>.$)); <span class="hljs-comment">// jQuery or jQuery-like library, such as Zepto</span></div></div></div></div></body></html>

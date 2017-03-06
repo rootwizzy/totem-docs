@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-common/addon/mixins/phase_manager/addons</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-common/addon/mixins/phase_manager/addons"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-common/addon/mixins/phase_manager/addons.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-common/addon/mixins/phase_manager/addons.coffee">src/thinkspace/client/thinkspace-common/addon/mixins/phase_manager/addons.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">has_addon_ownerable</span>:         <span class="hljs-function">-&gt;</span> <span class="hljs-property">@addons</span>.has_addon_ownerable()
+  <span class="hljs-attribute">has_active_addons</span>:           <span class="hljs-function">-&gt;</span> <span class="hljs-property">@addons</span>.has_active_addons()
+  <span class="hljs-attribute">get_active_addons</span>:           <span class="hljs-function">-&gt;</span> <span class="hljs-property">@addons</span>.get_active_addons().copy()
+  <span class="hljs-attribute">get_active_addon_ownerable</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@addons</span>.get_active_addon_ownerable()
+  <span class="hljs-attribute">get_active_addon_components</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@addons</span>.get_active_addon_components()
+
+  <span class="hljs-attribute">set_addon_ownerable_and_generate_view</span>: <span class="hljs-function"><span class="hljs-params">(ownerable)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@view_is_generated_off</span>()
+      <span class="hljs-property">@show_loading_outlet</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Using run.next to allow templates to rerender based on &#39;view_is_generated&#39; turned off and
+before generating the phase view with the new ownerable.</p></div></div><div class="code"><div class="wrapper">      ember.run.next =&gt;
+        <span class="hljs-property">@addons</span>.set_active_addon_ownerable(ownerable)
+        <span class="hljs-property">@set_ownerable</span>(ownerable).<span class="hljs-keyword">then</span> =&gt;
+          <span class="hljs-property">@generate_view_with_ownerable</span>().<span class="hljs-keyword">then</span> =&gt;
+            <span class="hljs-property">@hide_loading_outlet</span>()
+            resolve()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: close the addons on an error or should addons close themselves?</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">validate_and_set_addon_ownerable</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">unless</span> (<span class="hljs-property">@has_active_addons</span>() <span class="hljs-keyword">and</span> <span class="hljs-property">@has_addon_ownerable</span>())
+      ownerable = <span class="hljs-property">@get_active_addon_ownerable</span>()
+      promises  = []
+      <span class="hljs-keyword">for</span> component <span class="hljs-keyword">in</span> <span class="hljs-property">@get_active_addon_components</span>()
+        promises.push <span class="hljs-property">@validate_addon_ownerable</span>(component, ownerable)
+      ember.RSVP.Promise.all(promises).<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@set_ownerable</span>(ownerable).<span class="hljs-keyword">then</span> =&gt; resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        <span class="hljs-property">@addons</span>.set_active_addon_ownerable(<span class="hljs-literal">null</span>)
+        <span class="hljs-property">@set_ownerable</span>(<span class="hljs-literal">null</span>).<span class="hljs-keyword">then</span> =&gt; resolve()
+
+  <span class="hljs-attribute">validate_addon_ownerable</span>: <span class="hljs-function"><span class="hljs-params">(component, ownerable)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">unless</span> <span class="hljs-property">@util</span>.is_object_function(component, <span class="hljs-string">'valid_addon_ownerable'</span>)
+      component.valid_addon_ownerable(ownerable).<span class="hljs-keyword">then</span> =&gt;
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        reject(error)</div></div></div></div></body></html>

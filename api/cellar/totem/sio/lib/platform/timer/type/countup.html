@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/sio/lib/platform/timer/type/countup</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/sio/lib/platform/timer/type/countup"><meta name="groc-project-path" content="src/totem/sio/lib/platform/timer/type/countup.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/sio/lib/platform/timer/type/countup.coffee">src/totem/sio/lib/platform/timer/type/countup.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SocketIOTimerCountup</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@timer</span>)</span> -&gt;</span>
+    <span class="hljs-property">@util</span>    = <span class="hljs-property">@timer</span>.util
+    <span class="hljs-property">@helpers</span> = <span class="hljs-property">@timer</span>.helpers
+    <span class="hljs-property">@type</span>    = <span class="hljs-string">'countup'</span>
+
+  <span class="hljs-attribute">cancel</span>: <span class="hljs-function">-&gt;</span> clearTimeout(<span class="hljs-property">@current_timer</span>)  <span class="hljs-keyword">if</span> <span class="hljs-property">@current_timer</span>
+
+  <span class="hljs-attribute">create_timeout</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@current_timer</span> = setTimeout (<span class="hljs-function">=&gt;</span>
+      <span class="hljs-property">@emit</span> = <span class="hljs-property">@interval_emit</span>()
+      <span class="hljs-property">@debug</span>()
+      <span class="hljs-property">@timer</span>.emit(@)
+      <span class="hljs-keyword">unless</span> <span class="hljs-property">@final</span>
+        <span class="hljs-property">@setup_timeout</span>()
+        <span class="hljs-property">@create_timeout</span>()
+    ), <span class="hljs-property">@timeout</span>
+
+  <span class="hljs-attribute">process</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@unit</span>     = <span class="hljs-property">@helpers</span>.data_unit(<span class="hljs-property">@data</span>)
+    <span class="hljs-property">@inc</span>      = <span class="hljs-property">@helpers</span>.data_interval(<span class="hljs-property">@data</span>)
+    <span class="hljs-property">@unit_ms</span>  = <span class="hljs-property">@helpers</span>.data_milliseconds(<span class="hljs-property">@data</span>)
+    <span class="hljs-property">@end_at</span>   = <span class="hljs-property">@helpers</span>.data_end_at(<span class="hljs-property">@data</span>)
+    <span class="hljs-property">@start_at</span> = <span class="hljs-property">@helpers</span>.data_start_at(<span class="hljs-property">@data</span>)
+    <span class="hljs-property">@message</span>  = <span class="hljs-property">@helpers</span>.data_message(<span class="hljs-property">@data</span>)
+    <span class="hljs-keyword">unless</span> <span class="hljs-property">@valid_and_values_set</span>()
+      <span class="hljs-property">@timer</span>.remove(@)
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-property">@util</span>.debug <span class="hljs-string">"TIMER countup added. id:"</span>, <span class="hljs-property">@id</span>
+    <span class="hljs-property">@final</span>   = <span class="hljs-literal">false</span>
+    <span class="hljs-property">@n</span>       = <span class="hljs-number">1</span>
+    <span class="hljs-property">@running</span> = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@start_at</span>
+      <span class="hljs-property">@timeout</span>        = <span class="hljs-property">@helpers</span>.timeout_value(<span class="hljs-property">@start_at</span>)
+      <span class="hljs-property">@total_timeout</span> -= <span class="hljs-property">@timeout</span>
+      <span class="hljs-property">@set_number_of_timers</span>()
+      <span class="hljs-property">@set_units</span>()
+      <span class="hljs-property">@create_timeout</span>()
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-property">@first_emit</span>()
+      <span class="hljs-property">@setup_timeout</span>()
+      <span class="hljs-property">@create_timeout</span>()
+
+  <span class="hljs-attribute">first_emit</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@timeout</span> = <span class="hljs-number">0</span>
+    <span class="hljs-property">@set_units</span>()
+    <span class="hljs-property">@emit</span> = <span class="hljs-property">@interval_emit</span>()
+    <span class="hljs-property">@debug</span>()
+    <span class="hljs-property">@timer</span>.emit(@)
+
+  <span class="hljs-attribute">setup_timeout</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@n</span>       += <span class="hljs-number">1</span>
+    <span class="hljs-property">@running</span> += <span class="hljs-property">@inc</span>
+    <span class="hljs-property">@timeout</span>  = <span class="hljs-keyword">if</span> <span class="hljs-property">@running</span> &gt; <span class="hljs-property">@total_timeout</span> <span class="hljs-keyword">then</span> (<span class="hljs-property">@running</span> - <span class="hljs-property">@total_timeout</span>) <span class="hljs-keyword">else</span> <span class="hljs-property">@inc</span>
+    <span class="hljs-property">@set_units</span>()
+    <span class="hljs-property">@set_final</span>()
+
+  <span class="hljs-attribute">set_final</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@final</span> = <span class="hljs-literal">true</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@running</span> &gt;= <span class="hljs-property">@total_timeout</span>
+    <span class="hljs-property">@final</span> = <span class="hljs-literal">true</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@n</span> &gt; <span class="hljs-property">@number_of_timers</span>
+
+  <span class="hljs-attribute">interval_emit</span>: <span class="hljs-function">-&gt;</span>
+    label = <span class="hljs-keyword">if</span> <span class="hljs-property">@units</span> == <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> <span class="hljs-property">@unit</span> <span class="hljs-keyword">else</span> (<span class="hljs-property">@unit</span> + <span class="hljs-string">'s'</span>)
+    {<span class="hljs-property">@units</span>, label, <span class="hljs-property">@n</span>, <span class="hljs-attribute">of</span>: <span class="hljs-property">@number_of_timers</span>, <span class="hljs-property">@message</span>}
+
+  <span class="hljs-attribute">set_total_timeout</span>:    <span class="hljs-function">-&gt;</span> <span class="hljs-property">@total_timeout</span>    = <span class="hljs-property">@helpers</span>.timeout_value(<span class="hljs-property">@end_at</span>)
+  <span class="hljs-attribute">set_units</span>:            <span class="hljs-function">-&gt;</span> <span class="hljs-property">@units</span>            = Math.ceil(<span class="hljs-property">@running</span> / <span class="hljs-property">@unit_ms</span>)
+  <span class="hljs-attribute">set_number_of_timers</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@number_of_timers</span> = Math.ceil(<span class="hljs-property">@total_timeout</span> / <span class="hljs-property">@inc</span>) + <span class="hljs-number">1</span>
+
+  <span class="hljs-attribute">valid_and_values_set</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">unless</span> <span class="hljs-property">@end_at</span>
+      <span class="hljs-property">@util</span>.warn <span class="hljs-string">"TIMER <span class="hljs-subst">#{<span class="hljs-property">@type</span>}</span> end_at is blank."</span>, {<span class="hljs-property">@id</span>, <span class="hljs-property">@cid</span>, <span class="hljs-property">@data</span>}
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@start_at</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@start_at</span> &gt; <span class="hljs-property">@end_at</span>
+      <span class="hljs-property">@util</span>.error <span class="hljs-string">"TIMER <span class="hljs-subst">#{<span class="hljs-property">@type</span>}</span> start at '<span class="hljs-subst">#{<span class="hljs-property">@start_at</span>}</span>' greater than end_at '<span class="hljs-subst">#{<span class="hljs-property">@end_at</span>}</span>'."</span>, {<span class="hljs-property">@id</span>, <span class="hljs-property">@cid</span>, <span class="hljs-property">@data</span>}
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+    <span class="hljs-property">@set_total_timeout</span>()
+    <span class="hljs-keyword">unless</span> <span class="hljs-property">@total_timeout</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@total_timeout</span> &gt; <span class="hljs-number">0</span>
+      <span class="hljs-property">@util</span>.warn <span class="hljs-string">"TIMER <span class="hljs-subst">#{<span class="hljs-property">@type</span>}</span> in the past. Not running timer."</span>, {<span class="hljs-property">@id</span>}
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+    <span class="hljs-property">@set_number_of_timers</span>()
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@max</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@number_of_timers</span> &gt; <span class="hljs-property">@max</span>
+      <span class="hljs-property">@util</span>.error <span class="hljs-string">"TIMER <span class="hljs-subst">#{<span class="hljs-property">@type</span>}</span> has over '<span class="hljs-subst">#{<span class="hljs-property">@max</span>}</span>' timers for id '<span class="hljs-subst">#{<span class="hljs-property">@id</span>}</span>'.  Would have created '<span class="hljs-subst">#{<span class="hljs-property">@number_of_timers</span>}</span>'."</span>, {<span class="hljs-property">@id</span>, <span class="hljs-property">@cid</span>, <span class="hljs-property">@data</span>}
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+    <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">debug</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@util</span>.debugging <span class="hljs-keyword">and</span> <span class="hljs-property">@helpers</span>.debug(@)
+
+  <span class="hljs-attribute">to_string</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'SocketIOTimerCountup'</span>
+
+<span class="hljs-built_in">module</span>.exports = SocketIOTimerCountup</div></div></div></div></body></html>

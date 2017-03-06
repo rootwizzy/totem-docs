@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/sio/lib/rooms/room_list</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace/sio/lib/rooms/room_list"><meta name="groc-project-path" content="src/thinkspace/sio/lib/rooms/room_list.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/sio/lib/rooms/room_list.coffee">src/thinkspace/sio/lib/rooms/room_list.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThinkspaceRoomList</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@platform</span>)</span> -&gt;</span>
+    <span class="hljs-property">@util</span>  = <span class="hljs-property">@platform</span>.util
+    <span class="hljs-property">@rooms</span> = <span class="hljs-property">@platform</span>.rooms
+
+  <span class="hljs-attribute">on_connection</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span>
+    socket.<span class="hljs-literal">on</span> <span class="hljs-property">@util</span>.client_event(<span class="hljs-string">'room_list'</span>), <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span> <span class="hljs-property">@emit_room_list</span>(socket, data)
+
+  <span class="hljs-attribute">emit_room_list</span>: <span class="hljs-function"><span class="hljs-params">(socket, data={})</span> -&gt;</span>
+    <span class="hljs-keyword">unless</span> <span class="hljs-property">@util</span>.is_superuser(socket)
+      <span class="hljs-property">@util</span>.error <span class="hljs-string">"Unauthorized room list request for non-superuser."</span>, <span class="hljs-property">@util</span>.get_user_date(socket)
+      <span class="hljs-keyword">return</span>
+    rooms      = <span class="hljs-property">@rooms</span>.get_room_names()
+    room_users = {}
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+      users = <span class="hljs-property">@rooms</span>.get_users_in_room(room)
+      <span class="hljs-keyword">for</span> hash <span class="hljs-keyword">in</span> users
+        <span class="hljs-keyword">if</span> <span class="hljs-property">@util</span>.is_hash(hash)
+          room_user = hash.user
+          <span class="hljs-keyword">if</span> <span class="hljs-property">@util</span>.is_hash_present(room_user)
+            user        = {id, username, first_name, last_name, email} = room_user
+            user_socket = hash.socket
+            user.sid    = user_socket.id
+            user.href   = (user_socket.tracker.user_data <span class="hljs-keyword">or</span> {}).href <span class="hljs-keyword">if</span> user_socket <span class="hljs-keyword">and</span> user_socket.tracker
+            room_users[room] ?= []
+            room_users[room].push(user)
+    sevent = <span class="hljs-property">@util</span>.server_event(<span class="hljs-string">'room_list'</span>)
+    socket.emit(sevent, room_users)
+
+  <span class="hljs-attribute">to_string</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'ThinkspaceRoomList'</span>
+
+<span class="hljs-built_in">module</span>.exports = ThinkspaceRoomList</div></div></div></div></body></html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/mixins/data</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/mixins/data"><meta name="groc-project-path" content="src/totem/client/totem/addon/mixins/data.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/mixins/data.coffee">src/totem/client/totem/addon/mixins/data.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import totem_data  from <span class="hljs-string">'totem/mixins/data/base_data'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">viewonly</span>:     ember.computed.reads <span class="hljs-string">'totem_scope.is_view_only'</span>
+  <span class="hljs-attribute">not_viewonly</span>: ember.computed.<span class="hljs-keyword">not</span>   <span class="hljs-string">'viewonly'</span>
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
+    <span class="hljs-property">@totem_data</span> = totem_data.create(<span class="hljs-attribute">source</span>: @)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Overview</p>
+<pre><code>Currently supports data-names &#39;ability&#39; and &#39;metadata&#39;.
+
+Totem data is designed to allow components/templates and models to reference a common
+data source for each ownerable (e.g. ability, metadata).
+
+The data is stored by ownerable and can be swapped when the totem_scope &#39;current user&#39;
+changes by adding &#39;current_user_observer: true&#39;.
+
+The data is stored in ember-data models.  Each totem_data-name module
+references its own model as resolved by the ns map&#39;s ns.to_p(&#39;data-name&#39;).
+
+The data may be pre-loaded as part of a server payload or can be obtained by
+an ajax request.
+
+If the data-name model has the mixin &#39;totem/mixins/data/did_load&#39; and totem_data
+is included in a &#39;model&#39;, the model&#39;s data-name data (e.g. can, metadata) is
+refreshed when the data-name model is loaded (via didLoad hook).
+
+Alternatively, to refresh the data, a record may be unloaded by another component to generate
+a new ajax data request.
+
+The data-name record id:
+  with a single record: &quot;record_path.record_id::ownerable_path.ownerable_id&quot;
+  with a record array:  &quot;component_defined_path::ownerable_path.ownerable_id&quot;
+
+Each module defines properties on the component.  Currently:
+  ability:  can and cannot
+  metadata: metadata
+
+Caution: The properties will overwrite any existing properties (a warning is issued).
+
+A component and template reference the values like:
+  can.update
+  metadata.count</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Usage</p>
+<pre><code>The component or model (e.g. the &#39;source&#39;) must mixin the totem_data mixin and define
+a &#39;totem_data_config&#39; property listing the modules to include and their configuration options.
+
+Each data-name (e.g. ability, metadata) have their own option values.
+Any key in the &#39;totem_data_config&#39; hash that is not a data-name is
+assumed to apply to &#39;all&#39; data-name configurations (a data-name hash option take precedence).
+
+If the data-name option value is &#39;true&#39; (rather than a hash), the data-name will use the default
+values unless overriden by an &#39;all&#39; option e.g. ability: true #=&gt; ember.merge({}, all_options).
+
+WARNING: In order to include a data-name module, the &#39;totem_data_config&#39; hash MUST include the data-name key
+         (e.g. cannot specify ONLY non-data-name options).
+
+IMPORTANT: Ajax requests are sent to the data-name model url.  The auth params are based on the
+           configuration options and whether the source &#39;model&#39; is a record or array of records.</code></pre>
+<p>  Configuration options:
+      model:                 string
+      ajax_source:           true|string<br>      ajax_method:           string
+      callback:              string (method in the component/model to alter the data e.g. ability/metadata)
+      module_only:           true|false
+      unload:                true|false
+      current_user_observer: true|false</p>
+<p>  Configuration option descriptions:
+     model:       default &#39;model&#39;; the property name of the model
+     ajax_source: default false, data is not required
+                  true -or- string means the data is required and an ajax request is sent unless the record exists
+                  true means a single record and sets the ajax auth params: {model_id and model_type; source is null}
+                  string means use as-is and sets the the ajax auth params: {source: string}
+     ajax_method: default null
+                  string means use as-is and set the ajax params auth: {source_method: string}
+     module_only: default false - set the data-name data
+                  true means include the data-name module but do not set any data; this could be used
+                  by a component to &#39;unload&#39; a record&#39;s data and force a reload of required data (e.g. has an ajax_source)
+     unload:      default false
+                  true means unload the record data before setting the data (e.g. makes an ajax call if has an ajax_source)
+     callback:    method name on the source to change the data-name data before setting on the source (e.g. can abilities)
+                  for example, call a method on a component to change (add/delete) abilities based on some other related model or data
+                  Note: a model with a method called &#39;add_data-name&#39; (e.g. &#39;add_ability&#39;), is automatically
+                        called before setting the data on the source
+     current_user_observer: default false
+                            true means add a totem_scope.current_user observer and refresh the data on a change</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Ajax Requests</p>
+<pre><code>How the server responds to ajax requests is platform dependent.
+
+Ajax requests are sent to the data-name model url with auth params set by the configuration options.
+If the source model is a single record then the auth params will include the record id and record type.
+
+params:
+  auth:
+    ownerable_id:   ownerable-id
+   ownerable_type: ownerable-record-type
+   source:         config &#39;ajax_source&#39; value (if a string)
+   source_method:  config &#39;ajax_method&#39; value (if a string)
+   * if the source model is a single record the following are added
+   model_id:   model-id
+   model_type: model-record-type</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Process Hooks</p>
+<pre><code>Model records &#39;add_data-name&#39; function (e.g. add_ability, add_metadata):
+
+  If a record has a function called &#39;add_data-name&#39; it will be called with the data and the data can
+  be modified as needed.
+  Argurments are (data, module) and the data must be modified in place e.g. not return a new value.
+  Example: assignment model function to equate &#39;update&#39; to &#39;gradebook&#39; ability.
+
+Source callback:
+
+  The data-name module configuration include a callback options, the source method will be called before setting the final values.
+  The arguments are data-name module specific.
+
+Examples:
+  totem_data_config: ability: callback: &#39;my_ability_callback&#39;
+
+Caution: ajax requests for the same id are queued, so &#39;only&#39; the initiator of the ajax will get
+         populated data in the callback.</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>thinkspace-authorization</p>
+<pre><code>Currently, the thinkspace-authorization engine constructs a serializer_options &#39;class&#39; method-name
+based on the record (when model_id and model_type are present), &#39;source&#39; and &#39;source_method&#39;.
+
+When the &#39;ajax_method&#39; is present, it is used as-is as the method-name, otherwise the method-name
+is based on the record or &#39;ajax_source&#39;.
+
+The method-name will be taken from a path:
+  path = ajax_source.present? ? ajax_source : record.class.name.underscore.pluralize
+
+The method-name becomes &#39;path.camelize.demodulize.downcase&#39; with the final method-name:
+  &quot;#{data-name}_#{method-name}&quot;  #=&gt; e.g. ability_space, ability_spaces, etc.
+
+The serializer_options &#39;class&#39; to be called is also determined from the path:
+
+This serailzer_options method-name is called with args:
+  record:      (controller, record, ownerable)  #=&gt; auth params include model_id and model_type
+  ajax_source: (controller, ownerable)          #=&gt; auth params do &#39;not&#39; include model_id and/or model_type</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Examples</p>
+<pre><code>  totem_data_config:  #=&gt; only include ability module with default option values
+    ability: true
+
+  totem_data_config:  #=&gt; only include metadata module but do not populate any metadata
+    metadata:
+      module_only: true
+
+  totem_data_config:  #=&gt; include both ability and metadata modules with default option values
+    ability:  true
+    metadata: true
+
+  totem_data_config:  #=&gt; change the source&#39;s model property to &#39;mymodel&#39; for both ability and metadata
+    model:    &#39;mymodel&#39;
+    ability:  true
+    metadata: true
+
+  totem_data_config:  #=&gt; require both ability and metadata
+    ability:
+      ajax_source: true
+    metadata: true
+      ajax_source: true
+
+  totem_data_config:  #=&gt; add the source (thinkspace/common/spaces) and source_method to the ajax request for ability and metadata
+    ajax_source: ns.to_p(&#39;spaces&#39;)
+    ability:
+      ajax_method: &#39;myability&#39;
+    metadata: true
+      ajax_method: &#39;mymetadata&#39;</code></pre></div></div></div></div></body></html>

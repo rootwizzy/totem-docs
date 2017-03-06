@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/base_handler</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/base_handler"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/base_handler.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/base_handler.rb">src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/base_handler.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReadinessAssurance</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PhaseActions</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseHandler</span></span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:phase</span>, <span class="hljs-symbol">:current_user</span>, <span class="hljs-symbol">:params</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:processor</span>, <span class="hljs-symbol">:error_class</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(phase, current_user, params, processor_options={})</span></span>
+    <span class="hljs-variable">@phase</span>        = phase
+    <span class="hljs-variable">@current_user</span> = current_user
+    <span class="hljs-variable">@params</span>       = params || <span class="hljs-constant">Hash</span>.new
+    <span class="hljs-variable">@error_class</span>  = <span class="hljs-constant">HandlerError</span>
+    <span class="hljs-keyword">if</span> processor_options.is_a?(processor_class)
+      <span class="hljs-variable">@processor</span> = processor_options
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-variable">@processor</span> = processor_class.new(phase, current_user, processor_options) <span class="hljs-keyword">if</span> phase.present?
+    <span class="hljs-keyword">end</span>
+    set_timer_params
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="score-response">Score Response.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">score_response</span><span class="hljs-params">(response, ownerable)</span></span>
+    processor.set_action(<span class="hljs-symbol">:submit</span>)
+    processor.action_options[<span class="hljs-symbol">:response</span>] = response
+    processor.action_score(ownerable)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">handler_error</span><span class="hljs-params">(message)</span>;</span> raise <span class="hljs-constant">HandlerError</span>, message; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HandlerError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Handler::Messages</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Handler::Params</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Handler::PhaseStates</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Handler::Records</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Handler::Classes</span>
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Thinkspace::Casespace::PhaseActions::Helpers::Action::Controller</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

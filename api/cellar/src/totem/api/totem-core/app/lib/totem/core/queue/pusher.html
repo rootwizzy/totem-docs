@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/lib/totem/core/queue/pusher</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/lib/totem/core/queue/pusher"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/queue/pusher.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/queue/pusher.rb">src/totem/api/totem-core/app/lib/totem/core/queue/pusher.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Queue</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Pusher</span></span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(message, handler, source_id = <span class="hljs-keyword">nil</span>, options = {})</span></span>
+          raise <span class="hljs-constant">InvalidArguments</span>, <span class="hljs-string">"No message or handler passed in for SQS [<span class="hljs-subst">#{message}</span>], [<span class="hljs-subst">#{handler}</span>]."</span> <span class="hljs-keyword">unless</span> message <span class="hljs-keyword">and</span> handler
+          <span class="hljs-variable">@message</span>              = message
+          <span class="hljs-variable">@message</span>[<span class="hljs-string">'handler'</span>]   = handler
+          <span class="hljs-variable">@message</span>[<span class="hljs-string">'source_id'</span>] = source_id <span class="hljs-keyword">if</span> source_id
+          <span class="hljs-variable">@options</span>              = options
+          set_queue
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_queue</span></span>
+          sqs    = <span class="hljs-constant">AWS::SQS</span>.new(<span class="hljs-symbol">access_key_id:</span> <span class="hljs-constant">Rails</span>.application.secrets.aws[<span class="hljs-string">'sqs'</span>][<span class="hljs-string">'access_key'</span>], <span class="hljs-symbol">secret_access_key:</span> <span class="hljs-constant">Rails</span>.application.secrets.aws[<span class="hljs-string">'sqs'</span>][<span class="hljs-string">'secret_access_key'</span>])
+          <span class="hljs-variable">@queue</span> = sqs.queues.named(<span class="hljs-constant">Rails</span>.application.secrets.aws[<span class="hljs-string">'sqs'</span>][<span class="hljs-string">'queue_name'</span>])
+          raise <span class="hljs-constant">InvalidQueue</span>, <span class="hljs-string">"Invalid queue specified to push to."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@queue</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span>
+          message = <span class="hljs-variable">@message</span>.to_json
+          <span class="hljs-variable">@queue</span>.send_message(message)
+        <span class="hljs-keyword">end</span>
+        
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InvalidQueue</span>     <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InvalidArguments</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-cli/lib/totem/cli/helpers/doc</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-cli/lib/totem/cli/helpers/doc"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers/doc.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers/doc.rb">src/totem/api/totem-cli/lib/totem/cli/helpers/doc.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Helpers</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Doc</span></span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">included</span><span class="hljs-params">(base)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> base.ancestors.<span class="hljs-keyword">include</span>?(<span class="hljs-constant">Thor::Group</span>)
+          base.class_eval <span class="hljs-keyword">do</span>
+            class_option <span class="hljs-symbol">:overview</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">'-O'</span>, <span class="hljs-symbol">desc:</span> <span class="hljs-string">'overview help'</span>
+            class_option <span class="hljs-symbol">:examples</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">'-E'</span>, <span class="hljs-symbol">desc:</span> <span class="hljs-string">'usage examples help'</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">base</span>.<span class="hljs-title">doc_banner_run_options</span></span>
+              doc_run_options = &lt;&lt;<span class="hljs-constant">DOC_RUN_OPTIONS</span>
+
+  <span class="hljs-constant">If</span> running multiple times, recommend using the option --run-options-filename [-o, -<span class="hljs-constant">O</span>] that points
+  to a yaml formatted file containing the run options.  <span class="hljs-constant">All</span> run options can be specified <span class="hljs-keyword">in</span> this file
+  except the <span class="hljs-constant">Thor</span> <span class="hljs-string">'runtime options'</span>.  <span class="hljs-constant">You</span> can tailor this file (e.g. path values) to match your local setup.
+  <span class="hljs-constant">Note</span><span class="hljs-symbol">:</span> <span class="hljs-keyword">when</span> no filename extension is used, will first try the filename as-is, <span class="hljs-keyword">and</span> <span class="hljs-keyword">if</span> it does <span class="hljs-keyword">not</span>
+  exsit, try the filename with a <span class="hljs-string">'.yml'</span> extension.  <span class="hljs-constant">If</span> neither exists will generate an error.
+
+  <span class="hljs-constant">Additional</span> <span class="hljs-symbol">information:</span> <span class="hljs-string">'<span class="hljs-subst">#{basename}</span> --overview'</span> <span class="hljs-keyword">or</span> <span class="hljs-string">'<span class="hljs-subst">#{basename}</span> --examples'</span>
+<span class="hljs-constant">DOC_RUN_OPTIONS</span>
+              doc_run_options.chomp
+            <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">doc_options</span></span>
+          say doc_overview, <span class="hljs-symbol">:green</span>   <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:overview</span>]
+          say doc_examples, <span class="hljs-symbol">:yellow</span>  <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:examples</span>]
+          stop_run <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:overview</span>] || options[<span class="hljs-symbol">:examples</span>]
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong><em> Documentation files must use the sprintf substitution format of %{replace} (e.g. not #{replace}). </em></strong></p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">doc_examples</span></span>
+          file_path = <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../../<span class="hljs-subst">#{<span class="hljs-constant">HELPERS_DIR</span>}</span>/doc/examples"</span>, __FILE_<span class="hljs-number">_</span>)
+          doc_content(file_path)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">doc_overview</span></span>
+          file_path = <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../../<span class="hljs-subst">#{<span class="hljs-constant">HELPERS_DIR</span>}</span>/doc/overview"</span>, __FILE_<span class="hljs-number">_</span>)
+          doc_content(file_path)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">doc_content</span><span class="hljs-params">(file_path)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-string">'No documentation available.'</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.exist?(file_path)
+
+          basename      = <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.send(<span class="hljs-symbol">:basename</span>)         <span class="hljs-comment"># Binary run name e.g. totem-app</span>
+          framework     = (basename.split(<span class="hljs-string">'-'</span>).shift) || <span class="hljs-string">''</span>  <span class="hljs-comment"># Framework name from binary name e.g. totem</span>
+          cli           = framework + <span class="hljs-string">'-cli'</span>                 <span class="hljs-comment"># cli gem for this framework e.g. totem-cli</span>
+          example_app   = <span class="hljs-string">'orchid'</span>                           <span class="hljs-comment"># example Rail app name</span>
+          rails_version = <span class="hljs-string">'&gt;= 4.2.0'</span>                         <span class="hljs-comment"># Rails version required</span>
+
+          content_sub                 = <span class="hljs-constant">Hash</span>.new  <span class="hljs-comment"># string substitutions e.g. %{name}</span>
+          content_sub[<span class="hljs-symbol">:basename</span>]      = basename
+          content_sub[<span class="hljs-symbol">:Basename</span>]      = basename.capitalize
+          content_sub[<span class="hljs-symbol">:framework</span>]     = framework
+          content_sub[<span class="hljs-symbol">:Framework</span>]     = framework.capitalize
+          content_sub[<span class="hljs-symbol">:cli</span>]           = cli
+          content_sub[<span class="hljs-symbol">:Cli</span>]           = cli.capitalize
+          content_sub[<span class="hljs-symbol">:example_app</span>]   = example_app
+          content_sub[<span class="hljs-symbol">:rails_version</span>] = rails_version
+          content_sub[<span class="hljs-symbol">:run_modes</span>]     = doc_run_modes % content_sub  <span class="hljs-comment"># common run modes text</span>
+
+          <span class="hljs-constant">File</span>.read(file_path) % content_sub
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">doc_run_modes</span></span>
+          run_modes = &lt;&lt;<span class="hljs-constant">DOC_RUN_MODES</span>
+<span class="hljs-string">'%{basename}'</span> can be run <span class="hljs-keyword">in</span> two modes (assumes a local copy of <span class="hljs-string">%{cli}</span>)<span class="hljs-symbol">:</span>
+  <span class="hljs-number">1</span>. <span class="hljs-constant">Run</span> without installing the <span class="hljs-string">%{cli}</span> gem.
+     - <span class="hljs-symbol">advantages:</span>    <span class="hljs-keyword">do</span> no need to install the gem
+     - <span class="hljs-symbol">disadvantages:</span> need to use the relative path to the <span class="hljs-symbol">installer:</span> relatvie_path/<span class="hljs-string">%{cli}</span>/bin/<span class="hljs-string">%{basename}</span>
+  <span class="hljs-number">2</span>. <span class="hljs-constant">Run</span> with installing the <span class="hljs-string">%{cli}</span> gem.
+     - <span class="hljs-symbol">advantages:</span>    <span class="hljs-string">%{cli}</span> gem includes a binary, so once installed just <span class="hljs-symbol">use:</span> <span class="hljs-string">%{basename}</span>
+     - <span class="hljs-symbol">disadvantages:</span> need to install the gem; <span class="hljs-keyword">if</span> change the <span class="hljs-string">%{basename}</span> gem itself, need to re-install
+<span class="hljs-constant">DOC_RUN_MODES</span>
+          run_modes.chomp
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

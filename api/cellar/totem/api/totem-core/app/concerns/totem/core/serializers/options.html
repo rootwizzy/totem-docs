@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/app/concerns/totem/core/serializers/options</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/app/concerns/totem/core/serializers/options"><meta name="groc-project-path" content="src/totem/api/totem-core/app/concerns/totem/core/serializers/options.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/concerns/totem/core/serializers/options.rb">src/totem/api/totem-core/app/concerns/totem/core/serializers/options.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Serializers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Options</span></span>
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">SerializerOptions::Ability</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">SerializerOptions::Associations</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">SerializerOptions::Attributes</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">SerializerOptions::Authorize</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">SerializerOptions::Cache</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">SerializerOptions::CollectData</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">SerializerOptions::Controller</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">SerializerOptions::Debug</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">SerializerOptions::Metadata</span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:controller</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:global_serializer_options</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:root_serializer_options</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:association_serializer_options</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:custom_serializer_options</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:default_options</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:debug_options</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="public-custom-option-getter-and-setter-used-by-serailzers-and-controllers-and-shared-by-all-serializers">Public custom option getter and setter.  Used by serailzers and controllers and shared by all serializers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get</span><span class="hljs-params">(key)</span>;</span> custom_serializer_options[key]; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set</span><span class="hljs-params">(key, value)</span></span>
+    custom_serializer_options[key] = value
+    get(key) <span class="hljs-comment"># return the set value</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="set-root-serializer-class">Set ROOT serializer class.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def set_root_serializer(serializer); root_serializer_options[:serializer_class] ||= serializer.class.name; end</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_root_serializer</span><span class="hljs-params">(name)</span>;</span> root_serializer_options[<span class="hljs-symbol">:serializer_class</span>] ||= name; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="private">PRIVATE.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(controller, defaults={})</span></span>
+    <span class="hljs-variable">@controller</span>                     = controller
+    <span class="hljs-variable">@global_serializer_options</span>      = <span class="hljs-constant">HashWithIndifferentAccess</span>.new
+    <span class="hljs-variable">@root_serializer_options</span>        = <span class="hljs-constant">HashWithIndifferentAccess</span>.new
+    <span class="hljs-variable">@association_serializer_options</span> = <span class="hljs-constant">HashWithIndifferentAccess</span>.new
+    <span class="hljs-variable">@custom_serializer_options</span>      = <span class="hljs-constant">HashWithIndifferentAccess</span>.new
+    <span class="hljs-variable">@default_options</span>                = defaults || <span class="hljs-constant">Hash</span>.new
+    <span class="hljs-variable">@debug_options</span>                  = <span class="hljs-constant">Hash</span>.new
+    error(<span class="hljs-string">"Default values must be a hash."</span>)  <span class="hljs-keyword">unless</span> default_options.kind_of?(<span class="hljs-constant">Hash</span>)
+    init_collect_data
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_boolean?</span><span class="hljs-params">(value)</span>;</span> value == <span class="hljs-keyword">true</span> || value == <span class="hljs-keyword">false</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">element_in_array_ends_with?</span><span class="hljs-params">(array, value)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> array.blank?
+    check_value = value.to_s
+    array.find {|a| check_value.ends_with?(a.to_s)}.present?
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>Option methods used by serializers.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">evaluate_option</span><span class="hljs-params">(serializer, key)</span></span>
+    global_serializer_options[key] || get_serializer_option(serializer, key)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">evaluate_option_root_first</span><span class="hljs-params">(serializer, key)</span></span>
+    <span class="hljs-keyword">if</span> root_serializer?(serializer)
+      value = root_serializer_options[key]
+      <span class="hljs-keyword">return</span> value  <span class="hljs-keyword">if</span> value.present?
+    <span class="hljs-keyword">end</span>
+    evaluate_option(serializer, key)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">evaluate_array_option</span><span class="hljs-params">(serializer, association_name, key, options={})</span></span>
+    key_all = <span class="hljs-string">"<span class="hljs-subst">#{key}</span>_all"</span>.to_sym</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="global-checks">global checks</h3>
+<h2 id="">#</h2>
+<p>key_all</p></div></div><div class="code"><div class="wrapper">    value = global_serializer_options[key_all]
+    <span class="hljs-keyword">return</span> value <span class="hljs-keyword">if</span> is_boolean?(value)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>key_all_except</p></div></div><div class="code"><div class="wrapper">    key_all_except = <span class="hljs-string">"<span class="hljs-subst">#{key}</span>_all_except"</span>.to_sym
+    array = global_serializer_options[key_all_except]
+    <span class="hljs-keyword">return</span> array.<span class="hljs-keyword">include</span>?(association_name) ? <span class="hljs-keyword">false</span> <span class="hljs-symbol">:</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> array.present?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>key</p></div></div><div class="code"><div class="wrapper">    array = global_serializer_options[key]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> array.present? &amp;&amp; array.<span class="hljs-keyword">include</span>?(association_name)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="association-scope-checks">association scope checks</h3>
+<h2 id="">#</h2>
+<p>key_all</p></div></div><div class="code"><div class="wrapper">    value = get_serializer_option(serializer, key_all)
+    <span class="hljs-keyword">return</span> value <span class="hljs-keyword">if</span> is_boolean?(value)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>key_all_except</p></div></div><div class="code"><div class="wrapper">    array = get_serializer_option(serializer, key_all_except)
+    <span class="hljs-keyword">return</span> array.<span class="hljs-keyword">include</span>?(association_name) ? <span class="hljs-keyword">false</span> <span class="hljs-symbol">:</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> array.present?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>key</p></div></div><div class="code"><div class="wrapper">    array = get_serializer_option(serializer, key)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> array.present? &amp;&amp; array.<span class="hljs-keyword">include</span>?(association_name)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:ends_with</span>].blank?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ends with check</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> evaluate_array_option_ends_with(serializer, association_name, key)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>default return value</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">false</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">evaluate_array_option_ends_with</span><span class="hljs-params">(serializer, association_name, key)</span></span>
+    key_ends_with = <span class="hljs-string">"<span class="hljs-subst">#{key}</span>_ends_with"</span>.to_sym
+    array = global_serializer_options[key_ends_with] <span class="hljs-comment"># global check</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> array.present? &amp;&amp; element_in_array_ends_with?(array, association_name)
+    array = get_serializer_option(serializer, key_ends_with) <span class="hljs-comment"># association check</span>
+    array.present? &amp;&amp; array.<span class="hljs-keyword">include</span>?(association_name)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">evaluate_hash_option</span><span class="hljs-params">(serializer, root_key, key)</span></span>
+    hash  = global_serializer_options[root_key]
+    <span class="hljs-keyword">return</span> hash[key] <span class="hljs-keyword">if</span> hash.present? &amp;&amp; hash.has_key?(key)
+    hash = get_serializer_option(serializer, root_key)
+    <span class="hljs-keyword">return</span> hash[key] <span class="hljs-keyword">if</span> hash.present? &amp;&amp; hash.has_key?(key)
+    <span class="hljs-keyword">nil</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get the serializer &#39;options&#39; whether from root or association.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_serializer_options</span><span class="hljs-params">(serializer)</span></span>
+    <span class="hljs-keyword">return</span> root_serializer_options <span class="hljs-keyword">if</span> root_serializer?(serializer)
+    get_association_options(serializer.<span class="hljs-keyword">class</span>.totem_root_name)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get serializer &#39;option&#39; from root or association.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_serializer_option</span><span class="hljs-params">(serializer, key)</span></span>
+    get_serializer_options(serializer)[key]
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">root_serializer?</span><span class="hljs-params">(serializer)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> root_serializer_options[<span class="hljs-symbol">:serializer_class</span>] == serializer.<span class="hljs-keyword">class</span>.name</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>(serializer.options[:root_ids] || []).include? serializer.object.id</p></div></div><div class="code"><div class="wrapper">    (get_serializer_options_hash(serializer)[<span class="hljs-symbol">:root_ids</span>] || []).<span class="hljs-keyword">include</span>? serializer.object.id
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_serializer_options_hash</span><span class="hljs-params">(serializer)</span></span>
+    serializer.instance_variable_get(<span class="hljs-symbol">:</span><span class="hljs-variable">@instance_options</span>)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>Option methods used by controllers.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_default_option</span><span class="hljs-params">(key)</span>;</span> default_options[key]; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_option_hash_for_scope</span><span class="hljs-params">(scope)</span></span>
+    <span class="hljs-keyword">return</span> global_serializer_options  <span class="hljs-keyword">if</span> scope.blank?  <span class="hljs-comment"># default to global option</span>
+    <span class="hljs-keyword">case</span> scope.to_sym
+    <span class="hljs-keyword">when</span> (<span class="hljs-symbol">:all</span> || <span class="hljs-symbol">:global</span>)
+      global_serializer_options
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:root</span>
+      root_serializer_options
+    <span class="hljs-keyword">else</span>
+      association_name = scope.to_s.singularize.to_sym
+      get_association_options(association_name)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_option_hash_for_scope_and_keys</span><span class="hljs-params">(*args)</span></span>
+    scope = args.shift
+    value = get_option_hash_for_scope(scope)
+    <span class="hljs-keyword">return</span> <span class="hljs-constant">Hash</span>.new <span class="hljs-keyword">if</span> value.blank?
+    [args].flatten.each <span class="hljs-keyword">do</span> |key|
+      value = value[key] || <span class="hljs-constant">Hash</span>.new
+    <span class="hljs-keyword">end</span>
+    value
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_option_array_values</span><span class="hljs-params">(*args)</span></span>
+    options         = args.extract_options!
+    key             = args.shift
+    key             = <span class="hljs-string">"<span class="hljs-subst">#{key}</span>_ends_with"</span>.to_sym  <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:ends_with</span>].present?
+    scope_hash      = get_option_hash_for_scope(options[<span class="hljs-symbol">:scope</span>])
+    scope_hash[key] = (scope_hash[key] || <span class="hljs-constant">Array</span>.new) + [args].flatten.compact
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_option_hash_values</span><span class="hljs-params">(*args)</span></span>
+    options    = args.extract_options!
+    root_key   = args.shift
+    key        = args.shift
+    value      = args.shift
+    scope_hash = get_option_hash_for_scope(options[<span class="hljs-symbol">:scope</span>])
+    scope_hash[root_key]    ||= <span class="hljs-constant">Hash</span>.new
+    scope_hash[root_key][key] = value
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_option_value</span><span class="hljs-params">(*args)</span></span>
+    options         = args.extract_options!
+    key             = args.shift
+    value           = args.shift
+    scope_hash      = get_option_hash_for_scope(options[<span class="hljs-symbol">:scope</span>])
+    scope_hash[key] = value
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get the association&#39;s option values either by an association_name passed
+by a controller or the serializer&#39;s totem_root_name.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_association_options</span><span class="hljs-params">(association_name)</span></span>
+    association_serializer_options[association_name] ||= <span class="hljs-constant">Hash</span>.new
+    association_serializer_options[association_name]
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">error</span><span class="hljs-params">(message)</span></span>
+    raise <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name}</span>: <span class="hljs-subst">#{message}</span>"</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

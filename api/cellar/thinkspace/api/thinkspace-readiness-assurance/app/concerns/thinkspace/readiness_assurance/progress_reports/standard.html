@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/progress_reports/standard</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/progress_reports/standard"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/progress_reports/standard.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/progress_reports/standard.rb">src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/progress_reports/standard.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReadinessAssurance</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ProgressReports</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Standard</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Base</span></span></span>
+  <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:report</span>, <span class="hljs-symbol">:results</span>, <span class="hljs-symbol">:json</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="querying">Querying</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">query_column</span>;</span> <span class="hljs-string">'attempt_values'</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Why does this use <code>metadata</code> and not <code>userdata</code> for the jsonb_each?
+TODO: Determine if using <code>answers</code> here is too overzealous for streaming.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">query_json</span></span>
+    joined_response_ids = response_ids.join(<span class="hljs-string">','</span>)
+    puts <span class="hljs-string">"\n <span class="hljs-subst">#{joined_response_ids}</span> \n"</span>
+    query = <span class="hljs-string">"SELECT t1.id, REPLACE(t1.value::text, '\"', '') AS choice, COUNT(t1.value) AS total FROM (SELECT key AS id, value-&gt;0 AS value FROM thinkspace_readiness_assurance_responses t, jsonb_each((t.answers)::jsonb) WHERE t.id IN (<span class="hljs-subst">#{joined_response_ids}</span>)) t1 GROUP BY t1.id, t1.value;"</span>
+    <span class="hljs-variable">@assessment</span>.<span class="hljs-keyword">class</span>.connection.select_all(query)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="default-hwia-values">Default HWIA values</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">default_choice_value</span><span class="hljs-params">(choice, is_correct, label, order)</span>;</span> <span class="hljs-constant">HashWithIndifferentAccess</span>.new(<span class="hljs-symbol">id:</span> choice, <span class="hljs-symbol">correct:</span> is_correct, <span class="hljs-symbol">total:</span> <span class="hljs-number">0</span>.<span class="hljs-number">0</span>, <span class="hljs-symbol">label:</span> label, <span class="hljs-symbol">order:</span> order, <span class="hljs-symbol">percentages:</span> percentages_from_decimal(<span class="hljs-number">0</span>.<span class="hljs-number">0</span>)); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="parsing">Parsing</h3>
+<p>TODO: Refactor to base?</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_base_results</span></span>
+    r = <span class="hljs-constant">HashWithIndifferentAccess</span>.new
+    <span class="hljs-variable">@assessment</span>.questions.each_with_index <span class="hljs-keyword">do</span> |question, order|
+      result    = <span class="hljs-constant">HashWithIndifferentAccess</span>.new
+      choices   = <span class="hljs-constant">Array</span>.new
+      id        = question[<span class="hljs-string">'id'</span>]
+      label     = question[<span class="hljs-string">'question'</span>]
+      q_choices = choices_for_question_id(id)
+      q_choices.each_with_index <span class="hljs-keyword">do</span> |choice, c_order|
+        c_id      = choice[<span class="hljs-string">'id'</span>]
+        c_label   = choice[<span class="hljs-string">'label'</span>]
+        c_correct = (answer_for_question_id(id) == c_id)
+        c_value   = default_choice_value(c_id, c_correct, c_label, c_order)
+        choices.push(c_value)
+      <span class="hljs-keyword">end</span>
+      result[<span class="hljs-string">'id'</span>]          = id
+      result[<span class="hljs-string">'order'</span>]       = order
+      result[<span class="hljs-string">'question'</span>]    = label
+      result[<span class="hljs-string">'choices'</span>]     = choices
+      result[<span class="hljs-string">'total'</span>]       = <span class="hljs-number">0</span>.<span class="hljs-number">0</span> <span class="hljs-comment"># ADDED, if refactor.</span>
+      result[<span class="hljs-string">'percentages'</span>] = percentages_from_decimal(<span class="hljs-number">0</span>.<span class="hljs-number">0</span>)
+      r[id]                 = result
+    <span class="hljs-keyword">end</span>
+    r
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_responses</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@responses</span>.empty?
+    <span class="hljs-variable">@json</span> = query_json
+    parse_json_to_results
+    parse_aggregate_results
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_json_to_results</span></span>
+    <span class="hljs-variable">@json</span>.each <span class="hljs-keyword">do</span> |q|
+      id     = q[<span class="hljs-string">'id'</span>]
+      choice = q[<span class="hljs-string">'choice'</span>]
+      total  = q[<span class="hljs-string">'total'</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Refactor to base?</p></div></div><div class="code"><div class="wrapper">      value  = <span class="hljs-variable">@results</span>[id][<span class="hljs-string">'choices'</span>].find {|i| i.with_indifferent_access[<span class="hljs-string">'id'</span>] == choice }
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> value.present?
+      value[<span class="hljs-string">'total'</span>]         = total
+      <span class="hljs-variable">@results</span>[id][<span class="hljs-string">'total'</span>] += total <span class="hljs-comment"># Aggregate number of selected.</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_aggregate_results</span></span>
+    <span class="hljs-variable">@results</span>.each <span class="hljs-keyword">do</span> |id, data|
+      data[<span class="hljs-string">'choices'</span>].each <span class="hljs-keyword">do</span> |choice|
+        add_percentages_to_choice(id, data, choice)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_report</span></span>
+    <span class="hljs-variable">@report</span>[<span class="hljs-string">'completed'</span>] = responses_count
+    <span class="hljs-variable">@report</span>[<span class="hljs-string">'total'</span>]     = all_ownerables_count
+    <span class="hljs-variable">@report</span>[<span class="hljs-string">'average'</span>]   = report_average
+    <span class="hljs-variable">@report</span>[<span class="hljs-string">'results'</span>]   = flatten_results
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="choice-helpers">Choice helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_percentages_to_choice</span><span class="hljs-params">(id, data, choice)</span></span>
+    total_responses = data[<span class="hljs-string">'total'</span>].to_f || <span class="hljs-number">0</span>.<span class="hljs-number">0</span>
+    total_selected  = choice[<span class="hljs-string">'total'</span>].to_f || <span class="hljs-number">0</span>.<span class="hljs-number">0</span>
+    (total_responses == <span class="hljs-number">0</span>.<span class="hljs-number">0</span>) ? decimal = <span class="hljs-number">0</span>.<span class="hljs-number">0</span> <span class="hljs-symbol">:</span> decimal = (total_selected / total_responses)
+    choice[<span class="hljs-string">'percentages'</span>] = percentages_from_decimal(decimal)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="processing">Processing</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span>
+    <span class="hljs-variable">@report</span>  = <span class="hljs-constant">HashWithIndifferentAccess</span>.new
+    <span class="hljs-variable">@results</span> = parse_base_results
+    parse_responses
+    parse_report
+    <span class="hljs-variable">@report</span>
+  <span class="hljs-keyword">end</span>
+      
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

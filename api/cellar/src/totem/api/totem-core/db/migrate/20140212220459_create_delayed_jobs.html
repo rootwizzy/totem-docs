@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/db/migrate/20140212220459_create_delayed_jobs</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/db/migrate/20140212220459_create_delayed_jobs"><meta name="groc-project-path" content="src/totem/api/totem-core/db/migrate/20140212220459_create_delayed_jobs.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/db/migrate/20140212220459_create_delayed_jobs.rb">src/totem/api/totem-core/db/migrate/20140212220459_create_delayed_jobs.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CreateDelayedJobs</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Migration</span></span></span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">up</span></span>
+    create_table <span class="hljs-symbol">:delayed_jobs</span>, <span class="hljs-symbol">:force</span> =&gt; <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |table|
+      table.integer  <span class="hljs-symbol">:priority</span>, <span class="hljs-symbol">:default</span> =&gt; <span class="hljs-number">0</span>, <span class="hljs-symbol">:null</span> =&gt; <span class="hljs-keyword">false</span> <span class="hljs-comment"># Allows some jobs to jump to the front of the queue</span>
+      table.integer  <span class="hljs-symbol">:attempts</span>, <span class="hljs-symbol">:default</span> =&gt; <span class="hljs-number">0</span>, <span class="hljs-symbol">:null</span> =&gt; <span class="hljs-keyword">false</span> <span class="hljs-comment"># Provides for retries, but still fail eventually.</span>
+      table.text     <span class="hljs-symbol">:handler</span>, <span class="hljs-symbol">:null</span> =&gt; <span class="hljs-keyword">false</span>                 <span class="hljs-comment"># YAML-encoded string of the object that will do work</span>
+      table.text     <span class="hljs-symbol">:last_error</span>                              <span class="hljs-comment"># reason for last failure (See Note below)</span>
+      table.datetime <span class="hljs-symbol">:run_at</span>                                  <span class="hljs-comment"># When to run. Could be Time.zone.now for immediately, or sometime in the future.</span>
+      table.datetime <span class="hljs-symbol">:locked_at</span>                               <span class="hljs-comment"># Set when a client is working on this object</span>
+      table.datetime <span class="hljs-symbol">:failed_at</span>                               <span class="hljs-comment"># Set when all retries have failed (actually, by default, the record is deleted instead)</span>
+      table.string   <span class="hljs-symbol">:locked_by</span>                               <span class="hljs-comment"># Who is working on this object (if locked)</span>
+      table.string   <span class="hljs-symbol">:queue</span>                                   <span class="hljs-comment"># The name of the queue this job is in</span>
+      table.timestamps
+    <span class="hljs-keyword">end</span>
+
+    add_index <span class="hljs-symbol">:delayed_jobs</span>, [<span class="hljs-symbol">:priority</span>, <span class="hljs-symbol">:run_at</span>], <span class="hljs-symbol">:name</span> =&gt; <span class="hljs-string">'delayed_jobs_priority'</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">down</span></span>
+    drop_table <span class="hljs-symbol">:delayed_jobs</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

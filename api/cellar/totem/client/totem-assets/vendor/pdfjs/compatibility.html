@@ -1,0 +1,463 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-assets/vendor/pdfjs/compatibility</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-assets/vendor/pdfjs/compatibility"><meta name="groc-project-path" content="src/totem/client/totem-assets/vendor/pdfjs/compatibility.js"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-assets/vendor/pdfjs/compatibility.js">src/totem/client/totem-assets/vendor/pdfjs/compatibility.js</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>Copyright 2012 Mozilla Foundation</p>
+<p>Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<pre><code>http://www.apache.org/licenses/LICENSE-2.0</code></pre>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+globals VBArray, PDFJS </p></div></div><div class="code"><div class="wrapper"><span class="hljs-pi">
+'use strict'</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Initializing PDFJS global object here, it case if we need to change/disable
+some PDF.js features, e.g. range requests</p></div></div><div class="code"><div class="wrapper"><span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> PDFJS === <span class="hljs-string">'undefined'</span>) {
+  (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> !== <span class="hljs-string">'undefined'</span> ? <span class="hljs-built_in">window</span> : <span class="hljs-keyword">this</span>).PDFJS = {};
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Checking if the typed arrays are supported
+Support: iOS&lt;6.0 (subarray), IE&lt;10, Android&lt;4.0</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkTypedArrayCompatibility</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">Uint8Array</span> !== <span class="hljs-string">'undefined'</span>) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Support: iOS&lt;6.0</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">Uint8Array</span>.prototype.subarray === <span class="hljs-string">'undefined'</span>) {
+        <span class="hljs-built_in">Uint8Array</span>.prototype.subarray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">subarray</span>(<span class="hljs-params">start, end</span>) </span>{
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(<span class="hljs-keyword">this</span>.slice(start, end));
+        };
+        <span class="hljs-built_in">Float32Array</span>.prototype.subarray = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">subarray</span>(<span class="hljs-params">start, end</span>) </span>{
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Float32Array</span>(<span class="hljs-keyword">this</span>.slice(start, end));
+        };
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Support: Android&lt;4.1</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">Float64Array</span> === <span class="hljs-string">'undefined'</span>) {
+      <span class="hljs-built_in">window</span>.Float64Array = <span class="hljs-built_in">Float32Array</span>;
+    }
+    <span class="hljs-keyword">return</span>;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">subarray</span>(<span class="hljs-params">start, end</span>) </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> TypedArray(<span class="hljs-keyword">this</span>.slice(start, end));
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setArrayOffset</span>(<span class="hljs-params">array, offset</span>) </span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">arguments</span>.length &lt; <span class="hljs-number">2</span>) {
+      offset = <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, n = array.length; i &lt; n; ++i, ++offset) {
+      <span class="hljs-keyword">this</span>[offset] = array[i] &amp; <span class="hljs-number">0xFF</span>;
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">TypedArray</span>(<span class="hljs-params">arg1</span>) </span>{
+    <span class="hljs-keyword">var</span> result, i, n;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> arg1 === <span class="hljs-string">'number'</span>) {
+      result = [];
+      <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; arg1; ++i) {
+        result[i] = <span class="hljs-number">0</span>;
+      }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-string">'slice'</span> <span class="hljs-keyword">in</span> arg1) {
+      result = arg1.slice(<span class="hljs-number">0</span>);
+    } <span class="hljs-keyword">else</span> {
+      result = [];
+      <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>, n = arg1.length; i &lt; n; ++i) {
+        result[i] = arg1[i];
+      }
+    }
+
+    result.subarray = subarray;
+    result.buffer = result;
+    result.byteLength = result.length;
+    result.set = setArrayOffset;
+
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> arg1 === <span class="hljs-string">'object'</span> &amp;&amp; arg1.buffer) {
+      result.buffer = arg1.buffer;
+    }
+    <span class="hljs-keyword">return</span> result;
+  }
+
+  <span class="hljs-built_in">window</span>.Uint8Array = TypedArray;
+  <span class="hljs-built_in">window</span>.Int8Array = TypedArray;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>we don&#39;t need support for set, byteLength for 32-bit array
+so we can use the TypedArray as well</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-built_in">window</span>.Uint32Array = TypedArray;
+  <span class="hljs-built_in">window</span>.Int32Array = TypedArray;
+  <span class="hljs-built_in">window</span>.Uint16Array = TypedArray;
+  <span class="hljs-built_in">window</span>.Float32Array = TypedArray;
+  <span class="hljs-built_in">window</span>.Float64Array = TypedArray;
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>URL = URL || webkitURL
+Support: Safari&lt;7, Android 4.2+</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">normalizeURLObject</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">window</span>.URL) {
+    <span class="hljs-built_in">window</span>.URL = <span class="hljs-built_in">window</span>.webkitURL;
+  }
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Object.defineProperty()?
+Support: Android&lt;4.0, Safari&lt;5.1</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkObjectDefinePropertyCompatibility</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">Object</span>.defineProperty !== <span class="hljs-string">'undefined'</span>) {
+    <span class="hljs-keyword">var</span> definePropertyPossible = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">try</span> {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>some browsers (e.g. safari) cannot use defineProperty() on DOM objects
+and thus the native version is not sufficient</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-keyword">new</span> Image(), <span class="hljs-string">'id'</span>, { value: <span class="hljs-string">'test'</span> });</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>... another test for android gb browser for non-DOM objects</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> Test = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Test</span>(<span class="hljs-params"></span>) </span>{};
+      Test.prototype = { get id() { } };
+      <span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-keyword">new</span> Test(), <span class="hljs-string">'id'</span>,
+        { value: <span class="hljs-string">''</span>, configurable: <span class="hljs-literal">true</span>, enumerable: <span class="hljs-literal">true</span>, writable: <span class="hljs-literal">false</span> });
+    } <span class="hljs-keyword">catch</span> (e) {
+      definePropertyPossible = <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">if</span> (definePropertyPossible) {
+      <span class="hljs-keyword">return</span>;
+    }
+  }
+
+  <span class="hljs-built_in">Object</span>.defineProperty = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">objectDefineProperty</span>(<span class="hljs-params">obj, name, def</span>) </span>{
+    <span class="hljs-keyword">delete</span> obj[name];
+    <span class="hljs-keyword">if</span> (<span class="hljs-string">'get'</span> <span class="hljs-keyword">in</span> def) {
+      obj.__defineGetter__(name, def[<span class="hljs-string">'get'</span>]);
+    }
+    <span class="hljs-keyword">if</span> (<span class="hljs-string">'set'</span> <span class="hljs-keyword">in</span> def) {
+      obj.__defineSetter__(name, def[<span class="hljs-string">'set'</span>]);
+    }
+    <span class="hljs-keyword">if</span> (<span class="hljs-string">'value'</span> <span class="hljs-keyword">in</span> def) {
+      obj.__defineSetter__(name, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">objectDefinePropertySetter</span>(<span class="hljs-params">value</span>) </span>{
+        <span class="hljs-keyword">this</span>.__defineGetter__(name, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">objectDefinePropertyGetter</span>(<span class="hljs-params"></span>) </span>{
+          <span class="hljs-keyword">return</span> value;
+        });
+        <span class="hljs-keyword">return</span> value;
+      });
+      obj[name] = def.value;
+    }
+  };
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>No XMLHttpRequest#response?
+Support: IE&lt;11, Android &lt;4.0</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkXMLHttpRequestResponseCompatibility</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> xhrPrototype = XMLHttpRequest.prototype;
+  <span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> XMLHttpRequest();
+  <span class="hljs-keyword">if</span> (!(<span class="hljs-string">'overrideMimeType'</span> <span class="hljs-keyword">in</span> xhr)) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>IE10 might have response, but not overrideMimeType
+Support: IE10</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-built_in">Object</span>.defineProperty(xhrPrototype, <span class="hljs-string">'overrideMimeType'</span>, {
+      value: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">xmlHttpRequestOverrideMimeType</span>(<span class="hljs-params">mimeType</span>) </span>{}
+    });
+  }
+  <span class="hljs-keyword">if</span> (<span class="hljs-string">'responseType'</span> <span class="hljs-keyword">in</span> xhr) {
+    <span class="hljs-keyword">return</span>;
+  }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The worker will be using XHR, so we can save time and disable worker.</p></div></div><div class="code"><div class="wrapper">  PDFJS.disableWorker = <span class="hljs-literal">true</span>;
+
+  <span class="hljs-built_in">Object</span>.defineProperty(xhrPrototype, <span class="hljs-string">'responseType'</span>, {
+    get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">xmlHttpRequestGetResponseType</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._responseType || <span class="hljs-string">'text'</span>;
+    },
+    set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">xmlHttpRequestSetResponseType</span>(<span class="hljs-params">value</span>) </span>{
+      <span class="hljs-keyword">if</span> (value === <span class="hljs-string">'text'</span> || value === <span class="hljs-string">'arraybuffer'</span>) {
+        <span class="hljs-keyword">this</span>._responseType = value;
+        <span class="hljs-keyword">if</span> (value === <span class="hljs-string">'arraybuffer'</span> &amp;&amp;
+            <span class="hljs-keyword">typeof</span> <span class="hljs-keyword">this</span>.overrideMimeType === <span class="hljs-string">'function'</span>) {
+          <span class="hljs-keyword">this</span>.overrideMimeType(<span class="hljs-string">'text/plain; charset=x-user-defined'</span>);
+        }
+      }
+    }
+  });</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Support: IE9</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> VBArray !== <span class="hljs-string">'undefined'</span>) {
+    <span class="hljs-built_in">Object</span>.defineProperty(xhrPrototype, <span class="hljs-string">'response'</span>, {
+      get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">xmlHttpRequestResponseGet</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.responseType === <span class="hljs-string">'arraybuffer'</span>) {
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(<span class="hljs-keyword">new</span> VBArray(<span class="hljs-keyword">this</span>.responseBody).toArray());
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.responseText;
+        }
+      }
+    });
+    <span class="hljs-keyword">return</span>;
+  }
+
+  <span class="hljs-built_in">Object</span>.defineProperty(xhrPrototype, <span class="hljs-string">'response'</span>, {
+    get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">xmlHttpRequestResponseGet</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.responseType !== <span class="hljs-string">'arraybuffer'</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.responseText;
+      }
+      <span class="hljs-keyword">var</span> text = <span class="hljs-keyword">this</span>.responseText;
+      <span class="hljs-keyword">var</span> i, n = text.length;
+      <span class="hljs-keyword">var</span> result = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(n);
+      <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        result[i] = text.charCodeAt(i) &amp; <span class="hljs-number">0xFF</span>;
+      }
+      <span class="hljs-keyword">return</span> result.buffer;
+    }
+  });
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>window.btoa (base64 encode function) ?
+Support: IE&lt;10</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkWindowBtoaCompatibility</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-string">'btoa'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>) {
+    <span class="hljs-keyword">return</span>;
+  }
+
+  <span class="hljs-keyword">var</span> digits =
+    <span class="hljs-string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='</span>;
+
+  <span class="hljs-built_in">window</span>.btoa = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">windowBtoa</span>(<span class="hljs-params">chars</span>) </span>{
+    <span class="hljs-keyword">var</span> buffer = <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">var</span> i, n;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>, n = chars.length; i &lt; n; i += <span class="hljs-number">3</span>) {
+      <span class="hljs-keyword">var</span> b1 = chars.charCodeAt(i) &amp; <span class="hljs-number">0xFF</span>;
+      <span class="hljs-keyword">var</span> b2 = chars.charCodeAt(i + <span class="hljs-number">1</span>) &amp; <span class="hljs-number">0xFF</span>;
+      <span class="hljs-keyword">var</span> b3 = chars.charCodeAt(i + <span class="hljs-number">2</span>) &amp; <span class="hljs-number">0xFF</span>;
+      <span class="hljs-keyword">var</span> d1 = b1 &gt;&gt; <span class="hljs-number">2</span>, d2 = ((b1 &amp; <span class="hljs-number">3</span>) &lt;&lt; <span class="hljs-number">4</span>) | (b2 &gt;&gt; <span class="hljs-number">4</span>);
+      <span class="hljs-keyword">var</span> d3 = i + <span class="hljs-number">1</span> &lt; n ? ((b2 &amp; <span class="hljs-number">0xF</span>) &lt;&lt; <span class="hljs-number">2</span>) | (b3 &gt;&gt; <span class="hljs-number">6</span>) : <span class="hljs-number">64</span>;
+      <span class="hljs-keyword">var</span> d4 = i + <span class="hljs-number">2</span> &lt; n ? (b3 &amp; <span class="hljs-number">0x3F</span>) : <span class="hljs-number">64</span>;
+      buffer += (digits.charAt(d1) + digits.charAt(d2) +
+                 digits.charAt(d3) + digits.charAt(d4));
+    }
+    <span class="hljs-keyword">return</span> buffer;
+  };
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>window.atob (base64 encode function)?
+Support: IE&lt;10</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkWindowAtobCompatibility</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-string">'atob'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>) {
+    <span class="hljs-keyword">return</span>;
+  }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><a href="https://github.com/davidchambers/Base64.js">https://github.com/davidchambers/Base64.js</a></p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> digits =
+    <span class="hljs-string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='</span>;
+  <span class="hljs-built_in">window</span>.atob = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">input</span>) </span>{
+    input = input.replace(<span class="hljs-regexp">/=+$/</span>, <span class="hljs-string">''</span>);
+    <span class="hljs-keyword">if</span> (input.length % <span class="hljs-number">4</span> === <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'bad atob input'</span>);
+    }
+    <span class="hljs-keyword">for</span> (</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>initialize result and counters</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> bc = <span class="hljs-number">0</span>, bs, buffer, idx = <span class="hljs-number">0</span>, output = <span class="hljs-string">''</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>get next character</p></div></div><div class="code"><div class="wrapper">      buffer = input.charAt(idx++);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>character found in table?
+initialize bit storage and add its ascii value</p></div></div><div class="code"><div class="wrapper">      ~buffer &amp;&amp; (bs = bc % <span class="hljs-number">4</span> ? bs * <span class="hljs-number">64</span> + buffer : buffer,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>and if not first of each 4 characters,
+convert the first 8 bits to one ascii character</p></div></div><div class="code"><div class="wrapper">        bc++ % <span class="hljs-number">4</span>) ? output += <span class="hljs-built_in">String</span>.fromCharCode(<span class="hljs-number">255</span> &amp; bs &gt;&gt; (-<span class="hljs-number">2</span> * bc &amp; <span class="hljs-number">6</span>)) : <span class="hljs-number">0</span>
+    ) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>try to find character in table (0-63, not found =&gt; -1)</p></div></div><div class="code"><div class="wrapper">      buffer = digits.indexOf(buffer);
+    }
+    <span class="hljs-keyword">return</span> output;
+  };
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Function.prototype.bind?
+Support: Android&lt;4.0, iOS&lt;6.0</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkFunctionPrototypeBindCompatibility</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">Function</span>.prototype.bind !== <span class="hljs-string">'undefined'</span>) {
+    <span class="hljs-keyword">return</span>;
+  }
+
+  <span class="hljs-built_in">Function</span>.prototype.bind = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">functionPrototypeBind</span>(<span class="hljs-params">obj</span>) </span>{
+    <span class="hljs-keyword">var</span> fn = <span class="hljs-keyword">this</span>, headArgs = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">var</span> bound = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">functionPrototypeBindBound</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">var</span> args = headArgs.concat(<span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>));
+      <span class="hljs-keyword">return</span> fn.apply(obj, args);
+    };
+    <span class="hljs-keyword">return</span> bound;
+  };
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>HTMLElement dataset property
+Support: IE&lt;11, Safari&lt;5.1, Android&lt;4.0</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkDatasetProperty</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> div = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+  <span class="hljs-keyword">if</span> (<span class="hljs-string">'dataset'</span> <span class="hljs-keyword">in</span> div) {
+    <span class="hljs-keyword">return</span>; <span class="hljs-comment">// dataset property exists</span>
+  }
+
+  <span class="hljs-built_in">Object</span>.defineProperty(HTMLElement.prototype, <span class="hljs-string">'dataset'</span>, {
+    get: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._dataset) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._dataset;
+      }
+
+      <span class="hljs-keyword">var</span> dataset = {};
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>, jj = <span class="hljs-keyword">this</span>.attributes.length; j &lt; jj; j++) {
+        <span class="hljs-keyword">var</span> attribute = <span class="hljs-keyword">this</span>.attributes[j];
+        <span class="hljs-keyword">if</span> (attribute.name.substring(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>) !== <span class="hljs-string">'data-'</span>) {
+          <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-keyword">var</span> key = attribute.name.substring(<span class="hljs-number">5</span>).replace(<span class="hljs-regexp">/\-([a-z])/g</span>,
+          <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">all, ch</span>) </span>{
+            <span class="hljs-keyword">return</span> ch.toUpperCase();
+          });
+        dataset[key] = attribute.value;
+      }
+
+      <span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-keyword">this</span>, <span class="hljs-string">'_dataset'</span>, {
+        value: dataset,
+        writable: <span class="hljs-literal">false</span>,
+        enumerable: <span class="hljs-literal">false</span>
+      });
+      <span class="hljs-keyword">return</span> dataset;
+    },
+    enumerable: <span class="hljs-literal">true</span>
+  });
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>HTMLElement classList property
+Support: IE&lt;10, Android&lt;4.0, iOS&lt;5.0</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkClassListProperty</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> div = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">'div'</span>);
+  <span class="hljs-keyword">if</span> (<span class="hljs-string">'classList'</span> <span class="hljs-keyword">in</span> div) {
+    <span class="hljs-keyword">return</span>; <span class="hljs-comment">// classList property exists</span>
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">changeList</span>(<span class="hljs-params">element, itemName, add, remove</span>) </span>{
+    <span class="hljs-keyword">var</span> s = element.className || <span class="hljs-string">''</span>;
+    <span class="hljs-keyword">var</span> list = s.split(<span class="hljs-regexp">/\s+/g</span>);
+    <span class="hljs-keyword">if</span> (list[<span class="hljs-number">0</span>] === <span class="hljs-string">''</span>) {
+      list.shift();
+    }
+    <span class="hljs-keyword">var</span> index = list.indexOf(itemName);
+    <span class="hljs-keyword">if</span> (index &lt; <span class="hljs-number">0</span> &amp;&amp; add) {
+      list.push(itemName);
+    }
+    <span class="hljs-keyword">if</span> (index &gt;= <span class="hljs-number">0</span> &amp;&amp; remove) {
+      list.splice(index, <span class="hljs-number">1</span>);
+    }
+    element.className = list.join(<span class="hljs-string">' '</span>);
+    <span class="hljs-keyword">return</span> (index &gt;= <span class="hljs-number">0</span>);
+  }
+
+  <span class="hljs-keyword">var</span> classListPrototype = {
+    add: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>) </span>{
+      changeList(<span class="hljs-keyword">this</span>.element, name, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>);
+    },
+    contains: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>) </span>{
+      <span class="hljs-keyword">return</span> changeList(<span class="hljs-keyword">this</span>.element, name, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>);
+    },
+    remove: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>) </span>{
+      changeList(<span class="hljs-keyword">this</span>.element, name, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>);
+    },
+    toggle: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>) </span>{
+      changeList(<span class="hljs-keyword">this</span>.element, name, <span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>);
+    }
+  };
+
+  <span class="hljs-built_in">Object</span>.defineProperty(HTMLElement.prototype, <span class="hljs-string">'classList'</span>, {
+    get: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._classList) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._classList;
+      }
+
+      <span class="hljs-keyword">var</span> classList = <span class="hljs-built_in">Object</span>.create(classListPrototype, {
+        element: {
+          value: <span class="hljs-keyword">this</span>,
+          writable: <span class="hljs-literal">false</span>,
+          enumerable: <span class="hljs-literal">true</span>
+        }
+      });
+      <span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-keyword">this</span>, <span class="hljs-string">'_classList'</span>, {
+        value: classList,
+        writable: <span class="hljs-literal">false</span>,
+        enumerable: <span class="hljs-literal">false</span>
+      });
+      <span class="hljs-keyword">return</span> classList;
+    },
+    enumerable: <span class="hljs-literal">true</span>
+  });
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check console compatibility
+In older IE versions the console object is not available
+unless console is open.
+Support: IE&lt;10</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkConsoleCompatibility</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">if</span> (!(<span class="hljs-string">'console'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>)) {
+    <span class="hljs-built_in">window</span>.console = {
+      log: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{},
+      error: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{},
+      warn: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{}
+    };
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!(<span class="hljs-string">'bind'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">console</span>.log)) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>native functions in IE9 might not have bind</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-built_in">console</span>.log = (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">fn</span>) </span>{
+      <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>) </span>{ <span class="hljs-keyword">return</span> fn(msg); };
+    })(<span class="hljs-built_in">console</span>.log);
+    <span class="hljs-built_in">console</span>.error = (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">fn</span>) </span>{
+      <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>) </span>{ <span class="hljs-keyword">return</span> fn(msg); };
+    })(<span class="hljs-built_in">console</span>.error);
+    <span class="hljs-built_in">console</span>.warn = (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">fn</span>) </span>{
+      <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>) </span>{ <span class="hljs-keyword">return</span> fn(msg); };
+    })(<span class="hljs-built_in">console</span>.warn);
+  }
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check onclick compatibility in Opera
+Support: Opera&lt;15</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkOnClickCompatibility</span>(<span class="hljs-params"></span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>workaround for reported Opera bug DSK-354448:
+onclick fires on disabled buttons with opaque content</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ignoreIfTargetDisabled</span>(<span class="hljs-params">event</span>) </span>{
+    <span class="hljs-keyword">if</span> (isDisabled(event.target)) {
+      event.stopPropagation();
+    }
+  }
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isDisabled</span>(<span class="hljs-params">node</span>) </span>{
+    <span class="hljs-keyword">return</span> node.disabled || (node.parentNode &amp;&amp; isDisabled(node.parentNode));
+  }
+  <span class="hljs-keyword">if</span> (navigator.userAgent.indexOf(<span class="hljs-string">'Opera'</span>) !== -<span class="hljs-number">1</span>) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>use browser detection since we cannot feature-check this bug</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-built_in">document</span>.addEventListener(<span class="hljs-string">'click'</span>, ignoreIfTargetDisabled, <span class="hljs-literal">true</span>);
+  }
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Checks if possible to use URL.createObjectURL()
+Support: IE</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkOnBlobSupport</span>(<span class="hljs-params"></span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>sometimes IE loosing the data created with createObjectURL(), see #3977</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (navigator.userAgent.indexOf(<span class="hljs-string">'Trident'</span>) &gt;= <span class="hljs-number">0</span>) {
+    PDFJS.disableCreateObjectURL = <span class="hljs-literal">true</span>;
+  }
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Checks if navigator.language is supported</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkNavigatorLanguage</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-string">'language'</span> <span class="hljs-keyword">in</span> navigator) {
+    <span class="hljs-keyword">return</span>;
+  }
+  PDFJS.locale = navigator.userLanguage || <span class="hljs-string">'en-US'</span>;
+})();
+
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkRangeRequests</span>(<span class="hljs-params"></span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Safari has issues with cached range requests see:
+<a href="https://github.com/mozilla/pdf.js/issues/3260">https://github.com/mozilla/pdf.js/issues/3260</a>
+Last tested with version 6.0.4.
+Support: Safari 6.0+</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> isSafari = <span class="hljs-built_in">Object</span>.prototype.toString.call(
+                  <span class="hljs-built_in">window</span>.HTMLElement).indexOf(<span class="hljs-string">'Constructor'</span>) &gt; <span class="hljs-number">0</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Older versions of Android (pre 3.0) has issues with range requests, see:
+<a href="https://github.com/mozilla/pdf.js/issues/3381">https://github.com/mozilla/pdf.js/issues/3381</a>.
+Make sure that we only match webkit-based Android browsers,
+since Firefox/Fennec works as expected.
+Support: Android&lt;3.0</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> regex = <span class="hljs-regexp">/Android\s[0-2][^\d]/</span>;
+  <span class="hljs-keyword">var</span> isOldAndroid = regex.test(navigator.userAgent);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Range requests are broken in Chrome 39 and 40, <a href="https://crbug.com/442318">https://crbug.com/442318</a></p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> isChromeWithRangeBug = <span class="hljs-regexp">/Chrome\/(39|40)\./</span>.test(navigator.userAgent);
+
+  <span class="hljs-keyword">if</span> (isSafari || isOldAndroid || isChromeWithRangeBug) {
+    PDFJS.disableRange = <span class="hljs-literal">true</span>;
+    PDFJS.disableStream = <span class="hljs-literal">true</span>;
+  }
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check if the browser supports manipulation of the history.
+Support: IE&lt;10, Android&lt;4.2</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkHistoryManipulation</span>(<span class="hljs-params"></span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Android 2.x has so buggy pushState support that it was removed in
+Android 3.0 and restored as late as in Android 4.2.
+Support: Android 2.x</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (!history.pushState || navigator.userAgent.indexOf(<span class="hljs-string">'Android 2.'</span>) &gt;= <span class="hljs-number">0</span>) {
+    PDFJS.disableHistory = <span class="hljs-literal">true</span>;
+  }
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Support: IE&lt;11, Chrome&lt;21, Android&lt;4.4, Safari&lt;6</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkSetPresenceInImageData</span>(<span class="hljs-params"></span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>IE &lt; 11 will use window.CanvasPixelArray which lacks set function.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.CanvasPixelArray) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span>.CanvasPixelArray.prototype.set !== <span class="hljs-string">'function'</span>) {
+      <span class="hljs-built_in">window</span>.CanvasPixelArray.prototype.set = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">arr</span>) </span>{
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, ii = <span class="hljs-keyword">this</span>.length; i &lt; ii; i++) {
+          <span class="hljs-keyword">this</span>[i] = arr[i];
+        }
+      };
+    }
+  } <span class="hljs-keyword">else</span> {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Old Chrome and Android use an inaccessible CanvasPixelArray prototype.
+Because we cannot feature detect it, we rely on user agent parsing.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> polyfill = <span class="hljs-literal">false</span>, versionMatch;
+    <span class="hljs-keyword">if</span> (navigator.userAgent.indexOf(<span class="hljs-string">'Chrom'</span>) &gt;= <span class="hljs-number">0</span>) {
+      versionMatch = navigator.userAgent.match(<span class="hljs-regexp">/Chrom(e|ium)\/([0-9]+)\./</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Chrome &lt; 21 lacks the set function.</p></div></div><div class="code"><div class="wrapper">      polyfill = versionMatch &amp;&amp; <span class="hljs-built_in">parseInt</span>(versionMatch[<span class="hljs-number">2</span>]) &lt; <span class="hljs-number">21</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (navigator.userAgent.indexOf(<span class="hljs-string">'Android'</span>) &gt;= <span class="hljs-number">0</span>) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Android &lt; 4.4 lacks the set function.
+Android &gt;= 4.4 will contain Chrome in the user agent,
+thus pass the Chrome check above and not reach this block.</p></div></div><div class="code"><div class="wrapper">      polyfill = <span class="hljs-regexp">/Android\s[0-4][^\d]/g</span>.test(navigator.userAgent);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (navigator.userAgent.indexOf(<span class="hljs-string">'Safari'</span>) &gt;= <span class="hljs-number">0</span>) {
+      versionMatch = navigator.userAgent.
+        match(<span class="hljs-regexp">/Version\/([0-9]+)\.([0-9]+)\.([0-9]+) Safari\//</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Safari &lt; 6 lacks the set function.</p></div></div><div class="code"><div class="wrapper">      polyfill = versionMatch &amp;&amp; <span class="hljs-built_in">parseInt</span>(versionMatch[<span class="hljs-number">1</span>]) &lt; <span class="hljs-number">6</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (polyfill) {
+      <span class="hljs-keyword">var</span> contextPrototype = <span class="hljs-built_in">window</span>.CanvasRenderingContext2D.prototype;
+      <span class="hljs-keyword">var</span> createImageData = contextPrototype.createImageData;
+      contextPrototype.createImageData = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">w, h</span>) </span>{
+        <span class="hljs-keyword">var</span> imageData = createImageData.call(<span class="hljs-keyword">this</span>, w, h);
+        imageData.data.set = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">arr</span>) </span>{
+          <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, ii = <span class="hljs-keyword">this</span>.length; i &lt; ii; i++) {
+            <span class="hljs-keyword">this</span>[i] = arr[i];
+          }
+        };
+        <span class="hljs-keyword">return</span> imageData;
+      };</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>this closure will be kept referenced, so clear its vars</p></div></div><div class="code"><div class="wrapper">      contextPrototype = <span class="hljs-literal">null</span>;
+    }
+  }
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Support: IE&lt;10, Android&lt;4.0, iOS</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkRequestAnimationFrame</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fakeRequestAnimationFrame</span>(<span class="hljs-params">callback</span>) </span>{
+    <span class="hljs-built_in">window</span>.setTimeout(callback, <span class="hljs-number">20</span>);
+  }
+
+  <span class="hljs-keyword">var</span> isIOS = <span class="hljs-regexp">/(iPad|iPhone|iPod)/g</span>.test(navigator.userAgent);
+  <span class="hljs-keyword">if</span> (isIOS) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>requestAnimationFrame on iOS is broken, replacing with fake one.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-built_in">window</span>.requestAnimationFrame = fakeRequestAnimationFrame;
+    <span class="hljs-keyword">return</span>;
+  }
+  <span class="hljs-keyword">if</span> (<span class="hljs-string">'requestAnimationFrame'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>) {
+    <span class="hljs-keyword">return</span>;
+  }
+  <span class="hljs-built_in">window</span>.requestAnimationFrame =
+    <span class="hljs-built_in">window</span>.mozRequestAnimationFrame ||
+    <span class="hljs-built_in">window</span>.webkitRequestAnimationFrame ||
+    fakeRequestAnimationFrame;
+})();
+
+(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkCanvasSizeLimitation</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> isIOS = <span class="hljs-regexp">/(iPad|iPhone|iPod)/g</span>.test(navigator.userAgent);
+  <span class="hljs-keyword">var</span> isAndroid = <span class="hljs-regexp">/Android/g</span>.test(navigator.userAgent);
+  <span class="hljs-keyword">if</span> (isIOS || isAndroid) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>5MP</p></div></div><div class="code"><div class="wrapper">    PDFJS.maxCanvasPixels = <span class="hljs-number">5242880</span>;
+  }
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Disable fullscreen support for certain problematic configurations.
+Support: IE11+ (when embedded).</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkFullscreenSupport</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">var</span> isEmbeddedIE = (navigator.userAgent.indexOf(<span class="hljs-string">'Trident'</span>) &gt;= <span class="hljs-number">0</span> &amp;&amp;
+                      <span class="hljs-built_in">window</span>.parent !== <span class="hljs-built_in">window</span>);
+  <span class="hljs-keyword">if</span> (isEmbeddedIE) {
+    PDFJS.disableFullscreen = <span class="hljs-literal">true</span>;
+  }
+})();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Provides document.currentScript support
+Support: IE, Chrome&lt;29.</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkCurrentScript</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">if</span> (<span class="hljs-string">'currentScript'</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">document</span>) {
+    <span class="hljs-keyword">return</span>;
+  }
+  <span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-built_in">document</span>, <span class="hljs-string">'currentScript'</span>, {
+    get: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">var</span> scripts = <span class="hljs-built_in">document</span>.getElementsByTagName(<span class="hljs-string">'script'</span>);
+      <span class="hljs-keyword">return</span> scripts[scripts.length - <span class="hljs-number">1</span>];
+    },
+    enumerable: <span class="hljs-literal">true</span>,
+    configurable: <span class="hljs-literal">true</span>
+  });
+})();</div></div></div></div></body></html>

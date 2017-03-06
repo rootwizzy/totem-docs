@@ -1,0 +1,153 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/lib/tasks/totem_helper_module</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/lib/tasks/totem_helper_module"><meta name="groc-project-path" content="src/totem/api/totem-core/lib/tasks/totem_helper_module.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/lib/tasks/totem_helper_module.rb">src/totem/api/totem-core/lib/tasks/totem_helper_module.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">TotemHelperModule</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>NOTE: methods defined in rake tasks are NOT namepsaced to the rake namespace (rake namespaces only used for task organization).
+Putting methods in this module so will not collide with any other rake tasks.
+This module needs to be include in any rake task requireing these helper methods.</p></div></div><div class="code"><div class="wrapper">  puts <span class="hljs-string">"[env] Running in [<span class="hljs-subst">#{<span class="hljs-constant">Rails</span>.env}</span>] environment.\n"</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_message</span><span class="hljs-params">(msg, level=<span class="hljs-symbol">:info</span>)</span></span>
+    <span class="hljs-keyword">return</span> puts <span class="hljs-string">''</span> <span class="hljs-keyword">if</span> msg.blank?
+    msg.each_line <span class="hljs-keyword">do</span> |m|
+      m.blank? ? puts(<span class="hljs-string">''</span>) <span class="hljs-symbol">:</span> puts(<span class="hljs-string">"[<span class="hljs-subst">#{level}</span>] "</span> + m)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_eager_load</span></span>
+    totem_eager_load_application
+    totem_eager_load_engines
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_eager_load_application</span></span>
+    <span class="hljs-constant">::Rails</span>.application.eager_load!
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_eager_load_engines</span></span>
+    <span class="hljs-constant">::Totem::Settings</span>.engines.each <span class="hljs-keyword">do</span> |engine|
+       engine.eager_load!
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_framework_name</span></span>
+    <span class="hljs-constant">::Totem::Settings</span>.registered.framework_name
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Database</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_seed_order_all</span></span>
+    <span class="hljs-constant">::Totem::Settings</span>.seed.order_all
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_seed_order</span><span class="hljs-params">(name)</span></span>
+    order = <span class="hljs-constant">::Totem::Settings</span>.seed.order(name) || []
+    order.select { |e| e.starts_with?(name)}
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_engine</span></span>
+    <span class="hljs-constant">::Totem::Settings</span>.engine
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_registered_engines</span></span>
+    <span class="hljs-variable">@totem_registered_engines</span> ||= <span class="hljs-constant">::Totem::Settings</span>.registered.engines
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_engines</span></span>
+    <span class="hljs-variable">@totem_engines</span> ||= <span class="hljs-constant">::Totem::Settings</span>.engines
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_engine_name</span><span class="hljs-params">(engine)</span></span>
+    totem_engine.engine_name(engine)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_engine_by_name</span><span class="hljs-params">(name)</span></span>
+    engine = totem_engine.get_by_name(name)
+    raise <span class="hljs-string">"*ERROR* Engine [<span class="hljs-subst">#{name}</span>] not found."</span>              <span class="hljs-keyword">if</span> engine.blank?
+    raise <span class="hljs-string">"*ERROR* More than one engine matched [<span class="hljs-subst">#{name}</span>]."</span>  <span class="hljs-keyword">if</span> engine.length &gt; <span class="hljs-number">1</span>
+    engine.first
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_engines_by_starts_with</span><span class="hljs-params">(name)</span></span>
+    engines = totem_engine.get_by_starts_with(name)
+    raise <span class="hljs-string">"*ERROR* No engines start with [<span class="hljs-subst">#{name}</span>]."</span>   <span class="hljs-keyword">if</span> engines.blank?
+    engines
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_has_migration_folder?</span><span class="hljs-params">(engine)</span></span>
+    found_folder = <span class="hljs-keyword">false</span>
+    root  = engine.root
+    paths = engine.config.paths[<span class="hljs-string">'db/migrate'</span>]
+    paths.each <span class="hljs-keyword">do</span> |path|
+      dir = <span class="hljs-constant">File</span>.join(root, path)
+      found_folder = <span class="hljs-constant">File</span>.directory?(dir)
+      <span class="hljs-keyword">break</span> <span class="hljs-keyword">if</span> found_folder
+    <span class="hljs-keyword">end</span>
+    found_folder
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_print_seed_order_all</span></span>
+    totem_print_seed_order(totem_seed_order_all)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_print_seed_order</span><span class="hljs-params">(order=seed_order)</span></span>
+    order.each_with_index <span class="hljs-keyword">do</span> |name, index|
+      count = <span class="hljs-string">"<span class="hljs-subst">#{index+<span class="hljs-number">1</span>}</span>."</span>.ljust(<span class="hljs-number">3</span>)
+      totem_message <span class="hljs-string">"<span class="hljs-subst">#{count}</span> <span class="hljs-subst">#{name}</span>"</span>
+    <span class="hljs-keyword">end</span>
+    totem_message <span class="hljs-string">''</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Associations</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_output_association_warnings</span></span>
+    warnings = <span class="hljs-constant">::Totem::Settings</span>.associations.warnings
+    <span class="hljs-keyword">if</span> warnings.blank?
+      puts <span class="hljs-string">"\n*** No Warnings ***\n\n"</span>
+    <span class="hljs-keyword">else</span>
+      puts <span class="hljs-string">"\n*** <span class="hljs-subst">#{warnings.length}</span> WARNING(S) ***\n"</span>
+      warnings.each_with_index <span class="hljs-keyword">do</span> |warning, index|
+        count = <span class="hljs-string">"<span class="hljs-subst">#{index+<span class="hljs-number">1</span>}</span>."</span>
+        puts <span class="hljs-string">"<span class="hljs-subst">#{count.ljust(<span class="hljs-number">5</span>)}</span> <span class="hljs-subst">#{warning}</span>"</span>
+      <span class="hljs-keyword">end</span>
+      puts <span class="hljs-string">"\n"</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Index</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_database_connection</span>;</span> <span class="hljs-constant">ActiveRecord::Base</span>.connection; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_database_tables</span><span class="hljs-params">(db_connection=database_connection)</span>;</span> db_connection.tables; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_table_id_columns</span><span class="hljs-params">(table, db_connection=database_connection)</span></span>
+    id_columns   = db_connection.columns(table).collect(&amp;<span class="hljs-symbol">:name</span>).select {|c| c.end_with?(<span class="hljs-string">'_id'</span>)}
+    type_columns = db_connection.columns(table).collect(&amp;<span class="hljs-symbol">:name</span>).select {|c| c.end_with?(<span class="hljs-string">'_type'</span>) &amp;&amp; id_columns.<span class="hljs-keyword">include</span>?(c.sub(<span class="hljs-regexp">/_type$/</span>, <span class="hljs-string">'_id'</span>))}
+    id_columns + type_columns
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_table_columns_with_index</span><span class="hljs-params">(table, db_connection=database_connection)</span></span>
+    db_connection.indexes(table).collect(&amp;<span class="hljs-symbol">:columns</span>).flatten.uniq
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_output_header</span><span class="hljs-params">(text=<span class="hljs-string">''</span>)</span></span>
+    puts <span class="hljs-string">"\n-- <span class="hljs-subst">#{text}</span> --\n\n"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_output_index_columns</span><span class="hljs-params">(table, columns, all=<span class="hljs-keyword">false</span>)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> columns.blank? &amp;&amp; !all
+    puts <span class="hljs-string">"  <span class="hljs-subst">#{table}</span>:"</span>
+    columns.push(<span class="hljs-string">'None'</span>) <span class="hljs-keyword">if</span> columns.blank?
+    columns.each <span class="hljs-keyword">do</span> |column|
+      type_column = column.end_with?(<span class="hljs-string">'able_id'</span>,<span class="hljs-string">'able_type'</span>) ? <span class="hljs-string">'*'</span> <span class="hljs-symbol">:</span> <span class="hljs-string">''</span>
+      puts <span class="hljs-string">"    <span class="hljs-subst">#{type_column}</span><span class="hljs-subst">#{column}</span>"</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ERD</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_erd_options</span></span>
+    {
+      <span class="hljs-symbol">title:</span>        <span class="hljs-string">'Default ERD Title'</span>,
+      <span class="hljs-symbol">filename:</span>     <span class="hljs-string">'default_erd'</span>,
+      <span class="hljs-symbol">filetype:</span>     <span class="hljs-symbol">:pdf</span>,
+      <span class="hljs-symbol">orientation:</span>  <span class="hljs-symbol">:vertical</span>,
+      <span class="hljs-symbol">disconnected:</span> <span class="hljs-keyword">true</span>,
+      <span class="hljs-symbol">indirect:</span>     <span class="hljs-keyword">true</span>,
+      <span class="hljs-symbol">notation:</span>     <span class="hljs-symbol">:simple</span>,
+      <span class="hljs-symbol">polymorphism:</span> <span class="hljs-keyword">true</span>,
+      <span class="hljs-symbol">warn:</span>         <span class="hljs-keyword">true</span>,
+      <span class="hljs-symbol">attributes:</span>   [<span class="hljs-symbol">:content</span>, <span class="hljs-symbol">:primary_keys</span>, <span class="hljs-symbol">:foreign_keys</span>, <span class="hljs-symbol">:timestamps</span>]
+    }
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_erb_filename_location</span><span class="hljs-params">(filename)</span></span>
+    path = <span class="hljs-constant">File</span>.join(<span class="hljs-constant">::Rails</span>.root, <span class="hljs-string">'db'</span>, filename)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_erb_select_models</span><span class="hljs-params">(name)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> name.blank?
+    name_class       = name.classify
+    model_classes    = <span class="hljs-constant">ActiveRecord::Base</span>.descendants
+    model_classes.select {|m| m.name.starts_with?(name_class)}.collect {|m| m.name}
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

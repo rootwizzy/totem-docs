@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/tracker/user</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/tracker/user"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/tracker/user.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/tracker/user.coffee">src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/tracker/user.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-readiness-assurance-instructor/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">send_message</span>: <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">actions</span>:
+
+    <span class="hljs-attribute">toggle_send_message</span>: <span class="hljs-function">-&gt;</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'send_message'</span>)
+        <span class="hljs-property">@send</span> <span class="hljs-string">'done'</span>
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@rad</span> = <span class="hljs-property">@am</span>.rad(<span class="hljs-attribute">name</span>: <span class="hljs-string">'MSG'</span>)
+        <span class="hljs-property">@rad</span>.set <span class="hljs-string">'users'</span>, [<span class="hljs-property">@user</span>]
+        <span class="hljs-property">@set</span> <span class="hljs-string">'send_message'</span>, <span class="hljs-literal">true</span>
+
+    <span class="hljs-attribute">send</span>: <span class="hljs-function">-&gt;</span>
+      message = <span class="hljs-property">@rad</span>.get_data()
+      <span class="hljs-property">@am</span>.send_message_to_users({message})
+      <span class="hljs-property">@send</span> <span class="hljs-string">'done'</span>
+
+    <span class="hljs-attribute">done</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'send_message'</span>, <span class="hljs-literal">false</span></div></div></div></div></body></html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/lib/totem/core/support/engines</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/lib/totem/core/support/engines"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/support/engines.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/support/engines.rb">src/totem/api/totem-core/app/lib/totem/core/support/engines.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Support</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Engines</span></span>
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:totem_settings</span>
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:engine_instances</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Should always use the public methods to access these instance variables.
+Listing the instance variables used to provide easily access if needed.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:engine_names</span>
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:engine_name_and_class</span>
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:engine_name_and_engine</span>
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:engine_path_and_name</span>
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:engine_association_paths</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(env)</span></span>
+          <span class="hljs-variable">@totem_settings</span>  = env
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>define engine.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine</span>;</span> <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>array of totem engine instances</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engines</span></span>
+          <span class="hljs-variable">@engine_instances</span> ||= <span class="hljs-constant">::Rails::Engine</span>.subclasses.map(&amp;<span class="hljs-symbol">:instance</span>).select {|e| is_registered_platform_engine?(e)}
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_registered_platform_engine?</span><span class="hljs-params">(e)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> e.respond_to?(<span class="hljs-symbol">:engine_name</span>)
+          totem_settings.registered.engines.<span class="hljs-keyword">include</span>?(e.engine_name)
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Engine Information</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>array of string engine names (engine_name setting): [&#39;totem_core&#39;, &#39;totem_authentication&#39;, ...]</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">names</span></span>
+          <span class="hljs-variable">@engine_names</span> ||= engines.collect {|e| engine_name(e)}
+          engine_names.dup
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>hash of string engine name with engine instance; used in adding routes</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">name_and_engine</span></span>
+          <span class="hljs-variable">@engine_name_and_engine</span> ||= <span class="hljs-constant">Hash</span>[*engines.collect {|e| [engine_name(e), e]}.flatten]
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>hash of engine_name: engine_class: &#39;totem_core&#39; =&gt; &#39;Totem::Core&#39;, ...; used by engine validation</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">name_and_class</span></span>
+          <span class="hljs-variable">@engine_name_and_class</span> ||= <span class="hljs-constant">Hash</span>[*engines.collect { |e| [engine_name(e), engine_class_name(e)] }.flatten]
+          engine_name_and_class.dup
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>hash of engine paths and engine names: &#39;totem/authentication/user&#39; =&gt; totem_authentication_user ...</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">path_and_name</span></span>
+          <span class="hljs-variable">@engine_path_and_name</span> ||= <span class="hljs-constant">Hash</span>[*engines.collect { |e| [engine_class_name(e).underscore, engine_name(e)] }.flatten]
+          engine_path_and_name.dup
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>array of engine association.yml file paths (full paths)</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">association_paths</span></span>
+          <span class="hljs-variable">@engine_association_paths</span> ||= get_model_association_paths
+          engine_association_paths.dup
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>force instance variables to be re-populated from current engines array on next request.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reset!</span></span>
+          <span class="hljs-variable">@engine_names</span>             = <span class="hljs-keyword">nil</span>
+          <span class="hljs-variable">@engine_name_and_engine</span>   = <span class="hljs-keyword">nil</span>
+          <span class="hljs-variable">@engine_name_and_class</span>    = <span class="hljs-keyword">nil</span>
+          <span class="hljs-variable">@engine_path_and_name</span>     = <span class="hljs-keyword">nil</span>
+          <span class="hljs-variable">@engine_association_paths</span> = <span class="hljs-keyword">nil</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>force engines instances to be re-populated on next request.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engines_reset!</span></span>
+          <span class="hljs-variable">@engine_instances</span> = <span class="hljs-keyword">nil</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Public Engine Helpers</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>engine name from the engine instance</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_name</span><span class="hljs-params">(e)</span></span>
+          e.engine_name
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>engine class name from the engine instance</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_class_name</span><span class="hljs-params">(e)</span></span>
+          e.<span class="hljs-keyword">class</span>.name.deconstantize  <span class="hljs-comment"># remove the ::Engine part</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>engine is loaded</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">loaded?</span><span class="hljs-params">(name)</span></span>
+          names.<span class="hljs-keyword">include</span>?(name)
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>convert engine class, path to engine name</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">to_engine_name</span><span class="hljs-params">(name)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> name.instance_of?(<span class="hljs-constant">String</span>)
+          name.underscore.gsub(<span class="hljs-regexp">/\//</span>, <span class="hljs-string">'_'</span>)
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Engine Finders</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>array of engine &#39;instances&#39; matching the name (should only be one)</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_by_name</span><span class="hljs-params">(name)</span></span>
+          engines.select {|e| engine_name(e) == name}
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>array of engine &#39;names&#39; matching name</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_by_name</span><span class="hljs-params">(name)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> name.present?
+          names.select {|e| e == name}
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>array of engine &#39;names&#39; starting with name; used by wildcard matches</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_by_starts_with</span><span class="hljs-params">(name)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> name.present?
+          names.select {|e| e.starts_with?(name)}
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Current Engine and Conversions</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>To get the current platform name, first get the &#39;engine name&#39; from the table_name_prefix
+class method, then lookup the engine&#39;s registered platform name.
+Note: If the engine is not registered, will return nil.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_platform_name</span><span class="hljs-params">(object)</span></span>
+          klass = object.kind_of?(<span class="hljs-constant">Class</span>) ? object <span class="hljs-symbol">:</span> object.<span class="hljs-keyword">class</span>
+          name  = get_table_name_prefix(klass)
+          name  = name.dup.chop
+          totem_settings.registered.engine_platform_name(name)
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If platform name is set in a module method &#39;totem_platform_name&#39; rather than engine option.
+def current_platform_name(object)
+  klass = object.kind_of?(Class) ? object : object.class
+  (klass.parents.detect{ |p| p.respond_to?(:totem_platform_name) } || self).totem_platform_name
+end</p></div></div><div class="code"><div class="wrapper">        private</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Helper Methods</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_table_name_prefix</span><span class="hljs-params">(klass)</span></span>
+          (klass.parents.detect{ |p| p.respond_to?(<span class="hljs-symbol">:table_name_prefix</span>) } || <span class="hljs-keyword">self</span>).table_name_prefix
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_railtie_namespace</span><span class="hljs-params">(klass)</span></span>
+          (klass.parents.detect{ |p| p.respond_to?(<span class="hljs-symbol">:table_name_prefix</span>) } || <span class="hljs-keyword">self</span>).railtie_namespace
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_model_association_paths</span></span>
+          file_name  = totem_settings.option.db_associations_filename
+          error <span class="hljs-string">"The associations file name is blank."</span>  <span class="hljs-keyword">if</span> file_name.blank?
+          file_paths = []
+          engines.each <span class="hljs-keyword">do</span> |engine|
+            db_paths = engine.config.paths[<span class="hljs-string">'db'</span>]
+            db_paths.each <span class="hljs-keyword">do</span> |path|
+              db_path    = <span class="hljs-constant">Pathname</span>.new(<span class="hljs-constant">File</span>.join(engine.root, path))
+              assoc_file = <span class="hljs-constant">File</span>.join(db_path, file_name)
+              <span class="hljs-keyword">if</span> <span class="hljs-constant">File</span>.exists?(assoc_file)
+                file_paths.push assoc_file
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+          file_paths.flatten.compact
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">Shared</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

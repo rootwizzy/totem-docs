@@ -1,0 +1,1118 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-assets/vendor/file_upload/jquery.fileupload</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-assets/vendor/file_upload/jquery.fileupload"><meta name="groc-project-path" content="src/totem/client/totem-assets/vendor/file_upload/jquery.fileupload.js"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-assets/vendor/file_upload/jquery.fileupload.js">src/totem/client/totem-assets/vendor/file_upload/jquery.fileupload.js</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>jQuery File Upload Plugin 5.34.0
+<a href="https://github.com/blueimp/jQuery-File-Upload">https://github.com/blueimp/jQuery-File-Upload</a></p>
+<p>Copyright 2010, Sebastian Tschan
+<a href="https://blueimp.net">https://blueimp.net</a></p>
+<p>Licensed under the MIT license:
+<a href="http://www.opensource.org/licenses/MIT">http://www.opensource.org/licenses/MIT</a></p></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">/*jslint nomen: true, unparam: true, regexp: true */</span>
+<span class="hljs-comment">/*global define, window, document, location, File, Blob, FormData */</span>
+
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">factory</span>) </span>{
+<span class="hljs-pi">    'use strict'</span>;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">'function'</span> &amp;&amp; define.amd) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Register as an anonymous AMD module:</p></div></div><div class="code"><div class="wrapper">        define([
+            <span class="hljs-string">'jquery'</span>,
+            <span class="hljs-string">'jquery.ui.widget'</span>
+        ], factory);
+    } <span class="hljs-keyword">else</span> {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Browser globals:</p></div></div><div class="code"><div class="wrapper">        factory(<span class="hljs-built_in">window</span>.jQuery);
+    }
+}(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$</span>) </span>{
+<span class="hljs-pi">    'use strict'</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Detect file input support, based on
+<a href="http://viljamis.com/blog/2012/file-upload-support-on-mobile/">http://viljamis.com/blog/2012/file-upload-support-on-mobile/</a></p></div></div><div class="code"><div class="wrapper">    $.support.fileInput = !(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Handle devices which give false positives for the feature detection:</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-string">'(Android (1\\.[0156]|2\\.[01]))'</span> +
+            <span class="hljs-string">'|(Windows Phone (OS 7|8\\.0))|(XBLWP)|(ZuneWP)|(WPDesktop)'</span> +
+            <span class="hljs-string">'|(w(eb)?OSBrowser)|(webOS)'</span> +
+            <span class="hljs-string">'|(Kindle/(1\\.0|2\\.[05]|3\\.0))'</span>
+    ).test(<span class="hljs-built_in">window</span>.navigator.userAgent) ||</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Feature detection for all other devices:</p></div></div><div class="code"><div class="wrapper">        $(<span class="hljs-string">'&lt;input type="file"&gt;'</span>).prop(<span class="hljs-string">'disabled'</span>));</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The FileReader API is not actually used, but works as feature detection,
+as e.g. Safari supports XHR file uploads via the FormData API,
+but not non-multipart XHR file uploads:</p></div></div><div class="code"><div class="wrapper">    $.support.xhrFileUpload = !!(<span class="hljs-built_in">window</span>.XMLHttpRequestUpload &amp;&amp; <span class="hljs-built_in">window</span>.FileReader);
+    $.support.xhrFormDataFileUpload = !!<span class="hljs-built_in">window</span>.FormData;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Detect support for Blob slicing (required for chunked uploads):</p></div></div><div class="code"><div class="wrapper">    $.support.blobSlice = <span class="hljs-built_in">window</span>.Blob &amp;&amp; (Blob.prototype.slice ||
+        Blob.prototype.webkitSlice || Blob.prototype.mozSlice);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The fileupload widget listens for change events on file input fields defined
+via fileInput setting and paste or drop events of the given dropZone.
+In addition to the default jQuery Widget methods, the fileupload widget
+exposes the &quot;add&quot; and &quot;send&quot; methods, to add or directly send files using
+the fileupload API.
+By default, files added via file input selection, paste, drag &amp; drop or
+&quot;add&quot; method are uploaded immediately, but it is possible to override
+the &quot;add&quot; callback option to queue file uploads.</p></div></div><div class="code"><div class="wrapper">    $.widget(<span class="hljs-string">'blueimp.fileupload'</span>, {
+
+        options: {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The drop target element(s), by the default the complete document.
+Set to null to disable drag &amp; drop support:</p></div></div><div class="code"><div class="wrapper">            dropZone: $(<span class="hljs-built_in">document</span>),</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The paste target element(s), by the default the complete document.
+Set to null to disable paste support:</p></div></div><div class="code"><div class="wrapper">            pasteZone: $(<span class="hljs-built_in">document</span>),</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The file input field(s), that are listened to for change events.
+If undefined, it is set to the file input fields inside
+of the widget element on plugin initialization.
+Set to null to disable the change listener.</p></div></div><div class="code"><div class="wrapper">            fileInput: <span class="hljs-literal">undefined</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>By default, the file input field is replaced with a clone after
+each input field change event. This is required for iframe transport
+queues and allows change events to be fired for the same file
+selection, but can be disabled by setting the following option to false:</p></div></div><div class="code"><div class="wrapper">            replaceFileInput: <span class="hljs-literal">true</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The parameter name for the file form data (the request argument name).
+If undefined or empty, the name property of the file input field is
+used, or &quot;files[]&quot; if the file input name property is also empty,
+can be a string or an array of strings:</p></div></div><div class="code"><div class="wrapper">            paramName: <span class="hljs-literal">undefined</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>By default, each file of a selection is uploaded using an individual
+request for XHR type uploads. Set to false to upload file
+selections in one request each:</p></div></div><div class="code"><div class="wrapper">            singleFileUploads: <span class="hljs-literal">true</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>To limit the number of files uploaded with one XHR request,
+set the following option to an integer greater than 0:</p></div></div><div class="code"><div class="wrapper">            limitMultiFileUploads: <span class="hljs-literal">undefined</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the following option to true to issue all file upload requests
+in a sequential order:</p></div></div><div class="code"><div class="wrapper">            sequentialUploads: <span class="hljs-literal">false</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>To limit the number of concurrent uploads,
+set the following option to an integer greater than 0:</p></div></div><div class="code"><div class="wrapper">            limitConcurrentUploads: <span class="hljs-literal">undefined</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the following option to true to force iframe transport uploads:</p></div></div><div class="code"><div class="wrapper">            forceIframeTransport: <span class="hljs-literal">false</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the following option to the location of a redirect url on the
+origin server, for cross-domain iframe transport uploads:</p></div></div><div class="code"><div class="wrapper">            redirect: <span class="hljs-literal">undefined</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The parameter name for the redirect url, sent as part of the form
+data and set to &#39;redirect&#39; if this option is empty:</p></div></div><div class="code"><div class="wrapper">            redirectParamName: <span class="hljs-literal">undefined</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the following option to the location of a postMessage window,
+to enable postMessage transport uploads:</p></div></div><div class="code"><div class="wrapper">            postMessage: <span class="hljs-literal">undefined</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>By default, XHR file uploads are sent as multipart/form-data.
+The iframe transport is always using multipart/form-data.
+Set to false to enable non-multipart XHR uploads:</p></div></div><div class="code"><div class="wrapper">            multipart: <span class="hljs-literal">true</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>To upload large files in smaller chunks, set the following option
+to a preferred maximum chunk size. If set to 0, null or undefined,
+or the browser does not support the required Blob API, files will
+be uploaded as a whole.</p></div></div><div class="code"><div class="wrapper">            maxChunkSize: <span class="hljs-literal">undefined</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>When a non-multipart upload or a chunked multipart upload has been
+aborted, this option can be used to resume the upload by setting
+it to the size of the already uploaded bytes. This option is most
+useful when modifying the options object inside of the &quot;add&quot; or
+&quot;send&quot; callbacks, as the options are cloned for each file upload.</p></div></div><div class="code"><div class="wrapper">            uploadedBytes: <span class="hljs-literal">undefined</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>By default, failed (abort or error) file uploads are removed from the
+global progress calculation. Set the following option to false to
+prevent recalculating the global progress data:</p></div></div><div class="code"><div class="wrapper">            recalculateProgress: <span class="hljs-literal">true</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Interval in milliseconds to calculate and trigger progress events:</p></div></div><div class="code"><div class="wrapper">            progressInterval: <span class="hljs-number">100</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Interval in milliseconds to calculate progress bitrate:</p></div></div><div class="code"><div class="wrapper">            bitrateInterval: <span class="hljs-number">500</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>By default, uploads are started automatically when adding files:</p></div></div><div class="code"><div class="wrapper">            autoUpload: <span class="hljs-literal">true</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Error and info messages:</p></div></div><div class="code"><div class="wrapper">            messages: {
+                uploadedBytes: <span class="hljs-string">'Uploaded bytes exceed file size'</span>
+            },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Translation function, gets the message key to be translated
+and an object with context specific data as arguments:</p></div></div><div class="code"><div class="wrapper">            i18n: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">message, context</span>) </span>{
+                message = <span class="hljs-keyword">this</span>.messages[message] || message.toString();
+                <span class="hljs-keyword">if</span> (context) {
+                    $.each(context, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, value</span>) </span>{
+                        message = message.replace(<span class="hljs-string">'{'</span> + key + <span class="hljs-string">'}'</span>, value);
+                    });
+                }
+                <span class="hljs-keyword">return</span> message;
+            },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Additional form data to be sent along with the file uploads can be set
+using this option, which accepts an array of objects with name and
+value properties, a function returning such an array, a FormData
+object (for XHR file uploads), or a simple object.
+The form of the first fileInput is given as parameter to the function:</p></div></div><div class="code"><div class="wrapper">            formData: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">form</span>) </span>{
+                <span class="hljs-keyword">return</span> form.serializeArray();
+            },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The add callback is invoked as soon as files are added to the fileupload
+widget (via file input selection, drag &amp; drop, paste or add API call).
+If the singleFileUploads option is enabled, this callback will be
+called once for each file in the selection for XHR file uploads, else
+once for each file selection.</p>
+<p>The upload starts when the submit method is invoked on the data parameter.
+The data object contains a files property holding the added files
+and allows you to override plugin options as well as define ajax settings.</p>
+<p>Listeners for this callback can also be bound the following way:
+.bind(&#39;fileuploadadd&#39;, func);</p>
+<p>data.submit() returns a Promise object and allows to attach additional
+handlers using jQuery&#39;s Deferred callbacks:
+data.submit().done(func).fail(func).always(func);</p></div></div><div class="code"><div class="wrapper">            add: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e, data</span>) </span>{
+                <span class="hljs-keyword">if</span> (e.isDefaultPrevented()) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+                }
+                <span class="hljs-keyword">if</span> (data.autoUpload || (data.autoUpload !== <span class="hljs-literal">false</span> &amp;&amp;
+                        $(<span class="hljs-keyword">this</span>).fileupload(<span class="hljs-string">'option'</span>, <span class="hljs-string">'autoUpload'</span>))) {
+                    data.process().done(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                        data.submit();
+                    });
+                }
+            },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Other callbacks:</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for the submit event of each file upload:
+submit: function (e, data) {}, // .bind(&#39;fileuploadsubmit&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for the start of each file upload request:
+send: function (e, data) {}, // .bind(&#39;fileuploadsend&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for successful uploads:
+done: function (e, data) {}, // .bind(&#39;fileuploaddone&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for failed (abort or error) uploads:
+fail: function (e, data) {}, // .bind(&#39;fileuploadfail&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for completed (success, abort or error) requests:
+always: function (e, data) {}, // .bind(&#39;fileuploadalways&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for upload progress events:
+progress: function (e, data) {}, // .bind(&#39;fileuploadprogress&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for global upload progress events:
+progressall: function (e, data) {}, // .bind(&#39;fileuploadprogressall&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for uploads start, equivalent to the global ajaxStart event:
+start: function (e) {}, // .bind(&#39;fileuploadstart&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for uploads stop, equivalent to the global ajaxStop event:
+stop: function (e) {}, // .bind(&#39;fileuploadstop&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for change events of the fileInput(s):
+change: function (e, data) {}, // .bind(&#39;fileuploadchange&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for paste events to the pasteZone(s):
+paste: function (e, data) {}, // .bind(&#39;fileuploadpaste&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for drop events of the dropZone(s):
+drop: function (e, data) {}, // .bind(&#39;fileuploaddrop&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for dragover events of the dropZone(s):
+dragover: function (e) {}, // .bind(&#39;fileuploaddragover&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for the start of each chunk upload request:
+chunksend: function (e, data) {}, // .bind(&#39;fileuploadchunksend&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for successful chunk uploads:
+chunkdone: function (e, data) {}, // .bind(&#39;fileuploadchunkdone&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for failed (abort or error) chunk uploads:
+chunkfail: function (e, data) {}, // .bind(&#39;fileuploadchunkfail&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback for completed (success, abort or error) chunk upload requests:
+chunkalways: function (e, data) {}, // .bind(&#39;fileuploadchunkalways&#39;, func);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The plugin options are used as settings object for the ajax calls.
+The following are jQuery ajax settings required for the file uploads:</p></div></div><div class="code"><div class="wrapper">            processData: <span class="hljs-literal">false</span>,
+            contentType: <span class="hljs-literal">false</span>,
+            cache: <span class="hljs-literal">false</span>
+        },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A list of options that require reinitializing event listeners and/or
+special initialization code:</p></div></div><div class="code"><div class="wrapper">        _specialOptions: [
+            <span class="hljs-string">'fileInput'</span>,
+            <span class="hljs-string">'dropZone'</span>,
+            <span class="hljs-string">'pasteZone'</span>,
+            <span class="hljs-string">'multipart'</span>,
+            <span class="hljs-string">'forceIframeTransport'</span>
+        ],
+
+        _blobSlice: $.support.blobSlice &amp;&amp; <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">var</span> slice = <span class="hljs-keyword">this</span>.slice || <span class="hljs-keyword">this</span>.webkitSlice || <span class="hljs-keyword">this</span>.mozSlice;
+            <span class="hljs-keyword">return</span> slice.apply(<span class="hljs-keyword">this</span>, <span class="hljs-built_in">arguments</span>);
+        },
+
+        _BitrateTimer: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">this</span>.timestamp = ((<span class="hljs-built_in">Date</span>.now) ? <span class="hljs-built_in">Date</span>.now() : (<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()).getTime());
+            <span class="hljs-keyword">this</span>.loaded = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">this</span>.bitrate = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">this</span>.getBitrate = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">now, loaded, interval</span>) </span>{
+                <span class="hljs-keyword">var</span> timeDiff = now - <span class="hljs-keyword">this</span>.timestamp;
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.bitrate || !interval || timeDiff &gt; interval) {
+                    <span class="hljs-keyword">this</span>.bitrate = (loaded - <span class="hljs-keyword">this</span>.loaded) * (<span class="hljs-number">1000</span> / timeDiff) * <span class="hljs-number">8</span>;
+                    <span class="hljs-keyword">this</span>.loaded = loaded;
+                    <span class="hljs-keyword">this</span>.timestamp = now;
+                }
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.bitrate;
+            };
+        },
+
+        _isXHRUpload: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{
+            <span class="hljs-keyword">return</span> !options.forceIframeTransport &amp;&amp;
+                ((!options.multipart &amp;&amp; $.support.xhrFileUpload) ||
+                $.support.xhrFormDataFileUpload);
+        },
+
+        _getFormData: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{
+            <span class="hljs-keyword">var</span> formData;
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> options.formData === <span class="hljs-string">'function'</span>) {
+                <span class="hljs-keyword">return</span> options.formData(options.form);
+            }
+            <span class="hljs-keyword">if</span> ($.isArray(options.formData)) {
+                <span class="hljs-keyword">return</span> options.formData;
+            }
+            <span class="hljs-keyword">if</span> ($.type(options.formData) === <span class="hljs-string">'object'</span>) {
+                formData = [];
+                $.each(options.formData, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">name, value</span>) </span>{
+                    formData.push({name: name, value: value});
+                });
+                <span class="hljs-keyword">return</span> formData;
+            }
+            <span class="hljs-keyword">return</span> [];
+        },
+
+        _getTotal: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">files</span>) </span>{
+            <span class="hljs-keyword">var</span> total = <span class="hljs-number">0</span>;
+            $.each(files, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index, file</span>) </span>{
+                total += file.size || <span class="hljs-number">1</span>;
+            });
+            <span class="hljs-keyword">return</span> total;
+        },
+
+        _initProgressObject: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
+            <span class="hljs-keyword">var</span> progress = {
+                loaded: <span class="hljs-number">0</span>,
+                total: <span class="hljs-number">0</span>,
+                bitrate: <span class="hljs-number">0</span>
+            };
+            <span class="hljs-keyword">if</span> (obj._progress) {
+                $.extend(obj._progress, progress);
+            } <span class="hljs-keyword">else</span> {
+                obj._progress = progress;
+            }
+        },
+
+        _initResponseObject: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>{
+            <span class="hljs-keyword">var</span> prop;
+            <span class="hljs-keyword">if</span> (obj._response) {
+                <span class="hljs-keyword">for</span> (prop <span class="hljs-keyword">in</span> obj._response) {
+                    <span class="hljs-keyword">if</span> (obj._response.hasOwnProperty(prop)) {
+                        <span class="hljs-keyword">delete</span> obj._response[prop];
+                    }
+                }
+            } <span class="hljs-keyword">else</span> {
+                obj._response = {};
+            }
+        },
+
+        _onProgress: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e, data</span>) </span>{
+            <span class="hljs-keyword">if</span> (e.lengthComputable) {
+                <span class="hljs-keyword">var</span> now = ((<span class="hljs-built_in">Date</span>.now) ? <span class="hljs-built_in">Date</span>.now() : (<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>()).getTime()),
+                    loaded;
+                <span class="hljs-keyword">if</span> (data._time &amp;&amp; data.progressInterval &amp;&amp;
+                        (now - data._time &lt; data.progressInterval) &amp;&amp;
+                        e.loaded !== e.total) {
+                    <span class="hljs-keyword">return</span>;
+                }
+                data._time = now;
+                loaded = <span class="hljs-built_in">Math</span>.floor(
+                    e.loaded / e.total * (data.chunkSize || data._progress.total)
+                ) + (data.uploadedBytes || <span class="hljs-number">0</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add the difference from the previously loaded state
+to the global loaded counter:</p></div></div><div class="code"><div class="wrapper">                <span class="hljs-keyword">this</span>._progress.loaded += (loaded - data._progress.loaded);
+                <span class="hljs-keyword">this</span>._progress.bitrate = <span class="hljs-keyword">this</span>._bitrateTimer.getBitrate(
+                    now,
+                    <span class="hljs-keyword">this</span>._progress.loaded,
+                    data.bitrateInterval
+                );
+                data._progress.loaded = data.loaded = loaded;
+                data._progress.bitrate = data.bitrate = data._bitrateTimer.getBitrate(
+                    now,
+                    loaded,
+                    data.bitrateInterval
+                );</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Trigger a custom progress event with a total data property set
+to the file size(s) of the current upload and a loaded data
+property calculated accordingly:</p></div></div><div class="code"><div class="wrapper">                <span class="hljs-keyword">this</span>._trigger(
+                    <span class="hljs-string">'progress'</span>,
+                    $.Event(<span class="hljs-string">'progress'</span>, {delegatedEvent: e}),
+                    data
+                );</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Trigger a global progress event for all current file uploads,
+including ajax calls queued for sequential file uploads:</p></div></div><div class="code"><div class="wrapper">                <span class="hljs-keyword">this</span>._trigger(
+                    <span class="hljs-string">'progressall'</span>,
+                    $.Event(<span class="hljs-string">'progressall'</span>, {delegatedEvent: e}),
+                    <span class="hljs-keyword">this</span>._progress
+                );
+            }
+        },
+
+        _initProgressListener: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+                xhr = options.xhr ? options.xhr() : $.ajaxSettings.xhr();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Accesss to the native XHR object is required to add event listeners
+for the upload progress event:</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">if</span> (xhr.upload) {
+                $(xhr.upload).bind(<span class="hljs-string">'progress'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+                    <span class="hljs-keyword">var</span> oe = e.originalEvent;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Make sure the progress event properties get copied over:</p></div></div><div class="code"><div class="wrapper">                    e.lengthComputable = oe.lengthComputable;
+                    e.loaded = oe.loaded;
+                    e.total = oe.total;
+                    that._onProgress(e, options);
+                });
+                options.xhr = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                    <span class="hljs-keyword">return</span> xhr;
+                };
+            }
+        },
+
+        _isInstanceOf: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">type, obj</span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Cross-frame instanceof check</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.prototype.toString.call(obj) === <span class="hljs-string">'[object '</span> + type + <span class="hljs-string">']'</span>;
+        },
+
+        _initXHRData: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+                formData,
+                file = options.files[<span class="hljs-number">0</span>],</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Ignore non-multipart setting if not supported:</p></div></div><div class="code"><div class="wrapper">                multipart = options.multipart || !$.support.xhrFileUpload,
+                paramName = options.paramName[<span class="hljs-number">0</span>];
+            options.headers = $.extend({}, options.headers);
+            <span class="hljs-keyword">if</span> (options.contentRange) {
+                options.headers[<span class="hljs-string">'Content-Range'</span>] = options.contentRange;
+            }
+            <span class="hljs-keyword">if</span> (!multipart || options.blob || !<span class="hljs-keyword">this</span>._isInstanceOf(<span class="hljs-string">'File'</span>, file)) {
+                options.headers[<span class="hljs-string">'Content-Disposition'</span>] = <span class="hljs-string">'attachment; filename="'</span> +
+                    <span class="hljs-built_in">encodeURI</span>(file.name) + <span class="hljs-string">'"'</span>;
+            }
+            <span class="hljs-keyword">if</span> (!multipart) {
+                options.contentType = file.type;
+                options.data = options.blob || file;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ($.support.xhrFormDataFileUpload) {
+                <span class="hljs-keyword">if</span> (options.postMessage) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>window.postMessage does not allow sending FormData
+objects, so we just add the File/Blob objects to
+the formData array and let the postMessage window
+create the FormData object out of this array:</p></div></div><div class="code"><div class="wrapper">                    formData = <span class="hljs-keyword">this</span>._getFormData(options);
+                    <span class="hljs-keyword">if</span> (options.blob) {
+                        formData.push({
+                            name: paramName,
+                            value: options.blob
+                        });
+                    } <span class="hljs-keyword">else</span> {
+                        $.each(options.files, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index, file</span>) </span>{
+                            formData.push({
+                                name: options.paramName[index] || paramName,
+                                value: file
+                            });
+                        });
+                    }
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">if</span> (that._isInstanceOf(<span class="hljs-string">'FormData'</span>, options.formData)) {
+                        formData = options.formData;
+                    } <span class="hljs-keyword">else</span> {
+                        formData = <span class="hljs-keyword">new</span> FormData();
+                        $.each(<span class="hljs-keyword">this</span>._getFormData(options), <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index, field</span>) </span>{
+                            formData.append(field.name, field.value);
+                        });
+                    }
+                    <span class="hljs-keyword">if</span> (options.blob) {
+                        formData.append(paramName, options.blob, file.name);
+                    } <span class="hljs-keyword">else</span> {
+                        $.each(options.files, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index, file</span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This check allows the tests to run with
+dummy objects:</p></div></div><div class="code"><div class="wrapper">                            <span class="hljs-keyword">if</span> (that._isInstanceOf(<span class="hljs-string">'File'</span>, file) ||
+                                    that._isInstanceOf(<span class="hljs-string">'Blob'</span>, file)) {
+                                formData.append(
+                                    options.paramName[index] || paramName,
+                                    file,
+                                    file.name
+                                );
+                            }
+                        });
+                    }
+                }
+                options.data = formData;
+            }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Blob reference is not needed anymore, free memory:</p></div></div><div class="code"><div class="wrapper">            options.blob = <span class="hljs-literal">null</span>;
+        },
+
+        _initIframeSettings: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{
+            <span class="hljs-keyword">var</span> targetHost = $(<span class="hljs-string">'&lt;a&gt;&lt;/a&gt;'</span>).prop(<span class="hljs-string">'href'</span>, options.url).prop(<span class="hljs-string">'host'</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Setting the dataType to iframe enables the iframe transport:</p></div></div><div class="code"><div class="wrapper">            options.dataType = <span class="hljs-string">'iframe '</span> + (options.dataType || <span class="hljs-string">''</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The iframe transport accepts a serialized array as form data:</p></div></div><div class="code"><div class="wrapper">            options.formData = <span class="hljs-keyword">this</span>._getFormData(options);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add redirect url to form data on cross-domain uploads:</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">if</span> (options.redirect &amp;&amp; targetHost &amp;&amp; targetHost !== location.host) {
+                options.formData.push({
+                    name: options.redirectParamName || <span class="hljs-string">'redirect'</span>,
+                    value: options.redirect
+                });
+            }
+        },
+
+        _initDataSettings: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._isXHRUpload(options)) {
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>._chunkedUpload(options, <span class="hljs-literal">true</span>)) {
+                    <span class="hljs-keyword">if</span> (!options.data) {
+                        <span class="hljs-keyword">this</span>._initXHRData(options);
+                    }
+                    <span class="hljs-keyword">this</span>._initProgressListener(options);
+                }
+                <span class="hljs-keyword">if</span> (options.postMessage) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Setting the dataType to postmessage enables the
+postMessage transport:</p></div></div><div class="code"><div class="wrapper">                    options.dataType = <span class="hljs-string">'postmessage '</span> + (options.dataType || <span class="hljs-string">''</span>);
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">this</span>._initIframeSettings(options);
+            }
+        },
+
+        _getParamName: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{
+            <span class="hljs-keyword">var</span> fileInput = $(options.fileInput),
+                paramName = options.paramName;
+            <span class="hljs-keyword">if</span> (!paramName) {
+                paramName = [];
+                fileInput.each(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                    <span class="hljs-keyword">var</span> input = $(<span class="hljs-keyword">this</span>),
+                        name = input.prop(<span class="hljs-string">'name'</span>) || <span class="hljs-string">'files[]'</span>,
+                        i = (input.prop(<span class="hljs-string">'files'</span>) || [<span class="hljs-number">1</span>]).length;
+                    <span class="hljs-keyword">while</span> (i) {
+                        paramName.push(name);
+                        i -= <span class="hljs-number">1</span>;
+                    }
+                });
+                <span class="hljs-keyword">if</span> (!paramName.length) {
+                    paramName = [fileInput.prop(<span class="hljs-string">'name'</span>) || <span class="hljs-string">'files[]'</span>];
+                }
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!$.isArray(paramName)) {
+                paramName = [paramName];
+            }
+            <span class="hljs-keyword">return</span> paramName;
+        },
+
+        _initFormSettings: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Retrieve missing options from the input field and the
+associated form, if available:</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">if</span> (!options.form || !options.form.length) {
+                options.form = $(options.fileInput.prop(<span class="hljs-string">'form'</span>));</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the given file input doesn&#39;t have an associated form,
+use the default widget file input&#39;s form:</p></div></div><div class="code"><div class="wrapper">                <span class="hljs-keyword">if</span> (!options.form.length) {
+                    options.form = $(<span class="hljs-keyword">this</span>.options.fileInput.prop(<span class="hljs-string">'form'</span>));
+                }
+            }
+            options.paramName = <span class="hljs-keyword">this</span>._getParamName(options);
+            <span class="hljs-keyword">if</span> (!options.url) {
+                options.url = options.form.prop(<span class="hljs-string">'action'</span>) || location.href;
+            }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The HTTP request method must be &quot;POST&quot; or &quot;PUT&quot;:</p></div></div><div class="code"><div class="wrapper">            options.type = (options.type ||
+                ($.type(options.form.prop(<span class="hljs-string">'method'</span>)) === <span class="hljs-string">'string'</span> &amp;&amp;
+                    options.form.prop(<span class="hljs-string">'method'</span>)) || <span class="hljs-string">''</span>
+                ).toUpperCase();
+            <span class="hljs-keyword">if</span> (options.type !== <span class="hljs-string">'POST'</span> &amp;&amp; options.type !== <span class="hljs-string">'PUT'</span> &amp;&amp;
+                    options.type !== <span class="hljs-string">'PATCH'</span>) {
+                options.type = <span class="hljs-string">'POST'</span>;
+            }
+            <span class="hljs-keyword">if</span> (!options.formAcceptCharset) {
+                options.formAcceptCharset = options.form.attr(<span class="hljs-string">'accept-charset'</span>);
+            }
+        },
+
+        _getAJAXSettings: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
+            <span class="hljs-keyword">var</span> options = $.extend({}, <span class="hljs-keyword">this</span>.options, data);
+            <span class="hljs-keyword">this</span>._initFormSettings(options);
+            <span class="hljs-keyword">this</span>._initDataSettings(options);
+            <span class="hljs-keyword">return</span> options;
+        },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>jQuery 1.6 doesn&#39;t provide .state(),
+while jQuery 1.8+ removed .isRejected() and .isResolved():</p></div></div><div class="code"><div class="wrapper">        _getDeferredState: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">deferred</span>) </span>{
+            <span class="hljs-keyword">if</span> (deferred.state) {
+                <span class="hljs-keyword">return</span> deferred.state();
+            }
+            <span class="hljs-keyword">if</span> (deferred.isResolved()) {
+                <span class="hljs-keyword">return</span> <span class="hljs-string">'resolved'</span>;
+            }
+            <span class="hljs-keyword">if</span> (deferred.isRejected()) {
+                <span class="hljs-keyword">return</span> <span class="hljs-string">'rejected'</span>;
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-string">'pending'</span>;
+        },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Maps jqXHR callbacks to the equivalent
+methods of the given Promise object:</p></div></div><div class="code"><div class="wrapper">        _enhancePromise: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">promise</span>) </span>{
+            promise.success = promise.done;
+            promise.error = promise.fail;
+            promise.complete = promise.always;
+            <span class="hljs-keyword">return</span> promise;
+        },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Creates and returns a Promise object enhanced with
+the jqXHR methods abort, success, error and complete:</p></div></div><div class="code"><div class="wrapper">        _getXHRPromise: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">resolveOrReject, context, args</span>) </span>{
+            <span class="hljs-keyword">var</span> dfd = $.Deferred(),
+                promise = dfd.promise();
+            context = context || <span class="hljs-keyword">this</span>.options.context || promise;
+            <span class="hljs-keyword">if</span> (resolveOrReject === <span class="hljs-literal">true</span>) {
+                dfd.resolveWith(context, args);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (resolveOrReject === <span class="hljs-literal">false</span>) {
+                dfd.rejectWith(context, args);
+            }
+            promise.abort = dfd.promise;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._enhancePromise(promise);
+        },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Adds convenience methods to the data callback argument:</p></div></div><div class="code"><div class="wrapper">        _addConvenienceMethods: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e, data</span>) </span>{
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+                getPromise = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
+                    <span class="hljs-keyword">return</span> $.Deferred().resolveWith(that, [data]).promise();
+                };
+            data.process = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">resolveFunc, rejectFunc</span>) </span>{
+                <span class="hljs-keyword">if</span> (resolveFunc || rejectFunc) {
+                    data._processQueue = <span class="hljs-keyword">this</span>._processQueue =
+                        (<span class="hljs-keyword">this</span>._processQueue || getPromise(<span class="hljs-keyword">this</span>))
+                            .pipe(resolveFunc, rejectFunc);
+                }
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._processQueue || getPromise(<span class="hljs-keyword">this</span>);
+            };
+            data.submit = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.state() !== <span class="hljs-string">'pending'</span>) {
+                    data.jqXHR = <span class="hljs-keyword">this</span>.jqXHR =
+                        (that._trigger(
+                            <span class="hljs-string">'submit'</span>,
+                            $.Event(<span class="hljs-string">'submit'</span>, {delegatedEvent: e}),
+                            <span class="hljs-keyword">this</span>
+                        ) !== <span class="hljs-literal">false</span>) &amp;&amp; that._onSend(e, <span class="hljs-keyword">this</span>);
+                }
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.jqXHR || that._getXHRPromise();
+            };
+            data.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.jqXHR) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.jqXHR.abort();
+                }
+                <span class="hljs-keyword">return</span> that._getXHRPromise();
+            };
+            data.state = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.jqXHR) {
+                    <span class="hljs-keyword">return</span> that._getDeferredState(<span class="hljs-keyword">this</span>.jqXHR);
+                }
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._processQueue) {
+                    <span class="hljs-keyword">return</span> that._getDeferredState(<span class="hljs-keyword">this</span>._processQueue);
+                }
+            };
+            data.progress = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._progress;
+            };
+            data.response = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._response;
+            };
+        },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Parses the Range header from the server response
+and returns the uploaded bytes:</p></div></div><div class="code"><div class="wrapper">        _getUploadedBytes: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">jqXHR</span>) </span>{
+            <span class="hljs-keyword">var</span> range = jqXHR.getResponseHeader(<span class="hljs-string">'Range'</span>),
+                parts = range &amp;&amp; range.split(<span class="hljs-string">'-'</span>),
+                upperBytesPos = parts &amp;&amp; parts.length &gt; <span class="hljs-number">1</span> &amp;&amp;
+                    <span class="hljs-built_in">parseInt</span>(parts[<span class="hljs-number">1</span>], <span class="hljs-number">10</span>);
+            <span class="hljs-keyword">return</span> upperBytesPos &amp;&amp; upperBytesPos + <span class="hljs-number">1</span>;
+        },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Uploads a file in multiple, sequential requests
+by splitting the file up in multiple blob chunks.
+If the second parameter is true, only tests if the file
+should be uploaded in chunks, but does not invoke any
+upload requests:</p></div></div><div class="code"><div class="wrapper">        _chunkedUpload: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options, testOnly</span>) </span>{
+            options.uploadedBytes = options.uploadedBytes || <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+                file = options.files[<span class="hljs-number">0</span>],
+                fs = file.size,
+                ub = options.uploadedBytes,
+                mcs = options.maxChunkSize || fs,
+                slice = <span class="hljs-keyword">this</span>._blobSlice,
+                dfd = $.Deferred(),
+                promise = dfd.promise(),
+                jqXHR,
+                upload;
+            <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span>._isXHRUpload(options) &amp;&amp; slice &amp;&amp; (ub || mcs &lt; fs)) ||
+                    options.data) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            }
+            <span class="hljs-keyword">if</span> (testOnly) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            }
+            <span class="hljs-keyword">if</span> (ub &gt;= fs) {
+                file.error = options.i18n(<span class="hljs-string">'uploadedBytes'</span>);
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._getXHRPromise(
+                    <span class="hljs-literal">false</span>,
+                    options.context,
+                    [<span class="hljs-literal">null</span>, <span class="hljs-string">'error'</span>, file.error]
+                );
+            }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The chunk upload method:</p></div></div><div class="code"><div class="wrapper">            upload = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Clone the options object for each chunk upload:</p></div></div><div class="code"><div class="wrapper">                <span class="hljs-keyword">var</span> o = $.extend({}, options),
+                    currentLoaded = o._progress.loaded;
+                o.blob = slice.call(
+                    file,
+                    ub,
+                    ub + mcs,
+                    file.type
+                );</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Store the current chunk size, as the blob itself
+will be dereferenced after data processing:</p></div></div><div class="code"><div class="wrapper">                o.chunkSize = o.blob.size;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Expose the chunk bytes position range:</p></div></div><div class="code"><div class="wrapper">                o.contentRange = <span class="hljs-string">'bytes '</span> + ub + <span class="hljs-string">'-'</span> +
+                    (ub + o.chunkSize - <span class="hljs-number">1</span>) + <span class="hljs-string">'/'</span> + fs;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Process the upload data (the blob and potential form data):</p></div></div><div class="code"><div class="wrapper">                that._initXHRData(o);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add progress listeners for this chunk upload:</p></div></div><div class="code"><div class="wrapper">                that._initProgressListener(o);
+                jqXHR = ((that._trigger(<span class="hljs-string">'chunksend'</span>, <span class="hljs-literal">null</span>, o) !== <span class="hljs-literal">false</span> &amp;&amp; $.ajax(o)) ||
+                        that._getXHRPromise(<span class="hljs-literal">false</span>, o.context))
+                    .done(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">result, textStatus, jqXHR</span>) </span>{
+                        ub = that._getUploadedBytes(jqXHR) ||
+                            (ub + o.chunkSize);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a progress event if no final progress event
+with loaded equaling total has been triggered
+for this chunk:</p></div></div><div class="code"><div class="wrapper">                        <span class="hljs-keyword">if</span> (currentLoaded + o.chunkSize - o._progress.loaded) {
+                            that._onProgress($.Event(<span class="hljs-string">'progress'</span>, {
+                                lengthComputable: <span class="hljs-literal">true</span>,
+                                loaded: ub - o.uploadedBytes,
+                                total: ub - o.uploadedBytes
+                            }), o);
+                        }
+                        options.uploadedBytes = o.uploadedBytes = ub;
+                        o.result = result;
+                        o.textStatus = textStatus;
+                        o.jqXHR = jqXHR;
+                        that._trigger(<span class="hljs-string">'chunkdone'</span>, <span class="hljs-literal">null</span>, o);
+                        that._trigger(<span class="hljs-string">'chunkalways'</span>, <span class="hljs-literal">null</span>, o);
+                        <span class="hljs-keyword">if</span> (ub &lt; fs) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>File upload not yet complete,
+continue with the next chunk:</p></div></div><div class="code"><div class="wrapper">                            upload();
+                        } <span class="hljs-keyword">else</span> {
+                            dfd.resolveWith(
+                                o.context,
+                                [result, textStatus, jqXHR]
+                            );
+                        }
+                    })
+                    .fail(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">jqXHR, textStatus, errorThrown</span>) </span>{
+                        o.jqXHR = jqXHR;
+                        o.textStatus = textStatus;
+                        o.errorThrown = errorThrown;
+                        that._trigger(<span class="hljs-string">'chunkfail'</span>, <span class="hljs-literal">null</span>, o);
+                        that._trigger(<span class="hljs-string">'chunkalways'</span>, <span class="hljs-literal">null</span>, o);
+                        dfd.rejectWith(
+                            o.context,
+                            [jqXHR, textStatus, errorThrown]
+                        );
+                    });
+            };
+            <span class="hljs-keyword">this</span>._enhancePromise(promise);
+            promise.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                <span class="hljs-keyword">return</span> jqXHR.abort();
+            };
+            upload();
+            <span class="hljs-keyword">return</span> promise;
+        },
+
+        _beforeSend: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e, data</span>) </span>{
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._active === <span class="hljs-number">0</span>) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>the start callback is triggered when an upload starts
+and no other uploads are currently running,
+equivalent to the global ajaxStart event:</p></div></div><div class="code"><div class="wrapper">                <span class="hljs-keyword">this</span>._trigger(<span class="hljs-string">'start'</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set timer for global bitrate progress calculation:</p></div></div><div class="code"><div class="wrapper">                <span class="hljs-keyword">this</span>._bitrateTimer = <span class="hljs-keyword">new</span> <span class="hljs-keyword">this</span>._BitrateTimer();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Reset the global progress values:</p></div></div><div class="code"><div class="wrapper">                <span class="hljs-keyword">this</span>._progress.loaded = <span class="hljs-keyword">this</span>._progress.total = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">this</span>._progress.bitrate = <span class="hljs-number">0</span>;
+            }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Make sure the container objects for the .response() and
+.progress() methods on the data object are available
+and reset to their initial state:</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">this</span>._initResponseObject(data);
+            <span class="hljs-keyword">this</span>._initProgressObject(data);
+            data._progress.loaded = data.loaded = data.uploadedBytes || <span class="hljs-number">0</span>;
+            data._progress.total = data.total = <span class="hljs-keyword">this</span>._getTotal(data.files) || <span class="hljs-number">1</span>;
+            data._progress.bitrate = data.bitrate = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">this</span>._active += <span class="hljs-number">1</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Initialize the global progress values:</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">this</span>._progress.loaded += data.loaded;
+            <span class="hljs-keyword">this</span>._progress.total += data.total;
+        },
+
+        _onDone: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">result, textStatus, jqXHR, options</span>) </span>{
+            <span class="hljs-keyword">var</span> total = options._progress.total,
+                response = options._response;
+            <span class="hljs-keyword">if</span> (options._progress.loaded &lt; total) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a progress event if no final progress event
+with loaded equaling total has been triggered:</p></div></div><div class="code"><div class="wrapper">                <span class="hljs-keyword">this</span>._onProgress($.Event(<span class="hljs-string">'progress'</span>, {
+                    lengthComputable: <span class="hljs-literal">true</span>,
+                    loaded: total,
+                    total: total
+                }), options);
+            }
+            response.result = options.result = result;
+            response.textStatus = options.textStatus = textStatus;
+            response.jqXHR = options.jqXHR = jqXHR;
+            <span class="hljs-keyword">this</span>._trigger(<span class="hljs-string">'done'</span>, <span class="hljs-literal">null</span>, options);
+        },
+
+        _onFail: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">jqXHR, textStatus, errorThrown, options</span>) </span>{
+            <span class="hljs-keyword">var</span> response = options._response;
+            <span class="hljs-keyword">if</span> (options.recalculateProgress) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Remove the failed (error or abort) file upload from
+the global progress calculation:</p></div></div><div class="code"><div class="wrapper">                <span class="hljs-keyword">this</span>._progress.loaded -= options._progress.loaded;
+                <span class="hljs-keyword">this</span>._progress.total -= options._progress.total;
+            }
+            response.jqXHR = options.jqXHR = jqXHR;
+            response.textStatus = options.textStatus = textStatus;
+            response.errorThrown = options.errorThrown = errorThrown;
+            <span class="hljs-keyword">this</span>._trigger(<span class="hljs-string">'fail'</span>, <span class="hljs-literal">null</span>, options);
+        },
+
+        _onAlways: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">jqXHRorResult, textStatus, jqXHRorError, options</span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>jqXHRorResult, textStatus and jqXHRorError are added to the
+options object via done and fail callbacks</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">this</span>._trigger(<span class="hljs-string">'always'</span>, <span class="hljs-literal">null</span>, options);
+        },
+
+        _onSend: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e, data</span>) </span>{
+            <span class="hljs-keyword">if</span> (!data.submit) {
+                <span class="hljs-keyword">this</span>._addConvenienceMethods(e, data);
+            }
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+                jqXHR,
+                aborted,
+                slot,
+                pipe,
+                options = that._getAJAXSettings(data),
+                send = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                    that._sending += <span class="hljs-number">1</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set timer for bitrate progress calculation:</p></div></div><div class="code"><div class="wrapper">                    options._bitrateTimer = <span class="hljs-keyword">new</span> that._BitrateTimer();
+                    jqXHR = jqXHR || (
+                        ((aborted || that._trigger(
+                            <span class="hljs-string">'send'</span>,
+                            $.Event(<span class="hljs-string">'send'</span>, {delegatedEvent: e}),
+                            options
+                        ) === <span class="hljs-literal">false</span>) &amp;&amp;
+                        that._getXHRPromise(<span class="hljs-literal">false</span>, options.context, aborted)) ||
+                        that._chunkedUpload(options) || $.ajax(options)
+                    ).done(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">result, textStatus, jqXHR</span>) </span>{
+                        that._onDone(result, textStatus, jqXHR, options);
+                    }).fail(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">jqXHR, textStatus, errorThrown</span>) </span>{
+                        that._onFail(jqXHR, textStatus, errorThrown, options);
+                    }).always(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">jqXHRorResult, textStatus, jqXHRorError</span>) </span>{
+                        that._onAlways(
+                            jqXHRorResult,
+                            textStatus,
+                            jqXHRorError,
+                            options
+                        );
+                        that._sending -= <span class="hljs-number">1</span>;
+                        that._active -= <span class="hljs-number">1</span>;
+                        <span class="hljs-keyword">if</span> (options.limitConcurrentUploads &amp;&amp;
+                                options.limitConcurrentUploads &gt; that._sending) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Start the next queued upload,
+that has not been aborted:</p></div></div><div class="code"><div class="wrapper">                            <span class="hljs-keyword">var</span> nextSlot = that._slots.shift();
+                            <span class="hljs-keyword">while</span> (nextSlot) {
+                                <span class="hljs-keyword">if</span> (that._getDeferredState(nextSlot) === <span class="hljs-string">'pending'</span>) {
+                                    nextSlot.resolve();
+                                    <span class="hljs-keyword">break</span>;
+                                }
+                                nextSlot = that._slots.shift();
+                            }
+                        }
+                        <span class="hljs-keyword">if</span> (that._active === <span class="hljs-number">0</span>) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The stop callback is triggered when all uploads have
+been completed, equivalent to the global ajaxStop event:</p></div></div><div class="code"><div class="wrapper">                            that._trigger(<span class="hljs-string">'stop'</span>);
+                        }
+                    });
+                    <span class="hljs-keyword">return</span> jqXHR;
+                };
+            <span class="hljs-keyword">this</span>._beforeSend(e, options);
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.sequentialUploads ||
+                    (<span class="hljs-keyword">this</span>.options.limitConcurrentUploads &amp;&amp;
+                    <span class="hljs-keyword">this</span>.options.limitConcurrentUploads &lt;= <span class="hljs-keyword">this</span>._sending)) {
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.limitConcurrentUploads &gt; <span class="hljs-number">1</span>) {
+                    slot = $.Deferred();
+                    <span class="hljs-keyword">this</span>._slots.push(slot);
+                    pipe = slot.pipe(send);
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">this</span>._sequence = <span class="hljs-keyword">this</span>._sequence.pipe(send, send);
+                    pipe = <span class="hljs-keyword">this</span>._sequence;
+                }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return the piped Promise object, enhanced with an abort method,
+which is delegated to the jqXHR object of the current upload,
+and jqXHR callbacks mapped to the equivalent Promise methods:</p></div></div><div class="code"><div class="wrapper">                pipe.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                    aborted = [<span class="hljs-literal">undefined</span>, <span class="hljs-string">'abort'</span>, <span class="hljs-string">'abort'</span>];
+                    <span class="hljs-keyword">if</span> (!jqXHR) {
+                        <span class="hljs-keyword">if</span> (slot) {
+                            slot.rejectWith(options.context, aborted);
+                        }
+                        <span class="hljs-keyword">return</span> send();
+                    }
+                    <span class="hljs-keyword">return</span> jqXHR.abort();
+                };
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._enhancePromise(pipe);
+            }
+            <span class="hljs-keyword">return</span> send();
+        },
+
+        _onAdd: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e, data</span>) </span>{
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+                result = <span class="hljs-literal">true</span>,
+                options = $.extend({}, <span class="hljs-keyword">this</span>.options, data),
+                limit = options.limitMultiFileUploads,
+                paramName = <span class="hljs-keyword">this</span>._getParamName(options),
+                paramNameSet,
+                paramNameSlice,
+                fileSet,
+                i;
+            <span class="hljs-keyword">if</span> (!(options.singleFileUploads || limit) ||
+                    !<span class="hljs-keyword">this</span>._isXHRUpload(options)) {
+                fileSet = [data.files];
+                paramNameSet = [paramName];
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!options.singleFileUploads &amp;&amp; limit) {
+                fileSet = [];
+                paramNameSet = [];
+                <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; data.files.length; i += limit) {
+                    fileSet.push(data.files.slice(i, i + limit));
+                    paramNameSlice = paramName.slice(i, i + limit);
+                    <span class="hljs-keyword">if</span> (!paramNameSlice.length) {
+                        paramNameSlice = paramName;
+                    }
+                    paramNameSet.push(paramNameSlice);
+                }
+            } <span class="hljs-keyword">else</span> {
+                paramNameSet = paramName;
+            }
+            data.originalFiles = data.files;
+            $.each(fileSet || data.files, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index, element</span>) </span>{
+                <span class="hljs-keyword">var</span> newData = $.extend({}, data);
+                newData.files = fileSet ? element : [element];
+                newData.paramName = paramNameSet[index];
+                that._initResponseObject(newData);
+                that._initProgressObject(newData);
+                that._addConvenienceMethods(e, newData);
+                result = that._trigger(
+                    <span class="hljs-string">'add'</span>,
+                    $.Event(<span class="hljs-string">'add'</span>, {delegatedEvent: e}),
+                    newData
+                );
+                <span class="hljs-keyword">return</span> result;
+            });
+            <span class="hljs-keyword">return</span> result;
+        },
+
+        _replaceFileInput: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">input</span>) </span>{
+            <span class="hljs-keyword">var</span> inputClone = input.clone(<span class="hljs-literal">true</span>);
+            $(<span class="hljs-string">'&lt;form&gt;&lt;/form&gt;'</span>).append(inputClone)[<span class="hljs-number">0</span>].reset();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Detaching allows to insert the fileInput on another form
+without loosing the file input value:</p></div></div><div class="code"><div class="wrapper">            input.after(inputClone).detach();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Avoid memory leaks with the detached file input:</p></div></div><div class="code"><div class="wrapper">            $.cleanData(input.unbind(<span class="hljs-string">'remove'</span>));</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Replace the original file input element in the fileInput
+elements set with the clone, which has been copied including
+event handlers:</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">this</span>.options.fileInput = <span class="hljs-keyword">this</span>.options.fileInput.map(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">i, el</span>) </span>{
+                <span class="hljs-keyword">if</span> (el === input[<span class="hljs-number">0</span>]) {
+                    <span class="hljs-keyword">return</span> inputClone[<span class="hljs-number">0</span>];
+                }
+                <span class="hljs-keyword">return</span> el;
+            });</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the widget has been initialized on the file input itself,
+override this.element with the file input clone:</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">if</span> (input[<span class="hljs-number">0</span>] === <span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>]) {
+                <span class="hljs-keyword">this</span>.element = inputClone;
+            }
+        },
+
+        _handleFileTreeEntry: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">entry, path</span>) </span>{
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+                dfd = $.Deferred(),
+                errorHandler = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+                    <span class="hljs-keyword">if</span> (e &amp;&amp; !e.entry) {
+                        e.entry = entry;
+                    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Since $.when returns immediately if one
+Deferred is rejected, we use resolve instead.
+This allows valid files and invalid items
+to be returned together in one set:</p></div></div><div class="code"><div class="wrapper">                    dfd.resolve([e]);
+                },
+                dirReader;
+            path = path || <span class="hljs-string">''</span>;
+            <span class="hljs-keyword">if</span> (entry.isFile) {
+                <span class="hljs-keyword">if</span> (entry._file) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Workaround for Chrome bug #149735</p></div></div><div class="code"><div class="wrapper">                    entry._file.relativePath = path;
+                    dfd.resolve(entry._file);
+                } <span class="hljs-keyword">else</span> {
+                    entry.file(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">file</span>) </span>{
+                        file.relativePath = path;
+                        dfd.resolve(file);
+                    }, errorHandler);
+                }
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (entry.isDirectory) {
+                dirReader = entry.createReader();
+                dirReader.readEntries(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">entries</span>) </span>{
+                    that._handleFileTreeEntries(
+                        entries,
+                        path + entry.name + <span class="hljs-string">'/'</span>
+                    ).done(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">files</span>) </span>{
+                        dfd.resolve(files);
+                    }).fail(errorHandler);
+                }, errorHandler);
+            } <span class="hljs-keyword">else</span> {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return an empy list for file system items
+other than files or directories:</p></div></div><div class="code"><div class="wrapper">                dfd.resolve([]);
+            }
+            <span class="hljs-keyword">return</span> dfd.promise();
+        },
+
+        _handleFileTreeEntries: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">entries, path</span>) </span>{
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>;
+            <span class="hljs-keyword">return</span> $.when.apply(
+                $,
+                $.map(entries, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">entry</span>) </span>{
+                    <span class="hljs-keyword">return</span> that._handleFileTreeEntry(entry, path);
+                })
+            ).pipe(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">Array</span>.prototype.concat.apply(
+                    [],
+                    <span class="hljs-built_in">arguments</span>
+                );
+            });
+        },
+
+        _getDroppedFiles: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">dataTransfer</span>) </span>{
+            dataTransfer = dataTransfer || {};
+            <span class="hljs-keyword">var</span> items = dataTransfer.items;
+            <span class="hljs-keyword">if</span> (items &amp;&amp; items.length &amp;&amp; (items[<span class="hljs-number">0</span>].webkitGetAsEntry ||
+                    items[<span class="hljs-number">0</span>].getAsEntry)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._handleFileTreeEntries(
+                    $.map(items, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item</span>) </span>{
+                        <span class="hljs-keyword">var</span> entry;
+                        <span class="hljs-keyword">if</span> (item.webkitGetAsEntry) {
+                            entry = item.webkitGetAsEntry();
+                            <span class="hljs-keyword">if</span> (entry) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Workaround for Chrome bug #149735:</p></div></div><div class="code"><div class="wrapper">                                entry._file = item.getAsFile();
+                            }
+                            <span class="hljs-keyword">return</span> entry;
+                        }
+                        <span class="hljs-keyword">return</span> item.getAsEntry();
+                    })
+                );
+            }
+            <span class="hljs-keyword">return</span> $.Deferred().resolve(
+                $.makeArray(dataTransfer.files)
+            ).promise();
+        },
+
+        _getSingleFileInputFiles: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">fileInput</span>) </span>{
+            fileInput = $(fileInput);
+            <span class="hljs-keyword">var</span> entries = fileInput.prop(<span class="hljs-string">'webkitEntries'</span>) ||
+                    fileInput.prop(<span class="hljs-string">'entries'</span>),
+                files,
+                value;
+            <span class="hljs-keyword">if</span> (entries &amp;&amp; entries.length) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._handleFileTreeEntries(entries);
+            }
+            files = $.makeArray(fileInput.prop(<span class="hljs-string">'files'</span>));
+            <span class="hljs-keyword">if</span> (!files.length) {
+                value = fileInput.prop(<span class="hljs-string">'value'</span>);
+                <span class="hljs-keyword">if</span> (!value) {
+                    <span class="hljs-keyword">return</span> $.Deferred().resolve([]).promise();
+                }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the files property is not available, the browser does not
+support the File API and we add a pseudo File object with
+the input value as name with path information removed:</p></div></div><div class="code"><div class="wrapper">                files = [{name: value.replace(<span class="hljs-regexp">/^.*\\/</span>, <span class="hljs-string">''</span>)}];
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (files[<span class="hljs-number">0</span>].name === <span class="hljs-literal">undefined</span> &amp;&amp; files[<span class="hljs-number">0</span>].fileName) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>File normalization for Safari 4 and Firefox 3:</p></div></div><div class="code"><div class="wrapper">                $.each(files, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index, file</span>) </span>{
+                    file.name = file.fileName;
+                    file.size = file.fileSize;
+                });
+            }
+            <span class="hljs-keyword">return</span> $.Deferred().resolve(files).promise();
+        },
+
+        _getFileInputFiles: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">fileInput</span>) </span>{
+            <span class="hljs-keyword">if</span> (!(fileInput <span class="hljs-keyword">instanceof</span> $) || fileInput.length === <span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._getSingleFileInputFiles(fileInput);
+            }
+            <span class="hljs-keyword">return</span> $.when.apply(
+                $,
+                $.map(fileInput, <span class="hljs-keyword">this</span>._getSingleFileInputFiles)
+            ).pipe(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                <span class="hljs-keyword">return</span> <span class="hljs-built_in">Array</span>.prototype.concat.apply(
+                    [],
+                    <span class="hljs-built_in">arguments</span>
+                );
+            });
+        },
+
+        _onChange: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+                data = {
+                    fileInput: $(e.target),
+                    form: $(e.target.form)
+                };
+            <span class="hljs-keyword">this</span>._getFileInputFiles(data.fileInput).always(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">files</span>) </span>{
+                data.files = files;
+                <span class="hljs-keyword">if</span> (that.options.replaceFileInput) {
+                    that._replaceFileInput(data.fileInput);
+                }
+                <span class="hljs-keyword">if</span> (that._trigger(
+                        <span class="hljs-string">'change'</span>,
+                        $.Event(<span class="hljs-string">'change'</span>, {delegatedEvent: e}),
+                        data
+                    ) !== <span class="hljs-literal">false</span>) {
+                    that._onAdd(e, data);
+                }
+            });
+        },
+
+        _onPaste: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+            <span class="hljs-keyword">var</span> items = e.originalEvent &amp;&amp; e.originalEvent.clipboardData &amp;&amp;
+                    e.originalEvent.clipboardData.items,
+                data = {files: []};
+            <span class="hljs-keyword">if</span> (items &amp;&amp; items.length) {
+                $.each(items, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index, item</span>) </span>{
+                    <span class="hljs-keyword">var</span> file = item.getAsFile &amp;&amp; item.getAsFile();
+                    <span class="hljs-keyword">if</span> (file) {
+                        data.files.push(file);
+                    }
+                });
+                <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._trigger(
+                        <span class="hljs-string">'paste'</span>,
+                        $.Event(<span class="hljs-string">'paste'</span>, {delegatedEvent: e}),
+                        data
+                    ) !== <span class="hljs-literal">false</span>) {
+                    <span class="hljs-keyword">this</span>._onAdd(e, data);
+                }
+            }
+        },
+
+        _onDrop: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+            e.dataTransfer = e.originalEvent &amp;&amp; e.originalEvent.dataTransfer;
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+                dataTransfer = e.dataTransfer,
+                data = {};
+            <span class="hljs-keyword">if</span> (dataTransfer &amp;&amp; dataTransfer.files &amp;&amp; dataTransfer.files.length) {
+                e.preventDefault();
+                <span class="hljs-keyword">this</span>._getDroppedFiles(dataTransfer).always(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">files</span>) </span>{
+                    data.files = files;
+                    <span class="hljs-keyword">if</span> (that._trigger(
+                            <span class="hljs-string">'drop'</span>,
+                            $.Event(<span class="hljs-string">'drop'</span>, {delegatedEvent: e}),
+                            data
+                        ) !== <span class="hljs-literal">false</span>) {
+                        that._onAdd(e, data);
+                    }
+                });
+            }
+        },
+
+        _onDragOver: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+            e.dataTransfer = e.originalEvent &amp;&amp; e.originalEvent.dataTransfer;
+            <span class="hljs-keyword">var</span> dataTransfer = e.dataTransfer;
+            <span class="hljs-keyword">if</span> (dataTransfer &amp;&amp; $.inArray(<span class="hljs-string">'Files'</span>, dataTransfer.types) !== -<span class="hljs-number">1</span> &amp;&amp;
+                    <span class="hljs-keyword">this</span>._trigger(
+                        <span class="hljs-string">'dragover'</span>,
+                        $.Event(<span class="hljs-string">'dragover'</span>, {delegatedEvent: e})
+                    ) !== <span class="hljs-literal">false</span>) {
+                e.preventDefault();
+                dataTransfer.dropEffect = <span class="hljs-string">'copy'</span>;
+            }
+        },
+
+        _initEventHandlers: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._isXHRUpload(<span class="hljs-keyword">this</span>.options)) {
+                <span class="hljs-keyword">this</span>._on(<span class="hljs-keyword">this</span>.options.dropZone, {
+                    dragover: <span class="hljs-keyword">this</span>._onDragOver,
+                    drop: <span class="hljs-keyword">this</span>._onDrop
+                });
+                <span class="hljs-keyword">this</span>._on(<span class="hljs-keyword">this</span>.options.pasteZone, {
+                    paste: <span class="hljs-keyword">this</span>._onPaste
+                });
+            }
+            <span class="hljs-keyword">if</span> ($.support.fileInput) {
+                <span class="hljs-keyword">this</span>._on(<span class="hljs-keyword">this</span>.options.fileInput, {
+                    change: <span class="hljs-keyword">this</span>._onChange
+                });
+            }
+        },
+
+        _destroyEventHandlers: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">this</span>._off(<span class="hljs-keyword">this</span>.options.dropZone, <span class="hljs-string">'dragover drop'</span>);
+            <span class="hljs-keyword">this</span>._off(<span class="hljs-keyword">this</span>.options.pasteZone, <span class="hljs-string">'paste'</span>);
+            <span class="hljs-keyword">this</span>._off(<span class="hljs-keyword">this</span>.options.fileInput, <span class="hljs-string">'change'</span>);
+        },
+
+        _setOption: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, value</span>) </span>{
+            <span class="hljs-keyword">var</span> reinit = $.inArray(key, <span class="hljs-keyword">this</span>._specialOptions) !== -<span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (reinit) {
+                <span class="hljs-keyword">this</span>._destroyEventHandlers();
+            }
+            <span class="hljs-keyword">this</span>._super(key, value);
+            <span class="hljs-keyword">if</span> (reinit) {
+                <span class="hljs-keyword">this</span>._initSpecialOptions();
+                <span class="hljs-keyword">this</span>._initEventHandlers();
+            }
+        },
+
+        _initSpecialOptions: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">var</span> options = <span class="hljs-keyword">this</span>.options;
+            <span class="hljs-keyword">if</span> (options.fileInput === <span class="hljs-literal">undefined</span>) {
+                options.fileInput = <span class="hljs-keyword">this</span>.element.is(<span class="hljs-string">'input[type="file"]'</span>) ?
+                        <span class="hljs-keyword">this</span>.element : <span class="hljs-keyword">this</span>.element.find(<span class="hljs-string">'input[type="file"]'</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!(options.fileInput <span class="hljs-keyword">instanceof</span> $)) {
+                options.fileInput = $(options.fileInput);
+            }
+            <span class="hljs-keyword">if</span> (!(options.dropZone <span class="hljs-keyword">instanceof</span> $)) {
+                options.dropZone = $(options.dropZone);
+            }
+            <span class="hljs-keyword">if</span> (!(options.pasteZone <span class="hljs-keyword">instanceof</span> $)) {
+                options.pasteZone = $(options.pasteZone);
+            }
+        },
+
+        _getRegExp: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str</span>) </span>{
+            <span class="hljs-keyword">var</span> parts = str.split(<span class="hljs-string">'/'</span>),
+                modifiers = parts.pop();
+            parts.shift();
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(parts.join(<span class="hljs-string">'/'</span>), modifiers);
+        },
+
+        _isRegExpOption: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, value</span>) </span>{
+            <span class="hljs-keyword">return</span> key !== <span class="hljs-string">'url'</span> &amp;&amp; $.type(value) === <span class="hljs-string">'string'</span> &amp;&amp;
+                <span class="hljs-regexp">/^\/.*\/[igm]{0,3}$/</span>.test(value);
+        },
+
+        _initDataAttributes: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+                options = <span class="hljs-keyword">this</span>.options;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Initialize options set via HTML5 data-attributes:</p></div></div><div class="code"><div class="wrapper">            $.each(
+                $(<span class="hljs-keyword">this</span>.element[<span class="hljs-number">0</span>].cloneNode(<span class="hljs-literal">false</span>)).data(),
+                <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">key, value</span>) </span>{
+                    <span class="hljs-keyword">if</span> (that._isRegExpOption(key, value)) {
+                        value = that._getRegExp(value);
+                    }
+                    options[key] = value;
+                }
+            );
+        },
+
+        _create: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">this</span>._initDataAttributes();
+            <span class="hljs-keyword">this</span>._initSpecialOptions();
+            <span class="hljs-keyword">this</span>._slots = [];
+            <span class="hljs-keyword">this</span>._sequence = <span class="hljs-keyword">this</span>._getXHRPromise(<span class="hljs-literal">true</span>);
+            <span class="hljs-keyword">this</span>._sending = <span class="hljs-keyword">this</span>._active = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">this</span>._initProgressObject(<span class="hljs-keyword">this</span>);
+            <span class="hljs-keyword">this</span>._initEventHandlers();
+        },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This method is exposed to the widget API and allows to query
+the number of active uploads:</p></div></div><div class="code"><div class="wrapper">        active: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._active;
+        },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This method is exposed to the widget API and allows to query
+the widget upload progress.
+It returns an object with loaded, total and bitrate properties
+for the running uploads:</p></div></div><div class="code"><div class="wrapper">        progress: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._progress;
+        },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This method is exposed to the widget API and allows adding files
+using the fileupload API. The data parameter accepts an object which
+must have a files property and can contain additional options:
+.fileupload(&#39;add&#39;, {files: filesList});</p></div></div><div class="code"><div class="wrapper">        add: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
+            <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>;
+            <span class="hljs-keyword">if</span> (!data || <span class="hljs-keyword">this</span>.options.disabled) {
+                <span class="hljs-keyword">return</span>;
+            }
+            <span class="hljs-keyword">if</span> (data.fileInput &amp;&amp; !data.files) {
+                <span class="hljs-keyword">this</span>._getFileInputFiles(data.fileInput).always(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">files</span>) </span>{
+                    data.files = files;
+                    that._onAdd(<span class="hljs-literal">null</span>, data);
+                });
+            } <span class="hljs-keyword">else</span> {
+                data.files = $.makeArray(data.files);
+                <span class="hljs-keyword">this</span>._onAdd(<span class="hljs-literal">null</span>, data);
+            }
+        },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This method is exposed to the widget API and allows sending files
+using the fileupload API. The data parameter accepts an object which
+must have a files or fileInput property and can contain additional options:
+.fileupload(&#39;send&#39;, {files: filesList});
+The method returns a Promise object for the file upload call.</p></div></div><div class="code"><div class="wrapper">        send: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
+            <span class="hljs-keyword">if</span> (data &amp;&amp; !<span class="hljs-keyword">this</span>.options.disabled) {
+                <span class="hljs-keyword">if</span> (data.fileInput &amp;&amp; !data.files) {
+                    <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+                        dfd = $.Deferred(),
+                        promise = dfd.promise(),
+                        jqXHR,
+                        aborted;
+                    promise.abort = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                        aborted = <span class="hljs-literal">true</span>;
+                        <span class="hljs-keyword">if</span> (jqXHR) {
+                            <span class="hljs-keyword">return</span> jqXHR.abort();
+                        }
+                        dfd.reject(<span class="hljs-literal">null</span>, <span class="hljs-string">'abort'</span>, <span class="hljs-string">'abort'</span>);
+                        <span class="hljs-keyword">return</span> promise;
+                    };
+                    <span class="hljs-keyword">this</span>._getFileInputFiles(data.fileInput).always(
+                        <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">files</span>) </span>{
+                            <span class="hljs-keyword">if</span> (aborted) {
+                                <span class="hljs-keyword">return</span>;
+                            }
+                            <span class="hljs-keyword">if</span> (!files.length) {
+                                dfd.reject();
+                                <span class="hljs-keyword">return</span>;
+                            }
+                            data.files = files;
+                            jqXHR = that._onSend(<span class="hljs-literal">null</span>, data).then(
+                                <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">result, textStatus, jqXHR</span>) </span>{
+                                    dfd.resolve(result, textStatus, jqXHR);
+                                },
+                                <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">jqXHR, textStatus, errorThrown</span>) </span>{
+                                    dfd.reject(jqXHR, textStatus, errorThrown);
+                                }
+                            );
+                        }
+                    );
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._enhancePromise(promise);
+                }
+                data.files = $.makeArray(data.files);
+                <span class="hljs-keyword">if</span> (data.files.length) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._onSend(<span class="hljs-literal">null</span>, data);
+                }
+            }
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._getXHRPromise(<span class="hljs-literal">false</span>, data &amp;&amp; data.context);
+        }
+
+    });
+
+}));</div></div></div></div></body></html>

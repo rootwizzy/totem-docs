@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/observation_list_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/observation_list_helper"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/observation_list_helper.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/observation_list_helper.rb">src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/observation_list_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-comment">#########################################################################################</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="observation-list-phase-componentable">Observation List Phase Componentable.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_casespace_phase_componentable_observation_list</span><span class="hljs-params">(phase, section, common_component, config)</span></span>
+  category = config[<span class="hljs-symbol">:category</span>] || {<span class="hljs-symbol">name:</span> get_casespace_phase_componentable_observation_list_category_name(phase)}
+  create_observation_list <span class="hljs-symbol">authable:</span> phase, <span class="hljs-symbol">category:</span> category
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the category name based on the other components defined in the phase template.
+Using a &#39;match&#39; so may not be 100% accruate but should be correct most of the time
+or can add in the phase&#39;s sections: {obs-list: {category: H|D|M}.
+diagnostic-path = &#39;M&#39;; lab = &#39;D&#39;; html = &#39;H&#39;</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_casespace_phase_componentable_observation_list_category_name</span><span class="hljs-params">(phase)</span></span>
+  phase_template = <span class="hljs-variable">@seed</span>.get_association(phase, <span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:phase_template</span>)
+  template       = phase_template.template || <span class="hljs-string">''</span>
+  <span class="hljs-keyword">case</span>
+  <span class="hljs-keyword">when</span> template.match(<span class="hljs-string">'diagnostic-path'</span>) <span class="hljs-keyword">then</span> <span class="hljs-string">'M'</span>
+  <span class="hljs-keyword">when</span> template.match(<span class="hljs-string">'lab'</span>)             <span class="hljs-keyword">then</span> <span class="hljs-string">'D'</span>
+  <span class="hljs-keyword">when</span> template.match(<span class="hljs-string">'html'</span>)            <span class="hljs-keyword">then</span> <span class="hljs-string">'H'</span>
+  <span class="hljs-keyword">else</span>
+    <span class="hljs-string">'H'</span>  <span class="hljs-comment"># default</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">#########################################################################################</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="post-phase-componentables">Post Phase Componentables.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Called after all phase components have been created.
+Currently does not support observation list sub-groups in an assignment.
+To implement sub-groups, would need to collect configs above and get group(s) from configs and pass as group_lists.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">post_casespace_phase_componentables_observation_list</span></span>
+  phase_component_class = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:phase_component</span>)
+  list_class            = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:observation_list</span>, <span class="hljs-symbol">:list</span>)
+  assignments           = casespace_get_assignments_created
+  assignments.each <span class="hljs-keyword">do</span> |assignment|
+    observation_lists = <span class="hljs-constant">Hash</span>.new
+    phase_ids         = <span class="hljs-variable">@seed</span>.get_association(assignment, <span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:phases</span>).pluck(<span class="hljs-symbol">:id</span>)
+    phase_components  = phase_component_class.where(<span class="hljs-symbol">phase_id:</span> phase_ids, <span class="hljs-symbol">componentable_type:</span> list_class.name)
+    phase_components.each <span class="hljs-keyword">do</span> |phase_component|
+      observation_list       = phase_component.componentable
+      key                    = observation_list.id.to_s
+      phase                  = <span class="hljs-variable">@seed</span>.get_association(phase_component, <span class="hljs-symbol">:casespace</span>, <span class="hljs-symbol">:phase</span>)
+      observation_lists[key] = {<span class="hljs-symbol">title:</span> phase.title, <span class="hljs-symbol">observation_lists:</span> observation_list}
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> observation_lists.present?
+      <span class="hljs-variable">@seed</span>.message <span class="hljs-string">"++Adding phase observation list groups for assignment <span class="hljs-subst">#{assignment.title.inspect}</span>."</span>
+      add_casespace_phase_observation_list_groups(assignment, observation_lists)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add any observation list groups and list associations.
+The phase_observation_lists is a hash where hash[key] = {title: &#39;title&#39;, observation_lists: [observation_list-instances] || observation_list-instance}.
+The group_lists is an array of arrays where each array contains the keys to combine the lists.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_casespace_phase_observation_list_groups</span><span class="hljs-params">(assignment, phase_observation_lists={}, group_lists=[])</span></span>
+  group_lists = [phase_observation_lists.keys]  <span class="hljs-keyword">if</span> group_lists.blank?  <span class="hljs-comment"># default to one group for the assignment's phases</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> group_lists.blank?  <span class="hljs-comment"># no lists on the phases</span>
+  group_lists.each <span class="hljs-keyword">do</span> |group_keys|
+    hashes = group_keys.collect {|key| phase_observation_lists[key] || <span class="hljs-constant">Hash</span>.new}
+    titles = hashes.collect {|h| h[<span class="hljs-symbol">:title</span>]}.compact
+    <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> titles.blank?  <span class="hljs-comment"># has group keys but phase(s) do not have observation lists</span>
+    group = create_observation_list_group(
+      <span class="hljs-symbol">title:</span>     titles.join(<span class="hljs-string">' '</span>),
+      <span class="hljs-symbol">groupable:</span> assignment,
+    )
+    lists = hashes.collect {|h| h[<span class="hljs-symbol">:observation_lists</span>]}
+    create_observation_list_group_lists(group, lists)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

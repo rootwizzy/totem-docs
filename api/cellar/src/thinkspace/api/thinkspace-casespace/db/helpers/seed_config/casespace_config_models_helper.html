@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/casespace_config_models_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/casespace_config_models_helper"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/casespace_config_models_helper.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/casespace_config_models_helper.rb">src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/casespace_config_models_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>Allow model titles (e.g. assignments and phases) to be identical
+in different configs.
+Collects the model ids created by a config which can be used to
+add the ids to the &#39;find_by&#39; options e.g. id: [1,2,3].
+Currently implemented for spaces, assignments and phases.
+To prevent adding the ids to the find_by call &#39;clear_find_by&#39;.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'pp'</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CasespaceConfigModels</span></span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:config_model_ids</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:find_config_name</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(caller, seed)</span></span>
+    <span class="hljs-variable">@caller</span>           = caller
+    <span class="hljs-variable">@seed</span>             = seed
+    <span class="hljs-variable">@config_model_ids</span> = new_hash
+    <span class="hljs-variable">@sep_len</span>          = <span class="hljs-number">100</span>
+    clear_find_by
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add</span><span class="hljs-params">(config, model)</span></span>
+    config_model_ids_array(config_name(config), model).push(model.id)
+    set_find_by(config)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_by_ids</span><span class="hljs-params">(klass)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> find_config_name.blank?
+    config_model_ids_array(find_config_name, klass)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clear_find_by</span>;</span> <span class="hljs-variable">@find_config_name</span> = <span class="hljs-keyword">nil</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_find_by</span><span class="hljs-params">(config)</span>;</span> <span class="hljs-variable">@find_config_name</span> = config_name(config); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">include_auto_input_model?</span><span class="hljs-params">(model, options)</span>;</span> include_model?(model, options); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print</span>;</span> pp config_model_ids; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_config_models</span>;</span> _print_config_models(find_config_name); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_models</span>;</span> _print_models; <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">config_model_ids_array</span><span class="hljs-params">(name, model_or_class)</span></span>
+    hash             = (config_model_ids[name] ||= new_hash)
+    model_class_name = model_or_class.is_a?(<span class="hljs-constant">Class</span>) ? model_or_class.name <span class="hljs-symbol">:</span> model_or_class.<span class="hljs-keyword">class</span>.name
+    (hash[model_class_name] ||= <span class="hljs-constant">Array</span>.new)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">include_model?</span><span class="hljs-params">(model, options)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> config_model_ids_array(find_config_name, model).<span class="hljs-keyword">include</span>?(model.id)
+    only   = [options[<span class="hljs-symbol">:only</span>]].flatten.compact
+    except = [options[<span class="hljs-symbol">:except</span>]].flatten.compact
+    title  = model.title
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> title.blank?
+      <span class="hljs-keyword">false</span>
+    <span class="hljs-keyword">when</span> only.present?
+      only.<span class="hljs-keyword">include</span>?(title)
+    <span class="hljs-keyword">when</span> except.present?
+      !except.<span class="hljs-keyword">include</span>?(title)
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">true</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_hash</span>;</span> <span class="hljs-constant">HashWithIndifferentAccess</span>.new; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">config_name</span><span class="hljs-params">(config)</span></span>
+    config[<span class="hljs-symbol">:_config_name</span>]
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_print_models</span></span>
+    config_model_ids.keys.sort.each <span class="hljs-keyword">do</span> |name|
+      _print_config_models(name)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_config_models_header</span><span class="hljs-params">(name)</span></span>
+    hdr = color_line(<span class="hljs-string">"Models for config (<span class="hljs-subst">#{name}</span>)"</span>.ljust(<span class="hljs-variable">@sep_len</span>, <span class="hljs-string">'-'</span>), <span class="hljs-symbol">:yellow</span>, <span class="hljs-symbol">:bold</span>)
+    puts <span class="hljs-string">"\n"</span>, color_line(hdr, <span class="hljs-symbol">:on_blue</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_print_config_models</span><span class="hljs-params">(name)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> name.blank?
+    hash = config_model_ids[name] || {}
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> hash.blank?
+    indent = <span class="hljs-string">' '</span> * <span class="hljs-number">6</span>
+    print_config_models_header(name)
+    keys = hash.keys.sort
+    keys.each <span class="hljs-keyword">do</span> |key|
+      ids = hash[key]
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> ids.blank?
+      klass = key.safe_constantize
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> klass.blank?
+      puts <span class="hljs-string">"\n\n"</span>, color_line(<span class="hljs-string">"  <span class="hljs-subst">#{key}</span> ids: <span class="hljs-subst">#{ids}</span>"</span>.ljust(<span class="hljs-variable">@sep_len</span>, <span class="hljs-string">'-'</span>), <span class="hljs-symbol">:yellow</span>)
+      ids.each <span class="hljs-keyword">do</span> |id|
+        record = klass.find_by(<span class="hljs-symbol">id:</span> id)
+        <span class="hljs-keyword">if</span> record.blank?
+          puts color_line(<span class="hljs-string">"<span class="hljs-subst">#{key.inspect}</span> record id [<span class="hljs-subst">#{id}</span>] not found."</span>, <span class="hljs-symbol">:red</span>, <span class="hljs-symbol">:bold</span>)
+        <span class="hljs-keyword">else</span>
+          lines = <span class="hljs-string">''</span>
+          <span class="hljs-constant">PP</span>.pp(record, lines)
+          lines.each_line <span class="hljs-keyword">do</span> |line|
+            line = color_line(line.chomp, <span class="hljs-symbol">:green</span>, <span class="hljs-symbol">:bold</span>) <span class="hljs-keyword">if</span> line.match(<span class="hljs-regexp">/\s+id:\s\d+/</span>)
+            puts indent + line
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+        puts <span class="hljs-string">''</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    puts <span class="hljs-string">"\n\n"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">color_line</span><span class="hljs-params">(*args)</span>;</span> <span class="hljs-variable">@caller</span>.color_line(*args); <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

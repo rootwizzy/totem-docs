@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-authorization-cancan/app/concerns/totem/authorization/cancan/serializers/authorize</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-authorization-cancan/app/concerns/totem/authorization/cancan/serializers/authorize"><meta name="groc-project-path" content="src/totem/api/totem-authorization-cancan/app/concerns/totem/authorization/cancan/serializers/authorize.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-authorization-cancan/app/concerns/totem/authorization/cancan/serializers/authorize.rb">src/totem/api/totem-authorization-cancan/app/concerns/totem/authorization/cancan/serializers/authorize.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authorization</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cancan</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Serializers</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Note: These methods will be called only if an action exists.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authorize</span></span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_authorize_has_many</span><span class="hljs-params">(record, association_name, action)</span></span>
+            record.send(association_name).accessible_by(current_ability, action)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_authorize_has_one</span><span class="hljs-params">(record, association_name, action)</span></span>
+            association_record = record.send(association_name)
+            <span class="hljs-keyword">if</span> association_record.present?
+              <span class="hljs-keyword">if</span> current_ability.can?(action, association_record) <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> association_record <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

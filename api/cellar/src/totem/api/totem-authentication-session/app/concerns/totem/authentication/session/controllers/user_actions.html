@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-authentication-session/app/concerns/totem/authentication/session/controllers/user_actions</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-authentication-session/app/concerns/totem/authentication/session/controllers/user_actions"><meta name="groc-project-path" content="src/totem/api/totem-authentication-session/app/concerns/totem/authentication/session/controllers/user_actions.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-authentication-session/app/concerns/totem/authentication/session/controllers/user_actions.rb">src/totem/api/totem-authentication-session/app/concerns/totem/authentication/session/controllers/user_actions.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authentication</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Session</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controllers</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">UserActions</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="session-user-actions">Session User Actions.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sign_in</span></span>
+            api_session  = totem_sign_in_user!
+            hash         = controller_as_json(current_user)
+            controller_after_json(hash)
+            hash[<span class="hljs-symbol">:token</span>] = api_session.authentication_token
+            controller_render_json(hash)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sign_out</span></span>
+            totem_sign_out_user!
+            controller_render_no_content
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Authenticates the user (via before_action) and resets the session timeout.
+Used by the ember application when no server calls are performed, but the user is active.
+Must be called by ember on the platform&#39;s api &#39;users&#39; controller which extends this controller.
+The platform&#39;s routes must include: get :stay_alive, on: :collection</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">stay_alive</span></span>
+            update_api_session_alive(current_user)
+            render <span class="hljs-symbol">json:</span> {<span class="hljs-string">"<span class="hljs-subst">#{current_user.<span class="hljs-keyword">class</span>.name.underscore}</span>"</span> =&gt; []}, <span class="hljs-symbol">status:</span> <span class="hljs-symbol">:ok</span>
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Authenticates the user&#39;s token and email are valid (e.g. token has not expired) but
+does &#39;not&#39; update the api_session &#39;updated_at&#39; like &#39;stay_alive&#39; or return any json.
+The user&#39;s token and email are validated by the authentication controller&#39;s
+before_action &#39;:totem_authenticate_user_from_token!&#39;.  If this does not raise
+an exception (e.g. a session timout), then is still valid.
+Used by the &#39;ember-cli-simple-auth&#39; authenticator when restoring a session
+(e.g. page reload, browser is opened by another user) to determine if the
+browser&#39;s local storage is still valid (user token and user email).
+If not valid, the authenticator routes the user to the sign_in page.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate</span></span>
+            raise <span class="hljs-constant">SessionCredentialsInvalid</span>, <span class="hljs-string">"Invalid credentials."</span>  <span class="hljs-keyword">if</span> current_user.blank?
+            raise <span class="hljs-constant">SessionCredentialsInvalid</span>, <span class="hljs-string">"Invalid user."</span>         <span class="hljs-keyword">unless</span> current_user.id.to_s == params[<span class="hljs-symbol">:user_id</span>]
+            controller_render(current_user)
+          <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

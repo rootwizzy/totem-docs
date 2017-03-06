@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-pub-sub/app/concerns/totem/pub_sub/publish</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-pub-sub/app/concerns/totem/pub_sub/publish"><meta name="groc-project-path" content="src/totem/api/totem-pub-sub/app/concerns/totem/pub_sub/publish.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-pub-sub/app/concerns/totem/pub_sub/publish.rb">src/totem/api/totem-pub-sub/app/concerns/totem/pub_sub/publish.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>Be sure to restart your server when you modify this file. &#39;totem_pubsub&#39; (the PubSub instance) is create on the class.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PubSub</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Publish</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>An instance of this class is referenced by the class method &#39;totem_pubsub&#39; when the PubSub::Client is included.
+An object (e.g. controller) should call &#39;pubsub.data&#39; to return a new PubSub::Data instance that can be modified.
+Do not modify any of these Publish variables directly.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(platform_name, pubsub_client, options={})</span></span>
+    <span class="hljs-variable">@platform_name</span> = platform_name
+    <span class="hljs-variable">@client</span>        = pubsub_client
+    <span class="hljs-variable">@debugging</span>     = (options[<span class="hljs-symbol">:debug</span>] == <span class="hljs-keyword">true</span>)
+    raise <span class="hljs-constant">PublishError</span>, <span class="hljs-string">"PubSub server is blank."</span>  <span class="hljs-keyword">if</span> <span class="hljs-variable">@client</span>.blank?
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">data</span><span class="hljs-params">(init_value={})</span>;</span> <span class="hljs-constant">PubSub::Data</span>.new(<span class="hljs-keyword">self</span>, init_value); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish</span><span class="hljs-params">(pubsub_data)</span></span>
+    data         = pubsub_data.get_data
+    channel      = pubsub_data.get_channel || channel_name
+    encoded_data = <span class="hljs-constant">::ActiveSupport::JSON</span>.encode(data)
+    <span class="hljs-keyword">if</span> debug?
+      debug <span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>
+      debug <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name}</span>:"</span>
+      debug <span class="hljs-string">"  Channel   : <span class="hljs-subst">#{channel.inspect}</span>"</span>
+      debug <span class="hljs-string">"  Action    : <span class="hljs-subst">#{data[<span class="hljs-symbol">:action</span>]}</span>"</span>
+      debug <span class="hljs-string">"  Room Event: <span class="hljs-subst">#{data[<span class="hljs-symbol">:room_event</span>]}</span>"</span>
+      debug <span class="hljs-string">"  Room Type : <span class="hljs-subst">#{data[<span class="hljs-symbol">:room_type</span>]}</span>"</span>
+      debug <span class="hljs-string">"  Data: <span class="hljs-subst">#{data.inspect}</span>"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>debug &quot;  Encoded: #{encoded_data.inspect}&quot;</p></div></div><div class="code"><div class="wrapper">      debug <span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-variable">@client</span>.publish channel, encoded_data
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish_raw</span><span class="hljs-params">(channel, data)</span></span>
+    encoded_data = <span class="hljs-constant">::ActiveSupport::JSON</span>.encode(data)
+    <span class="hljs-variable">@client</span>.publish channel, encoded_data
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">channel_name</span>;</span> <span class="hljs-string">"/<span class="hljs-subst">#{<span class="hljs-variable">@platform_name</span>}</span>"</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">room_with_ownerable</span><span class="hljs-params">(record_or_scope, ownerable, *args)</span></span>
+    ownerable_key = record_or_scope_key(ownerable)
+    room_for(record_or_scope, ownerable_key, *args)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">room_for</span><span class="hljs-params">(record_or_scope, *args)</span></span>
+    room = record_or_scope_key(record_or_scope)
+    args.blank? ? room <span class="hljs-symbol">:</span> room + <span class="hljs-string">'/'</span> + args.join(<span class="hljs-string">'/'</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">room_members?</span><span class="hljs-params">(room)</span>;</span> room_count(room) &gt; <span class="hljs-number">0</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">room_count</span><span class="hljs-params">(room)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> room.blank?
+    count = <span class="hljs-variable">@client</span>.hget(key_for_room_counts, room)
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> count.blank? || !count.is_a?(<span class="hljs-constant">String</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">unless</span> count.match(<span class="hljs-regexp">/^\d+$/</span>)
+    count.to_i
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">record_or_scope_key</span><span class="hljs-params">(record_or_scope)</span></span>
+    <span class="hljs-keyword">if</span> scope?(record_or_scope)
+      key = record_or_scope.model.name.underscore.pluralize
+    <span class="hljs-keyword">else</span>
+      klass = (record_or_scope.is_a?(<span class="hljs-constant">Class</span>) ? record_or_scope <span class="hljs-symbol">:</span> record_or_scope.<span class="hljs-keyword">class</span>)
+      key   = (klass.name || <span class="hljs-string">'unknown'</span>).underscore
+      key  += <span class="hljs-string">"/<span class="hljs-subst">#{record_or_scope.id}</span>"</span>  <span class="hljs-keyword">if</span> record_or_scope.respond_to?(<span class="hljs-symbol">:id</span>)
+    <span class="hljs-keyword">end</span>
+    key
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">key_for_room_counts</span>;</span> <span class="hljs-variable">@_redis_room_counts_key</span> ||= <span class="hljs-string">"<span class="hljs-subst">#{channel_name}</span>/room_counts"</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">scope?</span><span class="hljs-params">(record_or_scope)</span>;</span> record_or_scope.is_a?(<span class="hljs-constant">::ActiveRecord::Relation</span>); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug?</span>;</span> <span class="hljs-variable">@debugging</span> == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug</span><span class="hljs-params">(message)</span></span>
+    puts <span class="hljs-string">"[debug] <span class="hljs-subst">#{message}</span>"</span>  <span class="hljs-keyword">if</span> <span class="hljs-constant">::Rails</span>.env.test?
+    <span class="hljs-constant">::Rails</span>.logger.debug <span class="hljs-string">'[debug] '</span> + message
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PublishError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

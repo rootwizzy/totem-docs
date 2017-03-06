@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-pub-sub/db/migrate/20160601000000_create_thinkspace_pub_sub</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-pub-sub/db/migrate/20160601000000_create_thinkspace_pub_sub"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-pub-sub/db/migrate/20160601000000_create_thinkspace_pub_sub.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-pub-sub/db/migrate/20160601000000_create_thinkspace_pub_sub.rb">src/thinkspace/api/thinkspace-pub-sub/db/migrate/20160601000000_create_thinkspace_pub_sub.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CreateThinkspacePubSub</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Migration</span></span></span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">change</span></span>
+
+    create_table <span class="hljs-symbol">:thinkspace_pub_sub_server_events</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+      t.references  <span class="hljs-symbol">:authable</span>,  <span class="hljs-symbol">polymorphic:</span> <span class="hljs-keyword">true</span>
+      t.references  <span class="hljs-symbol">:user</span>
+      t.string      <span class="hljs-symbol">:state</span>
+      t.string      <span class="hljs-symbol">:origin</span>
+      t.string      <span class="hljs-symbol">:channel</span>
+      t.string      <span class="hljs-symbol">:event</span>
+      t.string      <span class="hljs-symbol">:room_event</span>
+      t.jsonb       <span class="hljs-symbol">:rooms</span>
+      t.json        <span class="hljs-symbol">:value</span>
+      t.json        <span class="hljs-symbol">:records</span>
+      t.json        <span class="hljs-symbol">:timer_settings</span>
+      t.datetime    <span class="hljs-symbol">:timer_start_at</span>
+      t.datetime    <span class="hljs-symbol">:timer_end_at</span>
+      t.datetime    <span class="hljs-symbol">:timer_cancelled_at</span>
+      t.timestamps
+      t.index  [<span class="hljs-symbol">:state</span>],         <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_pub_sub_server_events_on_state</span>
+      t.index  [<span class="hljs-symbol">:user_id</span>],       <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_pub_sub_server_events_on_user</span>
+      t.index  [<span class="hljs-symbol">:channel</span>],       <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_pub_sub_server_events_on_channel</span>
+      t.index  [<span class="hljs-symbol">:room_event</span>],    <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_pub_sub_server_events_on_room_event</span>
+      t.index  [<span class="hljs-symbol">:event</span>],         <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_pub_sub_server_events_on_event</span>
+      t.index  [<span class="hljs-symbol">:timer_end_at</span>],  <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_pub_sub_server_events_on_end_at</span>
+      t.index  [<span class="hljs-symbol">:created_at</span>],    <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_pub_sub_server_events_on_created_at</span>
+      t.index  [<span class="hljs-symbol">:rooms</span>],         <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_pub_sub_server_events_on_rooms</span>, <span class="hljs-symbol">using:</span> <span class="hljs-symbol">:gin</span>
+      t.index  [<span class="hljs-symbol">:authable_id</span>, <span class="hljs-symbol">:authable_type</span>], <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_pub_sub_server_events_on_authable</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

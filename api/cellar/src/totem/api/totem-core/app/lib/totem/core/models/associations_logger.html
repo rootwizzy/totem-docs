@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/lib/totem/core/models/associations_logger</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/lib/totem/core/models/associations_logger"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/models/associations_logger.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/models/associations_logger.rb">src/totem/api/totem-core/app/lib/totem/core/models/associations_logger.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Models</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">AssociationsLogger</span></span>
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:warnings</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<pre><code>                  LOGGING FOR RAKE TASK                                          #</code></pre>
+<h6 id="">#</h6>
+<p>@!group Log Associations</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_model_separator</span><span class="hljs-params">(model=<span class="hljs-keyword">nil</span>)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> log_class?(model.name)
+          log <span class="hljs-string">"\n"</span>
+          log <span class="hljs-string">"[<span class="hljs-subst">#{model.name}</span>]"</span>  <span class="hljs-keyword">if</span> log_clean? &amp;&amp; model.present?
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_serializer_separator</span><span class="hljs-params">(model, serializer=<span class="hljs-keyword">nil</span>)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> log_class?(model.name)
+          log <span class="hljs-string">'  --'</span>  <span class="hljs-keyword">unless</span> log_clean?
+          log <span class="hljs-string">"  $ [<span class="hljs-subst">#{serializer.name}</span>]"</span>  <span class="hljs-keyword">if</span> log_clean? &amp;&amp; serializer.present?
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_model_association</span><span class="hljs-params">(model, type, assoc_name, options)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> log_class?(model.name)
+          <span class="hljs-keyword">if</span> log_clean?
+            log <span class="hljs-string">"  &gt; <span class="hljs-subst">#{type}</span> <span class="hljs-subst">#{assoc_name.inspect}</span>"</span>
+            log_options(options, <span class="hljs-string">'    '</span>)
+          <span class="hljs-keyword">else</span>
+            log <span class="hljs-string">"Model [<span class="hljs-subst">#{model.name}</span>] [<span class="hljs-subst">#{type}</span>] association [<span class="hljs-subst">#{assoc_name.inspect}</span>] added with options <span class="hljs-subst">#{options.inspect}</span>"</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_serializer_association</span><span class="hljs-params">(model, type, serializer, assoc_name, options={})</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> log_class?(model.name)
+          <span class="hljs-keyword">if</span> log_clean?
+            log <span class="hljs-string">"    &gt; <span class="hljs-subst">#{type}</span> <span class="hljs-subst">#{assoc_name.inspect}</span>"</span>
+            log_options(options, <span class="hljs-string">'      '</span>, <span class="hljs-number">7</span>)
+          <span class="hljs-keyword">else</span>
+            log <span class="hljs-string">"Model [<span class="hljs-subst">#{model.name}</span>] Serializer [<span class="hljs-subst">#{serializer.name}</span>] [<span class="hljs-subst">#{type}</span>] association [<span class="hljs-subst">#{assoc_name.inspect}</span>] added with options <span class="hljs-subst">#{options.inspect}</span>"</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_serializer_method</span><span class="hljs-params">(model, type, serializer, assoc_name, options={})</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> log_class?(model.name)
+          <span class="hljs-keyword">if</span> log_clean?
+            log <span class="hljs-string">"      <span class="hljs-subst">#{type}</span> <span class="hljs-subst">#{assoc_name.inspect}</span>"</span>
+          <span class="hljs-keyword">else</span>
+            log <span class="hljs-string">"Model [<span class="hljs-subst">#{model.name}</span>] Serializer [<span class="hljs-subst">#{serializer.name}</span>] add method [<span class="hljs-subst">#{type}</span>] for association [<span class="hljs-subst">#{assoc_name.inspect}</span>]"</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_options</span><span class="hljs-params">(options, pad=<span class="hljs-string">''</span>, ljust=<span class="hljs-number">12</span>)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> options.present? &amp;&amp; options.kind_of?(<span class="hljs-constant">Hash</span>)
+          keys        = options.keys.sort
+          keys.each <span class="hljs-keyword">do</span> |key|
+            log <span class="hljs-string">"<span class="hljs-subst">#{pad}</span>- <span class="hljs-subst">#{key.inspect.ljust(ljust)}</span> = <span class="hljs-subst">#{options[key].inspect}</span>"</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Rake Task</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>rake task options:
+  LIST=&#39;class1, class2,...&#39;  #=&gt; must match one of the class names
+  LIKE=&#39;partial-class1, partial_class2,...&#39;  #=&gt; must &#39;start_with&#39; one of the partial class names</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_rake_task</span></span>
+          <span class="hljs-variable">@is_rake_task</span> = (<span class="hljs-variable">$0</span> =~ <span class="hljs-regexp">/rake$/</span>)
+          <span class="hljs-keyword">if</span> is_rake_task?
+            task_name = <span class="hljs-constant">ENV</span>[<span class="hljs-string">'TASKNAME'</span>]
+            task_name = task_name.present? ? task_name.downcase <span class="hljs-symbol">:</span> <span class="hljs-string">''</span>
+            <span class="hljs-keyword">if</span> task_name.match(<span class="hljs-string">'association:list'</span>)
+              set_log_on
+              set_log_clean_on <span class="hljs-keyword">unless</span> task_name.match(<span class="hljs-string">':full'</span>)
+              <span class="hljs-variable">@is_rake_association_task</span> = <span class="hljs-keyword">true</span>
+              <span class="hljs-variable">@warnings</span>    = []
+              <span class="hljs-variable">@log_classes</span> = []
+              list_classes = <span class="hljs-constant">ENV</span>[<span class="hljs-string">'LIST'</span>] || <span class="hljs-constant">ENV</span>[<span class="hljs-string">'LIKE'</span>]
+              <span class="hljs-keyword">if</span> list_classes.present?
+                <span class="hljs-variable">@log_classes</span> = list_classes.split(<span class="hljs-string">','</span>).collect {|c| c.strip}.compact
+                <span class="hljs-variable">@log_classes_like</span> = <span class="hljs-constant">ENV</span>[<span class="hljs-string">'LIKE'</span>].present?
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_rake_task?</span></span>
+          <span class="hljs-variable">@is_rake_task</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_rake_association_task?</span></span>
+          is_rake_task? &amp;&amp; <span class="hljs-variable">@is_rake_association_task</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Log Utility</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_log_on</span></span>
+          <span class="hljs-variable">@log</span> = <span class="hljs-keyword">true</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_log_clean_on</span></span>
+          <span class="hljs-variable">@log_clean</span> = <span class="hljs-keyword">true</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log?</span></span>
+          <span class="hljs-variable">@log</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_clean?</span></span>
+          <span class="hljs-variable">@log_clean</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_class?</span><span class="hljs-params">(model_class)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@log_classes</span>.present?
+          <span class="hljs-keyword">return</span> <span class="hljs-variable">@log_classes</span>.<span class="hljs-keyword">include</span>?(model_class) <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable">@log_classes_like</span>
+          <span class="hljs-variable">@log_classes</span>.each <span class="hljs-keyword">do</span> |log_class|
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> model_class.start_with?(log_class)
+          <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">false</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log</span><span class="hljs-params">(message)</span></span>
+          <span class="hljs-keyword">if</span> log_clean?
+            puts message
+            <span class="hljs-constant">Rails</span>.logger.info message
+          <span class="hljs-keyword">else</span>
+            message = <span class="hljs-string">"[INFO] <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>}</span>: <span class="hljs-subst">#{message}</span>"</span>
+            puts message
+            <span class="hljs-constant">Rails</span>.logger.info message
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

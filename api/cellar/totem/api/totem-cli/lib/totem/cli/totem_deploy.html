@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-cli/lib/totem/cli/totem_deploy</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/api/totem-cli/lib/totem/cli/totem_deploy"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/totem_deploy.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/totem_deploy.rb">src/totem/api/totem-cli/lib/totem/cli/totem_deploy.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../totem_app'</span>, __FILE_<span class="hljs-number">_</span>)
+
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemDeploy</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Cli::TotemApp</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Thor runs all &#39;public&#39; instance methods in a class.
+Alias the &#39;TotemApp#process&#39; method and make private (so can call when run options :app is true)
+and not automatically run by Thor. TotemDeploy has its own &#39;process&#39; method.</p></div></div><div class="code"><div class="wrapper">  private <span class="hljs-symbol">:process</span>
+  alias_method <span class="hljs-symbol">:totem_app_process</span>, <span class="hljs-symbol">:process</span>
+
+  class_option <span class="hljs-symbol">:api</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">''</span>, <span class="hljs-symbol">group:</span> <span class="hljs-symbol">:totem_deploy</span>,        <span class="hljs-symbol">desc:</span> <span class="hljs-string">'deploy the api specified in config'</span>
+  class_option <span class="hljs-symbol">:client</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">''</span>, <span class="hljs-symbol">group:</span> <span class="hljs-symbol">:totem_deploy</span>,     <span class="hljs-symbol">desc:</span> <span class="hljs-string">'deploy the client specified in config'</span>
+
+  class_option <span class="hljs-symbol">:app</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">''</span>, <span class="hljs-symbol">group:</span> <span class="hljs-symbol">:totem_deploy</span>,        <span class="hljs-symbol">desc:</span> <span class="hljs-string">'deploy framework and platform into existing Rails app'</span>
+  class_option <span class="hljs-symbol">:db_install</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">''</span>, <span class="hljs-symbol">group:</span> <span class="hljs-symbol">:totem_deploy</span>, <span class="hljs-symbol">desc:</span> <span class="hljs-string">'rake totem:db:install:all'</span>
+
+  class_option <span class="hljs-symbol">:promote_revision</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">''</span>, <span class="hljs-symbol">group:</span> <span class="hljs-symbol">:totem_deploy</span>, <span class="hljs-symbol">desc:</span> <span class="hljs-string">'promote the ember revision to current'</span>
+
+  class_option <span class="hljs-symbol">:commit</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">''</span>, <span class="hljs-symbol">group:</span> <span class="hljs-symbol">:totem_deploy</span>,     <span class="hljs-symbol">desc:</span> <span class="hljs-string">'git add -A, git add -u, git commit -m “Deployment of version X.”'</span>
+  class_option <span class="hljs-symbol">:branch</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:string</span>, <span class="hljs-symbol">default:</span> <span class="hljs-string">'master'</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">'-b'</span>, <span class="hljs-symbol">group:</span> <span class="hljs-symbol">:totem_deploy</span>, <span class="hljs-symbol">desc:</span> <span class="hljs-string">'git branch for push'</span>
+  class_option <span class="hljs-symbol">:push</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">''</span>, <span class="hljs-symbol">group:</span> <span class="hljs-symbol">:totem_deploy</span>,       <span class="hljs-symbol">desc:</span> <span class="hljs-string">'git push origin branch'</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span>
+    deploy_verify_existing_rails_app
+    <span class="hljs-keyword">if</span> perform?(<span class="hljs-symbol">:api</span>)
+      deploy_app            <span class="hljs-keyword">if</span> perform?(<span class="hljs-symbol">:app</span>)
+      deploy_db_install     <span class="hljs-keyword">if</span> perform?(<span class="hljs-symbol">:db_install</span>)
+      deploy_app_git_commit <span class="hljs-keyword">if</span> perform?(<span class="hljs-symbol">:commit</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>deploy_git_push       if run_options[:push] # currently, do not run as part of --all; require --push option (and optional --branch)</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> perform?(<span class="hljs-symbol">:client</span>)
+      deploy_ember
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy_verify_existing_rails_app</span></span>
+    run_options[<span class="hljs-symbol">:new</span>] = <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> onew? <span class="hljs-comment"># allow override of run options :new if use --new on the command line</span>
+    stop_run <span class="hljs-string">"You must deploy into an existing Rails application.  <span class="hljs-subst">#{<span class="hljs-variable">@app_path</span>.inspect}</span> is not a Rails application."</span>  <span class="hljs-keyword">if</span> !new? &amp;&amp; !rails_application_exists?
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_options_key</span>;</span> {<span class="hljs-symbol">key:</span> <span class="hljs-symbol">:deploy_run_options</span>, <span class="hljs-symbol">app:</span> <span class="hljs-keyword">true</span>}; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy_app</span></span>
+    totem_app_process
+    deploy_git_init <span class="hljs-keyword">if</span> new?
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy_db_install</span></span>
+    cmd = <span class="hljs-string">"rails totem:db:install:all"</span>
+    validate_deploy_rails_app(cmd)
+    say_message <span class="hljs-string">"Running <span class="hljs-subst">#{cmd.inspect}</span>."</span>, <span class="hljs-symbol">:cyan</span>
+    debug cmd.inspect
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      run cmd, <span class="hljs-symbol">capture:</span> capture_output?, <span class="hljs-symbol">verbose:</span> verbose_copy?
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy_app_git_commit</span></span>
+    validate_deploy_rails_app(<span class="hljs-string">'git commit'</span>)
+    message = <span class="hljs-string">"Deployment of: <span class="hljs-subst">#{deploy_framework_commit_message}</span>.  <span class="hljs-subst">#{deploy_platform_commit_message}</span>."</span>
+    say_message <span class="hljs-string">"Local commit <span class="hljs-subst">#{message.inspect}</span>."</span>
+    deploy_git_init
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      cmd = <span class="hljs-string">'git add -A'</span>
+      say_message <span class="hljs-string">"Running <span class="hljs-subst">#{cmd.inspect}</span>."</span>, <span class="hljs-symbol">:cyan</span>
+      rc = run cmd, <span class="hljs-symbol">verbose:</span> verbose_copy?
+      deploy_command_failure(cmd, rc)
+      cmd = <span class="hljs-string">'git add -u'</span>
+      say_message <span class="hljs-string">"Running <span class="hljs-subst">#{cmd.inspect}</span>."</span>, <span class="hljs-symbol">:cyan</span>
+      rc = run cmd, <span class="hljs-symbol">verbose:</span> verbose_copy?
+      deploy_command_failure(cmd, rc)
+      cmd = <span class="hljs-string">"git commit -m '<span class="hljs-subst">#{message}</span>' --quiet"</span>
+      say_message <span class="hljs-string">"Running <span class="hljs-subst">#{cmd.inspect}</span>."</span>, <span class="hljs-symbol">:cyan</span>
+      rc = run cmd, <span class="hljs-symbol">verbose:</span> verbose_copy?
+      deploy_command_failure(cmd, rc)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy_git_init</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> rails_git?  <span class="hljs-comment"># check if already git repo</span>
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      cmd = <span class="hljs-string">'git init'</span>
+      say_message <span class="hljs-string">"Running <span class="hljs-subst">#{cmd.inspect}</span>."</span>, <span class="hljs-symbol">:cyan</span>
+      rc = run cmd, <span class="hljs-symbol">verbose:</span> verbose_copy?
+      deploy_command_failure(cmd, rc)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy_ember</span></span>
+    say_message      <span class="hljs-string">"Running ember deploy."</span>
+    ember_run_options = run_options[<span class="hljs-symbol">:ember_run_options</span>]
+    application_path  = ember_run_options[<span class="hljs-symbol">:app_path</span>]
+    sha_length        = ember_run_options[<span class="hljs-symbol">:sha_length</span>] || <span class="hljs-number">7</span>
+    stop_run         <span class="hljs-string">"Running an Ember deploy requires an existing Ember application."</span>  <span class="hljs-keyword">if</span> application_path.blank?
+    stop_run         <span class="hljs-string">"Running an Ember client deploy requires an environment specified for the deploy.js"</span> <span class="hljs-keyword">unless</span> run_options[<span class="hljs-symbol">:environment</span>].present?
+    cmd = <span class="hljs-string">"ember deploy --environment <span class="hljs-subst">#{run_options[<span class="hljs-symbol">:environment</span>]}</span>"</span>
+    inside application_path <span class="hljs-keyword">do</span>
+      rc             = run cmd, <span class="hljs-symbol">capture:</span> <span class="hljs-keyword">true</span>, <span class="hljs-symbol">verbose:</span> <span class="hljs-keyword">true</span>
+      revision_match = <span class="hljs-string">"revision: [a-zA-Z\\d]{<span class="hljs-subst">#{sha_length}</span>}"</span> <span class="hljs-comment"># e.g. match to - revision: abc1234</span>
+      revision       = rc.match(<span class="hljs-regexp">/<span class="hljs-subst">#{revision_match}</span>/</span>)
+      stop_run       <span class="hljs-string">"No revision found for <span class="hljs-subst">#{cmd}</span>.  Has there been changes since the last run to the client code?"</span> <span class="hljs-keyword">unless</span> revision.present?
+      revision       = revision.to_s.last(sha_length)
+      deploy_ember_promote_revision(revision)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy_ember_promote_revision</span><span class="hljs-params">(revision)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>NOTE: Requires that this is already inside the application_path.</p></div></div><div class="code"><div class="wrapper">    cmd = <span class="hljs-string">"ember deploy:activate --revision <span class="hljs-subst">#{revision}</span> --environment <span class="hljs-subst">#{run_options[<span class="hljs-symbol">:environment</span>]}</span>"</span>
+    <span class="hljs-keyword">if</span> run_options[<span class="hljs-symbol">:promote_revision</span>] <span class="hljs-comment"># outside of the scope of 'all'</span>
+      rc         = run cmd, <span class="hljs-symbol">capture:</span> <span class="hljs-keyword">true</span>, <span class="hljs-symbol">verbose:</span> <span class="hljs-keyword">true</span>
+      successful = rc.<span class="hljs-keyword">include</span>?(<span class="hljs-string">'Activation successful!'</span>)
+      stop_run <span class="hljs-string">"Ember deploy command [<span class="hljs-subst">#{cmd}</span>] was not successful."</span> <span class="hljs-keyword">unless</span> successful
+    <span class="hljs-keyword">else</span>
+      say_message <span class="hljs-string">"To promote to current: <span class="hljs-subst">#{cmd}</span>"</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def deploy_git_push
+  validate_deploy_rails_app(&#39;git push&#39;)
+  branch = run_options[:branch]
+  stop_run &quot;A git push branch is required.&quot;  if branch.blank?
+  cmd = &quot;git push origin #{branch}&quot;
+  stop_install unless yes? &quot;Do you want to run #{cmd.inspect} [yes|no]?&quot;, :yellow
+  say_message &quot;Running #{cmd.inspect}.&quot;
+  inside @app_path do
+    rc = run cmd, verbose: verbose_copy?
+    deploy_command_failure(cmd, rc)
+  end
+end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy_command_failure</span><span class="hljs-params">(cmd, rc=<span class="hljs-keyword">nil</span>)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> rc == <span class="hljs-keyword">true</span>
+    stop_run <span class="hljs-string">"Command <span class="hljs-subst">#{cmd.inspect}</span> failure.  Install stopped."</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy_platform_commit_message</span></span>
+    hash = get_platform_run_options
+    get_deploy_version_message(hash, <span class="hljs-string">'Platform'</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy_framework_commit_message</span></span>
+    hash = get_framework_run_options
+    get_deploy_version_message(hash, <span class="hljs-string">'Framework'</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_deploy_version_message</span><span class="hljs-params">(hash, type)</span></span>
+    stop_run <span class="hljs-string">"<span class="hljs-subst">#{type}</span> run options is not a hash."</span> <span class="hljs-keyword">unless</span> hash.is_a?(<span class="hljs-constant">Hash</span>)
+    path = hash[<span class="hljs-symbol">:platform</span>]
+    stop_run <span class="hljs-string">"<span class="hljs-subst">#{type}</span> run options platform path is blank."</span> <span class="hljs-keyword">if</span> path.blank?
+    version = <span class="hljs-string">''</span>
+    inside path <span class="hljs-keyword">do</span>
+      file = <span class="hljs-constant">Dir</span>[<span class="hljs-string">'*_VERSION'</span>].first
+      stop_run <span class="hljs-string">"<span class="hljs-subst">#{type}</span> VERSION file not found."</span>  <span class="hljs-keyword">if</span> file.blank? || !<span class="hljs-constant">File</span>.file?(file)
+      version = <span class="hljs-constant">File</span>.read(file)
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-string">"<span class="hljs-subst">#{type}</span> <span class="hljs-subst">#{path.inspect}</span> version <span class="hljs-subst">#{version.strip.chomp.inspect}</span>"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_deploy_rails_app</span><span class="hljs-params">(cmd)</span></span>
+    stop_run <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-variable">@app_path</span>.inspect}</span> must be a Rails application to run <span class="hljs-subst">#{cmd.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> rails_application_exists?
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">banner</span></span>
+    usage = &lt;&lt;<span class="hljs-constant">USAGE</span>
+
+<span class="hljs-comment">#{basename} APP_PATH [options]</span>
+<span class="hljs-comment">#{doc_banner_run_options}</span>
+<span class="hljs-constant">USAGE</span>
+    usage
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

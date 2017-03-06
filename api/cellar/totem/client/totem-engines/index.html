@@ -1,0 +1,12 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-engines/index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="totem/client/totem-engines/index"><meta name="groc-project-path" content="src/totem/client/totem-engines/index.js"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-engines/index.js">src/totem/client/totem-engines/index.js</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>jshint node: true </p></div></div><div class="code"><div class="wrapper"><span class="hljs-pi">'use strict'</span>;
+
+<span class="hljs-keyword">var</span> engine_addon  = <span class="hljs-built_in">require</span>(<span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>).resolve(<span class="hljs-string">'.'</span>, <span class="hljs-string">'node_modules'</span>, <span class="hljs-string">'ember-engines/lib/engine-addon'</span>));
+<span class="hljs-keyword">var</span> totem_engines = {
+  name: <span class="hljs-string">'totem-engines'</span>,
+  isDevelopingAddon: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>}  <span class="hljs-comment">// see ember-cli issue #2451</span>
+};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Node &#39;require&#39; uses the &#39;linked&#39; engine&#39;s root path for module lookup so
+ember modules (e.g. ember-engines/lib/engine-add) will not be found.
+&#39;engine_addon&#39; is set to the node&#39;s &#39;node_modules&#39; module
+and other engines can just use this global.</p></div></div><div class="code"><div class="wrapper">global.totem_engine_addon = engine_addon;
+
+<span class="hljs-built_in">module</span>.exports            = totem_engines;</div></div></div></div></body></html>

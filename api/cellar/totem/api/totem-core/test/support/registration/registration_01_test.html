@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/support/registration/registration_01_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/support/registration/registration_01_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/registration/registration_01_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/registration/registration_01_test.rb">src/totem/api/totem-core/test/support/registration/registration_01_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../../support_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">class_config_class</span>;</span>  <span class="hljs-constant">Totem::Core::Settings::ConfigClass</span>; <span class="hljs-keyword">end</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">module_config_class</span>;</span> <span class="hljs-constant">Totem::Core::Settings::ConfigModule</span>; <span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'01: registration.rb framework classes after register'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    set_environment
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'01_*'</span>)
+    register_framework_and_platform
+    <span class="hljs-variable">@class</span>     = <span class="hljs-variable">@env</span>.<span class="hljs-keyword">class</span>
+    <span class="hljs-variable">@framework</span> = <span class="hljs-variable">@class</span>.test_framework
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should be valid'</span> <span class="hljs-keyword">do</span> 
+    assert_kind_of <span class="hljs-constant">Hash</span>, <span class="hljs-variable">@class</span>
+    assert_equal [<span class="hljs-symbol">:test_platform</span>, <span class="hljs-symbol">:test_framework</span>].sort, <span class="hljs-variable">@class</span>.keys.sort
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should be kind of config class'</span> <span class="hljs-keyword">do</span> 
+    assert_kind_of class_config_class, <span class="hljs-variable">@framework</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: has class'</span> <span class="hljs-keyword">do</span> 
+    assert <span class="hljs-variable">@framework</span>.has_class?(<span class="hljs-symbol">:class_1</span>), <span class="hljs-string">"Framework should have class_1."</span>
+    assert <span class="hljs-variable">@framework</span>.has_class?(<span class="hljs-symbol">:class_2</span>), <span class="hljs-string">"Framework should have class_2."</span>
+    assert <span class="hljs-variable">@framework</span>.has_class?(<span class="hljs-symbol">:class_3</span>), <span class="hljs-string">"Framework should have class_3."</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should have classes'</span> <span class="hljs-keyword">do</span> 
+    assert_equal path_to_class(<span class="hljs-string">'test/framework/core/class_1'</span>), <span class="hljs-variable">@framework</span>.class_1
+    assert_equal path_to_class(<span class="hljs-string">'test/framework/core/controllers/class_2'</span>), <span class="hljs-variable">@framework</span>.class_2
+    assert_equal path_to_class(<span class="hljs-string">'test/framework/core/models/class_3'</span>), <span class="hljs-variable">@framework</span>.class_3
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">if</span> debug_on
+    it <span class="hljs-string">'01: debug'</span> <span class="hljs-keyword">do</span>
+      puts <span class="hljs-string">"\n"</span>
+      pp <span class="hljs-string">'01: Registration classes:'</span>, <span class="hljs-variable">@framework</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'01: registration.rb framework modules after register'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    set_environment
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'01_*'</span>)
+    register_framework_and_platform
+    <span class="hljs-variable">@module</span>    = <span class="hljs-variable">@env</span>.<span class="hljs-keyword">module</span>
+    <span class="hljs-variable">@framework</span> = <span class="hljs-variable">@module</span>.test_framework
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should be valid'</span> <span class="hljs-keyword">do</span> 
+    assert_kind_of <span class="hljs-constant">Hash</span>, <span class="hljs-variable">@module</span>
+    assert_equal [<span class="hljs-symbol">:test_platform</span>, <span class="hljs-symbol">:test_framework</span>].sort, <span class="hljs-variable">@module</span>.keys.sort
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should be kind of config class'</span> <span class="hljs-keyword">do</span> 
+    assert_kind_of module_config_class, <span class="hljs-variable">@framework</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: has module'</span> <span class="hljs-keyword">do</span> 
+    assert <span class="hljs-variable">@framework</span>.has_module?(<span class="hljs-symbol">:module_0</span>), <span class="hljs-string">"Framework should have module_0."</span>
+    assert <span class="hljs-variable">@framework</span>.has_module?(<span class="hljs-symbol">:module_1</span>), <span class="hljs-string">"Framework should have module_1."</span>
+    assert <span class="hljs-variable">@framework</span>.has_module?(<span class="hljs-symbol">:module_2</span>), <span class="hljs-string">"Framework should have module_2."</span>
+    assert <span class="hljs-variable">@framework</span>.has_module?(<span class="hljs-symbol">:module_3</span>), <span class="hljs-string">"Framework should have module_3."</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should have modules'</span> <span class="hljs-keyword">do</span>
+    assert_equal path_to_module(<span class="hljs-string">'test/framework/core/module_1'</span>), <span class="hljs-variable">@framework</span>.module_1
+    assert_equal path_to_module(<span class="hljs-string">'test/framework/core/controllers/module_2'</span>), <span class="hljs-variable">@framework</span>.module_2
+    assert_equal path_to_module(<span class="hljs-string">'test/framework/core/models/module_3'</span>), <span class="hljs-variable">@framework</span>.module_3
+    assert_equal path_to_module(<span class="hljs-string">'test/framework/core/module_0'</span>), <span class="hljs-variable">@framework</span>.module_<span class="hljs-number">0</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: modules should be returned in order'</span> <span class="hljs-keyword">do</span> 
+    expect = [
+      path_to_module(<span class="hljs-string">'test/framework/core/module_1'</span>),
+      path_to_module(<span class="hljs-string">'test/framework/core/controllers/module_2'</span>),
+      path_to_module(<span class="hljs-string">'test/framework/core/models/module_3'</span>),
+      path_to_module(<span class="hljs-string">'test/framework/core/module_0'</span>),
+    ]
+    assert_equal expect, <span class="hljs-variable">@framework</span>.get_all
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">if</span> debug_on
+    it <span class="hljs-string">'01: debug'</span> <span class="hljs-keyword">do</span>
+      puts <span class="hljs-string">"\n"</span>
+      pp <span class="hljs-string">'01: Registration modules:'</span>, <span class="hljs-variable">@framework</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="platform-">PLATFORM ###</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">describe <span class="hljs-string">'01: registration.rb platform classes after register'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    set_environment
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'01_*'</span>)
+    register_framework_and_platform
+    <span class="hljs-variable">@class</span>    = <span class="hljs-variable">@env</span>.<span class="hljs-keyword">class</span>
+    <span class="hljs-variable">@platform</span> = <span class="hljs-variable">@class</span>.test_platform
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should be valid'</span> <span class="hljs-keyword">do</span> 
+    assert_kind_of <span class="hljs-constant">Hash</span>, <span class="hljs-variable">@class</span>
+    assert_equal [<span class="hljs-symbol">:test_platform</span>, <span class="hljs-symbol">:test_framework</span>].sort, <span class="hljs-variable">@class</span>.keys.sort
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should be kind of config class'</span> <span class="hljs-keyword">do</span> 
+    assert_kind_of class_config_class, <span class="hljs-variable">@platform</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: has class'</span> <span class="hljs-keyword">do</span> 
+    assert <span class="hljs-variable">@platform</span>.has_class?(<span class="hljs-symbol">:class_1</span>), <span class="hljs-string">"Platform should have class_1."</span>
+    assert <span class="hljs-variable">@platform</span>.has_class?(<span class="hljs-symbol">:class_2</span>), <span class="hljs-string">"Platform should have class_2."</span>
+    assert <span class="hljs-variable">@platform</span>.has_class?(<span class="hljs-symbol">:class_3</span>), <span class="hljs-string">"Platform should have class_3."</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should have classes'</span> <span class="hljs-keyword">do</span> 
+    assert_equal path_to_class(<span class="hljs-string">'test/platform/main/class_1'</span>), <span class="hljs-variable">@platform</span>.class_1
+    assert_equal path_to_class(<span class="hljs-string">'test/framework/core/controllers/class_2'</span>), <span class="hljs-variable">@platform</span>.class_2
+    assert_equal path_to_class(<span class="hljs-string">'test/platform/main/models/class_3'</span>), <span class="hljs-variable">@platform</span>.class_3
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">if</span> debug_on
+    it <span class="hljs-string">'01: debug'</span> <span class="hljs-keyword">do</span>
+      puts <span class="hljs-string">"\n"</span>
+      pp <span class="hljs-string">'01: Registration classes:'</span>, <span class="hljs-variable">@platform</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'01: registration.rb platform modules after register'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    set_environment
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'01_*'</span>)
+    register_framework_and_platform
+    <span class="hljs-variable">@module</span>   = <span class="hljs-variable">@env</span>.<span class="hljs-keyword">module</span>
+    <span class="hljs-variable">@platform</span> = <span class="hljs-variable">@module</span>.test_platform
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should be valid'</span> <span class="hljs-keyword">do</span> 
+    assert_kind_of <span class="hljs-constant">Hash</span>, <span class="hljs-variable">@module</span>
+    assert_equal [<span class="hljs-symbol">:test_platform</span>, <span class="hljs-symbol">:test_framework</span>].sort, <span class="hljs-variable">@module</span>.keys.sort
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should be kind of config class'</span> <span class="hljs-keyword">do</span> 
+    assert_kind_of module_config_class, <span class="hljs-variable">@platform</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: has module'</span> <span class="hljs-keyword">do</span> 
+    assert <span class="hljs-variable">@platform</span>.has_module?(<span class="hljs-symbol">:module_0</span>), <span class="hljs-string">"Platform should have module_0."</span>
+    assert <span class="hljs-variable">@platform</span>.has_module?(<span class="hljs-symbol">:module_1</span>), <span class="hljs-string">"Platform should have module_1."</span>
+    assert <span class="hljs-variable">@platform</span>.has_module?(<span class="hljs-symbol">:module_2</span>), <span class="hljs-string">"Platform should have module_2."</span>
+    assert <span class="hljs-variable">@platform</span>.has_module?(<span class="hljs-symbol">:module_3</span>), <span class="hljs-string">"Platform should have module_3."</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should have inherited framework modules'</span> <span class="hljs-keyword">do</span>
+    assert_equal path_to_module(<span class="hljs-string">'test/platform/main/module_1'</span>), <span class="hljs-variable">@platform</span>.module_1
+    assert_equal path_to_module(<span class="hljs-string">'test/framework/core/controllers/module_2'</span>), <span class="hljs-variable">@platform</span>.module_2
+    assert_equal path_to_module(<span class="hljs-string">'test/platform/main/models/module_3'</span>), <span class="hljs-variable">@platform</span>.module_3
+    assert_equal path_to_module(<span class="hljs-string">'test/framework/core/module_0'</span>), <span class="hljs-variable">@platform</span>.module_<span class="hljs-number">0</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: modules should be returned in order'</span> <span class="hljs-keyword">do</span> 
+    expect = [
+      path_to_module(<span class="hljs-string">'test/platform/main/module_1'</span>),
+      path_to_module(<span class="hljs-string">'test/framework/core/controllers/module_2'</span>),
+      path_to_module(<span class="hljs-string">'test/platform/main/models/module_3'</span>),
+      path_to_module(<span class="hljs-string">'test/framework/core/module_0'</span>),
+    ]
+    assert_equal expect, <span class="hljs-variable">@platform</span>.get_all
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">if</span> debug_on
+    it <span class="hljs-string">'01: debug'</span> <span class="hljs-keyword">do</span>
+      puts <span class="hljs-string">"\n"</span>
+      pp <span class="hljs-string">'01: Registration modules:'</span>, <span class="hljs-variable">@platform</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/test/helpers/ability/controllers/common</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/test/helpers/ability/controllers/common"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/helpers/ability/controllers/common.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/helpers/ability/controllers/common.rb">src/thinkspace/api/thinkspace-casespace/test/helpers/ability/controllers/common.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Ability</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controllers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Common</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UsersController</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def setup_create(route); route.assert_unauthorized(/no invitation token/i); end</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_create</span><span class="hljs-params">(route)</span>;</span> route.assert_unauthorized(<span class="hljs-regexp">/already been accepted/i</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_sign_out</span><span class="hljs-params">(route)</span>;</span>    route.assert_authorized; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_show</span><span class="hljs-params">(route)</span>;</span>        route.assert_authorized; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_stay_alive</span><span class="hljs-params">(route)</span>;</span>  route.assert_authorized; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_validate</span><span class="hljs-params">(route)</span>;</span>    route.assert_authorized; <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpacesController</span></span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_index</span><span class="hljs-params">(route)</span>;</span> route.assert_authorized; <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PasswordResetsController</span></span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup</span><span class="hljs-params">(route)</span>;</span> route.assert_authorized; <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DiscourseController</span></span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup</span><span class="hljs-params">(route)</span>;</span> route.assert_unauthorized(<span class="hljs-regexp">/are relative/i</span>); <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Admin</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UsersController</span></span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_select_can_update_unauthorized</span><span class="hljs-params">(route)</span>;</span> route.assert_authorized; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_switch_can_update_authorized</span><span class="hljs-params">(route)</span>;</span> route.assert_unauthorized(<span class="hljs-regexp">/space id is blank/i</span>); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_refresh_can_update_unauthorized</span><span class="hljs-params">(route)</span>;</span> route.assert_authorized; <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpacesController</span></span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_create</span><span class="hljs-params">(route)</span>;</span> route.assert_authorized; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_import_can_update_authorized</span><span class="hljs-params">(route)</span>;</span> route.assert_unauthorized(<span class="hljs-regexp">/problem processing the file/i</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpaceUsersController</span></span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_update_can_update_authorized</span><span class="hljs-params">(route)</span>;</span> route.assert_unauthorized(<span class="hljs-regexp">/invalid role change/i</span>); <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InvitationsController</span></span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_fetch_state_unauthorized_reader</span><span class="hljs-params">(route)</span>;</span> route.assert_authorized; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup_fetch_state_can_update_unauthorized</span><span class="hljs-params">(route)</span>;</span> route.assert_authorized; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_save</span><span class="hljs-params">(route)</span></span>
+        invitation           = route.model
+        invitation.invitable = route.dictionary_space
+        user                 = route.dictionary_user
+        invitation.sender_id = user.id  <span class="hljs-keyword">if</span> user.present?
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">after_save_import</span><span class="hljs-params">(route)</span></span>
+        user = route.dictionary_user
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> user.blank?
+        route.set_params(<span class="hljs-symbol">:invitable_id</span>, user.id)
+        route.set_params(<span class="hljs-symbol">:invitable_type</span>, user.<span class="hljs-keyword">class</span>.name)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

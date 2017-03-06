@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/mixins/data/base_data</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/mixins/data/base_data"><meta name="groc-project-path" content="src/totem/client/totem/addon/mixins/data/base_data.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/mixins/data/base_data.coffee">src/totem/client/totem/addon/mixins/data/base_data.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import totem_scope    from <span class="hljs-string">'totem/scope'</span>
+import totem_ability  from <span class="hljs-string">'totem/mixins/data/ability'</span>
+import totem_metadata from <span class="hljs-string">'totem/mixins/data/metadata'</span>
+import totem_queue    from <span class="hljs-string">'totem/mixins/data/queue'</span>
+
+export default ember.Object.extend
+
+  <span class="hljs-attribute">data_names</span>: [<span class="hljs-string">'ability'</span>, <span class="hljs-string">'metadata'</span>]
+  <span class="hljs-attribute">source</span>:     <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>()
+    <span class="hljs-property">@setup_totem_data</span>()
+
+  <span class="hljs-attribute">setup_totem_data</span>: <span class="hljs-function">-&gt;</span>
+    config = <span class="hljs-property">@get</span>(<span class="hljs-string">'source.totem_data_config'</span>) <span class="hljs-keyword">or</span> {}
+    <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_object</span>(config)
+      <span class="hljs-built_in">console</span>.error <span class="hljs-string">"totem_data_config property in <span class="hljs-subst">#{<span class="hljs-property">@source</span>.toString()}</span> must be a hash e.g. {ability: {}} not:"</span>, config
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-property">@totem_data_config</span> = config
+    <span class="hljs-property">@all_config</span>        = <span class="hljs-property">@get_all_data_names_config</span>()
+    <span class="hljs-property">@include_totem_data_modules</span>()
+
+  <span class="hljs-attribute">include_totem_data_modules</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@include_totem_data_module</span>(<span class="hljs-string">'ability'</span>,  totem_ability)
+    <span class="hljs-property">@include_totem_data_module</span>(<span class="hljs-string">'metadata'</span>, totem_metadata)
+
+  <span class="hljs-attribute">include_totem_data_module</span>: <span class="hljs-function"><span class="hljs-params">(data_name, mod)</span> -&gt;</span>
+    mod_config = <span class="hljs-property">@merge_all_and_mod_configs</span>(data_name)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> mod_config
+    base_name = <span class="hljs-string">'totem_data'</span>
+    mod_name  = <span class="hljs-string">"<span class="hljs-subst">#{base_name.classify()}</span><span class="hljs-subst">#{data_name.classify()}</span>"</span>
+    inst      = mod.create
+      <span class="hljs-attribute">data_name</span>:         data_name
+      <span class="hljs-attribute">base_name</span>:         base_name
+      <span class="hljs-attribute">mod_name</span>:          mod_name
+      <span class="hljs-attribute">totem_scope</span>:       totem_scope
+      <span class="hljs-attribute">requests_queue</span>:    totem_queue
+      <span class="hljs-attribute">totem_data_config</span>: mod_config
+      <span class="hljs-attribute">totem_data</span>:        @
+    <span class="hljs-property">@set</span> data_name, inst
+    inst.init_values(<span class="hljs-property">@source</span>)
+
+  <span class="hljs-attribute">merge_all_and_mod_configs</span>: <span class="hljs-function"><span class="hljs-params">(data_name)</span> -&gt;</span>
+    mod = <span class="hljs-property">@totem_data_config</span>[data_name]
+    mod = {}  <span class="hljs-keyword">if</span> mod == <span class="hljs-literal">true</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_object</span>(mod)
+    all = ember.merge({}, <span class="hljs-property">@all_config</span>)
+    ember.merge(all, mod)
+
+  <span class="hljs-attribute">get_all_data_names_config</span>: <span class="hljs-function">-&gt;</span>
+    all = {}
+    <span class="hljs-keyword">for</span> key, value <span class="hljs-keyword">of</span> <span class="hljs-property">@totem_data_config</span>
+      all[key] = value  <span class="hljs-keyword">unless</span> <span class="hljs-property">@data_names</span>.includes(key)
+    all
+
+  <span class="hljs-attribute">set_source_property</span>: <span class="hljs-function"><span class="hljs-params">(prop, value={})</span> -&gt;</span>
+    <span class="hljs-keyword">unless</span> <span class="hljs-keyword">typeof</span>(<span class="hljs-property">@source</span>[prop]) == <span class="hljs-string">'undefined'</span>
+      <span class="hljs-built_in">console</span>.warn <span class="hljs-string">"totem_data: '<span class="hljs-subst">#{prop}</span>' is already defined in <span class="hljs-subst">#{<span class="hljs-property">@source</span>.toString()}</span>.  The component's '<span class="hljs-subst">#{prop}</span>' property is being overwritten."</span>
+    <span class="hljs-property">@source</span>.set prop, value
+
+  <span class="hljs-attribute">define_source_property</span>: <span class="hljs-function"><span class="hljs-params">(prop, tab_prop)</span> -&gt;</span>
+    path = <span class="hljs-string">"<span class="hljs-subst">#{prop}</span>.<span class="hljs-subst">#{tab_prop}</span>"</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span>(<span class="hljs-property">@source</span>[tab_prop]) == <span class="hljs-string">'undefined'</span>
+      ember.defineProperty <span class="hljs-property">@source</span>, tab_prop, ember.computed.reads path
+    <span class="hljs-keyword">else</span>
+      message =  <span class="hljs-string">"totem_data: '<span class="hljs-subst">#{tab_prop}</span>' is already defined in <span class="hljs-subst">#{<span class="hljs-property">@source</span>.toString()}</span>.  "</span>
+      message += <span class="hljs-string">"Will need to use the full path '<span class="hljs-subst">#{path}</span>' or rename the component's '<span class="hljs-subst">#{tab_prop}</span>' property."</span>
+      <span class="hljs-built_in">console</span>.warn message
+
+  <span class="hljs-attribute">is_object</span>: <span class="hljs-function"><span class="hljs-params">(object)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">if</span> ember.isBlank(object)
+    <span class="hljs-keyword">typeof</span>(object) == <span class="hljs-string">'object'</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> ember.isArray(object)
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'TotemData'</span></div></div></div></div></body></html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-messages/addon/mixins/messages/filter</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem-messages/addon/mixins/messages/filter"><meta name="groc-project-path" content="src/totem/client/totem-messages/addon/mixins/messages/filter.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-messages/addon/mixins/messages/filter.coffee">src/totem/client/totem-messages/addon/mixins/messages/filter.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import util  from <span class="hljs-string">'totem/util'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">get_new_messages_filter</span>: <span class="hljs-function"><span class="hljs-params">(rooms=<span class="hljs-literal">null</span>)</span>      -&gt;</span> <span class="hljs-property">@get_messages_filter</span>(<span class="hljs-string">'is_new'</span>, rooms)
+  <span class="hljs-attribute">get_previous_messages_filter</span>: <span class="hljs-function"><span class="hljs-params">(rooms=<span class="hljs-literal">null</span>)</span> -&gt;</span> <span class="hljs-property">@get_messages_filter</span>(<span class="hljs-string">'is_previous'</span>, rooms)
+  
+  <span class="hljs-attribute">move_all_new_to_previous</span>: <span class="hljs-function"><span class="hljs-params">(rooms=<span class="hljs-literal">null</span>)</span> -&gt;</span> <span class="hljs-property">@move_all_to_previous</span>(<span class="hljs-string">'is_new'</span>, rooms)
+
+  <span class="hljs-attribute">move_all_to_previous</span>: <span class="hljs-function"><span class="hljs-params">(msg_prop=<span class="hljs-string">'is_new'</span>, rooms=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    type  = <span class="hljs-property">@get_filter_model_type</span>()
+    rooms = ember.makeArray(rooms).compact()
+    <span class="hljs-property">@get_filter_store</span>().peekAll(type).forEach (message) =&gt;
+      message.set_previous() <span class="hljs-keyword">if</span> <span class="hljs-property">@include_message</span>(message, msg_prop, rooms)
+
+  <span class="hljs-attribute">move_all_to_inactive</span>: <span class="hljs-function"><span class="hljs-params">(msg_prop=<span class="hljs-string">'is_previous'</span>, rooms=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    type  = <span class="hljs-property">@get_filter_model_type</span>()
+    rooms = ember.makeArray(rooms).compact()
+    <span class="hljs-property">@get_filter_store</span>().peekAll(type).forEach (message) =&gt;
+      message.set_inactive() <span class="hljs-keyword">if</span> <span class="hljs-property">@include_message</span>(message, msg_prop, rooms)
+
+  <span class="hljs-attribute">get_messages_filter</span>: <span class="hljs-function"><span class="hljs-params">(msg_prop=<span class="hljs-string">'is_new'</span>, rooms=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      rooms = ember.makeArray(rooms).compact()
+      type  = <span class="hljs-property">@get_filter_model_type</span>()
+      <span class="hljs-property">@get_filter_store</span>().filter(type, <span class="hljs-function"><span class="hljs-params">(message)</span> =&gt;</span>
+        <span class="hljs-property">@include_message</span>(message, msg_prop, rooms)).<span class="hljs-keyword">then</span> (filter) =&gt; resolve(filter)
+
+  <span class="hljs-attribute">get_filter_store</span>:      <span class="hljs-function">-&gt;</span> totem_scope.get_store()
+  <span class="hljs-attribute">get_filter_model_type</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@message_model_type</span>
+
+  <span class="hljs-attribute">include_message</span>: <span class="hljs-function"><span class="hljs-params">(message, msg_prop, rooms=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">if</span> ember.isBlank(msg_prop)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> message.get(msg_prop)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>  <span class="hljs-keyword">if</span> ember.isBlank(rooms)
+    msg_rooms = message.get(<span class="hljs-string">'rooms'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">if</span> ember.isBlank(msg_rooms)
+    msg_rooms = ember.makeArray(msg_rooms)
+    <span class="hljs-property">@in_rooms</span>(rooms, msg_rooms)
+
+  <span class="hljs-attribute">in_rooms</span>: <span class="hljs-function"><span class="hljs-params">(rooms, msg_rooms)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> msg_rooms
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">if</span> rooms.includes(room)
+    <span class="hljs-literal">false</span></div></div></div></div></body></html>

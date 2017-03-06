@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-builder-pe/addon/components/content/templates</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-builder-pe/addon/components/content/templates"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-builder-pe/addon/components/content/templates.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-builder-pe/addon/components/content/templates.coffee">src/thinkspace/client/thinkspace-builder-pe/addon/components/content/templates.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="templatescoffee">templates.coffee</h1>
+<ul>
+<li>Type: <strong>Component</strong></li>
+<li>Package: <strong>ethinkspace-builder-pe</strong></li>
+</ul></div></div><div class="code"><div class="wrapper">export default base.extend
+
+  <span class="hljs-attribute">manager</span>: ember.inject.service()
+
+  <span class="hljs-attribute">select_template</span>:        <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">confirm_template</span>:       <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">user_template_selected</span>: <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">selected_template</span>:      ember.computed.reads <span class="hljs-string">'assessment_template_michaelsens'</span>
+
+  <span class="hljs-attribute">assessment_templates</span>:   ember.computed.reads <span class="hljs-string">'step.assessment_templates'</span>
+  <span class="hljs-attribute">user_templates</span>:         ember.computed.reads <span class="hljs-string">'step.user_templates'</span>
+  <span class="hljs-attribute">is_editing_template</span>:    ember.computed.reads <span class="hljs-string">'step.is_editing_template'</span>
+
+  <span class="hljs-attribute">has_no_user_templates</span>: ember.computed.empty <span class="hljs-string">'user_templates'</span>
+
+  <span class="hljs-attribute">assessment_template_michaelsens</span>:  ember.computed <span class="hljs-string">'assessment_templates'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'assessment_templates'</span>).findBy <span class="hljs-string">'is_michaelsens'</span>, <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">assessment_template_categories</span>:   ember.computed <span class="hljs-string">'assessment_templates'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'assessment_templates'</span>).findBy <span class="hljs-string">'is_categories'</span>, <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">assessment_template_blank_canvas</span>: ember.computed <span class="hljs-string">'assessment_templates'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'assessment_templates'</span>).findBy <span class="hljs-string">'is_blank_canvas'</span>, <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">michaelsens_selected</span>: ember.computed <span class="hljs-string">'selected_template'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'selected_template'</span>) == <span class="hljs-property">@get</span>(<span class="hljs-string">'assessment_template_michaelsens'</span>)
+
+  <span class="hljs-attribute">categories_selected</span>: ember.computed <span class="hljs-string">'selected_template'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'selected_template'</span>) == <span class="hljs-property">@get</span>(<span class="hljs-string">'assessment_template_categories'</span>)
+
+  <span class="hljs-attribute">blank_canvas_selected</span>: ember.computed <span class="hljs-string">'selected_template'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'selected_template'</span>) == <span class="hljs-property">@get</span>(<span class="hljs-string">'assessment_template_blank_canvas'</span>)
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    assessment = <span class="hljs-property">@get</span>(<span class="hljs-string">'manager.model'</span>)
+    assessment.get(<span class="hljs-string">'assessment_template'</span>).<span class="hljs-keyword">then</span> (assessment_template) =&gt;
+      <span class="hljs-keyword">if</span> ember.isPresent assessment_template
+        <span class="hljs-property">@set</span> <span class="hljs-string">'selected_template'</span>, assessment_template
+        <span class="hljs-property">@set</span> <span class="hljs-string">'user_template_selected'</span>, assessment_template.get(<span class="hljs-string">'is_user'</span>)
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@set</span> <span class="hljs-string">'selected_template'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'assessment_template_michaelsens'</span>)
+      <span class="hljs-property">@set_all_data_loaded</span>()
+
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select_assessment_template</span>: <span class="hljs-function"><span class="hljs-params">(template)</span> -&gt;</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'selected_template'</span>, template
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, template
+      <span class="hljs-property">@set</span> <span class="hljs-string">'user_template_selected'</span>, <span class="hljs-literal">false</span>
+
+    <span class="hljs-attribute">select_user_template</span>: <span class="hljs-function"><span class="hljs-params">(template)</span> -&gt;</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'selected_template'</span>, template
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, template
+      <span class="hljs-property">@propertyDidChange</span>(<span class="hljs-string">'selected_template'</span>) <span class="hljs-comment"># The properties won't recompute without this. Why is this necessary?</span>
+
+    <span class="hljs-attribute">toggle_user_templates</span>: <span class="hljs-function">-&gt;</span> 
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'has_no_user_templates'</span>)
+      <span class="hljs-property">@send</span> <span class="hljs-string">'select_user_template'</span>, <span class="hljs-property">@get</span>(<span class="hljs-string">'user_templates.firstObject'</span>)
+      <span class="hljs-property">@toggleProperty</span> <span class="hljs-string">'user_template_selected'</span>
+
+    <span class="hljs-attribute">confirm</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@sendAction</span>(<span class="hljs-string">'confirm'</span>)
+    <span class="hljs-attribute">cancel</span>: <span class="hljs-function">-&gt;</span>  <span class="hljs-property">@sendAction</span>(<span class="hljs-string">'cancel'</span>)</div></div></div></div></body></html>

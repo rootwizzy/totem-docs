@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/shared/timer/interval</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/shared/timer/interval"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/shared/timer/interval.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/shared/timer/interval.coffee">src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/shared/timer/interval.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-readiness-assurance-instructor/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">selected_id</span>:      <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">interval_buttons</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">time_change</span>: ember.observer <span class="hljs-string">'time_at'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set_interval_buttons</span>()
+
+  <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set_interval_buttons</span>()
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'selected_id'</span>, id
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, id
+      <span class="hljs-property">@set_interval_buttons</span>()
+
+  <span class="hljs-attribute">set_interval_buttons</span>: <span class="hljs-function">-&gt;</span>
+    max  = <span class="hljs-property">@get</span>(<span class="hljs-string">'intervals'</span>) <span class="hljs-keyword">or</span> <span class="hljs-number">5</span>
+    mins = <span class="hljs-property">@am</span>.minutes_from_now(<span class="hljs-property">@time_at</span>)
+    <span class="hljs-keyword">if</span> mins &lt;= <span class="hljs-number">0</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'interval_buttons'</span>, <span class="hljs-literal">null</span>
+      <span class="hljs-property">@set</span> <span class="hljs-string">'selected_id'</span>, <span class="hljs-literal">null</span>
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'clear'</span>
+      <span class="hljs-keyword">return</span>
+    mins = max <span class="hljs-keyword">if</span> mins &gt; max
+    buttons = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.mins]
+      label = <span class="hljs-property">@am</span>.pluralize(i, <span class="hljs-string">'minute'</span>)
+      buttons.push(<span class="hljs-attribute">id</span>: i, <span class="hljs-attribute">label</span>: <span class="hljs-string">"<span class="hljs-subst">#{i}</span> <span class="hljs-subst">#{label}</span>"</span>)
+    <span class="hljs-keyword">if</span> buttons.length == <span class="hljs-number">1</span>
+      id = buttons[<span class="hljs-number">0</span>].id
+      <span class="hljs-property">@set</span> <span class="hljs-string">'selected_id'</span>, id
+      <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, id
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@selected_id</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@selected_id</span> &gt; mins
+        <span class="hljs-property">@set</span> <span class="hljs-string">'selected_id'</span>, <span class="hljs-literal">null</span>
+        <span class="hljs-property">@sendAction</span> <span class="hljs-string">'select'</span>, <span class="hljs-literal">null</span>
+    <span class="hljs-property">@set</span> <span class="hljs-string">'interval_buttons'</span>, buttons</div></div></div></div></body></html>

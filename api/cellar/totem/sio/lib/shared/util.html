@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/sio/lib/shared/util</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="totem/sio/lib/shared/util"><meta name="groc-project-path" content="src/totem/sio/lib/shared/util.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/sio/lib/shared/util.coffee">src/totem/sio/lib/shared/util.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SocketIOUtil</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@debugging</span>=<span class="hljs-literal">false</span>)</span> -&gt;</span> <span class="hljs-keyword">return</span>
+
+  <span class="hljs-attribute">server_event</span>: <span class="hljs-function"><span class="hljs-params">(args...)</span> -&gt;</span> <span class="hljs-string">"server:<span class="hljs-subst">#{args.join(<span class="hljs-string">'/'</span>)}</span>"</span>
+  <span class="hljs-attribute">client_event</span>: <span class="hljs-function"><span class="hljs-params">(args...)</span> -&gt;</span> <span class="hljs-string">"client:<span class="hljs-subst">#{args.join(<span class="hljs-string">'/'</span>)}</span>"</span>
+
+  <span class="hljs-attribute">as_json</span>: <span class="hljs-function"><span class="hljs-params">(str)</span> -&gt;</span>
+    <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_string</span>(str)
+      message = <span class="hljs-string">"Invalid JSON [util.as_json]: Argument must be a string not '<span class="hljs-subst">#{<span class="hljs-keyword">typeof</span>(str)}</span>'."</span>
+      <span class="hljs-property">@error</span>(message)
+      <span class="hljs-keyword">return</span> {message}
+    <span class="hljs-keyword">try</span>
+      json = JSON.parse(str)
+    <span class="hljs-keyword">catch</span> e
+      message = <span class="hljs-string">"Invalid JSON [util.as_json]: <span class="hljs-subst">#{e.message}</span>"</span>
+      <span class="hljs-property">@error</span>(message)
+      json = {message}
+    <span class="hljs-keyword">finally</span>
+      json
+
+  <span class="hljs-attribute">env_var_int</span>: <span class="hljs-function"><span class="hljs-params">(name, namespace=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    value = <span class="hljs-property">@env_var</span>(name, namespace)
+    <span class="hljs-keyword">if</span> value.match(<span class="hljs-regexp">/^\d+$/</span>) <span class="hljs-keyword">then</span> parseInt(value) <span class="hljs-keyword">else</span> <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">env_var</span>: <span class="hljs-function"><span class="hljs-params">(name, namespace=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> namespace
+      ns = namespace.replace(<span class="hljs-string">'/'</span>, <span class="hljs-string">''</span>).toUpperCase()
+      ns = <span class="hljs-string">"<span class="hljs-subst">#{ns}</span>_"</span>
+    <span class="hljs-keyword">else</span>
+      ns = <span class="hljs-string">''</span>
+    name  = <span class="hljs-string">'SIO_'</span> + ns + name
+    value = process.env[name]
+    <span class="hljs-property">@debug</span> <span class="hljs-string">"env: <span class="hljs-subst">#{name}</span>=<span class="hljs-subst">#{value}</span>"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the first value is &#39;$&#39;, proxy it to the related ENV.
+Used to standardize the ENV to things like SIO_APP_PORT, but defer to Cloud provider set values (e.g. ENV[&#39;PORT&#39;])</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> value &amp;&amp; value[<span class="hljs-number">0</span>] == <span class="hljs-string">'$'</span> <span class="hljs-keyword">then</span> value = process.env[value.substring(<span class="hljs-number">1</span>)]
+    value
+
+  <span class="hljs-attribute">make_array</span>: <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">unless</span> obj
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@is_array</span>(obj) <span class="hljs-keyword">then</span> obj <span class="hljs-keyword">else</span> [obj]
+
+  <span class="hljs-attribute">array_contains</span>: <span class="hljs-function"><span class="hljs-params">(array, element)</span> -&gt;</span> array.indexOf(element) != -<span class="hljs-number">1</span>
+
+  <span class="hljs-attribute">is_array</span>:    <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span> obj <span class="hljs-keyword">and</span> Array.isArray(obj)
+  <span class="hljs-attribute">is_hash</span>:     <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span> obj <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(obj) == <span class="hljs-string">'object'</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@is_array</span>(obj)
+  <span class="hljs-attribute">is_string</span>:   <span class="hljs-function"><span class="hljs-params">(str)</span> -&gt;</span> str <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(str) == <span class="hljs-string">'string'</span>
+  <span class="hljs-attribute">is_function</span>: <span class="hljs-function"><span class="hljs-params">(fn)</span>  -&gt;</span> fn  <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(fn)  == <span class="hljs-string">'function'</span>
+  <span class="hljs-attribute">is_nan</span>:      <span class="hljs-function"><span class="hljs-params">(n)</span>   -&gt;</span> n   <span class="hljs-keyword">and</span> isNaN(n)
+
+  <span class="hljs-attribute">is_array_blank</span>: <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">unless</span> obj
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_array</span>(obj)
+    obj.length == <span class="hljs-number">0</span>
+
+  <span class="hljs-attribute">is_array_present</span>: <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@is_array_blank</span>(obj)
+
+  <span class="hljs-attribute">starts_with</span>: <span class="hljs-function"><span class="hljs-params">(string, prefix)</span> -&gt;</span> (string <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>).indexOf(prefix) == <span class="hljs-number">0</span>
+
+  <span class="hljs-attribute">timeout</span>: <span class="hljs-function"><span class="hljs-params">(to)</span> -&gt;</span> <span class="hljs-keyword">if</span> to <span class="hljs-keyword">then</span> parseInt(to) <span class="hljs-keyword">else</span> <span class="hljs-string">'none'</span>
+
+  <span class="hljs-attribute">hash_keys</span>: <span class="hljs-function"><span class="hljs-params">(hash)</span> -&gt;</span> (<span class="hljs-property">@is_hash</span>(hash) <span class="hljs-keyword">and</span> Object.keys(hash)) <span class="hljs-keyword">or</span> []
+
+  <span class="hljs-attribute">is_hash_present</span>: <span class="hljs-function"><span class="hljs-params">(hash)</span> -&gt;</span> <span class="hljs-property">@hash_keys</span>(hash).length &gt; <span class="hljs-number">0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="socket-helpers">Socket Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">is_authenticated</span>:      <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket <span class="hljs-keyword">and</span> socket.authenticated == <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">set_is_authenticated</span>:  <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket <span class="hljs-keyword">and</span> socket.authenticated = <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">set_not_authenticated</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket <span class="hljs-keyword">and</span> socket.authenticated = <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">set_not_authorized</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket <span class="hljs-keyword">and</span> socket.authorized = <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">set_is_authorized</span>:  <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket <span class="hljs-keyword">and</span> socket.authorized = <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">is_authorized</span>:      <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket <span class="hljs-keyword">and</span> socket.authorized == <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">can_access</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> <span class="hljs-property">@is_authenticated</span>(socket) <span class="hljs-keyword">and</span> <span class="hljs-property">@is_authorized</span>(socket)
+
+  <span class="hljs-attribute">can_access_room</span>: <span class="hljs-function"><span class="hljs-params">(socket, room)</span> -&gt;</span> <span class="hljs-property">@can_access</span>(socket) <span class="hljs-keyword">and</span> ( <span class="hljs-property">@in_room</span>(socket, room) <span class="hljs-keyword">or</span> <span class="hljs-property">@is_superuser</span>(socket) )
+
+  <span class="hljs-attribute">disconnect</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span>
+    <span class="hljs-property">@debug</span> <span class="hljs-string">'\n'</span>, <span class="hljs-string">'disconnect sid:'</span>, socket.id
+    socket.disconnect(<span class="hljs-string">'close'</span>) <span class="hljs-comment"># disconnect and close socket connection</span>
+
+  <span class="hljs-attribute">is_disconnected</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> <span class="hljs-keyword">not</span> socket <span class="hljs-keyword">or</span> socket.disconnected
+  <span class="hljs-attribute">is_connected</span>:    <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@is_disconnected</span>(socket)
+
+  <span class="hljs-attribute">set_user_data</span>: <span class="hljs-function"><span class="hljs-params">(socket, json)</span> -&gt;</span>
+    user_data = json.user_data <span class="hljs-keyword">or</span> {}
+    socket.auth_data ?= {}
+    socket.auth_data.user = user_data
+
+  <span class="hljs-attribute">get_user_data</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> (socket.auth_data <span class="hljs-keyword">or</span> {}).user <span class="hljs-keyword">or</span> {}
+  <span class="hljs-attribute">get_user_id</span>:   <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> <span class="hljs-property">@get_user_data</span>(socket).id <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">is_superuser</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> <span class="hljs-property">@get_user_data</span>(socket).superuser == <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">in_room</span>: <span class="hljs-function"><span class="hljs-params">(socket, room)</span> -&gt;</span> <span class="hljs-property">@get_rooms</span>(socket)[room]
+
+  <span class="hljs-attribute">get_rooms</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> socket.rooms <span class="hljs-keyword">or</span> {}
+
+  <span class="hljs-attribute">get_room_names</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span> <span class="hljs-property">@hash_keys</span>(<span class="hljs-property">@get_rooms</span>(socket))</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="select-module-type-helpers">Select Module Type Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">room_modules</span>:          <span class="hljs-function"><span class="hljs-params">(mods)</span> -&gt;</span> (mods <span class="hljs-keyword">or</span> []).filter (mod) =&gt; <span class="hljs-property">@is_string</span>(mod.prototype.room_type)
+  <span class="hljs-attribute">on_connection_modules</span>: <span class="hljs-function"><span class="hljs-params">(mods)</span> -&gt;</span> (mods <span class="hljs-keyword">or</span> []).filter (mod) =&gt; <span class="hljs-property">@is_function</span>(mod.prototype.on_connection)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="data-helpers">Data Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">data_rooms</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    rooms = data <span class="hljs-keyword">and</span> (data.rooms <span class="hljs-keyword">or</span> data.room)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> rooms
+    <span class="hljs-property">@make_array</span>(rooms)
+
+  <span class="hljs-attribute">data_room_types</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    types = data.room_types <span class="hljs-keyword">or</span> data.room_type
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> types
+    <span class="hljs-property">@make_array</span>(types)
+
+  <span class="hljs-attribute">data_room_event</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span> data <span class="hljs-keyword">and</span> data.room_event
+
+  <span class="hljs-attribute">data_auth</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span> (data <span class="hljs-keyword">and</span> data.auth) <span class="hljs-keyword">or</span> {}
+
+  <span class="hljs-attribute">data_response</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> {} <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_hash</span>(data)
+    auth_key = data.auth_key
+    <span class="hljs-keyword">if</span> auth_key <span class="hljs-keyword">then</span> {auth_key} <span class="hljs-keyword">else</span> data
+
+  <span class="hljs-attribute">data_return_message</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    value = data.value
+    <span class="hljs-keyword">return</span> {value}  <span class="hljs-keyword">if</span> value
+    <span class="hljs-keyword">return</span> {}       <span class="hljs-keyword">if</span> data.room_event
+    data
+
+  <span class="hljs-attribute">data_room_room_event</span>: <span class="hljs-function"><span class="hljs-params">(room, data)</span> -&gt;</span>
+    event = [room]
+    event.push data.room_type  <span class="hljs-keyword">if</span> data.room_type
+    event.push data.room_event <span class="hljs-keyword">if</span> data.room_event
+    <span class="hljs-property">@server_event</span>(event...)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="request-auth-header">Request Auth Header.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_auth_data_and_header</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_hash</span>(data)
+      <span class="hljs-property">@error</span> <span class="hljs-string">'Auth request data is not a hash.'</span>, data
+      <span class="hljs-keyword">return</span> [<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>]
+    auth = data.auth <span class="hljs-keyword">or</span> {}
+    <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_hash</span>(auth)
+      <span class="hljs-property">@error</span> <span class="hljs-string">'Auth request data.auth is not a hash.'</span>, data
+      <span class="hljs-keyword">return</span> [<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>]
+    token = auth.token
+    email = auth.email
+    <span class="hljs-keyword">unless</span> token
+      <span class="hljs-property">@error</span> <span class="hljs-string">'Auth request auth token is blank.'</span>, data
+      <span class="hljs-keyword">return</span> [<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>]
+    <span class="hljs-keyword">unless</span> email
+      <span class="hljs-property">@error</span> <span class="hljs-string">'Auth request auth email is blank.'</span>, data
+      <span class="hljs-keyword">return</span> [<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>]
+    header = {<span class="hljs-string">'Authorization'</span>: <span class="hljs-string">"Token token=\"<span class="hljs-subst">#{token}</span>\", email=\"<span class="hljs-subst">#{email}</span>\""</span>}
+    <span class="hljs-keyword">delete</span>(auth.token)
+    <span class="hljs-keyword">delete</span>(auth.email)
+    [data, header]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="console-messages">Console Messages.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">sep</span>: <span class="hljs-function"><span class="hljs-params">(n=<span class="hljs-number">80</span>)</span> -&gt;</span> Array(n).join(<span class="hljs-string">'-'</span>)
+
+  <span class="hljs-attribute">say</span>: <span class="hljs-function"><span class="hljs-params">(args...)</span> -&gt;</span> <span class="hljs-built_in">console</span>.log args...
+
+  <span class="hljs-attribute">info</span>:  <span class="hljs-function"><span class="hljs-params">(messages...)</span> -&gt;</span> <span class="hljs-property">@say</span> <span class="hljs-property">@prepare_messages</span>(messages, <span class="hljs-string">'[info ] '</span>)...
+  <span class="hljs-attribute">warn</span>:  <span class="hljs-function"><span class="hljs-params">(messages...)</span> -&gt;</span> <span class="hljs-property">@say</span> <span class="hljs-property">@prepare_messages</span>(messages, <span class="hljs-string">'[WARN ] '</span>, <span class="hljs-string">'yellow'</span>, <span class="hljs-literal">true</span>)...
+  <span class="hljs-attribute">debug</span>: <span class="hljs-function"><span class="hljs-params">(messages...)</span> -&gt;</span> <span class="hljs-property">@debugging</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@say</span> <span class="hljs-property">@prepare_messages</span>(messages, <span class="hljs-string">'[debug] '</span>, <span class="hljs-string">'green'</span>)...
+
+  <span class="hljs-attribute">error</span>: <span class="hljs-function"><span class="hljs-params">(messages...)</span> -&gt;</span>
+    <span class="hljs-property">@say</span> <span class="hljs-property">@color_line</span>(<span class="hljs-string">'******************************'</span>, <span class="hljs-string">'red'</span>)
+    <span class="hljs-property">@say</span> <span class="hljs-property">@prepare_messages</span>(messages, <span class="hljs-string">'[ERROR]'</span>, <span class="hljs-string">'red'</span>, <span class="hljs-literal">true</span>)...
+    <span class="hljs-property">@say</span> <span class="hljs-property">@color_line</span>(<span class="hljs-string">'------------------------------'</span>, <span class="hljs-string">'red'</span>)
+
+  <span class="hljs-attribute">prepare_messages</span>: <span class="hljs-function"><span class="hljs-params">(messages, prefix=<span class="hljs-string">''</span>, color=<span class="hljs-literal">null</span>, bold=<span class="hljs-literal">false</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> messages[<span class="hljs-number">0</span>] == <span class="hljs-string">'\n'</span>
+      <span class="hljs-property">@blank_line</span>()
+      messages.shift()
+    prefix_msg = prefix + <span class="hljs-property">@message_date</span>()
+    prefix_msg = <span class="hljs-keyword">if</span> bold <span class="hljs-keyword">then</span> <span class="hljs-property">@bold_line</span>(prefix_msg, color) <span class="hljs-keyword">else</span> <span class="hljs-property">@color_line</span>(prefix_msg, color)
+    messages.unshift prefix_msg
+    messages
+
+  <span class="hljs-attribute">blank_line</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@say</span>(<span class="hljs-string">''</span>)
+
+  <span class="hljs-attribute">message_date</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">"[<span class="hljs-subst">#{<span class="hljs-keyword">new</span> Date().toLocaleString()}</span>]"</span>
+
+  <span class="hljs-attribute">source_name</span>: <span class="hljs-function"><span class="hljs-params">(source)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">''</span> <span class="hljs-keyword">unless</span> source
+    <span class="hljs-keyword">return</span> <span class="hljs-string">''</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_function</span>(source.to_string)
+    <span class="hljs-string">"[<span class="hljs-subst">#{source.to_string()}</span>]"</span>
+
+  <span class="hljs-attribute">color_line</span>: <span class="hljs-function"><span class="hljs-params">(message, color=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> message <span class="hljs-keyword">unless</span> color
+    color = <span class="hljs-property">@colors</span>[color]
+    <span class="hljs-keyword">return</span> message <span class="hljs-keyword">unless</span> color
+    color + message + <span class="hljs-property">@colors</span>.reset
+
+  <span class="hljs-attribute">bold_line</span>: <span class="hljs-function"><span class="hljs-params">(message, color=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@color_line</span>(message, <span class="hljs-string">'bold'</span>) <span class="hljs-keyword">unless</span> color
+    <span class="hljs-property">@colors</span>.bold + <span class="hljs-property">@color_line</span>(message, color) + <span class="hljs-property">@colors</span>.reset
+
+  <span class="hljs-attribute">colors</span>:
+    <span class="hljs-attribute">reset</span>:     <span class="hljs-string">"\x1b[0m"</span>
+    <span class="hljs-attribute">hicolor</span>:   <span class="hljs-string">"\x1b[1m"</span>
+    <span class="hljs-attribute">bold</span>:      <span class="hljs-string">"\x1b[1m"</span> <span class="hljs-comment"># same as hicolor</span>
+    <span class="hljs-attribute">underline</span>: <span class="hljs-string">"\x1b[4m"</span>
+    <span class="hljs-attribute">inverse</span>:   <span class="hljs-string">"\x1b[7m"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>foreground colors</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-attribute">black</span>:         <span class="hljs-string">"\x1b[30m"</span>
+    <span class="hljs-attribute">red</span>:           <span class="hljs-string">"\x1b[31m"</span>
+    <span class="hljs-attribute">green</span>:         <span class="hljs-string">"\x1b[32m"</span>
+    <span class="hljs-attribute">yellow</span>:        <span class="hljs-string">"\x1b[33m"</span>
+    <span class="hljs-attribute">blue</span>:          <span class="hljs-string">"\x1b[34m"</span>
+    <span class="hljs-attribute">magenta</span>:       <span class="hljs-string">"\x1b[35m"</span>
+    <span class="hljs-attribute">cyan</span>:          <span class="hljs-string">"\x1b[36m"</span>
+    <span class="hljs-attribute">white</span>:         <span class="hljs-string">"\x1b[37m"</span>
+    <span class="hljs-attribute">light_red</span>:     <span class="hljs-string">"\x1b[91m"</span>
+    <span class="hljs-attribute">light_green</span>:   <span class="hljs-string">"\x1b[92m"</span>
+    <span class="hljs-attribute">light_yellow</span>:  <span class="hljs-string">"\x1b[93m"</span>
+    <span class="hljs-attribute">light_blue</span>:    <span class="hljs-string">"\x1b[94m"</span>
+    <span class="hljs-attribute">light_magenta</span>: <span class="hljs-string">"\x1b[95m"</span>
+    <span class="hljs-attribute">light_cyan</span>:    <span class="hljs-string">"\x1b[96m"</span>
+
+  <span class="hljs-attribute">throw_error</span>: <span class="hljs-function"><span class="hljs-params">(source, message)</span> -&gt;</span>
+    message = <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@message_date</span>()}</span> <span class="hljs-subst">#{<span class="hljs-property">@source_name</span>(source)}</span> <span class="hljs-subst">#{message}</span>"</span>
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Error(message)
+
+  <span class="hljs-attribute">to_string</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'SocketIOUtil'</span>
+
+<span class="hljs-built_in">module</span>.exports = SocketIOUtil</div></div></div></div></body></html>

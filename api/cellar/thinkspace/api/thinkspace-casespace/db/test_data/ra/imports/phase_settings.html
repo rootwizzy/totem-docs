@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/db/test_data/ra/imports/phase_settings</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/db/test_data/ra/imports/phase_settings"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/ra/imports/phase_settings.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/ra/imports/phase_settings.yml">src/thinkspace/api/thinkspace-casespace/db/test_data/ra/imports/phase_settings.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">no_auto_score:
+  actions: 
+    submit:
+      <span class="hljs-keyword">state</span>: complete
+
+auto_score:
+  actions: 
+    submit:
+      <span class="hljs-keyword">state</span>:      complete
+      auto_score: {<span class="hljs-keyword">min</span>: <span class="hljs-number">1</span>, <span class="hljs-keyword">max</span>: <span class="hljs-number">1</span>}
+
+auto_score_unlock_next:
+  actions: 
+    submit:
+      <span class="hljs-keyword">state</span>:      complete
+      unlock:     next
+      auto_score: {<span class="hljs-keyword">min</span>: <span class="hljs-number">1</span>, <span class="hljs-keyword">max</span>: <span class="hljs-number">1</span>}
+
+validate:
+  validation: {validate: true}
+  phase_score_validation:
+    numericality:
+      allow_blank:              false
+      greater_than_or_equal_to: <span class="hljs-number">1</span>
+      less_than_or_equal_to:    <span class="hljs-number">1000</span>
+      decimals:                 <span class="hljs-number">0</span></div></div></div></div></body></html>

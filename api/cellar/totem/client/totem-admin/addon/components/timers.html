@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-admin/addon/components/timers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-admin/addon/components/timers"><meta name="groc-project-path" content="src/totem/client/totem-admin/addon/components/timers.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-admin/addon/components/timers.coffee">src/totem/client/totem-admin/addon/components/timers.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import util  from <span class="hljs-string">'totem/util'</span>
+import base  from <span class="hljs-string">'totem-base/components/base'</span>
+import m_sort_by from <span class="hljs-string">'totem-application/mixins/table_sort_by'</span>
+
+export default base.extend m_sort_by,
+
+  <span class="hljs-attribute">pubsub</span>: ember.inject.service()
+  <span class="hljs-attribute">admin</span>:  ember.inject.service()
+
+  <span class="hljs-attribute">timer_data</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">ready</span>:      <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">sorted_timers</span>: ember.computed.sort <span class="hljs-string">'timer_data'</span>, <span class="hljs-string">'sort_by'</span>
+
+  <span class="hljs-attribute">sort</span>: ember.computed -&gt;
+    sort_configs =
+      <span class="hljs-attribute">id</span>:        {<span class="hljs-attribute">id</span>: <span class="hljs-string">'id'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'id'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Timer Id'</span>}
+      <span class="hljs-attribute">room</span>:      {<span class="hljs-attribute">id</span>: <span class="hljs-string">'room'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'sort_room'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Room'</span>}
+      <span class="hljs-attribute">start_at</span>:  {<span class="hljs-attribute">id</span>: <span class="hljs-string">'start_at'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'start_date'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Start At'</span>}
+      <span class="hljs-attribute">end_at</span>:    {<span class="hljs-attribute">id</span>: <span class="hljs-string">'end_at'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'end_date'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'End At'</span>}
+      <span class="hljs-attribute">remaining</span>: {<span class="hljs-attribute">id</span>: <span class="hljs-string">'remaining'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'remaining'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Remaining'</span>}
+      <span class="hljs-attribute">title</span>:     {<span class="hljs-attribute">id</span>: <span class="hljs-string">'title'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'sort_title'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Title'</span>}
+      <span class="hljs-attribute">type</span>:      {<span class="hljs-attribute">id</span>: <span class="hljs-string">'type'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'sort_type'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Type'</span>}
+      <span class="hljs-attribute">message</span>:   {<span class="hljs-attribute">id</span>: <span class="hljs-string">'message'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'sort_message'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Message'</span>}
+      <span class="hljs-attribute">interval</span>:  {<span class="hljs-attribute">id</span>: <span class="hljs-string">'interval'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'interval'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'Interval'</span>}
+      <span class="hljs-attribute">user_id</span>:   {<span class="hljs-attribute">id</span>: <span class="hljs-string">'user_id'</span>, <span class="hljs-attribute">sort</span>: <span class="hljs-string">'user_id'</span>, <span class="hljs-attribute">text</span>: <span class="hljs-string">'User Id'</span>}
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">refresh</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@emit_timer_list</span>()
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>(arguments...)
+    <span class="hljs-property">@pubsub</span>     = <span class="hljs-property">@get</span>(<span class="hljs-string">'pubsub'</span>)
+    <span class="hljs-property">@am</span>         = <span class="hljs-property">@get</span>(<span class="hljs-string">'admin'</span>)
+    <span class="hljs-property">@ttz</span>        = <span class="hljs-property">@get</span>(<span class="hljs-string">'ttz'</span>)
+    <span class="hljs-property">@event</span>      = <span class="hljs-string">'timer_list'</span>
+    <span class="hljs-property">@timer_date</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@get_timer_list</span>()
+
+  <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'admin'</span>).set_other_header_links_inactvie(<span class="hljs-string">'timers'</span>)
+
+  <span class="hljs-attribute">get_timer_list</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@socket</span> = <span class="hljs-property">@pubsub</span>.get_socket()
+    sevent = <span class="hljs-property">@pubsub</span>.server_event(<span class="hljs-property">@event</span>)
+    <span class="hljs-property">@pubsub</span>.<span class="hljs-literal">on</span>(<span class="hljs-property">@socket</span>, sevent, @, <span class="hljs-string">'handle_timer_list'</span>)
+    <span class="hljs-property">@emit_timer_list</span>()
+
+  <span class="hljs-attribute">emit_timer_list</span>: <span class="hljs-function">-&gt;</span>
+    cevent = <span class="hljs-property">@pubsub</span>.client_event(<span class="hljs-property">@event</span>)
+    <span class="hljs-property">@socket</span>.emit(cevent)
+
+  <span class="hljs-attribute">handle_timer_list</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.info <span class="hljs-string">'handle_timer_list:'</span>, data
+    <span class="hljs-property">@set_timers</span>(data)
+
+  <span class="hljs-attribute">set_timers</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      values   = data.value <span class="hljs-keyword">or</span> []
+      values   = values.sortBy <span class="hljs-string">'timer.settings.end_at'</span>
+      promises = (<span class="hljs-property">@format_timer_value</span>(value) <span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> values)
+      ember.RSVP.all(promises).<span class="hljs-keyword">then</span> (timers) =&gt;
+        <span class="hljs-property">@set</span> <span class="hljs-string">'timer_data'</span>, timers
+        <span class="hljs-property">@set</span> <span class="hljs-string">'ready'</span>, <span class="hljs-literal">true</span>
+        <span class="hljs-property">@notifyPropertyChange</span> <span class="hljs-string">'sorted_timers'</span>
+        resolve()
+
+  <span class="hljs-attribute">format_timer_value</span>: <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      settings = value.timer <span class="hljs-keyword">or</span> {}
+      timer    =
+        <span class="hljs-attribute">id</span>:            settings.id
+        <span class="hljs-attribute">title</span>:         settings.title <span class="hljs-keyword">or</span> <span class="hljs-string">'no-title'</span>
+        <span class="hljs-attribute">type</span>:          settings.type
+        <span class="hljs-attribute">interval</span>:      settings.interval
+        <span class="hljs-attribute">unit</span>:          settings.unit
+        <span class="hljs-attribute">message</span>:       settings.message
+        <span class="hljs-attribute">room_event</span>:    settings.room_event
+        <span class="hljs-attribute">user_id</span>:       settings.user_id
+      <span class="hljs-property">@add_show_interval</span>(timer)
+      <span class="hljs-property">@add_room_and_users</span>(timer, value)
+      <span class="hljs-property">@add_end_at</span>(timer, settings)
+      <span class="hljs-property">@add_start_at</span>(timer, settings)
+      <span class="hljs-property">@make_timer_sortable</span>(timer)
+      resolve(timer)
+
+  <span class="hljs-attribute">add_show_interval</span>: <span class="hljs-function"><span class="hljs-params">(timer)</span> -&gt;</span>
+    interval = timer.interval
+    <span class="hljs-keyword">if</span> ember.isBlank(interval)
+      timer.interval      = <span class="hljs-number">0</span>
+      timer.show_interval = <span class="hljs-string">'no reminders'</span>
+    <span class="hljs-keyword">else</span>
+      unit = <span class="hljs-property">@am</span>.pluralize(interval, timer.unit)
+      timer.show_interval = <span class="hljs-string">"<span class="hljs-subst">#{timer.interval}</span> (<span class="hljs-subst">#{unit}</span>)"</span>
+
+  <span class="hljs-attribute">add_room_and_users</span>: <span class="hljs-function"><span class="hljs-params">(timer, value)</span> -&gt;</span>
+    rooms = ember.makeArray(value.rooms).compact()
+    users = []
+    platform = <span class="hljs-property">@am</span>.get_platform()
+    regex = <span class="hljs-keyword">new</span> RegExp(<span class="hljs-string">"<span class="hljs-subst">#{platform}</span>.*?\\\d+"</span>)
+    timer_room = <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+      match = room.match(regex)
+      <span class="hljs-keyword">if</span> ember.isPresent(match)
+        timer_room = match[<span class="hljs-number">0</span>] <span class="hljs-keyword">unless</span> timer_room
+        users.push room.replace(timer_room,<span class="hljs-string">''</span>).replace(<span class="hljs-regexp">/^\//</span>,<span class="hljs-string">''</span>)
+    timer.room  = timer_room
+    timer.users = users.sort()
+
+  <span class="hljs-attribute">add_end_at</span>: <span class="hljs-function"><span class="hljs-params">(timer, settings)</span> -&gt;</span>
+    date = settings.end_at
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(date)
+    timer.end_date    = <span class="hljs-keyword">new</span> Date(date)
+    timer.show_end_at = <span class="hljs-property">@am</span>.format_time(timer.end_date)
+    timer.remaining   = <span class="hljs-property">@am</span>.seconds_from_now(timer.end_date)
+    min_now           = <span class="hljs-keyword">if</span> timer.remaining &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> Math.floor(timer.remaining / <span class="hljs-number">60</span>) <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+    timer.from_now    = <span class="hljs-string">"<span class="hljs-subst">#{timer.remaining}</span> seconds (<span class="hljs-subst">#{min_now}</span> mins)"</span>
+
+  <span class="hljs-attribute">add_start_at</span>: <span class="hljs-function"><span class="hljs-params">(timer, settings)</span> -&gt;</span>
+    date = settings.start_at
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(date)
+    timer.start_date    = <span class="hljs-keyword">new</span> Date(date)
+    timer.show_start_at = <span class="hljs-property">@am</span>.format_time(timer.start_date)
+
+  <span class="hljs-attribute">make_timer_sortable</span>: <span class="hljs-function"><span class="hljs-params">(timer)</span> -&gt;</span>
+    timer.sort_room    = (timer.room <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>).toLowerCase()
+    timer.sort_title   = (timer.title <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>).toLowerCase()
+    timer.sort_type    = (timer.type <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>).toLowerCase()
+    timer.sort_message = (timer.message <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>).toLowerCase()</div></div></div></div></body></html>

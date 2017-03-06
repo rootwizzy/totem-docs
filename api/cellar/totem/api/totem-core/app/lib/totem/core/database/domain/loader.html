@@ -1,0 +1,515 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/app/lib/totem/core/database/domain/loader</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/app/lib/totem/core/database/domain/loader"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/database/domain/loader.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/database/domain/loader.rb">src/totem/api/totem-core/app/lib/totem/core/database/domain/loader.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Database</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Domain</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Loader</span></span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:totem_settings</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:last_sequence_number</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:run_messages</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(env=<span class="hljs-keyword">nil</span>)</span></span>
+    <span class="hljs-variable">@totem_settings</span>    = env || <span class="hljs-constant">::Totem::Settings</span>
+    <span class="hljs-variable">@ignore_timestamps</span> = <span class="hljs-keyword">true</span>
+    <span class="hljs-variable">@run_messages</span>      = <span class="hljs-constant">Array</span>.new
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="public-methods">Public Methods.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_files</span><span class="hljs-params">(args=<span class="hljs-keyword">nil</span>)</span></span>
+    engines = get_args_engines_and_models(args)
+    engines.each <span class="hljs-keyword">do</span> |engine, models|
+      create_engine_domain_directory(engine)
+      models.each <span class="hljs-keyword">do</span> |model|
+        create_engine_domain_yml_file(engine, model)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    print_run_messages
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">compare_files</span><span class="hljs-params">(args=<span class="hljs-keyword">nil</span>)</span></span>
+    engines = get_args_engines_and_models(args)
+    engines.each <span class="hljs-keyword">do</span> |engine, models|
+      models.each <span class="hljs-keyword">do</span> |model|
+        compare_model_domain_records(engine, model)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    print_run_messages
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_files</span><span class="hljs-params">(args=<span class="hljs-keyword">nil</span>)</span></span>
+    <span class="hljs-constant">ActiveRecord::Base</span>.transaction <span class="hljs-keyword">do</span>
+      engines = get_args_engines_and_models(args)
+      engines.each <span class="hljs-keyword">do</span> |engine, models|
+        models.each <span class="hljs-keyword">do</span> |model|
+          load_model_domain_records(engine, model)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    print_run_messages
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_from_yml</span><span class="hljs-params">(*args)</span></span>
+    engine, model, data = validate_load_from_yml(args)
+    <span class="hljs-constant">ActiveRecord::Base</span>.transaction <span class="hljs-keyword">do</span>
+      delete_all_model_records(model)
+      load_model_domain_records(engine, model, data)
+      create_engine_domain_directory(engine)
+      create_engine_domain_yml_file(engine, model)
+    <span class="hljs-keyword">end</span>
+    print_run_messages
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="private-methods">Private Methods.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_data_ids</span><span class="hljs-params">(data)</span>;</span> data.select {|d| d[<span class="hljs-symbol">:id</span>].present?}.map{|d| d[<span class="hljs-symbol">:id</span>]}; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_model_yml_file_after_load?</span></span>
+    <span class="hljs-variable">@archive_data</span> &amp;&amp; (<span class="hljs-variable">@records_created</span> &gt; <span class="hljs-number">0</span> || <span class="hljs-variable">@records_updated</span> &gt; <span class="hljs-number">0</span> || <span class="hljs-variable">@records_destroyed</span> &gt; <span class="hljs-number">0</span> || <span class="hljs-variable">@records_recreated</span> &gt; <span class="hljs-number">0</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_model_domain_records</span><span class="hljs-params">(engine, model, data=<span class="hljs-keyword">nil</span>)</span></span>
+    <span class="hljs-variable">@last_sequence_number</span> = get_table_last_sequence_number(model)
+    reset_counts
+    <span class="hljs-variable">@archive_data</span> = model.count &gt; <span class="hljs-number">0</span>  <span class="hljs-comment"># if the table is empty, don't archive the data just load it e.g. after a totem:db:reset</span>
+    data = get_model_yml_data(engine, model)  <span class="hljs-keyword">if</span> data.blank?
+    validate_data(model, data)
+    new_records     = <span class="hljs-constant">Array</span>.new
+    data.each <span class="hljs-keyword">do</span> |data_record|
+      id = data_record[<span class="hljs-symbol">:id</span>]
+      <span class="hljs-keyword">if</span> id.present?
+        record = model.find_by(<span class="hljs-symbol">id:</span> id)
+        <span class="hljs-keyword">if</span> record.present?
+          update_record(record, data_record)
+        <span class="hljs-keyword">else</span>
+          recreate_record(model, data_record, id)  <span class="hljs-comment"># recreating a destroyed record or setting a specific id</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">else</span>
+        new_records.push(data_record)  <span class="hljs-comment"># save data to create the new record</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>By now, all of the records with ids have been created.</p></div></div><div class="code"><div class="wrapper">    data_ids    = get_data_ids(data)
+    db_ids      = get_domain_table_record_ids(model)
+    destroy_ids = db_ids - data_ids
+    destroy_ids.each <span class="hljs-keyword">do</span> |id|
+      destroy_record(model, id)
+    <span class="hljs-keyword">end</span>
+    new_records.each <span class="hljs-keyword">do</span> |data_record|
+      create_record(model, data_record)
+    <span class="hljs-keyword">end</span>
+    create_engine_domain_yml_file(engine, model)  <span class="hljs-keyword">if</span> create_model_yml_file_after_load?
+    print_model_results(model)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_data</span><span class="hljs-params">(model, data)</span></span>
+    data_ids = get_data_ids(data)
+    uniq_ids = data_ids.uniq
+    <span class="hljs-keyword">unless</span> data_ids.length == uniq_ids.length
+      dup_ids = <span class="hljs-constant">Array</span>.new
+      uniq_ids.each {|id| dup_ids.push(id)  <span class="hljs-keyword">if</span> data_ids.count(id) &gt; <span class="hljs-number">1</span>}
+      raise_error <span class="hljs-string">"Model <span class="hljs-subst">#{model.name.inspect}</span> has duplicate yml data file ids <span class="hljs-subst">#{dup_ids}</span>."</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_record</span><span class="hljs-params">(record, data_record)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> same_record_attributes?(record, data_record)
+    attributes = data_record.except(timestamps_columns + [<span class="hljs-string">'id'</span>])
+    rc         = record.update(attributes)
+    check_validation_errors(record)
+    raise_error <span class="hljs-string">"Error updating record <span class="hljs-subst">#{record.inspect}</span>."</span>  <span class="hljs-keyword">if</span> rc.blank?
+    <span class="hljs-variable">@records_updated</span> += <span class="hljs-number">1</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">recreate_record</span><span class="hljs-params">(model, data_record, id)</span></span>
+    set_table_sequence_number_for_create(model)
+    record = model.create(data_record)
+    check_validation_errors(record)
+    record.update_columns(<span class="hljs-symbol">id:</span> id)
+    <span class="hljs-variable">@records_recreated</span> += <span class="hljs-number">1</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>When re-creating a record that was previouly destroyed, reset the sequence number back to the
+original value e.g. reset the sequence increment generated by this &#39;create&#39; for the recreated record.
+Also ensure the &#39;next&#39; sequence number is correct if only recreating records.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> id &gt;= last_sequence_number
+      next_seq_num = get_available_table_sequence_number(model, last_sequence_number)
+      set_domain_table_sequence_number(model, next_seq_num)
+    <span class="hljs-keyword">end</span>
+    record
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">destroy_record</span><span class="hljs-params">(model, id)</span></span>
+    record = model.find_by(<span class="hljs-symbol">id:</span> id)
+    raise_error <span class="hljs-string">"Destroy record id <span class="hljs-subst">#{id}</span> not found for class <span class="hljs-subst">#{model.name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> record.blank?
+    rc = record.destroy
+    check_validation_errors(record)
+    raise_error <span class="hljs-string">"Error destroying record <span class="hljs-subst">#{record.inspect}</span>."</span>  <span class="hljs-keyword">if</span> rc.blank?
+    <span class="hljs-variable">@records_destroyed</span> += <span class="hljs-number">1</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_record</span><span class="hljs-params">(model, data_record)</span></span>
+    set_table_sequence_number_for_create(model)
+    record = model.create(data_record)
+    check_validation_errors(record)
+    <span class="hljs-variable">@records_created</span> += <span class="hljs-number">1</span>
+    record
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_validation_errors</span><span class="hljs-params">(record)</span></span>
+    raise_error <span class="hljs-string">"Record is blank."</span>  <span class="hljs-keyword">if</span> record.blank?
+    <span class="hljs-keyword">if</span> record.errors.present?
+      raise_error <span class="hljs-string">"Could not save record <span class="hljs-subst">#{record.<span class="hljs-keyword">class</span>.name}</span>.<span class="hljs-subst">#{record.id}</span>.  Validation errors: <span class="hljs-subst">#{record.errors.messages}</span>."</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">same_record_attributes?</span><span class="hljs-params">(record, data_record, *except)</span></span>
+    <span class="hljs-variable">@records_verified</span> += <span class="hljs-number">1</span>
+    except            += timestamps_columns  <span class="hljs-keyword">if</span> ignore_timestamps?
+    except_attributes  = [except].flatten.compact.uniq.map {|a| a.to_s}
+    data_record.except(*except_attributes) == record.attributes.except(*except_attributes)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="load-from-yml">Load from Yml.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_load_from_yml</span><span class="hljs-params">(args)</span></span>
+    args = args.flatten
+    stop_run <span class="hljs-string">"load_from_yml arguments must be engine_name, model_path, yml-string not <span class="hljs-subst">#{args.inspect}</span>"</span>  <span class="hljs-keyword">unless</span> args.length == <span class="hljs-number">3</span>
+    engine_name, model_path, content = args
+    stop_run <span class="hljs-string">"YAML argument is not a string but <span class="hljs-subst">#{content.<span class="hljs-keyword">class</span>.name.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> content.is_a?(<span class="hljs-constant">String</span>)
+    engine = totem_engine_by_name(engine_name)
+    model  = get_model_class(model_path)
+    stop_run <span class="hljs-string">"Model path <span class="hljs-subst">#{model_path.inspect}</span> could not be constantized."</span>  <span class="hljs-keyword">if</span> model.blank?
+    stop_run <span class="hljs-string">"Domain model <span class="hljs-subst">#{model_path.inspect}</span> is not a model for engine <span class="hljs-subst">#{engine.engine_name.inspect}</span>."</span> <span class="hljs-keyword">unless</span> is_engine_model?(engine, model_path)
+    data = <span class="hljs-constant">YAML</span>.load(content)
+    stop_run <span class="hljs-string">"Yml argument is not an array of domain records but <span class="hljs-subst">#{data.<span class="hljs-keyword">class</span>.name.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> data.is_a?(<span class="hljs-constant">Array</span>)
+    format_data_records(data)
+    [engine, model, data]
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="compare-files-and-db">Compare files and db.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">compare_model_domain_records</span><span class="hljs-params">(engine, model)</span></span>
+    reset_counts
+    <span class="hljs-keyword">if</span> <span class="hljs-variable">@compare_model_count</span>.blank?
+      <span class="hljs-variable">@compare_model_count</span> = <span class="hljs-number">1</span>
+      print_message <span class="hljs-string">"\n"</span>
+      header  = <span class="hljs-string">"Comparing database record attributes and domain_data yml file attributes "</span>
+      header += ignore_timestamps? ? <span class="hljs-string">"(ignoring timestamps <span class="hljs-subst">#{timestamps_columns}</span>):"</span> <span class="hljs-symbol">:</span> <span class="hljs-string">"(including timestampes <span class="hljs-subst">#{timestamps_columns}</span>):"</span>
+      print_message header
+      print_message <span class="hljs-string">"\n"</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-variable">@compare_model_count</span> += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">begin</span>
+      data = get_model_yml_data(engine, model)
+    <span class="hljs-keyword">rescue</span> <span class="hljs-constant">DomainFileNotFound</span>
+      model_name = domain_model_filename(model).sub(<span class="hljs-string">'.yml'</span>, <span class="hljs-string">''</span>)
+      run_messages.push <span class="hljs-string">"WARNING: <span class="hljs-subst">#{model.name.inspect}</span> domain_data file does not exist.  Run: rake totem:db:domain:create[<span class="hljs-subst">#{engine.engine_name}</span>,<span class="hljs-subst">#{model_name}</span>]"</span>
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">end</span>
+    validate_data(model, data)
+    data.each <span class="hljs-keyword">do</span> |data_record|
+      id = data_record[<span class="hljs-symbol">:id</span>]
+      <span class="hljs-keyword">if</span> id.present?
+        record = model.find_by(<span class="hljs-symbol">id:</span> id)
+        <span class="hljs-keyword">if</span> record.present?
+          <span class="hljs-keyword">if</span> same_record_attributes?(record, data_record)
+            <span class="hljs-variable">@records_verified_attributes</span>.push(data_record)
+          <span class="hljs-keyword">else</span>
+            <span class="hljs-variable">@records_updated</span> += <span class="hljs-number">1</span>
+            <span class="hljs-variable">@records_updated_attributes</span>.push(data_record)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-variable">@records_recreated</span> += <span class="hljs-number">1</span>
+          <span class="hljs-variable">@records_recreated_attributes</span>.push(data_record)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-variable">@records_created</span> += <span class="hljs-number">1</span>
+        <span class="hljs-variable">@records_created_attributes</span>.push(data_record)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    data_ids    = get_data_ids(data)
+    db_ids      = get_domain_table_record_ids(model)
+    destroy_ids = db_ids - data_ids
+    destroy_ids.each <span class="hljs-keyword">do</span> |id|
+      <span class="hljs-variable">@records_destroyed</span> += <span class="hljs-number">1</span>
+      <span class="hljs-variable">@records_destroyed_attributes</span>.push(record.attributes)
+    <span class="hljs-keyword">end</span>
+    print_model_results(model)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="model-sequence-number">Model Sequence Number.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_available_table_sequence_number</span><span class="hljs-params">(model, seq_num)</span></span>
+    record = model.find_by(<span class="hljs-symbol">id:</span> seq_num)
+    <span class="hljs-keyword">return</span> seq_num <span class="hljs-keyword">if</span> record.blank?  <span class="hljs-comment"># can create a record at this sequence number</span>
+    seq_num += <span class="hljs-number">1</span>
+    get_available_table_sequence_number(model, seq_num)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_table_sequence_number_for_create</span><span class="hljs-params">(model)</span></span>
+    seq_num = get_available_table_sequence_number(model, last_sequence_number)
+    set_domain_table_sequence_number(model, seq_num)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The sequence &#39;last_value&#39; is the next row id for a record create.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_table_last_sequence_number</span><span class="hljs-params">(model)</span></span>
+    seq_name = model.sequence_name
+    raise_error <span class="hljs-string">"Model sequence name is blank for <span class="hljs-subst">#{model.name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> seq_name.blank?
+    res = <span class="hljs-constant">ActiveRecord::Base</span>.connection.execute(<span class="hljs-string">"SELECT last_value FROM <span class="hljs-subst">#{seq_name}</span>"</span>)
+    raise_error <span class="hljs-string">"Model sequence select response is blank for <span class="hljs-subst">#{model.name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> res.blank?
+    result = res[<span class="hljs-number">0</span>]
+    raise_error <span class="hljs-string">"Model sequence select response if invalid for <span class="hljs-subst">#{model.name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> result.blank?
+    last_value = result[<span class="hljs-string">'last_value'</span>]
+    raise_error <span class="hljs-string">"Model sequence select response 'last_value' is blank for <span class="hljs-subst">#{model.name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> last_value.blank?
+    last_value.to_i
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Reset the sequence number after recreating a destroyed record.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_domain_table_sequence_number</span><span class="hljs-params">(model, seq_num)</span></span>
+    raise_error <span class="hljs-string">"Reset sequence number is blank for <span class="hljs-subst">#{model.name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> seq_num.blank?
+    raise_error <span class="hljs-string">"Reset sequence number is not a number for <span class="hljs-subst">#{model.name.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> seq_num.is_a?(<span class="hljs-constant">Fixnum</span>)
+    seq_name = model.sequence_name
+    raise_error <span class="hljs-string">"Reset sequence name is blank for <span class="hljs-subst">#{model.name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> seq_name.blank?
+    <span class="hljs-constant">ActiveRecord::Base</span>.connection.execute(<span class="hljs-string">"ALTER SEQUENCE <span class="hljs-subst">#{seq_name}</span> RESTART WITH <span class="hljs-subst">#{seq_num}</span>"</span>) <span class="hljs-comment"># reset id sequence number</span>
+    <span class="hljs-variable">@last_sequence_number</span> = seq_num
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If something bad happens and the table is out of sync, can start over by running this truncate.
+All yml data records should have an id, otherwise new records may be a different id.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">delete_all_model_records</span><span class="hljs-params">(klass)</span></span>
+    klass.delete_all
+    <span class="hljs-constant">ActiveRecord::Base</span>.connection.execute(<span class="hljs-string">"TRUNCATE TABLE <span class="hljs-subst">#{klass.table_name}</span> RESTART IDENTITY"</span>) <span class="hljs-comment"># restart ids at 1</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="engine-pathsfilenames">Engine Paths/Filenames.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">domain_model_filename</span><span class="hljs-params">(model)</span>;</span> <span class="hljs-string">"<span class="hljs-subst">#{model.name.demodulize.underscore.pluralize}</span>.yml"</span>; <span class="hljs-keyword">end</span>  <span class="hljs-comment"># e.g. user.yml</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def domain_model_filename(model); &quot;#{model.table_name}.yml&quot;; end  # e.g. thinkspace_common_user.yml</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">domain_directory</span>;</span>         <span class="hljs-string">'domain_data'</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">domain_archive_directory</span>;</span> <span class="hljs-string">'archive'</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_db_path</span><span class="hljs-params">(engine)</span>;</span>                       <span class="hljs-constant">File</span>.join(engine.root, <span class="hljs-string">'db'</span>); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_domain_path</span><span class="hljs-params">(engine)</span>;</span>                   <span class="hljs-constant">File</span>.join(engine_db_path(engine), domain_directory); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_domain_archive_path</span><span class="hljs-params">(engine)</span>;</span>           <span class="hljs-constant">File</span>.join(engine_domain_path(engine), domain_archive_directory); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_domain_model_file_path</span><span class="hljs-params">(engine, model)</span>;</span> <span class="hljs-constant">File</span>.join(engine_domain_path(engine), domain_model_filename(model)); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_has_domain_path?</span><span class="hljs-params">(engine)</span>;</span> <span class="hljs-constant">File</span>.directory? engine_domain_path(engine); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="readwrite-model-yaml-data">Read/Write Model YAML Data.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_engine_domain_yml_file</span><span class="hljs-params">(engine, model)</span></span>
+    data       = get_domain_table_record_scope(model).map {|record| record.attributes}
+    file_path  = engine_domain_model_file_path(engine, model)
+    domain_dir = engine_domain_path(engine)
+    filename   = domain_model_filename(model)
+    <span class="hljs-keyword">if</span> <span class="hljs-constant">File</span>.file?(file_path)
+      archive_engine_domain_yml_file(engine, model)
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-constant">Dir</span>.chdir(domain_dir) <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">if</span> data.present?
+        <span class="hljs-constant">File</span>.open(filename, <span class="hljs-string">'w'</span>) {|f| f.write(data.to_yaml)}
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-constant">File</span>.open(filename, <span class="hljs-string">'w'</span>) {|f| f.write(get_model_sample_record(model))}
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    print_engine_message engine, <span class="hljs-symbol">:created</span>, <span class="hljs-string">"<span class="hljs-subst">#{domain_directory}</span>/<span class="hljs-subst">#{filename}</span>"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_model_sample_record</span><span class="hljs-params">(model)</span></span>
+    columns = get_table_column_names_without_timestamps(model)
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'# model does not have any non-timestamp columns'</span>  <span class="hljs-keyword">if</span> columns.blank?
+    sample_record          = columns.map {|col| <span class="hljs-string">"#   <span class="hljs-subst">#{col}</span>:"</span>}
+    sample_record[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>..<span class="hljs-number">2</span>] = <span class="hljs-string">'# -'</span>
+    sample_record.join(<span class="hljs-string">"\n"</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">archive_engine_domain_yml_file</span><span class="hljs-params">(engine, model)</span></span>
+    filename         = domain_model_filename(model)
+    archive_filename = <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-constant">Time</span>.now.to_s(<span class="hljs-symbol">:db</span>)}</span>_<span class="hljs-subst">#{filename}</span>"</span>.gsub(<span class="hljs-string">':'</span>, <span class="hljs-string">'-'</span>).gsub(<span class="hljs-string">' '</span>, <span class="hljs-string">'_'</span>)
+    source_file      = engine_domain_model_file_path(engine, model)
+    source_content   = <span class="hljs-constant">File</span>.read(source_file)
+    domain_dir       = engine_domain_path(engine)
+    archive_dir      = engine_domain_archive_path(engine)
+    <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(archive_dir)
+      <span class="hljs-constant">Dir</span>.chdir(domain_dir) <span class="hljs-keyword">do</span>
+        <span class="hljs-constant">Dir</span>.mkdir(domain_archive_directory)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    raise_error <span class="hljs-string">"Archive <span class="hljs-subst">#{archive_dir.inspect}</span> directory does not exist."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(archive_dir)
+    <span class="hljs-constant">Dir</span>.chdir(archive_dir) <span class="hljs-keyword">do</span>
+      <span class="hljs-constant">File</span>.open(archive_filename, <span class="hljs-string">'w'</span>) {|f| f.write(source_content)}
+    <span class="hljs-keyword">end</span>
+    print_engine_message engine, <span class="hljs-symbol">:archived</span>, <span class="hljs-string">"<span class="hljs-subst">#{domain_directory}</span>/<span class="hljs-subst">#{domain_archive_directory}</span>/<span class="hljs-subst">#{archive_filename}</span>"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_engine_domain_directory</span><span class="hljs-params">(engine)</span></span>
+    domain_dir = engine_domain_path(engine)
+    <span class="hljs-keyword">if</span> <span class="hljs-constant">File</span>.exists?(domain_dir)
+      raise_error <span class="hljs-string">"Invalid domain directory <span class="hljs-subst">#{domain_dir.inspect}</span> in engine <span class="hljs-subst">#{engine.engine_name.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(domain_dir)
+      print_engine_message engine, <span class="hljs-symbol">:kept</span>, <span class="hljs-string">"db/<span class="hljs-subst">#{domain_directory}</span>."</span>
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">end</span>
+    db_dir = engine_db_path(engine)
+    raise_error <span class="hljs-string">"No 'db' directory in engine <span class="hljs-subst">#{engine.engine_name.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(db_dir)
+    <span class="hljs-constant">Dir</span>.chdir(db_dir) <span class="hljs-keyword">do</span>
+      <span class="hljs-constant">Dir</span>.mkdir(domain_directory)
+    <span class="hljs-keyword">end</span>
+    print_engine_message engine, <span class="hljs-symbol">:created</span>, <span class="hljs-string">"db/<span class="hljs-subst">#{domain_directory}</span> directory."</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_model_yml_data</span><span class="hljs-params">(engine, model)</span></span>
+    file_path = engine_domain_model_file_path(engine, model)
+    raise <span class="hljs-constant">DomainFileNotFound</span>, <span class="hljs-string">"Domain file <span class="hljs-subst">#{file_path.inspect}</span> does not exist."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(file_path)
+    data = read_yml_file(file_path)
+    raise_error <span class="hljs-string">"Domain file <span class="hljs-subst">#{file_path.inspect}</span> data is not an array."</span>  <span class="hljs-keyword">unless</span> data.is_a?(<span class="hljs-constant">Array</span>)
+    format_data_records(data)
+    data
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">format_data_records</span><span class="hljs-params">(data)</span></span>
+    data.each <span class="hljs-keyword">do</span> |data_record|
+      id               = data_record[<span class="hljs-symbol">:id</span>]
+      id               = id.strip  <span class="hljs-keyword">if</span> id.is_a?(<span class="hljs-constant">String</span>)
+      data_record[<span class="hljs-symbol">:id</span>] = id.blank? ? <span class="hljs-keyword">nil</span> <span class="hljs-symbol">:</span> id.to_i
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_yml_file</span><span class="hljs-params">(file_path)</span></span>
+    content = <span class="hljs-constant">File</span>.read(file_path)
+    data    = <span class="hljs-constant">YAML</span>.load(content)
+    data    = <span class="hljs-constant">Array</span>.new <span class="hljs-keyword">if</span> data.blank?
+    raise_error <span class="hljs-string">"YAML data file id not an array <span class="hljs-subst">#{file_path.inspect}</span>."</span> <span class="hljs-keyword">unless</span> data.is_a?(<span class="hljs-constant">Array</span>)
+    data.map {|h| h.is_a?(<span class="hljs-constant">Hash</span>) ? h.with_indifferent_access <span class="hljs-symbol">:</span> h}
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="engines">Engines.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_args_engines_and_models</span><span class="hljs-params">(args)</span></span>
+    hash         = <span class="hljs-constant">Hash</span>.new
+    args         = [args].flatten.compact
+    name         = args.shift
+    models       = args
+    engine_names = totem_registered_engines
+    <span class="hljs-keyword">if</span> name.present?
+      engine_names = name.end_with?(<span class="hljs-string">'*'</span>) ? engine_names.select {|n| n.start_with?(name.chop)} <span class="hljs-symbol">:</span> [name]
+    <span class="hljs-keyword">end</span>
+    engine_names.sort.each <span class="hljs-keyword">do</span> |name|
+      engine        = totem_engine_by_name(name)
+      engine_models = get_engine_models(engine, models)
+      hash[engine]  = engine_models  <span class="hljs-keyword">if</span> engine_models.present?
+    <span class="hljs-keyword">end</span>
+    stop_run <span class="hljs-string">"No registered engines found matching the arguments engine: <span class="hljs-subst">#{name.inspect}</span> models: <span class="hljs-subst">#{models.inspect}</span>"</span>  <span class="hljs-keyword">if</span> hash.blank?
+    hash
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_engine_models</span><span class="hljs-params">(engine, models)</span></span>
+    filename  = <span class="hljs-string">'associations.yml'</span>
+    file_path = <span class="hljs-constant">File</span>.join(engine_db_path(engine), filename)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(file_path)
+    associations  = read_yml_file(file_path)
+    raise_error <span class="hljs-string">"Associations file is not an array <span class="hljs-subst">#{file_path.inspect}</span>."</span> <span class="hljs-keyword">unless</span> associations.is_a?(<span class="hljs-constant">Array</span>)
+    domain_models = <span class="hljs-constant">Array</span>.new
+    associations.each <span class="hljs-keyword">do</span> |hash|
+      hash = hash.with_indifferent_access
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> hash[<span class="hljs-symbol">:domain</span>] == <span class="hljs-keyword">true</span>
+      model_path = hash[<span class="hljs-symbol">:model</span>]
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> models.present? &amp;&amp; (!models.find {|m| model_path.end_with?(m.singularize)})
+      stop_run <span class="hljs-string">"Domain model <span class="hljs-subst">#{model_path.inspect}</span> is not a model for engine <span class="hljs-subst">#{engine.engine_name.inspect}</span>."</span> <span class="hljs-keyword">unless</span> is_engine_model?(engine, model_path)
+      klass = get_model_class(model_path)
+      stop_run <span class="hljs-string">"Domain model <span class="hljs-subst">#{model_path.inspect}</span> could not be constantized for engine <span class="hljs-subst">#{engine.engine_name.inspect}</span>."</span> <span class="hljs-keyword">if</span> klass.blank?
+      domain_models.push(klass)
+    <span class="hljs-keyword">end</span>
+    domain_models.sort_by {|m| m.name}
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_engine_model?</span><span class="hljs-params">(engine, model_path)</span>;</span> model_path.classify.start_with?(engine.<span class="hljs-keyword">class</span>.name.deconstantize); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_model_class</span><span class="hljs-params">(model_path)</span></span>
+    raise_error <span class="hljs-string">"Model path is blank."</span>  <span class="hljs-keyword">if</span> model_path.blank?
+    model_path.classify.safe_constantize
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_engine</span>;</span>             totem_settings.engine; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_registered_engines</span>;</span> totem_settings.registered.engines; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_engine_by_name</span><span class="hljs-params">(name)</span></span>
+    engine = totem_engine.get_by_name(name)
+    stop_run <span class="hljs-string">"Engine <span class="hljs-subst">#{name.inspect}</span> not found."</span>              <span class="hljs-keyword">if</span> engine.blank?
+    stop_run <span class="hljs-string">"More than one engine matched <span class="hljs-subst">#{name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> engine.length &gt; <span class="hljs-number">1</span>
+    engine.first
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_engines_by_starts_with</span><span class="hljs-params">(name)</span></span>
+    engines = totem_engine.find_by_starts_with(name)
+    stop_run <span class="hljs-string">"No engines start with <span class="hljs-subst">#{name.inspect}</span>."</span>   <span class="hljs-keyword">if</span> engines.blank?
+    engines
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="tables">Tables.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">timestamps_columns</span>;</span> [<span class="hljs-string">'created_at'</span>, <span class="hljs-string">'updated_at'</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ignore_timestamps?</span>;</span> <span class="hljs-variable">@ignore_timestamps</span> == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_domain_table_record_scope</span><span class="hljs-params">(model)</span></span>
+    has_domain_column?(model) ? model.where(<span class="hljs-symbol">domain:</span> <span class="hljs-keyword">true</span>).order(<span class="hljs-symbol">:id</span>) <span class="hljs-symbol">:</span> model.all.order(<span class="hljs-symbol">:id</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_domain_table_record_ids</span><span class="hljs-params">(model)</span>;</span> get_domain_table_record_scope(model).pluck(<span class="hljs-symbol">:id</span>); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_table_column_names</span><span class="hljs-params">(model)</span>;</span> model.column_names; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_table_column_names_without_timestamps</span><span class="hljs-params">(model)</span>;</span> get_table_column_names(model) - timestamps_columns; <span class="hljs-keyword">end</span>
+  
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">has_domain_column?</span><span class="hljs-params">(model)</span>;</span> get_table_column_names(model).<span class="hljs-keyword">include</span>?(<span class="hljs-string">'domain'</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="run-results">Run Results.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reset_counts</span></span>
+    <span class="hljs-variable">@records_created</span>   = <span class="hljs-number">0</span>
+    <span class="hljs-variable">@records_recreated</span> = <span class="hljs-number">0</span>
+    <span class="hljs-variable">@records_updated</span>   = <span class="hljs-number">0</span>
+    <span class="hljs-variable">@records_destroyed</span> = <span class="hljs-number">0</span>
+    <span class="hljs-variable">@records_verified</span>  = <span class="hljs-number">0</span>
+    
+    <span class="hljs-variable">@records_created_attributes</span>   = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-variable">@records_recreated_attributes</span> = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-variable">@records_updated_attributes</span>   = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-variable">@records_destroyed_attributes</span> = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-variable">@records_verified_attributes</span>  = <span class="hljs-constant">Array</span>.new
+
+    <span class="hljs-variable">@file_messages</span>                = <span class="hljs-constant">Array</span>.new
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_model_results</span><span class="hljs-params">(model)</span></span>
+    print_message <span class="hljs-string">"--Domain model: <span class="hljs-subst">#{model.name}</span> "</span>.ljust(<span class="hljs-number">80</span>,<span class="hljs-string">'-'</span>)
+    print_count <span class="hljs-symbol">:created</span>,   <span class="hljs-variable">@records_created</span>,   <span class="hljs-variable">@records_created_attributes</span>
+    print_count <span class="hljs-symbol">:recreated</span>, <span class="hljs-variable">@records_recreated</span>, <span class="hljs-variable">@records_recreated_attributes</span>
+    print_count <span class="hljs-symbol">:updated</span>,   <span class="hljs-variable">@records_updated</span>,   <span class="hljs-variable">@records_updated_attributes</span>
+    print_count <span class="hljs-symbol">:destroyed</span>, <span class="hljs-variable">@records_destroyed</span>, <span class="hljs-variable">@records_destroyed_attributes</span>
+    print_count <span class="hljs-symbol">:verified</span>,  <span class="hljs-variable">@records_verified</span>,  <span class="hljs-variable">@records_verified_attributes</span>
+    <span class="hljs-variable">@file_messages</span>.each <span class="hljs-keyword">do</span> |message|
+      print_message <span class="hljs-string">'  '</span> + message
+    <span class="hljs-keyword">end</span>
+    print_message <span class="hljs-string">"\n"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_count</span><span class="hljs-params">(type, num, attributes=[])</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>
+    c_len         = <span class="hljs-number">5</span>
+    t_len         = <span class="hljs-number">15</span>
+    m_len         = <span class="hljs-number">130</span>
+    message       = <span class="hljs-string">"  <span class="hljs-subst">#{type}</span>"</span>.ljust(t_len) + <span class="hljs-string">': '</span> + num.to_s.rjust(c_len)
+    print_message message
+    attributes.each <span class="hljs-keyword">do</span> |hash|
+      hash_str = hash.except(*timestamps_columns).inspect
+      more     = hash_str.length - m_len
+      <span class="hljs-keyword">if</span> more &lt;= <span class="hljs-number">12</span>
+        message = hash_str
+        more    = <span class="hljs-number">0</span>
+      <span class="hljs-keyword">else</span>
+        message = hash_str[<span class="hljs-number">0</span>..m_len]
+      <span class="hljs-keyword">end</span>
+      message += <span class="hljs-string">" (+<span class="hljs-subst">#{more}</span> more...)"</span>  <span class="hljs-keyword">if</span> more &gt; <span class="hljs-number">0</span>
+      print_message (<span class="hljs-string">' '</span> * <span class="hljs-number">24</span>) + message
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_run_messages</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> run_messages.blank?
+    <span class="hljs-variable">@run_messages</span>.each <span class="hljs-keyword">do</span> |message|
+      print_message message
+    <span class="hljs-keyword">end</span>
+    print_message <span class="hljs-string">"\n"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_engine_message</span><span class="hljs-params">(engine, key, message=<span class="hljs-keyword">nil</span>)</span></span>
+    <span class="hljs-keyword">if</span> message.present?
+      message = key.to_s.ljust(<span class="hljs-number">10</span>) + <span class="hljs-string">': '</span> + message
+    <span class="hljs-keyword">end</span>
+    message = <span class="hljs-string">"[<span class="hljs-subst">#{engine.engine_name}</span>] "</span> + message
+    <span class="hljs-keyword">self</span>.instance_variable_defined?(<span class="hljs-symbol">:</span><span class="hljs-variable">@file_messages</span>) ? <span class="hljs-variable">@file_messages</span>.push(message) <span class="hljs-symbol">:</span> print_message(message)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_message</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+    puts <span class="hljs-string">'[db-domain] '</span> + message
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">stop_run</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+    print_message <span class="hljs-string">"\n"</span>
+    print_message message
+    print_message <span class="hljs-string">"Run stopped."</span>
+    print_message <span class="hljs-string">"\n"</span>
+    exit
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_error</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+    raise <span class="hljs-constant">DomainError</span>, message
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DomainFileNotFound</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DomainError</span>        <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

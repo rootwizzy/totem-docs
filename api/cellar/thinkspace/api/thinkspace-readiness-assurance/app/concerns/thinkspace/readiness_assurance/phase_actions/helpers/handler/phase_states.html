@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/handler/phase_states</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/handler/phase_states"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/handler/phase_states.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/handler/phase_states.rb">src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/handler/phase_states.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReadinessAssurance</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PhaseActions</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Helpers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Handler</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PhaseStates</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_ownerable_phase_states</span><span class="hljs-params">(ownerables, state=phase_state)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> state.blank?
+    state = state.to_sym
+    ownerables.each <span class="hljs-keyword">do</span> |ownerable|
+      <span class="hljs-keyword">case</span> state
+      <span class="hljs-keyword">when</span> <span class="hljs-symbol">:complete</span>        <span class="hljs-keyword">then</span> processor.complete_phase_state(ownerable, phase)
+      <span class="hljs-keyword">when</span> <span class="hljs-symbol">:lock</span>            <span class="hljs-keyword">then</span> processor.lock_phase_state(ownerable, phase)
+      <span class="hljs-keyword">when</span> <span class="hljs-symbol">:unlock</span>          <span class="hljs-keyword">then</span> processor.unlock_phase_state(ownerable, phase)
+      <span class="hljs-keyword">else</span> handler_error(<span class="hljs-string">"Unknown phase state '<span class="hljs-subst">#{state}</span>' for user [id: <span class="hljs-subst">#{user.id}</span>]."</span>)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="publish">Publish.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish_transition_to_phase</span><span class="hljs-params">(ownerables, options={})</span></span>
+    options[<span class="hljs-symbol">:event</span>] = <span class="hljs-symbol">:transition_to_phase</span>
+    publish_phase_states(ownerables, options)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish_phase_states</span><span class="hljs-params">(ownerables, options={})</span></span>
+    options.symbolize_keys!
+    value = pubsub_phase_states_value(options)
+    rooms = assignment_ownerable_rooms(ownerables)
+    event = options[<span class="hljs-symbol">:event</span>] || <span class="hljs-symbol">:phase_states</span>
+    server_event_record_class.new
+      .on_error(error_class)
+      .origin(<span class="hljs-keyword">self</span>)
+      .authable(phase)
+      .user(current_user)
+      .rooms(rooms)
+      .event(event)
+      .records(options[<span class="hljs-symbol">:records</span>])
+      .value(value)
+      .timer_settings(timer_settings)
+      .timer_start_at(timer_start_at)
+      .timer_end_at(timer_end_at)
+      .publish
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pubsub_phase_states_value</span><span class="hljs-params">(options)</span></span>
+    value    = <span class="hljs-constant">Hash</span>.new
+    complete = options[<span class="hljs-symbol">:complete</span>]
+    unlock   = options[<span class="hljs-symbol">:unlock</span>]
+    lock     = options[<span class="hljs-symbol">:lock</span>]
+    to       = options[<span class="hljs-symbol">:to</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>set value when present</p></div></div><div class="code"><div class="wrapper">    value[<span class="hljs-symbol">:complete_phase_ids</span>]     = <span class="hljs-constant">Array</span>.wrap(complete).map(&amp;<span class="hljs-symbol">:id</span>) <span class="hljs-keyword">if</span> complete.present?
+    value[<span class="hljs-symbol">:lock_phase_ids</span>]         = <span class="hljs-constant">Array</span>.wrap(lock).map(&amp;<span class="hljs-symbol">:id</span>)     <span class="hljs-keyword">if</span> lock.present?
+    value[<span class="hljs-symbol">:unlock_phase_ids</span>]       = <span class="hljs-constant">Array</span>.wrap(unlock).map(&amp;<span class="hljs-symbol">:id</span>)   <span class="hljs-keyword">if</span> unlock.present?
+    value[<span class="hljs-symbol">:transition_to_phase_id</span>] = to.id                          <span class="hljs-keyword">if</span> to.present?
+    value.blank? ? <span class="hljs-keyword">nil</span> <span class="hljs-symbol">:</span> value
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_phase_state</span></span>
+    handler_error <span class="hljs-string">"Phase state is blank."</span> <span class="hljs-keyword">if</span> phase_state.blank?
+    handler_error <span class="hljs-string">"Invalid phase state <span class="hljs-subst">#{phase_state}</span>."</span> <span class="hljs-keyword">unless</span> [<span class="hljs-symbol">:complete</span>, <span class="hljs-symbol">:lock</span>, <span class="hljs-symbol">:unlock</span>].<span class="hljs-keyword">include</span>?(phase_state.to_sym)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">humanized_phase_state</span><span class="hljs-params">(state=phase_state)</span></span>
+    state.to_s + (state.to_s.end_with?(<span class="hljs-string">'e'</span>) ? <span class="hljs-string">'d'</span> <span class="hljs-symbol">:</span> <span class="hljs-string">'ed'</span>)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

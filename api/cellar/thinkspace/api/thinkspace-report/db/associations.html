@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-report/db/associations</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-report/db/associations"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-report/db/associations.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-report/db/associations.yml">src/thinkspace/api/thinkspace-report/db/associations.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">-<span class="ruby"> <span class="hljs-symbol">model:</span> thinkspace/report/file
+</span>  associations:
+    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> thinkspace/report/report
+</span>    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> thinkspace/common/user
+</span>  serializers:
+    -<span class="ruby"> <span class="hljs-symbol">attributes:</span> [id, url, title, content_type, size, attachment_updated_at, user_id, created_at]
+</span>
+-<span class="ruby"> <span class="hljs-symbol">model:</span> thinkspace/report/report
+</span>  associations:
+    -<span class="ruby"> <span class="hljs-symbol">has_many:</span> thinkspace/report/report_tokens
+</span>      dependent: destroy
+    -<span class="ruby"> <span class="hljs-symbol">has_many:</span> thinkspace/report/files
+</span>      dependent: destroy
+    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> thinkspace/common/user
+</span>    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> authable
+</span>      polymorphic: true
+  serializers:
+    -<span class="ruby"> <span class="hljs-symbol">attributes:</span> [id, title, created_at, authable_type, authable_id]
+</span>    -<span class="ruby"> <span class="hljs-symbol">scoped_attributes:</span> [token]
+</span>
+-<span class="ruby"> <span class="hljs-symbol">model:</span> thinkspace/report/report_token
+</span>  associations:
+    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> thinkspace/report/report
+</span>    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> thinkspace/common/user
+</span>  serializers:
+    -<span class="ruby"> <span class="hljs-symbol">attributes:</span> [id]
+</span></div></div></div></div></body></html>

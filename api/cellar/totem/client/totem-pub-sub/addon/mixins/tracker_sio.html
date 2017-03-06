@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-pub-sub/addon/mixins/tracker_sio</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-pub-sub/addon/mixins/tracker_sio"><meta name="groc-project-path" content="src/totem/client/totem-pub-sub/addon/mixins/tracker_sio.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-pub-sub/addon/mixins/tracker_sio.coffee">src/totem/client/totem-pub-sub/addon/mixins/tracker_sio.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="socketio-only-tracker">Socketio-only Tracker.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">tracker_sio_callback_map</span>: ember.Map.create()
+
+  <span class="hljs-attribute">tracker_sio_leave</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    rooms = <span class="hljs-property">@get_options_rooms</span>(options)
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"Tracker show leave requires a room."</span>) <span class="hljs-keyword">if</span> ember.isBlank(rooms)
+    event  = <span class="hljs-string">'tracker_sio_leave'</span>
+    cevent = <span class="hljs-property">@client_event</span>(event)
+    socket = <span class="hljs-property">@get_non_auth_socket</span>()
+    socket.emit(cevent, {rooms})
+
+  <span class="hljs-attribute">tracker_sio_join</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    rooms = <span class="hljs-property">@get_options_rooms</span>(options)
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"Tracker SIO requires a room."</span>, options)  <span class="hljs-keyword">if</span> ember.isBlank(rooms)
+    connect_options =
+      <span class="hljs-attribute">source</span>:   @
+      <span class="hljs-attribute">callback</span>: <span class="hljs-string">'after_tracker_sio_connect'</span>
+      <span class="hljs-attribute">options</span>:  options
+    <span class="hljs-property">@get_non_auth_socket</span>(connect_options)
+
+  <span class="hljs-attribute">after_tracker_sio_connect</span>: <span class="hljs-function"><span class="hljs-params">(socket, options)</span> -&gt;</span>
+    options = options.options <span class="hljs-keyword">or</span> {}
+    <span class="hljs-property">@emit_tracker_sio_join</span>(socket, options)
+    <span class="hljs-keyword">if</span> ember.isPresent(options.callback)
+      <span class="hljs-property">@tracker_sio_callback_map</span>.set(options, socket)
+      <span class="hljs-property">@call_non_auth_socket_callbacks</span>(<span class="hljs-property">@tracker_sio_callback_map</span>)
+
+  <span class="hljs-attribute">emit_tracker_sio_join</span>: <span class="hljs-function"><span class="hljs-params">(socket, options={})</span> -&gt;</span>
+    event  = <span class="hljs-string">'tracker_sio_join'</span>
+    cevent = <span class="hljs-property">@client_event</span>(event)
+    href   = <span class="hljs-built_in">window</span>.location.href
+    rooms  = <span class="hljs-property">@get_options_rooms</span>(options)
+    user   = <span class="hljs-property">@get_tracker_sio_user_data</span>()
+    data   = options.data <span class="hljs-keyword">or</span> {}
+    socket.emit(cevent, {rooms, user, href, data})
+
+  <span class="hljs-attribute">get_tracker_sio_user_data</span>: <span class="hljs-function">-&gt;</span>
+    current_user = <span class="hljs-property">@current_user</span>()
+    <span class="hljs-keyword">return</span> {} <span class="hljs-keyword">unless</span> ember.isPresent(current_user)
+    user = 
+      <span class="hljs-attribute">id</span>:         current_user.get(<span class="hljs-string">'id'</span>)
+      <span class="hljs-attribute">first_name</span>: current_user.get(<span class="hljs-string">'first_name'</span>)
+      <span class="hljs-attribute">last_name</span>:  current_user.get(<span class="hljs-string">'last_name'</span>)
+      <span class="hljs-attribute">email</span>:      current_user.get(<span class="hljs-string">'email'</span>)
+      <span class="hljs-attribute">username</span>:   current_user.get(<span class="hljs-string">'email'</span>)
+    user</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="show-tracked-sio-users-to-trackers-eg-instructors">Show Tracked SIO Users to Trackers e.g. instructors.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">tracker_sio_show</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    rooms = <span class="hljs-property">@get_options_rooms</span>(options)
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"Tracker show emit requires a room."</span>) <span class="hljs-keyword">if</span> ember.isBlank(rooms)
+    event     = options.event <span class="hljs-keyword">or</span> <span class="hljs-string">'tracker_show'</span>
+    socket    = options.socket <span class="hljs-keyword">or</span> <span class="hljs-property">@get_non_auth_socket</span>()
+    room_type = options.room_type <span class="hljs-keyword">or</span> <span class="hljs-string">'tracker'</span>
+    cevent    = <span class="hljs-property">@client_event</span>(event)
+    callback  = options.callback
+    source    = options.source
+    <span class="hljs-keyword">if</span> ember.isPresent(callback) <span class="hljs-keyword">and</span> ember.isPresent(source)
+      <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+        sevent = <span class="hljs-property">@server_event</span>(room, room_type)
+        <span class="hljs-property">@on</span>(socket, sevent, source, callback)
+    socket.emit(cevent, {rooms, room_type})</div></div></div></div></body></html>

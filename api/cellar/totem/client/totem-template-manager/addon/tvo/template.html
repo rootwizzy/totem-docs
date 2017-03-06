@@ -1,0 +1,175 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-template-manager/addon/tvo/template</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-template-manager/addon/tvo/template"><meta name="groc-project-path" content="src/totem/client/totem-template-manager/addon/tvo/template.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-template-manager/addon/tvo/template.coffee">src/totem/client/totem-template-manager/addon/tvo/template.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+import {mp}   from <span class="hljs-string">'totem-config/config'</span>
+import config from <span class="hljs-string">'totem-config/config'</span>
+import ns     from <span class="hljs-string">'totem/ns'</span>
+import util   from <span class="hljs-string">'totem/util'</span>
+
+export default ember.Object.extend
+
+  <span class="hljs-attribute">parse</span>: <span class="hljs-function"><span class="hljs-params">(template)</span> -&gt;</span> <span class="hljs-property">@_parse</span>(template)
+
+  <span class="hljs-attribute">add_components</span>: <span class="hljs-function"><span class="hljs-params">(components)</span> -&gt;</span> <span class="hljs-property">@_add_components</span>(components)
+
+  <span class="hljs-attribute">get_template</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'$template'</span>)
+
+  <span class="hljs-attribute">to_html</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_template</span>().html()
+  <span class="hljs-attribute">compile</span>: <span class="hljs-function">-&gt;</span> ember.Handlebars.compile <span class="hljs-property">@to_html</span>()
+
+  <span class="hljs-attribute">engine_values</span>: <span class="hljs-function"><span class="hljs-params">(titles, component=<span class="hljs-literal">null</span>)</span> -&gt;</span> <span class="hljs-property">@_engine_values</span>(titles, component)
+
+  <span class="hljs-attribute">engine_path_values</span>: <span class="hljs-function"><span class="hljs-params">(component, path)</span> -&gt;</span> <span class="hljs-property">@_set_engine_path_values</span>(component, path)
+
+  <span class="hljs-attribute">dup_value</span>: <span class="hljs-function"><span class="hljs-params">(path)</span> -&gt;</span>
+    hash         = ember.merge {}, (<span class="hljs-property">@tvo</span>.get_path_value(path) <span class="hljs-keyword">or</span> {})
+    hash.mounted = <span class="hljs-literal">false</span>
+    hash
+
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'TvoTemplate'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<h3 id="internal-">Internal ###</h3>
+<h6 id="">#</h6></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="engine-values-until-can-pass-hash-values-on-mount-eg-mount-39myengine39-component-name39mycomponent39">Engine Values (until can pass hash values on {{mount}} e.g. mount &#39;myengine&#39; component_name=&#39;mycomponent&#39;).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">_engine_values</span>: <span class="hljs-function"><span class="hljs-params">(titles, component)</span> -&gt;</span>
+    titles = ember.makeArray(titles)
+    mount = <span class="hljs-literal">null</span>
+    path  = <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">for</span> guid <span class="hljs-keyword">in</span> <span class="hljs-property">@tvo</span>.value.get_paths()
+      hash = <span class="hljs-property">@tvo</span>.value.get_value(guid)
+      <span class="hljs-keyword">if</span> titles.includes(hash.title) <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> hash.mounted
+        path  = guid
+        mount = hash
+        <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">if</span> ember.isBlank(mount)
+      <span class="hljs-built_in">console</span>.error <span class="hljs-string">'No engine values found for any title in:'</span>, titles
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+    path = <span class="hljs-string">"value.<span class="hljs-subst">#{path}</span>"</span>
+    mount.mounted = <span class="hljs-literal">true</span>
+    <span class="hljs-keyword">return</span> path <span class="hljs-keyword">unless</span> component
+    <span class="hljs-property">@_set_engine_path_values</span>(component, path)
+    path
+
+  <span class="hljs-attribute">_set_engine_path_values</span>: <span class="hljs-function"><span class="hljs-params">(component, path)</span> -&gt;</span>
+    hash                 = <span class="hljs-property">@tvo</span>.get_path_value(path)
+    props                = {}
+    props.model          = hash.model
+    props.component_name = hash.title.underscore()
+    props.attributes     = hash.attributes <span class="hljs-keyword">or</span> {}
+    <span class="hljs-keyword">if</span> util.is_hash(hash.values)
+      <span class="hljs-keyword">for</span> prop, val <span class="hljs-keyword">of</span> hash.values
+        props[prop] = val
+    component.setProperties(props)
+    hash</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="parse-template">Parse Template.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">_parse</span>: <span class="hljs-function"><span class="hljs-params">(template)</span> -&gt;</span>
+    $template = $(<span class="hljs-string">'&lt;div/&gt;'</span>).html(template)
+    <span class="hljs-property">@_set_default_sections</span>($template)
+    <span class="hljs-property">@_replace_rows</span>($template)
+    <span class="hljs-property">@_replace_columns</span>($template)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'$template'</span>, $template
+    <span class="hljs-property">@get_template</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Default a component&#39;s section value to the &#39;title&#39; attribute if the &#39;section&#39; attribute is not specified.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">_set_default_sections</span>: <span class="hljs-function"><span class="hljs-params">($template)</span> -&gt;</span>
+    $components = $template.find(<span class="hljs-string">'component'</span>)
+    <span class="hljs-keyword">for</span> component <span class="hljs-keyword">in</span> $components
+      $comp = $(component)
+      $comp.attr <span class="hljs-string">'section'</span>, <span class="hljs-property">@tvo</span>.tag_title($comp)  <span class="hljs-keyword">unless</span> $comp.attr(<span class="hljs-string">'section'</span>)
+
+  <span class="hljs-attribute">_replace_rows</span>: <span class="hljs-function"><span class="hljs-params">($template)</span> -&gt;</span>
+    $rows = $template.find(<span class="hljs-string">'row'</span>)
+    <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> $rows
+      $row      = $(row)
+      $children = $row.children()
+      $new_row  = $(<span class="hljs-property">@_row_html</span>($row))
+      $row.replaceWith($new_row)
+      $new_row.append($children)
+
+  <span class="hljs-attribute">_replace_columns</span>: <span class="hljs-function"><span class="hljs-params">($template)</span> -&gt;</span>
+    $cols = $template.find(<span class="hljs-string">'column'</span>)
+    <span class="hljs-keyword">for</span> col <span class="hljs-keyword">in</span> $cols
+      $col      = $(col)
+      $children = $col.children()
+      $new_col  = $(<span class="hljs-property">@_col_html</span>($col))
+      $col.replaceWith($new_col)
+      $new_col.append($children)
+
+  <span class="hljs-attribute">_row_html</span>: <span class="hljs-function"><span class="hljs-params">($row)</span> -&gt;</span>
+    hash       = <span class="hljs-property">@tvo</span>.tag_attribute_hash($row)
+    hash.class = <span class="hljs-property">@_get_tag_classes</span>($row, <span class="hljs-string">'row'</span>)
+    <span class="hljs-property">@_tag_with_attributes</span>(<span class="hljs-string">'div'</span>, hash)
+
+  <span class="hljs-attribute">_col_html</span>: <span class="hljs-function"><span class="hljs-params">($col)</span> -&gt;</span>
+    hash = <span class="hljs-property">@tvo</span>.tag_attribute_hash($col)
+    cols = hash.width <span class="hljs-keyword">or</span> <span class="hljs-number">12</span>
+    <span class="hljs-keyword">delete</span>(hash.width)
+    columns_class = config.grid.classes.columns
+    hash.class    = <span class="hljs-property">@_get_tag_classes</span>($col, <span class="hljs-string">"<span class="hljs-subst">#{columns_class}</span> small-<span class="hljs-subst">#{cols}</span>"</span>)
+    <span class="hljs-property">@_tag_with_attributes</span>(<span class="hljs-string">'div'</span>, hash)
+
+  <span class="hljs-attribute">_tag_with_attributes</span>: <span class="hljs-function"><span class="hljs-params">(tag, hash)</span> -&gt;</span>
+    new_tag = <span class="hljs-string">"&lt;<span class="hljs-subst">#{tag}</span>"</span>
+    <span class="hljs-keyword">for</span> own attr_name, attr_value <span class="hljs-keyword">of</span> hash
+      new_tag += <span class="hljs-string">" <span class="hljs-subst">#{attr_name}</span>='<span class="hljs-subst">#{attr_value}</span>'"</span>
+    new_tag += <span class="hljs-string">'&gt;'</span>
+    new_tag
+
+  <span class="hljs-attribute">_get_tag_classes</span>: <span class="hljs-function"><span class="hljs-params">($tag, classes=<span class="hljs-string">''</span>)</span> -&gt;</span> (<span class="hljs-property">@tvo</span>.tag_class($tag) + <span class="hljs-string">' '</span> + classes).trim()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="add-components">Add Components.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">_add_components</span>: <span class="hljs-function"><span class="hljs-params">(components)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      common_component_promises = components.getEach(ns.to_p <span class="hljs-string">'component'</span>)
+      componentable_promises    = components.getEach(<span class="hljs-string">'componentable'</span>)
+      ember.RSVP.Promise.all(common_component_promises).<span class="hljs-keyword">then</span> (common_components) =&gt;
+        ember.RSVP.Promise.all(componentable_promises).<span class="hljs-keyword">then</span> (componentables) =&gt;
+          component_promises = []
+          components.forEach (component, index) =&gt;
+            common_component = common_components.objectAt(index)
+            componentable    = componentables.objectAt(index)
+            component_promises.push <span class="hljs-property">@_add_component</span>(common_component, component, componentable)
+          ember.RSVP.Promise.all(component_promises).<span class="hljs-keyword">then</span> =&gt;
+            resolve()
+          , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+            <span class="hljs-built_in">console</span>.error error
+
+  <span class="hljs-attribute">_add_component</span>: <span class="hljs-function"><span class="hljs-params">(common_component, component, componentable)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@_replace_template_component_html</span>(common_component, component, componentable)
+      resolve()
+
+  <span class="hljs-attribute">_replace_template_component_html</span>: <span class="hljs-function"><span class="hljs-params">(common_component, component, componentable)</span> -&gt;</span>
+    section         = component.get(<span class="hljs-string">'section'</span>)
+    $comp           = <span class="hljs-property">@_get_component_section_tag</span>(section)
+    hash            = {}
+    hash.attributes = <span class="hljs-property">@tvo</span>.tag_attribute_hash($comp)
+    hash.model      = componentable
+    path            = <span class="hljs-property">@tvo</span>.value.set_value(hash)
+    bind_properties = <span class="hljs-property">@_get_bind_properties</span>($comp, path, hash)
+    hash.title      = <span class="hljs-property">@tvo</span>.tag_title($comp)
+    mount           = common_component.get(<span class="hljs-string">'ember_engine'</span>)
+    <span class="hljs-keyword">if</span> ember.isPresent(mount)
+      html = <span class="hljs-string">"{{mount '<span class="hljs-subst">#{mount}</span>'}}"</span>
+    <span class="hljs-keyword">else</span>
+      comp = common_component.get(<span class="hljs-string">'ember_component'</span>)
+      html = <span class="hljs-string">"{{component '<span class="hljs-subst">#{comp}</span>' <span class="hljs-subst">#{bind_properties}</span>}}"</span>
+    $comp.replaceWith(html)
+
+  <span class="hljs-attribute">_get_bind_properties</span>: <span class="hljs-function"><span class="hljs-params">($comp, path, hash)</span> -&gt;</span>
+    keys = []
+    keys.push key <span class="hljs-keyword">for</span> own key <span class="hljs-keyword">of</span> hash
+    bind = <span class="hljs-string">''</span>
+    <span class="hljs-keyword">return</span> bind <span class="hljs-keyword">if</span> ember.isBlank(keys)
+    bind += <span class="hljs-string">" <span class="hljs-subst">#{key}</span>=tvo.<span class="hljs-subst">#{path}</span>.<span class="hljs-subst">#{key}</span>"</span>  <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> keys
+    actions = $comp.data(<span class="hljs-string">'actions'</span>)
+    <span class="hljs-keyword">return</span> bind <span class="hljs-keyword">unless</span> actions
+    bind += <span class="hljs-string">" <span class="hljs-subst">#{key}</span>='<span class="hljs-subst">#{value}</span>'"</span>  <span class="hljs-keyword">for</span> own key, value <span class="hljs-keyword">of</span> actions
+    bind
+
+  <span class="hljs-attribute">_get_component_section_tag</span>: <span class="hljs-function"><span class="hljs-params">(section)</span> -&gt;</span>
+    $comp  = <span class="hljs-property">@get_template</span>().find(<span class="hljs-string">"component[section=<span class="hljs-subst">#{section}</span>]"</span>)
+    length = $comp.length
+    <span class="hljs-keyword">switch</span>
+      <span class="hljs-keyword">when</span> length &gt; <span class="hljs-number">1</span>
+        <span class="hljs-built_in">console</span>.warn <span class="hljs-string">"Section [<span class="hljs-subst">#{section}</span>] is duplicated <span class="hljs-subst">#{length}</span> times."</span>
+        <span class="hljs-literal">null</span>
+      <span class="hljs-keyword">when</span> length &lt; <span class="hljs-number">1</span>
+        <span class="hljs-built_in">console</span>.warn <span class="hljs-string">"Section [<span class="hljs-subst">#{section}</span>] is not found."</span>
+        <span class="hljs-literal">null</span>
+      <span class="hljs-keyword">else</span>
+        $comp</div></div></div></div></body></html>

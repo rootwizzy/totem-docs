@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-assets/vendor/file_upload/jquery.iframe-transport</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-assets/vendor/file_upload/jquery.iframe-transport"><meta name="groc-project-path" content="src/totem/client/totem-assets/vendor/file_upload/jquery.iframe-transport.js"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-assets/vendor/file_upload/jquery.iframe-transport.js">src/totem/client/totem-assets/vendor/file_upload/jquery.iframe-transport.js</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>jQuery Iframe Transport Plugin 1.8.0
+<a href="https://github.com/blueimp/jQuery-File-Upload">https://github.com/blueimp/jQuery-File-Upload</a></p>
+<p>Copyright 2011, Sebastian Tschan
+<a href="https://blueimp.net">https://blueimp.net</a></p>
+<p>Licensed under the MIT license:
+<a href="http://www.opensource.org/licenses/MIT">http://www.opensource.org/licenses/MIT</a></p></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">/*jslint unparam: true, nomen: true */</span>
+<span class="hljs-comment">/*global define, window, document */</span>
+
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">factory</span>) </span>{
+<span class="hljs-pi">    'use strict'</span>;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">'function'</span> &amp;&amp; define.amd) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Register as an anonymous AMD module:</p></div></div><div class="code"><div class="wrapper">        define([<span class="hljs-string">'jquery'</span>], factory);
+    } <span class="hljs-keyword">else</span> {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Browser globals:</p></div></div><div class="code"><div class="wrapper">        factory(<span class="hljs-built_in">window</span>.jQuery);
+    }
+}(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$</span>) </span>{
+<span class="hljs-pi">    'use strict'</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Helper variable to create unique names for the transport iframes:</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> counter = <span class="hljs-number">0</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The iframe transport accepts four additional options:
+options.fileInput: a jQuery collection of file input fields
+options.paramName: the parameter name for the file form data,
+ overrides the name property of the file input field(s),
+ can be a string or an array of strings.
+options.formData: an array of objects with name and value properties,
+ equivalent to the return data of .serializeArray(), e.g.:
+ [{name: &#39;a&#39;, value: 1}, {name: &#39;b&#39;, value: 2}]
+options.initialIframeSrc: the URL of the initial iframe src,
+ by default set to &quot;javascript:false;&quot;</p></div></div><div class="code"><div class="wrapper">    $.ajaxTransport(<span class="hljs-string">'iframe'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">options</span>) </span>{
+        <span class="hljs-keyword">if</span> (options.async) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>javascript:false as initial iframe src
+prevents warning popups on HTTPS in IE6:</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">var</span> initialIframeSrc = options.initialIframeSrc || <span class="hljs-string">'javascript:false;'</span>,
+                form,
+                iframe,
+                addParamChar;
+            <span class="hljs-keyword">return</span> {
+                send: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">_, completeCallback</span>) </span>{
+                    form = $(<span class="hljs-string">'&lt;form style="display:none;"&gt;&lt;/form&gt;'</span>);
+                    form.attr(<span class="hljs-string">'accept-charset'</span>, options.formAcceptCharset);
+                    addParamChar = <span class="hljs-regexp">/\?/</span>.test(options.url) ? <span class="hljs-string">'&amp;'</span> : <span class="hljs-string">'?'</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>XDomainRequest only supports GET and POST:</p></div></div><div class="code"><div class="wrapper">                    <span class="hljs-keyword">if</span> (options.type === <span class="hljs-string">'DELETE'</span>) {
+                        options.url = options.url + addParamChar + <span class="hljs-string">'_method=DELETE'</span>;
+                        options.type = <span class="hljs-string">'POST'</span>;
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (options.type === <span class="hljs-string">'PUT'</span>) {
+                        options.url = options.url + addParamChar + <span class="hljs-string">'_method=PUT'</span>;
+                        options.type = <span class="hljs-string">'POST'</span>;
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (options.type === <span class="hljs-string">'PATCH'</span>) {
+                        options.url = options.url + addParamChar + <span class="hljs-string">'_method=PATCH'</span>;
+                        options.type = <span class="hljs-string">'POST'</span>;
+                    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>IE versions below IE8 cannot set the name property of
+elements that have already been added to the DOM,
+so we set the name along with the iframe HTML markup:</p></div></div><div class="code"><div class="wrapper">                    counter += <span class="hljs-number">1</span>;
+                    iframe = $(
+                        <span class="hljs-string">'&lt;iframe src="'</span> + initialIframeSrc +
+                            <span class="hljs-string">'" name="iframe-transport-'</span> + counter + <span class="hljs-string">'"&gt;&lt;/iframe&gt;'</span>
+                    ).bind(<span class="hljs-string">'load'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                        <span class="hljs-keyword">var</span> fileInputClones,
+                            paramNames = $.isArray(options.paramName) ?
+                                    options.paramName : [options.paramName];
+                        iframe
+                            .unbind(<span class="hljs-string">'load'</span>)
+                            .bind(<span class="hljs-string">'load'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                                <span class="hljs-keyword">var</span> response;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Wrap in a try/catch block to catch exceptions thrown
+when trying to access cross-domain iframe contents:</p></div></div><div class="code"><div class="wrapper">                                <span class="hljs-keyword">try</span> {
+                                    response = iframe.contents();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Google Chrome and Firefox do not throw an
+exception when calling iframe.contents() on
+cross-domain requests, so we unify the response:</p></div></div><div class="code"><div class="wrapper">                                    <span class="hljs-keyword">if</span> (!response.length || !response[<span class="hljs-number">0</span>].firstChild) {
+                                        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>();
+                                    }
+                                } <span class="hljs-keyword">catch</span> (e) {
+                                    response = <span class="hljs-literal">undefined</span>;
+                                }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The complete callback returns the
+iframe content document as response object:</p></div></div><div class="code"><div class="wrapper">                                completeCallback(
+                                    <span class="hljs-number">200</span>,
+                                    <span class="hljs-string">'success'</span>,
+                                    {<span class="hljs-string">'iframe'</span>: response}
+                                );</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Fix for IE endless progress bar activity bug
+(happens on form submits to iframe targets):</p></div></div><div class="code"><div class="wrapper">                                $(<span class="hljs-string">'&lt;iframe src="'</span> + initialIframeSrc + <span class="hljs-string">'"&gt;&lt;/iframe&gt;'</span>)
+                                    .appendTo(form);
+                                <span class="hljs-built_in">window</span>.setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Removing the form in a setTimeout call
+allows Chrome&#39;s developer tools to display
+the response result</p></div></div><div class="code"><div class="wrapper">                                    form.remove();
+                                }, <span class="hljs-number">0</span>);
+                            });
+                        form
+                            .prop(<span class="hljs-string">'target'</span>, iframe.prop(<span class="hljs-string">'name'</span>))
+                            .prop(<span class="hljs-string">'action'</span>, options.url)
+                            .prop(<span class="hljs-string">'method'</span>, options.type);
+                        <span class="hljs-keyword">if</span> (options.formData) {
+                            $.each(options.formData, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index, field</span>) </span>{
+                                $(<span class="hljs-string">'&lt;input type="hidden"/&gt;'</span>)
+                                    .prop(<span class="hljs-string">'name'</span>, field.name)
+                                    .val(field.value)
+                                    .appendTo(form);
+                            });
+                        }
+                        <span class="hljs-keyword">if</span> (options.fileInput &amp;&amp; options.fileInput.length &amp;&amp;
+                                options.type === <span class="hljs-string">'POST'</span>) {
+                            fileInputClones = options.fileInput.clone();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Insert a clone for each file input field:</p></div></div><div class="code"><div class="wrapper">                            options.fileInput.after(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index</span>) </span>{
+                                <span class="hljs-keyword">return</span> fileInputClones[index];
+                            });
+                            <span class="hljs-keyword">if</span> (options.paramName) {
+                                options.fileInput.each(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index</span>) </span>{
+                                    $(<span class="hljs-keyword">this</span>).prop(
+                                        <span class="hljs-string">'name'</span>,
+                                        paramNames[index] || options.paramName
+                                    );
+                                });
+                            }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Appending the file input fields to the hidden form
+removes them from their original location:</p></div></div><div class="code"><div class="wrapper">                            form
+                                .append(options.fileInput)
+                                .prop(<span class="hljs-string">'enctype'</span>, <span class="hljs-string">'multipart/form-data'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>enctype must be set as encoding for IE:</p></div></div><div class="code"><div class="wrapper">                                .prop(<span class="hljs-string">'encoding'</span>, <span class="hljs-string">'multipart/form-data'</span>);
+                        }
+                        form.submit();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Insert the file input fields at their original location
+by replacing the clones with the originals:</p></div></div><div class="code"><div class="wrapper">                        <span class="hljs-keyword">if</span> (fileInputClones &amp;&amp; fileInputClones.length) {
+                            options.fileInput.each(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index, input</span>) </span>{
+                                <span class="hljs-keyword">var</span> clone = $(fileInputClones[index]);
+                                $(input).prop(<span class="hljs-string">'name'</span>, clone.prop(<span class="hljs-string">'name'</span>));
+                                clone.replaceWith(input);
+                            });
+                        }
+                    });
+                    form.append(iframe).appendTo(<span class="hljs-built_in">document</span>.body);
+                },
+                abort: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                    <span class="hljs-keyword">if</span> (iframe) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>javascript:false as iframe src aborts the request
+and prevents warning popups on HTTPS in IE6.
+concat is used to avoid the &quot;Script URL&quot; JSLint error:</p></div></div><div class="code"><div class="wrapper">                        iframe
+                            .unbind(<span class="hljs-string">'load'</span>)
+                            .prop(<span class="hljs-string">'src'</span>, initialIframeSrc);
+                    }
+                    <span class="hljs-keyword">if</span> (form) {
+                        form.remove();
+                    }
+                }
+            };
+        }
+    });</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The iframe transport returns the iframe content document as response.
+The following adds converters from iframe to text, json, html, xml
+and script.
+Please note that the Content-Type for JSON responses has to be text/plain
+or text/html, if the browser doesn&#39;t include application/json in the
+Accept header, else IE will show a download dialog.
+The Content-Type for XML responses on the other hand has to be always
+application/xml or text/xml, so IE properly parses the XML response.
+See also
+<a href="https://github.com/blueimp/jQuery-File-Upload/wiki/Setup#content-type-negotiation">https://github.com/blueimp/jQuery-File-Upload/wiki/Setup#content-type-negotiation</a></p></div></div><div class="code"><div class="wrapper">    $.ajaxSetup({
+        converters: {
+            <span class="hljs-string">'iframe text'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">iframe</span>) </span>{
+                <span class="hljs-keyword">return</span> iframe &amp;&amp; $(iframe[<span class="hljs-number">0</span>].body).text();
+            },
+            <span class="hljs-string">'iframe json'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">iframe</span>) </span>{
+                <span class="hljs-keyword">return</span> iframe &amp;&amp; $.parseJSON($(iframe[<span class="hljs-number">0</span>].body).text());
+            },
+            <span class="hljs-string">'iframe html'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">iframe</span>) </span>{
+                <span class="hljs-keyword">return</span> iframe &amp;&amp; $(iframe[<span class="hljs-number">0</span>].body).html();
+            },
+            <span class="hljs-string">'iframe xml'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">iframe</span>) </span>{
+                <span class="hljs-keyword">var</span> xmlDoc = iframe &amp;&amp; iframe[<span class="hljs-number">0</span>];
+                <span class="hljs-keyword">return</span> xmlDoc &amp;&amp; $.isXMLDoc(xmlDoc) ? xmlDoc :
+                        $.parseXML((xmlDoc.XMLDocument &amp;&amp; xmlDoc.XMLDocument.xml) ||
+                            $(xmlDoc.body).html());
+            },
+            <span class="hljs-string">'iframe script'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">iframe</span>) </span>{
+                <span class="hljs-keyword">return</span> iframe &amp;&amp; $.globalEval($(iframe[<span class="hljs-number">0</span>].body).text());
+            }
+        }
+    });
+
+}));</div></div></div></div></body></html>

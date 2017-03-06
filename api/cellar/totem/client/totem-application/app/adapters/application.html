@@ -1,0 +1,204 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-application/app/adapters/application</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-application/app/adapters/application"><meta name="groc-project-path" content="src/totem/client/totem-application/app/adapters/application.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-application/app/adapters/application.coffee">src/totem/client/totem-application/app/adapters/application.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import ds          from <span class="hljs-string">'ember-data'</span>
+import config      from <span class="hljs-string">'totem-config/config'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+import auth_mixin  from <span class="hljs-string">'ember-simple-auth/mixins/data-adapter-mixin'</span>
+
+export default ds.JSONAPIAdapter.extend auth_mixin,
+
+  <span class="hljs-attribute">namespace</span>:  <span class="hljs-string">'api'</span>
+  <span class="hljs-attribute">host</span>:       config.api_host
+  <span class="hljs-attribute">authorizer</span>: <span class="hljs-string">'authorizer:totem'</span>
+
+  <span class="hljs-attribute">coalesceFindRequests</span>: <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">headersForRequest</span>: <span class="hljs-function"><span class="hljs-params">(params)</span> -&gt;</span>
+    headers = <span class="hljs-property">@_super</span>(params)
+    ember.merge headers, <span class="hljs-property">@get_auth_headers</span>()
+    headers
+
+  <span class="hljs-attribute">get_auth_headers</span>: <span class="hljs-function">-&gt;</span>
+    headers = {}
+    session = <span class="hljs-property">@get</span>(<span class="hljs-string">'session'</span>)
+    data    = session.get(<span class="hljs-string">'session.content.authenticated'</span>) <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">if</span> data
+      headers.Authorization = <span class="hljs-string">'Token '</span> + <span class="hljs-string">'token'</span> + <span class="hljs-string">'="'</span> + data.token + <span class="hljs-string">'", '</span> + <span class="hljs-string">'email'</span> + <span class="hljs-string">'="'</span> + data.email + <span class="hljs-string">'"'</span>
+    headers
+
+  <span class="hljs-attribute">findMany</span>: <span class="hljs-function"><span class="hljs-params">(store, type, ids, snapshots)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>console.warn query</p></div></div><div class="code"><div class="wrapper">    query = {<span class="hljs-attribute">ids</span>: ids}
+    totem_scope.find_many(type, query)
+    url = <span class="hljs-property">@buildURL</span>(type.modelName, ids, snapshots, <span class="hljs-string">'findMany'</span>) + <span class="hljs-string">'/select'</span>
+    <span class="hljs-property">@ajax</span> url, <span class="hljs-string">'GET'</span>, <span class="hljs-attribute">data</span>: query
+
+  <span class="hljs-attribute">findRecord</span>: <span class="hljs-function"><span class="hljs-params">(store, type, id, snapshot)</span> -&gt;</span>
+    query = {}
+    totem_scope.find(type, id, query)
+    url = <span class="hljs-property">@buildURL</span>(type.modelName, id, snapshot, <span class="hljs-string">'findRecord'</span>)
+    <span class="hljs-property">@ajax</span>(url, <span class="hljs-string">'GET'</span>, <span class="hljs-attribute">data</span>: query)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>query: (store, type, query) -&gt;
+  console.warn query
+  totem_scope.find_query(type, query)
+  url = @buildURL(type.modelName, null, null, &#39;query&#39;, query)
+  url += &quot;/#{query.action}&quot;  if query.action
+  @ajax(url, &#39;GET&#39;, query)</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Override pathForType to underscore the path (otherwise is dasherized).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">pathForType</span>: <span class="hljs-function"><span class="hljs-params">(modelName)</span> -&gt;</span>
+    path = <span class="hljs-property">@_super</span>(modelName)
+    ember.String.underscore(path)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ajax: (url, type, hash={}) -&gt;
+  timeout      = config and config.ajax_timeout
+  hash.timeout = timeout  if timeout</p>
+<h1 id="consolewarn-url-type-hash">console.warn url, type, hash</h1>
+<p>  @_super(url, type, hash)</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>findRecord: (store, type, id, snapshot) -&gt;
+  query = {}
+  totem_scope.find_record(type, id, query)
+  url = @buildURL(type.modelName, id, snapshot, &#39;findRecord&#39;)
+  @ajax(url, &#39;GET&#39;, data: query)</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>findMany: (store, type, ids, snapshots) -&gt;
+  query = {ids: ids}
+  totem_scope.find_many(type, query)
+  url = @buildURL(type.modelName, ids, snapshots, &#39;findMany&#39;) + &#39;/select&#39;
+  @ajax url, &#39;GET&#39;, data: query</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>findAll: (store, type, sinceToken) -&gt;
+  query       = {}
+  query.since = sinceToken  if sinceToken
+  totem_scope.find_all(type, query)
+  url = @buildURL(type.modelName, null, null, &#39;findAll&#39;)
+  @ajax(url, &#39;GET&#39;, data: query)</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="return-a-single-record-from-the-query">Return a single record from the query.</h1>
+<p>queryRecord: (store, type, query) -&gt;
+  totem_scope.query_record(type, query)
+  url = @buildURL(type.modelName, null, null, &#39;queryRecord&#39;, query)
+  @send_query(url, query)</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return an array of records from the query.
+query: (store, type, query) -&gt;
+  totem_scope.query(type, query)
+  url = @buildURL(type.modelName, null, null, &#39;query&#39;, query)
+  @send_query(url, query)</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>send_query: (url, query) -&gt;
+  id     = query.id
+  action = query.action
+  verb   = query.verb or &#39;GET&#39;
+  url   += &#39;/&#39; + id     if id
+  url   += &#39;/&#39; + action if action
+  delete(query.id)      if query.id
+  delete(query.action)  if query.action
+  delete(query.verb)    if query.verb
+  query = @sortQueryParams(query)  if @sortQueryParams
+  @ajax(url, verb, data: query)</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="delete-record-does-not-go-through-the-rest-serializer39s-39serializeintohash39-function">Delete record does not go through the rest_serializer&#39;s &#39;serializeIntoHash&#39; function</h1>
+<h1 id="so-the-totem-scope-information-must-be-added-in-the-rest-adapter">so the totem_scope information must be added in the rest_adapter.</h1>
+<h1 id="calls-to-39totem-scope39-add-the-authableownerable-model-type-and-id-when-appropriate">Calls to &#39;totem_scope&#39; add the authable/ownerable model type and id when appropriate.</h1>
+<p>deleteRecord: (store, type, record) -&gt;
+  query = {}
+  totem_scope.delete_record(type, record, query)
+  id = record.get &#39;id&#39;
+  @ajax(@buildURL(type.typeKey, id), &quot;DELETE&quot;, data: query);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="override-this-so-that-the-422-error-do-not-get-gobbled">Override this so that the 422 error do not get gobbled.</h1>
+<p>ajaxError: (jqXHR, responseText, errorThrown) -&gt;
+  isObject = jqXHR != null and typeof jqXHR == &#39;object&#39;
+  if isObject
+    jqXHR.then = null
+    if !jqXHR.errorThrown
+      if typeof errorThrown == &#39;string&#39;
+        jqXHR.errorThrown = new Error(errorThrown)
+      else
+        jqXHR.errorThrown = errorThrown
+  jqXHR</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="other-rest-adapter-functions">OTHER REST ADAPTER FUNCTIONS</h3></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  Called by the store in order to fetch a JSON array for
+  the unloaded records in a has-many relationship that were originally
+  specified as a URL (inside of <code>links</code>).
+  For example, if your original payload looks like this:
+  {
+    &quot;post&quot;: {
+      &quot;id&quot;: 1,
+      &quot;title&quot;: &quot;Rails is omakase&quot;,
+      &quot;links&quot;: { &quot;comments&quot;: &quot;/posts/1/comments&quot; }
+    }
+  }
+  This method will be called with the parent record and <code>/posts/1/comments</code>.
+  The <code>findHasMany</code> method will make an Ajax (HTTP GET) request to the originally specified URL.
+  @method findHasMany
+  @param {DS.Store} store
+  @param {DS.Snapshot} snapshot
+  @param {String} url
+  @return {Promise} promise
+findHasMany: function(store, snapshot, url, relationship) {
+  var id   = snapshot.id;
+  var type = snapshot.modelName;
+  url = this.urlPrefix(url, this.buildURL(type, id, null, &#39;findHasMany&#39;));
+  return this.ajax(url, &#39;GET&#39;);</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-comment"># ,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  Called by the store in order to fetch a JSON array for
+  the unloaded records in a belongs-to relationship that were originally
+  specified as a URL (inside of <code>links</code>).
+  For example, if your original payload looks like this:
+  {
+    &quot;person&quot;: {
+      &quot;id&quot;: 1,
+      &quot;name&quot;: &quot;Tom Dale&quot;,
+      &quot;links&quot;: { &quot;group&quot;: &quot;/people/1/group&quot; }
+    }
+  }
+  This method will be called with the parent record and <code>/people/1/group</code>.
+  The <code>findBelongsTo</code> method will make an Ajax (HTTP GET) request to the originally specified URL.
+  @method findBelongsTo
+  @param {DS.Store} store
+  @param {DS.Snapshot} snapshot
+  @param {String} url
+  @return {Promise} promise
+findBelongsTo: function(store, snapshot, url, relationship) {
+  var id   = snapshot.id;
+  var type = snapshot.modelName;
+  url = this.urlPrefix(url, this.buildURL(type, id, null, &#39;findBelongsTo&#39;));
+  return this.ajax(url, &#39;GET&#39;);</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-comment"># ,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>import ember  from &#39;ember&#39;
+import ds     from &#39;ember-data&#39;
+import config from &#39;totem-config/config&#39;
+import totem_scope    from &#39;totem/scope&#39;
+import totem_messages from &#39;totem-messages/messages&#39;</p>
+<h1 id="export-default-dsactivemodeladapterextend">export default ds.ActiveModelAdapter.extend</h1>
+<p>export default ds.JSONAPIAdapter.extend
+  namespace: &#39;api&#39;</p>
+<h1 id="host-configapi-host">host:      config.api_host</h1>
+<h1 id="coalescefindrequests-true">coalesceFindRequests: true</h1></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ajax: (url, type, hash={}) -&gt;
+  timeout      = config and config.ajax_timeout
+  hash.timeout = timeout  if timeout
+  @_super(url, type, hash)</p>
+<h1 id="findquery-looks-for-the-query-object-keys-39action39-39id39-and-39verb39">findQuery looks for the query object keys &#39;action&#39;, &#39;id&#39;, and &#39;verb&#39;.</h1>
+<h1 id="they-will-be-deleted-from-the-query-params-base-on">They will be deleted from the query params base on:</h1>
+<h1 id="-if-query-contains-both-39action39-and-39id39-then-format-the-url-for-a-member-request">* If query contains both &#39;action&#39; and &#39;id&#39; then format the url for a :member request.</h1>
+<h1 id="eg-base-urlidaction-gt-delete-action-and-id-from-query">e.g. base_url/id/action  #=&gt; delete action and id from query</h1>
+<h1 id="-if-query-has-an-39action39-but-no-39id39-then-format-the-url-for-a-collection-request">* If query has an &#39;action&#39; but no &#39;id&#39; then format the url for a :collection request.</h1>
+<h1 id="eg-base-urlaction-gt-delete-action-from-query">e.g. base_url/action     #=&gt; delete action from query</h1>
+<h1 id="-if-query-does-not-have-an-action-eg-null-then-get-a-standard-buildurl-eg-the-null-is-ignored">* If query does not have an action (e.g. null) then get a standard buildURL (e.g. the null is ignored).</h1>
+<h1 id="-always-deletes-the-39verb39-key-and-either-uses-it-in-the-buildurl-or-defaults-to-39get39">* Always deletes the &#39;verb&#39; key and either uses it in the buildURL or defaults to &#39;GET&#39;.</h1>
+<h1 id="note-latest-ember-data-buildurl-will-convert-3939-to-392f39-so-need-to-add-the-action-after-the-url-is-built">Note: Latest ember-data buildURL will convert &#39;/&#39; to &#39;%2F&#39; so need to add the action after the url is built.</h1>
+<p>findQuery: (store, type, query) -&gt;
+  totem_scope.find_query(type, query)  # add model type and id
+  action = query.action
+  id     = query.id
+  verb   = query.verb or &#39;GET&#39;
+  url    = @buildURL(type.typeKey, id)
+  url   += &#39;/&#39; + action if action
+  delete(query.id)      if query.id
+  delete(query.action)  if query.action
+  delete(query.verb)    if query.verb
+  @ajax(url, verb, { data: query })</p>
+<h1 id="delete-record-does-not-go-through-the-rest-serializer39s-39serializeintohash39-function">Delete record does not go through the rest_serializer&#39;s &#39;serializeIntoHash&#39; function</h1>
+<h1 id="so-the-totem-scope-information-must-be-added-in-the-rest-adapter">so the totem_scope information must be added in the rest_adapter.</h1>
+<h1 id="calls-to-39totem-scope39-add-the-authableownerable-model-type-and-id-when-appropriate">Calls to &#39;totem_scope&#39; add the authable/ownerable model type and id when appropriate.</h1>
+<p>deleteRecord: (store, type, record) -&gt;
+  query = {}
+  totem_scope.delete_record(type, record, query)
+  id = record.get &#39;id&#39;
+  @ajax(@buildURL(type.typeKey, id), &quot;DELETE&quot;, data: query);</p>
+<p>find: (store, type, id) -&gt;
+  query = {}
+  totem_scope.find(type, id, query)
+  @ajax(@buildURL(type.typeKey, id), &#39;GET&#39;, data: query);</p>
+<p>findAll: (store, type, sinceToken) -&gt;
+  query = {}
+  query.since = sinceToken  if sinceToken
+  totem_scope.find_all(type, query)
+  @ajax(@buildURL(type.typeKey), &#39;GET&#39;, { data: query });</p>
+<p>findMany: (store, type, ids) -&gt;
+  query = {ids: ids}
+  totem_scope.find_many(type, query)
+  @ajax(@buildURL(type.typeKey, &#39;select&#39;), &#39;GET&#39;, data: query)</p>
+<h1 id="override-this-so-that-the-422-error-does-not-get-gobbled">Override this so that the 422 error does not get gobbled.</h1>
+<p>ajaxError: (jqXHR, responseText, errorThrown) -&gt;
+  isObject = jqXHR != null and typeof jqXHR == &#39;object&#39;
+  if isObject
+    jqXHR.then = null
+    if !jqXHR.errorThrown
+      if typeof errorThrown == &#39;string&#39;
+        jqXHR.errorThrown = new Error(errorThrown)
+      else
+        jqXHR.errorThrown = errorThrown
+  jqXHR</p></div></div></div></div></body></html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-cli/lib/totem/cli/helpers_ember/versions</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_ember/versions"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_ember/versions.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers_ember/versions.rb">src/totem/api/totem-cli/lib/totem/cli/helpers_ember/versions.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">HelpersEmber</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Versions</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="set-ember-cli-node-and-npm-versions">Set ember-cli, node and npm versions.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:installed_ember_cli_version</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:installed_node_version</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:installed_npm_version</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:ember_cli_is_installed</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:node_is_installed</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:npm_is_installed</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_run_versions</span></span>
+    <span class="hljs-variable">@installed_ember_cli_version</span> = <span class="hljs-string">'not installed'</span>
+    <span class="hljs-variable">@installed_node_version</span>      = <span class="hljs-string">'not installed'</span>
+    <span class="hljs-variable">@installed_npm_version</span>       = <span class="hljs-string">'not installed'</span>
+
+    version = <span class="hljs-string">`ember --version`</span> <span class="hljs-keyword">rescue</span> version = <span class="hljs-keyword">nil</span>
+    <span class="hljs-variable">@ember_cli_is_installed</span> = <span class="hljs-keyword">false</span>
+    <span class="hljs-keyword">if</span> version.present? &amp;&amp; (match = version.match /ember-<span class="hljs-symbol">cli:</span>(.*?)\n/)
+      <span class="hljs-variable">@installed_ember_cli_version</span> = match[<span class="hljs-number">1</span>].to_s.strip
+      <span class="hljs-variable">@ember_cli_is_installed</span>      = <span class="hljs-keyword">true</span>
+    <span class="hljs-keyword">end</span>
+
+    version = <span class="hljs-string">`node --version`</span> <span class="hljs-keyword">rescue</span> version = <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">if</span> version.blank?
+      <span class="hljs-variable">@node_is_installed</span> = <span class="hljs-keyword">false</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-variable">@node_is_installed</span> = <span class="hljs-keyword">true</span>
+      <span class="hljs-variable">@installed_node_version</span> = version.each_line.first.strip.sub(<span class="hljs-regexp">/^v/</span>, <span class="hljs-string">''</span>)
+    <span class="hljs-keyword">end</span>
+
+    version = <span class="hljs-string">`npm --version`</span> <span class="hljs-keyword">rescue</span> version = <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">if</span> version.blank?
+      <span class="hljs-variable">@npm_is_installed</span> = <span class="hljs-keyword">false</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-variable">@npm_is_installed</span> = <span class="hljs-keyword">true</span>
+      <span class="hljs-variable">@installed_npm_version</span> = version.each_line.first.strip
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>NPM version 3 flattens the node_modules in an attempt to remove module duplication.
+Need to base NPM version on the ember-cli version (installs own version of npm) rather than the system NPM.
+ember-cli 2.10.0 starts using NPM 3.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_npm_version_gte_v3?</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> installed_ember_cli_version.blank?
+    major = installed_ember_cli_version.split(<span class="hljs-string">'.'</span>).first  || <span class="hljs-number">0</span>
+    minor = installed_ember_cli_version.split(<span class="hljs-string">'.'</span>).second || <span class="hljs-number">0</span>
+    major.to_i &gt; <span class="hljs-number">1</span> &amp;&amp; minor.to_i &gt; <span class="hljs-number">9</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

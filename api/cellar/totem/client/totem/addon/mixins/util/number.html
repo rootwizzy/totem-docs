@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/mixins/util/number</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/mixins/util/number"><meta name="groc-project-path" content="src/totem/client/totem/addon/mixins/util/number.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/mixins/util/number.coffee">src/totem/client/totem/addon/mixins/util/number.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">convert_to_number</span>: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span> Number(n)
+
+  <span class="hljs-attribute">number_of_decimals</span>: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_number</span>(n)
+    [v, decimals]  = (<span class="hljs-string">''</span> + n).split(<span class="hljs-string">'.'</span>)
+    <span class="hljs-keyword">if</span> ember.isBlank(decimals) <span class="hljs-keyword">then</span> <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> decimals.length
+
+  <span class="hljs-attribute">decimal_value</span>: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_number</span>(n)
+    [v, decimals]  = (<span class="hljs-string">''</span> + n).split(<span class="hljs-string">'.'</span>)
+    <span class="hljs-keyword">if</span> ember.isBlank(decimals) <span class="hljs-keyword">then</span> <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> Number(decimals)</div></div></div></div></body></html>

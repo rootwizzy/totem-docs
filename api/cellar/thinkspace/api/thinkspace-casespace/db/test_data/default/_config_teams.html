@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/db/test_data/default/_config_teams</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/db/test_data/default/_config_teams"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_teams.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_teams.yml">src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_teams.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-attribute">require_data_files</span>: <span class="hljs-string">html_samples</span>
+
+<span class="haml">variables:
+  -<span class="ruby"> &amp;<span class="hljs-constant">SPACE</span> teams
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">PHASE_ONLY_COLLABORATION_TEAMS</span> <span class="hljs-constant">ONLY</span> <span class="hljs-constant">PHASE</span> collaboration teams - users only on <span class="hljs-constant">ONE</span> team
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">PHASE_ONLY_PEER_REVIEW_TEAMS</span>   <span class="hljs-constant">ONLY</span> <span class="hljs-constant">PHASE</span> peer review teams - users only on <span class="hljs-constant">ONE</span> team
+</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Team Sets</p></div></div><div class="code"><div class="wrapper">  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_SET_A</span>    team_set_a
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_SET_B</span>    team_set_b
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_SET_C</span>    team_set_c
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">ALL_TEAM_SETS</span> [*<span class="hljs-constant">TEAM_SET_A</span>, *<span class="hljs-constant">TEAM_SET_B</span>, *<span class="hljs-constant">TEAM_SET_C</span>]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Teams</p></div></div><div class="code"><div class="wrapper">  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_1</span> <span class="hljs-string">'Team-1 : read_1, read_2, read_3'</span>
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_2</span> <span class="hljs-string">'Team-2 : read_4, read_5, read_6'</span>
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_3</span> <span class="hljs-string">'Team-3 : read_7, read_8'</span>
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_4</span> <span class="hljs-string">'Team-4 : john_01, john_02, john_03, john_04, john_05'</span>
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_5</span> <span class="hljs-string">'Team-5 : john_06, john_07, john_08, john_09, john_10'</span>
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_9</span> <span class="hljs-string">'Team-9 : read_9'</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Team users</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-tag">-</span> &amp;<span class="hljs-tag">TEAM_1_USERS</span> <span class="hljs-attr_selector">[read_1, read_2, read_3]</span>
+  <span class="hljs-tag">-</span> &amp;<span class="hljs-tag">TEAM_2_USERS</span> <span class="hljs-attr_selector">[read_4, read_5, read_6]</span>
+  <span class="hljs-tag">-</span> &amp;<span class="hljs-tag">TEAM_3_USERS</span> <span class="hljs-attr_selector">[read_7, read_8]</span>
+  <span class="hljs-tag">-</span> &amp;<span class="hljs-tag">TEAM_4_USERS</span> <span class="hljs-attr_selector">[john_01, john_02, john_03, john_04, john_05]</span>
+  <span class="hljs-tag">-</span> &amp;<span class="hljs-tag">TEAM_5_USERS</span> <span class="hljs-attr_selector">[john_06, john_07, john_08, john_09, john_10]</span>
+  <span class="hljs-tag">-</span> &amp;<span class="hljs-tag">TEAM_9_USERS</span> <span class="hljs-attr_selector">[read_9]</span>
+
+<span class="hljs-tag">spaces</span>:
+  <span class="hljs-tag">-</span> <span class="hljs-tag">title</span>: *<span class="hljs-tag">SPACE</span>
+
+<span class="hljs-tag">space_users</span>:
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">spaces</span>:<span class="hljs-value"> *SPACE, users: <span class="hljs-string">'import[users]'</span></span></span></span>}
+
+<span class="hljs-tag">repeat_space_users</span>:
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">spaces</span>:<span class="hljs-value"> *SPACE, repeat: <span class="hljs-number">10</span>, merge_with: <span class="hljs-string">'import[users@repeat_john_doe]'</span></span></span></span>}
+
+<span class="hljs-tag">assignments</span>:
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> *PHASE_ONLY_COLLABORATION_TEAMS, space: *SPACE</span></span></span>}
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> *PHASE_ONLY_PEER_REVIEW_TEAMS</span></span></span>}
+
+<span class="hljs-tag">phases</span>:
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> phase_A, team_category: collaboration, assignment: *PHASE_ONLY_COLLABORATION_TEAMS, template_name: template_teams_min</span></span></span>}
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> phase_B, team_category: collaboration</span></span></span>}
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> phase_C, team_category: collaboration</span></span></span>}
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> phase_D, team_category: collaboration</span></span></span>}
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> phase_A, team_category: peer_review, assignment: *PHASE_ONLY_PEER_REVIEW_TEAMS</span></span></span>}
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> phase_B, team_category: peer_review</span></span></span>}
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> phase_C, team_category: peer_review</span></span></span>}
+  <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> phase_D, team_category: peer_review</span></span></span>}
+
+<span class="hljs-tag">teams</span>:
+
+  <span class="hljs-tag">team_sets</span>:
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> *TEAM_SET_A, space: *SPACE</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> *TEAM_SET_B</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> *TEAM_SET_C</span></span></span>}
+
+  <span class="hljs-tag">team_set_teams</span>:
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> *TEAM_1,   users: *TEAM_1_USERS,   team_set: *TEAM_SET_A, space: *SPACE</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> *TEAM_2,   users: *TEAM_2_USERS,   team_set: *TEAM_SET_A</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> *TEAM_3,   users: *TEAM_3_USERS,   team_set: *TEAM_SET_A</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> *TEAM_4,   users: *TEAM_4_USERS,   team_set: *TEAM_SET_B</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> *TEAM_5,   users: *TEAM_5_USERS,   team_set: *TEAM_SET_B</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> *TEAM_9,   users: *TEAM_9_USERS,   team_set: *TEAM_SET_C</span></span></span>}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Phase teams only, user (e.g. read_1) only on one team</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">phase</span>:</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Collaboration teams: all team users create one &#39;team&#39; response (e.g. ownerable = team)</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> <span class="hljs-string">'phase_A'</span>, assignment: *PHASE_ONLY_COLLABORATION_TEAMS,  team_sets: *ALL_TEAM_SETS, space: *SPACE</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> <span class="hljs-string">'phase_B'</span>, assignment: *PHASE_ONLY_COLLABORATION_TEAMS,  team_sets: *ALL_TEAM_SETS</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> <span class="hljs-string">'phase_C'</span>, assignment: *PHASE_ONLY_COLLABORATION_TEAMS,  team_sets: *ALL_TEAM_SETS</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> <span class="hljs-string">'phase_D'</span>, assignment: *PHASE_ONLY_COLLABORATION_TEAMS,  team_sets: *ALL_TEAM_SETS</span></span></span>}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Peer review teams: each user creates own response but can review other team member&#39;s responses (e.g. ownerable = user)</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> <span class="hljs-string">'phase_A'</span>, assignment: *PHASE_ONLY_PEER_REVIEW_TEAMS,    team_sets: *ALL_TEAM_SETS</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> <span class="hljs-string">'phase_B'</span>, assignment: *PHASE_ONLY_PEER_REVIEW_TEAMS,    team_sets: *ALL_TEAM_SETS</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> <span class="hljs-string">'phase_C'</span>, assignment: *PHASE_ONLY_PEER_REVIEW_TEAMS,    team_sets: *ALL_TEAM_SETS</span></span></span>}
+    <span class="hljs-tag">-</span> <span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">title</span>:<span class="hljs-value"> <span class="hljs-string">'phase_D'</span>, assignment: *PHASE_ONLY_PEER_REVIEW_TEAMS,    team_sets: *ALL_TEAM_SETS</span></span></span>}
+
+  <span class="hljs-tag">viewers</span>:</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Team peer review another team (phase ownerable = team; view ownerable = team)</p></div></div><div class="code"><div class="wrapper">    - {team_sets: <span class="hljs-keyword">*</span>ALL_TEAM_SETS, teams: [<span class="hljs-keyword">*</span>TEAM_1], view: [<span class="hljs-keyword">*</span>TEAM_2, <span class="hljs-keyword">*</span>TEAM_3], space: <span class="hljs-keyword">*</span>SPACE}
+    - {team_sets: <span class="hljs-keyword">*</span>ALL_TEAM_SETS, teams: [<span class="hljs-keyword">*</span>TEAM_2], view: [<span class="hljs-keyword">*</span>TEAM_1, <span class="hljs-keyword">*</span>TEAM_3]}
+    - {team_sets: <span class="hljs-keyword">*</span>ALL_TEAM_SETS, teams: [<span class="hljs-keyword">*</span>TEAM_3], view: [<span class="hljs-keyword">*</span>TEAM_1, <span class="hljs-keyword">*</span>TEAM_2]}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>User peer view another user on their team(s) or another team(s) (phase ownerable = user; view ownerable = user)</p></div></div><div class="code"><div class="wrapper"><span class="xml">    - </span><span class="hljs-expression">{<span class="hljs-variable">team</span>_<span class="hljs-variable">sets</span>: *<span class="hljs-variable">ALL</span>_<span class="hljs-variable">TEAM</span>_<span class="hljs-variable">SETS</span>, <span class="hljs-variable">users</span>: <span class="hljs-variable">update</span>_1, <span class="hljs-variable">view</span>: [*<span class="hljs-variable">TEAM</span>_1, *<span class="hljs-variable">TEAM</span>_2, *<span class="hljs-variable">TEAM</span>_3]}</span><span class="xml">
+    - </span><span class="hljs-expression">{<span class="hljs-variable">team</span>_<span class="hljs-variable">sets</span>: *<span class="hljs-variable">ALL</span>_<span class="hljs-variable">TEAM</span>_<span class="hljs-variable">SETS</span>, <span class="hljs-variable">users</span>: <span class="hljs-variable">read</span>_1,   <span class="hljs-variable">view</span>: [*<span class="hljs-variable">TEAM</span>_2, *<span class="hljs-variable">TEAM</span>_3]}</span><span class="xml">
+
+phase_templates:
+
+  - title: Phase Template Teams Min
+    name: template_teams_min
+    template: |
+      <span class="hljs-tag">&lt;<span class="hljs-title">row</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">column</span> <span class="hljs-attribute">width</span>=<span class="hljs-value">8</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">component</span> <span class="hljs-attribute">section</span>=<span class="hljs-value">'header'</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">'casespace-phase-header'</span>/&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">component</span> <span class="hljs-attribute">section</span>=<span class="hljs-value">'html'</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">'html-select-text'</span> <span class="hljs-attribute">select-text</span>=<span class="hljs-value">'obs-list'</span>/&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">component</span> <span class="hljs-attribute">section</span>=<span class="hljs-value">'submit'</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">'casespace-phase-submit'</span> <span class="hljs-attribute">data-actions</span>=<span class="hljs-value">'</span></span></span><span class="hljs-expression">{<span class="hljs-string">"submit"</span>:<span class="hljs-string">"submit"</span>}</span><span class="xml"><span class="hljs-tag"><span class="hljs-value">'</span>/&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">column</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">column</span> <span class="hljs-attribute">width</span>=<span class="hljs-value">4</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">component</span> <span class="hljs-attribute">section</span>=<span class="hljs-value">'obs-list'</span> <span class="hljs-attribute">title</span>=<span class="hljs-value">'observation-list'</span>/&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">column</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">row</span>&gt;</span>
+
+auto_input:
+  responses: true
+  observations:
+    observations_per_list:       10
+    max_notes_per_observation:   3
+
+</span></div></div></div></div></body></html>

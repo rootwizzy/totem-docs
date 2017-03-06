@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-engines/addon/patch/outlet</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-engines/addon/patch/outlet"><meta name="groc-project-path" content="src/totem/client/totem-engines/addon/patch/outlet.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-engines/addon/patch/outlet.coffee">src/totem/client/totem-engines/addon/patch/outlet.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+erequire        = ember.__loader.<span class="hljs-built_in">require</span>
+outlet          = erequire(<span class="hljs-string">'ember-htmlbars/keywords/outlet'</span>).default
+ViewNodeManager = erequire(<span class="hljs-string">'ember-htmlbars/node-managers/view-node-manager'</span>).default</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Implements routeable components (see: ember-routeable-components-shim).</p></div></div><div class="code"><div class="wrapper">export default -&gt;
+  original_render = outlet.render
+  outlet.render   = <span class="hljs-function"><span class="hljs-params">(renderNode, _env, scope, params, hash, template, inverse, visitor)</span> -&gt;</span>
+    env         = _env
+    state       = renderNode.getState()
+    owner       = env.owner
+    parentView  = env.view
+    outletState = state.outletState
+    toRender    = outletState.render
+    namespace   = owner.lookup(<span class="hljs-string">'application:main'</span>)
+
+    ViewClass = outletState.render.ViewClass
+    owner     = env.originalOwner || owner
+
+    <span class="hljs-keyword">if</span> !state.hasParentOutlet <span class="hljs-keyword">and</span> !ViewClass
+      outletState.render.ViewClass = owner._lookupFactory(<span class="hljs-string">'view:toplevel'</span>)
+
+    name      = toRender.name
+    component = owner._lookupFactory(<span class="hljs-string">"component:<span class="hljs-subst">#{name}</span>"</span>)
+    layout    = owner.lookup(<span class="hljs-string">"template:components/<span class="hljs-subst">#{name}</span>"</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Routable component or template not found, use original implementation.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">return</span> original_render(arguments...) <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (component <span class="hljs-keyword">or</span> layout)
+
+    attrs =
+      <span class="hljs-attribute">model</span>:  Ember.get(toRender.controller, <span class="hljs-string">'model'</span>)
+      <span class="hljs-attribute">target</span>: Ember.get(toRender.controller, <span class="hljs-string">'target'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add the query params to the component.</p></div></div><div class="code"><div class="wrapper">    attrs.query_params            = Ember.get(toRender.controller, <span class="hljs-string">'target.router.state.fullQueryParams'</span>) <span class="hljs-keyword">or</span> {}
+    attrs.query_params_controller = toRender.controller
+
+    options =
+      <span class="hljs-attribute">component</span>: component <span class="hljs-keyword">or</span> ember.Component.extend()
+      <span class="hljs-attribute">layout</span>:    layout
+
+    <span class="hljs-keyword">if</span> state.manager
+      state.manager.destroy()
+      state.manager = <span class="hljs-literal">null</span>
+
+    nodeManager   = ViewNodeManager.create(renderNode, env, attrs, options, parentView, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, template)
+    state.manager = nodeManager</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>console.warn &#39;=====OUTLET ENV&#39;, env
+console.info &#39;=====OUTLET OWNER&#39;, owner
+console.info &#39;=====OUTLET STATE&#39;, state
+console.info &#39;=====OUTLET LAYOUT&#39;, component, layout
+console.info &#39;=====OUTLET NODEMANAGER&#39;, nodeManager, options
+console.info &#39;=====OUTLET RENDER NODE&#39;, renderNode
+console.info &#39;=====OUTLET PARENT VIEW&#39;, parentView
+console.info &#39;=====OUTLET TEMPLATE&#39;, template</p></div></div><div class="code"><div class="wrapper">    nodeManager.render(env, hash, visitor)</div></div></div></div></body></html>

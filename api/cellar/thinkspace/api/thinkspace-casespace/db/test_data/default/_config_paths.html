@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/db/test_data/default/_config_paths</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/db/test_data/default/_config_paths"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_paths.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_paths.yml">src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_paths.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">variables:
+  - &amp;<span class="hljs-type">SPACE</span> diagnostic_paths
+  - &amp;<span class="hljs-type">ASSIGNMENT</span> diagnostic_path_assignment
+
+spaces:
+  - title: *<span class="hljs-type">SPACE</span>
+
+space_users:
+  - spaces: *<span class="hljs-type">SPACE</span>
+    users: import[users@space_1]
+
+assignments:
+  - {title: *<span class="hljs-type">ASSIGNMENT</span> , space: *<span class="hljs-type">SPACE</span>}
+  - title: &amp;<span class="hljs-type">LARGE</span> large
+  - title: &amp;<span class="hljs-type">SMALL</span> small
+  - title: &amp;<span class="hljs-type">EMPTY</span> empty
+
+phases:
+  - assignment:    *<span class="hljs-type">ASSIGNMENT</span>
+    title:         phase_diag_path_A
+    template_name: template_diag_path_A
+  - assignment:    *<span class="hljs-type">LARGE</span>
+    title:         phase_large_diag_path
+    template_name: template_diag_path_A
+  - assignment:    *<span class="hljs-type">SMALL</span>
+    title:         phase_small_diag_path
+    template_name: template_diag_path_A
+  - assignment:    *<span class="hljs-type">EMPTY</span>
+    title:         phase_empty_diag_path
+    template_name: template_diag_path_A
+
+phase_templates:
+  - title: <span class="hljs-type">Diagnostic</span> <span class="hljs-type">Path</span> <span class="hljs-type">A</span>
+    name: template_diag_path_A
+    template: |
+      &lt;row&gt;
+        &lt;column width=<span class="hljs-number">8</span>&gt;
+            &lt;component title=<span class="hljs-symbol">'casespace</span>-phase-header'/&gt;
+            &lt;component title=<span class="hljs-symbol">'diagnostic</span>-path' source=<span class="hljs-symbol">'observation</span>-list'/&gt;
+            &lt;component section=<span class="hljs-symbol">'submit'</span> title=<span class="hljs-symbol">'casespace</span>-phase-submit' data-actions=<span class="hljs-char">'{"submit":"submit"}'</span>/&gt;
+        &lt;/column&gt;
+        &lt;column width=<span class="hljs-number">4</span>&gt;
+          &lt;component title=<span class="hljs-symbol">'observation</span>-list' droppable=<span class="hljs-symbol">'false'</span> has_path=<span class="hljs-symbol">'true'</span> /&gt;
+        &lt;/column&gt;
+      &lt;/row&gt;
+
+auto_input:
+
+  ## <span class="hljs-symbol">'observations'</span> options:
+  ##   observations_per_list:       number <span class="hljs-keyword">of</span> observations <span class="hljs-keyword">when</span> only a single <span class="hljs-built_in">list</span>
+  ##   observations_per_list_lists: number <span class="hljs-keyword">of</span> observations <span class="hljs-keyword">when</span> multiple lists (e.g. list_lists)
+  ##   max_notes_per_observation:   maximum number <span class="hljs-keyword">of</span> observation notes <span class="hljs-keyword">to</span> generate
+  observations:                  
+    - only: [phase_diag_path_A]
+      observations_per_list:       <span class="hljs-number">20</span>
+      observations_per_list_lists: <span class="hljs-number">10</span>
+      max_notes_per_observation:   <span class="hljs-number">5</span>
+    - only: [phase_large_diag_path]
+      observations_per_list:       <span class="hljs-number">100</span>
+      observations_per_list_lists: <span class="hljs-number">1</span>
+      max_notes_per_observation:   <span class="hljs-number">1</span>
+    - only: [phase_small_diag_path]
+      observations_per_list:       <span class="hljs-number">10</span>
+      observations_per_list_lists: <span class="hljs-number">1</span>
+      max_notes_per_observation:   <span class="hljs-number">1</span>
+    - only: [phase_empty_diag_path]
+      observations_per_list:       <span class="hljs-number">10</span>
+      observations_per_list_lists: <span class="hljs-number">1</span>
+      max_notes_per_observation:   <span class="hljs-number">1</span>
+
+  ## <span class="hljs-symbol">'path_items'</span> options:
+  ##   pattern: [<span class="hljs-built_in">array</span>]
+  ##     <span class="hljs-type">Pattern</span> <span class="hljs-keyword">to</span> nest path items.
+  ##     e.g. [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>] = each path item has two children each <span class="hljs-keyword">with</span> one child (e.g. grand-child).
+  ##     <span class="hljs-type">Default</span> is [<span class="hljs-number">0</span>]; results <span class="hljs-keyword">in</span> un-nested path items.
+  ##   <span class="hljs-built_in">list</span>: [<span class="hljs-literal">true</span>|<span class="hljs-literal">false</span>]
+  ##     <span class="hljs-type">Whether</span> <span class="hljs-keyword">to</span> create path items from the path's observation <span class="hljs-built_in">list</span>.
+  ##     <span class="hljs-type">Default</span> is <span class="hljs-literal">true</span> <span class="hljs-keyword">when</span> the path has an observation <span class="hljs-built_in">list</span>, otherwise ignored.
+  ##   count: [number]
+  ##     <span class="hljs-type">Number</span> <span class="hljs-keyword">of</span> path items <span class="hljs-keyword">to</span> generate.
+  ##     <span class="hljs-type">If</span> path has an observation <span class="hljs-built_in">list</span>, default is number <span class="hljs-keyword">of</span> observations, otherwise <span class="hljs-number">0.</span>
+  ##     <span class="hljs-type">Will</span> always generate this number <span class="hljs-keyword">of</span> path items (using observations <span class="hljs-keyword">if</span> they exist).
+  ##   only|except: [phase title]
+  path_items:
+    - only: [phase_diag_path_A]
+      pattern: [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+    - only: [phase_large_diag_path]
+      pattern: [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]
+    - only: [phase_small_diag_path]
+      pattern: [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]</div></div></div></div></body></html>

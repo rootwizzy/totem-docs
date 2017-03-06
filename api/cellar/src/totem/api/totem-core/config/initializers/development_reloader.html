@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/config/initializers/development_reloader</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/config/initializers/development_reloader"><meta name="groc-project-path" content="src/totem/api/totem-core/config/initializers/development_reloader.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/config/initializers/development_reloader.rb">src/totem/api/totem-core/config/initializers/development_reloader.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">if</span> <span class="hljs-constant">::Rails</span>.env.development?
+
+  quiet = <span class="hljs-constant">::Totem::Settings</span>.config.startup_quiet?
+
+  <span class="hljs-constant">::Rails</span>.application.config.after_initialize <span class="hljs-keyword">do</span> |app|</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Watches for changes to an association.yml file then clears the classes so totem_associations are reloaded.
+if &#39;rails console&#39;, need to do reload!</p></div></div><div class="code"><div class="wrapper">    files = <span class="hljs-constant">::Totem::Settings</span>.engine.association_paths.dup</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>puts &quot;[debug] Watching for changes to association.yml files: #{files.inspect}&quot;</p></div></div><div class="code"><div class="wrapper">    puts <span class="hljs-string">"[debug] Watching <span class="hljs-subst">#{files.length}</span> association.yml files for changes"</span>  <span class="hljs-keyword">unless</span> quiet
+
+    associations_yml_reloader = <span class="hljs-constant">::ActiveSupport::FileUpdateChecker</span>.new(files) <span class="hljs-keyword">do</span>
+      puts <span class="hljs-string">"[debug] An associations.yml file has changed and the associations are reset."</span>  <span class="hljs-keyword">unless</span> quiet
+      <span class="hljs-constant">::Totem::Settings</span>.associations.reset! <span class="hljs-comment"># Reset totem associations.yml definitions to re-load the associations.yml files.</span>
+      <span class="hljs-constant">::ActiveSupport::Dependencies</span>.clear   <span class="hljs-comment"># Clear all loaded classes so will be reloaded (even if not changed) and totem_associations re-called.</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-constant">::ActionDispatch::Reloader</span>.to_prepare <span class="hljs-keyword">do</span>
+      associations_yml_reloader.execute_if_updated
+    <span class="hljs-keyword">end</span>
+
+    app.reloaders &lt;&lt; associations_yml_reloader</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Watches for changes to an platform&#39;s ability class file then clears the classes so the Ability class is reloaded.
+if &#39;rails console&#39;, need to do reload!</p></div></div><div class="code"><div class="wrapper">    ability_path  = <span class="hljs-constant">Rails</span>.root.join(<span class="hljs-string">'config'</span>, <span class="hljs-string">'totem'</span>)
+    ability_files = <span class="hljs-constant">Dir</span>.glob(<span class="hljs-constant">File</span>.join(ability_path, <span class="hljs-string">'*.abilities.yml'</span>))
+    files         = <span class="hljs-constant">Array</span>.new
+    ability_files.each <span class="hljs-keyword">do</span> |file|
+      ability = <span class="hljs-constant">YAML</span>.load(<span class="hljs-constant">File</span>.read(file))
+      classes = ability[<span class="hljs-string">'classes'</span>]
+      [classes].flatten.compact.each <span class="hljs-keyword">do</span> |hash|
+        path = hash[<span class="hljs-string">'path'</span>]
+        puts <span class="hljs-string">"[debug] WARNING ability class <span class="hljs-subst">#{hash.inspect}</span> path in <span class="hljs-subst">#{file.inspect}</span> is blank."</span> <span class="hljs-keyword">if</span> path.blank?
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> path.present?
+        puts <span class="hljs-string">"[debug] WARNING ability class path <span class="hljs-subst">#{path.inspect}</span> in <span class="hljs-subst">#{hash.inspect}</span> is not a directory."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(path)
+        ability_files = <span class="hljs-constant">Dir</span>.glob <span class="hljs-constant">File</span>.join(path, <span class="hljs-string">'**/*.rb'</span>)
+        ability_files.each <span class="hljs-keyword">do</span> |file|
+          files.push(file)
+          relative_path = <span class="hljs-constant">Pathname</span>.new(file).relative_path_from(<span class="hljs-constant">Rails</span>.root).to_s
+          puts <span class="hljs-string">"[debug] Watching ability class file for changes <span class="hljs-subst">#{relative_path.inspect}</span>"</span>  <span class="hljs-keyword">unless</span> quiet
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    abilities_module_reloader = <span class="hljs-constant">::ActiveSupport::FileUpdateChecker</span>.new(files) <span class="hljs-keyword">do</span>
+      puts <span class="hljs-string">"[debug] An abilities class file has changed and classes reloaded."</span>  <span class="hljs-keyword">unless</span> quiet
+      <span class="hljs-constant">::ActiveSupport::Dependencies</span>.clear   <span class="hljs-comment"># Clear all loaded classes so will be reloaded (even if not changed).</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-constant">::ActionDispatch::Reloader</span>.to_prepare <span class="hljs-keyword">do</span>
+      abilities_module_reloader.execute_if_updated
+    <span class="hljs-keyword">end</span>
+
+    app.reloaders &lt;&lt; abilities_module_reloader
+
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-team/app/controllers/thinkspace/team/api/teams_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-team/app/controllers/thinkspace/team/api/teams_controller"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-team/app/controllers/thinkspace/team/api/teams_controller.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-team/app/controllers/thinkspace/team/api/teams_controller.rb">src/thinkspace/api/thinkspace-team/app/controllers/thinkspace/team/api/teams_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Team</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TeamsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+        totem_action_authorize! <span class="hljs-symbol">except:</span> [<span class="hljs-symbol">:teams_view</span>, <span class="hljs-symbol">:team_users_view</span>], <span class="hljs-class"><span class="hljs-keyword">module</span>: :<span class="hljs-title">action_authorize_teams</span>, <span class="hljs-title">params_ownerable</span>: <span class="hljs-title">false</span></span>
+        totem_action_authorize! <span class="hljs-symbol">only:</span>   [<span class="hljs-symbol">:teams_view</span>, <span class="hljs-symbol">:team_users_view</span>], <span class="hljs-symbol">read:</span> [<span class="hljs-symbol">:teams_view</span>, <span class="hljs-symbol">:team_users_view</span>]
+        totem_action_serializer_options
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">select</span></span>
+          controller_render(<span class="hljs-variable">@teams</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
+          controller_render(<span class="hljs-variable">@team</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">teams_view</span></span>
+          teamable = totem_action_authorize.params_authable
+          raise_team_exception(<span class="hljs-string">"Teamable [id: <span class="hljs-subst">#{teamable.id}</span> class: <span class="hljs-subst">#{teamable.<span class="hljs-keyword">class</span>.name}</span>] does not have collboration teams."</span>)  <span class="hljs-keyword">unless</span> teamable.collaboration?
+          sub_action = totem_action_authorize.sub_action
+          <span class="hljs-keyword">case</span> sub_action
+          <span class="hljs-keyword">when</span> <span class="hljs-symbol">:collaboration_teams</span>
+            teams = can_update_teamable?(teamable) ? teamable.get_teams <span class="hljs-symbol">:</span> teamable.get_teams(current_user)
+          <span class="hljs-keyword">when</span> <span class="hljs-symbol">:peer_review_teams</span>
+            teams = get_all_peer_review_teams(teamable)
+          <span class="hljs-keyword">else</span>
+            raise_team_exception(<span class="hljs-string">"Unknown sub_action [<span class="hljs-subst">#{sub_action.inspect}</span>]."</span>)
+          <span class="hljs-keyword">end</span>
+          controller_render(teams)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_users_view</span></span>
+          teamable   = totem_action_authorize.params_authable
+          scope      = teamable.thinkspace_team_teams
+          sub_action = totem_action_authorize.sub_action
+          <span class="hljs-keyword">case</span> sub_action
+          <span class="hljs-keyword">when</span> <span class="hljs-symbol">:peer_review_users</span>
+            teams    = get_all_peer_review_teams(teamable) + teamable.get_teams(current_user)
+            team_ids = teams.map(&amp;<span class="hljs-symbol">:id</span>)
+            user_ids = <span class="hljs-constant">Thinkspace::Team::TeamUser</span>.where(<span class="hljs-symbol">team_id:</span> team_ids).pluck(<span class="hljs-symbol">:user_id</span>).uniq
+            users    = <span class="hljs-constant">Thinkspace::Common::User</span>.where(<span class="hljs-symbol">id:</span> user_ids)
+          <span class="hljs-keyword">else</span>
+            raise_team_exception(<span class="hljs-string">"Unknown sub_action [<span class="hljs-subst">#{sub_action.inspect}</span>]."</span>)
+          <span class="hljs-keyword">end</span>
+          hash = controller_as_json(users)
+          controller_render_json(hash)
+        <span class="hljs-keyword">end</span>
+
+        private</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Not sure what a &#39;reader&#39; should return.  Was:
+teams = can_update_teamable?(teamable) ? teamable.get_teams : team_class.viewer_teams_for_users(teamable, current_user)</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_all_peer_review_teams</span><span class="hljs-params">(teamable)</span></span>
+          <span class="hljs-keyword">if</span> can_update_teamable?(teamable)
+            teamable.get_teams
+          <span class="hljs-keyword">else</span>
+            team_class.users_teams(teamable, current_user) + team_class.viewer_teams_for_users(teamable, current_user)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">can_update_teamable?</span><span class="hljs-params">(teamable)</span>;</span> can?(<span class="hljs-symbol">:update</span>, teamable); <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_class</span>;</span> <span class="hljs-constant">Thinkspace::Team::Team</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_team_exception</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+          raise <span class="hljs-constant">TeamError</span>, message
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TeamError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>;
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

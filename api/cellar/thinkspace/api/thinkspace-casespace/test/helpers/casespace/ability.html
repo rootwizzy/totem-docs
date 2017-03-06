@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/test/helpers/casespace/ability</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/test/helpers/casespace/ability"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/helpers/casespace/ability.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/helpers/casespace/ability.rb">src/thinkspace/api/thinkspace-casespace/test/helpers/casespace/ability.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::Casespace::Ability</span></span>
+  extend <span class="hljs-constant">ActiveSupport::Concern</span>
+
+  class_methods <span class="hljs-keyword">do</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">alias_read_actions</span>;</span> [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:index</span>, <span class="hljs-symbol">:show</span>, <span class="hljs-symbol">:select</span>, <span class="hljs-symbol">:view</span>]; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ability_class</span>;</span>       <span class="hljs-constant">Thinkspace::Authorization::Ability</span>; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_test_ability_classes</span><span class="hljs-params">(paths)</span></span>
+      class_paths = <span class="hljs-constant">Array</span>.new
+      [paths].flatten.compact.each <span class="hljs-keyword">do</span> |path|
+        raise <span class="hljs-string">"Ability files directory is does not exist <span class="hljs-subst">#{path.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(path)
+        class_paths.push(<span class="hljs-symbol">path:</span> path)
+      <span class="hljs-keyword">end</span>
+      ability_class.load_ability_classes(class_paths)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># class methods</span>
+
+  included <span class="hljs-keyword">do</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ability_class</span>;</span>       <span class="hljs-constant">Thinkspace::Authorization::Ability</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ability_error_class</span>;</span> <span class="hljs-constant">Thinkspace::Authorization::AbilityError</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def alias_read_actions; [:read, :index, :show, :select, :view]; end</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">alias_read_actions</span>;</span> <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.alias_read_actions; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ability</span><span class="hljs-params">(username)</span>;</span> ability_class.new(get_user(username)); <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_accessible_by</span><span class="hljs-params">(klass, username, options={})</span></span>
+      action    = options[<span class="hljs-symbol">:action</span>]    || <span class="hljs-symbol">:read</span>
+      debug_sql = options[<span class="hljs-symbol">:debug_sql</span>] || <span class="hljs-keyword">false</span>
+      query     = klass.accessible_by(get_ability(username), action)
+      print_sql(klass, username, action, query)  <span class="hljs-keyword">if</span> debug_sql
+      query.respond_to?(<span class="hljs-symbol">:to_a</span>) ? query.to_a <span class="hljs-symbol">:</span> query
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Print accesssible_by sql</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_sql</span><span class="hljs-params">(klass, username, action, query)</span></span>
+      sql = query.to_sql
+      puts <span class="hljs-string">"\n\nDebug SQL: Class=<span class="hljs-subst">#{klass.name.inspect}</span>  User=<span class="hljs-subst">#{username.inspect}</span>  Action=<span class="hljs-subst">#{action.to_s.inspect}</span>"</span>
+      puts <span class="hljs-string">"  SQL=<span class="hljs-subst">#{sql}</span>"</span>
+      puts <span class="hljs-string">"\n"</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ability_subject_name</span><span class="hljs-params">(subject)</span></span>
+      <span class="hljs-keyword">return</span> subject.name <span class="hljs-keyword">if</span> subject.is_a?(<span class="hljs-constant">Class</span>)
+      id    = subject.respond_to?(<span class="hljs-symbol">:id</span>)    ? subject.id <span class="hljs-symbol">:</span> <span class="hljs-string">''</span>
+      title = subject.respond_to?(<span class="hljs-symbol">:title</span>) ? subject.title <span class="hljs-symbol">:</span> <span class="hljs-string">''</span>
+      <span class="hljs-string">"<span class="hljs-subst">#{subject.<span class="hljs-keyword">class</span>.name}</span>.<span class="hljs-subst">#{subject.id}</span> <span class="hljs-subst">#{title}</span>"</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># included</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

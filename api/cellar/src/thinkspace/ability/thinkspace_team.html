@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/ability/thinkspace_team</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="src/thinkspace/ability/thinkspace_team"><meta name="groc-project-path" content="src/thinkspace/ability/thinkspace_team.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/ability/thinkspace_team.rb">src/thinkspace/ability/thinkspace_team.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authorization</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThinkspaceTeam</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">authorization</span>.<span class="hljs-title">platforms</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">cancan</span>.<span class="hljs-title">classes</span>.<span class="hljs-title">ability_engine</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span>;</span> call_private_methods; <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ns_exists?(<span class="hljs-string">'Thinkspace::Team'</span>)
+    team = get_class <span class="hljs-string">'Thinkspace::Team::Team'</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> team.blank?
+    team_set      = <span class="hljs-constant">Thinkspace::Team::TeamSet</span>
+    team_category = <span class="hljs-constant">Thinkspace::Team::TeamCategory</span>
+    team_user     = <span class="hljs-constant">Thinkspace::Team::TeamUser</span>
+    team_teamable = <span class="hljs-constant">Thinkspace::Team::TeamTeamable</span>
+    team_viewer   = <span class="hljs-constant">Thinkspace::Team::TeamViewer</span>
+    can [<span class="hljs-symbol">:read</span>], team_category
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:teams_view</span>, <span class="hljs-symbol">:team_users_view</span>, <span class="hljs-symbol">:read_commenterable</span>], team
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> admin?
+    can [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:destroy</span>, <span class="hljs-symbol">:gradebook</span>], team
+    can [<span class="hljs-symbol">:crud</span>, <span class="hljs-symbol">:teams</span>], team_set
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:destroy</span>], [team_teamable, team_user, team_viewer]
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

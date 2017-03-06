@@ -1,0 +1,272 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/support/support_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/support/support_helper"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/support_helper.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/support_helper.rb">src/totem/api/totem-core/test/support/support_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$:</span>.push <span class="hljs-constant">ENV</span>[<span class="hljs-string">'TOTEM_TEST_HELPER'</span>]  <span class="hljs-comment"># add totem's test_helper.rb to the load path before requiring it</span>
+
+<span class="hljs-keyword">require</span> <span class="hljs-string">'test_helper'</span>
+<span class="hljs-keyword">require</span> <span class="hljs-string">'pp'</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_on</span></span>
+  <span class="hljs-keyword">false</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Framework</span></span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">table_name_prefix</span>;</span> <span class="hljs-string">'test_framework_'</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Platform</span></span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">table_name_prefix</span>;</span> <span class="hljs-string">'test_platform_'</span>; <span class="hljs-keyword">end</span>  <span class="hljs-comment"># used by environment classes to get engine name then current_platform_name</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_environment</span></span>
+  <span class="hljs-variable">@env</span> = <span class="hljs-constant">::Totem::Core::Environment</span>.new
+  <span class="hljs-variable">@env</span>.option.db_associations_filename = <span class="hljs-string">'associations.yml'</span>  <span class="hljs-comment"># used in engines.rb and called when a model class is created</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">base_platform_config</span></span>
+  <span class="hljs-string">'test/platform'</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_platform_configs</span><span class="hljs-params">(options={})</span></span>
+  search_dir, file_ext = search_dir_and_file_ext_from_options(options)
+  <span class="hljs-variable">@env</span>.option.configuration_file_directory_search = search_dir
+  <span class="hljs-variable">@env</span>.option.configuration_file_extension        = file_ext
+  <span class="hljs-variable">@env</span>.option.configuration_files_relative_to     = options[<span class="hljs-symbol">:relative_to</span>]
+  <span class="hljs-variable">@env</span>.option.configuration_files_filename        = options[<span class="hljs-symbol">:filename</span>]
+  clear_engine_instances  <span class="hljs-keyword">unless</span> options[<span class="hljs-symbol">:clear_engines</span>] == <span class="hljs-keyword">false</span>
+  <span class="hljs-variable">@env</span>.config.platforms  <span class="hljs-comment"># load file and set the configuration</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">search_dir_and_file_ext_from_options</span><span class="hljs-params">(options)</span></span>
+  file         = options[<span class="hljs-symbol">:file</span>]
+  file_ext     = options[<span class="hljs-symbol">:file_ext</span>]
+  fixtures_dir = options[<span class="hljs-symbol">:fixtures_dir</span>] || <span class="hljs-string">'fixtures_configs'</span>
+  <span class="hljs-keyword">case</span> file
+  <span class="hljs-keyword">when</span> <span class="hljs-keyword">false</span>    <span class="hljs-comment"># allow passing false to set as nil</span>
+    search_dir = <span class="hljs-keyword">nil</span>
+  <span class="hljs-keyword">when</span> <span class="hljs-keyword">nil</span>      <span class="hljs-comment"># make relative to test/support/fixtures_configs</span>
+    search_dir = <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../<span class="hljs-subst">#{fixtures_dir}</span>"</span>, __FILE_<span class="hljs-number">_</span>) 
+  <span class="hljs-keyword">else</span>          <span class="hljs-comment"># make relative to the file's folder (e.g. the test file: test/support/configuration/fixtures_configs)</span>
+    search_dir = <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../<span class="hljs-subst">#{fixtures_dir}</span>"</span>, file) 
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">case</span> file_ext
+  <span class="hljs-keyword">when</span> <span class="hljs-keyword">false</span>    <span class="hljs-comment"># allow passing false to set as nil</span>
+    file_ext = <span class="hljs-keyword">nil</span>
+  <span class="hljs-keyword">when</span> <span class="hljs-keyword">nil</span>      <span class="hljs-comment"># use default file ext pattern</span>
+    file_ext = <span class="hljs-string">"*.config.yml"</span>
+  <span class="hljs-keyword">else</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>use the original value</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">end</span>
+  [search_dir, file_ext]
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clear_engine_instances</span></span>
+  <span class="hljs-variable">@env</span>.engine.instance_variable_set(<span class="hljs-string">"@engine_instances"</span>, [])  <span class="hljs-comment"># reset the engine array</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">register_framework_and_platform</span></span>
+  register_framework
+  register_platform
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">register_framework</span></span>
+  <span class="hljs-variable">@env</span>.register.framework(<span class="hljs-string">'test_framework'</span>, <span class="hljs-string">'test/framework'</span>)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">register_platform</span></span>
+  <span class="hljs-variable">@env</span>.register.platform(<span class="hljs-string">'test_platform'</span>, <span class="hljs-string">'test/platform'</span>)
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>When called without options, registers the &#39;test/platform/main&#39; engine.
+Note: Call from the <em>test file with (file: <em>_FILE</em></em>) if requires engine.root to be set to the test folder.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">register_engine</span><span class="hljs-params">(options={})</span></span>
+  file            = options.delete(<span class="hljs-symbol">:file</span>) || __FILE_<span class="hljs-number">_</span>
+  path            = options.delete(<span class="hljs-symbol">:path</span>) || <span class="hljs-string">'test/platform/main'</span>
+  engine_name     = options.delete(<span class="hljs-symbol">:engine_name</span>) || path_to_name(path)
+  options[<span class="hljs-symbol">:reset</span>] = <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> options.has_key?(<span class="hljs-symbol">:reset</span>)
+  options[<span class="hljs-symbol">:platform_path</span>] ||= <span class="hljs-string">'test/platform'</span>
+  options[<span class="hljs-symbol">:platform_name</span>] ||= path_to_name(options[<span class="hljs-symbol">:platform_path</span>])
+  engine_path = path + <span class="hljs-string">'/engine'</span>
+  klass       = path_to_class(engine_path)
+  <span class="hljs-variable">@env</span>.register.engine(engine_name, options)  <span class="hljs-keyword">unless</span> options[<span class="hljs-symbol">:register</span>] == <span class="hljs-keyword">false</span>
+  mock_engine_methods(klass, file, engine_name)
+  engines = <span class="hljs-variable">@env</span>.engine.instance_variable_get(<span class="hljs-string">"@engine_instances"</span>)
+  engine  = klass.new
+  engines.push(engine)  <span class="hljs-comment"># add engine to engine array</span>
+  <span class="hljs-variable">@env</span>.engine.reset!    <span class="hljs-comment"># reset the instance variables so will be re-populated from current engine array</span>
+  engine
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add methods relative to the test engine name.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">mock_engine_methods</span><span class="hljs-params">(klass, file, engine_name)</span></span>
+  <span class="hljs-keyword">unless</span> klass.method_defined?(<span class="hljs-symbol">:root</span>)
+    klass.send <span class="hljs-symbol">:define_method</span>, <span class="hljs-symbol">:root</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@engine_root</span> ||= <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../fixtures_engines/<span class="hljs-subst">#{engine_name}</span>"</span>,  file)
+      <span class="hljs-variable">@engine_root</span>
+    <span class="hljs-keyword">end</span>
+    klass.send <span class="hljs-symbol">:define_method</span>, <span class="hljs-symbol">:set_root</span> <span class="hljs-keyword">do</span> |value|
+      <span class="hljs-variable">@engine_root</span> = value
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">unless</span> klass.method_defined?(<span class="hljs-symbol">:engine_name</span>)
+    klass.send <span class="hljs-symbol">:define_method</span>, <span class="hljs-symbol">:engine_name</span> <span class="hljs-keyword">do</span>
+      engine_name
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">unless</span> klass.method_defined?(<span class="hljs-symbol">:config</span>)
+    klass.send <span class="hljs-symbol">:define_method</span>, <span class="hljs-symbol">:config</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@mock_config</span>            ||= <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+      <span class="hljs-variable">@mock_config</span>.paths      ||= <span class="hljs-constant">HashWithIndifferentAccess</span>.new
+      <span class="hljs-variable">@mock_config</span>.paths[<span class="hljs-symbol">:db</span>] ||= [<span class="hljs-string">'db'</span>]  <span class="hljs-comment"># required by engines.rb to load engine associations</span>
+      <span class="hljs-variable">@mock_config</span>
+    <span class="hljs-keyword">end</span>
+    klass.send <span class="hljs-symbol">:define_method</span>, <span class="hljs-symbol">:paths</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@mock_config</span>.paths
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a module based on the path.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">path_to_module</span><span class="hljs-params">(path)</span></span>
+  path_mod_name = path.camelize
+  path_mod      = path_mod_name.safe_constantize
+  <span class="hljs-keyword">return</span> path_mod  <span class="hljs-keyword">if</span> path_mod.present? &amp;&amp; path_mod.kind_of?(<span class="hljs-constant">Module</span>)
+  raise <span class="hljs-string">"Path <span class="hljs-subst">#{path.inspect}</span> constant already exists as a <span class="hljs-subst">#{path_mod.name}</span> and is not a module."</span>  <span class="hljs-keyword">if</span> path_mod.present?
+  parent_mod_name = path_mod_name.deconstantize
+  parent_mod      = parent_mod_name.safe_constantize
+  path_to_module(parent_mod_name.underscore)  <span class="hljs-keyword">if</span> parent_mod.blank?  <span class="hljs-comment"># recursive call for nesting modules</span>
+  parent_mod      = parent_mod_name.safe_constantize
+  raise <span class="hljs-string">"Path <span class="hljs-subst">#{path.inspect}</span> parent <span class="hljs-subst">#{parent_mod.inspect}</span> does not exist.  Is it defined?"</span>  <span class="hljs-keyword">if</span> parent_mod.blank?
+  mod_name = path_mod_name.demodulize
+  mod      = parent_mod.const_set(mod_name, <span class="hljs-constant">Module</span>.new)
+  raise <span class="hljs-string">"Could not create module <span class="hljs-subst">#{mod_name.inspect}</span> in module <span class="hljs-subst">#{parent_mod.inspect}</span>."</span>  <span class="hljs-keyword">if</span> mod.blank?
+  <span class="hljs-keyword">unless</span> mod.method_defined?(<span class="hljs-symbol">:table_name_prefix</span>)  <span class="hljs-comment"># add class method to get current platform name</span>
+    mod.send <span class="hljs-symbol">:define_singleton_method</span>, <span class="hljs-symbol">:table_name_prefix</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">self</span>.name.underscore.gsub(<span class="hljs-regexp">/\//</span>,<span class="hljs-string">'_'</span>) + <span class="hljs-string">'_'</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  mod
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get the class&#39;s module to define a class.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">class_module</span><span class="hljs-params">(path)</span></span>
+  class_name    = path.classify                  <span class="hljs-comment"># e.g. Test::Platform::Main::Engine</span>
+  path_mod_name = class_name.deconstantize       <span class="hljs-comment"># e.g. Test::Platform::Main</span>
+  path_to_module(path_mod_name.underscore)
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a class extending ActiveRecord::Base</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">path_to_model</span><span class="hljs-params">(path)</span></span>
+  path_to_class(path, <span class="hljs-constant">ActiveRecord::Base</span>)
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a serializer for the class.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">class_serializer</span><span class="hljs-params">(klass)</span></span>
+  path            = klass.name.underscore
+  serializer      = path_to_class(path + <span class="hljs-string">'_serializer'</span>, <span class="hljs-constant">Totem::Core::BaseSerializer</span>)
+  serializer.root = path
+  serializer.send(<span class="hljs-symbol">:include</span>, <span class="hljs-constant">Totem::Core::Serializers::ActiveModelSerializer</span>)
+  serializer
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a class based on the path.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">path_to_class</span><span class="hljs-params">(path, base_class=<span class="hljs-keyword">nil</span>)</span></span>
+  class_name = path.classify
+  klass      = class_name.safe_constantize
+  <span class="hljs-keyword">return</span> klass <span class="hljs-keyword">if</span> klass.present? &amp;&amp; klass.kind_of?(<span class="hljs-constant">Class</span>)
+  raise <span class="hljs-string">"Class <span class="hljs-subst">#{class_name.inspect}</span> constant already exists as a <span class="hljs-subst">#{klass.name}</span> and is not a class."</span>  <span class="hljs-keyword">if</span> klass.present?
+  path_mod       = class_module(path)
+  class_mod_name = class_name.demodulize
+  <span class="hljs-keyword">if</span> base_class.present?
+    klass = path_mod.const_set(class_mod_name, <span class="hljs-constant">Class</span>.new(base_class))
+  <span class="hljs-keyword">else</span>
+    klass = path_mod.const_set(class_mod_name, <span class="hljs-constant">Class</span>.new)
+  <span class="hljs-keyword">end</span>
+  raise <span class="hljs-string">"Could not create class <span class="hljs-subst">#{class_name.inspect}</span> in module <span class="hljs-subst">#{path_mod.inspect}</span>."</span>  <span class="hljs-keyword">if</span> klass.blank?
+  klass
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">path_to_name</span><span class="hljs-params">(path)</span></span>
+  <span class="hljs-variable">@env</span>.engine.to_engine_name(path)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">c_path</span><span class="hljs-params">(*args)</span></span>
+  results = <span class="hljs-constant">Array</span>.new
+  args.each <span class="hljs-keyword">do</span> |arg|
+    results.push arg.name.underscore
+  <span class="hljs-keyword">end</span>
+  args.length &gt; <span class="hljs-number">1</span> ? results <span class="hljs-symbol">:</span> results.first
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">c_path_plural</span><span class="hljs-params">(*args)</span></span>
+  results = [c_path(*args)].flatten.map{|a| a.pluralize}
+  args.length &gt; <span class="hljs-number">1</span> ? results <span class="hljs-symbol">:</span> results.first
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">c_sym</span><span class="hljs-params">(*args)</span></span>
+  results = [c_path(*args)].flatten.map{|a| a.gsub(<span class="hljs-regexp">/\//</span>,<span class="hljs-string">'_'</span>).to_sym}
+  args.length &gt; <span class="hljs-number">1</span> ? results <span class="hljs-symbol">:</span> results.first
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">c_sym_plural</span><span class="hljs-params">(*args)</span></span>
+  results = [c_path_plural(*args)].flatten.map{|a| a.gsub(<span class="hljs-regexp">/\//</span>,<span class="hljs-string">'_'</span>).to_sym}
+  args.length &gt; <span class="hljs-number">1</span> ? results <span class="hljs-symbol">:</span> results.first
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">c_foreign_key</span><span class="hljs-params">(klass)</span></span>
+  klass.name.foreign_key
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">c_path_id</span><span class="hljs-params">(klass)</span></span>
+  klass.name.underscore + <span class="hljs-string">'_id'</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">c_path_ids</span><span class="hljs-params">(klass)</span></span>
+  klass.name.underscore + <span class="hljs-string">'_ids'</span>
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Read file content and convert</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">yml_file_to_object</span><span class="hljs-params">(options={})</span></span>
+  content = read_file_content(options)
+  <span class="hljs-constant">YAML</span>.load(content)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_file_content</span><span class="hljs-params">(options={})</span></span>
+  file         = options[<span class="hljs-symbol">:file</span>] || __FILE_<span class="hljs-number">_</span>
+  file_ext     = options[<span class="hljs-symbol">:file_ext</span>]
+  fixtures_dir = options[<span class="hljs-symbol">:fixtures_dir</span>] || <span class="hljs-string">'fixtures_configs'</span>
+
+  search_dir = <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../<span class="hljs-subst">#{fixtures_dir}</span>"</span>, file)
+  file = <span class="hljs-keyword">nil</span>
+  <span class="hljs-constant">Dir</span>.chdir(search_dir) <span class="hljs-keyword">do</span>
+    files = <span class="hljs-constant">Dir</span>.glob(<span class="hljs-string">"<span class="hljs-subst">#{file_ext}</span>*"</span>)
+    raise <span class="hljs-string">"More than one file with file ext <span class="hljs-subst">#{file_ext.inspect}</span>"</span> <span class="hljs-keyword">if</span> files.length &gt; <span class="hljs-number">1</span>
+    file = files.shift
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-constant">File</span>.read( <span class="hljs-constant">File</span>.join(search_dir, file) )
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A hack to add a mock method multiple times.
+This should only be used for common calls that are not important in testing
+the implementation flow.</p>
+<p>Note: Minitest::Mock (v4.7.5):</p>
+<ol>
+<li>mock.verify verifies at least one actual call is made for each unique return value.</li>
+<li>mock.verify does &#39;not&#39; verify the &#39;number&#39; of mock.expect&#39;s added with the same return value are actually called.</li>
+<li><p>must add an &#39;expect&#39; for each actual call.</p>
+<p>Examples:</p>
+<p>mock.expect(:mycall, nil)
+mock.verify</p>
+<ul>
+<li>Errors unless :mycall is called at least once (e.g. sets the acutal return value of &#39;nil&#39;).</li>
+</ul>
+<p>mock.expect(:mycall, nil)
+mock.expect(:mycall, true)
+mock.verify</p>
+<ul>
+<li>Errors unless :mycall is called twice; first to return nil and second to return true.</li>
+</ul>
+<p>mock.expect(:mycall, nil)
+mock.expect(:mycall, nil)
+mock.verify</p>
+<ul>
+<li>Errors unless :mycall is called at least &#39;once&#39; (e.g. since all return values are the same).</li>
+</ul>
+<p>mock.expect(:mycall, nil)
+mock.expect(:mycall, true)
+mock.expect(:mycall, true)
+mock.expect(:mycall, true)
+mock.expect(:mycall, nil)
+mock.expect(:mycall, nil)
+mock.verify</p>
+<ul>
+<li>Errors unless :mycall is called at least &#39;twice&#39;; once for nil and once for true.</li>
+<li>The other :mycall expect&#39;s have a matching return value of the first two, so they pass verification.</li>
+</ul>
+</li>
+</ol></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">mock_expect_ntimes</span><span class="hljs-params">(mock, name, retval, args, n=<span class="hljs-number">1</span>)</span></span>
+  n.times <span class="hljs-keyword">do</span>
+    mock.expect(name, retval, args)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Debug a code block and show the backtrace e.g. debug_block { do-something }</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_block</span><span class="hljs-params">(&amp;block)</span></span>
+  puts <span class="hljs-string">"\nDebug block running"</span>
+  <span class="hljs-keyword">begin</span>
+    block.call
+    puts <span class="hljs-string">"Debug block successful\n"</span>
+  <span class="hljs-keyword">rescue</span> =&gt; e
+    puts <span class="hljs-string">"Debug block error:\n"</span>
+    puts e.inspect
+    puts e.backtrace
+    raise e
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

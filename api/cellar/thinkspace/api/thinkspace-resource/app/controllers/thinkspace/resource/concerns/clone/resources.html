@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-resource/app/controllers/thinkspace/resource/concerns/clone/resources</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-resource/app/controllers/thinkspace/resource/concerns/clone/resources"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-resource/app/controllers/thinkspace/resource/concerns/clone/resources.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-resource/app/controllers/thinkspace/resource/concerns/clone/resources.rb">src/thinkspace/api/thinkspace-resource/app/controllers/thinkspace/resource/concerns/clone/resources.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Resource</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Concerns</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Clone</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Resources</span></span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_record_resources</span><span class="hljs-params">(record, dictionary, options={})</span></span>
+            record.thinkspace_resource_files.each <span class="hljs-keyword">do</span> |file|
+              ufile       = file.get_updateable
+              cloned_file = ufile.deep_clone <span class="hljs-symbol">include:</span> [<span class="hljs-symbol">:resourceable</span>], <span class="hljs-symbol">dictionary:</span> dictionary
+              clone_save_record(cloned_file)
+              clone_resource_paperclip_file(file, cloned_file)
+            <span class="hljs-keyword">end</span>
+            record.thinkspace_resource_links.each <span class="hljs-keyword">do</span> |link|
+              ulink       = link.get_updateable
+              cloned_link = ulink.deep_clone <span class="hljs-symbol">include:</span> [<span class="hljs-symbol">:resourceable</span>], <span class="hljs-symbol">dictionary:</span> dictionary
+              clone_save_record(cloned_link)
+            <span class="hljs-keyword">end</span>
+            record.thinkspace_resource_tags.each <span class="hljs-keyword">do</span> |tag|
+              utag       = tag.get_updateable
+              cloned_tag = utag.deep_clone <span class="hljs-symbol">include:</span> [<span class="hljs-symbol">:taggable</span>], <span class="hljs-symbol">dictionary:</span> dictionary
+              clone_save_record(cloned_tag)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Clone the tag&#39;s &#39;through&#39; tables for files and links.</p></div></div><div class="code"><div class="wrapper">              tag.thinkspace_resource_file_tags.each <span class="hljs-keyword">do</span> |file_tag|
+                cloned_file_tag = file_tag.deep_clone <span class="hljs-symbol">include:</span> [<span class="hljs-symbol">:thinkspace_resource_tag</span>, <span class="hljs-symbol">:thinkspace_resource_file</span>], <span class="hljs-symbol">dictionary:</span> dictionary
+                clone_save_record(cloned_file_tag)
+              <span class="hljs-keyword">end</span>
+              tag.thinkspace_resource_link_tags.each <span class="hljs-keyword">do</span> |link_tag|
+                cloned_link_tag = link_tag.deep_clone <span class="hljs-symbol">include:</span> [<span class="hljs-symbol">:thinkspace_resource_tag</span>, <span class="hljs-symbol">:thinkspace_resource_link</span>], <span class="hljs-symbol">dictionary:</span> dictionary
+                clone_save_record(cloned_link_tag)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_resource_paperclip_file</span><span class="hljs-params">(file, cloned_file)</span></span>
+            cloned_file.file = file.file
+            clone_save_record(cloned_file)
+          <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

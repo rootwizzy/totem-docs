@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-config/addon/routes</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="totem/client/totem-config/addon/routes"><meta name="groc-project-path" content="src/totem/client/totem-config/addon/routes.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-config/addon/routes.coffee">src/totem/client/totem-config/addon/routes.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import util  from <span class="hljs-string">'totem/util'</span>
+import tc    from <span class="hljs-string">'totem-config/configs'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemRoutes</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@engine_mounts</span> = {}
+    <span class="hljs-property">@config_routes</span> = {}
+    <span class="hljs-property">@root_routes</span>   = {}
+    <span class="hljs-property">@populate_routes</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="populate-from-configs">Populate from Configs.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">populate_routes</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@populate_config_routes</span>()
+    <span class="hljs-property">@populate_config_mounts</span>()
+
+  <span class="hljs-attribute">populate_config_routes</span>: <span class="hljs-function">-&gt;</span>
+    routes = tc.collect_by(<span class="hljs-string">'routes'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(routes)
+    paths = []
+    <span class="hljs-keyword">for</span> hash <span class="hljs-keyword">in</span> routes
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Route definition must be a hash."</span>, hash <span class="hljs-keyword">unless</span> util.is_hash(hash)
+      <span class="hljs-keyword">for</span> name, options <span class="hljs-keyword">of</span> hash
+        <span class="hljs-property">@error</span> <span class="hljs-string">"Route name must be a string."</span>, hash <span class="hljs-keyword">unless</span> util.is_string(name)
+        <span class="hljs-property">@error</span> <span class="hljs-string">"Route name '<span class="hljs-subst">#{name}</span>' options must be a hash."</span>, hash <span class="hljs-keyword">unless</span> util.is_hash(options)
+        <span class="hljs-property">@error</span> <span class="hljs-string">"Route name '<span class="hljs-subst">#{name}</span>' is a duplicate."</span>, hash <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@config_routes</span>[name])
+        path = options.path = (options.path <span class="hljs-keyword">or</span> <span class="hljs-string">"/<span class="hljs-subst">#{name}</span>"</span>)
+        <span class="hljs-property">@error</span> <span class="hljs-string">"Route option path must be a string."</span>, hash <span class="hljs-keyword">unless</span> util.is_string(path)
+        <span class="hljs-property">@error</span> <span class="hljs-string">"Route option path '<span class="hljs-subst">#{path}</span>' is a duplicate."</span>, hash <span class="hljs-keyword">if</span> paths.includes(path)
+        paths.push(path)
+        <span class="hljs-property">@config_routes</span>[name] = options
+
+  <span class="hljs-attribute">populate_config_mounts</span>: <span class="hljs-function">-&gt;</span>
+    mounts = tc.get_router_mounts()
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(mounts)
+    engine_mount_as    = []
+    engine_mount_paths = []
+    <span class="hljs-keyword">for</span> mount <span class="hljs-keyword">in</span> mounts
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Mount is not a hash."</span>, mount <span class="hljs-keyword">unless</span> util.is_hash(mount)
+      mod    = mount.<span class="hljs-built_in">module</span>
+      engine = mount.engine
+      args   = mount.args
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Module '<span class="hljs-subst">#{mod}</span>' engine mount name is not a string."</span>, mount    <span class="hljs-keyword">unless</span> util.is_string(engine)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Module '<span class="hljs-subst">#{mod}</span>' engine mount args is not a hash."</span>, mount      <span class="hljs-keyword">unless</span> util.is_hash(args)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Module '<span class="hljs-subst">#{mod}</span>' engine mount is a duplicate."</span>, mount          <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@engine_mounts</span>[engine])
+      as = args.as
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Module '<span class="hljs-subst">#{mod}</span>' engine mount args 'as' key is blank."</span>, mount    <span class="hljs-keyword">if</span> ember.isBlank(as)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Module '<span class="hljs-subst">#{mod}</span>' engine mount as '<span class="hljs-subst">#{as}</span>' is a duplicate."</span>, mount <span class="hljs-keyword">if</span> engine_mount_as.includes(as)
+      path = args.path <span class="hljs-keyword">or</span> as
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Module '<span class="hljs-subst">#{mod}</span>' engine mount path '<span class="hljs-subst">#{path}</span>' is a duplicate."</span>, mount  <span class="hljs-keyword">if</span> engine_mount_paths.includes(path)
+      under = args.under
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Module '<span class="hljs-subst">#{mod}</span>' engine mount under route must be a string."</span>, mount  <span class="hljs-keyword">if</span> ember.isPresent(under) <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> util.is_string(under)
+      <span class="hljs-property">@engine_mounts</span>[engine] = args
+      engine_mount_as.push(as)       <span class="hljs-comment"># for dup check</span>
+      engine_mount_paths.push(path)  <span class="hljs-comment"># for dup check</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="map">Map.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="map-does-not-return-any-value-but-generates-the-routes-based">Map does not return any value but generates the routes based</h3>
+<h3 id="on-the-route-map-argument-the-app-router-eg-routermap-gt-totem-routesmap">on the Route map argument (the app-router) e.g. Router.map -&gt; totem_routes.map(@).</h3></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">map</span>: <span class="hljs-function"><span class="hljs-params">(rmap)</span> -&gt;</span>
+    <span class="hljs-property">@map_root_routes</span>(rmap)
+    <span class="hljs-property">@map_engine_mounts</span>(rmap)
+
+  <span class="hljs-attribute">map_engine_mounts</span>: <span class="hljs-function"><span class="hljs-params">(rmap)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> engine, hash <span class="hljs-keyword">of</span> <span class="hljs-property">@engine_mounts</span>
+      under = hash.under
+      <span class="hljs-keyword">if</span> ember.isPresent(under)
+        map = <span class="hljs-property">@root_routes</span>[under]
+        <span class="hljs-property">@error</span> <span class="hljs-string">"Engine '<span class="hljs-subst">#{engine}</span>' mount under route '<span class="hljs-subst">#{under}</span>' does not exist."</span>, hash  <span class="hljs-keyword">if</span> ember.isBlank(map)
+        map.mount engine, hash
+      <span class="hljs-keyword">else</span>
+        rmap.mount engine, hash
+
+  <span class="hljs-attribute">map_root_routes</span>: <span class="hljs-function"><span class="hljs-params">(rmap)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> name, options <span class="hljs-keyword">of</span> <span class="hljs-property">@config_routes</span>
+      <span class="hljs-property">@map_root_route</span>(rmap, name, options)
+
+  <span class="hljs-attribute">map_root_route</span>: <span class="hljs-function"><span class="hljs-params">(rmap, name, options)</span> -&gt;</span>
+    _this = @
+    rmap.route name, options, <span class="hljs-function">-&gt;</span>
+      _this.root_routes[name] = @
+
+  <span class="hljs-attribute">error</span>: <span class="hljs-function">-&gt;</span> util.error(@, arguments...)
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'TotemRoutes'</span>
+
+export default <span class="hljs-keyword">new</span> TotemRoutes</div></div></div></div></body></html>

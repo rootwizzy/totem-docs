@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/admin/trats_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/admin/trats_controller"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/admin/trats_controller.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/admin/trats_controller.rb">src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/admin/trats_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReadinessAssurance</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Admin</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TratsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_users</span></span>
+            controller_render_json(get_team_json)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assessment</span></span>
+            set_trat_assessment
+            serializer_options.remove_all
+            serializer_options.add_attributes(<span class="hljs-symbol">:settings</span>, <span class="hljs-symbol">:answers</span>)
+            controller_render(<span class="hljs-variable">@assessment</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">responses</span></span>
+            set_trat_assessment
+            serializer_options.remove_all_except(
+              <span class="hljs-symbol">:thinkspace_readiness_assurance_assessment</span>,
+              <span class="hljs-symbol">:thinkspace_readiness_assurance_response</span>,
+              <span class="hljs-symbol">:thinkspace_readiness_assurance_status</span>,
+              <span class="hljs-symbol">:thinkspace_readiness_assurance_chat</span>,
+            )
+            serializer_options.include_association(
+              <span class="hljs-symbol">:thinkspace_readiness_assurance_chat</span>,
+              <span class="hljs-symbol">:thinkspace_readiness_assurance_status</span>,
+            )
+            responses = <span class="hljs-constant">Array</span>.new
+            phase     = get_trat_phase
+            phase_teams(phase).each <span class="hljs-keyword">do</span> |team|
+              response = <span class="hljs-variable">@assessment</span>.find_or_create_response_and_association_records(team, <span class="hljs-symbol">user:</span> current_user)
+              responses.push(response)
+            <span class="hljs-keyword">end</span>
+            controller_render(responses)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">overview</span></span>
+            set_trat_assessment
+            controller_render_no_content
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_states</span></span>
+            validate_space
+            trat = trat_handler_class.new(get_trat_phase, current_user, trat_params)
+            trat_params[<span class="hljs-symbol">:admin_message</span>] ||= <span class="hljs-string">"TRAT phase set to '<span class="hljs-subst">#{trat.humanized_phase_state}</span>'"</span>
+            trat.update_phase_states
+            controller_render_no_content
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">progress_report</span></span>
+            set_trat_assessment
+            controller_render_json(<span class="hljs-variable">@assessment</span>.progress_report)
+          <span class="hljs-keyword">end</span>
+
+          private
+
+          <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::ControllerHelpers::Base</span>
+          <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::ControllerHelpers::Admin</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_team_json</span></span>
+            json         = <span class="hljs-constant">Hash</span>.new
+            phase        = get_trat_phase
+            json[<span class="hljs-symbol">:teams</span>] = team_json(phase, phase_teams(phase), <span class="hljs-symbol">set_all_team_users:</span> <span class="hljs-keyword">true</span>)
+            <span class="hljs-keyword">if</span> (no_team_users = (get_phase_users(phase) - team_json_all_team_users)).present?
+              user_json = no_team_users.map {|user| get_user_json(user)}
+              json[<span class="hljs-symbol">:no_teams</span>] = <span class="hljs-constant">Hash</span>(<span class="hljs-symbol">users:</span> user_json)
+            <span class="hljs-keyword">end</span>
+            json
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_phase_users</span><span class="hljs-params">(phase)</span></span>
+            space.thinkspace_common_users.scope_active.scope_read
+          <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

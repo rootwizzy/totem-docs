@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/terminal_colors_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/terminal_colors_helper"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/terminal_colors_helper.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/terminal_colors_helper.rb">src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/terminal_colors_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-constant">DEFAULT_COLOR</span> = <span class="hljs-symbol">:light_cyan</span>
+
+<span class="hljs-constant">PRINT_COLORS</span> = {
+  <span class="hljs-symbol">clear:</span>            <span class="hljs-string">"\e[0m"</span>,   <span class="hljs-comment"># Embed in a String to clear all previous ANSI sequences.</span>
+  <span class="hljs-symbol">bold:</span>             <span class="hljs-string">"\e[1m"</span>,   <span class="hljs-comment"># The start of an ANSI bold sequence.</span>
+  <span class="hljs-symbol">black:</span>            <span class="hljs-string">"\e[30m"</span>,
+  <span class="hljs-symbol">red:</span>              <span class="hljs-string">"\e[31m"</span>,
+  <span class="hljs-symbol">green:</span>            <span class="hljs-string">"\e[32m"</span>,
+  <span class="hljs-symbol">yellow:</span>           <span class="hljs-string">"\e[33m"</span>,
+  <span class="hljs-symbol">blue:</span>             <span class="hljs-string">"\e[34m"</span>,
+  <span class="hljs-symbol">magenta:</span>          <span class="hljs-string">"\e[35m"</span>,
+  <span class="hljs-symbol">cyan:</span>             <span class="hljs-string">"\e[36m"</span>,
+  <span class="hljs-symbol">gray:</span>             <span class="hljs-string">"\e[90m"</span>,
+  <span class="hljs-symbol">white:</span>            <span class="hljs-string">"\e[97m"</span>,
+  <span class="hljs-symbol">light_gray:</span>       <span class="hljs-string">"\e[37m"</span>,
+  <span class="hljs-symbol">light_red:</span>        <span class="hljs-string">"\e[91m"</span>,
+  <span class="hljs-symbol">light_green:</span>      <span class="hljs-string">"\e[92m"</span>,
+  <span class="hljs-symbol">light_yellow:</span>     <span class="hljs-string">"\e[93m"</span>,
+  <span class="hljs-symbol">light_blue:</span>       <span class="hljs-string">"\e[94m"</span>,
+  <span class="hljs-symbol">light_magenta:</span>    <span class="hljs-string">"\e[95m"</span>,
+  <span class="hljs-symbol">light_cyan:</span>       <span class="hljs-string">"\e[96m"</span>,
+  <span class="hljs-symbol">on_black:</span>         <span class="hljs-string">"\e[40m"</span>,
+  <span class="hljs-symbol">on_red:</span>           <span class="hljs-string">"\e[41m"</span>,
+  <span class="hljs-symbol">on_green:</span>         <span class="hljs-string">"\e[42m"</span>,
+  <span class="hljs-symbol">on_yellow:</span>        <span class="hljs-string">"\e[43m"</span>,
+  <span class="hljs-symbol">on_blue:</span>          <span class="hljs-string">"\e[44m"</span>,
+  <span class="hljs-symbol">on_magenta:</span>       <span class="hljs-string">"\e[45m"</span>,
+  <span class="hljs-symbol">on_cyan:</span>          <span class="hljs-string">"\e[46m"</span>,
+  <span class="hljs-symbol">on_light_gray:</span>    <span class="hljs-string">"\e[47m"</span>,
+  <span class="hljs-symbol">on_gray:</span>          <span class="hljs-string">"\e[100m"</span>,
+  <span class="hljs-symbol">on_light_red:</span>     <span class="hljs-string">"\e[101m"</span>,
+  <span class="hljs-symbol">on_light_green:</span>   <span class="hljs-string">"\e[102m"</span>,
+  <span class="hljs-symbol">on_light_yellow:</span>  <span class="hljs-string">"\e[103m"</span>,
+  <span class="hljs-symbol">on_light_blue:</span>    <span class="hljs-string">"\e[104m"</span>,
+  <span class="hljs-symbol">on_light_magenta:</span> <span class="hljs-string">"\e[105m"</span>,
+  <span class="hljs-symbol">on_light_cyan:</span>    <span class="hljs-string">"\e[106m"</span>,
+  <span class="hljs-symbol">on_white:</span>         <span class="hljs-string">"\e[107m"</span>,
+}
+
+public
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_line</span><span class="hljs-params">(line, color=<span class="hljs-keyword">nil</span>, bold=<span class="hljs-keyword">nil</span>)</span>;</span> <span class="hljs-variable">$stdout</span>.print color_line(line, color, bold) + <span class="hljs-string">"\n"</span>; <span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_inline</span><span class="hljs-params">(line, color=<span class="hljs-keyword">nil</span>, bold=<span class="hljs-keyword">nil</span>)</span>;</span> <span class="hljs-variable">$stdout</span>.print color_line(line, color, bold); <span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_new_line</span>;</span> <span class="hljs-variable">$stdout</span>.print <span class="hljs-string">"\n"</span>; <span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">color_line</span><span class="hljs-params">(line, color=<span class="hljs-constant">DEFAULT_COLOR</span>, bold=<span class="hljs-keyword">nil</span>)</span></span>
+  <span class="hljs-keyword">return</span> line <span class="hljs-keyword">if</span> <span class="hljs-variable">@no_color</span>
+  <span class="hljs-keyword">return</span> line <span class="hljs-keyword">unless</span> color
+  <span class="hljs-keyword">if</span> color == <span class="hljs-symbol">:bold</span>
+    color = <span class="hljs-constant">DEFAULT_COLOR</span>
+    bold  = <span class="hljs-symbol">:bold</span>
+  <span class="hljs-keyword">end</span>
+  line = bold_line + line  <span class="hljs-keyword">if</span> bold == <span class="hljs-symbol">:bold</span>
+  prt_color = <span class="hljs-constant">PRINT_COLORS</span>[color]
+  print_error <span class="hljs-string">"Print color '<span class="hljs-subst">#{color.inspect}</span>' is not supported."</span> <span class="hljs-keyword">if</span> prt_color.blank?
+  prt_color + line + clear_line
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clear_line</span>;</span> <span class="hljs-constant">PRINT_COLORS</span>[<span class="hljs-symbol">:clear</span>]; <span class="hljs-keyword">end</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bold_line</span>;</span>  <span class="hljs-constant">PRINT_COLORS</span>[<span class="hljs-symbol">:bold</span>]; <span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_error</span><span class="hljs-params">(message)</span></span>
+  print_line message, <span class="hljs-symbol">:red</span>
+  exit
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ask_prompt</span><span class="hljs-params">(message=<span class="hljs-string">''</span>, color=<span class="hljs-keyword">nil</span>, bold=<span class="hljs-keyword">nil</span>)</span></span>
+  print_line message, color, bold
+  (<span class="hljs-constant">STDIN</span>.gets.chomp || <span class="hljs-string">''</span>).strip
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ask_inline_prompt</span><span class="hljs-params">(message=<span class="hljs-string">''</span>, color=<span class="hljs-keyword">nil</span>, bold=<span class="hljs-keyword">nil</span>)</span></span>
+  print_inline message, color, bold
+  (<span class="hljs-constant">STDIN</span>.gets.chomp || <span class="hljs-string">''</span>).strip
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clear_console</span>;</span> system(<span class="hljs-string">'clear'</span>) <span class="hljs-keyword">or</span> system(<span class="hljs-string">'cls'</span>); <span class="hljs-keyword">end</span></div></div></div></div></body></html>

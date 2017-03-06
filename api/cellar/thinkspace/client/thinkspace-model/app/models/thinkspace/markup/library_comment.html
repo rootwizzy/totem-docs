@@ -1,0 +1,17 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-model/app/models/thinkspace/markup/library_comment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-model/app/models/thinkspace/markup/library_comment"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-model/app/models/thinkspace/markup/library_comment.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-model/app/models/thinkspace/markup/library_comment.coffee">src/thinkspace/client/thinkspace-model/app/models/thinkspace/markup/library_comment.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ta    from <span class="hljs-string">'totem/ds/associations'</span>
+
+export default ta.Model.extend ta.add(
+    ta.belongs_to <span class="hljs-string">'library'</span>, <span class="hljs-attribute">reads</span>: {}
+  ),</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Similar to a normal Comment, but acts as a template.
+When adding a comment from the library, it will copy its <code>comment</code>.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">comment</span>:    ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">user_id</span>:    ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">uses</span>:       ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">last_used</span>:  ta.attr(<span class="hljs-string">'date'</span>)
+  <span class="hljs-attribute">created_at</span>: ta.attr(<span class="hljs-string">'date'</span>)
+  <span class="hljs-attribute">all_tags</span>:   ta.attr()
+
+  <span class="hljs-attribute">increment_uses</span>: <span class="hljs-function"><span class="hljs-params">(count=<span class="hljs-number">1</span>)</span> -&gt;</span>
+    uses = <span class="hljs-property">@get</span> <span class="hljs-string">'uses'</span>
+    <span class="hljs-property">@set</span> <span class="hljs-string">'uses'</span>, uses + count
+    <span class="hljs-property">@save</span>()</div></div></div></div></body></html>

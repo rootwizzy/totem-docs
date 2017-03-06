@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/test/serializer/model_state/phases_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/test/serializer/model_state/phases_test"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/serializer/model_state/phases_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/serializer/model_state/phases_test.rb">src/thinkspace/api/thinkspace-casespace/test/serializer/model_state/phases_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'serializer_helper'</span>
+<span class="hljs-constant">Test::Casespace::Seed</span>.load(<span class="hljs-symbol">config:</span> <span class="hljs-symbol">:serializer</span>)
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Serializer</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ModelStatePhases</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActionController::TestCase</span></span></span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Ability</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Utility</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Controller</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Model</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ModelState</span>
+
+  describe <span class="hljs-variable">@phases_controller</span> <span class="hljs-keyword">do</span>
+    before <span class="hljs-keyword">do</span>; set_current_ability(<span class="hljs-symbol">:phases</span>); <span class="hljs-keyword">end</span>
+
+    let(<span class="hljs-symbol">:user</span>)         {create_model_state_user(role)}
+    let(<span class="hljs-symbol">:space</span>)        {create_model_state_space}
+    let(<span class="hljs-symbol">:assignment</span>)   {create_model_state_assignment}
+    let(<span class="hljs-symbol">:phases</span>)       {create_model_state_phases}
+    let(<span class="hljs-symbol">:record</span>)       {assignment}
+    let(<span class="hljs-symbol">:action</span>)       {<span class="hljs-symbol">:index</span>}
+
+    describe <span class="hljs-string">'read..phases'</span> <span class="hljs-keyword">do</span>
+      let(<span class="hljs-symbol">:role</span>) {<span class="hljs-symbol">:read</span>}
+      it <span class="hljs-string">'phases'</span> <span class="hljs-keyword">do</span>; assert_phases; <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    describe <span class="hljs-string">'update..phases'</span> <span class="hljs-keyword">do</span>
+      let(<span class="hljs-symbol">:role</span>) {<span class="hljs-symbol">:update</span>}
+      it <span class="hljs-string">'phases'</span> <span class="hljs-keyword">do</span>; assert_phases; <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    describe <span class="hljs-string">'owner..phases'</span> <span class="hljs-keyword">do</span>
+      let(<span class="hljs-symbol">:role</span>) {<span class="hljs-symbol">:owner</span>}
+      it <span class="hljs-string">'phases'</span> <span class="hljs-keyword">do</span>; assert_phases; <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># describe controller</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

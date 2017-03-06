@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/ability/thinkspace_peer_assessment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="src/thinkspace/ability/thinkspace_peer_assessment"><meta name="groc-project-path" content="src/thinkspace/ability/thinkspace_peer_assessment.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/ability/thinkspace_peer_assessment.rb">src/thinkspace/ability/thinkspace_peer_assessment.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authorization</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThinkspacePeerAssessment</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">authorization</span>.<span class="hljs-title">platforms</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">cancan</span>.<span class="hljs-title">classes</span>.<span class="hljs-title">ability_engine</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span>;</span> call_private_methods; <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">peer_assessment</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ns_exists?(<span class="hljs-string">'Thinkspace::PeerAssessment'</span>)
+    assessment          = <span class="hljs-constant">Thinkspace::PeerAssessment::Assessment</span>
+    review_set          = <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>
+    team_set            = <span class="hljs-constant">Thinkspace::PeerAssessment::TeamSet</span>
+    review              = <span class="hljs-constant">Thinkspace::PeerAssessment::Review</span>
+    overview            = <span class="hljs-constant">Thinkspace::PeerAssessment::Overview</span>
+    assessment_template = <span class="hljs-constant">Thinkspace::PeerAssessment::AssessmentTemplate</span>
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:user_templates</span>, <span class="hljs-symbol">:create</span>], assessment_template
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:fetch</span>], assessment
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:submit</span>], review_set
+    can [<span class="hljs-symbol">:crud</span>], review
+    can [<span class="hljs-symbol">:read</span>], overview
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> admin?
+    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:teams</span>, <span class="hljs-symbol">:review_sets</span>, <span class="hljs-symbol">:team_sets</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:activate</span>], assessment
+    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:unapprove</span>], review
+    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:unapprove</span>, <span class="hljs-symbol">:notify</span>], review_set
+    can [<span class="hljs-symbol">:approve</span>, <span class="hljs-symbol">:unapprove</span>, <span class="hljs-symbol">:approve_all</span>, <span class="hljs-symbol">:unapprove_all</span>], team_set
+    can [<span class="hljs-symbol">:update</span>], overview
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

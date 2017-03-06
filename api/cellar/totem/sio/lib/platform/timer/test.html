@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/sio/lib/platform/timer/test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/sio/lib/platform/timer/test"><meta name="groc-project-path" content="src/totem/sio/lib/platform/timer/test.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/sio/lib/platform/timer/test.coffee">src/totem/sio/lib/platform/timer/test.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SocketIOTimerTest</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Test data for the timer module.</p>
+<h2 id="">#</h2>
+<h3 id="testing-only">TESTING ONLY</h3></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>**</strong>SAMPLE DATA<strong><strong><strong>**</strong></strong></strong>
+  action: &#39;rooms&#39;,
+  rooms: 
+   [ &#39;thinkspace/casespace/assignment/1/thinkspace/common/user/10&#39;,
+     &#39;thinkspace/casespace/assignment/1/thinkspace/common/user/11&#39;,
+     &#39;thinkspace/casespace/assignment/1/thinkspace/common/user/12&#39; ],
+  room_event: &#39;server_event&#39;,
+  timer: 
+   { type: &#39;countdown&#39;,
+     unit: &#39;minute&#39;,
+     interval: &#39;1&#39;,
+     title: &#39;some title&#39;,
+     room_event: &#39;timer&#39;,
+     end_at: &#39;2016-06-12 18:34:50 UTC&#39; },
+  timer: #=&gt; for server (e.g. rails server) redis publish for a cancel
+   { type: &#39;cancel&#39;,
+     cancel_ids: [1, 2], (or cancel_id: 1) }
+  value: 
+   { complete_phase_ids: [ 1 ],
+     unlock_phase_ids: [ 2 ],
+     transition_to_phase_id: 2,
+     event: &#39;transition_to_phase&#39;,
+     source_id: &#39;thinkspace/pub_sub/server_event/189&#39; } }</p>
+<hr></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">test_uid</span>: <span class="hljs-function"><span class="hljs-params">(uid, data)</span> -&gt;</span> data.value.timer.user_id = uid; data
+
+  <span class="hljs-attribute">once1</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_once</span>(<span class="hljs-attribute">end_at</span>: <span class="hljs-number">30</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'once1'</span>)
+  
+  <span class="hljs-attribute">countdown1</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countdown</span>(<span class="hljs-attribute">end_at</span>: <span class="hljs-number">10</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'countdown1'</span>)
+  <span class="hljs-attribute">countdown2</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countdown</span>(<span class="hljs-attribute">end_at</span>: <span class="hljs-number">10</span>, <span class="hljs-attribute">inc</span>: <span class="hljs-number">3</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'countdown2-inc=3'</span>)
+  <span class="hljs-attribute">countdown3</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countdown</span>(<span class="hljs-attribute">start_at</span>: <span class="hljs-number">15</span>, <span class="hljs-attribute">end_at</span>: <span class="hljs-number">20</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'countdown3'</span>)
+  <span class="hljs-attribute">countdown4</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countdown</span>(<span class="hljs-attribute">start_at</span>: <span class="hljs-number">15</span>, <span class="hljs-attribute">end_at</span>: <span class="hljs-number">20</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'countdown4'</span>)
+
+  <span class="hljs-attribute">countup1</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countup</span>(<span class="hljs-attribute">end_at</span>: <span class="hljs-number">10</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'countup1'</span>)
+  <span class="hljs-attribute">countup2</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countup</span>(<span class="hljs-attribute">start_at</span>: <span class="hljs-number">15</span>, <span class="hljs-attribute">end_at</span>: <span class="hljs-number">20</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'countup2'</span>)
+  <span class="hljs-attribute">countup3</span>: <span class="hljs-function">-&gt;</span> data = <span class="hljs-property">@test_countup</span>(<span class="hljs-attribute">end_at</span>: <span class="hljs-number">10</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'countup3'</span>); data.value = {<span class="hljs-attribute">source_id</span>: data.value.source_id, <span class="hljs-attribute">timer</span>: data.value.timer}; data
+
+  <span class="hljs-attribute">list1</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countdown</span>(<span class="hljs-attribute">unit</span>: <span class="hljs-string">'minute'</span>, <span class="hljs-attribute">end_at</span>: <span class="hljs-number">7</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'list1-7min'</span>, <span class="hljs-attribute">user_id</span>: <span class="hljs-number">5</span>, <span class="hljs-attribute">model_id</span>: <span class="hljs-number">1</span>)
+  <span class="hljs-attribute">list2</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countdown</span>(<span class="hljs-attribute">unit</span>: <span class="hljs-string">'minute'</span>, <span class="hljs-attribute">end_at</span>: <span class="hljs-number">10</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'list2-10min'</span>, <span class="hljs-attribute">user_id</span>: <span class="hljs-number">5</span>, <span class="hljs-attribute">inc</span>: <span class="hljs-number">3</span>, <span class="hljs-attribute">model_id</span>: <span class="hljs-number">2</span>)
+
+  <span class="hljs-attribute">super1</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countdown</span>(<span class="hljs-attribute">unit</span>: <span class="hljs-string">'minute'</span>, <span class="hljs-attribute">end_at</span>: <span class="hljs-number">5</span>, <span class="hljs-attribute">inc</span>: <span class="hljs-number">3</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'super1'</span>, <span class="hljs-attribute">user_id</span>: <span class="hljs-number">1</span>)
+  <span class="hljs-attribute">super2</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countdown</span>(<span class="hljs-attribute">unit</span>: <span class="hljs-string">'minute'</span>, <span class="hljs-attribute">end_at</span>: <span class="hljs-number">6</span>, <span class="hljs-attribute">inc</span>: <span class="hljs-number">3</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'super2'</span>, <span class="hljs-attribute">user_id</span>: <span class="hljs-number">2</span>)
+  <span class="hljs-attribute">super3</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countdown</span>(<span class="hljs-attribute">unit</span>: <span class="hljs-string">'minute'</span>, <span class="hljs-attribute">end_at</span>: <span class="hljs-number">7</span>, <span class="hljs-attribute">inc</span>: <span class="hljs-number">3</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'super3'</span>, <span class="hljs-attribute">user_id</span>: <span class="hljs-number">3</span>)
+  <span class="hljs-attribute">super4</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@test_countdown</span>(<span class="hljs-attribute">unit</span>: <span class="hljs-string">'minute'</span>, <span class="hljs-attribute">end_at</span>: <span class="hljs-number">8</span>, <span class="hljs-attribute">inc</span>: <span class="hljs-number">3</span>, <span class="hljs-attribute">testname</span>: <span class="hljs-string">'super4'</span>, <span class="hljs-attribute">user_id</span>: <span class="hljs-number">4</span>)
+
+  <span class="hljs-attribute">test_once</span>:      <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> options.type = <span class="hljs-string">'once'</span>; <span class="hljs-property">@test_base</span>(options)
+  <span class="hljs-attribute">test_countdown</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> options.type = <span class="hljs-string">'countdown'</span>; <span class="hljs-property">@test_base</span>(options)
+  <span class="hljs-attribute">test_countup</span>:   <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> options.type = <span class="hljs-string">'countup'</span>; <span class="hljs-property">@test_base</span>(options)
+
+  <span class="hljs-attribute">test_cancel</span>: <span class="hljs-function"><span class="hljs-params">(type=<span class="hljs-string">'countdown'</span>)</span> -&gt;</span>
+    data = <span class="hljs-property">@test_base</span>()
+    data.value.timer = {<span class="hljs-attribute">type</span>: <span class="hljs-string">'cancel'</span>, <span class="hljs-attribute">cancel_id</span>: <span class="hljs-string">"thinkspace/pub_sub/server_event/<span class="hljs-subst">#{type}</span>"</span>}
+    data
+
+
+  <span class="hljs-attribute">test_reminders</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span>-&gt;</span>
+    testname = options.testname <span class="hljs-keyword">or</span> <span class="hljs-string">'auto-testname'</span>
+    case_id  = options.case_id  <span class="hljs-keyword">or</span> <span class="hljs-number">1</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>timer setup (defaults: countdown timer for 100 seconds with reminder every 10 seconds)</p></div></div><div class="code"><div class="wrapper">    user_id          = options.user_id  <span class="hljs-keyword">or</span> <span class="hljs-number">3</span>  <span class="hljs-comment"># staging read_1</span>
+    unit             = options.unit     <span class="hljs-keyword">or</span> <span class="hljs-string">'second'</span>
+    start_at         = options.start_at <span class="hljs-keyword">or</span> <span class="hljs-number">0</span>
+    end_at           = options.end_at   <span class="hljs-keyword">or</span> <span class="hljs-number">100</span>
+    inc              = options.inc      <span class="hljs-keyword">or</span> <span class="hljs-number">10</span>
+    type             = options.type     <span class="hljs-keyword">or</span> <span class="hljs-string">'countdown'</span>
+    message          = options.message  <span class="hljs-keyword">or</span> <span class="hljs-string">"Test <span class="hljs-subst">#{type}</span> message will trigger in"</span>
+    id               = options.id       <span class="hljs-keyword">or</span> type
+    timer            = {}
+    timer.user_id    = user_id
+    timer.id         = <span class="hljs-string">"thinkspace/pub_sub/server_event/<span class="hljs-subst">#{id}</span>"</span>  <span class="hljs-comment"># Rails Thinkspace::PubSub::ServerEvent record id (s/b unique)</span>
+    timer.title      = <span class="hljs-string">"Timer for <span class="hljs-subst">#{type}</span> <span class="hljs-subst">#{testname}</span>"</span>          <span class="hljs-comment"># set by Rails controller in timer_settings.title (ra used assessment title)</span>
+    timer.type       = type
+    timer.room_event = <span class="hljs-string">'timer'</span>
+    timer.unit       = unit
+    timer.interval   = inc
+    timer.start_at   = <span class="hljs-property">@get_test_at</span>(unit, start_at)
+    timer.end_at     = <span class="hljs-property">@get_test_at</span>(unit, end_at)
+    timer.message    = message</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>value setup</p></div></div><div class="code"><div class="wrapper">    value         = {}
+    value.event   = options.event   <span class="hljs-keyword">or</span> <span class="hljs-string">'timer'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>data setup</p></div></div><div class="code"><div class="wrapper">    data            = {}
+    data.rooms      = [<span class="hljs-string">"thinkspace/casespace/assignment/<span class="hljs-subst">#{case_id}</span>/thinkspace/common/user/<span class="hljs-subst">#{user_id}</span>"</span>]
+    data.room_event = <span class="hljs-string">'server_event'</span>
+    data.room_type  = <span class="hljs-literal">null</span>
+    data.value      = value
+    data.timer      = timer
+
+    data
+
+  <span class="hljs-attribute">test_base</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span>-&gt;</span>
+    type                         = options.type <span class="hljs-keyword">or</span> <span class="hljs-string">'countdown'</span>
+    unit                         = options.unit <span class="hljs-keyword">or</span> <span class="hljs-string">'second'</span>
+    inc                          = options.inc <span class="hljs-keyword">or</span> <span class="hljs-number">2</span>
+    eat                          = options.end_at
+    sat                          = options.start_at
+    testname                     = options.testname <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+    user_id                      = options.user_id <span class="hljs-keyword">or</span> <span class="hljs-number">1</span>
+    model_id                     = options.model_id <span class="hljs-keyword">or</span> <span class="hljs-number">1</span>
+    data                         = {}
+    data.rooms                   = [<span class="hljs-string">'thinkspace/casespace/assignment/1/thinkspace/common/user/10'</span>]
+    data.room_event              = <span class="hljs-string">'server_event'</span>
+    data.room_type               = <span class="hljs-string">'1234567890'</span>
+    value                        = {}
+    value.complete_phase_id      = [<span class="hljs-number">1</span>]
+    value.unlock_phase_id        = [<span class="hljs-number">2</span>]
+    value.transition_to_phase_id = <span class="hljs-number">2</span>
+    value.event                  = <span class="hljs-string">'transition_to_phase'</span>
+    timer                        = {}
+    timer.id                     = <span class="hljs-string">"thinkspace/pub_sub/server_event/<span class="hljs-subst">#{type}</span>"</span>
+    timer.type                   = type
+    timer.title                  = <span class="hljs-string">"Timer for <span class="hljs-subst">#{type}</span> <span class="hljs-subst">#{testname}</span>"</span>
+    timer.room_event             = <span class="hljs-string">'timer'</span>
+    timer.unit                   = unit
+    timer.interval               = inc
+    timer.end_at                 = <span class="hljs-keyword">if</span>  unit == <span class="hljs-string">'minute'</span> <span class="hljs-keyword">then</span> <span class="hljs-property">@test_at_minutes</span>(eat) <span class="hljs-keyword">else</span> <span class="hljs-property">@test_at_seconds</span>(eat)
+    timer.start_at               = (<span class="hljs-keyword">if</span> unit == <span class="hljs-string">'minute'</span> <span class="hljs-keyword">then</span> <span class="hljs-property">@test_at_minutes</span>(sat) <span class="hljs-keyword">else</span> <span class="hljs-property">@test_at_seconds</span>(sat)) <span class="hljs-keyword">if</span> sat
+    timer.user_id                = user_id
+    timer.model_id               = model_id
+    timer.model_type             = <span class="hljs-string">'thinkspace/readiness_assurance/assessment'</span>
+    data.value                   = value
+    data.timer                   = timer
+    data
+ 
+  <span class="hljs-attribute">get_test_at</span>: <span class="hljs-function"><span class="hljs-params">(unit, units)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> <span class="hljs-keyword">typeof</span>(units) == <span class="hljs-string">'number'</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@test_at_minutes</span>(units) <span class="hljs-keyword">if</span> unit == <span class="hljs-string">'minute'</span>
+    <span class="hljs-property">@test_at_seconds</span>(units)
+
+  <span class="hljs-attribute">test_at_seconds</span>: <span class="hljs-function"><span class="hljs-params">(secs=<span class="hljs-number">30</span>)</span> -&gt;</span>
+    d = <span class="hljs-keyword">new</span> Date()
+    d.setSeconds(d.getSeconds() + (secs))
+    d.toString()
+
+  <span class="hljs-attribute">test_at_minutes</span>: <span class="hljs-function"><span class="hljs-params">(mins=<span class="hljs-number">5</span>)</span> -&gt;</span>
+    d = <span class="hljs-keyword">new</span> Date()
+    d.setMinutes(d.getMinutes() + (mins))
+    d.toString()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="testing-only">TESTING ONLY</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper"><span class="hljs-built_in">module</span>.exports = SocketIOTimerTest</div></div></div></div></body></html>

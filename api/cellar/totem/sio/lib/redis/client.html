@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/sio/lib/redis/client</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="totem/sio/lib/redis/client"><meta name="groc-project-path" content="src/totem/sio/lib/redis/client.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/sio/lib/redis/client.coffee">src/totem/sio/lib/redis/client.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SocketIORedisClient</span></span>
+
+  <span class="hljs-attribute">redis</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">'redis'</span>)
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@platform</span>)</span> -&gt;</span>
+    <span class="hljs-property">@util</span>      = <span class="hljs-property">@platform</span>.util
+    <span class="hljs-property">@messages</span>  = <span class="hljs-property">@platform</span>.redis_messages
+    <span class="hljs-property">@nsio</span>      = <span class="hljs-property">@platform</span>.nsio
+    <span class="hljs-property">@namespace</span> = <span class="hljs-property">@platform</span>.namespace
+    <span class="hljs-property">@init_env_vars</span>()
+
+  <span class="hljs-attribute">init_env_vars</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@url</span>     = <span class="hljs-property">@util</span>.env_var(<span class="hljs-string">'REDIS_URL'</span>)
+    <span class="hljs-property">@util</span>.error <span class="hljs-string">'No SIO_REDIS_URL specified, cannot connect to Redis.'</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@url</span>
+    <span class="hljs-property">@retries</span> = <span class="hljs-property">@util</span>.env_var_int(<span class="hljs-string">'REDIS_CONNECT_RETRY_ATTEMPTS'</span>) <span class="hljs-keyword">or</span> <span class="hljs-string">'none'</span>
+    <span class="hljs-property">@delay</span>   = <span class="hljs-property">@util</span>.env_var_int(<span class="hljs-string">'REDIS_CONNECT_RETRY_DELAY_SECONDS'</span>) <span class="hljs-keyword">or</span> <span class="hljs-number">10</span>
+
+  <span class="hljs-attribute">subscribe</span>: <span class="hljs-function"><span class="hljs-params">(channel=<span class="hljs-property">@namespace</span>, options={}, callback=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    options.retry_strategy = <span class="hljs-property">@retry_strategy</span>  <span class="hljs-keyword">unless</span> options.retry_strategy
+    <span class="hljs-property">@util</span>.info <span class="hljs-string">"redis server subscription '<span class="hljs-subst">#{<span class="hljs-property">@namespace</span>}</span>' -&gt; url: '<span class="hljs-subst">#{<span class="hljs-property">@url</span>}</span>' channel: '<span class="hljs-subst">#{channel}</span>'"</span>
+    client = <span class="hljs-property">@redis</span>.createClient(<span class="hljs-property">@url</span>)
+    client.<span class="hljs-literal">on</span> <span class="hljs-string">'connect'</span>, <span class="hljs-function">=&gt;</span>
+      <span class="hljs-property">@util</span>.info <span class="hljs-string">"redis server subscription connected '<span class="hljs-subst">#{<span class="hljs-property">@namespace</span>}</span>' channel: '<span class="hljs-subst">#{channel}</span>'"</span>
+      client.subscribe(channel)
+      client.<span class="hljs-literal">on</span> <span class="hljs-string">'message'</span>, <span class="hljs-function"><span class="hljs-params">(channel, message)</span> =&gt;</span> <span class="hljs-property">@messages</span>.message(channel, message)
+      <span class="hljs-property">@platform</span>[callback]() <span class="hljs-keyword">if</span> <span class="hljs-property">@util</span>.is_string(callback) <span class="hljs-keyword">and</span> <span class="hljs-property">@util</span>.is_function(<span class="hljs-property">@platform</span>[callback])
+    client.<span class="hljs-literal">on</span> <span class="hljs-string">'error'</span>, <span class="hljs-function"><span class="hljs-params">(e)</span> =&gt;</span>
+      <span class="hljs-property">@util</span>.error <span class="hljs-string">"Redis server connection failure after <span class="hljs-subst">#{<span class="hljs-property">@retries</span>}</span> retries: '<span class="hljs-subst">#{<span class="hljs-property">@namespace</span>}</span>:<span class="hljs-subst">#{channel}</span>' -&gt; <span class="hljs-subst">#{e.message}</span>"</span>
+
+  <span class="hljs-attribute">retry_strategy</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> =&gt;</span>
+    error_code = (options.error <span class="hljs-keyword">or</span> {}).code
+    <span class="hljs-keyword">if</span> !error_code <span class="hljs-keyword">or</span> error_code == <span class="hljs-string">'ECONNREFUSED'</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@retries</span> != <span class="hljs-string">'none'</span> <span class="hljs-keyword">and</span> options.attempt &lt; <span class="hljs-property">@retries</span>
+        secs  = <span class="hljs-property">@delay</span> * options.attempt
+        delay = secs * <span class="hljs-number">1000</span>  <span class="hljs-comment"># convert to milliseconds</span>
+        <span class="hljs-property">@util</span>.warn <span class="hljs-string">"Redis server connection failure.  Retry attempt <span class="hljs-subst">#{options.attempt}</span> of <span class="hljs-subst">#{<span class="hljs-property">@retries</span>}</span>.  <span class="hljs-subst">#{secs}</span> seconds until next attempt."</span>
+        <span class="hljs-keyword">return</span> delay <span class="hljs-comment"># retry after</span>
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Error <span class="hljs-string">'The server refused the connection.'</span> <span class="hljs-comment"># end reconnecting on a specific error and flush all commands with a individual error</span>
+    <span class="hljs-keyword">if</span> options.times_connected &gt; <span class="hljs-number">3</span>
+      <span class="hljs-literal">undefined</span> <span class="hljs-comment"># end reconnecting with built in error</span>
+    Math.max(options.attempt * <span class="hljs-number">100</span>, <span class="hljs-number">3000</span>) <span class="hljs-comment"># reconnect after</span>
+
+  <span class="hljs-attribute">to_string</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'SocketIORedisClient'</span>
+
+<span class="hljs-built_in">module</span>.exports = SocketIORedisClient</div></div></div></div></body></html>

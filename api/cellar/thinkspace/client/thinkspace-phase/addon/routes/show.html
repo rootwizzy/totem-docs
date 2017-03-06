@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-phase/addon/routes/show</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-phase/addon/routes/show"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-phase/addon/routes/show.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-phase/addon/routes/show.coffee">src/thinkspace/client/thinkspace-phase/addon/routes/show.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import base  from <span class="hljs-string">'thinkspace-base/routes/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">titleToken</span>: <span class="hljs-function"><span class="hljs-params">(model)</span> -&gt;</span> model.get(<span class="hljs-string">'title'</span>)
+
+  <span class="hljs-attribute">phase_manager</span>: ember.inject.service()
+
+  <span class="hljs-attribute">queryParams</span>: {<span class="hljs-attribute">query_id</span>: {}}
+
+  <span class="hljs-attribute">model</span>: <span class="hljs-function"><span class="hljs-params">(params)</span> -&gt;</span> <span class="hljs-property">@tc</span>.find_record_with_message ns.to_p(<span class="hljs-string">'phase'</span>), params.phase_id
+
+  <span class="hljs-attribute">afterModel</span>: <span class="hljs-function"><span class="hljs-params">(phase, transition)</span> -&gt;</span>
+    transition.abort() <span class="hljs-keyword">unless</span> phase
+    <span class="hljs-property">@hide_loading_outlet</span>() <span class="hljs-keyword">if</span> ember.isEqual(<span class="hljs-property">@get_phase</span>(), phase) <span class="hljs-comment"># Hide outlet if navigating to same phase.</span>
+    <span class="hljs-property">@current_models</span>().set_current_models(<span class="hljs-attribute">phase</span>: phase).<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'phase_manager'</span>).set_all_phase_states().<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@validate_phase_state</span>(phase, transition)
+
+  <span class="hljs-attribute">renderTemplate</span>: <span class="hljs-function"><span class="hljs-params">(controller, phase)</span> -&gt;</span> <span class="hljs-property">@route_based_on_phase_state</span>(phase)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>deactivate: -&gt;
+  @_super()
+  controller = @get &#39;controller&#39;
+  controller.reset_phase_settings()
+  controller.reset_query_id() # query_id persists between cases, need to reset.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helper-functions">Helper functions.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_assignment</span>:        <span class="hljs-function">-&gt;</span> <span class="hljs-property">@current_models</span>().get_current_assignment()
+  <span class="hljs-attribute">get_phase</span>:             <span class="hljs-function">-&gt;</span> <span class="hljs-property">@current_models</span>().get_current_phase()
+  <span class="hljs-attribute">get_phase_manager</span>:     <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'phase_manager'</span>
+  <span class="hljs-attribute">get_phase_manager_map</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'phase_manager.map'</span>
+  <span class="hljs-attribute">show_loading_outlet</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_phase_manager</span>().show_loading_outlet()
+  <span class="hljs-attribute">hide_loading_outlet</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_phase_manager</span>().hide_loading_outlet()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="route-on-phase-state">Route on Phase State.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">validate_phase_state</span>: <span class="hljs-function"><span class="hljs-params">(phase, transition)</span> -&gt;</span>
+    assignment = <span class="hljs-property">@get_assignment</span>()
+    assignment.totem_data.ability.refresh().<span class="hljs-keyword">then</span> =&gt;
+      can_update = assignment.get(<span class="hljs-string">'can.update'</span>)
+      query_id   = transition.queryParams.query_id
+      <span class="hljs-property">@get_phase_manager</span>().get_phase_state_for_phase(phase, query_id).<span class="hljs-keyword">then</span> (phase_state) =&gt;
+        can_view   = <span class="hljs-keyword">if</span> phase_state <span class="hljs-keyword">then</span> (<span class="hljs-keyword">not</span> phase_state.get(<span class="hljs-string">'is_locked'</span>)) <span class="hljs-keyword">else</span> <span class="hljs-literal">false</span>
+        can_access = can_view <span class="hljs-keyword">or</span> can_update</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the phase state is locked, redirect back to &#39;assignments#show&#39; unless
+can update the phase (e.g. gradebook)</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">unless</span> can_access
+          <span class="hljs-property">@totem_messages</span>.error(<span class="hljs-string">'You cannot access a locked phase.'</span>)
+          <span class="hljs-property">@transition_to_assignment</span>()
+
+  <span class="hljs-attribute">route_based_on_phase_state</span>: <span class="hljs-function"><span class="hljs-params">(phase)</span> -&gt;</span>
+    can_update    = <span class="hljs-property">@get_assignment</span>().get(<span class="hljs-string">'can_update'</span>)
+    phase_manager = <span class="hljs-property">@get_phase_manager</span>()
+    map           = <span class="hljs-property">@get_phase_manager_map</span>()
+    query_id      = <span class="hljs-property">@get</span>(<span class="hljs-string">'controller.query_id'</span>)
+    phase_manager.get_phase_state_for_phase(phase, query_id).<span class="hljs-keyword">then</span> (phase_state) =&gt;
+      <span class="hljs-keyword">switch</span>
+        <span class="hljs-keyword">when</span> phase_state
+          phase_manager.set_ownerable_from_phase_state(phase_state).<span class="hljs-keyword">then</span> =&gt; <span class="hljs-property">@render_view</span>()
+
+        <span class="hljs-keyword">when</span> map.ownerable_has_multiple_phase_states(phase)
+          <span class="hljs-keyword">if</span> can_update <span class="hljs-keyword">and</span> phase_manager.has_active_addons()
+            <span class="hljs-property">@render_view</span>()
+          <span class="hljs-keyword">else</span>
+            <span class="hljs-property">@render</span> ns.to_p(<span class="hljs-string">'phases'</span>, <span class="hljs-string">'select_phase_state'</span>)  <span class="hljs-comment"># note: this is NOT in the template/components folder e.g. ns.to_p not ns.to_t</span>
+            <span class="hljs-property">@hide_loading_outlet</span>()
+
+        <span class="hljs-keyword">when</span> can_update
+          <span class="hljs-property">@render_view</span>()
+
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-property">@transition_to_assignment</span>()
+
+  <span class="hljs-attribute">transition_to_assignment</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@hide_loading_outlet</span>()
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'thinkspace'</span>).transition_to_current_assignment()
+
+  <span class="hljs-attribute">render_view</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@show_loading_outlet</span>()
+    <span class="hljs-property">@get_phase_manager</span>().generate_view_with_ownerable().<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@render</span>()
+      <span class="hljs-property">@hide_loading_outlet</span>()</div></div></div></div></body></html>

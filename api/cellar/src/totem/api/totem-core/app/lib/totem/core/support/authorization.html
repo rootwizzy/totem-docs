@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/lib/totem/core/support/authorization</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/lib/totem/core/support/authorization"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/support/authorization.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/support/authorization.rb">src/totem/api/totem-core/app/lib/totem/core/support/authorization.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Support</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Authorization</span></span>
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:totem_settings</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Should always use the public methods to access these instance variables.
+Listing the instance variables used to provide easily access if needed.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:platform_authorization_settings</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(env)</span></span>
+          <span class="hljs-variable">@totem_settings</span>                  = env
+          <span class="hljs-variable">@platform_authorization_settings</span> = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>define authorization.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorization</span>;</span> <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform</span><span class="hljs-params">(platform_name)</span></span>
+          error <span class="hljs-string">"Platform [<span class="hljs-subst">#{platform_name.inspect}</span>] is blank"</span> <span class="hljs-keyword">if</span> platform_name.blank?
+          platforms[platform_name]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platforms</span></span>
+          platform_authorization_settings
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_platform</span><span class="hljs-params">(platform_name, settings)</span></span>
+          error <span class="hljs-string">"Platform [<span class="hljs-subst">#{platform_name}</span>] is blank in set platform"</span> <span class="hljs-keyword">if</span> platform_name.blank?
+          <span class="hljs-variable">@platform_authorization_settings</span>[platform_name] = settings
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_config</span><span class="hljs-params">(platform_name, auth_by)</span></span>
+          platform(platform_name) &amp;&amp; platform(platform_name)[auth_by]
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ability class for authorize_by name</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_authorize_by</span><span class="hljs-params">(object)</span></span>
+          authorize_by(get_current_platform_name(object))
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_by</span><span class="hljs-params">(platform_name)</span></span>
+          platform(platform_name) &amp;&amp; platform(platform_name).authorize_by
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ability class for authorize_by name</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_ability_class</span><span class="hljs-params">(object)</span></span>
+          ability_class(get_current_platform_name(object))
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ability_class</span><span class="hljs-params">(platform_name)</span></span>
+          auth_classes = get_authorization_values(platform_name, <span class="hljs-symbol">:classes</span>)
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> auth_classes.blank?
+          auth_classes.ability
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>serializer include modules</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_serializer_include_modules</span><span class="hljs-params">(object)</span></span>
+          serializer_include_modules(get_current_platform_name(object))
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">serializer_include_modules</span><span class="hljs-params">(platform_name)</span></span>
+          auth_modules = get_authorization_serializer_values(platform_name, <span class="hljs-symbol">:modules</span>)
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> auth_modules.blank?
+          auth_modules.get_all
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>serializer defaults</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_serializer_defaults</span><span class="hljs-params">(object)</span></span>
+          serializer_defaults(get_current_platform_name(object))
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">serializer_defaults</span><span class="hljs-params">(platform_name)</span></span>
+          get_authorization_serializer_values(platform_name, <span class="hljs-symbol">:defaults</span>)
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_current_platform_name</span><span class="hljs-params">(object)</span></span>
+          totem_settings.engine.current_platform_name(object)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_authorization_values</span><span class="hljs-params">(platform_name, key=<span class="hljs-keyword">nil</span>)</span></span>
+          auth = platform(platform_name)
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> auth.blank?
+          auth_by = auth.authorize_by
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> auth_by.blank?
+          auth_by_values = auth[auth_by]
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> auth_by_values.blank?
+          <span class="hljs-keyword">return</span> auth_by_values <span class="hljs-keyword">if</span> key.blank?
+          auth_by_values[key]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_authorization_serializer_values</span><span class="hljs-params">(platform_name, key)</span></span>
+          serializer_values = get_authorization_values(platform_name, <span class="hljs-symbol">:serializers</span>)
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> serializer_values.blank?
+          serializer_values[key]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">Shared</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

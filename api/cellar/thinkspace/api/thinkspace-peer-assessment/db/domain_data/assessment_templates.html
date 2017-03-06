@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/db/domain_data/assessment_templates</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/db/domain_data/assessment_templates"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/db/domain_data/assessment_templates.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-peer-assessment/db/domain_data/assessment_templates.yml">src/thinkspace/api/thinkspace-peer-assessment/db/domain_data/assessment_templates.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-comment">---</span>
+- id: 1
+  ownerable_type: 
+  ownerable_id: 
+  value:
+    options:
+      type: balance
+      points:
+        per_member: 10
+        different: true
+    quantitative:
+    - id: 1
+      label: Michaelsen's Quant 1
+      type: range
+      settings:
+        comments:
+          enabled: true
+        labels:
+          scale:
+            min: Low
+            max: High
+        points:
+          min: 0
+          max: 15
+    - id: 2
+      label: Michaelsen's Quant 2
+      type: range
+      settings:
+        comments:
+          enabled: true
+        labels:
+          scale:
+            min: Low
+            max: High
+        points:
+          min: 0
+          max: 15
+    qualitative:
+    - id: 1
+      label: "[Michaelsen's] Indicate specifically how this person contributes to
+        group success."
+      type: textarea
+      feedback_type: positive
+    - id: 2
+      label: "[Michaelsen's] Make constructive suggestions about how this person could
+        better contribute to group success."
+      type: textarea
+      feedback_type: constructive
+  title: Michaelsen's Method (Balance Points)
+  description: Students will be given a <span class="hljs-operator"><span class="hljs-keyword">set</span> <span class="hljs-built_in">number</span> <span class="hljs-keyword">of</span> points <span class="hljs-keyword">to</span> <span class="hljs-keyword">distribute</span> among their
+    peers.
+  state: <span class="hljs-keyword">system</span>
+  created_at: !ruby/<span class="hljs-keyword">object</span>:ActiveSupport::TimeWithZone
+    utc: &amp;<span class="hljs-number">1</span> <span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">12</span> <span class="hljs-number">18</span>:<span class="hljs-number">15</span>:<span class="hljs-number">48.252303000</span> Z
+    zone: &amp;<span class="hljs-number">2</span> !ruby/<span class="hljs-keyword">object</span>:ActiveSupport::TimeZone
+      <span class="hljs-keyword">name</span>: Etc/UTC
+    <span class="hljs-keyword">time</span>: *<span class="hljs-number">1</span>
+  updated_at: !ruby/<span class="hljs-keyword">object</span>:ActiveSupport::TimeWithZone
+    utc: &amp;<span class="hljs-number">3</span> <span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">12</span> <span class="hljs-number">18</span>:<span class="hljs-number">15</span>:<span class="hljs-number">48.252303000</span> Z
+    zone: *<span class="hljs-number">2</span>
+    <span class="hljs-keyword">time</span>: *<span class="hljs-number">3</span>
+- <span class="hljs-keyword">id</span>: <span class="hljs-number">2</span>
+  ownerable_type: 
+  ownerable_id: 
+  <span class="hljs-keyword">value</span>:
+    options:
+      <span class="hljs-keyword">type</span>: categories
+      points: 
+        per_member: <span class="hljs-number">10</span>
+        different: <span class="hljs-literal">true</span>
+    quantitative:
+    - <span class="hljs-keyword">id</span>: <span class="hljs-number">1</span>
+      label: Categories Quant <span class="hljs-number">1</span>
+      <span class="hljs-keyword">type</span>: <span class="hljs-keyword">range</span>
+      <span class="hljs-keyword">settings</span>:
+        comments:
+          enabled: <span class="hljs-literal">true</span>
+        labels:
+          scale:
+            <span class="hljs-keyword">min</span>: <span class="hljs-keyword">Low</span>
+            <span class="hljs-keyword">max</span>: <span class="hljs-keyword">High</span>
+        points:
+          <span class="hljs-keyword">min</span>: <span class="hljs-number">0</span>
+          <span class="hljs-keyword">max</span>: <span class="hljs-number">15</span>
+    - <span class="hljs-keyword">id</span>: <span class="hljs-number">2</span>
+      label: Categories Quant <span class="hljs-number">2</span>
+      <span class="hljs-keyword">type</span>: <span class="hljs-keyword">range</span>
+      <span class="hljs-keyword">settings</span>:
+        comments:
+          enabled: <span class="hljs-literal">true</span>
+        labels:
+          scale:
+            <span class="hljs-keyword">min</span>: <span class="hljs-keyword">Low</span>
+            <span class="hljs-keyword">max</span>: <span class="hljs-keyword">High</span>
+        points:
+          <span class="hljs-keyword">min</span>: <span class="hljs-number">0</span>
+          <span class="hljs-keyword">max</span>: <span class="hljs-number">15</span>
+    qualitative:
+    - <span class="hljs-keyword">id</span>: <span class="hljs-number">1</span>
+      label: <span class="hljs-string">"[Categories] Indicate specifically how this person contributes to group
+        success."</span>
+      <span class="hljs-keyword">type</span>: textarea
+      feedback_type: positive
+    - <span class="hljs-keyword">id</span>: <span class="hljs-number">2</span>
+      label: <span class="hljs-string">"[Categories] Make constructive suggestions about how this person could
+        better contribute to group success."</span>
+      <span class="hljs-keyword">type</span>: textarea
+      feedback_type: constructive
+  title: Categories
+  description: Students will be given a <span class="hljs-keyword">set</span> <span class="hljs-keyword">of</span> categories <span class="hljs-keyword">or</span> questions <span class="hljs-keyword">to</span> <span class="hljs-keyword">evaluate</span>
+    their peers <span class="hljs-keyword">by</span>.
+  state: <span class="hljs-keyword">system</span>
+  created_at: !ruby/<span class="hljs-keyword">object</span>:ActiveSupport::TimeWithZone
+    utc: &amp;<span class="hljs-number">4</span> <span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">12</span> <span class="hljs-number">18</span>:<span class="hljs-number">15</span>:<span class="hljs-number">48.262308000</span> Z
+    zone: *<span class="hljs-number">2</span>
+    <span class="hljs-keyword">time</span>: *<span class="hljs-number">4</span>
+  updated_at: !ruby/<span class="hljs-keyword">object</span>:ActiveSupport::TimeWithZone
+    utc: &amp;<span class="hljs-number">5</span> <span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">12</span> <span class="hljs-number">18</span>:<span class="hljs-number">15</span>:<span class="hljs-number">48.262308000</span> Z
+    zone: *<span class="hljs-number">2</span>
+    <span class="hljs-keyword">time</span>: *<span class="hljs-number">5</span>
+- <span class="hljs-keyword">id</span>: <span class="hljs-number">3</span>
+  ownerable_type: 
+  ownerable_id: 
+  <span class="hljs-keyword">value</span>:
+    options: {}
+    quantitative: {}
+    qualitative: {}
+  title: Blank Canvas
+  description: <span class="hljs-keyword">Start</span> <span class="hljs-keyword">fresh</span>.
+  state: <span class="hljs-keyword">system</span>
+  created_at: !ruby/<span class="hljs-keyword">object</span>:ActiveSupport::TimeWithZone
+    utc: &amp;<span class="hljs-number">6</span> <span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">16</span> <span class="hljs-number">18</span>:<span class="hljs-number">16</span>:<span class="hljs-number">47.032326000</span> Z
+    zone: *<span class="hljs-number">2</span>
+    <span class="hljs-keyword">time</span>: *<span class="hljs-number">6</span>
+  updated_at: !ruby/<span class="hljs-keyword">object</span>:ActiveSupport::TimeWithZone
+    utc: &amp;<span class="hljs-number">7</span> <span class="hljs-number">2017</span>-<span class="hljs-number">01</span>-<span class="hljs-number">16</span> <span class="hljs-number">18</span>:<span class="hljs-number">16</span>:<span class="hljs-number">47.032326000</span> Z
+    zone: *<span class="hljs-number">2</span>
+    <span class="hljs-keyword">time</span>: *<span class="hljs-number">7</span>
+</span></div></div></div></div></body></html>

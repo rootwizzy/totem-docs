@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/mixins/group_by</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/mixins/group_by"><meta name="groc-project-path" content="src/totem/client/totem/addon/mixins/group_by.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/mixins/group_by.coffee">src/totem/client/totem/addon/mixins/group_by.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Group an array of EMBER objects that have the same &#39;<key>_id&#39; value but different related values.
+Each group property must start with the same <key> e.g. key=some_name: some_name_model, some_name_label, etc.
+Groups are nested based on the <key> sort order.
+The sort order must be either be:</p>
+<ul>
+<li>Passed in the options key &#39;sort&#39; e.g. @group_values(values, sort: [&#39;key1&#39;, &#39;key2&#39;, ...].</li>
+<li>A &#39;group_sort&#39; property on the current object.
+By default, the object will be sorted on &#39;<key>_label&#39; unless options &#39;sort_prop&#39; is specified.</li>
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="main-function-to-group-a-values-array">Main function to group a values array.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">group_values</span>: <span class="hljs-function"><span class="hljs-params">(values, options={})</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> ember.isBlank(values)
+    [sort_keys, sorted_values] = <span class="hljs-property">@get_group_sort_keys_and_sorted_values</span>(values, options)
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">unless</span> sort_keys
+    group_obj  = ember.Object.create(<span class="hljs-attribute">content</span>: sorted_values)
+    find    = <span class="hljs-property">@get_group_find</span>(sort_keys, options)
+    groups     = <span class="hljs-literal">null</span>
+    sort_objs  = <span class="hljs-literal">null</span>
+    last_index = sort_keys.get(<span class="hljs-string">'length'</span>) - <span class="hljs-number">1</span>
+    sort_keys.forEach (key, sort_index) =&gt;
+      obj_find = find[sort_index] <span class="hljs-keyword">or</span> <span class="hljs-string">"<span class="hljs-subst">#{key}</span>_id"</span>
+      <span class="hljs-keyword">if</span> sort_objs
+        next_objs = []
+        sort_objs.forEach (obj) =&gt;
+          result = <span class="hljs-property">@get_group_results</span>(obj, key, obj_find, options)
+          obj.set <span class="hljs-string">'content'</span>, result
+          result.forEach (result_obj) =&gt;
+            result_obj.set <span class="hljs-string">'is_last_group'</span>, sort_index == last_index <span class="hljs-comment"># identify the last group for templates</span>
+            next_objs.push(result_obj)
+        sort_objs = next_objs
+      <span class="hljs-keyword">else</span>
+        groups    = <span class="hljs-property">@get_group_results</span>(group_obj, key, obj_find, options)
+        sort_objs = groups
+    groups</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_group_results</span>: <span class="hljs-function"><span class="hljs-params">(group_obj, key, find, options={})</span> -&gt;</span>
+    result = []
+    group_obj.get(<span class="hljs-string">'content'</span>).forEach (obj) =&gt;
+      id        = <span class="hljs-property">@get_group_object_id</span>(obj, key, find)
+      has_group = result.findBy(<span class="hljs-string">'id'</span>, id)
+      <span class="hljs-keyword">unless</span> has_group
+        result_obj = ember.Object.create
+          <span class="hljs-attribute">id</span>:      id
+          <span class="hljs-attribute">label</span>:   obj.get(<span class="hljs-string">"<span class="hljs-subst">#{key}</span>_label"</span>)
+          <span class="hljs-attribute">model</span>:   obj.get(<span class="hljs-string">"<span class="hljs-subst">#{key}</span>_model"</span>)
+          <span class="hljs-attribute">path</span>:    obj.get(<span class="hljs-string">"<span class="hljs-subst">#{key}</span>_path"</span>)
+          <span class="hljs-attribute">content</span>: []
+        <span class="hljs-property">@totem_error</span>.<span class="hljs-keyword">throw</span> @, <span class="hljs-string">"GroupByMixin: group id is blank for key [<span class="hljs-subst">#{key}</span>].  Either add <span class="hljs-subst">#{key}</span>_id or <span class="hljs-subst">#{key}</span>_model to the values object or a find option ."</span>  <span class="hljs-keyword">unless</span> result_obj.get(<span class="hljs-string">'id'</span>)?
+        <span class="hljs-keyword">if</span> options.add_key_props
+          props = ember.makeArray(options.add_key_props).compact()
+          <span class="hljs-keyword">for</span> prop <span class="hljs-keyword">in</span> props
+            result_obj.set prop, obj.get(<span class="hljs-string">"<span class="hljs-subst">#{key}</span>_<span class="hljs-subst">#{prop}</span>"</span>)
+        <span class="hljs-keyword">if</span> options.add_props
+          props = ember.makeArray(options.add_props).compact()
+          <span class="hljs-keyword">for</span> prop <span class="hljs-keyword">in</span> props
+            result_obj.set prop, obj.get(prop)
+        result.pushObject(result_obj)
+      result.findBy(<span class="hljs-string">'id'</span>, id).get(<span class="hljs-string">'content'</span>).pushObject(obj)
+    result
+
+  <span class="hljs-attribute">get_group_sort_keys_and_sorted_values</span>: <span class="hljs-function"><span class="hljs-params">(values, options)</span> -&gt;</span>
+    sort = options.sort <span class="hljs-keyword">or</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'group_sort'</span>)
+    <span class="hljs-keyword">return</span> [<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>] <span class="hljs-keyword">unless</span> sort
+    sort        = ember.makeArray(sort)
+    sort_props  = []
+    sort_orders = []
+    sort_keys   = []
+    first_obj   = values.get(<span class="hljs-string">'firstObject'</span>)
+    sort.forEach (sort_value) =&gt;
+      [key, order] = sort_value.split(<span class="hljs-string">':'</span>)
+      order        = <span class="hljs-string">'asc'</span>  <span class="hljs-keyword">unless</span> order
+      <span class="hljs-property">@totem_error</span>.<span class="hljs-keyword">throw</span> @, <span class="hljs-string">"GroupByMixin: Sort value [<span class="hljs-subst">#{sort_value}</span>] must use 'asc' or 'desc' not [<span class="hljs-subst">#{order}</span>]."</span>  <span class="hljs-keyword">unless</span> order == <span class="hljs-string">'asc'</span> <span class="hljs-keyword">or</span> order == <span class="hljs-string">'desc'</span>
+      sort_prop = <span class="hljs-property">@get_group_sort_by</span>(first_obj, key, options)
+      sort_props.push sort_prop
+      sort_orders.push order
+      sort_keys.push key
+    [sort_keys, <span class="hljs-property">@get_group_sorted_values</span>(values, sort_props, sort_orders)]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Sort the values array based on the sort property and order (e.g. &#39;asc&#39; or &#39;desc&#39;).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_group_sorted_values</span>: <span class="hljs-function"><span class="hljs-params">(values, sort_props, orders)</span> -&gt;</span>
+    values.toArray().sort (a, b) -&gt;
+      <span class="hljs-keyword">for</span> prop, i <span class="hljs-keyword">in</span> sort_props
+        prop_a = a.get(prop)
+        prop_b = b.get(prop)
+        rc     = ember.compare(prop_a, prop_b)
+        rc     = (rc * -<span class="hljs-number">1</span>)  <span class="hljs-keyword">if</span> rc <span class="hljs-keyword">and</span> orders[i] == <span class="hljs-string">'desc'</span>
+        <span class="hljs-keyword">return</span> rc <span class="hljs-keyword">if</span> rc
+      <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The default sort_by is first the <key> then &#39;<key>_label&#39; (if <key> does not exist in the object).
+The sort_by options specify the property used to sort the objects.
+A different sort_by value can be added to the &#39;options.sort_by&#39;.</p>
+<ul>
+<li>sort_by: {<key>: &#39;string&#39;} #=&gt; use the property name for the sort_key.</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-comment">#:            If a &lt;key&gt; for the sort key does not exist will use the default.</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>When a sort_by value is not found in the object, an error is raised.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_group_sort_by</span>: <span class="hljs-function"><span class="hljs-params">(obj, key, options)</span> -&gt;</span>
+    sort_by = options.sort_by
+    <span class="hljs-keyword">if</span> sort_by
+      <span class="hljs-keyword">unless</span> <span class="hljs-keyword">typeof</span>(sort_by) == <span class="hljs-string">'object'</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> ember.isArray(sort_by)
+        <span class="hljs-property">@totem_error</span>.<span class="hljs-keyword">throw</span> @, <span class="hljs-string">"GroupByMixin: Options sort_by [<span class="hljs-subst">#{sort_by}</span>] must be an object."</span>
+      key_sort_by = sort_by[key]
+      <span class="hljs-keyword">if</span> key_sort_by
+        <span class="hljs-keyword">unless</span> obj.get(key_sort_by)?
+          <span class="hljs-property">@totem_error</span>.<span class="hljs-keyword">throw</span> @, <span class="hljs-string">"GroupByMixin: Options sort_by [<span class="hljs-subst">#{key_sort_by}</span>] for key [<span class="hljs-subst">#{key}</span>] is not an object property.  Missing option add_props?"</span>
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">return</span> key_sort_by
+    <span class="hljs-keyword">switch</span>
+      <span class="hljs-keyword">when</span> obj.get(key)?                 <span class="hljs-keyword">then</span> key
+      <span class="hljs-keyword">when</span> obj.get(<span class="hljs-string">"<span class="hljs-subst">#{key}</span>_label"</span>)       <span class="hljs-keyword">then</span> <span class="hljs-string">"<span class="hljs-subst">#{key}</span>_label"</span>
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-property">@totem_error</span>.<span class="hljs-keyword">throw</span> @, <span class="hljs-string">"GroupByMixin: Value objects do not contain sort property for [<span class="hljs-subst">#{key}</span>]."</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The default find value is <key>_id.
+A different find value can be added to the &#39;options.find&#39;.</p>
+<ul>
+<li>find: &#39;string&#39; #=&gt; use this property name for the &#39;first&#39; sort key.</li>
+<li>find: [array]  #=&gt; use the array[sort-keys-index] property name (if null|undefined uses default).</li>
+<li>find: {<key>: &#39;string&#39;} #=&gt; use the property name for the sort_key.<pre><code>                          (note: transformed into an array with a null value if the sort key is not included).</code></pre>
+Warning: If the find value is not a <key>_id, you must include the property with the options.add_prop.</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_group_find</span>: <span class="hljs-function"><span class="hljs-params">(sort_keys, options)</span> -&gt;</span>
+    find = options.find
+    <span class="hljs-keyword">switch</span>
+      <span class="hljs-keyword">when</span> ember.isArray(find)       <span class="hljs-keyword">then</span> find
+      <span class="hljs-keyword">when</span> <span class="hljs-keyword">typeof</span>(find) == <span class="hljs-string">'string'</span>  <span class="hljs-keyword">then</span> ember.makeArray(find)
+      <span class="hljs-keyword">when</span> <span class="hljs-keyword">typeof</span>(find) == <span class="hljs-string">'object'</span>  <span class="hljs-keyword">then</span> sort_keys.map (key) =&gt; find[key] <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+      <span class="hljs-keyword">else</span> []</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The object &#39;group_id&#39; is a unique identifier for this object.  Typically, it is a model id.
+Options (in priority order):</p>
+<ul>
+<li>Set a &#39;find&#39; property name string in the options to get the id from the object property.</li>
+<li>Add a &#39;<key>_id&#39; value to the object.</li>
+<li>Add a &#39;<key>_model&#39; to the object and the key will become the model&#39;s id.</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_group_object_id</span>: <span class="hljs-function"><span class="hljs-params">(obj, key, find)</span> -&gt;</span>
+    id = obj.get(find)
+    <span class="hljs-keyword">return</span> id <span class="hljs-keyword">if</span> id?
+    obj.get(<span class="hljs-string">"<span class="hljs-subst">#{key}</span>_model.id"</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Helper that can be called during the construction of the value object.
+Returns if a &#39;values object&#39; matches an object in the array (e.g. does a per key equality check).
+Note: This is similar to the ember &#39;contains&#39; function when the objects are not the &#39;same&#39; object by equality.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">contains_group_values</span>: <span class="hljs-function"><span class="hljs-params">(array, values)</span> -&gt;</span>
+    array.find (obj) -&gt;
+      <span class="hljs-keyword">for</span> own key, value <span class="hljs-keyword">of</span> values
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">if</span> (obj[key] != value)
+      <span class="hljs-literal">true</span></div></div></div></div></body></html>

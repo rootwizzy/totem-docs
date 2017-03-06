@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-common/addon/mixins/thinkspace/wizard</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-common/addon/mixins/thinkspace/wizard"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-common/addon/mixins/thinkspace/wizard.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-common/addon/mixins/thinkspace/wizard.coffee">src/thinkspace/client/thinkspace-common/addon/mixins/thinkspace/wizard.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">enable_wizard_mode</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@hide_toolbar</span>()
+  <span class="hljs-attribute">disable_wizard_mode</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@show_toolbar</span>()
+
+  <span class="hljs-attribute">scroll_to_top</span>: <span class="hljs-function">-&gt;</span>
+    $(<span class="hljs-string">'#content-wrapper'</span>).scrollTop(<span class="hljs-number">0</span>)
+    $(<span class="hljs-built_in">window</span>).scrollTop(<span class="hljs-number">0</span>)
+
+  <span class="hljs-attribute">current_transition</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">get_current_transition</span>:              <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">'current_transition'</span>
+  <span class="hljs-attribute">set_current_transition</span>: <span class="hljs-function"><span class="hljs-params">(transition)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'current_transition'</span>, transition
+
+  <span class="hljs-attribute">transition_is_for</span>: <span class="hljs-function"><span class="hljs-params">(transition, match=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> (transition <span class="hljs-keyword">and</span> match)
+    target = transition.targetName <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+    target.match(match)</div></div></div></div></body></html>

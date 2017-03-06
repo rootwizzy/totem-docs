@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/test/helpers/clone/assert</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/test/helpers/clone/assert"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/helpers/clone/assert.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/helpers/clone/assert.rb">src/thinkspace/api/thinkspace-casespace/test/helpers/clone/assert.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::Clone::Assert</span></span>
+  extend <span class="hljs-constant">ActiveSupport::Concern</span>
+  included <span class="hljs-keyword">do</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_clone_attributes</span><span class="hljs-params">(*args)</span></span>
+      record = args.shift
+      cloned = args.shift
+      attrs  = [args].flatten.map {|a| a.to_s}
+      assert_equal <span class="hljs-keyword">true</span>, cloned.present?, <span class="hljs-string">'the record was cloned'</span>
+      refute_equal record.id, cloned.id, <span class="hljs-string">'cloned record has new id'</span>
+      except_attrs = [<span class="hljs-string">'id'</span>, <span class="hljs-string">'created_at'</span>, <span class="hljs-string">'updated_at'</span>] + attrs
+      assert_equal record.attributes.except(*except_attrs), cloned.attributes.except(*except_attrs), <span class="hljs-string">'record attributes are the same'</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The options[:keep_title] must be reset correctly since will be set to true for full clones of assignments and phases.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_clone_title</span><span class="hljs-params">(record, cloned_record, options)</span></span>
+      <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:keep_title</span>]
+        assert_equal record.title, cloned_record.title, <span class="hljs-string">"the cloned title [id: <span class="hljs-subst">#{cloned_record.id}</span>] matches the original [id: <span class="hljs-subst">#{record.id}</span>]"</span>
+      <span class="hljs-keyword">elsif</span> title = options[<span class="hljs-symbol">:title</span>]
+        assert_equal title.to_s, cloned_record.title, <span class="hljs-string">'the cloned title matches the options title'</span>
+      <span class="hljs-keyword">else</span>
+        assert_equal <span class="hljs-string">'clone: '</span> + record.title, cloned_record.title, <span class="hljs-string">'clone: prepended to title'</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_space_clone</span><span class="hljs-params">(space, cloned_space, options={})</span></span>
+      dictionary        = get_dictionary(options)
+      except_attributes = [<span class="hljs-symbol">:title</span>, <span class="hljs-symbol">:state</span>, options[<span class="hljs-symbol">:except_attributes</span>]].flatten.compact
+      assert_clone_attributes(space, cloned_space, except_attributes)
+      assert_clone_title(space, cloned_space, options)
+      spaces = dictionary[<span class="hljs-string">'thinkspace/common/spaces'</span>.to_sym]
+      assert_kind_of <span class="hljs-constant">Hash</span>, spaces, <span class="hljs-string">'spaces is a hash'</span>
+      assert_equal [space], spaces.keys, <span class="hljs-string">'is original space'</span>
+      assignments = dictionary[<span class="hljs-string">'thinkspace/casespace/assignments'</span>.to_sym]
+      assert_kind_of <span class="hljs-constant">Hash</span>, assignments, <span class="hljs-string">'space assignments is a hash'</span>
+      assignments.each <span class="hljs-keyword">do</span> |record, cloned|
+        assert_equal cloned_space.id, cloned.space_id, <span class="hljs-string">'is a phase for the cloned space'</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_assignment_clone</span><span class="hljs-params">(assignment, cloned_assignment, options={})</span></span>
+      dictionary        = get_dictionary(options)
+      except_attributes = [<span class="hljs-symbol">:title</span>, <span class="hljs-symbol">:state</span>, options[<span class="hljs-symbol">:except_attributes</span>]].flatten.compact
+      assert_clone_attributes(assignment, cloned_assignment, except_attributes)
+      assert_clone_title(assignment, cloned_assignment, options)
+      assert_equal <span class="hljs-keyword">false</span>, cloned_assignment.active?, <span class="hljs-string">'cloned assignment is inactive'</span>
+      assignments = dictionary[<span class="hljs-string">'thinkspace/casespace/assignments'</span>.to_sym]
+      assert_kind_of <span class="hljs-constant">Hash</span>, assignments, <span class="hljs-string">'assignments is a hash'</span>
+      assert_equal [assignment], assignments.keys, <span class="hljs-string">'is original assignment'</span>
+      phases = dictionary[<span class="hljs-string">'thinkspace/casespace/phases'</span>.to_sym]
+      assert_kind_of <span class="hljs-constant">Hash</span>, phases, <span class="hljs-string">'assignment phases is a hash'</span>
+      phases.each <span class="hljs-keyword">do</span> |record, cloned|
+        assert_equal cloned_assignment.id, cloned.assignment_id, <span class="hljs-string">'is a phase for the cloned assignment'</span>
+        assert_equal record.title, cloned.title, <span class="hljs-string">'phase titles are the same in an assignment clone'</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_phase_clone</span><span class="hljs-params">(phase, cloned_phase, options={})</span></span>
+      dictionary        = get_dictionary(options)
+      except_attributes = [<span class="hljs-symbol">:title</span>, <span class="hljs-symbol">:state</span>, <span class="hljs-symbol">:position</span>, <span class="hljs-symbol">:phase_template_id</span>, options[<span class="hljs-symbol">:except_attributes</span>]].flatten.compact
+      assert_clone_attributes(phase, cloned_phase, except_attributes)
+      assert_clone_title(phase, cloned_phase, options)
+      assert_equal <span class="hljs-keyword">true</span>, cloned_phase.active?, <span class="hljs-string">'cloned phase is active'</span>
+      key    = phase.get_record_dictionary_key(phase)
+      phases = dictionary[key]
+      assert_kind_of <span class="hljs-constant">Hash</span>, phases, <span class="hljs-string">'phases is a hash'</span>
+      assert_equal [phase], phases.keys, <span class="hljs-string">'is original phase'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>assert_phase_components(cloned_phase, dictionary, options)</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_phase_components</span><span class="hljs-params">(cloned_phase, dictionary, options={})</span></span>
+      phase_key         = cloned_phase.get_record_dictionary_key(cloned_phase)
+      except_attributes = [<span class="hljs-symbol">:title</span>, <span class="hljs-symbol">:description</span>, <span class="hljs-symbol">:configurable_id</span>, <span class="hljs-symbol">:authable_id</span>, <span class="hljs-symbol">:componentable_id</span>]
+      cloned_id         = cloned_phase.id
+      dictionary.each <span class="hljs-keyword">do</span> |key, hash|
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> key == phase_key
+        hash.each <span class="hljs-keyword">do</span> |from, to|
+          assert_clone_attributes(from, to, except_attributes)
+          assert_equal cloned_id, to.configurable_id  <span class="hljs-keyword">if</span> from.configurable_id.present?
+          assert_equal cloned_id, to.authable_id      <span class="hljs-keyword">if</span> from.authable_id.present?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>assert_equal cloned_id, to.componentable_id if from.componentable_id.present?</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_input_elements_clone</span><span class="hljs-params">(*args)</span></span>
+      phase        = args.shift
+      cloned_phase = args.shift
+      dictionary   = args.shift
+      elements     = dictionary[<span class="hljs-string">'thinkspace/input_element/elements'</span>.to_sym]
+      assert_kind_of <span class="hljs-constant">Hash</span>, elements, <span class="hljs-string">'has input elements'</span>
+      elements.each <span class="hljs-keyword">do</span> |record, cloned|
+        assert_clone_attributes(record, cloned, <span class="hljs-symbol">:phase_id</span>, <span class="hljs-symbol">:helper_embedable_id</span>)
+        assert_equal phase.id, record.phase_id, <span class="hljs-string">'input element has original phase id'</span>
+        assert_equal cloned_phase.id, cloned.phase_id, <span class="hljs-string">'cloned input element has cloned phase id'</span>
+        key               = record.helper_embedable_type.underscore.pluralize.to_sym
+        helper_embedables = dictionary[key]
+        assert_kind_of <span class="hljs-constant">Hash</span>, helper_embedables, <span class="hljs-string">'dictionary input element has helper embedables'</span>
+        assert_equal <span class="hljs-keyword">true</span>, extract_phase_clone_ids(helper_embedables).<span class="hljs-keyword">include</span>?(cloned.helper_embedable_id), <span class="hljs-string">'input element has tool'</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extract_phase_clone_ids</span><span class="hljs-params">(records)</span></span>
+      records.collect { |record, cloned| cloned.id }
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># included</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

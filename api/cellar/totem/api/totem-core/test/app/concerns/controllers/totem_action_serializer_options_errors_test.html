@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/app/concerns/controllers/totem_action_serializer_options_errors_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/app/concerns/controllers/totem_action_serializer_options_errors_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/app/concerns/controllers/totem_action_serializer_options_errors_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/app/concerns/controllers/totem_action_serializer_options_errors_test.rb">src/totem/api/totem-core/test/app/concerns/controllers/totem_action_serializer_options_errors_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../../action_serializer_options_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+describe <span class="hljs-string">'totem serializer options errors'</span> <span class="hljs-keyword">do</span>
+
+  describe <span class="hljs-string">'controller module'</span>  <span class="hljs-keyword">do</span>
+
+    it <span class="hljs-string">'module not defined'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">module_name:</span> <span class="hljs-string">'xxxxx'</span>}
+      e = assert_raises(so_error) {get_controller(options)}
+      assert_match(<span class="hljs-regexp">/cannot.*constantize/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'module not string or symbol'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-class"><span class="hljs-keyword">module</span>: <span class="hljs-title">so_error</span>}</span>
+      e = assert_raises(so_error) {get_controller(options)}
+      assert_match(<span class="hljs-regexp">/be a string or symbol/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'module name not string or symbol'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">module_name:</span> so_error}
+      e = assert_raises(so_error) {get_controller(options)}
+      assert_match(<span class="hljs-regexp">/be a string or symbol/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'module and module name'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-class"><span class="hljs-keyword">module</span>: :<span class="hljs-title">test</span>, <span class="hljs-title">module_name</span>: :<span class="hljs-title">test</span>}</span>
+      e = assert_raises(so_error) {get_controller(options)}
+      assert_match(<span class="hljs-regexp">/use both/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'name'</span>  <span class="hljs-keyword">do</span>
+
+    it <span class="hljs-string">'not string or symbol'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">name:</span> so_error}
+      e = assert_raises(so_error) {get_controller(options)}
+      assert_match(<span class="hljs-regexp">/be a string or symbol/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'blank'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span> [{<span class="hljs-class"><span class="hljs-keyword">module</span>: '<span class="hljs-title">test</span>'}]}</span>
+      e = assert_raises(so_error) {get_controller(options)}
+      assert_match(<span class="hljs-regexp">/is blank/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'duplicate'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span> [{<span class="hljs-symbol">name:</span> <span class="hljs-symbol">:users</span>}]}
+      e = assert_raises(so_error) {get_controller(options)}
+      assert_match(<span class="hljs-regexp">/exists/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'before filter'</span>  <span class="hljs-keyword">do</span>
+
+    it <span class="hljs-string">'not string or symbol'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">before_action:</span> so_error}
+      e = assert_raises(so_error) {get_controller(options)}
+      assert_match(<span class="hljs-regexp">/be a string or symbol/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'invalid options'</span>  <span class="hljs-keyword">do</span>
+
+    it <span class="hljs-string">'not hash, string, symbol'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span> so_error}  <span class="hljs-comment"># so_error is a class not a hash, string or symbol</span>
+      e = assert_raises(so_error) {get_controller(options)}
+      assert_match(<span class="hljs-regexp">/not a hash, string or symbol/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'not array of hashes'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span> [so_error]}
+      e = assert_raises(so_error) {get_controller(options)}
+      assert_match(<span class="hljs-regexp">/not a hash, string or symbol/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'invalid options'</span>  <span class="hljs-keyword">do</span>
+
+    it <span class="hljs-string">'instance blank'</span> <span class="hljs-keyword">do</span>
+      options    = {<span class="hljs-symbol">action_name:</span> <span class="hljs-symbol">:index</span>}
+      controller = get_controller(options)
+      methods    = controller.tso_method <span class="hljs-symbol">:serializer_options_methods</span>
+      methods[<span class="hljs-symbol">:users</span>][<span class="hljs-symbol">:instance</span>] = <span class="hljs-keyword">nil</span>
+      e = assert_raises(so_error) {controller.tso.before_action_process(controller)}
+      assert_match(<span class="hljs-regexp">/instance is blank/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'missing method'</span> <span class="hljs-keyword">do</span>
+      options    = {<span class="hljs-symbol">action_name:</span> <span class="hljs-symbol">:xxxxxxx</span>}
+      controller = get_controller(options)
+      methods    = controller.tso_method <span class="hljs-symbol">:serializer_options_methods</span>
+      e = assert_raises(so_error) {controller.tso.before_action_process(controller)}
+      assert_match(<span class="hljs-regexp">/not respond to/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

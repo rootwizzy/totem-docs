@@ -1,0 +1,381 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-cli/lib/totem/cli/helpers_ember/bundle</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_ember/bundle"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_ember/bundle.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers_ember/bundle.rb">src/totem/api/totem-cli/lib/totem/cli/helpers_ember/bundle.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">HelpersEmber</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Bundle</span></span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:bower_components_directories</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:node_modules_directories</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="add-bundle-version-on-commands">Add Bundle Version on Commands.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_command</span><span class="hljs-params">(cmd)</span>;</span> get_command_with_bundle_version(cmd) || cmd; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_command_with_bundle_version</span><span class="hljs-params">(cmd)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> cmd.blank?
+    run_cmd = get_command_line_from_command_hash(cmd)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> run_cmd.blank?
+    hash = get_bundle_standardized_run_command(cmd)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> hash.blank?
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> hash[<span class="hljs-symbol">:git</span>].present?
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> hash[<span class="hljs-symbol">:action</span>] != <span class="hljs-string">'install'</span>
+    app = hash[<span class="hljs-symbol">:app</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> app.blank?
+    pkg = hash[<span class="hljs-symbol">:package</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> pkg.blank?
+    key     = app == <span class="hljs-string">'bower'</span> ? <span class="hljs-symbol">:bower</span> <span class="hljs-symbol">:</span> <span class="hljs-symbol">:node</span>
+    bundle  = (bundle_lock_data[key] || <span class="hljs-constant">Hash</span>.new)[pkg.to_sym] || <span class="hljs-constant">Hash</span>.new
+    version = bundle[<span class="hljs-symbol">:version</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> version.blank?
+    command = cmd.deep_dup
+    <span class="hljs-keyword">case</span> key
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:bower</span>
+      set_command_line_in_command_hash(command, run_cmd.strip + <span class="hljs-string">"#<span class="hljs-subst">#{version}</span>"</span>)  <span class="hljs-keyword">unless</span> run_cmd.match(<span class="hljs-string">'#'</span>)
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:node</span>
+      set_command_line_in_command_hash(command, run_cmd.strip + <span class="hljs-string">"@<span class="hljs-subst">#{version}</span>"</span>)  <span class="hljs-keyword">unless</span> run_cmd.match(<span class="hljs-string">'@'</span>)
+    <span class="hljs-keyword">end</span>
+    command
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_command_line_from_command_hash</span><span class="hljs-params">(cmd)</span></span>
+    type = cmd[<span class="hljs-symbol">:command</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> type.blank?
+    <span class="hljs-keyword">case</span> type.to_sym
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:prompt</span>  <span class="hljs-keyword">then</span> cmd[<span class="hljs-symbol">:prompt_command</span>]
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:run</span>     <span class="hljs-keyword">then</span> cmd[<span class="hljs-symbol">:run_command</span>]
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_command_line_in_command_hash</span><span class="hljs-params">(cmd, new_cmd)</span></span>
+    type = cmd[<span class="hljs-symbol">:command</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> type.blank?
+    <span class="hljs-keyword">case</span> type.to_sym
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:prompt</span>  <span class="hljs-keyword">then</span> cmd[<span class="hljs-symbol">:prompt_command</span>] = new_cmd
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:run</span>     <span class="hljs-keyword">then</span> cmd[<span class="hljs-symbol">:run_command</span>]    = new_cmd
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="bundle-commands-for-missing-modules">Bundle Commands for Missing Modules.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_run_commands</span></span>
+    paths        = <span class="hljs-constant">Array</span>.new
+    run_commands = <span class="hljs-constant">Array</span>.new
+    commands     = get_bundle_standardized_run_commands
+    gen_commands = generate_additional_package_commands(commands)
+    commands.merge(gen_commands).each <span class="hljs-keyword">do</span> |pkg, hash|
+      cmd_path = hash[<span class="hljs-symbol">:command_path</span>]
+      cmd      = hash[<span class="hljs-symbol">:original_command</span>]
+      ibower   = hash[<span class="hljs-symbol">:installed_bower</span>]
+      inode    = hash[<span class="hljs-symbol">:installed_node</span>]
+      post     = hash[<span class="hljs-symbol">:post_install</span>] || <span class="hljs-constant">Array</span>.new
+      git      = hash[<span class="hljs-symbol">:git</span>]
+
+      <span class="hljs-keyword">case</span>
+
+      <span class="hljs-keyword">when</span> !ibower &amp;&amp; !inode
+        <span class="hljs-keyword">unless</span> paths.<span class="hljs-keyword">include</span>?(cmd_path)
+          run_commands.push(<span class="hljs-symbol">command:</span> <span class="hljs-symbol">:comment</span>, <span class="hljs-symbol">say:</span> <span class="hljs-string">"Running commands from <span class="hljs-subst">#{cmd_path.inspect}</span>"</span>, <span class="hljs-symbol">args:</span> <span class="hljs-symbol">:yellow</span>)
+          paths.push(cmd_path)
+        <span class="hljs-keyword">end</span>
+        run_commands.push(cmd)
+        post.each {|h| run_commands.push(h[<span class="hljs-symbol">:original_command</span>])}
+
+      <span class="hljs-keyword">when</span> inode
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> ember_cli_package?(pkg)  <span class="hljs-comment"># don't uninstall ember-cli even if different version</span>
+        iver = hash[<span class="hljs-symbol">:installed_node_version</span>]
+        bver = get_package_bundle_lock_node_version(pkg)
+        <span class="hljs-keyword">if</span> iver.present? &amp;&amp; bver.present? &amp;&amp; iver != bver
+          <span class="hljs-keyword">if</span> bundle_uninstall?
+            run_commands += generate_node_bundle_uninstall_commands(hash, pkg)
+            run_commands.push get_bundle_command(hash[<span class="hljs-symbol">:original_command</span>])
+            post.each {|h| run_commands.push(h[<span class="hljs-symbol">:original_command</span>])}
+          <span class="hljs-keyword">else</span>
+            say_message <span class="hljs-string">"Installed node package <span class="hljs-subst">#{pkg.to_s.inspect}</span> version <span class="hljs-subst">#{iver.inspect}</span> differs from bundle lock version <span class="hljs-subst">#{bver.inspect}</span>"</span>, <span class="hljs-symbol">:yellow</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">when</span> ibower &amp;&amp; git &amp;&amp; get_package_bundle_lock_bower_version(pkg) == hash[<span class="hljs-symbol">:version</span>]
+
+      <span class="hljs-keyword">when</span> ibower
+        iver = hash[<span class="hljs-symbol">:installed_bower_version</span>]
+        bver = get_package_bundle_lock_bower_version(pkg)
+        <span class="hljs-keyword">if</span> iver.present? &amp;&amp; bver.present? &amp;&amp; iver != bver
+          <span class="hljs-keyword">if</span> bundle_uninstall?
+            run_commands += generate_bower_bundle_uninstall_commands(hash, pkg)
+            run_commands.push get_bundle_command(hash[<span class="hljs-symbol">:original_command</span>])
+            post.each {|h| run_commands.push(h[<span class="hljs-symbol">:original_command</span>])}
+          <span class="hljs-keyword">else</span>
+            say_message <span class="hljs-string">"Installed bower package <span class="hljs-subst">#{pkg.to_s.inspect}</span> version <span class="hljs-subst">#{iver.inspect}</span> differs from bundle lock version <span class="hljs-subst">#{bver.inspect}</span>"</span>, <span class="hljs-symbol">:yellow</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+    bundle_lock_versions? ? run_commands.map {|c| get_bundle_command(c)} <span class="hljs-symbol">:</span> run_commands
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Generate additional packages that are in the bundle.lock file but do not have
+an install command (e.g. ember-cli installed packackes such as ember, ember-data).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_additional_package_commands</span><span class="hljs-params">(commands)</span></span>
+    gen_cmds   = <span class="hljs-constant">Hash</span>.new
+    node_pkgs = [<span class="hljs-string">'ember-data'</span>].map {|p| p.to_sym}
+    node_pkgs.each <span class="hljs-keyword">do</span> |pkg|
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> commands.has_key?(pkg)
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> gen_cmds.has_key?(pkg)
+      version = get_installed_package_version(pkg.to_s) || <span class="hljs-string">'new'</span>
+      gen_hash = {
+        <span class="hljs-symbol">installed_node:</span>         <span class="hljs-keyword">true</span>,
+        <span class="hljs-symbol">installed_node_version:</span> version,
+        <span class="hljs-symbol">original_command:</span>       get_bundle_hash_prompt_command(<span class="hljs-string">"npm install --save-dev <span class="hljs-subst">#{pkg}</span>"</span>),
+      }
+      generate_node_bundle_post_install_commands(pkg, gen_hash)
+      gen_cmds[pkg] = gen_hash
+    <span class="hljs-keyword">end</span>
+    bower_pkgs = [<span class="hljs-string">'ember'</span>].map {|p| p.to_sym}
+    bower_pkgs.each <span class="hljs-keyword">do</span> |pkg|
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> commands.has_key?(pkg)
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> gen_cmds.has_key?(pkg)
+      version = get_installed_bower_version(pkg.to_s) || <span class="hljs-string">'new'</span>
+      gen_hash = {
+        <span class="hljs-symbol">installed_bower:</span>         <span class="hljs-keyword">true</span>,
+        <span class="hljs-symbol">installed_bower_version:</span> version,
+        <span class="hljs-symbol">original_command:</span>        get_bundle_hash_prompt_command(<span class="hljs-string">"bower install --save <span class="hljs-subst">#{pkg}</span>"</span>),
+      }
+      gen_cmds[pkg] = gen_hash
+    <span class="hljs-keyword">end</span>
+    gen_cmds
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add custom commands e.g. a npm install for &#39;ember-data&#39; does not install ember-data in bower_components.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_node_bundle_post_install_commands</span><span class="hljs-params">(pkg, gen_hash)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>case pkg
+when &#39;ember-data&#39;.to_sym
+  post_hash = {package: pkg}
+  lock_ver  = get_package_bundle_lock_node_version(pkg)
+  post      = (gen_hash[:post_install] ||= Array.new)
+  post.push post_hash.merge(original_command: get_bundle_hash_prompt_command(&quot;bower uninstall --save ember-data&quot;))
+  post.push post_hash.merge(original_command: get_bundle_hash_prompt_command(&quot;bower install --save ember-data##{lock_ver}&quot;))
+end</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_node_bundle_uninstall_commands</span><span class="hljs-params">(hash, pkg)</span></span>
+    cmds = <span class="hljs-constant">Array</span>.new
+    cmds.push get_bundle_hash_prompt_command(<span class="hljs-string">"npm uninstall --save-dev <span class="hljs-subst">#{pkg}</span>"</span>).merge(<span class="hljs-symbol">installed_version:</span> hash[<span class="hljs-symbol">:installed_node_version</span>])
+    (hash[<span class="hljs-symbol">:node_related</span>] || <span class="hljs-constant">Hash</span>.new).keys.each <span class="hljs-keyword">do</span> |node_pkg|
+      cmds.push get_bundle_hash_prompt_command(<span class="hljs-string">"npm uninstall --save-dev <span class="hljs-subst">#{node_pkg}</span>"</span>)
+    <span class="hljs-keyword">end</span>
+    (hash[<span class="hljs-symbol">:bower_related</span>] || <span class="hljs-constant">Hash</span>.new).keys.each <span class="hljs-keyword">do</span> |bower_pkg|
+      cmds.push get_bundle_hash_prompt_command(<span class="hljs-string">"bower uninstall --save <span class="hljs-subst">#{bower_pkg}</span>"</span>)
+    <span class="hljs-keyword">end</span>
+    cmds
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_bower_bundle_uninstall_commands</span><span class="hljs-params">(hash, pkg)</span></span>
+    cmds = <span class="hljs-constant">Array</span>.new
+    cmds.push get_bundle_hash_prompt_command(<span class="hljs-string">"bower uninstall --save <span class="hljs-subst">#{pkg}</span>"</span>)
+    cmds
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Using a &#39;prompt&#39; command incase the install/uninstall requires a user prompt (e.g. ember will raise a
+&#39;depends on&#39; conflict when uninstalled).
+Note: &#39;install&#39; commands use the command in the command file (e.g. may be a string or prompt).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_hash_prompt_command</span><span class="hljs-params">(cmd)</span>;</span> {<span class="hljs-symbol">command:</span> <span class="hljs-symbol">:prompt</span>, <span class="hljs-symbol">prompt_command:</span> cmd}; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="standardize-command-values">Standardize Command Values.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_standardized_run_commands</span></span>
+    array = <span class="hljs-constant">Array</span>.new
+    array.push(<span class="hljs-symbol">package:</span> <span class="hljs-string">'ember-cli'</span>, <span class="hljs-symbol">action:</span> <span class="hljs-string">'install'</span>)
+    all_commands.each <span class="hljs-keyword">do</span> |cmd|
+      file    = cmd[<span class="hljs-symbol">:command_file</span>] || <span class="hljs-string">''</span>
+      options = {<span class="hljs-symbol">command_file:</span> file, <span class="hljs-symbol">command_path:</span> <span class="hljs-constant">File</span>.dirname(file)}
+      hash    = get_bundle_standardized_run_command(cmd.except(<span class="hljs-symbol">:command_file</span>, <span class="hljs-symbol">:command_path</span>), options)
+      array.push(hash)  <span class="hljs-keyword">if</span> hash.present?
+    <span class="hljs-keyword">end</span>
+    set_bower_components_directories
+    set_node_modules_directories
+    commands = <span class="hljs-constant">Hash</span>.new
+    array.each <span class="hljs-keyword">do</span> |hash|
+      package = hash[<span class="hljs-symbol">:package</span>]
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> package.blank?
+      add_bundle_installed_modules_info(hash)
+      action = hash[<span class="hljs-symbol">:action</span>]
+      <span class="hljs-keyword">if</span> commands.has_key?(package)
+        pkg        = commands[package]
+        pkg_action = pkg[<span class="hljs-symbol">:action</span>]
+        <span class="hljs-keyword">if</span> action  == pkg_action
+          say <span class="hljs-string">"Package <span class="hljs-subst">#{package.inspect}</span> is a duplicate in command <span class="hljs-subst">#{hash.inspect}</span>."</span>, <span class="hljs-symbol">:red</span>
+        <span class="hljs-keyword">else</span>
+          pkg[<span class="hljs-symbol">:post_install</span>] = [pkg[<span class="hljs-symbol">:post_install</span>], hash].flatten.compact
+        <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">next</span>
+      <span class="hljs-keyword">end</span>
+      commands[package] = hash
+    <span class="hljs-keyword">end</span>
+    commands.deep_symbolize_keys
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_bundle_standardized_run_command</span><span class="hljs-params">(cmd, options={})</span></span>
+    stop_run <span class="hljs-string">"String command <span class="hljs-subst">#{cmd.inspect}</span> is depreciated."</span>  <span class="hljs-keyword">if</span> cmd.is_a?(<span class="hljs-constant">String</span>)
+    stop_run <span class="hljs-string">"Command <span class="hljs-subst">#{cmd.inspect}</span> is not a hash."</span>  <span class="hljs-keyword">unless</span> cmd.is_a?(<span class="hljs-constant">Hash</span>)
+    command = get_command_line_from_command_hash(cmd)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> command.blank?
+    hash = parse_bundle_command(command).merge(options)
+    hash.merge!(<span class="hljs-symbol">original_command:</span> cmd)
+    hash
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_bundle_installed_modules_info</span><span class="hljs-params">(hash)</span></span>
+    pkg = hash[<span class="hljs-symbol">:package</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> pkg.blank?
+    installed_bower     = is_bower_component?(pkg)
+    installed_bower_ver = get_installed_bower_version(pkg)
+    installed_node      = is_node_component?(pkg)
+    installed_node_ver  = get_installed_package_version(pkg)
+    hash.merge!(
+      <span class="hljs-symbol">installed_bower:</span>         installed_bower,
+      <span class="hljs-symbol">installed_node:</span>          installed_node,
+      <span class="hljs-symbol">installed_bower_version:</span> installed_bower_ver,
+      <span class="hljs-symbol">installed_node_version:</span>  installed_node_ver,
+    )
+    <span class="hljs-keyword">if</span> installed_node.present? &amp;&amp; hash[<span class="hljs-symbol">:action</span>] == <span class="hljs-string">'install'</span>
+      add_node_package_related_bower_components(pkg, hash)
+      add_node_package_related_node_modules(pkg, hash)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_node_package_related_bower_components</span><span class="hljs-params">(pkg, hash)</span></span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> pkg == <span class="hljs-string">'ember-cli'</span>
+      set_node_package_related_bower_components(hash, <span class="hljs-string">'ember'</span>)
+    <span class="hljs-keyword">else</span>
+      comps    = <span class="hljs-constant">Array</span>.new
+      package  = hash[<span class="hljs-symbol">:package</span>]
+      basename = package.sub(<span class="hljs-string">'ember-cli-'</span>,<span class="hljs-string">''</span>).sub(<span class="hljs-string">'ember-'</span>,<span class="hljs-string">''</span>)
+      comps.push package  <span class="hljs-keyword">if</span> is_bower_component?(package)
+      comps.push basename <span class="hljs-keyword">if</span> is_bower_component?(basename)
+      embername = <span class="hljs-string">'ember-'</span> + basename
+      cliname   = <span class="hljs-string">'ember-cli-'</span> + basename
+      comps    += bower_components_directories.select {|d| d.start_with?(embername) || d.start_with?(cliname)}
+      set_node_package_related_bower_components(hash, *comps)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_node_package_related_node_modules</span><span class="hljs-params">(pkg, hash)</span></span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> pkg == <span class="hljs-string">'ember-cli'</span>
+      set_node_package_related_node_modules(hash, <span class="hljs-string">'ember-data'</span>)
+    <span class="hljs-keyword">else</span>
+      related = node_modules_directories.select {|c| c.start_with?(pkg)} - [pkg]
+      set_node_package_related_node_modules(hash, *related)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_node_package_related_node_modules</span><span class="hljs-params">(hash, *packages)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> packages.blank?
+    node_related = <span class="hljs-constant">Hash</span>.new
+    packages.uniq.each <span class="hljs-keyword">do</span> |pkg|
+      version  = get_installed_package_version(pkg)
+      cmd_file = hash[<span class="hljs-symbol">:command_file</span>]
+      node_related[pkg] = {<span class="hljs-symbol">version:</span> version}
+      node_related[pkg].merge!(<span class="hljs-symbol">command_file:</span> cmd_file) <span class="hljs-keyword">if</span> cmd_file.present?
+    <span class="hljs-keyword">end</span>
+    hash[<span class="hljs-symbol">:node_related</span>] = node_related
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_node_package_related_bower_components</span><span class="hljs-params">(hash, *packages)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> packages.blank?
+    bower_related = <span class="hljs-constant">Hash</span>.new
+    packages.uniq.each <span class="hljs-keyword">do</span> |pkg|
+      version  = get_installed_bower_version(pkg)
+      cmd_file = hash[<span class="hljs-symbol">:command_file</span>]
+      bower_related[pkg] = {<span class="hljs-symbol">version:</span> version}
+      bower_related[pkg].merge!(<span class="hljs-symbol">command_file:</span> cmd_file) <span class="hljs-keyword">if</span> cmd_file.present?
+    <span class="hljs-keyword">end</span>
+    hash[<span class="hljs-symbol">:bower_related</span>] = bower_related
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_bower_component?</span><span class="hljs-params">(pkg)</span>;</span> bower_components_directories.<span class="hljs-keyword">include</span>?(pkg); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_node_component?</span><span class="hljs-params">(pkg)</span>;</span>  node_modules_directories.<span class="hljs-keyword">include</span>?(pkg); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_bundle_command</span><span class="hljs-params">(command)</span></span>
+    <span class="hljs-keyword">return</span> {} <span class="hljs-keyword">unless</span> command.is_a?(<span class="hljs-constant">String</span>)
+    parts     = command.to_s.split(<span class="hljs-string">' '</span>)
+    app       = parts.shift
+    action    = parts.shift
+    save_type = parts.shift
+    package   = parts.shift
+    git       = <span class="hljs-keyword">false</span>
+    version   = <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">if</span> package.blank? &amp;&amp; !save_type.to_s.start_with?(<span class="hljs-string">'-'</span>)
+      package   = save_type
+      save_type = <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">end</span>
+    save_type = <span class="hljs-string">'--save-dev'</span>  <span class="hljs-keyword">if</span> save_type.blank? &amp;&amp; app == <span class="hljs-string">'ember'</span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> package.present? &amp;&amp; package.match(<span class="hljs-string">'/'</span>)
+      git              = package.strip.start_with?(<span class="hljs-string">'git:'</span>)
+      package, version = package.split(<span class="hljs-string">'#'</span>,<span class="hljs-number">2</span>)  <span class="hljs-keyword">if</span> package.match(<span class="hljs-string">'#'</span>)
+      package          = <span class="hljs-constant">File</span>.basename(package, <span class="hljs-string">'.*'</span>)
+    <span class="hljs-keyword">when</span> package.present? &amp;&amp; app == <span class="hljs-string">'bower'</span> &amp;&amp; package.match(<span class="hljs-string">'#'</span>)
+      package, version = package.split(<span class="hljs-string">'#'</span>,<span class="hljs-number">2</span>)
+    <span class="hljs-keyword">when</span> package.present? &amp;&amp; package.match(<span class="hljs-string">'@'</span>)
+      package, version = package.split(<span class="hljs-string">'@'</span>,<span class="hljs-number">2</span>)
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>start: custom exceptions.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> package.present? &amp;&amp; package.start_with?(<span class="hljs-string">'chosen_'</span>)
+      package = package.split(<span class="hljs-string">'_'</span>,<span class="hljs-number">2</span>).first
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>end: custom exceptions.</p></div></div><div class="code"><div class="wrapper">    app     = app.strip       <span class="hljs-keyword">if</span> app.present?
+    action  = action.strip    <span class="hljs-keyword">if</span> action.present?
+    package = package.strip   <span class="hljs-keyword">if</span> package.present?
+    version = version.strip   <span class="hljs-keyword">if</span> version.present?
+    {<span class="hljs-symbol">app:</span> app, <span class="hljs-symbol">action:</span> action, <span class="hljs-symbol">package:</span> package, <span class="hljs-symbol">version:</span> version, <span class="hljs-symbol">save_type:</span> save_type, <span class="hljs-symbol">git:</span> git}
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_installed_bower_version</span><span class="hljs-params">(package)</span></span>
+    filename = <span class="hljs-string">'bower.json'</span>
+    ver = get_installed_package_version(package, <span class="hljs-string">'bower_components'</span>)  <span class="hljs-comment"># return the package.json version if it exists</span>
+    <span class="hljs-keyword">return</span> ver <span class="hljs-keyword">if</span> ver.present?
+    bower_file = <span class="hljs-constant">File</span>.join(<span class="hljs-string">'bower_components'</span>, package, filename)     <span class="hljs-comment"># return the bower.json version if it exists</span>
+    ver        = <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">if</span> file_exist_in_app_path?(bower_file)
+      json = parse_ember_app_path_json(bower_file)
+      ver  = json[<span class="hljs-symbol">:version</span>] <span class="hljs-keyword">if</span> json.is_a?(<span class="hljs-constant">Hash</span>)
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> ver.blank?
+      bower_file = <span class="hljs-constant">File</span>.join(<span class="hljs-string">'bower_components'</span>, package, <span class="hljs-string">'.'</span> + filename)  <span class="hljs-comment"># try the .bower.json to see if it has a version</span>
+      <span class="hljs-keyword">if</span> file_exist_in_app_path?(bower_file)
+        json     = parse_ember_app_path_json(bower_file)
+        ver = json[<span class="hljs-symbol">:version</span>] <span class="hljs-keyword">if</span> json.is_a?(<span class="hljs-constant">Hash</span>)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    ver
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_installed_package_version</span><span class="hljs-params">(package, dir=<span class="hljs-string">'node_modules'</span>)</span></span>
+    filename = <span class="hljs-string">'package.json'</span>
+    package_file = <span class="hljs-constant">File</span>.join(dir, package, filename)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> file_exist_in_app_path?(package_file)
+    json    = parse_ember_app_path_json(package_file)
+    version = json.is_a?(<span class="hljs-constant">Hash</span>) ? json[<span class="hljs-symbol">:version</span>] <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ember_cli_package?</span><span class="hljs-params">(pkg)</span>;</span> pkg.present? &amp;&amp; pkg.to_s == <span class="hljs-string">'ember-cli'</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_bower_components_directories</span></span>
+    inside <span class="hljs-constant">File</span>.join(<span class="hljs-variable">@app_path</span>,<span class="hljs-string">'bower_components'</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@bower_components_directories</span> = <span class="hljs-constant">Dir</span>.glob(<span class="hljs-string">'*'</span>)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_node_modules_directories</span></span>
+    inside <span class="hljs-constant">File</span>.join(<span class="hljs-variable">@app_path</span>,<span class="hljs-string">'node_modules'</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@node_modules_directories</span> = <span class="hljs-constant">Dir</span>.glob(<span class="hljs-string">'*'</span>)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">file_exist_in_app_path?</span><span class="hljs-params">(file)</span></span>
+    exist = <span class="hljs-keyword">false</span>
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      exist = <span class="hljs-constant">File</span>.file?(file)
+    <span class="hljs-keyword">end</span>
+    exist
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dir_exist_in_app_path?</span><span class="hljs-params">(dir)</span></span>
+    exist = <span class="hljs-keyword">false</span>
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      exist = <span class="hljs-constant">File</span>.directory?(dir)
+    <span class="hljs-keyword">end</span>
+    exist
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_ember_app_path_json</span><span class="hljs-params">(file)</span></span>
+    stop_run <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-constant">File</span>.join(<span class="hljs-variable">@app_path</span>, file).inspect}</span> file does not exist."</span>  <span class="hljs-keyword">unless</span> file_exist_in_app_path?(file)
+    content = <span class="hljs-keyword">nil</span>
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      content = <span class="hljs-constant">File</span>.read(file)
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-constant">JSON</span>.parse(content).symbolize_keys
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

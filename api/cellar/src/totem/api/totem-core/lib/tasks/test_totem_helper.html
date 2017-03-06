@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/lib/tasks/test_totem_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/lib/tasks/test_totem_helper"><meta name="groc-project-path" content="src/totem/api/totem-core/lib/tasks/test_totem_helper.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/lib/tasks/test_totem_helper.rb">src/totem/api/totem-core/lib/tasks/test_totem_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'rake/testtask'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">TestTotemHelper</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_get_options</span><span class="hljs-params">(args, options={})</span></span>
+    options[<span class="hljs-symbol">:engine_name</span>] = args.engine_name
+    list_files       = <span class="hljs-keyword">true</span>  <span class="hljs-comment"># default</span>
+    list_dirs        = <span class="hljs-keyword">false</span> <span class="hljs-comment"># default</span>
+    list_helper_dirs = <span class="hljs-keyword">false</span> <span class="hljs-comment"># default</span>
+    path             = <span class="hljs-constant">Array</span>.new
+    [args.extras].flatten.compact.each <span class="hljs-keyword">do</span> |arg|
+      <span class="hljs-keyword">case</span> arg.downcase
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'nf'</span>, <span class="hljs-string">'no_file_list'</span>, <span class="hljs-string">'no-file-list'</span>     <span class="hljs-keyword">then</span> list_files       = <span class="hljs-keyword">false</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'d'</span>, <span class="hljs-string">'dir_list'</span>, <span class="hljs-string">'dir-list'</span>              <span class="hljs-keyword">then</span> list_dirs        = <span class="hljs-keyword">true</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'h'</span>, <span class="hljs-string">'helper_list'</span>, <span class="hljs-string">'helper-list'</span>        <span class="hljs-keyword">then</span> list_helper_dirs = <span class="hljs-keyword">true</span>
+      <span class="hljs-keyword">else</span>
+        path.push(arg)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    options[<span class="hljs-symbol">:list_files</span>]        = list_files
+    options[<span class="hljs-symbol">:list_dirs</span>]         = list_dirs
+    options[<span class="hljs-symbol">:list_helper_dirs</span>]  = list_helper_dirs
+    options[<span class="hljs-symbol">:path</span>]              = path
+    options
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_all_test_task</span><span class="hljs-params">(options={})</span></span>
+    match_name = options[<span class="hljs-symbol">:engine_name</span>]
+    error <span class="hljs-string">"No engine pattern match provided for 'all' task."</span>  <span class="hljs-keyword">if</span> match_name.blank?
+    test_files = <span class="hljs-constant">Array</span>.new
+    libs       = <span class="hljs-constant">Array</span>.new
+    totem_engines.each <span class="hljs-keyword">do</span> |engine|
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> engine.engine_name.start_with?(match_name)
+      test_files += totem_get_engine_test_files(engine, options)
+      libs       += totem_get_test_helper_directory(engine, options)
+    <span class="hljs-keyword">end</span>
+    totem_setup_rake_test_task(test_files.sort, libs, options)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_engine_test_task</span><span class="hljs-params">(options)</span></span>
+    name   = options[<span class="hljs-symbol">:engine_name</span>]
+    engine = totem_engines.find {|e| e.railtie_name == name}
+    error <span class="hljs-string">"No engine matches name <span class="hljs-subst">#{name.inspect}</span>.  Did you use the folder name instead of the engine_name?"</span>  <span class="hljs-keyword">if</span> engine.blank?
+    test_files = totem_get_engine_test_files(engine, options)
+    libs       = totem_get_test_helper_directory(engine, options)
+    totem_setup_rake_test_task(test_files.sort, libs, options)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_setup_rake_test_task</span><span class="hljs-params">(test_files, libs, options)</span></span>
+    set_totem_test_environment_variables(options)
+    totem_print_setup(test_files, libs, options)
+    libs.each {|lib| <span class="hljs-variable">$LOAD_PATH</span>.push(lib)}  <span class="hljs-comment"># add the helper directories to the load path</span>
+    <span class="hljs-constant">Minitest</span>.rake_run(test_files)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_totem_test_environment_variables</span><span class="hljs-params">(options)</span></span>
+    env     = <span class="hljs-constant">ENV</span>[<span class="hljs-string">'TESTOPTS'</span>] || <span class="hljs-string">''</span>
+    verbose = env.match(<span class="hljs-string">'-v'</span>) || env.match(<span class="hljs-string">'--verbose'</span>)
+    <span class="hljs-constant">ENV</span>[<span class="hljs-string">'TOTEM_STARTUP_NO_SERIALIZERS'</span>] = <span class="hljs-string">'false'</span>
+    <span class="hljs-constant">ENV</span>[<span class="hljs-string">'TOTEM_STARTUP_QUIET'</span>] = <span class="hljs-string">'true'</span>  <span class="hljs-keyword">unless</span> verbose</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Path to Rails main app config/environment.rb.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-constant">ENV</span>[<span class="hljs-string">'MAIN_APP_CONFIG_ENV'</span>] = <span class="hljs-constant">Rails</span>.root.join(<span class="hljs-string">'config'</span>, <span class="hljs-string">'environment'</span>).to_s</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Path to Rake::TestTask &#39;test_helper.rb&#39;.
+&#39;test_helper.rb&#39; sets the test environment plus additional setup.
+Tests need to &quot;$:.push ENV[&#39;TOTEM_TEST_HELPER&#39;]&quot; (to add to load path) then &quot;require test_helper&quot;.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-constant">ENV</span>[<span class="hljs-string">'TOTEM_TEST_HELPER'</span>] = <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../../../test'</span>, __FILE_<span class="hljs-number">_</span>).to_s
+    <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:unit</span>].present?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Rake::Task[:test].clear # removes db:prepare task</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-constant">ENV</span>[<span class="hljs-string">'UNIT_TESTS'</span>] = <span class="hljs-string">'true'</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_get_test_helper_directory</span><span class="hljs-params">(engine, options)</span></span>
+    dir  = <span class="hljs-constant">File</span>.join(engine.root, <span class="hljs-string">'test'</span>)
+    dirs = <span class="hljs-constant">Dir</span>.glob(<span class="hljs-constant">File</span>.join(dir, <span class="hljs-string">'**/helpers'</span>))
+    dirs.select {|d| <span class="hljs-constant">File</span>.directory?(d)}
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_get_engine_test_files</span><span class="hljs-params">(engine, options)</span></span>
+    base_path = <span class="hljs-constant">File</span>.join(engine.root, <span class="hljs-string">'test'</span>)
+    <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:path</span>].blank?
+      path  = options[<span class="hljs-symbol">:path</span>] = [<span class="hljs-string">'*'</span>]
+      paths = [path]
+    <span class="hljs-keyword">else</span>
+      path      = options[<span class="hljs-symbol">:path</span>]
+      dir_paths = path.deep_dup
+      last_path = dir_paths.pop
+      <span class="hljs-keyword">if</span> last_path.to_s.match(<span class="hljs-string">':'</span>)
+        paths = last_path.split(<span class="hljs-string">':'</span>).compact.uniq.map {|p| dir_paths + [p] + [<span class="hljs-constant">File</span>.directory?(<span class="hljs-constant">File</span>.join(base_path, p)) ? <span class="hljs-string">'*'</span> <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>].compact}
+      <span class="hljs-keyword">else</span>
+        path.push(<span class="hljs-string">'*'</span>) <span class="hljs-keyword">if</span> <span class="hljs-constant">File</span>.directory?(<span class="hljs-constant">File</span>.join(base_path, path))
+        paths = [path]
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    test_files = <span class="hljs-constant">Array</span>.new
+    paths.each <span class="hljs-keyword">do</span> |path|
+      each_path  = path.deep_dup
+      test_match = each_path.pop
+      test_path  = <span class="hljs-constant">File</span>.join(base_path, each_path, <span class="hljs-string">"**/<span class="hljs-subst">#{test_match}</span>_test.rb"</span>)
+      test_files += <span class="hljs-constant">Dir</span>.glob(test_path).select {|file| !file.to_s.match(<span class="hljs-string">'test/helpers'</span>)}
+    <span class="hljs-keyword">end</span>
+    test_files.uniq
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_engines</span></span>
+    <span class="hljs-constant">::Rails::Engine</span>.subclasses.map(&amp;<span class="hljs-symbol">:instance</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_print_setup</span><span class="hljs-params">(test_files, libs, options)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:print_setup</span>] == <span class="hljs-keyword">false</span>
+    rake_cmd = <span class="hljs-constant">ARGV</span>.join(<span class="hljs-string">' '</span>)
+    totem_message <span class="hljs-string">"\n"</span>
+    width = <span class="hljs-number">20</span>
+    totem_message <span class="hljs-string">'** caution: Unit tests do not perform a db:prepare **'</span>  <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:unit</span>].present?
+    totem_message <span class="hljs-string">'Test Run Options:'</span>
+    totem_message <span class="hljs-string">'  run'</span>.ljust(width) + <span class="hljs-string">": rake <span class="hljs-subst">#{rake_cmd}</span>"</span>
+    totem_message <span class="hljs-string">'  coverage'</span>.ljust(width) + <span class="hljs-string">": <span class="hljs-subst">#{options[<span class="hljs-symbol">:coverage</span>].present?}</span>"</span>
+    totem_message <span class="hljs-string">'  environment'</span>.ljust(width) + <span class="hljs-string">": <span class="hljs-subst">#{<span class="hljs-constant">ENV</span>[<span class="hljs-string">'MAIN_APP_CONFIG_ENV'</span>].inspect}</span>"</span>
+    totem_message <span class="hljs-string">'  test_helper'</span>.ljust(width) + <span class="hljs-string">": <span class="hljs-subst">#{<span class="hljs-constant">ENV</span>[<span class="hljs-string">'TOTEM_TEST_HELPER'</span>].inspect}</span>"</span>
+    totem_message <span class="hljs-string">'  options'</span>.ljust(width) + <span class="hljs-string">": <span class="hljs-subst">#{options.inspect}</span>"</span>
+    <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:list_helper_dirs</span>]
+      <span class="hljs-keyword">if</span> libs.present?
+        <span class="hljs-keyword">if</span> libs.length == <span class="hljs-number">1</span>
+          totem_message <span class="hljs-string">"  helper lib dir"</span>.ljust(width) + <span class="hljs-string">": <span class="hljs-subst">#{libs.first}</span>"</span>
+        <span class="hljs-keyword">else</span>
+          totem_message <span class="hljs-string">"  helper lib dirs (<span class="hljs-subst">#{libs.length}</span>):"</span>
+          libs.sort.each_with_index <span class="hljs-keyword">do</span> |lib, index|
+            totem_message <span class="hljs-string">"   <span class="hljs-subst">#{(index + <span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">5</span>)}</span>. <span class="hljs-subst">#{lib}</span>"</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:list_dirs</span>]
+      totem_message <span class="hljs-string">"  test files per dir (total=<span class="hljs-subst">#{test_files.length}</span>):"</span>
+      file_counts = <span class="hljs-constant">Hash</span>.new(<span class="hljs-number">0</span>)
+      test_files.sort.each <span class="hljs-keyword">do</span> |file|
+        dirname = <span class="hljs-constant">File</span>.dirname(file)
+        file_counts[dirname] += <span class="hljs-number">1</span>
+      <span class="hljs-keyword">end</span>
+      file_counts.each <span class="hljs-keyword">do</span> |dirname, count|
+        s_count = <span class="hljs-string">"(<span class="hljs-subst">#{count}</span>)"</span>
+        totem_message <span class="hljs-string">"   <span class="hljs-subst">#{s_count.rjust(<span class="hljs-number">6</span>)}</span> -&gt; <span class="hljs-subst">#{dirname}</span>"</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:list_files</span>]
+      totem_message <span class="hljs-string">"  test files:"</span>
+      test_files.each_with_index <span class="hljs-keyword">do</span> |file, index|
+        totem_message <span class="hljs-string">"   <span class="hljs-subst">#{(index + <span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">5</span>)}</span>. <span class="hljs-subst">#{file}</span>"</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    totem_message <span class="hljs-string">"\n"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_message</span><span class="hljs-params">(message)</span></span>
+    puts message
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">error</span><span class="hljs-params">(message)</span></span>
+    raise <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name}</span>: <span class="hljs-subst">#{message}</span>"</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

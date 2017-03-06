@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/support/registration/registration_error</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/support/registration/registration_error"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/registration/registration_error.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/registration/registration_error.rb">src/totem/api/totem-core/test/support/registration/registration_error.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../../support_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+describe <span class="hljs-string">'registration.rb errors'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span>
+    set_environment
+    load_platform_configs
+    <span class="hljs-variable">@register</span>         = <span class="hljs-variable">@env</span>.register
+    <span class="hljs-variable">@registered</span>       = <span class="hljs-variable">@env</span>.registered
+    <span class="hljs-variable">@platform_options</span> = {
+      <span class="hljs-symbol">platform_name:</span>     <span class="hljs-string">'test_platform'</span>,
+      <span class="hljs-symbol">platform_path:</span>     <span class="hljs-string">'test/platform'</span>,
+      <span class="hljs-symbol">platform_scope:</span>    <span class="hljs-string">'test_scope'</span>,
+      <span class="hljs-symbol">platform_sub_type:</span> <span class="hljs-string">'common'</span>,
+    }
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'framework name cannot be blank'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {<span class="hljs-variable">@register</span>.framework}
+    assert_match(<span class="hljs-regexp">/framework name.*blank/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'framework path cannot be blank'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {<span class="hljs-variable">@register</span>.framework(<span class="hljs-string">'test_framework'</span>)}
+    assert_match(<span class="hljs-regexp">/framework path.*blank/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'framework name must be a string'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {<span class="hljs-variable">@register</span>.framework(<span class="hljs-symbol">:test_framework</span>, <span class="hljs-string">'test/framework/core'</span>)}
+    assert_match(<span class="hljs-regexp">/framework.*not a string/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'framework cannot be registered more than once'</span> <span class="hljs-keyword">do</span>
+    register_framework
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {register_framework}
+    assert_match(<span class="hljs-regexp">/framework.*already been registered/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'platform name cannot be blank'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {<span class="hljs-variable">@register</span>.platform}
+    assert_match(<span class="hljs-regexp">/platform.*blank/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'platform path cannot be blank'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {<span class="hljs-variable">@register</span>.platform(<span class="hljs-string">'test_platform'</span>)}
+    assert_match(<span class="hljs-regexp">/platform path.*blank/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'platform must be a string'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {<span class="hljs-variable">@register</span>.platform(<span class="hljs-symbol">:test_platform</span>, <span class="hljs-string">'test/platform/main'</span>)}
+    assert_match(<span class="hljs-regexp">/platform.*not a string/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'platform cannot register until framework registered'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {register_platform}
+    assert_match(<span class="hljs-regexp">/framework has not been set/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'platform cannot be registered more than once'</span> <span class="hljs-keyword">do</span>
+    register_framework
+    register_platform
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {register_platform}
+    assert_match(<span class="hljs-regexp">/platform.*already been registered/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'engine cannot be blank'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {<span class="hljs-variable">@register</span>.engine(<span class="hljs-string">''</span>)}
+    assert_match(<span class="hljs-regexp">/engine.*blank/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'engine must be a string'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {<span class="hljs-variable">@register</span>.engine(<span class="hljs-symbol">:test_engine_name</span>)}
+    assert_match(<span class="hljs-regexp">/engine.*not a string/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

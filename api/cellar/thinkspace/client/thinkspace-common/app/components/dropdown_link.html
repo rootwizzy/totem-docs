@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-common/app/components/dropdown_link</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-common/app/components/dropdown_link"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-common/app/components/dropdown_link.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-common/app/components/dropdown_link.coffee">src/thinkspace/client/thinkspace-common/app/components/dropdown_link.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>thinkspace-dropdown-link
+see thinkspace/common/dropdown for usage instructions</p></div></div><div class="code"><div class="wrapper">export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">'li'</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@classNames</span> = ember.makeArray(<span class="hljs-property">@list_item_class</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>didInsertElement: -&gt; $(document).foundation()
+didInsertElement: -&gt; @$().foundation()</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">active</span>: ember.computed.reads <span class="hljs-string">'member.active'</span>
+
+  <span class="hljs-attribute">select_action</span>: ember.computed -&gt;
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'select_action_master'</span>) <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'select_action_master'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'link.action'</span>) <span class="hljs-keyword">if</span> <span class="hljs-property">@has_key</span>(<span class="hljs-property">@get</span>(<span class="hljs-string">'link'</span>), <span class="hljs-string">'action'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">select_route</span>: ember.computed -&gt;
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'select_route_master'</span>) <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'select_route_master'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'link.route'</span>) <span class="hljs-keyword">if</span> <span class="hljs-property">@has_key</span>(<span class="hljs-property">@get</span>(<span class="hljs-string">'link'</span>), <span class="hljs-string">'route'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">display</span>: ember.computed -&gt;
+    display_property = <span class="hljs-property">@get</span> <span class="hljs-string">'display_property_master'</span>
+    link             = <span class="hljs-property">@get</span> <span class="hljs-string">'link'</span>
+    <span class="hljs-keyword">if</span> ember.isPresent(display_property)
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span> link[<span class="hljs-string">'get'</span>] == <span class="hljs-string">'function'</span>
+        value = link.get(display_property)
+        value = link[display_property] <span class="hljs-keyword">unless</span> ember.isPresent(value)
+      <span class="hljs-keyword">else</span>
+        value = link[display_property]
+      <span class="hljs-keyword">return</span> value
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'link.display'</span>) <span class="hljs-keyword">if</span> <span class="hljs-property">@has_key</span>(<span class="hljs-property">@get</span>(<span class="hljs-string">'link'</span>), <span class="hljs-string">'display'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'link'</span>)
+
+  <span class="hljs-attribute">route_param_key</span>: ember.computed -&gt;
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'link'</span>).get(<span class="hljs-property">@get</span>(<span class="hljs-string">'route_param_key_master'</span>)) <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'route_param_key_master'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@get</span>(<span class="hljs-string">"link.route_param_key"</span>) <span class="hljs-keyword">if</span> <span class="hljs-property">@has_key</span>(<span class="hljs-property">@get</span>(<span class="hljs-string">'link'</span>), <span class="hljs-string">'route_param_key'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'link'</span>)
+
+  <span class="hljs-attribute">route_param</span>: ember.computed <span class="hljs-string">'route_param_key'</span>, <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@get</span>(<span class="hljs-string">"link.<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'route_param_key'</span>)}</span>"</span>)
+
+  <span class="hljs-attribute">has_key</span>: <span class="hljs-function"><span class="hljs-params">(obj, key)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> (key <span class="hljs-keyword">of</span> obj) <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> This breaks on string arrays.</span></div></div></div></div></body></html>

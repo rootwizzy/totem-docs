@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/app/lib/totem/core/support/oauth</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/app/lib/totem/core/support/oauth"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/support/oauth.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/support/oauth.rb">src/totem/api/totem-core/app/lib/totem/core/support/oauth.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'totem/core/oauth/exceptions'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Support</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Oauth</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Should always use the public methods to access these instance variables.
+Listing the instance variables used to provide easily access if needed.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:totem_settings</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:loaded_providers</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:platform_active_providers</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:platform_api_requests</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(env)</span></span>
+            <span class="hljs-variable">@totem_settings</span>   = env
+            <span class="hljs-variable">@loaded_providers</span> = <span class="hljs-constant">::Rails</span>.application.secrets.totem_oauth_providers || <span class="hljs-constant">Hash</span>.new
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">oauth</span>;</span> <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reset</span></span>
+            <span class="hljs-variable">@platform_active_providers</span> = <span class="hljs-keyword">nil</span>
+            <span class="hljs-variable">@platform_api_requests</span>     = <span class="hljs-keyword">nil</span>
+            <span class="hljs-keyword">self</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reload_providers</span><span class="hljs-params">(hash)</span>;</span> <span class="hljs-variable">@loaded_providers</span> = hash; reset; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Can be used when the platform name or a current object is not available (e.g. rake task)
+but a glob route (e.g. the main platform) exists.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">default_platform_name</span></span>
+            glob_routes = totem_settings.registered.engine_glob_routes
+            glob_route  = glob_routes.first || <span class="hljs-constant">Hash</span>.new
+            glob_route[<span class="hljs-symbol">:platform_name</span>]
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="oauth-api-request-section">Oauth API Request Section.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_user</span><span class="hljs-params">(platform_name, params={}, options={})</span>;</span>  platform_api(platform_name).create_user(params.deep_dup, options); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">email_check</span><span class="hljs-params">(platform_name, params={})</span>;</span>              platform_api(platform_name).email_check(params.deep_dup); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">email_exists?</span><span class="hljs-params">(platform_name, params={})</span>;</span>            platform_api(platform_name).email_exists?(params.deep_dup); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verify_password</span><span class="hljs-params">(platform_name, params={})</span>;</span>          platform_api(platform_name).verify_password(params.deep_dup); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">password_valid?</span><span class="hljs-params">(platform_name, params={})</span>;</span>          platform_api(platform_name).password_valid?(params.deep_dup); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reset_password</span><span class="hljs-params">(platform_name, params={})</span>;</span>           platform_api(platform_name).reset_password(params.deep_dup); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_password_reset_token</span><span class="hljs-params">(platform_name, params={})</span>;</span> platform_api(platform_name).get_password_reset_token(params.deep_dup); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_password_from_token</span><span class="hljs-params">(platform_name, params={})</span>;</span>  platform_api(platform_name).set_password_from_token(params.deep_dup); <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_create_user</span><span class="hljs-params">(object, params={}, options={})</span>;</span>  create_user(get_platform_name(object), params, options); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_email_check</span><span class="hljs-params">(object, params={})</span>;</span>              email_check(get_platform_name(object), params); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_email_exists?</span><span class="hljs-params">(object, params={})</span>;</span>            email_exists?(get_platform_name(object), params); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_verify_password</span><span class="hljs-params">(object, params={})</span>;</span>          verify_password(get_platform_name(object), params); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_password_valid?</span><span class="hljs-params">(object, params={})</span>;</span>          password_valid?(get_platform_name(object), params); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_reset_password</span><span class="hljs-params">(object, params={})</span>;</span>           reset_password(get_platform_name(object), params); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_get_password_reset_token</span><span class="hljs-params">(object, params={})</span>;</span> get_password_reset_token(get_platform_name(object), params); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_set_password_from_token</span><span class="hljs-params">(object, params={})</span>;</span>  set_password_from_token(get_platform_name(object), params); <span class="hljs-keyword">end</span>
+          </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="oauth-api-section">Oauth API Section.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">api_requests</span>;</span> <span class="hljs-variable">@platform_api_requests</span> ||= get_api_requests; <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform_api</span><span class="hljs-params">(platform_name)</span></span>
+            raise <span class="hljs-constant">PlatformNameBlank</span>, <span class="hljs-string">"Platform API platform name is blank."</span>  <span class="hljs-keyword">if</span> platform_name.blank?
+            request = api_requests[platform_name]
+            raise <span class="hljs-constant">PlatformApiBlank</span>, <span class="hljs-string">"Platform API is blank for platform name <span class="hljs-subst">#{platform_name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> request.blank?
+            request
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="oauth-providers-section">Oauth Providers Section.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">providers</span>;</span> <span class="hljs-variable">@platform_active_providers</span> ||= <span class="hljs-constant">PlatformActiveProviders</span>.new.providers(loaded_providers); <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform_providers</span><span class="hljs-params">(platform_name)</span></span>
+            raise <span class="hljs-constant">PlatformNameBlank</span>, <span class="hljs-string">"Platform providers platform name is blank."</span>  <span class="hljs-keyword">if</span> platform_name.blank?
+            hash = providers[platform_name]
+            raise <span class="hljs-constant">PlatformProvidersBlank</span>, <span class="hljs-string">"Platform providers are blank for platform name <span class="hljs-subst">#{platform_name.inspect}</span>."</span>  <span class="hljs-keyword">if</span> hash.blank?
+            hash
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_platform_providers</span><span class="hljs-params">(object)</span>;</span> platform_providers(get_platform_name(object)); <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform_provider</span><span class="hljs-params">(platform_name, provider)</span>;</span> platform_providers(platform_name)[provider] || {}; <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_platform_provider</span><span class="hljs-params">(object, provider)</span>;</span> platform_provider(get_platform_name(object), provider); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="private">Private.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">          private
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_platform_name</span><span class="hljs-params">(object)</span>;</span> totem_settings.engine.current_platform_name(object); <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_api_requests</span></span>
+            api_providers = <span class="hljs-constant">Hash</span>.new
+            providers.each <span class="hljs-keyword">do</span> |platform_name, platform_providers|
+              api_class                    = totem_settings.classes[platform_name].oauth_api
+              providers_in_order           = platform_providers.values.sort_by {|p| p.order}
+              api_providers[platform_name] = api_class.new(providers_in_order)
+            <span class="hljs-keyword">end</span>
+            api_providers
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">include</span> <span class="hljs-constant">Shared</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Encapsulating this in a class to prevent any naming conflicts with the base class.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PlatformActiveProviders</span></span>
+
+            <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:platform_active_providers</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(platform_active_providers=<span class="hljs-constant">Hash</span>.new)</span></span>
+              <span class="hljs-variable">@platform_active_providers</span> = platform_active_providers
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">providers</span><span class="hljs-params">(loaded_providers)</span></span>
+              loaded_providers.deep_symbolize_keys.each <span class="hljs-keyword">do</span> |provider_name, hash|
+                config    = hash[<span class="hljs-symbol">:_config</span>]
+                platforms = hash.except(<span class="hljs-symbol">:_config</span>)
+                <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> provider_active?(config)
+                add_provider_to_platforms(provider_name, config, platforms)
+              <span class="hljs-keyword">end</span>
+              debug_message
+              platform_active_providers
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_provider_to_platforms</span><span class="hljs-params">(provider_name, provider_config, platforms)</span></span>
+              platforms.deep_symbolize_keys.each <span class="hljs-keyword">do</span> |platform_name, config|
+                <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> platform_active?(config)
+                add_platform_provider(provider_name, provider_config, platform_name, config)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_platform_provider</span><span class="hljs-params">(provider_name, provider_config, platform_name, platform_config)</span></span>
+              platform_name        = platform_name.to_s
+              providers            = platform_active_providers[platform_name] || <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+              config               = providers[provider_name] || <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+              config.provider      = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>[provider_config.deep_dup]
+              config.provider.name = provider_name
+              config.provider.site = config.provider.site.chop  <span class="hljs-keyword">if</span> config.provider.site.end_with?(<span class="hljs-string">'/'</span>)
+              config.platform      = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>[platform_config.deep_dup]
+              config.order         = platform_config[<span class="hljs-symbol">:order</span>] || provider_config[<span class="hljs-symbol">:order</span>] || providers.keys.length + <span class="hljs-number">1</span>
+              providers[provider_name]                 = config
+              platform_active_providers[platform_name] = providers
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">provider_active?</span><span class="hljs-params">(config)</span></span>
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> config.blank?
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> config[<span class="hljs-symbol">:active</span>] == <span class="hljs-keyword">true</span>
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> config[<span class="hljs-symbol">:site</span>].present?
+              <span class="hljs-keyword">true</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform_active?</span><span class="hljs-params">(config)</span>;</span> config.has_key?(<span class="hljs-symbol">:active</span>) &amp;&amp; (config[<span class="hljs-symbol">:active</span>] == <span class="hljs-keyword">true</span> || config[<span class="hljs-symbol">:active</span>] == <span class="hljs-string">'true'</span>); <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_message</span></span>
+              <span class="hljs-keyword">if</span> platform_active_providers.blank?
+                debug <span class="hljs-string">"Oauth providers active: None."</span>
+                <span class="hljs-keyword">return</span>
+              <span class="hljs-keyword">end</span>
+              debug <span class="hljs-string">"Oauth providers active:"</span>
+              platforms = platform_active_providers.keys.sort
+              platforms.each <span class="hljs-keyword">do</span> |platform_name|
+                providers = platform_active_providers[platform_name]
+                providers.each <span class="hljs-keyword">do</span> |provider_name, config|
+                  debug <span class="hljs-string">"  <span class="hljs-subst">#{platform_name.inspect}</span>: <span class="hljs-subst">#{provider_name.to_s.inspect}</span> site: <span class="hljs-subst">#{config.provider.site.inspect}</span>"</span>
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-keyword">include</span> <span class="hljs-constant">Shared</span>
+
+          <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

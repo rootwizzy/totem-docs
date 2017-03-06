@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/support/models/models_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/support/models/models_helper"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/models/models_helper.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/models/models_helper.rb">src/totem/api/totem-core/test/support/models/models_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../../support_helper'</span>, __FILE_<span class="hljs-number">_</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="set-model-associations-and-verify-expectations-">Set Model Associations and Verify Expectations ###</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_mock_model_associations</span><span class="hljs-params">(*args)</span></span>
+  options = args.extract_options!
+  mock    = args.shift
+  sz_mock = args.shift
+  fn      = options[<span class="hljs-symbol">:fn</span>]
+  dir     = options[<span class="hljs-symbol">:dir</span>]
+  set_associations_filename(dir, fn)
+  add_mock_model_associations(mock, sz_mock)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_mock_model_associations</span><span class="hljs-params">(mock, sz_mock=<span class="hljs-keyword">nil</span>)</span></span>
+  <span class="hljs-variable">@env</span>.associations.perform(mock, {})
+  assert mock.verify
+  assert sz_mock.verify  <span class="hljs-keyword">if</span> sz_mock.present?
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the association.yml file (with filename prefix) relative to the test folder.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_associations_filename</span><span class="hljs-params">(dir, fn)</span></span>
+  load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'01_*'</span>)
+  set_db_associations_filename(dir, fn)
+  register_models_engines
+  <span class="hljs-variable">@env</span>.engine.reset!
+  register_framework_and_platform
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_db_associations_filename</span><span class="hljs-params">(dir=<span class="hljs-keyword">nil</span>, fn=<span class="hljs-keyword">nil</span>)</span></span>
+  filename      = fn.present?  ? <span class="hljs-string">"<span class="hljs-subst">#{fn}</span>_associations.yml"</span> <span class="hljs-symbol">:</span> <span class="hljs-string">'associations.yml'</span>
+  full_filename = dir.present? ? <span class="hljs-string">"<span class="hljs-subst">#{dir}</span>/<span class="hljs-subst">#{filename}</span>"</span>     <span class="hljs-symbol">:</span> filename
+  <span class="hljs-variable">@env</span>.option.db_associations_filename = full_filename
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">register_models_engines</span></span>
+  clear_engine_instances
+  file         = __FILE_<span class="hljs-number">_</span>
+  root_path    = <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../"</span>, file)
+  db_path      = [<span class="hljs-string">'fixtures_associations'</span>]
+  platform_one = register_engine(<span class="hljs-symbol">file:</span> file, <span class="hljs-symbol">path:</span> <span class="hljs-string">'test/associations/one'</span>, <span class="hljs-symbol">platform_scope:</span> <span class="hljs-string">'test_platform'</span>)
+  platform_one.set_root(root_path)
+  platform_one.config.paths[<span class="hljs-symbol">:db</span>] = db_path
+  platform_two = register_engine(<span class="hljs-symbol">file:</span> file, <span class="hljs-symbol">path:</span> <span class="hljs-string">'test/associations/two'</span>, <span class="hljs-symbol">platform_scope:</span> <span class="hljs-string">'test_platform'</span>)
+  platform_two.set_root(root_path)
+  platform_two.config.paths[<span class="hljs-symbol">:db</span>] = db_path
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="basic-test-to-ensure-registration-works-">Basic test to ensure registration works ###</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">basic_association_paths_test</span></span>
+  set_db_associations_filename
+  register_models_engines
+  <span class="hljs-variable">@env</span>.engine.reset!
+  assert_equal <span class="hljs-number">2</span>, <span class="hljs-variable">@env</span>.engine.association_paths.length
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="mock-model-">Mock Model ###</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">mock_model</span><span class="hljs-params">(options={})</span></span>
+  path    = options[<span class="hljs-symbol">:path</span>]
+  klass   = options[<span class="hljs-symbol">:model</span>]
+  raise <span class="hljs-string">"Must supply a class or path to mock model path."</span>  <span class="hljs-keyword">if</span> path.blank? &amp;&amp; klass.blank?
+  mock    = <span class="hljs-constant">MiniTest::Mock</span>.new
+  klass   = path_to_class(path)  <span class="hljs-keyword">if</span> klass.blank?
+  expect_model_common(mock, klass, options)
+  expect_model_attributes(mock, options)
+  mock
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">expect_model_common</span><span class="hljs-params">(mock, klass, options={})</span></span>
+  mock.expect <span class="hljs-symbol">:ancestors</span>, [<span class="hljs-constant">ActiveRecord::Base</span>]
+  mock.expect <span class="hljs-symbol">:blank?</span>, <span class="hljs-keyword">false</span>
+  ntimes = options[<span class="hljs-symbol">:times</span>] || <span class="hljs-number">10</span>
+  mock_expect_ntimes(mock, <span class="hljs-symbol">:kind_of?</span>, <span class="hljs-keyword">true</span>, [<span class="hljs-constant">Class</span>], ntimes)
+  mock_expect_ntimes(mock, <span class="hljs-symbol">:parents</span>, klass.parents, [], ntimes)
+  mock_expect_ntimes(mock, <span class="hljs-symbol">:name</span>, klass.name, [], ntimes)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">expect_model_attributes</span><span class="hljs-params">(mock, options={})</span></span>
+  attributes = [options[<span class="hljs-symbol">:attributes</span>]].flatten.compact
+  mock.expect(<span class="hljs-symbol">:table_exists?</span>, <span class="hljs-keyword">true</span>)
+  mock.expect(<span class="hljs-symbol">:column_names</span>, attributes)
+  attributes.each <span class="hljs-keyword">do</span> |column|
+    mock_expect_ntimes(mock, <span class="hljs-symbol">:method_defined?</span>, <span class="hljs-keyword">true</span>, [column], <span class="hljs-number">1</span>)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A scope &#39;expect&#39; require special handling since are lambdas.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">expect_model_association_with_scope</span><span class="hljs-params">(mock, options)</span></span>
+  fn         = options[<span class="hljs-symbol">:fn</span>]     || <span class="hljs-string">''</span>
+  scopes     = options[<span class="hljs-symbol">:scopes</span>] || {}
+  args       = options[<span class="hljs-symbol">:args</span>]
+  assoc_name = options[<span class="hljs-symbol">:assoc_name</span>]
+  method     = options[<span class="hljs-symbol">:method</span>]
+  scope_mock = <span class="hljs-constant">MiniTest::Mock</span>.new
+  scopes.each <span class="hljs-keyword">do</span> |scope_method, scope_args|
+    scope_args = scope_args.kind_of?(<span class="hljs-constant">Array</span>) ? scope_args <span class="hljs-symbol">:</span> [scope_args].flatten.compact
+    scope_mock.expect(scope_method, scope_mock, scope_args)  <span class="hljs-comment"># return self (e.g. scope_mock) so chained methods will succeed</span>
+  <span class="hljs-keyword">end</span>
+  scope_class = path_to_class(<span class="hljs-string">"test/associations/one/scope_<span class="hljs-subst">#{fn}</span>"</span>, <span class="hljs-constant">SimpleDelegator</span>)
+  mock.expect(method, <span class="hljs-keyword">nil</span>) <span class="hljs-keyword">do</span> |name, scope, hash|
+    <span class="hljs-keyword">if</span> name == assoc_name &amp;&amp; hash == args &amp;&amp; scope.kind_of?(<span class="hljs-constant">Proc</span>)
+      sm = scope_class.new(scope_mock)
+      sm.instance_exec &amp;scope
+      assert scope_mock.verify
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">false</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="mock-serializer-">Mock Serializer ###</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">mock_serializer</span><span class="hljs-params">(options={})</span></span>
+  path       = options[<span class="hljs-symbol">:path</span>]
+  serializer = options[<span class="hljs-symbol">:serializer</span>]
+  model      = options[<span class="hljs-symbol">:model</span>]
+  <span class="hljs-keyword">case</span> 
+  <span class="hljs-keyword">when</span> path.present?
+    klass = path_to_class(path)
+  <span class="hljs-keyword">when</span> serializer.present?
+    klass = serializer
+  <span class="hljs-keyword">when</span> model.present?
+    klass = path_to_class(model.name + <span class="hljs-string">'Serializer'</span>)
+  <span class="hljs-keyword">else</span>
+    raise <span class="hljs-string">"Must supply a :model class, :serializer class or :path to mock model path."</span>
+  <span class="hljs-keyword">end</span>
+  mock = <span class="hljs-constant">MiniTest::Mock</span>.new
+  klass.define_singleton_method(<span class="hljs-symbol">:root=</span>)      {|arg| mock.root = arg}
+  klass.define_singleton_method(<span class="hljs-symbol">:attribute</span>)  {|*args| mock.attribute(*args)}
+  klass.define_singleton_method(<span class="hljs-symbol">:attributes</span>) {|*args| mock.attributes(*args)}
+  klass.define_singleton_method(<span class="hljs-symbol">:has_one</span>)    {|*args| mock.has_one(*args)}
+  klass.define_singleton_method(<span class="hljs-symbol">:has_many</span>)   {|*args| mock.has_many(*args)}
+  expect_serializer_common(mock, model, options)  <span class="hljs-keyword">if</span> model.present?
+  mock
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">expect_serializer_common</span><span class="hljs-params">(mock, model, options={})</span></span>
+  attributes = options[<span class="hljs-symbol">:attributes</span>] || []
+  mock.expect <span class="hljs-symbol">:root=</span>, <span class="hljs-keyword">nil</span>, [c_path(model)]
+  mock.expect <span class="hljs-symbol">:attributes</span>, <span class="hljs-keyword">nil</span>, attributes
+  mock.expect <span class="hljs-symbol">:present?</span>, <span class="hljs-keyword">true</span>, []
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_base_framework_serializer_class</span></span>
+  path_to_class(<span class="hljs-string">'test/framework/serializer/base'</span>, base_serializer_class)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">base_serializer_class</span></span>
+  <span class="hljs-constant">Totem::Core::BaseSerializer</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

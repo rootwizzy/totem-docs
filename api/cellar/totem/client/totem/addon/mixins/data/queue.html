@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/mixins/data/queue</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/mixins/data/queue"><meta name="groc-project-path" content="src/totem/client/totem/addon/mixins/data/queue.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/mixins/data/queue.coffee">src/totem/client/totem/addon/mixins/data/queue.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+queue = ember.Object.extend()
+
+queue.reopenClass
+
+  <span class="hljs-attribute">base_name</span>: <span class="hljs-string">'totem_data'</span>
+
+  <span class="hljs-attribute">requests_queue</span>: ember.Map.create()
+
+  <span class="hljs-attribute">get_requests_queue</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@requests_queue</span>
+
+  <span class="hljs-attribute">queue_request</span>: <span class="hljs-function"><span class="hljs-params">(source, name, id)</span> -&gt;</span>
+    queue     = <span class="hljs-property">@get_requests_queue</span>()
+    req_id    = <span class="hljs-property">@get_request_id</span>(name, id)
+    req_queue = queue.get(req_id)
+    <span class="hljs-keyword">if</span> req_queue <span class="hljs-keyword">and</span> ember.isArray(req_queue)
+      req_queue.push(source)
+      <span class="hljs-literal">true</span>
+    <span class="hljs-keyword">else</span>
+      queue.set req_id, []
+      <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">delete_queue_request</span>: <span class="hljs-function"><span class="hljs-params">(name, id)</span> -&gt;</span>
+    queue     = <span class="hljs-property">@get_requests_queue</span>()
+    req_id    = <span class="hljs-property">@get_request_id</span>(name, id)
+    req_queue = queue.get(req_id)
+    <span class="hljs-keyword">if</span> ember.isPresent(req_queue) <span class="hljs-keyword">and</span> ember.isArray(req_queue)
+      <span class="hljs-keyword">for</span> source <span class="hljs-keyword">in</span> req_queue
+        <span class="hljs-keyword">if</span> source.get(<span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@base_name</span>}</span>_include.<span class="hljs-subst">#{name}</span>"</span>) == <span class="hljs-literal">true</span>
+          source[<span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@base_name</span>}</span>_<span class="hljs-subst">#{name}</span>"</span>].refresh()
+    queue.<span class="hljs-keyword">delete</span>(req_id)
+
+  <span class="hljs-attribute">get_request_id</span>: <span class="hljs-function"><span class="hljs-params">(name, id)</span> -&gt;</span> name + <span class="hljs-string">'--'</span> + id
+
+  <span class="hljs-attribute">get_totem_data_properties</span>: <span class="hljs-function"><span class="hljs-params">(source)</span> -&gt;</span> source.get_totem_data_properties() <span class="hljs-keyword">or</span> []
+
+  <span class="hljs-attribute">debug_queue</span>: <span class="hljs-function"><span class="hljs-params">(title=<span class="hljs-string">''</span>)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.log title  <span class="hljs-keyword">if</span> title
+    <span class="hljs-property">@get_requests_queue</span>().forEach (value, key) -&gt;
+      <span class="hljs-built_in">console</span>.info <span class="hljs-string">"  key   = "</span>, key
+      <span class="hljs-built_in">console</span>.info <span class="hljs-string">"  value = "</span>, value
+      <span class="hljs-built_in">console</span>.info <span class="hljs-string">' '</span>
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@base_name</span>.camelize()}</span>Queue"</span>
+
+export default queue</div></div></div></div></body></html>

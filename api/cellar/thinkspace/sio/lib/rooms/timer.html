@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/sio/lib/rooms/timer</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace/sio/lib/rooms/timer"><meta name="groc-project-path" content="src/thinkspace/sio/lib/rooms/timer.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/sio/lib/rooms/timer.coffee">src/thinkspace/sio/lib/rooms/timer.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThinkspaceTimer</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@platform</span>)</span> -&gt;</span>
+    <span class="hljs-property">@util</span>  = <span class="hljs-property">@platform</span>.util
+    <span class="hljs-property">@timer</span> = <span class="hljs-property">@platform</span>.timer
+    <span class="hljs-property">@nsio</span>  = <span class="hljs-property">@platform</span>.nsio
+
+  <span class="hljs-attribute">on_connection</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span>
+    socket.<span class="hljs-literal">on</span> <span class="hljs-property">@util</span>.client_event(<span class="hljs-string">'timer_list'</span>), <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span> <span class="hljs-property">@timer_list_event</span>(socket, data)
+    socket.<span class="hljs-literal">on</span> <span class="hljs-property">@util</span>.client_event(<span class="hljs-string">'timer_show'</span>), <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span> <span class="hljs-property">@timer_show_event</span>(socket, data)
+
+  <span class="hljs-attribute">timer_list_event</span>: <span class="hljs-function"><span class="hljs-params">(socket, data=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    user_id = <span class="hljs-property">@util</span>.get_user_id(socket)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> user_id
+    timers = <span class="hljs-keyword">if</span> <span class="hljs-property">@util</span>.is_superuser(socket) <span class="hljs-keyword">then</span> <span class="hljs-property">@timer</span>.get_all_timers() <span class="hljs-keyword">else</span> <span class="hljs-property">@timer</span>.find_timers_by(<span class="hljs-attribute">uid</span>: user_id)
+    event  = <span class="hljs-property">@util</span>.server_event(<span class="hljs-string">'timer_list'</span>)
+    value  = (timer.data <span class="hljs-keyword">for</span> timer <span class="hljs-keyword">in</span> timers)
+    <span class="hljs-property">@util</span>.debug <span class="hljs-property">@util</span>.bold_line(<span class="hljs-string">"TIMER LIST for user id '<span class="hljs-subst">#{user_id}</span>'."</span>, <span class="hljs-string">'magenta'</span>), {event, <span class="hljs-attribute">timers</span>: value.length}
+    socket.emit(event, {value})
+
+  <span class="hljs-attribute">timer_show_event</span>: <span class="hljs-function"><span class="hljs-params">(socket, data=<span class="hljs-literal">null</span>)</span> -&gt;</span> <span class="hljs-property">@timer</span>.emit_timer_show(socket, data)
+
+  <span class="hljs-attribute">to_string</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'ThinkspaceTimer'</span>
+
+<span class="hljs-built_in">module</span>.exports = ThinkspaceTimer</div></div></div></div></body></html>

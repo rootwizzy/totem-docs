@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-pub-sub/app/concerns/thinkspace/pub_sub/timer_helpers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-pub-sub/app/concerns/thinkspace/pub_sub/timer_helpers"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-pub-sub/app/concerns/thinkspace/pub_sub/timer_helpers.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-pub-sub/app/concerns/thinkspace/pub_sub/timer_helpers.rb">src/thinkspace/api/thinkspace-pub-sub/app/concerns/thinkspace/pub_sub/timer_helpers.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PubSub</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">TimerHelpers</span></span>
+
+  extend <span class="hljs-constant">::ActiveSupport::Concern</span>
+
+  included <span class="hljs-keyword">do</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_timer_server_event</span><span class="hljs-params">(id)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> id.blank? <span class="hljs-keyword">or</span> !id.is_a?(<span class="hljs-constant">String</span>)
+      se_id = id.split(<span class="hljs-string">'/'</span>).last
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> se_id.blank? 
+      se    = timer_server_event_class.find_by(<span class="hljs-symbol">id:</span> se_id)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> se.blank?
+      se
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish_timer_cancel</span><span class="hljs-params">(se, id)</span></span>
+      se.cancel_timer
+      timer_server_event_record_class.new
+        .origin(<span class="hljs-keyword">self</span>)
+        .authable(se.authable)
+        .user(current_user)
+        .event(<span class="hljs-symbol">:timer_cancel</span>)
+        .timer_settings(<span class="hljs-symbol">type:</span> <span class="hljs-symbol">:cancel</span>, <span class="hljs-symbol">cancel_id:</span> id, <span class="hljs-symbol">user_id:</span> current_user.id)
+        .publish
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">timer_server_event_class</span>;</span>        <span class="hljs-constant">::Thinkspace::PubSub::ServerEvent</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">timer_server_event_record_class</span>;</span> <span class="hljs-constant">::Thinkspace::PubSub::ServerEvent::Record</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-common/app/models/thinkspace/common/invitation</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-common/app/models/thinkspace/common/invitation"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-common/app/models/thinkspace/common/invitation.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-common/app/models/thinkspace/common/invitation.rb">src/thinkspace/api/thinkspace-common/app/models/thinkspace/common/invitation.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Common</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Invitation</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
+      totem_associations
+      <span class="hljs-keyword">include</span> <span class="hljs-constant">AASM</span>
+
+      before_create <span class="hljs-symbol">:set_token</span>
+      before_create <span class="hljs-symbol">:set_expiry</span>
+      after_create  <span class="hljs-symbol">:notify!</span>
+
+      validates <span class="hljs-symbol">:token</span>,     <span class="hljs-symbol">uniqueness:</span> <span class="hljs-keyword">true</span>
+      validates <span class="hljs-symbol">:invitable</span>, <span class="hljs-symbol">presence:</span> <span class="hljs-keyword">true</span>
+      validates <span class="hljs-symbol">:role</span>,      <span class="hljs-symbol">presence:</span> <span class="hljs-keyword">true</span><span class="hljs-comment">#, inclusion: { in: %w( read update owner ) }</span>
+      validates <span class="hljs-symbol">:email</span>,     <span class="hljs-symbol">presence:</span> <span class="hljs-keyword">true</span>, <span class="hljs-symbol">format:</span> { <span class="hljs-symbol">with:</span> /\<span class="hljs-constant">A</span>([^@\s]+)@((?<span class="hljs-symbol">:</span>[-a-z<span class="hljs-number">0</span>-<span class="hljs-number">9</span>]+\.)+[a-z]{<span class="hljs-number">2</span>,})\z/i, <span class="hljs-symbol">on:</span> <span class="hljs-symbol">:create</span> },  <span class="hljs-symbol">uniqueness:</span> { <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:invitable_id</span> }
+      
+      aasm <span class="hljs-symbol">column:</span> <span class="hljs-symbol">:state</span> <span class="hljs-keyword">do</span>
+        state <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">initial:</span> <span class="hljs-keyword">true</span>
+        state <span class="hljs-symbol">:sent</span>
+        state <span class="hljs-symbol">:accepted</span>
+        state <span class="hljs-symbol">:autoaccepted</span>
+
+        event <span class="hljs-symbol">:notify</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:sent</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:deliver</span>
+        <span class="hljs-keyword">end</span>
+
+        event <span class="hljs-symbol">:accept</span> <span class="hljs-keyword">do</span>
+          after <span class="hljs-keyword">do</span>
+            accept_all_invitations
+          <span class="hljs-keyword">end</span>
+          transitions <span class="hljs-symbol">from:</span> <span class="hljs-symbol">:sent</span>, <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:accepted</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:add_to_invitable</span>
+        <span class="hljs-keyword">end</span>
+
+        event <span class="hljs-symbol">:autoaccept</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> <span class="hljs-symbol">:sent</span>, <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:autoaccepted</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:auto_add_to_invitable</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span>
+        user = <span class="hljs-constant">Thinkspace::Common::User</span>.find_by(<span class="hljs-symbol">email:</span> <span class="hljs-keyword">self</span>.email)
+        <span class="hljs-keyword">if</span> user.present?
+          space_user = <span class="hljs-constant">Thinkspace::Common::SpaceUser</span>.find_by(<span class="hljs-symbol">user_id:</span> user.id, <span class="hljs-symbol">space_id:</span> <span class="hljs-keyword">self</span>.invitable_id)
+          <span class="hljs-keyword">unless</span> space_user.present?
+            space_user = <span class="hljs-constant">Thinkspace::Common::SpaceUser</span>.create(<span class="hljs-symbol">user_id:</span> user.id, <span class="hljs-symbol">space_id:</span> <span class="hljs-keyword">self</span>.invitable_id, <span class="hljs-symbol">role:</span> <span class="hljs-keyword">self</span>.role)
+            sender     = <span class="hljs-constant">Thinkspace::Common::User</span>.find(<span class="hljs-keyword">self</span>.sender_id)
+            space_user.notify_added_to_space(sender)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">self</span>.save
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">accept_all_invitations</span></span>
+        invitations = <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.where(<span class="hljs-symbol">email:</span> email, <span class="hljs-symbol">accepted_at:</span> <span class="hljs-keyword">nil</span>).where.<span class="hljs-keyword">not</span>(<span class="hljs-symbol">id:</span> id)
+        invitations.each <span class="hljs-keyword">do</span> |invitation| invitation.set_user_values(<span class="hljs-keyword">self</span>.thinkspace_common_user, <span class="hljs-keyword">true</span>) <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_to_invitable</span><span class="hljs-params">(auto=<span class="hljs-keyword">false</span>)</span></span>
+        klass = invitable_type.safe_constantize
+        raise <span class="hljs-string">"Cannot call process_invitation on a class that does not exist for: [<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.inspect}</span>]"</span> <span class="hljs-keyword">unless</span> klass.present?
+        <span class="hljs-keyword">if</span> invitable.process_invitation(<span class="hljs-keyword">self</span>, auto)
+          <span class="hljs-keyword">self</span>.accepted_at = <span class="hljs-constant">Time</span>.now
+          save
+        <span class="hljs-keyword">else</span>
+          raise <span class="hljs-string">"Did not successfully process the invitation for [<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.inspect}</span>]."</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auto_add_to_invitable</span></span>
+        add_to_invitable(<span class="hljs-keyword">true</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deliver</span></span>
+        <span class="hljs-keyword">self</span>.sent_at = <span class="hljs-constant">Time</span>.now
+        save
+        <span class="hljs-constant">Thinkspace::Common::InvitationMailer</span>.invitation(<span class="hljs-keyword">self</span>).deliver_now
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">refresh</span></span>
+        set_expiry
+        save
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">resend</span></span>
+        refresh
+        deliver
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_expired?</span></span>
+        expires_at &lt;= <span class="hljs-constant">Time</span>.now
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_accepted?</span></span>
+        accepted_at.present?
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_user_values</span><span class="hljs-params">(user, auto=<span class="hljs-keyword">false</span>)</span></span>
+        <span class="hljs-keyword">self</span>.user_id = user.id
+        <span class="hljs-keyword">if</span> auto <span class="hljs-keyword">then</span> <span class="hljs-keyword">self</span>.autoaccept <span class="hljs-keyword">else</span> <span class="hljs-keyword">self</span>.accept <span class="hljs-keyword">end</span>
+        save
+      <span class="hljs-keyword">end</span>
+
+      private
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_token</span></span>
+        <span class="hljs-keyword">self</span>.token = <span class="hljs-constant">SecureRandom</span>.urlsafe_base64(<span class="hljs-keyword">nil</span>, <span class="hljs-keyword">false</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_expiry</span></span>
+        <span class="hljs-keyword">self</span>.expires_at = <span class="hljs-constant">Time</span>.now + <span class="hljs-number">90</span>.days
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

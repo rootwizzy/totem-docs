@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/support/ember/ember_02_namespaces_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/support/ember/ember_02_namespaces_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/ember/ember_02_namespaces_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/ember/ember_02_namespaces_test.rb">src/totem/api/totem-core/test/support/ember/ember_02_namespaces_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../ember_helper'</span>, __FILE_<span class="hljs-number">_</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Namespaces is the merge of the framework and platform namespaces.
+The namespace sources are the config&#39;s keys &#39;paths&#39; and &#39;ember =&gt; path_namespaces&#39;.
+The ember.rb should fill in any gaps in the namespaces and they should be ordered
+hierarchily for Ember creation (e.g. create &#39;App.Platform&#39; before &#39;App.Platform.Main&#39;).</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_by_namespace</span><span class="hljs-params">(name)</span></span>
+  <span class="hljs-variable">@namespaces</span>.select {|ns| ns[<span class="hljs-symbol">:namespace</span>] == name}
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">namespace_assertions</span><span class="hljs-params">(namespace, aliases)</span></span>
+  ns = find_by_namespace(namespace)
+  assert_equal <span class="hljs-number">1</span>, ns.length
+  ns = ns.first
+  assert_equal [aliases].flatten.sort, ns[<span class="hljs-symbol">:alias</span>].sort
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'02: ember.rb namespaces'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span>
+    before_ember_common(<span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'02_*'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: should be valid'</span> <span class="hljs-keyword">do</span> 
+    assert_kind_of <span class="hljs-constant">Array</span>, <span class="hljs-variable">@namespaces</span>
+    refute_empty <span class="hljs-variable">@namespaces</span>, <span class="hljs-string">'Ember namespaces should be populated.'</span>
+    assert_kind_of <span class="hljs-constant">Hash</span>, <span class="hljs-variable">@namespaces</span>.first
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: removed when namespace is false'</span> <span class="hljs-keyword">do</span> 
+    assert_equal [], find_by_namespace(<span class="hljs-string">'Test.Platform.NoNamespace'</span>)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Caution: make sure another path doesn&#39;t require this namespace.
+For example, a different path&#39;s namespace &#39;Test.Platform.Common.Tools&#39; will
+insert a Test.Platform.Common namespace in the namespace hierarchy.</p></div></div><div class="code"><div class="wrapper">  it <span class="hljs-string">'02: removed when namespace key is present'</span> <span class="hljs-keyword">do</span> 
+    assert_equal [], find_by_namespace(<span class="hljs-string">'Test.Platform.Common'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: namespace array alias overrides path default alias'</span> <span class="hljs-keyword">do</span>
+    namespace_assertions(<span class="hljs-string">'Test.Platform.MyCommon'</span>, [<span class="hljs-string">'common'</span>, <span class="hljs-string">'my_common'</span>])
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: namespace string alias overrides path default alias and in array'</span> <span class="hljs-keyword">do</span>
+    namespace_assertions(<span class="hljs-string">'Test.Platform.MyCommon.Tools'</span>, <span class="hljs-string">'tools'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: path with no namespace keys gets defaults'</span> <span class="hljs-keyword">do</span>
+    namespace_assertions(<span class="hljs-string">'Test.Platform.Tools.Two'</span>, <span class="hljs-string">'test.platform.tools.two'</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">if</span> debug_on
+    it <span class="hljs-string">'02: debug'</span> <span class="hljs-keyword">do</span>
+      puts <span class="hljs-string">"\n"</span>
+      pp <span class="hljs-string">'02: Ember namespaces config:'</span>, <span class="hljs-variable">@namespaces</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'02: ember.rb ember=&gt;path_namespaces'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span>
+    before_ember_common(<span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'02_*'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: same options as paths'</span> <span class="hljs-keyword">do</span>
+    namespace_assertions(<span class="hljs-string">'Test.Me'</span>, <span class="hljs-string">'test.me'</span>)
+    namespace_assertions(<span class="hljs-string">'Test.Me.Special'</span>, <span class="hljs-string">'me_special'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: creates new top level namespace'</span> <span class="hljs-keyword">do</span>
+    namespace_assertions(<span class="hljs-string">'New'</span>, <span class="hljs-string">'new'</span>)
+    namespace_assertions(<span class="hljs-string">'New.Top'</span>, <span class="hljs-string">'new.top'</span>)
+    namespace_assertions(<span class="hljs-string">'New.Top.Level'</span>, <span class="hljs-string">'new.top.level'</span>)
+    namespace_assertions(<span class="hljs-string">'New.Top.Level.Namespace'</span>, <span class="hljs-string">'new.top.level.namespace'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: removed when namespace is false'</span> <span class="hljs-keyword">do</span> 
+    assert_equal [], find_by_namespace(<span class="hljs-string">'Test.Platform.Ember.NoNamespace'</span>)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

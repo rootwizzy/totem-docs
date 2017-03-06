@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-builder-pe/addon/components/content</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-builder-pe/addon/components/content"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-builder-pe/addon/components/content.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-builder-pe/addon/components/content.coffee">src/thinkspace/client/thinkspace-builder-pe/addon/components/content.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="contentcoffee">content.coffee</h1>
+<ul>
+<li>Type: <strong>Component</strong></li>
+<li>Package: <strong>ethinkspace-builder-pe</strong></li>
+</ul></div></div><div class="code"><div class="wrapper">export default base.extend
+
+  <span class="hljs-attribute">builder</span>: ember.inject.service()
+  <span class="hljs-attribute">step</span>: ember.computed.reads <span class="hljs-string">'builder.current_step'</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">next_step</span>: <span class="hljs-function">-&gt;</span> 
+      opts          = {}
+      opts.save     = <span class="hljs-literal">true</span>
+      opts.validate = <span class="hljs-literal">true</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'step.assessment.is_balance'</span>)
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'builder'</span>).transition_to_next_step(opts)
+    <span class="hljs-attribute">prev_step</span>: <span class="hljs-function">-&gt;</span> 
+      opts          = {}
+      opts.save     = <span class="hljs-literal">true</span>
+      opts.validate = <span class="hljs-literal">true</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'step.assessment.is_balance'</span>)
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'builder'</span>).transition_to_prev_step(opts)
+      
+    <span class="hljs-attribute">select</span>:  <span class="hljs-function"><span class="hljs-params">(template)</span> -&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'step'</span>).select_template(template) <span class="hljs-keyword">if</span> ember.isPresent(template)
+    <span class="hljs-attribute">cancel</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'step'</span>).reset_is_editing_template()
+    <span class="hljs-attribute">confirm</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'step'</span>).confirm_template()</div></div></div></div></body></html>

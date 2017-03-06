@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/db/associations</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/db/associations"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/db/associations.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-peer-assessment/db/associations.yml">src/thinkspace/api/thinkspace-peer-assessment/db/associations.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">-<span class="ruby"> <span class="hljs-symbol">model:</span> thinkspace/peer_assessment/assessment
+</span>  associations:
+    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> authable
+</span>      polymorphic: true
+    -<span class="ruby"> <span class="hljs-symbol">has_many:</span> thinkspace/peer_assessment/team_sets
+</span>    -<span class="ruby"> <span class="hljs-symbol">has_many:</span> thinkspace/peer_assessment/overviews
+</span>    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> thinkspace/peer_assessment/assessment_template
+</span>  serializers:
+    -<span class="ruby"> <span class="hljs-symbol">attributes:</span> [id, authable_id, authable_type, assessment_template_id, value, state, modified_template]
+</span>
+-<span class="ruby"> <span class="hljs-symbol">model:</span> thinkspace/peer_assessment/assessment_template
+</span>  domain: true
+  associations:
+    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> ownerable
+</span>      polymorphic: true
+  serializers:
+    -<span class="ruby"> <span class="hljs-symbol">attributes:</span> [id, ownerable_id, ownerable_type, value, title, description, state]
+</span>
+-<span class="ruby"> <span class="hljs-symbol">model:</span> thinkspace/peer_assessment/review
+</span>  delegate:
+    -<span class="ruby"> <span class="hljs-symbol">method:</span> authable
+</span>      to: thinkspace/peer_assessment/review_set
+    -<span class="ruby"> <span class="hljs-symbol">method:</span> ownerable
+</span>      to: thinkspace/peer_assessment/review_set
+  associations:
+    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> reviewable
+</span>      polymorphic: true
+    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> thinkspace/peer_assessment/review_set
+</span>  serializers:
+    -<span class="ruby"> <span class="hljs-symbol">attributes:</span> [id, reviewable_id, reviewable_type, value, state]
+</span>
+-<span class="ruby"> <span class="hljs-symbol">model:</span> thinkspace/peer_assessment/review_set
+</span>  delegate:
+    -<span class="ruby"> <span class="hljs-symbol">method:</span> authable
+</span>      to: thinkspace/peer_assessment/team_set
+  associations:
+    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> ownerable
+</span>      polymorphic: true
+    -<span class="ruby"> <span class="hljs-symbol">has_many:</span> thinkspace/peer_assessment/reviews
+</span>    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> thinkspace/peer_assessment/team_set
+</span>  serializers:
+    -<span class="ruby"> <span class="hljs-symbol">attributes:</span> [id, ownerable_id, ownerable_type, state]
+</span>
+-<span class="ruby"> <span class="hljs-symbol">model:</span> thinkspace/peer_assessment/team_set
+</span>  delegate:
+    -<span class="ruby"> <span class="hljs-symbol">method:</span> authable
+</span>      to: thinkspace/peer_assessment/assessment
+  associations:
+    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> thinkspace/team/team
+</span>    -<span class="ruby"> <span class="hljs-symbol">has_many:</span> thinkspace/peer_assessment/review_sets
+</span>    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> thinkspace/peer_assessment/assessment
+</span>  serializers:
+    -<span class="ruby"> <span class="hljs-symbol">attributes:</span> [id, state, team_id]
+</span>
+-<span class="ruby"> <span class="hljs-symbol">model:</span> thinkspace/peer_assessment/overview
+</span>  associations:
+    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> authable
+</span>      polymorphic: true
+    -<span class="ruby"> <span class="hljs-symbol">belongs_to:</span> thinkspace/peer_assessment/assessment
+</span>  serializers:
+    -<span class="ruby"> <span class="hljs-symbol">attributes:</span> [id, authable_id, authable_type]</span></div></div></div></div></body></html>

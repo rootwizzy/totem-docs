@@ -1,0 +1,297 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/ds/associations</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/ds/associations"><meta name="groc-project-path" content="src/totem/client/totem/addon/ds/associations.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/ds/associations.coffee">src/totem/client/totem/addon/ds/associations.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ds    from <span class="hljs-string">'ember-data'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import totem_error      from <span class="hljs-string">'totem/error'</span>
+import totem_data_mixin from <span class="hljs-string">'totem/mixins/data'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemAssociations</span></span>
+
+  <span class="hljs-property">@totem_data</span>: totem_data_mixin
+
+  <span class="hljs-property">@Model</span>: ds.Model.extend
+    <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@constructor</span>.modelName}</span>:<span class="hljs-subst">#{<span class="hljs-property">@get</span>(<span class="hljs-string">'id'</span>)}</span>:<span class="hljs-subst">#{ember.guidFor(@)}</span>"</span>
+
+  <span class="hljs-property">@attr</span>: <span class="hljs-function"><span class="hljs-params">(type, options)</span> -&gt;</span> ds.attr(type, options)
+
+  <span class="hljs-property">@PromiseArray</span>:  ds.PromiseArray
+  <span class="hljs-property">@PromiseObject</span>: ds.PromiseObject
+
+  <span class="hljs-property">@to_p</span>:    <span class="hljs-function">-&gt;</span> ns.to_p(arguments)
+  <span class="hljs-property">@to_o</span>:    <span class="hljs-function">-&gt;</span> ns.to_o(arguments)
+  <span class="hljs-property">@to_t</span>:    <span class="hljs-function">-&gt;</span> ns.to_t(arguments)
+  <span class="hljs-property">@to_prop</span>: <span class="hljs-function">-&gt;</span> ns.to_prop(arguments)
+
+  <span class="hljs-property">@add</span>: <span class="hljs-function">-&gt;</span>
+    result = {}
+    ember.merge(result, association) <span class="hljs-keyword">for</span> association <span class="hljs-keyword">in</span> arguments
+    ember.Mixin.create(result)
+
+  <span class="hljs-property">@belongs_to</span>: <span class="hljs-function"><span class="hljs-params">(type, options={})</span> -&gt;</span>
+    type = TotemAssociations.to_p(type) <span class="hljs-keyword">unless</span> options.ns == <span class="hljs-literal">false</span>
+    TotemAssociations.association_defaults(options)
+    assoc = options.type <span class="hljs-keyword">or</span> type
+    <span class="hljs-keyword">delete</span> options.type
+    result = {}
+    TotemAssociations.include_notify_observable(result, assoc, options)
+    TotemAssociations.include_reads(result, assoc, options)
+    <span class="hljs-keyword">delete</span> options.belongs_to
+    result[type] = ds.belongsTo(assoc, options)
+    result
+
+  <span class="hljs-property">@has_many</span>: <span class="hljs-function"><span class="hljs-params">(type, options={})</span> -&gt;</span>
+    type = TotemAssociations.to_p(type) <span class="hljs-keyword">unless</span> options.ns == <span class="hljs-literal">false</span>
+    TotemAssociations.association_defaults(options)
+    assoc = options.type <span class="hljs-keyword">or</span> type.pluralize()
+    <span class="hljs-keyword">delete</span> options.type
+    result = {}
+    TotemAssociations.include_notify_observable(result, assoc, options)
+    TotemAssociations.include_reads(result, assoc, options)
+    <span class="hljs-keyword">delete</span> options.has_many
+    result[assoc] = ds.hasMany(type.singularize(), options)  <span class="hljs-comment"># singularize the type path</span>
+    result
+
+  <span class="hljs-property">@polymorphic</span>: <span class="hljs-function"><span class="hljs-params">(name, options={})</span> -&gt;</span>
+    result = {}
+    totem_error.<span class="hljs-keyword">throw</span> @, <span class="hljs-string">"A totem_polymorphic requires a string name as the first parameter."</span>  <span class="hljs-keyword">unless</span> name <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(name) == <span class="hljs-string">'string'</span>
+    attribute    = options.attribute <span class="hljs-keyword">or</span> name
+    result[name] = ember.computed -&gt; (<span class="hljs-keyword">new</span> TotemAssociationsPolymorphic(attribute)).call(@)
+    result</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Returns a live &#39;store.filter&#39; of record type &#39;ta.to_p(name).singularize()&#39;.
+Store records are filtered based on the record id matching the filtered record-attribute specified by &#39;options.on&#39;.
+Other options:
+ polymorphic: true #=&gt; filter on id and type (default false)
+ model:       property to get the model (if not specified uses @; e.g. mixin is in a model)
+ load:        computed property(s) to &#39;get&#39; before filtering (can be an array of property names) (default none)</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-comment">#:              must return a promise</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>See the TotemAssociationStoreFilter below for more options.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-property">@store_filter</span>: <span class="hljs-function"><span class="hljs-params">(name, options={})</span> -&gt;</span>
+    totem_error.<span class="hljs-keyword">throw</span> @, <span class="hljs-string">"A totem_associations store filter 'on' is blank."</span>  <span class="hljs-keyword">unless</span> options.<span class="hljs-literal">on</span>
+    <span class="hljs-keyword">if</span> options.reads
+      totem_error.<span class="hljs-keyword">throw</span> @, <span class="hljs-string">"A totem_associations store 'reads' must contain a name."</span>  <span class="hljs-keyword">unless</span> options.reads.name
+      totem_error.<span class="hljs-keyword">throw</span> @, <span class="hljs-string">"A totem_associations store 'reads' name must be different than the store name."</span>  <span class="hljs-keyword">if</span> name == options.reads.name
+    type = TotemAssociations.to_p(name).singularize()
+    result = {}
+    TotemAssociations.include_notify_observable(result, name, options)
+    TotemAssociations.include_reads(result, name, options)
+    result[name] = ember.computed -&gt; (<span class="hljs-keyword">new</span> TotemAssociationsStoreFilter(name, type, options)).call(@)
+    result
+
+  <span class="hljs-property">@association_defaults</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    options.async = <span class="hljs-literal">true</span>  <span class="hljs-keyword">unless</span> options.async == <span class="hljs-literal">false</span>
+
+  <span class="hljs-property">@include_notify_observable</span>: <span class="hljs-function"><span class="hljs-params">(result, assoc, options)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> options.notify <span class="hljs-keyword">or</span> options.notify_property</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Notify association on path_ids change.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> options.notify
+      notifies = ember.makeArray(options.notify)
+      <span class="hljs-keyword">delete</span> options.notify
+      observe_on  = []
+      <span class="hljs-keyword">for</span> notify <span class="hljs-keyword">in</span> notifies
+        <span class="hljs-keyword">switch</span> notify
+          <span class="hljs-keyword">when</span> <span class="hljs-literal">true</span>
+            observe_on.push <span class="hljs-string">'totem_scope.path_ids'</span>
+          <span class="hljs-keyword">else</span>
+            observe_on.push <span class="hljs-string">"totem_scope.path_ids.<span class="hljs-subst">#{notify}</span>"</span>
+      notify_observer = (<span class="hljs-function">-&gt;</span>
+        <span class="hljs-property">@notifyPropertyChange</span>(assoc)
+      ).observes(observe_on...)
+      prop = <span class="hljs-string">'_notify_'</span> + assoc
+      result[prop] = notify_observer</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Notfity association on an object property change.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> options.notify_property
+      notify_properties = ember.makeArray(options.notify_property)
+      <span class="hljs-keyword">delete</span> options.notify_property
+      observe_on = []
+      <span class="hljs-keyword">for</span> notify <span class="hljs-keyword">in</span> notify_properties
+        observe_on.push notify
+      notify_observer = (<span class="hljs-function">-&gt;</span>
+        <span class="hljs-property">@notifyPropertyChange</span>(assoc)
+      ).observes(observe_on...)
+      prop = <span class="hljs-string">'_notify_property_'</span> + assoc
+      result[prop] = notify_observer
+
+  <span class="hljs-property">@include_reads</span>: <span class="hljs-function"><span class="hljs-params">(result, assoc, options)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> options.reads
+    reads = ember.makeArray(options.reads)
+    <span class="hljs-keyword">delete</span> options.reads
+    <span class="hljs-keyword">for</span> opts <span class="hljs-keyword">in</span> reads
+      name        = opts.name <span class="hljs-keyword">or</span> assoc.split(<span class="hljs-string">'/'</span>).pop()  <span class="hljs-comment"># default to last part of association path</span>
+      filter      = opts.filter
+      filter_fn   = opts.filter_fn
+      sort        = opts.sort
+      from        = opts.from
+      from_notify = opts.notify != <span class="hljs-literal">false</span>
+      totem_error.<span class="hljs-keyword">throw</span> @, <span class="hljs-string">"A totem_associations 'reads' object must contain a name."</span>  <span class="hljs-keyword">unless</span> name</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Setup up an alias when the &#39;reads&#39; contains a notify to only notify changes for the specific &#39;reads&#39; name.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> opts.notify <span class="hljs-keyword">or</span> opts.notify_property
+        alias_prop         = <span class="hljs-string">"_ta_alias_<span class="hljs-subst">#{name}</span>_<span class="hljs-subst">#{assoc}</span>"</span>
+        result[alias_prop] = ember.computed.alias assoc
+        assoc_prop         = alias_prop
+      <span class="hljs-keyword">else</span>
+        assoc_prop = assoc
+
+      TotemAssociations.include_notify_observable(result, assoc_prop, opts)  <span class="hljs-comment"># add any notifications</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>&#39;From&#39; uses a &#39;store.filter&#39; to create an array of association records that match the &#39;from&#39; record&#39;s &#39;id&#39;.
+This array substitutes for a model association.
+Note: the association records must have a &#39;ds.attr&#39; with the &#39;from&#39; record&#39;s id.
+This is a &#39;live&#39; array and will be updated whenever a create/delete record is performed.
+A &#39;from&#39; defaults to adding a totem_scope id change notification when filtering and notify != false
+since the &#39;store.filter&#39; changes are record-by-record.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> from
+        from = TotemAssociations.to_p(from) <span class="hljs-keyword">unless</span> opts.ns == <span class="hljs-literal">false</span>
+        <span class="hljs-keyword">if</span> sort <span class="hljs-keyword">or</span> filter <span class="hljs-keyword">then</span> assoc_prop = <span class="hljs-string">'_ta_store_'</span> + name <span class="hljs-keyword">else</span> assoc_prop = name
+        result[assoc_prop] = ember.computed -&gt; (<span class="hljs-keyword">new</span> TotemAssociationsFrom(assoc, from, opts.self, opts.id)).call(@)
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> assoc_prop == name  <span class="hljs-comment"># already setup the 'name' since no filter or sort and don't need an alias</span>
+
+      <span class="hljs-keyword">if</span> filter
+        filter_function = <span class="hljs-keyword">new</span> TotemAssociationsFilter(filter, filter_fn)
+
+      <span class="hljs-keyword">if</span> sort
+        sort_on_prop         = <span class="hljs-string">'_ta_sort_'</span> + name + <span class="hljs-string">'_by'</span>
+        sort_prop            = <span class="hljs-string">'_ta_sort'</span>
+        sort_prop           += <span class="hljs-string">'_'</span>  <span class="hljs-keyword">unless</span> assoc_prop.match(<span class="hljs-regexp">/^_/</span>)
+        sort_prop           += assoc_prop
+        sort_prop           += <span class="hljs-string">'_'</span> + name  <span class="hljs-comment"># make unique when multiple read names</span>
+        result[sort_on_prop] = ember.makeArray(sort)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="add-filter-and-sort-to-result-object-">Add filter and sort to result object ###</h3></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>filter -&gt; sort</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> filter <span class="hljs-keyword">and</span> sort</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Have to sort before filtering due to the index issue because ember.computed.sort fires against property changes
+=&gt; This raises an error if the view_user_id is changed within a .then =&gt; block.</p></div></div><div class="code"><div class="wrapper">        result[sort_prop] = ember.computed.sort   assoc_prop, sort_on_prop
+        result[name]      = ember.computed.filter sort_prop, filter_function
+        TotemAssociations.include_notify_observable(result, sort_prop, <span class="hljs-attribute">notify</span>: <span class="hljs-literal">true</span>)  <span class="hljs-keyword">if</span> from <span class="hljs-keyword">and</span> from_notify  <span class="hljs-comment"># notify the filter its source array changed and to re-filter</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>filter</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> filter
+        result[name] = ember.computed.filter assoc_prop, filter_function
+        TotemAssociations.include_notify_observable(result, assoc_prop, <span class="hljs-attribute">notify</span>: <span class="hljs-literal">true</span>) <span class="hljs-keyword">if</span> from <span class="hljs-keyword">and</span> from_notify  <span class="hljs-comment"># notify the filter its source array changed and to re-filter</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>sort</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> sort
+        result[name] = ember.computed.sort assoc_prop, sort_on_prop</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>alias</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">else</span>
+        result[name] = ember.computed.alias assoc_prop</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>&#39;@&#39; (e.g. this) is the current model instance.  Therefore, any @func-name() must be available in
+the instance e.g. @store, @totem_scope, etc.
+This function uses &#39;store.find(type, id)&#39;; if the record is not in the store it will query for it.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemAssociationsPolymorphic</span></span>
+    <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(attribute)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-property">@get_polymorphic_function</span>(attribute)
+
+    <span class="hljs-attribute">get_polymorphic_function</span>: <span class="hljs-function"><span class="hljs-params">(attribute)</span> -&gt;</span>
+<span class="hljs-function">      <span class="hljs-title">fn</span> = -&gt;</span>
+        promise = <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+          type = <span class="hljs-property">@get</span>(<span class="hljs-string">"<span class="hljs-subst">#{attribute}</span>_type"</span>)
+          id   = <span class="hljs-property">@get</span>(<span class="hljs-string">"<span class="hljs-subst">#{attribute}</span>_id"</span>)
+          <span class="hljs-keyword">return</span> resolve(<span class="hljs-literal">null</span>)  <span class="hljs-keyword">unless</span> (type <span class="hljs-keyword">and</span> id)
+          type = <span class="hljs-property">@totem_scope</span>.rails_polymorphic_type_to_path(type)
+          record = <span class="hljs-property">@store</span>.peekRecord(type, id)
+          <span class="hljs-keyword">return</span> resolve(record) <span class="hljs-keyword">if</span> record
+          <span class="hljs-property">@store</span>.findRecord(type, id).<span class="hljs-keyword">then</span> (record) =&gt;
+            <span class="hljs-keyword">unless</span> record.get(<span class="hljs-string">'isDeleted'</span>)
+              resolve(record)
+            <span class="hljs-keyword">else</span>
+              resolve(<span class="hljs-literal">null</span>)
+          , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+            reject(error)
+        ds.PromiseObject.create <span class="hljs-attribute">promise</span>: promise</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>&#39;@&#39; (e.g. this) is the current model instance.  Therefore, any @func-name() must be available in
+the instance e.g. @store, @totem_scope, etc.
+This function uses &#39;store.filter&#39; which filters only the &#39;loaded&#39; records in the store (e.g. no query performed).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemAssociationsFrom</span></span>
+    <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(assoc, from, self, id=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-property">@get_from_function</span>(assoc, from, self, id)
+
+    <span class="hljs-attribute">get_from_function</span>: <span class="hljs-function"><span class="hljs-params">(assoc, from, self, id)</span> -&gt;</span>
+<span class="hljs-function">      <span class="hljs-title">fn</span> = -&gt;</span>
+        promise = <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+          id_prop  = id <span class="hljs-keyword">or</span> from.split(<span class="hljs-string">'/'</span>).pop().singularize() + <span class="hljs-string">'_id'</span>
+          type     = assoc.singularize()
+          add_self = self != <span class="hljs-literal">false</span> <span class="hljs-keyword">and</span> from == <span class="hljs-property">@totem_scope</span>.get_record_path(@).pluralize()  <span class="hljs-comment"># if self and same record type then add instance's id</span>
+          <span class="hljs-property">@get</span>(from).<span class="hljs-keyword">then</span> (records) =&gt;
+            record_ids = records.mapBy <span class="hljs-string">'id'</span>
+            <span class="hljs-keyword">if</span> add_self
+              id = <span class="hljs-property">@get</span>(<span class="hljs-string">'id'</span>)
+              record_ids.push id  <span class="hljs-keyword">unless</span> record_ids.includes(id)
+            filter_ids     = <span class="hljs-property">@totem_scope</span>.make_ids_array record_ids.uniq()
+            assoc_promises = records.map (record) =&gt; record.get(assoc)
+            ember.RSVP.Promise.all(assoc_promises).<span class="hljs-keyword">then</span> =&gt;
+              <span class="hljs-property">@store</span>.filter(type, <span class="hljs-function"><span class="hljs-params">(record)</span> =&gt;</span>
+                filter_ids.includes record.get(id_prop)
+              ).<span class="hljs-keyword">then</span> (filtered_store_records) =&gt;
+                resolve(filtered_store_records)
+              , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+                reject(error)
+        ds.PromiseArray.create <span class="hljs-attribute">promise</span>: promise</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Encapsulate the filter so does not reference ds namespace.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemAssociationsFilter</span></span>
+    <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(filter, filter_fn)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-property">@get_filter_function</span>(filter, filter_fn)
+
+    <span class="hljs-attribute">get_filter_function</span>: <span class="hljs-function"><span class="hljs-params">(filter, filter_fn)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> filter <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span> filter == <span class="hljs-string">'function'</span>
+
+      <span class="hljs-keyword">switch</span> filter
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'users'</span>
+          <span class="hljs-property">@filter_by_users</span>(filter, filter_fn)
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-property">@filter_by_path</span>(filter, filter_fn)
+
+    <span class="hljs-attribute">filter_by_users</span>: <span class="hljs-function"><span class="hljs-params">(filter, filter_fn)</span> -&gt;</span>
+      <span class="hljs-keyword">if</span> filter_fn
+<span class="hljs-function">        <span class="hljs-title">fn</span> = <span class="hljs-params">(record)</span> -&gt;</span>
+          <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">if</span> filter_fn(record) == <span class="hljs-literal">false</span>
+          <span class="hljs-property">@totem_scope</span>.can_view_record_user_id(record)
+      <span class="hljs-keyword">else</span>
+<span class="hljs-function">        <span class="hljs-title">fn</span> = <span class="hljs-params">(record)</span> -&gt;</span>
+          <span class="hljs-property">@totem_scope</span>.can_view_record_user_id(record)
+      <span class="hljs-keyword">return</span> fn
+
+    <span class="hljs-attribute">filter_by_path</span>: <span class="hljs-function"><span class="hljs-params">(filter, filter_fn)</span> -&gt;</span>
+      <span class="hljs-keyword">if</span> filter_fn
+<span class="hljs-function">        <span class="hljs-title">fn</span> = <span class="hljs-params">(record)</span> -&gt;</span>
+          <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">if</span> filter_fn(record) == <span class="hljs-literal">false</span>
+          <span class="hljs-property">@totem_scope</span>.can_view_record_current_path_id(record)
+      <span class="hljs-keyword">else</span>
+<span class="hljs-function">        <span class="hljs-title">fn</span> = <span class="hljs-params">(record)</span> -&gt;</span>
+          <span class="hljs-property">@totem_scope</span>.can_view_record_current_path_id(record)
+      <span class="hljs-keyword">return</span> fn</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return a &#39;store.filter&#39;.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemAssociationsStoreFilter</span></span>
+    <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(name, type, options)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-property">@get_store_filter</span>(name, type, options)
+
+    <span class="hljs-attribute">get_store_filter</span>: <span class="hljs-function"><span class="hljs-params">(name, type, options)</span> -&gt;</span>
+<span class="hljs-function">      <span class="hljs-title">fn</span> = -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ta.store_filter options may contain an additional filtering rule beyond the record id.
+  filter_on: &#39;attribute&#39;  #=&gt; string attribute name in the record being filtered
+  is_blank:  true         #=&gt; the record&#39;s attribute-value is blank (uses ember.isBlank)
+  is_equal:  value        #=&gt; the record&#39;s attribute-value == value
+More may be added in the future e.g. gt, lt, etc.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">        <span class="hljs-title">__filter_on</span> = <span class="hljs-params">(record, options)</span> -&gt;</span>
+          filter_attr = options.filter_on
+          <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">unless</span> filter_attr  <span class="hljs-comment"># no additional filtering (and record id already passed), so return true</span>
+          value = record.get(filter_attr)
+          <span class="hljs-keyword">return</span> ember.isBlank(value)         <span class="hljs-keyword">if</span> options.is_blank
+          <span class="hljs-keyword">return</span> (value == options.is_equal)  <span class="hljs-keyword">if</span> options.is_equal
+          <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+
+        <span class="hljs-keyword">unless</span> options.destroy == <span class="hljs-literal">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Destroy the store.filter when the object is destroyed.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-property">@willDestroy</span> = (<span class="hljs-function">-&gt;</span>
+            <span class="hljs-property">@_super</span>()
+            filter = <span class="hljs-property">@get</span>(<span class="hljs-string">"<span class="hljs-subst">#{name}</span>.content"</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> filter
+            filter.destroy()
+          )
+        promise = <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+          <span class="hljs-keyword">if</span> options.load
+            load     = ember.makeArray(options.load)
+            promises = load.map (load_prop) =&gt; <span class="hljs-property">@get</span>(load_prop)
+          <span class="hljs-keyword">else</span>
+            promises = [ember.RSVP.resolve()]
+          model = options.model <span class="hljs-keyword">or</span> @
+          <span class="hljs-keyword">if</span> options.model
+            model = <span class="hljs-property">@get</span> model
+          <span class="hljs-keyword">if</span> model.<span class="hljs-keyword">then</span>?
+            promises.unshift model
+          <span class="hljs-keyword">else</span>
+            promises.unshift ember.RSVP.resolve(model)
+
+          ember.RSVP.Promise.all(promises).<span class="hljs-keyword">then</span> (results) =&gt;
+            model     = results.get(<span class="hljs-string">'firstObject'</span>)
+            filter_id = parseInt model.get(<span class="hljs-string">'id'</span>)
+            <span class="hljs-keyword">if</span> options.polymorphic
+              id_attr     = options.<span class="hljs-literal">on</span> + <span class="hljs-string">'_id'</span>
+              type_attr   = options.<span class="hljs-literal">on</span> + <span class="hljs-string">'_type'</span>
+              filter_type = <span class="hljs-property">@totem_scope</span>.get_record_path(model)
+              <span class="hljs-property">@store</span>.filter(type, <span class="hljs-function"><span class="hljs-params">(record)</span> =&gt;</span>
+                record_id   = parseInt record.get(id_attr)
+                record_type = <span class="hljs-property">@totem_scope</span>.rails_polymorphic_type_to_path(record.get(type_attr))
+                <span class="hljs-built_in">console</span>.warn <span class="hljs-string">'filter record'</span>, record_id, filter_id, record_type, filter_type, record.toString()
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> (filter_id == record_id <span class="hljs-keyword">and</span> filter_type == record_type)
+                __filter_on(record, options)
+              ).<span class="hljs-keyword">then</span> (filtered_store_records) =&gt;
+                resolve(filtered_store_records)
+              , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+                reject(error)
+            <span class="hljs-keyword">else</span>
+              id_attr = options.<span class="hljs-literal">on</span>
+              <span class="hljs-property">@store</span>.filter(type, <span class="hljs-function"><span class="hljs-params">(record)</span> =&gt;</span>
+                record_id = parseInt record.get(id_attr)
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> filter_id == record_id
+                __filter_on(record, options)
+              ).<span class="hljs-keyword">then</span> (filtered_store_records) =&gt;
+                resolve(filtered_store_records)
+              , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+                reject(error)
+          , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+            reject(error)
+        ds.PromiseArray.create <span class="hljs-attribute">promise</span>: promise
+
+export default TotemAssociations</div></div></div></div></body></html>

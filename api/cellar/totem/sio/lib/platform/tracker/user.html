@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/sio/lib/platform/tracker/user</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/sio/lib/platform/tracker/user"><meta name="groc-project-path" content="src/totem/sio/lib/platform/tracker/user.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/sio/lib/platform/tracker/user.coffee">src/totem/sio/lib/platform/tracker/user.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SocketIOTrackerUser</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@tracker</span>, <span class="hljs-property">@socket</span>)</span> -&gt;</span>
+    <span class="hljs-property">@debug_color</span> = <span class="hljs-property">@tracker</span>.debug_color
+    <span class="hljs-property">@util</span>        = <span class="hljs-property">@tracker</span>.util
+    <span class="hljs-property">@user_data</span>   = {}
+    <span class="hljs-property">@user_rooms</span>  = {}
+    <span class="hljs-property">@auth_user</span>   = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@data_user</span>   = <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">get_data</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@user_data</span>.user = <span class="hljs-property">@get_user</span>(); <span class="hljs-property">@user_data</span>
+
+  <span class="hljs-attribute">get_rooms</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@util</span>.hash_keys(<span class="hljs-property">@user_rooms</span>)
+
+  <span class="hljs-attribute">in_room</span>: <span class="hljs-function"><span class="hljs-params">(room)</span> -&gt;</span> <span class="hljs-property">@util</span>.is_connected(<span class="hljs-property">@socket</span>) <span class="hljs-keyword">and</span> <span class="hljs-property">@user_rooms</span>[room]
+
+  <span class="hljs-attribute">track</span>: <span class="hljs-function"><span class="hljs-params">(rooms, data)</span> -&gt;</span>
+    <span class="hljs-property">@user_rooms</span>[room]    = <span class="hljs-literal">true</span> <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> <span class="hljs-property">@util</span>.make_array(rooms) 
+    <span class="hljs-property">@user_data</span>.date1     = <span class="hljs-keyword">new</span> Date() <span class="hljs-keyword">unless</span> <span class="hljs-property">@user_data</span>.date1
+    <span class="hljs-property">@user_data</span>.prev_href = <span class="hljs-property">@user_data</span>.href <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+    <span class="hljs-property">@user_data</span>.prev_date = <span class="hljs-property">@user_data</span>.date <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+    <span class="hljs-property">@user_data</span>.data      = data.data <span class="hljs-keyword">or</span> {}
+    <span class="hljs-property">@user_data</span>.href      = data.href
+    <span class="hljs-property">@user_data</span>.date      = <span class="hljs-keyword">new</span> Date()
+    <span class="hljs-property">@data_user</span>           = data.user
+
+  <span class="hljs-attribute">untrack</span>: <span class="hljs-function"><span class="hljs-params">(rooms)</span> -&gt;</span>
+    <span class="hljs-keyword">delete</span>(<span class="hljs-property">@user_rooms</span>[room]) <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> <span class="hljs-property">@util</span>.make_array(rooms)
+    <span class="hljs-property">@user_data</span>.date1     = <span class="hljs-keyword">new</span> Date() <span class="hljs-keyword">unless</span> <span class="hljs-property">@user_data</span>.date1
+    <span class="hljs-property">@user_data</span>.prev_href = <span class="hljs-property">@user_data</span>.href <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+    <span class="hljs-property">@user_data</span>.prev_date = <span class="hljs-property">@user_data</span>.date <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+    <span class="hljs-property">@user_data</span>.data      = data.data <span class="hljs-keyword">or</span> {}
+    <span class="hljs-property">@user_data</span>.href      = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@user_data</span>.date      = <span class="hljs-keyword">new</span> Date()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_user</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set_authenticated_user</span>()
+    <span class="hljs-property">@auth_user</span> <span class="hljs-keyword">or</span> <span class="hljs-property">@data_user</span> <span class="hljs-keyword">or</span> <span class="hljs-property">@user_data</span>.user <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">set_authenticated_user</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@auth_user</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@auth_user</span>.id
+    <span class="hljs-property">@auth_user</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@util</span>.is_authenticated(<span class="hljs-property">@socket</span>)
+    user = <span class="hljs-property">@util</span>.get_user_data(<span class="hljs-property">@socket</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> user.id
+    <span class="hljs-property">@auth_user</span> = user
+
+  <span class="hljs-attribute">debug</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'not debugging'</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@util</span>.debugging
+    sid        = <span class="hljs-property">@socket</span>.id
+    user_data  = <span class="hljs-property">@get_data</span>()
+    first_name = (user_data.user <span class="hljs-keyword">or</span> {}).first_name
+    last_name  = (user_data.user <span class="hljs-keyword">or</span> {}).last_name
+    msg        = <span class="hljs-property">@util</span>.bold_line(<span class="hljs-string">"USER TRACKER for <span class="hljs-subst">#{first_name}</span> <span class="hljs-subst">#{last_name}</span> sid: <span class="hljs-subst">#{sid}</span>\n"</span>, <span class="hljs-property">@debug_color</span>)
+    <span class="hljs-property">@util</span>.debug msg, {user_data, <span class="hljs-property">@user_rooms</span>, <span class="hljs-property">@auth_user</span>, <span class="hljs-property">@data_user</span>}
+
+  <span class="hljs-attribute">to_string</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'SocketIOTrackerUser'</span>
+
+<span class="hljs-built_in">module</span>.exports = SocketIOTrackerUser</div></div></div></div></body></html>

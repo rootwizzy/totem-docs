@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-application/app/instance-initializers/totem/application/errors</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/client/totem-application/app/instance-initializers/totem/application/errors"><meta name="groc-project-path" content="src/totem/client/totem-application/app/instance-initializers/totem/application/errors.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-application/app/instance-initializers/totem/application/errors.coffee">src/totem/client/totem-application/app/instance-initializers/totem/application/errors.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import totem_error    from <span class="hljs-string">'totem/error'</span>
+import totem_messages from <span class="hljs-string">'totem-messages/messages'</span>
+
+initializer =
+  <span class="hljs-attribute">name</span>:       <span class="hljs-string">'totem-application-errors'</span>
+  <span class="hljs-attribute">after</span>:      [<span class="hljs-string">'totem'</span>, <span class="hljs-string">'totem-messages'</span>]
+  <span class="hljs-attribute">initialize</span>: <span class="hljs-function"><span class="hljs-params">(instance)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>RSVP errors can be raised by normal events (e.g. any transition aborted)
+and these errors are not be fatal.  Only if the error was thrown
+by &#39;totem_error&#39; should they be handled.</p></div></div><div class="code"><div class="wrapper">    ember.RSVP.<span class="hljs-literal">on</span> <span class="hljs-string">'error'</span>, <span class="hljs-function"><span class="hljs-params">(reason=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+      <span class="hljs-built_in">console</span>.info <span class="hljs-string">'2.......rsvp-error'</span>, reason
+      <span class="hljs-keyword">if</span> reason <span class="hljs-keyword">and</span> reason.is_totem_error
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> reason.is_handled
+          route = instance.lookup(<span class="hljs-string">'route:application'</span>)
+          route.handle_error(reason) <span class="hljs-keyword">if</span> route <span class="hljs-keyword">and</span> route.handle_error</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Ember will call this function on errors.
+Some errors should not be fatal such as rails model validation errors and ember-validation errors.
+Totem should handle fatal errors by displaying an error page, so overriding the default functionality.
+NOTE: ActiveModelAdapter throws an &#39;InvalidError&#39; on model validation errors.
+      These are handled by the messages:api module and are not fatal errors,
+      However, this function is the first in the error-chain for them.</p></div></div><div class="code"><div class="wrapper">    ember.onerror = <span class="hljs-function"><span class="hljs-params">(reason=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+      <span class="hljs-built_in">console</span>.info <span class="hljs-string">'3.......on-error'</span>, reason
+      message = reason <span class="hljs-keyword">and</span> reason.message
+      <span class="hljs-built_in">console</span>.error message  <span class="hljs-keyword">if</span> message</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>return if reason and reason.status == 422   # ignore model validations
+return if reason and reason.is_totem_error and reason.is_handled
+route = instance.lookup(&#39;route:application&#39;)
+route.send &#39;error&#39;, reason</p></div></div><div class="code"><div class="wrapper">export default initializer</div></div></div></div></body></html>

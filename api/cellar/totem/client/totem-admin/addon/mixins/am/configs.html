@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-admin/addon/mixins/am/configs</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem-admin/addon/mixins/am/configs"><meta name="groc-project-path" content="src/totem/client/totem-admin/addon/mixins/am/configs.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-admin/addon/mixins/am/configs.coffee">src/totem/client/totem-admin/addon/mixins/am/configs.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+import util   from <span class="hljs-string">'totem/util'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">get_config_engines</span>: <span class="hljs-function">-&gt;</span> 
+    configs = util.hash_values(<span class="hljs-property">@tc</span>.module_configs).sortBy <span class="hljs-string">'module_prefix'</span>
+    engines = []
+    <span class="hljs-keyword">for</span> config <span class="hljs-keyword">in</span> configs
+      hash                      = {}
+      hash.name                 = config.module_prefix
+      hash.add_engines          = (config.add_engines <span class="hljs-keyword">or</span> []).sortBy(<span class="hljs-string">'engine'</span>)
+      engine                    = config.engine <span class="hljs-keyword">or</span> {}
+      hash.external_routes      = (engine.external_routes <span class="hljs-keyword">or</span> []).sort()
+      hash.services             = engine.services
+      hash.services             = [<span class="hljs-string">'none'</span>] <span class="hljs-keyword">if</span> ember.isBlank(hash.services) <span class="hljs-keyword">and</span> ember.isArray(hash.services)
+      hash.services             = hash.services.sort() <span class="hljs-keyword">if</span> ember.isArray(hash.services)
+      hash.sort_name            = hash.name.toLowerCase()
+      hash.sort_services        = <span class="hljs-keyword">if</span> ember.isArray(hash.services) <span class="hljs-keyword">then</span> hash.services.join() <span class="hljs-keyword">else</span> <span class="hljs-string">''</span>
+      hash.sort_external_routes = hash.external_routes.join()
+      hash.sort_add_engines     = hash.add_engines.mapBy(<span class="hljs-string">'engine'</span>).sort().join()
+      engines.push(hash)
+    engines
+
+  <span class="hljs-attribute">get_default_services</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@te</span>.get_app_services().sort()
+
+  <span class="hljs-attribute">get_config_routes</span>: <span class="hljs-function">-&gt;</span>
+    routes = []
+    <span class="hljs-keyword">for</span> name, options <span class="hljs-keyword">of</span> <span class="hljs-property">@tr</span>.config_routes
+      hash           = {}
+      hash.name      = name <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+      hash.path      = options.path <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+      hash.sort_name = hash.name.toLowerCase()
+      hash.sort_path = hash.path.toLowerCase()
+      routes.push(hash)
+    routes
+
+  <span class="hljs-attribute">get_config_router_mounts</span>: <span class="hljs-function">-&gt;</span>
+    mounts        = []
+    router_mounts = <span class="hljs-property">@tc</span>.router_mounts.sortBy <span class="hljs-string">'engine'</span>
+    <span class="hljs-keyword">for</span> mount <span class="hljs-keyword">in</span> router_mounts
+      hash             = {}
+      hash.engine      = mount.engine
+      hash.as          = mount.args.as <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+      hash.under       = mount.args.under <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+      hash.path        = mount.args.path
+      hash.sort_engine = hash.engine.toLowerCase()
+      hash.sort_as     = hash.as.toLowerCase()
+      hash.sort_under  = hash.under.toLowerCase()
+      <span class="hljs-property">@add_mount_route_path</span>(hash)
+      mounts.push(hash)
+    mounts
+
+  <span class="hljs-attribute">add_mount_route_path</span>: <span class="hljs-function"><span class="hljs-params">(hash)</span> -&gt;</span>
+    route = []
+    path  = []
+    <span class="hljs-keyword">if</span> ember.isPresent(hash.under)
+      route.push hash.under
+      route_path = (<span class="hljs-property">@tr</span>.config_routes[hash.under] <span class="hljs-keyword">or</span> {}).path <span class="hljs-keyword">or</span> <span class="hljs-string">'/'</span>
+      path.push(route_path) 
+      path.push hash.path <span class="hljs-keyword">or</span> hash.as
+    <span class="hljs-keyword">else</span>
+      path.push hash.path <span class="hljs-keyword">or</span> <span class="hljs-string">"/<span class="hljs-subst">#{hash.as}</span>"</span>
+    route.push hash.as
+    hash.route      = route.join(<span class="hljs-string">'.'</span>)
+    hash.sort_route = hash.route.toLowerCase()
+    hash.path       = path.join(<span class="hljs-string">'/'</span>)
+    hash.sort_path  = hash.path.toLowerCase()</div></div></div></div></body></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-readiness-assurance/addon/mixins/user_list</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-readiness-assurance/addon/mixins/user_list"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-readiness-assurance/addon/mixins/user_list.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-readiness-assurance/addon/mixins/user_list.coffee">src/thinkspace/client/thinkspace-readiness-assurance/addon/mixins/user_list.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">pubsub</span>: ember.inject.service()
+
+  <span class="hljs-attribute">current_users</span>: []
+  <span class="hljs-attribute">users_added</span>:   []
+  <span class="hljs-attribute">users_removed</span>: []
+
+  <span class="hljs-attribute">collapsed</span>:            <span class="hljs-literal">false</span>
+  <span class="hljs-attribute">show_number_of_users</span>: <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">number_of_users</span>:      <span class="hljs-number">0</span>
+  <span class="hljs-attribute">number_of_all_users</span>:  <span class="hljs-number">0</span>
+  <span class="hljs-attribute">all_sorted_users</span>:     <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">room</span>:          <span class="hljs-string">'override_in_component'</span>
+  <span class="hljs-attribute">room_type</span>:     <span class="hljs-string">'user_list'</span>
+  <span class="hljs-attribute">get_room_type</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'room_type'</span>)
+  <span class="hljs-attribute">get_room</span>:      <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'room'</span>)
+
+  <span class="hljs-attribute">get_name</span>: <span class="hljs-function"><span class="hljs-params">(user)</span> -&gt;</span> <span class="hljs-string">"<span class="hljs-subst">#{user.last_name}</span>, <span class="hljs-subst">#{user.first_name}</span>"</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">toggle_collapsed</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@toggleProperty</span>(<span class="hljs-string">'collapsed'</span>); <span class="hljs-keyword">return</span>
+    <span class="hljs-attribute">refresh</span>:          <span class="hljs-function">-&gt;</span> <span class="hljs-property">@refresh_users</span>()
+
+  <span class="hljs-attribute">refresh_users</span>: <span class="hljs-function">-&gt;</span>
+    room      = <span class="hljs-property">@get_room</span>()
+    room_type = <span class="hljs-property">@get_room_type</span>()
+    event     = <span class="hljs-property">@get</span>(<span class="hljs-string">'pubsub'</span>).client_event(room_type)
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'pubsub'</span>).message_to_room_members(event, room, {room_type})
+
+  <span class="hljs-attribute">set_all_sorted_users</span>: <span class="hljs-function">-&gt;</span>
+    users            = <span class="hljs-property">@get</span>(<span class="hljs-string">'users'</span>)
+    all_sorted_users = []
+    <span class="hljs-keyword">if</span> ember.isPresent(users)
+      <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> users
+        id           = user.id
+        name         = <span class="hljs-property">@get_name</span>(user)
+        present      = <span class="hljs-literal">false</span>
+        current_user = <span class="hljs-property">@get</span>(<span class="hljs-string">'pubsub'</span>).is_current_user_id(id)
+        all_sorted_users.push({id, name, present, current_user})
+    <span class="hljs-property">@set</span> <span class="hljs-string">'all_sorted_users'</span>, all_sorted_users.sortBy <span class="hljs-string">'name'</span>
+
+  <span class="hljs-attribute">handle_room_users</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    user_list     = data.user_list <span class="hljs-keyword">or</span> []
+    current_users = <span class="hljs-property">@get</span>(<span class="hljs-string">'current_users'</span>)
+    users_added   = []
+    users_removed = []
+    users         = []
+    <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> user_list
+      <span class="hljs-keyword">unless</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'pubsub'</span>).is_current_user_id(user.id)
+        users_added.push(user) <span class="hljs-keyword">unless</span> current_users.findBy <span class="hljs-string">'id'</span>, user.id
+      user.name = <span class="hljs-property">@get_name</span>(user)
+      users.push(user)
+    <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> current_users
+      users_removed.push(user) <span class="hljs-keyword">unless</span> users.findBy <span class="hljs-string">'id'</span>, user.id
+    <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> <span class="hljs-property">@all_sorted_users</span>
+      ember.set user, <span class="hljs-string">'present'</span>, ember.isPresent users.findBy(<span class="hljs-string">'id'</span>, user.id)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'users_added'</span>,             users_added
+    <span class="hljs-property">@set</span> <span class="hljs-string">'users_removed'</span>,           users_removed
+    <span class="hljs-property">@set</span> <span class="hljs-string">'current_users'</span>,           users
+    <span class="hljs-property">@set</span> <span class="hljs-string">'number_of_users'</span>,         users.length
+    <span class="hljs-property">@set</span> <span class="hljs-string">'number_of_all_users'</span>,     <span class="hljs-property">@all_sorted_users</span>.length
+    <span class="hljs-property">@set</span> <span class="hljs-string">'number_of_users_changed'</span>, (users_added.length + users_removed.length)
+    <span class="hljs-property">@number_of_users_changed_animation</span>()
+
+  <span class="hljs-attribute">number_of_users_changed_animation</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'number_of_users_changed'</span>) == <span class="hljs-number">0</span>
+    <span class="hljs-property">@set</span> <span class="hljs-string">'show_number_of_users'</span>, <span class="hljs-literal">false</span>
+    ember.run.schedule <span class="hljs-string">'afterRender'</span>, <span class="hljs-function">=&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'show_number_of_users'</span>, <span class="hljs-literal">true</span></div></div></div></div></body></html>

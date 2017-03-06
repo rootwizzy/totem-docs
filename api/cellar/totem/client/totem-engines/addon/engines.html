@@ -1,0 +1,134 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-engines/addon/engines</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="totem/client/totem-engines/addon/engines"><meta name="groc-project-path" content="src/totem/client/totem-engines/addon/engines.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-engines/addon/engines.coffee">src/totem/client/totem-engines/addon/engines.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember            from <span class="hljs-string">'ember'</span>
+import util             from <span class="hljs-string">'totem/util'</span>
+import tc               from <span class="hljs-string">'totem-config/configs'</span>
+import fm               from <span class="hljs-string">'totem-config/find_modules'</span>
+import Engine           from <span class="hljs-string">'ember-engines/engine'</span>
+import Resolver         from <span class="hljs-string">'totem-engines/resolver'</span>
+import loadInitializers from <span class="hljs-string">'ember-load-initializers'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Engines</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="class-variables-and-methods">Class Variables and Methods.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-property">@engines</span>      = {} <span class="hljs-comment"># if saving each engine</span>
+  <span class="hljs-property">@current_app</span>  = <span class="hljs-literal">null</span>
+  <span class="hljs-property">@app_services</span> = <span class="hljs-literal">null</span>
+  <span class="hljs-property">@dock_addons</span>  = {}
+
+  <span class="hljs-property">@get_dock_addons</span>: <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span> <span class="hljs-property">@dock_addons</span>[name]
+
+  <span class="hljs-property">@get_app_services</span> = <span class="hljs-function">-&gt;</span> (<span class="hljs-property">@app_services</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@app_services</span>.copy()) <span class="hljs-keyword">or</span> <span class="hljs-property">@set_app_services</span>().copy()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Find and set the app&#39;s base services (e.g. those not namespaced or in an engine).
+Add these services to each engine&#39;s dependencies.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-property">@set_app_services</span> = <span class="hljs-function">-&gt;</span>
+    srv_path = util.app_path(<span class="hljs-string">'services'</span>)
+    regex    = <span class="hljs-keyword">new</span> RegExp <span class="hljs-string">"<span class="hljs-subst">#{srv_path}</span>\/(\\w+)$"</span>
+    mods     = fm.filter_by(regex)
+    services = [<span class="hljs-string">'store'</span>, <span class="hljs-string">'session'</span>] <span class="hljs-comment"># always include these services</span>
+    <span class="hljs-keyword">for</span> mod <span class="hljs-keyword">in</span> mods
+      service = mod.match(regex).get(<span class="hljs-string">'lastObject'</span>)
+      services.push(service) <span class="hljs-keyword">if</span> service
+    <span class="hljs-property">@app_services</span> = services.uniq()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="instance-methods">Instance Methods.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@env</span>, <span class="hljs-property">@options</span>={})</span> -&gt;</span>
+    <span class="hljs-property">@error</span> <span class="hljs-string">"The constructor config must be a hash."</span>, {<span class="hljs-property">@env</span>}  <span class="hljs-keyword">unless</span> util.is_hash(<span class="hljs-property">@env</span>)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"The constructor options must be a hash."</span>, {<span class="hljs-property">@options</span>} <span class="hljs-keyword">unless</span> util.is_hash(<span class="hljs-property">@options</span>)
+    <span class="hljs-property">@engine_options</span>    = {}
+    <span class="hljs-property">@resolver</span>          = Resolver
+    <span class="hljs-property">@module_prefix</span>     = <span class="hljs-property">@env</span>.modulePrefix
+    <span class="hljs-property">@pod_module_prefix</span> = <span class="hljs-property">@env</span>.podModulePrefix
+    <span class="hljs-property">@set_addon_services</span>(<span class="hljs-property">@options</span>)
+    <span class="hljs-property">@set_addon_external_routes</span>(<span class="hljs-property">@options</span>)
+    <span class="hljs-property">@add_config_engines</span>()
+
+  <span class="hljs-attribute">add_config_engines</span>: <span class="hljs-function">-&gt;</span>
+    add_engines = tc.get_add_engines(<span class="hljs-property">@module_prefix</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(add_engines)
+    <span class="hljs-property">@add_engine</span>(hash.engine, hash.args) <span class="hljs-keyword">for</span> hash <span class="hljs-keyword">in</span> add_engines
+
+  <span class="hljs-attribute">add_engine</span>: <span class="hljs-function"><span class="hljs-params">(name, options={})</span> -&gt;</span>
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Method 'add_engine' name must be a string."</span>, {name} <span class="hljs-keyword">unless</span> util.is_string(name)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Method 'add_engine' options must be a hash."</span>, options <span class="hljs-keyword">unless</span> util.is_hash(options)
+    engine              = <span class="hljs-property">@engine_options</span>[name.camelize()] = {}
+    hash                = engine.dependencies = {}
+    hash.services       = <span class="hljs-property">@get_options_services</span>(options)
+    hash.externalRoutes = <span class="hljs-property">@get_options_external_routes</span>(options)
+    <span class="hljs-property">@add_dock_addons</span>(name, options)
+    <span class="hljs-keyword">return</span> @ <span class="hljs-comment"># so can chain 'add_engine' calls</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="set-the-addon39s-engine-dependencies-if-not-added-in-the-39new-totem-enginesconfig-options39">Set the addon&#39;s engine dependencies if not added in the &#39;new totem_engines(config, options)&#39;.</h3>
+<h3 id="eg-not-an-added-engine-which-are-provided-in-the-quotadd-enginequot-method-options">(e.g. not an added engine - which are provided in the &quot;add_engine&quot; method options).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">set_addon_services</span>: <span class="hljs-function"><span class="hljs-params">(options)</span>        -&gt;</span> <span class="hljs-property">@services</span>        = <span class="hljs-property">@get_addon_options_services</span>(options)
+  <span class="hljs-attribute">set_addon_external_routes</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> <span class="hljs-property">@external_routes</span> = <span class="hljs-property">@get_addon_options_external_routes</span>(options)
+
+  <span class="hljs-attribute">get_app</span>: <span class="hljs-function">-&gt;</span>
+    eng = ember.Application.extend
+      <span class="hljs-attribute">modulePrefix</span>:    <span class="hljs-property">@module_prefix</span>
+      <span class="hljs-attribute">podModulePrefix</span>: <span class="hljs-property">@pod_module_prefix</span>
+      <span class="hljs-attribute">Resolver</span>:        <span class="hljs-property">@resolver</span>
+      <span class="hljs-attribute">engines</span>:         <span class="hljs-property">@engine_options</span>
+    Engines.current_app = <span class="hljs-property">@load_initializers</span>(eng) <span class="hljs-comment"># set the app in the class</span>
+
+  <span class="hljs-attribute">get_engine</span>: <span class="hljs-function">-&gt;</span>
+    eng = Engine.extend
+      <span class="hljs-attribute">modulePrefix</span>: <span class="hljs-property">@module_prefix</span>
+      <span class="hljs-attribute">Resolver</span>:     <span class="hljs-property">@resolver</span>
+      <span class="hljs-attribute">dependencies</span>:
+        <span class="hljs-attribute">services</span>:       <span class="hljs-property">@services</span>
+        <span class="hljs-attribute">externalRoutes</span>: <span class="hljs-property">@external_routes</span>
+      <span class="hljs-attribute">engines</span>: <span class="hljs-property">@engine_options</span>
+    <span class="hljs-property">@load_initializers</span>(eng)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="private-">Private ###</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">app_services</span>: <span class="hljs-function">-&gt;</span> Engines.get_app_services()
+
+  <span class="hljs-attribute">get_addon_options_services</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    config_options = tc.get_services(<span class="hljs-property">@module_prefix</span>)
+    config_options = <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(util.hash_keys(config_options))
+    <span class="hljs-property">@get_options_services</span>(options, config_options)
+
+  <span class="hljs-attribute">get_addon_options_external_routes</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    engine_routes = options.external_routes <span class="hljs-keyword">or</span> []
+    <span class="hljs-property">@error</span> <span class="hljs-string">"External routes for the addon engine dependencies must be an array."</span>, options <span class="hljs-keyword">unless</span> util.is_array(engine_routes)
+    config_routes = tc.get_external_routes(<span class="hljs-property">@module_prefix</span>) <span class="hljs-keyword">or</span> []
+    routes        = engine_routes.concat(config_routes).uniq()
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> ember.isBlank(routes)
+    routes</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>CAUTION when using options &#39;add_services&#39; and &#39;except_services&#39;.
+Both the engine and consuming-engine must be in sync with services.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_options_services</span>: <span class="hljs-function"><span class="hljs-params">(options, config_options=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    is_none         = util.is_array(options.services) <span class="hljs-keyword">and</span> ember.isBlank(options.services)
+    services        = ember.makeArray(options.services).compact()
+    add_services    = ember.makeArray(options.add_services).compact()
+    except_services = ember.makeArray(options.except_services).compact()
+    <span class="hljs-keyword">if</span> ember.isPresent(config_options)
+      is_none         = util.is_array(config_options.services) <span class="hljs-keyword">and</span> ember.isBlank(config_options.services)
+      services        = services.concat(ember.makeArray(config_options.services).compact()).uniq()
+      add_services    = add_services.concat(config_options.add_services).uniq()
+      except_services = except_services.concat(config_options.except_services).uniq()
+    services = <span class="hljs-property">@app_services</span>() <span class="hljs-keyword">if</span> !is_none <span class="hljs-keyword">and</span> ember.isBlank(services) <span class="hljs-comment"># allow 'no' services via empty array</span>
+    services.push(service) <span class="hljs-keyword">for</span> service <span class="hljs-keyword">in</span> add_services  <span class="hljs-keyword">if</span> ember.isPresent(add_services)
+    services = services.without(service) <span class="hljs-keyword">for</span> service <span class="hljs-keyword">in</span> except_services  <span class="hljs-keyword">if</span> ember.isPresent(except_services)
+    services.compact().uniq()
+
+  <span class="hljs-attribute">get_options_external_routes</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    routes = options.external_routes
+    <span class="hljs-keyword">return</span> {} <span class="hljs-keyword">if</span> ember.isBlank(routes)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"External routes for the addon engines: {} must be an hash."</span>, options <span class="hljs-keyword">unless</span> util.is_hash(routes)
+    routes
+
+  <span class="hljs-attribute">load_initializers</span>: <span class="hljs-function"><span class="hljs-params">(eng)</span> -&gt;</span>
+    loadInitializers(eng, <span class="hljs-property">@module_prefix</span>)
+    <span class="hljs-property">@save_engine_instance</span>(eng)
+    eng
+
+  <span class="hljs-attribute">save_engine_instance</span>: <span class="hljs-function"><span class="hljs-params">(eng)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> current_engine = eng  # set in this instance in the class
+Engines.engines[@module_prefix] = eng  # save engine
+Engines.engines[@module_prefix] = @    # save this instance</span></p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">add_dock_addons</span>: <span class="hljs-function"><span class="hljs-params">(name, options)</span> -&gt;</span>
+    dock = options.dock
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(dock)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Dock values for engine <span class="hljs-subst">#{name}</span> must be a hash."</span>, {dock} <span class="hljs-keyword">unless</span> util.is_hash(dock)
+    routes = ember.makeArray(dock.routes)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(routes)
+    dock.routes  = routes
+    addons       = (Engines.dock_addons[<span class="hljs-property">@module_prefix</span>] ?= {})
+    addons[name] = dock
+
+  <span class="hljs-attribute">error</span>: <span class="hljs-function">-&gt;</span> util.error(@, arguments...)
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'TotemEngines'</span>
+
+export default Engines</div></div></div></div></body></html>

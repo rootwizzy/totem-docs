@@ -1,0 +1,245 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-importer/app/models/thinkspace/importer/file</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-importer/app/models/thinkspace/importer/file"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-importer/app/models/thinkspace/importer/file.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-importer/app/models/thinkspace/importer/file.rb">src/thinkspace/api/thinkspace-importer/app/models/thinkspace/importer/file.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'csv'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Importer</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">File</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
+      has_attached_file                 <span class="hljs-symbol">:attachment</span>
+      validates_attachment_content_type <span class="hljs-symbol">:attachment</span>, <span class="hljs-symbol">content_type:</span> <span class="hljs-string">%w(text/csv text/plain application/octet-stream application/vnd.ms-excel)</span>
+      before_save                       <span class="hljs-symbol">:set_settings_will_change</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">title</span></span>
+        attachment_file_name
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">content_type</span></span>
+        attachment_content_type
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">size</span></span>
+        attachment_file_size
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">url</span></span>
+        custom_url || attachment.url
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="csv-processinghelpers">CSV processing/helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(contents = <span class="hljs-keyword">nil</span>)</span></span>
+        contents = open(url) <span class="hljs-keyword">unless</span> contents
+        csv      = <span class="hljs-constant">::CSV</span>.parse(contents, <span class="hljs-symbol">headers:</span> get_single_header.blank?)
+        records  = process_csv(csv)
+        records
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_csv</span><span class="hljs-params">(csv)</span></span>
+        sanity_checks
+        headers = <span class="hljs-keyword">if</span> get_single_header.present? <span class="hljs-keyword">then</span> [get_single_header] <span class="hljs-keyword">else</span> get_valid_headers_for_csv(csv) <span class="hljs-keyword">end</span> <span class="hljs-comment"># Should contain nested hash keys and direct column values.</span>
+        records = []
+        get_generated_model_class.transaction <span class="hljs-keyword">do</span>
+          csv.each <span class="hljs-keyword">do</span> |row|
+            validate_row_contains_required_headers(row) 
+            record = get_generated_model_instance
+            headers.each <span class="hljs-keyword">do</span> |header|
+              set_record_value_from_header_and_row(record, header, row)
+            <span class="hljs-keyword">end</span>
+            process_attributes_for_record(record)
+            process_nested_attributes_for_record(record)
+            records &lt;&lt; save_csv_generated_record(record)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+        records
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_attributes_for_record</span><span class="hljs-params">(record)</span></span>
+        attributes = get_attributes
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> attributes.present?
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> attributes.kind_of?(<span class="hljs-constant">Hash</span>)
+        attributes.each <span class="hljs-keyword">do</span> |k, v|
+          method = get_method_from_header(k.to_s)
+          record.send(method, v) <span class="hljs-keyword">if</span> record.respond_to?(method)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_nested_attributes_for_record</span><span class="hljs-params">(record)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Only root level keys can be column values.  The rest are nested.</p></div></div><div class="code"><div class="wrapper">        nested_attributes = get_nested_attributes
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> nested_attributes
+        nested_attributes.each <span class="hljs-keyword">do</span> |k, v|
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> record.respond_to?(k)
+          hash = record.send(k)
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> hash
+          merged_hash = hash.deep_merge(nested_attributes[k])
+          method      = get_method_from_header(k.to_s)
+          record.send(method, merged_hash)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_after_save_methods_for_record</span><span class="hljs-params">(record)</span></span>
+        after_save_methods = get_after_save_methods
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> after_save_methods.present?
+        after_save_methods.each <span class="hljs-keyword">do</span> |method|
+          record.send(method) <span class="hljs-keyword">if</span> record.respond_to?(method)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sanity_checks</span></span>
+        valid_headers = get_valid_headers
+        error <span class="hljs-constant">SoftInvalidHeadersError</span>, <span class="hljs-string">"No [:headers][:valid] are defined for the file.  Processing halted.  File: <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.inspect}</span>"</span> <span class="hljs-keyword">unless</span> valid_headers.present? <span class="hljs-keyword">or</span> get_single_header.present?
+        validate_required_headers
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save_csv_generated_record</span><span class="hljs-params">(record)</span></span>
+        <span class="hljs-keyword">if</span> get_save_bool
+          process_after_save_methods_for_record(record) <span class="hljs-keyword">if</span> record.save
+        <span class="hljs-keyword">end</span>
+        record
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_valid_headers_for_csv</span><span class="hljs-params">(csv)</span></span>
+        headers      = get_combined_valid_headers_from_csv(csv)
+        model        = get_generated_model_instance
+        headers.each <span class="hljs-keyword">do</span> |header|</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the header has a &#39;:&#39; in it, just shift the first value as that is the column.
+=&gt; Each subsequent string is a nested hash key.
+=&gt; This is the convention used to create a nested settings:json type column.</p></div></div><div class="code"><div class="wrapper">          method = get_method_from_header(header)
+          headers.delete(header) <span class="hljs-keyword">unless</span> model.respond_to?(method)
+        <span class="hljs-keyword">end</span>
+        headers
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_combined_valid_headers_from_csv</span><span class="hljs-params">(csv)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get the corresponding headers that the model would respond_to? from the valid headers setting and the csv file itself.</p></div></div><div class="code"><div class="wrapper">        csv_headers   = csv.headers
+        valid_headers = get_valid_headers
+        headers       = []
+        csv_headers.each <span class="hljs-keyword">do</span> |header|
+          base_header = header
+          header      = header.split(<span class="hljs-string">':'</span>).shift <span class="hljs-keyword">if</span> is_nested_header?(header)
+          headers     &lt;&lt; base_header <span class="hljs-keyword">if</span> valid_headers.<span class="hljs-keyword">include</span>?(base_header)
+        <span class="hljs-keyword">end</span>
+        headers
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_required_headers</span></span>
+        required_headers = get_required_headers
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> required_headers.present? <span class="hljs-comment"># Return if no required headers are specified.</span>
+        model            = get_generated_model_instance
+        model_class      = get_generated_model_class
+        required_headers.each <span class="hljs-keyword">do</span> |header|
+          method = get_method_from_header(header)
+          error <span class="hljs-constant">HardInvalidRequiredHeadersError</span>, <span class="hljs-string">"Invalid required headers; the <span class="hljs-subst">#{model_class}</span> model does not respond to '<span class="hljs-subst">#{method}</span>'. Processing halted. File: <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.inspect}</span>"</span> <span class="hljs-keyword">unless</span> model.respond_to?(method)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_row_contains_required_headers</span><span class="hljs-params">(row)</span></span>
+        headers = get_required_headers
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> headers.present? <span class="hljs-comment"># Return if no required headers are specified.</span>
+        headers.each <span class="hljs-keyword">do</span> |h|
+          error <span class="hljs-constant">SoftHeaderRequirementsNotMetError</span>, <span class="hljs-string">"CSV row did not contain the required header '<span class="hljs-subst">#{h}</span>'. Processing Halted. Row: <span class="hljs-subst">#{row.inspect}</span>"</span> <span class="hljs-keyword">unless</span> row[h]
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-generated_model-helpers"><code>generated_model</code> helpers</h3></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_generated_model_class</span></span>
+        error <span class="hljs-constant">InvalidModelError</span>, <span class="hljs-string">"Invalid model defined for file: <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.inspect}</span>."</span> <span class="hljs-keyword">unless</span> generated_model.present?
+        model_class = generated_model.safe_constantize
+        error <span class="hljs-constant">InvalidModelError</span>, <span class="hljs-string">"Invalid model constantization for: <span class="hljs-subst">#{model_class}</span>."</span> <span class="hljs-keyword">unless</span> model_class
+        model_class
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_generated_model_instance</span></span>
+        model_class = get_generated_model_class
+        model_class.new
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-header-helpers"><code>header</code> helpers</h3></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_method_from_header</span><span class="hljs-params">(header)</span></span>
+        <span class="hljs-keyword">if</span> header.<span class="hljs-keyword">include</span>?(<span class="hljs-string">':'</span>)
+          method_name = header.split(<span class="hljs-string">':'</span>).shift
+          method = <span class="hljs-string">"<span class="hljs-subst">#{method_name}</span>="</span>
+        <span class="hljs-keyword">else</span>
+          method = <span class="hljs-string">"<span class="hljs-subst">#{header}</span>="</span>
+        <span class="hljs-keyword">end</span>
+        method
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_nested_header?</span><span class="hljs-params">(header)</span></span>
+        header.<span class="hljs-keyword">include</span>?(<span class="hljs-string">':'</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_record_value_from_header_and_row</span><span class="hljs-params">(record, header, row)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Headers should be pre-validated at this point, so a send on it should be fine.</p></div></div><div class="code"><div class="wrapper">        method = get_method_from_header(header)
+        <span class="hljs-keyword">if</span> is_nested_header?(header)
+          keys          = header.split(<span class="hljs-string">':'</span>)
+          column        = keys.shift
+          original_hash = record.send(<span class="hljs-string">"<span class="hljs-subst">#{column}</span>"</span>)
+          error <span class="hljs-constant">HardInvalidNestedKeyColumnError</span>, <span class="hljs-string">"There was no resultant hash from getting column of: [<span class="hljs-subst">#{column}</span>]"</span> <span class="hljs-keyword">unless</span> original_hash.kind_of?(<span class="hljs-constant">Hash</span>)
+          hash   = set_nested_key_value(original_hash, *keys, row[header])
+          record.send(method, hash)
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">if</span> get_single_header.present?
+            record.send(method, row.first)
+          <span class="hljs-keyword">else</span>
+            record.send(method, row[header])
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_nested_key_value</span><span class="hljs-params">(hash, *keys, last_key, value)</span></span>
+        result = keys.inject(hash) <span class="hljs-keyword">do</span> |r, k|
+          r[k] ||= {}
+          r[k]
+        <span class="hljs-keyword">end</span>
+
+        result[last_key] = value
+        hash
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-settings-helpers"><code>settings</code> helpers</h3>
+<p>The settings could look like:
+{
+  headers: { valid: [&#39;first_name&#39;, &#39;last_name&#39;, &#39;email&#39;] },
+  after_save: [&#39;send_invitation&#39;],
+  attributes: { email: &#39;testing@test.com&#39;} </p></div></div><div class="code"><div class="wrapper">      <span class="hljs-comment"># </span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="headersvalid-is-required">headers[:valid] is required.</h3>
+<h3 id="all-others-are-optional">all others are optional.</h3></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_settings</span></span>
+        <span class="hljs-keyword">self</span>.settings.with_indifferent_access
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_settings_value</span><span class="hljs-params">(*args)</span></span>
+        settings = get_settings
+        args.each <span class="hljs-keyword">do</span> |arg|
+          settings.has_key?(arg) ? settings = settings[arg] <span class="hljs-symbol">:</span> settings = <span class="hljs-keyword">nil</span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> settings
+        <span class="hljs-keyword">end</span>
+        settings
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_valid_headers</span></span>
+        get_settings_value(<span class="hljs-symbol">:headers</span>, <span class="hljs-symbol">:valid</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_required_headers</span></span>
+        get_settings_value(<span class="hljs-symbol">:headers</span>, <span class="hljs-symbol">:required</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_single_header</span></span>
+        get_settings_value(<span class="hljs-symbol">:headers</span>, <span class="hljs-symbol">:single</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_save_bool</span></span>
+        get_settings_value(<span class="hljs-symbol">:save</span>).present? ? get_settings_value(<span class="hljs-symbol">:save</span>) <span class="hljs-symbol">:</span> <span class="hljs-keyword">true</span> <span class="hljs-comment"># save by default</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_after_save_methods</span></span>
+        get_settings_value(<span class="hljs-symbol">:after_save</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_attributes</span></span>
+        get_settings_value(<span class="hljs-symbol">:attributes</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_nested_attributes</span></span>
+        get_settings_value(<span class="hljs-symbol">:nested_attributes</span>)
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>At bottom because it will throw a WARNING otherwise because they above methods haven&#39;t been added yet.</p></div></div><div class="code"><div class="wrapper">      totem_associations
+
+      private
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">error</span><span class="hljs-params">(klass, message)</span></span>
+        raise klass, message
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This is REQUIRED until Rails 4.2
+=&gt; ActiveRecord does not flag JSON/Hstore columns as dirty (subsequently avoiding the update) in all instances.
+=&gt; This forces a rewrite of the settings column everytime.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_settings_will_change</span></span>
+        <span class="hljs-keyword">self</span>.settings_will_change!
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="error-definitions">Error definitions</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HardImporterError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>;
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InvalidModelError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">HardImporterError</span></span>;</span> <span class="hljs-keyword">end</span>;
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SoftImporterError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>;
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SoftInvalidHeadersError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">SoftImporterError</span></span>;</span> <span class="hljs-keyword">end</span>;
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SoftHeaderRequirementsNotMetError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">SoftImporterError</span></span>;</span> <span class="hljs-keyword">end</span>;
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HardInvalidRequiredHeadersError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">HardImporterError</span></span>;</span> <span class="hljs-keyword">end</span>;
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HardInvalidNestedKeyColumnError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">HardImporterError</span></span>;</span> <span class="hljs-keyword">end</span>;
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

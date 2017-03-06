@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/sio/lib/platform/timer/reload</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/sio/lib/platform/timer/reload"><meta name="groc-project-path" content="src/totem/sio/lib/platform/timer/reload.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/sio/lib/platform/timer/reload.coffee">src/totem/sio/lib/platform/timer/reload.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SocketIOTimerReload</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@platform</span>, <span class="hljs-property">@callback</span>)</span> -&gt;</span>
+    <span class="hljs-property">@util</span>      = <span class="hljs-property">@platform</span>.util
+    <span class="hljs-property">@nsio</span>      = <span class="hljs-property">@platform</span>.nsio
+    <span class="hljs-property">@namespace</span> = <span class="hljs-property">@platform</span>.namespace
+    <span class="hljs-property">@reloaded</span>  = <span class="hljs-literal">false</span>
+    <span class="hljs-property">@attempts</span>  = <span class="hljs-number">0</span>
+    <span class="hljs-property">@retries</span>   = <span class="hljs-number">5</span>
+    <span class="hljs-property">@init_env_variables</span>()
+
+  <span class="hljs-attribute">init_env_variables</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@url</span>     = <span class="hljs-property">@util</span>.env_var(<span class="hljs-string">'TIMER_RELOAD_URL'</span>, <span class="hljs-property">@namespace</span>)
+    timeout  = <span class="hljs-property">@util</span>.env_var(<span class="hljs-string">'TIMER_RELOAD_TIMEOUT'</span>, <span class="hljs-property">@namespace</span>)
+    <span class="hljs-property">@timeout</span> = <span class="hljs-property">@util</span>.timeout(timeout)
+
+  <span class="hljs-attribute">process</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@url</span> <span class="hljs-comment"># if the env url is blank then don't try to reload timers</span>
+    <span class="hljs-property">@platform</span>.request.post {<span class="hljs-attribute">url</span>: <span class="hljs-property">@url</span>, <span class="hljs-attribute">form</span>: {}}, <span class="hljs-function"><span class="hljs-params">(err, response, body)</span> =&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-property">@retry</span>(err) <span class="hljs-keyword">if</span> err
+      rc   = response.statusCode
+      data = <span class="hljs-property">@util</span>.as_json(body)
+      <span class="hljs-keyword">if</span> rc != <span class="hljs-number">200</span>
+        <span class="hljs-property">@util</span>.error <span class="hljs-string">"Timer reload failed. [response_code: <span class="hljs-subst">#{rc}</span>]"</span>, data
+        <span class="hljs-keyword">return</span>
+      <span class="hljs-keyword">unless</span> <span class="hljs-property">@util</span>.is_hash(data)
+        <span class="hljs-property">@util</span>.error <span class="hljs-string">"Timer reload response is not a hash."</span>, data
+        <span class="hljs-keyword">return</span>
+      <span class="hljs-property">@success</span>(data)
+
+  <span class="hljs-attribute">retry</span>: <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+    interval = <span class="hljs-property">@retry_interval</span>(err)
+    <span class="hljs-keyword">if</span> interval
+      setTimeout (<span class="hljs-function">=&gt;</span>
+        <span class="hljs-property">@process</span>() <span class="hljs-keyword">unless</span> <span class="hljs-property">@reloaded</span>
+      ), interval
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-property">@error</span>(err)
+
+  <span class="hljs-attribute">success</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    <span class="hljs-property">@reloaded</span> = <span class="hljs-literal">true</span>
+    <span class="hljs-property">@util</span>.info <span class="hljs-string">"TIMER reload successful. [timers reloaded: <span class="hljs-subst">#{data.timers}</span>]  namespace:"</span>, <span class="hljs-property">@namespace</span>
+
+  <span class="hljs-attribute">error</span>: <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span> <span class="hljs-property">@util</span>.error <span class="hljs-string">"Timer reload server connection failure after <span class="hljs-subst">#{<span class="hljs-property">@retries</span>}</span> retries: -&gt;"</span>, err.message
+
+  <span class="hljs-attribute">retry_interval</span>: <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@timeout</span> == <span class="hljs-string">'none'</span> <span class="hljs-keyword">or</span> <span class="hljs-property">@reloaded</span>
+    <span class="hljs-property">@attempts</span> += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@attempts</span> &gt; <span class="hljs-property">@retries</span>
+    interval = <span class="hljs-property">@timeout</span> * <span class="hljs-property">@attempts</span> * <span class="hljs-property">@attempts</span>
+    secs     = Math.floor(interval / <span class="hljs-number">1000</span>)
+    <span class="hljs-property">@util</span>.warn <span class="hljs-string">"Timer reload connection failure.  Retry attempt <span class="hljs-subst">#{<span class="hljs-property">@attempts</span>}</span> of <span class="hljs-subst">#{<span class="hljs-property">@retries</span>}</span>.  <span class="hljs-subst">#{secs}</span> seconds until next attempt."</span>
+    interval
+
+  <span class="hljs-attribute">to_string</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'SocketIOTimerReload'</span>
+
+<span class="hljs-built_in">module</span>.exports = SocketIOTimerReload</div></div></div></div></body></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/forecasts</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/forecasts"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/forecasts.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/forecasts.rb">src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/forecasts.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AutoInputForecasts</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">AutoInputBase</span></span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(options)</span></span>
+    roles            = [options[<span class="hljs-symbol">:roles</span>]].flatten.compact
+    user_format_col  = options[<span class="hljs-symbol">:user_format_col</span>] || <span class="hljs-symbol">:first_name</span>
+    number_days      = options[<span class="hljs-symbol">:days</span>]
+    users            = options[<span class="hljs-symbol">:users</span>]
+    include_unlocked = options[<span class="hljs-symbol">:include_unlocked</span>] == <span class="hljs-keyword">true</span>  <span class="hljs-comment"># defaults to false e.g. only create a forecast for locked days</span>
+    completed_days   = options[<span class="hljs-symbol">:completed_days</span>]  <span class="hljs-comment"># number of forecast days from current day to set the forecast state as 'completed'</span>
+
+    <span class="hljs-keyword">if</span> (names = [users].flatten.compact).present?
+      users = get_common_users_from_first_names(names)
+    <span class="hljs-keyword">end</span>
+
+    assessment_class   = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:weather_forecaster</span>, <span class="hljs-symbol">:assessment</span>)
+    forecast_class     = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:weather_forecaster</span>, <span class="hljs-symbol">:forecast</span>)
+    forecast_day_class = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:weather_forecaster</span>, <span class="hljs-symbol">:forecast_day</span>)
+    response_class     = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:weather_forecaster</span>, <span class="hljs-symbol">:response</span>)
+
+    assessments = assessment_class.all.order(<span class="hljs-symbol">:id</span>)
+
+    forecast_days = forecast_day_class.all.order(<span class="hljs-symbol">:forecast_at</span>)
+    forecast_days = forecast_days.select {|d| d.is_locked?}  <span class="hljs-keyword">unless</span> include_unlocked
+    <span class="hljs-keyword">if</span> number_days.present?
+      index         = number_days.to_i * -<span class="hljs-number">1</span>
+      forecast_days = forecast_days.slice(index, forecast_days.length)
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> completed_days.present?
+      index                   = completed_days.to_i * -<span class="hljs-number">1</span>
+      forecast_days_completed = forecast_days.slice(index, forecast_days.length)
+    <span class="hljs-keyword">else</span>
+      forecast_days_completed = forecast_days  <span class="hljs-comment"># mark all as completed</span>
+    <span class="hljs-keyword">end</span>
+
+    assessments.each <span class="hljs-keyword">do</span> |assessment|
+      phase = assessment.authable
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> include_model?(phase)
+      ownerables = get_phase_ownerables(phase)
+      ownerables = ownerables.select {|o| users.<span class="hljs-keyword">include</span>?(o)}  <span class="hljs-keyword">if</span> users.present?
+      items      = <span class="hljs-variable">@seed</span>.get_association(assessment, <span class="hljs-symbol">:weather_forecaster</span>, <span class="hljs-symbol">:assessment_items</span>)
+      format_col = phase.team_ownerable? ? <span class="hljs-symbol">:title</span> <span class="hljs-symbol">:</span> user_format_col
+
+      ownerables.each <span class="hljs-keyword">do</span> |ownerable|</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create forecasts for each day for ownerable.</p></div></div><div class="code"><div class="wrapper">        forecasts = <span class="hljs-constant">Array</span>.new
+        forecast_days.each <span class="hljs-keyword">do</span> |forecast_day|
+          forecast = <span class="hljs-variable">@seed</span>.get_association(assessment, <span class="hljs-symbol">:weather_forecaster</span>, <span class="hljs-symbol">:forecasts</span>).find_ownerable_day(ownerable, forecast_day.forecast_at)
+          <span class="hljs-keyword">if</span> forecast.blank?
+            forecast = create_weather_forecaster_forecast(
+              <span class="hljs-symbol">assessment:</span>      assessment,
+              <span class="hljs-symbol">ownerable:</span>       ownerable,
+              <span class="hljs-symbol">forecast_day_id:</span> forecast_day.id,
+              <span class="hljs-symbol">user_id:</span>         ownerable.id,
+              <span class="hljs-symbol">state:</span>           forecast_days_completed.<span class="hljs-keyword">include</span>?(forecast_day) ? <span class="hljs-string">'completed'</span> <span class="hljs-symbol">:</span> forecast_day.state
+            )
+          <span class="hljs-keyword">end</span>
+          forecasts.push(forecast)
+        <span class="hljs-keyword">end</span>
+
+        temp     = <span class="hljs-number">60</span>
+        wspeed   = <span class="hljs-number">10</span>
+        forecasts.each <span class="hljs-keyword">do</span> |forecast|</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create responses for each forecast&#39;s assessment item.
+Radio and checkbox values are selected by random.</p></div></div><div class="code"><div class="wrapper">          items.each <span class="hljs-keyword">do</span> |assessment_item|
+            item        = <span class="hljs-variable">@seed</span>.get_association(assessment_item, <span class="hljs-symbol">:weather_forecaster</span>, <span class="hljs-symbol">:item</span>)
+            metadata    = (item.response_metadata || {}).deep_symbolize_keys
+            validations = metadata[<span class="hljs-symbol">:validations</span>] || {}
+            choices     = metadata[<span class="hljs-symbol">:choices</span>] || []
+            r           = choices.length - <span class="hljs-number">1</span>
+            <span class="hljs-keyword">case</span> metadata[<span class="hljs-symbol">:type</span>]
+            <span class="hljs-keyword">when</span> <span class="hljs-string">'input'</span>
+              <span class="hljs-keyword">if</span> validations[<span class="hljs-symbol">:numericality</span>].present?
+                <span class="hljs-keyword">case</span>
+                <span class="hljs-keyword">when</span> item.score_var.match(<span class="hljs-regexp">/^TEMP/i</span>)
+                  value = (temp += <span class="hljs-number">1</span>).to_s
+                <span class="hljs-keyword">when</span> item.score_var.match(<span class="hljs-regexp">/^WSPD/i</span>)
+                  value = (wspeed += <span class="hljs-number">1</span>).to_s
+                <span class="hljs-keyword">else</span>
+                  value = <span class="hljs-string">'1'</span>
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">when</span> <span class="hljs-string">'radio'</span>
+              index = <span class="hljs-constant">Random</span>.new.rand(<span class="hljs-number">0</span>..r)
+              value = (choices[index] || {})[<span class="hljs-symbol">:id</span>]
+            <span class="hljs-keyword">when</span> <span class="hljs-string">'checkbox'</span>
+              value = []
+              ids   = choices.collect {|c| c[<span class="hljs-symbol">:id</span>]}
+              num   = <span class="hljs-constant">Random</span>.new.rand(<span class="hljs-number">1</span>..ids.length)
+              num.times <span class="hljs-keyword">do</span>
+                index = <span class="hljs-constant">Random</span>.new.rand(<span class="hljs-number">0</span>..r)
+                value.push(ids[index])  <span class="hljs-keyword">unless</span> value.<span class="hljs-keyword">include</span>?(ids[index])
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">else</span>
+              <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Unknown asssessment item response type <span class="hljs-subst">#{metadata.inspect}</span>."</span>
+            <span class="hljs-keyword">end</span>
+
+            options = {
+              <span class="hljs-symbol">forecast:</span>        forecast,
+              <span class="hljs-symbol">assessment_item:</span> assessment_item,
+              <span class="hljs-symbol">value:</span>           {<span class="hljs-symbol">input:</span> value},
+            }
+
+            response = <span class="hljs-variable">@seed</span>.new_model(<span class="hljs-symbol">:weather_forecaster</span>, <span class="hljs-symbol">:response</span>, options)
+            <span class="hljs-variable">@seed</span>.create_error(response)  <span class="hljs-keyword">unless</span> response.save
+          <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span> <span class="hljs-comment"># AutoInputForecasts</span></div></div></div></div></body></html>

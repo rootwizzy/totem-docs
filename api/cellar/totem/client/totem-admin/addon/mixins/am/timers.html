@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-admin/addon/mixins/am/timers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem-admin/addon/mixins/am/timers"><meta name="groc-project-path" content="src/totem/client/totem-admin/addon/mixins/am/timers.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-admin/addon/mixins/am/timers.coffee">src/totem/client/totem-admin/addon/mixins/am/timers.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ajax  from <span class="hljs-string">'totem/ajax'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">send_timer_cancel</span>: <span class="hljs-function"><span class="hljs-params">(timer)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isBlank(timer)
+      platform     = <span class="hljs-property">@get_platform</span>()
+      url          = <span class="hljs-string">"<span class="hljs-subst">#{platform}</span>/pub_sub/server_events/timer_cancel"</span>
+      verb         = <span class="hljs-string">'post'</span>
+      id           = timer.id
+      room         = timer.room
+      room_event   = timer.room_event
+      user_id      = timer.user_id
+      end_at       = timer.end_date
+      timer_cancel = {id, room, room_event, user_id, end_at}
+      data         = {timer_cancel}
+      query        = {url, verb, data}
+      ajax.object(query).<span class="hljs-keyword">then</span> =&gt;
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        reject(error)</div></div></div></div></body></html>

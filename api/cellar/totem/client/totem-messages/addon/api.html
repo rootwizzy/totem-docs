@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-messages/addon/api</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="totem/client/totem-messages/addon/api"><meta name="groc-project-path" content="src/totem/client/totem-messages/addon/api.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-messages/addon/api.coffee">src/totem/client/totem-messages/addon/api.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+import util   from <span class="hljs-string">'totem/util'</span>
+import totem_error  from <span class="hljs-string">'totem/error'</span>
+import status_codes from <span class="hljs-string">'totem-messages/api_status_codes'</span>
+import model_val    from <span class="hljs-string">'totem-messages/model_validation'</span>
+import i18n         from <span class="hljs-string">'totem/i18n'</span>
+import config       from <span class="hljs-string">'totem-config/config'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ApiMessages</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="main-public-functions">Main Public Functions.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">success</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    base_options = status_codes.definition(<span class="hljs-string">'success'</span>)
+    options      = <span class="hljs-property">@merge_options</span>(base_options, options)
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@return_value</span>(options) <span class="hljs-keyword">unless</span> options.i18n_path <span class="hljs-comment"># don't queue message if an i18n path isnt provided</span>
+    <span class="hljs-property">@queue_message</span>(options)
+    <span class="hljs-property">@process_handler</span>(options)
+    <span class="hljs-property">@return_value</span>(options)
+
+  <span class="hljs-attribute">failure</span>: <span class="hljs-function"><span class="hljs-params">(error, options={})</span> -&gt;</span>
+    options.error      = error
+    options.error_code = <span class="hljs-property">@status_code_from_error</span>(error)
+    base_options       = status_codes.definition(options.error_code) <span class="hljs-keyword">or</span> status_codes.definition(<span class="hljs-string">'failure'</span>)
+    options            = <span class="hljs-property">@merge_options</span>(base_options, options)
+    <span class="hljs-built_in">console</span>.warn <span class="hljs-string">'failure'</span>, error, options
+    <span class="hljs-property">@process_callback</span>(options).<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@process_failure</span>(error, options)
+    , <span class="hljs-function"><span class="hljs-params">(e)</span> =&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If a callback responds with a promise &#39;reject&#39; and the reject-error contains &#39;cancel: true&#39;, do not continue to process the failure.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-property">@process_failure</span>(error, options)  <span class="hljs-keyword">unless</span> e <span class="hljs-keyword">and</span> e.cancel == <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">process_failure</span>: <span class="hljs-function"><span class="hljs-params">(error, options)</span> -&gt;</span>
+    <span class="hljs-property">@queue_message</span>(options)
+    <span class="hljs-property">@process_handler</span>(options)
+    <span class="hljs-property">@process_model_rollback</span>(options)
+    <span class="hljs-property">@app_msgs</span>.hide_loading_outlet()  <span class="hljs-keyword">if</span> options.hide_loading
+    <span class="hljs-keyword">if</span> options.fatal
+      totem_error.<span class="hljs-keyword">throw</span> @, <span class="hljs-property">@get_error_message</span>(options), <span class="hljs-attribute">api</span>: <span class="hljs-literal">true</span>  <span class="hljs-comment"># not using @throw_error() to prevent queuing the detailed error message</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-property">@log_error</span>(options)
+      <span class="hljs-property">@return_value</span>(options)
+
+  <span class="hljs-attribute">return_value</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> options.<span class="hljs-keyword">return</span> <span class="hljs-keyword">or</span> options.model <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="callback">Callback.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Callback Examples (callback only called if the options contains &#39;allow_callback: true&#39;):</p>
+<ol>
+<li>@totem_messages.api_failure error, source: @, model: record, callback: @api_failure_callback  #=&gt; all status codes (with allow_callback: true)</li>
+<li>@totem_messages.api_failure error, source: @, model: record, callback: {unauthorized_access: @api_failure_callback}  #=&gt; only &#39;unauthorized_access&#39;</li>
+<li>@totem_messages.api_failure error, source: @, model: record, callback: {423: @api_failure_callback}  #=&gt; only error code 423 (e.g. unauthorized access)</li>
+</ol></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">process_callback</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">unless</span> options.allow_callback
+      callback = options.callback
+      <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">unless</span> callback
+      <span class="hljs-keyword">switch</span> <span class="hljs-keyword">typeof</span>(callback)
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'function'</span>
+          <span class="hljs-property">@call_callback</span>(callback, options).<span class="hljs-keyword">then</span> =&gt;
+            resolve()
+          , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+            reject(error)
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'object'</span>
+          <span class="hljs-keyword">if</span> (handler = options.handler)
+            handler_callback = callback[handler]  <span class="hljs-comment"># first find by name</span>
+            <span class="hljs-keyword">unless</span> handler_callback
+              <span class="hljs-keyword">if</span> (error_code = options.error_code)
+                handler_callback = callback[error_code]  <span class="hljs-comment"># second (and last) find by error code</span>
+            <span class="hljs-keyword">if</span> handler_callback
+              <span class="hljs-property">@call_callback</span>(handler_callback, options).<span class="hljs-keyword">then</span> =&gt;
+                resolve()
+              , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+                reject(error)
+            <span class="hljs-keyword">else</span>
+              resolve()
+        <span class="hljs-keyword">else</span> resolve()
+
+  <span class="hljs-attribute">call_callback</span>: <span class="hljs-function"><span class="hljs-params">(callback, options)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">if</span> (source = options.source)
+        response = callback.call(source, options)  <span class="hljs-comment"># call the callback with the callback's 'this' set to the source</span>
+      <span class="hljs-keyword">else</span>
+        response = callback(options)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the callback returns a promise, wait for the promise to resolve before continuing (e.g. resolve this function promise).</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> response.<span class="hljs-keyword">then</span>?
+        response.<span class="hljs-keyword">then</span> =&gt;
+          resolve()
+        , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+          reject(error)
+      <span class="hljs-keyword">else</span>
+        resolve()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="handlers">Handlers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">process_handler</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    handler = options.handler
+    <span class="hljs-keyword">switch</span> handler
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'model_validation'</span> <span class="hljs-keyword">then</span> mod = model_val
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span>
+    <span class="hljs-property">@throw_error</span>(<span class="hljs-string">"Handler module [<span class="hljs-subst">#{handler}</span>] is missing."</span>)  <span class="hljs-keyword">unless</span> mod
+    <span class="hljs-property">@throw_error</span>(<span class="hljs-string">"Handler module [<span class="hljs-subst">#{handler}</span>] does not have a [handle] function."</span>)  <span class="hljs-keyword">unless</span> <span class="hljs-keyword">typeof</span>(mod.handle) == <span class="hljs-string">'function'</span>
+    mod.handle(@, options)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="model-rollback">Model Rollback.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">process_model_rollback</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> options.model_rollback
+    options.model.rollback()  <span class="hljs-keyword">if</span> options.model <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(options.model.rollback) == <span class="hljs-string">'function'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="message">Message.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">queue_message</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    message = <span class="hljs-property">@get_options_message</span>(options)
+    queue   = options.queue
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> queue
+    <span class="hljs-property">@throw_error</span>(<span class="hljs-string">"Invalid status code message queue [<span class="hljs-subst">#{queue}</span>]."</span>) <span class="hljs-keyword">unless</span> <span class="hljs-keyword">typeof</span>(<span class="hljs-property">@app_msgs</span>[queue]) == <span class="hljs-string">'function'</span>
+    <span class="hljs-property">@app_msgs</span>[queue](message, options.sticky)
+
+  <span class="hljs-attribute">get_options_message</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> options.allow_user_message
+      message = <span class="hljs-property">@get_options_user_message</span>(options)
+      <span class="hljs-keyword">return</span> message  <span class="hljs-keyword">if</span> message
+    i18n.message
+      <span class="hljs-attribute">path</span>:         <span class="hljs-property">@get_i18n_message_path</span>(options)
+      <span class="hljs-attribute">args</span>:         <span class="hljs-property">@get_i18n_args</span>(options)
+      <span class="hljs-attribute">default_path</span>: <span class="hljs-string">'totem.api.status_codes.default'</span>
+      <span class="hljs-attribute">default_args</span>: options.handler
+
+  <span class="hljs-attribute">get_options_user_message</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> options.user_message <span class="hljs-keyword">if</span> options.user_message
+    response_json = options.error <span class="hljs-keyword">and</span> options.error.responseJSON
+    response_json <span class="hljs-keyword">and</span> response_json.errors <span class="hljs-keyword">and</span> response_json.errors.user_message
+
+  <span class="hljs-attribute">get_i18n_message_path</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    prefix = config.messages.i18n_path_prefix
+    path   = options.i18n_path
+    path   = prefix + path <span class="hljs-keyword">if</span> (ember.isPresent(path) <span class="hljs-keyword">and</span> ember.isPresent(prefix))
+    <span class="hljs-keyword">return</span> path <span class="hljs-keyword">if</span> path
+    <span class="hljs-keyword">if</span> (matches = options.match_response_text) <span class="hljs-keyword">and</span> (message = options.error.responseText)
+      <span class="hljs-keyword">for</span> own key, value <span class="hljs-keyword">of</span> matches
+        regex = <span class="hljs-keyword">new</span> RegExp(key, <span class="hljs-string">'i'</span>)
+        <span class="hljs-keyword">if</span> message.match(regex)
+          path = <span class="hljs-string">"totem.api.status_codes.<span class="hljs-subst">#{value}</span>"</span>
+          <span class="hljs-keyword">break</span>
+    path <span class="hljs-keyword">or</span> <span class="hljs-string">"totem.api.status_codes.<span class="hljs-subst">#{options.handler}</span>"</span>
+
+  <span class="hljs-attribute">get_i18n_args</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">unless</span> options.i18n
+    i18n_attrs = ember.makeArray(options.i18n)
+    args       = []
+    <span class="hljs-keyword">for</span> attr <span class="hljs-keyword">in</span> i18n_attrs
+      <span class="hljs-keyword">switch</span> attr
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'resource'</span>
+          args.push <span class="hljs-property">@get_model_name</span>(options)
+        <span class="hljs-keyword">when</span> <span class="hljs-string">'action'</span>
+          args.push <span class="hljs-property">@get_action</span>(options)
+    args
+
+  <span class="hljs-attribute">get_action</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> options.action <span class="hljs-keyword">or</span> <span class="hljs-string">'find'</span>
+
+  <span class="hljs-attribute">get_model_name</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    model = options.model <span class="hljs-keyword">or</span> <span class="hljs-string">'unknown'</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span>(model) == <span class="hljs-string">'string'</span>
+      type = model
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">if</span> ember.isArray(model)
+        type = model.get(<span class="hljs-string">'type'</span>).modelName
+        type = type.pluralize()
+      <span class="hljs-keyword">else</span>
+        type = model.constructor.modelName
+    type.split(<span class="hljs-string">'/'</span>).pop()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="error-messages">Error Messages.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_error_message</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    message = <span class="hljs-string">''</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span>(options.fatal) == <span class="hljs-string">'string'</span> <span class="hljs-keyword">and</span> options.fatal != <span class="hljs-string">''</span>
+      <span class="hljs-property">@app_msgs</span>.fatal options.fatal
+      message += <span class="hljs-string">"[fatal: <span class="hljs-subst">#{options.fatal}</span>] "</span>
+    source      = options.source <span class="hljs-keyword">and</span> options.source.toString <span class="hljs-keyword">and</span> options.source.toString()
+    status_code = options.error_code <span class="hljs-keyword">or</span> <span class="hljs-string">'unknown'</span>
+    handler     = options.handler <span class="hljs-keyword">or</span> <span class="hljs-string">'unknown'</span>
+    error       = options.error
+    <span class="hljs-keyword">if</span> error
+      error_message = options.error_message <span class="hljs-keyword">or</span> error.message <span class="hljs-keyword">or</span> error.responseText <span class="hljs-keyword">or</span> error.statusText
+      errors        = error.errors <span class="hljs-keyword">and</span> <span class="hljs-property">@stringify</span>(error.errors)
+    message        += <span class="hljs-string">"[source: <span class="hljs-subst">#{source}</span>] "</span>  <span class="hljs-keyword">if</span> source
+    message        += <span class="hljs-string">"[status-code: <span class="hljs-subst">#{status_code}</span>] [handler-name: <span class="hljs-subst">#{handler}</span>] "</span>
+    message        += <span class="hljs-string">"[errors: <span class="hljs-subst">#{errors}</span>] "</span>  <span class="hljs-keyword">if</span> errors
+    message        += <span class="hljs-string">"[error-message: <span class="hljs-subst">#{error_message}</span>] "</span>  <span class="hljs-keyword">if</span> error_message
+    message</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">set_app_msgs</span>: <span class="hljs-function"><span class="hljs-params">(app_msgs)</span> -&gt;</span> <span class="hljs-property">@app_msgs</span> = app_msgs</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Merge options into base options.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">merge_options</span>: <span class="hljs-function"><span class="hljs-params">(base_options, options)</span> -&gt;</span>
+    merged = {}
+    ember.merge(merged, base_options)
+    ember.merge(merged, options)
+    merged.message_array ?= []
+    merged</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Status code from error object.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">status_code_from_error</span>: <span class="hljs-function"><span class="hljs-params">(error)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The ember-data ActiveModelAdapter raises an &#39;InvalidError&#39; on a &#39;422&#39; (e.g. model validation error).</p></div></div><div class="code"><div class="wrapper">    error.status = <span class="hljs-number">422</span> <span class="hljs-keyword">if</span> error <span class="hljs-keyword">and</span> (<span class="hljs-keyword">not</span> error.status) <span class="hljs-keyword">and</span> error.stack <span class="hljs-keyword">and</span> util.starts_with(error.stack, <span class="hljs-string">'InvalidError'</span>)
+    error <span class="hljs-keyword">and</span> error.status</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Throw Api Error.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">throw_error</span>: <span class="hljs-function"><span class="hljs-params">(message, options=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    <span class="hljs-property">@app_msgs</span>.error(message)
+    <span class="hljs-property">@log_error</span>(options)  <span class="hljs-keyword">if</span> options
+    totem_error.<span class="hljs-keyword">throw</span> @, message, <span class="hljs-attribute">api</span>: <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">log_error</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span> util.console_error <span class="hljs-property">@get_error_message</span>(options), options
+
+  <span class="hljs-attribute">stringify</span>: <span class="hljs-function"><span class="hljs-params">(object)</span> -&gt;</span> JSON.stringify(object)
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'totem_messages:api'</span>
+
+export default <span class="hljs-keyword">new</span> ApiMessages</div></div></div></div></body></html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-builder-pe/addon/validators/comparison</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-builder-pe/addon/validators/comparison"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-builder-pe/addon/validators/comparison.js"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-builder-pe/addon/validators/comparison.js">src/thinkspace/client/thinkspace-builder-pe/addon/validators/comparison.js</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">import</span> ember <span class="hljs-keyword">from</span> <span class="hljs-string">'ember'</span>;
+
+<span class="hljs-keyword">const</span> {
+  get
+} = ember;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">validateComparison</span>(<span class="hljs-params">options = {}</span>) </span>{ 
+  <span class="hljs-keyword">return</span> (key, newValue, oldValue, changes) =&gt; {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We&#39;re trying to mirror the behavior of isNumber with our options as much as possible</p></div></div><div class="code"><div class="wrapper">    
+    <span class="hljs-keyword">let</span> otherVal = get(changes, options[<span class="hljs-string">'val'</span>]);
+    <span class="hljs-keyword">let</span> thisVal  = newValue;
+    <span class="hljs-keyword">let</span> type     = options[<span class="hljs-string">'type'</span>];
+
+    <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'is'</span> &amp;&amp; otherVal !== thisVal) {
+      <span class="hljs-keyword">return</span> options.message;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'lt'</span> &amp;&amp; thisVal &gt;= otherVal) {
+      <span class="hljs-keyword">return</span> options.message;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'lte'</span> &amp;&amp; thisVal &gt; otherVal) {
+      <span class="hljs-keyword">return</span> options.message;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'gt'</span> &amp;&amp; thisVal &lt;= otherVal) {
+      <span class="hljs-keyword">return</span> options.message;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type === <span class="hljs-string">'gte'</span> &amp;&amp; thisVal &lt; otherVal) {
+      <span class="hljs-keyword">return</span> options.message;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  };
+}</div></div></div></div></body></html>

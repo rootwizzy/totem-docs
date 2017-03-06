@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/sio/lib/thinkspace</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="thinkspace/sio/lib/thinkspace"><meta name="groc-project-path" content="src/thinkspace/sio/lib/thinkspace.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/sio/lib/thinkspace.coffee">src/thinkspace/sio/lib/thinkspace.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThinkspacePlatform</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@server</span>)</span> -&gt;</span>
+    <span class="hljs-property">@namespace</span> = <span class="hljs-string">'/thinkspace'</span>
+    <span class="hljs-property">@nsio</span>      = <span class="hljs-property">@server</span>.io.<span class="hljs-keyword">of</span>(<span class="hljs-property">@namespace</span>)
+    <span class="hljs-property">@request</span>   = <span class="hljs-property">@server</span>.request
+    <span class="hljs-property">@init_modules</span>()
+    <span class="hljs-property">@init_platform_modules</span>()
+    <span class="hljs-property">@init_redis</span>()
+    <span class="hljs-property">@on_connection</span>()
+
+  <span class="hljs-attribute">init_modules</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@util</span>           = <span class="hljs-keyword">new</span> <span class="hljs-property">@server</span>.util(<span class="hljs-property">@server</span>.debugging)
+    <span class="hljs-property">@platform_mods</span>  = <span class="hljs-keyword">new</span> <span class="hljs-property">@server</span>.platform_modules(@)
+    <span class="hljs-property">@messages</span>       = <span class="hljs-keyword">new</span> <span class="hljs-property">@server</span>.messages(@)
+    <span class="hljs-property">@timer</span>          = <span class="hljs-keyword">new</span> <span class="hljs-property">@server</span>.timer(@)
+    <span class="hljs-property">@redis_messages</span> = <span class="hljs-keyword">new</span> <span class="hljs-property">@server</span>.redis_messages(@)
+    <span class="hljs-property">@rooms</span>          = <span class="hljs-keyword">new</span> <span class="hljs-property">@server</span>.rooms(@)
+    <span class="hljs-property">@tracker</span>        = <span class="hljs-keyword">new</span> <span class="hljs-property">@server</span>.tracker(@)
+    <span class="hljs-property">@authenticate</span>   = <span class="hljs-keyword">new</span> <span class="hljs-property">@server</span>.authenticate(@, <span class="hljs-string">'authenticate_callback'</span>)
+    <span class="hljs-property">@authorize</span>      = <span class="hljs-keyword">new</span> <span class="hljs-property">@server</span>.authorize(@, <span class="hljs-string">'authorize_callback'</span>)
+
+  <span class="hljs-attribute">init_platform_modules</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@all_modules</span>  = <span class="hljs-property">@platform_mods</span>.modules(__dirname)
+    <span class="hljs-property">@room_modules</span> = ( <span class="hljs-keyword">new</span> mod(@) <span class="hljs-keyword">for</span> mod <span class="hljs-keyword">in</span> <span class="hljs-property">@util</span>.room_modules(<span class="hljs-property">@all_modules</span>) )
+    <span class="hljs-property">@conn_modules</span> = ( <span class="hljs-keyword">new</span> mod(@) <span class="hljs-keyword">for</span> mod <span class="hljs-keyword">in</span> <span class="hljs-property">@util</span>.on_connection_modules(<span class="hljs-property">@all_modules</span>) )
+
+  <span class="hljs-attribute">init_redis</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@redis_client</span> = <span class="hljs-keyword">new</span> <span class="hljs-property">@server</span>.redis_client(@)
+    <span class="hljs-property">@redis_client</span>.subscribe(<span class="hljs-property">@namespace</span>, {}, <span class="hljs-string">'init_timers_reload'</span>)
+
+  <span class="hljs-attribute">init_timers_reload</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@util</span>.debug <span class="hljs-string">'Reloading Timers for namespace:'</span>, <span class="hljs-property">@namespace</span>
+    <span class="hljs-property">@timer</span>.reload()
+
+  <span class="hljs-attribute">on_connection</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@nsio</span>.<span class="hljs-literal">on</span> <span class="hljs-string">'connection'</span>, <span class="hljs-function"><span class="hljs-params">(socket)</span> =&gt;</span>
+      <span class="hljs-property">@util</span>.debug <span class="hljs-string">'\n'</span>, <span class="hljs-string">'on connection sid:'</span>, socket.id
+      <span class="hljs-property">@util</span>.set_not_authenticated(socket)
+
+      socket.<span class="hljs-literal">on</span> <span class="hljs-string">'disconnect'</span>, <span class="hljs-function">=&gt;</span> <span class="hljs-property">@util</span>.disconnect(socket)
+
+      socket.<span class="hljs-literal">on</span> <span class="hljs-property">@util</span>.client_event(<span class="hljs-string">'authenticate'</span>), <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span> <span class="hljs-property">@authenticate</span>.process(socket, data)
+      socket.<span class="hljs-literal">on</span> <span class="hljs-property">@util</span>.client_event(<span class="hljs-string">'authorize'</span>),    <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span> <span class="hljs-property">@authorize</span>.process(socket, data)
+      socket.<span class="hljs-literal">on</span> <span class="hljs-property">@util</span>.client_event(<span class="hljs-string">'leave_room'</span>),   <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span> <span class="hljs-property">@rooms</span>.leave(socket, data)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Call any additional platform modules to add <on 'connection'> events.</p></div></div><div class="code"><div class="wrapper">      mod.on_connection(socket) <span class="hljs-keyword">for</span> mod <span class="hljs-keyword">in</span> <span class="hljs-property">@conn_modules</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="callbacks">Callbacks.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set any user data returned from the authorize call (e.g. from rails server) on the socket.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">authenticate_callback</span>: <span class="hljs-function"><span class="hljs-params">(socket, data, json)</span> -&gt;</span>
+    <span class="hljs-property">@util</span>.set_user_data(socket, json)
+    event = <span class="hljs-property">@util</span>.server_event(<span class="hljs-string">'authenticated'</span>)
+    socket.emit event</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>After all rooms are joined (asyncronously), function &#39;authorize_complete_callback&#39; will send &#39;authorized&#39;.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">authorize_callback</span>: <span class="hljs-function"><span class="hljs-params">(socket, data, json)</span> -&gt;</span>
+    <span class="hljs-property">@rooms</span>.join(socket, data, <span class="hljs-property">@authorize_complete_callback</span>)
+
+  <span class="hljs-attribute">authorize_complete_callback</span>: <span class="hljs-function"><span class="hljs-params">(socket, data)</span> =&gt;</span>
+    response = <span class="hljs-property">@util</span>.data_response(data)
+    event    = <span class="hljs-property">@util</span>.server_event(<span class="hljs-string">'authorized'</span>)
+    socket.emit event, response
+
+  <span class="hljs-attribute">to_string</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'ThinkspacePlatform'</span>
+
+<span class="hljs-built_in">module</span>.exports = ThinkspacePlatform</div></div></div></div></body></html>

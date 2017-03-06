@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-application/app/controllers/application</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-application/app/controllers/application"><meta name="groc-project-path" content="src/totem/client/totem-application/app/controllers/application.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-application/app/controllers/application.coffee">src/totem/client/totem-application/app/controllers/application.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Controller.extend</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Message can be stylized in the template totem/ember/error.
+Add more messages as required (with a corresponding template change).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">totem_error_template_message</span>: <span class="hljs-literal">null</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Messages for the totem outlet as an array of objects with the message
+in &#39;object.message&#39;.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">totem_outlet_messages</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">has_messages</span>:          ember.computed.gt <span class="hljs-string">'totem_outlet_messages.length'</span>, <span class="hljs-number">0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Custom outlet class names</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">totem_main_outlet_class_names</span>:    <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">totem_message_outlet_class_names</span>: <span class="hljs-literal">null</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Show the totem outlet in the application layout.
+Messages can be contained in the options key &#39;outlet_messages&#39; or
+obtained from the totem_messages queue by passing a &#39;message_type&#39;.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">totem_message_outlet</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    template_name = options.template_name <span class="hljs-keyword">or</span> <span class="hljs-string">'totem_message_outlet/messages'</span>
+    controller    = options.outlet_controller
+    model         = options.outlet_model
+    messages      = options.outlet_messages
+    message_type  = options.message_type
+    message_prop  = <span class="hljs-string">'totem_outlet_messages'</span>
+
+    <span class="hljs-keyword">if</span> messages
+      messages = <span class="hljs-property">@get_formatted_outlet_messages</span>(messages)
+    <span class="hljs-keyword">else</span>
+      messages = <span class="hljs-property">@get_totem_messages_for_type</span>(message_type)
+
+    <span class="hljs-keyword">if</span> controller
+      <span class="hljs-property">@set</span> message_prop, <span class="hljs-literal">null</span>
+      controller.set message_prop, messages
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-property">@set</span> message_prop, messages
+
+    <span class="hljs-property">@send</span> <span class="hljs-string">'show_totem_message_outlet'</span>, template_name,
+      <span class="hljs-attribute">controller</span>:              controller   <span class="hljs-comment"># controller instance or lookup</span>
+      <span class="hljs-attribute">model</span>:                   model
+      <span class="hljs-attribute">outlet_class_names</span>:      options.outlet_class_names
+      <span class="hljs-attribute">main_outlet_class_names</span>: options.main_outlet_class_names
+      <span class="hljs-attribute">fade_main_outlet</span>:        options.fade_main_outlet
+
+  <span class="hljs-attribute">get_totem_messages_for_type</span>: <span class="hljs-function"><span class="hljs-params">(type)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">unless</span> type
+    <span class="hljs-property">@totem_messages</span>.type_messages(type)
+
+  <span class="hljs-attribute">get_formatted_outlet_messages</span>: <span class="hljs-function"><span class="hljs-params">(messages)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">unless</span> messages
+    messages           = ember.makeArray(messages).compact()
+    formatted_messages = []
+    <span class="hljs-keyword">for</span> message <span class="hljs-keyword">in</span> messages
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span>(message) == <span class="hljs-string">'string'</span>
+        formatted_messages.push {<span class="hljs-attribute">message</span>: message}
+      <span class="hljs-keyword">else</span>
+        formatted_messages.push message
+    formatted_messages</div></div></div></div></body></html>

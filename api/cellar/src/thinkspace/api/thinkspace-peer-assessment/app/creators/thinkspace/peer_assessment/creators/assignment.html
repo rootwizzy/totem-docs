@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-peer-assessment/app/creators/thinkspace/peer_assessment/creators/assignment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/creators/thinkspace/peer_assessment/creators/assignment"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/creators/thinkspace/peer_assessment/creators/assignment.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-peer-assessment/app/creators/thinkspace/peer_assessment/creators/assignment.rb">src/thinkspace/api/thinkspace-peer-assessment/app/creators/thinkspace/peer_assessment/creators/assignment.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Creators</span> </span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Assignment</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Thinkspace::Casespace::Creators::Base</span></span>
+
+    <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:assessment</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(params)</span></span>
+      <span class="hljs-variable">@params</span> = params 
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate</span></span>
+      <span class="hljs-constant">ActiveRecord::Base</span>.transaction <span class="hljs-keyword">do</span>
+        <span class="hljs-variable">@assignment</span>      = create_assignment_from_params
+        phase            = create_assessment_phase
+        <span class="hljs-variable">@assessment</span>      = create_assessment(phase)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-variable">@assignment</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_assessment</span><span class="hljs-params">(phase)</span></span>
+      <span class="hljs-variable">@assessment</span> = assessment_class.create(<span class="hljs-symbol">authable:</span> phase)
+      create_header_component(phase)
+      create_phase_component(phase, assessment, <span class="hljs-string">'peer-assessment'</span>, <span class="hljs-string">'assessment'</span>)
+      <span class="hljs-variable">@assessment</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_assessment_phase</span></span>
+      options = get_assessment_phase_options
+      create_phase(options)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assessment_phase_options</span></span>
+      options                     = <span class="hljs-constant">Hash</span>.new
+      options[<span class="hljs-symbol">:assignment_id</span>]     = <span class="hljs-variable">@assignment</span>.id
+      options[<span class="hljs-symbol">:phase_template_id</span>] = assessment_phase_template.id
+      options[<span class="hljs-symbol">:team_category_id</span>]  = <span class="hljs-constant">Thinkspace::Team::TeamCategory</span>.assessment.id
+      options[<span class="hljs-symbol">:title</span>]             = <span class="hljs-string">'Peer Assessment'</span>
+      options[<span class="hljs-symbol">:description</span>]       = <span class="hljs-string">'Take the peer assessment here.'</span>
+      options[<span class="hljs-symbol">:state</span>]             = <span class="hljs-symbol">:active</span>
+      options[<span class="hljs-symbol">:default_state</span>]     = <span class="hljs-string">'unlocked'</span>
+      options[<span class="hljs-symbol">:position</span>]          = <span class="hljs-number">1</span>
+      options
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assessment_class</span>;</span> <span class="hljs-constant">Thinkspace::PeerAssessment::Assessment</span>; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assessment_phase_template</span>;</span> <span class="hljs-constant">Thinkspace::Casespace::PhaseTemplate</span>.find_by(<span class="hljs-symbol">name:</span> <span class="hljs-string">'peer_assessment/assessment'</span>); <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/db/test_data/ra/imports/blueprints</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/db/test_data/ra/imports/blueprints"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/ra/imports/blueprints.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/ra/imports/blueprints.yml">src/thinkspace/api/thinkspace-casespace/db/test_data/ra/imports/blueprints.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">irat_abcd:
+  -<span class="ruby"> &amp;<span class="hljs-constant">IRAT_CHOICES</span>   [*<span class="hljs-constant">CHOICES_ABCD</span>]
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">IRAT_QUESTIONS</span> [*<span class="hljs-constant">QUESTIONS_ABCD</span>]
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">IRAT_ANSWERS</span>   [*<span class="hljs-constant">ANSWERS_ABCD</span>]
+</span>
+trat_abcd:
+  -<span class="ruby"> &amp;<span class="hljs-constant">TRAT_CHOICES</span>   [*<span class="hljs-constant">CHOICES_ABCD</span>]
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TRAT_QUESTIONS</span> [*<span class="hljs-constant">QUESTIONS_ABCD</span>]
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TRAT_ANSWERS</span>   [*<span class="hljs-constant">ANSWERS_ABCD</span>]
+</span>
+irat_1234:
+  -<span class="ruby"> &amp;<span class="hljs-constant">IRAT_CHOICES</span>   [*<span class="hljs-constant">CHOICES_1234</span>]
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">IRAT_QUESTIONS</span> [*<span class="hljs-constant">QUESTIONS_1234</span>]
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">IRAT_ANSWERS</span>   [*<span class="hljs-constant">ANSWERS_1234</span>]
+</span>
+trat_1234:
+  -<span class="ruby"> &amp;<span class="hljs-constant">TRAT_CHOICES</span>   [*<span class="hljs-constant">CHOICES_1234</span>]
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TRAT_QUESTIONS</span> [*<span class="hljs-constant">QUESTIONS_1234</span>]
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TRAT_ANSWERS</span>   [*<span class="hljs-constant">ANSWERS_1234</span>]
+</span>
+templates:
+  -<span class="ruby"> <span class="hljs-symbol">choices:</span> &amp;<span class="hljs-constant">CHOICES_ABCD</span>
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> a, <span class="hljs-symbol">label:</span> <span class="hljs-constant">Choice</span> <span class="hljs-constant">A</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> b, <span class="hljs-symbol">label:</span> <span class="hljs-constant">Choice</span> <span class="hljs-constant">B</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> c, <span class="hljs-symbol">label:</span> <span class="hljs-constant">Choice</span> <span class="hljs-constant">C</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> d, <span class="hljs-symbol">label:</span> <span class="hljs-constant">Choice</span> <span class="hljs-constant">D</span>}
+</span>    questions: &amp;QUESTIONS_ABCD
+      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_1, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">1</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_2, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">2</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_3, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">3</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_4, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">4</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_5, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">5</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_6, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">6</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_7, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">7</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_8, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">8</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_9, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">9</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_1<span class="hljs-number">0</span>, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">10</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_11, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">11</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_12, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">12</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_13, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">13</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_14, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">14</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_15, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">15</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_ABCD</span>}
+</span>    answers: &amp;ANSWERS_ABCD
+      correct:
+        ra_1_1: a
+        ra_1_2: b
+        ra_1_3: c
+        ra_1_4: d
+        ra_1_5: a
+        ra_1_6: b
+        ra_1_7: c
+        ra_1_8: d
+        ra_1_9: a
+        ra_1_10: b
+        ra_1_11: c
+        ra_1_12: d
+        ra_1_13: a
+        ra_1_14: b
+        ra_1_15: c
+  -<span class="ruby"> <span class="hljs-symbol">choices:</span> &amp;<span class="hljs-constant">CHOICES_1234</span>
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> <span class="hljs-string">'1'</span>, <span class="hljs-symbol">label:</span> <span class="hljs-constant">Choice</span> <span class="hljs-number">1</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> <span class="hljs-string">'2'</span>, <span class="hljs-symbol">label:</span> <span class="hljs-constant">Choice</span> <span class="hljs-number">2</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> <span class="hljs-string">'3'</span>, <span class="hljs-symbol">label:</span> <span class="hljs-constant">Choice</span> <span class="hljs-number">3</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> <span class="hljs-string">'4'</span>, <span class="hljs-symbol">label:</span> <span class="hljs-constant">Choice</span> <span class="hljs-number">4</span>}
+</span>    questions: &amp;QUESTIONS_1234
+      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_1, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">1</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_1234</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_2, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">2</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_1234</span>}
+</span>      -<span class="ruby"> {<span class="hljs-symbol">id:</span> ra_1_3, <span class="hljs-symbol">question:</span> <span class="hljs-constant">Question</span> <span class="hljs-number">3</span>, <span class="hljs-symbol">choices:</span> *<span class="hljs-constant">CHOICES_1234</span>}
+</span>    answers: &amp;ANSWERS_1234
+      correct:
+        ra_1_1: '1'
+        ra_1_2: '2'
+        ra_1_3: '3'</div></div></div></div></body></html>

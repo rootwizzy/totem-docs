@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-common/app/controllers/thinkspace/common/api/users_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-common/app/controllers/thinkspace/common/api/users_controller"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-common/app/controllers/thinkspace/common/api/users_controller.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-common/app/controllers/thinkspace/common/api/users_controller.rb">src/thinkspace/api/thinkspace-common/app/controllers/thinkspace/common/api/users_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Common</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UsersController</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Totem::Settings</span></span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        skip_before_action <span class="hljs-symbol">:verify_authenticity_token</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:sign_in</span>, <span class="hljs-symbol">:sign_out</span>, <span class="hljs-symbol">:create</span>]
+        before_action <span class="hljs-symbol">:validate_token_and_set_user</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:create</span>]
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span>, <span class="hljs-title">except</span>: [:<span class="hljs-title">sign_in</span>, :<span class="hljs-title">sign_out</span>, :<span class="hljs-title">create</span>]</span>
+        totem_action_serializer_options
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
+          raise <span class="hljs-string">"User [id: <span class="hljs-subst">#{<span class="hljs-variable">@user</span>.id}</span>] is not current user [id: <span class="hljs-subst">#{current_user.id}</span>]"</span>  <span class="hljs-keyword">unless</span> <span class="hljs-variable">@user</span>.id == current_user.id
+          serializer_options.remove_all
+          controller_render(current_user)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span>
+          email = get_email_from_params
+          <span class="hljs-variable">@user</span> = user_class.new(<span class="hljs-symbol">email:</span> email) <span class="hljs-keyword">unless</span> <span class="hljs-variable">@user</span>.present?
+
+          <span class="hljs-constant">Thinkspace::Common::User</span>.transaction <span class="hljs-keyword">do</span>
+            response = <span class="hljs-keyword">nil</span>
+            <span class="hljs-keyword">begin</span>
+              response = <span class="hljs-constant">::Totem::Settings</span>.oauth.current_create_user(<span class="hljs-keyword">self</span>, params, <span class="hljs-symbol">root_key:</span> <span class="hljs-string">'thinkspace/common/user'</span>)
+            <span class="hljs-keyword">rescue</span>
+              permission_denied(<span class="hljs-string">'Authentication sever down. Please try again later'</span>)
+            <span class="hljs-keyword">end</span>
+            permission_denied(parse_s2s_errors(response[<span class="hljs-string">'errors'</span>])) <span class="hljs-keyword">unless</span> response[<span class="hljs-string">'valid'</span>] <span class="hljs-comment"># Invalid creation from S2S</span>
+
+            oauth_user_id           = response[<span class="hljs-string">'id'</span>]
+            <span class="hljs-variable">@user</span>.oauth_user_id     = oauth_user_id
+            
+            update_terms_accepted_at
+            set_user_values
+
+            <span class="hljs-keyword">if</span> <span class="hljs-variable">@user</span>.save
+              <span class="hljs-variable">@user</span>.activate!
+              <span class="hljs-variable">@user</span>.create_sandbox <span class="hljs-keyword">if</span> params_root[<span class="hljs-symbol">:sandbox</span>]
+              controller_render(<span class="hljs-variable">@user</span>)
+            <span class="hljs-keyword">else</span>
+              permission_denied(<span class="hljs-string">'User credentials could not be validated. Please contact us at support@thinkspace.org'</span>)
+            <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">avatar</span></span>
+          attachment   = params[<span class="hljs-symbol">:files</span>].first
+          <span class="hljs-variable">@user</span>.avatar = attachment
+          controller_save_record(<span class="hljs-variable">@user</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
+          set_user_values
+          process_updates
+          controller_save_record(<span class="hljs-variable">@user</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_tos</span></span>
+          update_terms_accepted_at
+          controller_save_record(<span class="hljs-variable">@user</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.session_user_actions
+
+        private
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">user_class</span>;</span> <span class="hljs-constant">Thinkspace::Common::User</span>; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">space_user_class</span>;</span> <span class="hljs-constant">Thinkspace::Common::SpaceUser</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_s2s_errors</span><span class="hljs-params">(errors)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>return first error</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">return</span> <span class="hljs-string">'There was a problem creating your account.'</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">not</span> errors.present? <span class="hljs-keyword">or</span> errors.empty?)
+          errors.each <span class="hljs-keyword">do</span> |key, value|
+            <span class="hljs-keyword">return</span> (key + <span class="hljs-string">' '</span> + value.first).capitalize
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_email_from_params</span>;</span> params_root[<span class="hljs-symbol">:email</span>].strip.downcase; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_token_and_set_user</span></span>
+          email = get_email_from_params
+          <span class="hljs-variable">@user</span> = user_class.find_by(<span class="hljs-symbol">email:</span> email)
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@user</span>.present?
+          token = params_root[<span class="hljs-symbol">:token</span>]
+          <span class="hljs-keyword">return</span> permission_denied(<span class="hljs-string">'The invitation has already been accepted.'</span>) <span class="hljs-keyword">if</span> <span class="hljs-variable">@user</span>.active?
+          <span class="hljs-keyword">return</span> permission_denied(<span class="hljs-string">'User was invited, but no invitation token was provided. Check your email for an invitation link and use it to sign up.'</span>) <span class="hljs-keyword">unless</span> token.present?
+          <span class="hljs-keyword">return</span> permission_denied(<span class="hljs-string">'The invitation token is invalid. Please contact your instructor.'</span>) <span class="hljs-keyword">unless</span> token == <span class="hljs-variable">@user</span>.activation_token
+          <span class="hljs-keyword">return</span> permission_denied(<span class="hljs-string">'The invitation has expired. Please contact your instructor.'</span>) <span class="hljs-keyword">if</span> <span class="hljs-variable">@user</span>.activation_expired?
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">render_user_creation_error</span><span class="hljs-params">(errors={})</span></span>
+          render <span class="hljs-symbol">json:</span> errors.as_json, <span class="hljs-symbol">status:</span> <span class="hljs-number">403</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">permission_denied</span><span class="hljs-params">(message=<span class="hljs-string">'Cannot access this resource.'</span>, options={})</span></span>
+          options[<span class="hljs-symbol">:user_message</span>] = message
+          raise_access_denied_exception(message, <span class="hljs-symbol">:create</span>, <span class="hljs-keyword">nil</span>, options)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_terms_accepted_at</span></span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> user</span></p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_user_values</span></span>
+          <span class="hljs-variable">@user</span>.first_name        = params_root[<span class="hljs-symbol">:first_name</span>]
+          <span class="hljs-variable">@user</span>.last_name         = params_root[<span class="hljs-symbol">:last_name</span>]
+          <span class="hljs-variable">@user</span>.email_optin       = params_root[<span class="hljs-symbol">:email_optin</span>]
+          <span class="hljs-variable">@user</span>.profile           = params_root[<span class="hljs-symbol">:profile</span>]
+
+          <span class="hljs-variable">@user</span>.thinkspace_common_discipline_ids = params_root[<span class="hljs-string">'thinkspace/common/disciplines'</span>]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_updates</span></span>
+          updates = params_root[<span class="hljs-symbol">:updates</span>]
+          <span class="hljs-keyword">if</span> updates.present?
+            <span class="hljs-keyword">if</span> updates.has_key?(<span class="hljs-symbol">:disciplines</span>)
+              discipline_change = updates[<span class="hljs-symbol">:disciplines</span>]
+              ids = discipline_change
+              <span class="hljs-variable">@user</span>.thinkspace_common_discipline_ids = ids
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

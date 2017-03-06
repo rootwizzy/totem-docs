@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/lib/totem/core/support/authentication</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/lib/totem/core/support/authentication"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/support/authentication.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/support/authentication.rb">src/totem/api/totem-core/app/lib/totem/core/support/authentication.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>Authentication wrapper around other Totem::Settings.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Support</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Authentication</span></span>
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:totem_settings</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Should always use the public methods to access these instance variables.
+Listing the instance variables used to provide easily access if needed.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:platform_authentication_settings</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(env)</span></span>
+          <span class="hljs-variable">@totem_settings</span>                   = env
+          <span class="hljs-variable">@platform_authentication_settings</span> = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>define authentication.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authentication</span>;</span> <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platforms</span>;</span> platform_authentication_settings; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform</span><span class="hljs-params">(platform_name)</span></span>
+          error <span class="hljs-string">"Platform [<span class="hljs-subst">#{platform_name.inspect}</span>] is blank"</span> <span class="hljs-keyword">if</span> platform_name.blank?
+          platforms[platform_name]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_platform</span><span class="hljs-params">(platform_name, settings)</span></span>
+          error <span class="hljs-string">"Platform [<span class="hljs-subst">#{platform_name}</span>] is blank in set platform"</span> <span class="hljs-keyword">if</span> platform_name.blank?
+          <span class="hljs-variable">@platform_authentication_settings</span>[platform_name] = settings
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">model_class</span><span class="hljs-params">(platform_name, class_name=<span class="hljs-symbol">:user_model</span>)</span></span>
+          platform(platform_name) &amp;&amp; platform(platform_name).classes.get_class(class_name)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_model_class</span><span class="hljs-params">(object, class_name=<span class="hljs-symbol">:user_model</span>)</span>;</span> model_class(get_platform_name(object), class_name); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="routes-section">Routes Section</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">route</span><span class="hljs-params">(platform_name, key)</span>;</span> get_platform_name_value(platform_name, <span class="hljs-symbol">:routes</span>, key); <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_route</span><span class="hljs-params">(object, key)</span>;</span> route(get_platform_name(object), key); <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_home_route</span><span class="hljs-params">(object)</span>;</span> current_route(object, <span class="hljs-symbol">:home</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="session-section">Session Section</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">session</span><span class="hljs-params">(platform_name)</span>;</span> get_platform_name_value(platform_name, <span class="hljs-symbol">:session</span>); <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_session</span><span class="hljs-params">(object)</span>;</span> session(get_platform_name(object)); <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">session_timeout</span><span class="hljs-params">(platform_name)</span>;</span> get_platform_name_value(platform_name, <span class="hljs-symbol">:session</span>, <span class="hljs-symbol">:timeout_time</span>); <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_session_timeout</span><span class="hljs-params">(object)</span>;</span> session_timeout(get_platform_name(object)); <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">session_expire_after</span><span class="hljs-params">(platform_name)</span>;</span> get_platform_name_value(platform_name, <span class="hljs-symbol">:session</span>, <span class="hljs-symbol">:expire_after_time</span>); <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_session_expire_after</span><span class="hljs-params">(object)</span>;</span> session_expire_after(get_platform_name(object)); <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_platform_name</span><span class="hljs-params">(object)</span>;</span> totem_settings.engine.current_platform_name(object); <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_platform_name_value</span><span class="hljs-params">(*args)</span></span>
+          platform_name = args.shift
+          value         = platform(platform_name)
+          args.each <span class="hljs-keyword">do</span> |arg|
+            value = value[arg]
+            <span class="hljs-keyword">break</span> <span class="hljs-keyword">if</span> value.blank?
+          <span class="hljs-keyword">end</span>
+          value
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">Shared</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

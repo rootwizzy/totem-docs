@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-cli/lib/totem/cli/helpers/run_options</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-cli/lib/totem/cli/helpers/run_options"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers/run_options.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers/run_options.rb">src/totem/api/totem-cli/lib/totem/cli/helpers/run_options.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Helpers</span>;</span>  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">RunOptions</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">included</span><span class="hljs-params">(base)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> base.ancestors.<span class="hljs-keyword">include</span>?(<span class="hljs-constant">Thor::Group</span>)
+    base.class_eval <span class="hljs-keyword">do</span>
+      class_option <span class="hljs-symbol">:run_options_file</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:string</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">nil</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">'-o'</span>, <span class="hljs-symbol">desc:</span> <span class="hljs-string">'run options file'</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:run_options</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:run_dir_pwd</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">app?</span>;</span> <span class="hljs-variable">@_app</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize_run_options_and_merge_run_options_file</span><span class="hljs-params">(opts={})</span></span>
+    <span class="hljs-variable">@run_dir_pwd</span> = <span class="hljs-constant">Dir</span>.pwd
+    <span class="hljs-variable">@run_options</span> = options.dup.deep_symbolize_keys  <span class="hljs-comment"># dup since options hash is frozen</span>
+    merge_run_options_file(opts)
+    <span class="hljs-variable">@_app</span>      = opts[<span class="hljs-symbol">:app</span>] || <span class="hljs-keyword">false</span>
+    set_standard_run_options <span class="hljs-keyword">if</span> app?
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">merge_run_options_file</span><span class="hljs-params">(opts)</span></span>
+    file = run_options[<span class="hljs-symbol">:run_options_file</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> file.blank?
+    file = <span class="hljs-constant">File</span>.join(run_dir_pwd, file)
+    file = get_run_options_yml_filename(file)
+    run_options[<span class="hljs-symbol">:run_options_file</span>] = file
+    stop_run <span class="hljs-string">"Run options file: <span class="hljs-subst">#{file.inspect}</span> does not exist."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.exists?(file)
+    say_message set_color(<span class="hljs-string">"Running with options file "</span>, <span class="hljs-symbol">:green</span>) + set_color(file, <span class="hljs-symbol">:green</span>, <span class="hljs-symbol">:bold</span>)
+    run_options[<span class="hljs-symbol">:run_options_key</span>] = opts[<span class="hljs-symbol">:key</span>]
+    hash     = get_yml_file_hash(file)
+    key_hash = get_options_key_hash(hash, opts)
+    run_options.merge!(key_hash)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_options_key_hash</span><span class="hljs-params">(hash, opts)</span></span>
+    key = run_options[<span class="hljs-symbol">:run_options_key</span>]
+    <span class="hljs-keyword">return</span> hash.deep_symbolize_keys <span class="hljs-keyword">if</span> key == <span class="hljs-keyword">false</span>
+    stop_run <span class="hljs-string">"Run options has a blank key value."</span>  <span class="hljs-keyword">if</span> key.blank?
+    stop_run <span class="hljs-string">"<span class="hljs-subst">#{key.inspect}</span> is not a key in the run options file."</span>  <span class="hljs-keyword">unless</span> (opts[<span class="hljs-symbol">:required</span>] == <span class="hljs-keyword">false</span> || hash.has_key?(key))
+    run_hash = hash[key] || <span class="hljs-constant">Hash</span>.new
+    stop_run <span class="hljs-string">"Run options key <span class="hljs-subst">#{key.inspect}</span> is not a hash."</span> <span class="hljs-keyword">unless</span> run_hash.is_a?(<span class="hljs-constant">Hash</span>)
+    run_hash.deep_symbolize_keys
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_standard_run_options</span></span>
+    run_options[<span class="hljs-symbol">:framework_run_options</span>] = get_standard_framework_run_options
+    run_options[<span class="hljs-symbol">:platform_run_options</span>]  = get_standard_platform_run_options
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_standard_framework_run_options</span><span class="hljs-params">(options=get_framework_run_options)</span></span>
+    type = <span class="hljs-string">'Framework'</span>
+    options.deep_merge get_options_run_options(options, type)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_standard_platform_run_options</span><span class="hljs-params">(options=get_platform_run_options)</span></span>
+    type = <span class="hljs-string">'Platform'</span>
+    options.deep_merge get_options_run_options(options, type)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_merged_standard_framework_package</span></span>
+    options = get_standard_framework_run_options
+    get_merged_package_hash(options.merge(<span class="hljs-symbol">required:</span> <span class="hljs-keyword">false</span>))
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_merged_standard_platform_package</span></span>
+    options = get_standard_platform_run_options
+    get_merged_package_hash(options.merge(<span class="hljs-symbol">required:</span> <span class="hljs-keyword">false</span>))
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_merged_framework_config</span></span>
+    options = get_framework_run_options
+    get_merged_platform_hash(options)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_merged_platform_config</span></span>
+    options = get_platform_run_options
+    get_merged_platform_hash(options)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_options_run_options</span><span class="hljs-params">(options, type=<span class="hljs-string">''</span>)</span></span>
+    stop_run <span class="hljs-string">"<span class="hljs-subst">#{type}</span> config run options are blank."</span> <span class="hljs-keyword">if</span> options.blank?
+    {
+      <span class="hljs-symbol">platform_name:</span>  get_options_platform_name(options, type),
+      <span class="hljs-symbol">platform_path:</span>  get_options_platform_path(options, type),
+      <span class="hljs-symbol">src_paths:</span>      get_options_paths(options, type, <span class="hljs-symbol">:src_paths</span>),
+      <span class="hljs-symbol">ability_paths:</span>  get_options_paths(options, type, <span class="hljs-symbol">:ability_paths</span>, <span class="hljs-keyword">false</span>),
+      <span class="hljs-symbol">package_files:</span>  get_options_files(options, type, <span class="hljs-symbol">:package_files</span>),
+      <span class="hljs-symbol">config_files:</span>   get_options_files(options, type, <span class="hljs-symbol">:config_files</span>),
+      <span class="hljs-symbol">config_paths:</span>   get_options_paths_from_files(options, type, <span class="hljs-symbol">:config_files</span>),
+      <span class="hljs-symbol">template_paths:</span> get_options_paths(options, type, <span class="hljs-symbol">:template_paths</span>, <span class="hljs-keyword">false</span>),
+    }
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_framework_run_options</span><span class="hljs-params">(options=run_options)</span>;</span> options[<span class="hljs-symbol">:framework_run_options</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_platform_run_options</span><span class="hljs-params">(options=run_options)</span>;</span>  options[<span class="hljs-symbol">:platform_run_options</span>];  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_options_platform_name</span><span class="hljs-params">(options, type=<span class="hljs-string">''</span>)</span></span>
+    name = options[<span class="hljs-symbol">:platform_name</span>] || options[<span class="hljs-symbol">:platform</span>]
+    stop_run <span class="hljs-string">"<span class="hljs-subst">#{type}</span> platform name is blank."</span>, <span class="hljs-symbol">:red</span>   <span class="hljs-keyword">if</span> name.blank?
+    name
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_options_platform_path</span><span class="hljs-params">(options, type=<span class="hljs-string">''</span>)</span></span>
+    path = options[<span class="hljs-symbol">:platform</span>]
+    stop_run <span class="hljs-string">"<span class="hljs-subst">#{type}</span> platform path is blank."</span>, <span class="hljs-symbol">:red</span>   <span class="hljs-keyword">if</span> path.blank?
+    get_absolute_path(path)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_options_paths</span><span class="hljs-params">(options, type, key, required=<span class="hljs-keyword">true</span>)</span></span>
+    paths = [options[key]].flatten.compact
+    stop_run <span class="hljs-string">"<span class="hljs-subst">#{type}</span> <span class="hljs-subst">#{key}</span> are blank."</span>, <span class="hljs-symbol">:red</span>   <span class="hljs-keyword">if</span> paths.blank? &amp;&amp; required
+    array = <span class="hljs-constant">Array</span>.new
+    paths.each <span class="hljs-keyword">do</span> |p|
+      path = get_absolute_path(p)
+      stop_run <span class="hljs-string">"<span class="hljs-subst">#{type}</span> <span class="hljs-subst">#{key}</span> <span class="hljs-subst">#{path.inspect}</span> is not a directory."</span>, <span class="hljs-symbol">:red</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(path)
+      array.push(path)
+    <span class="hljs-keyword">end</span>
+    array
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_options_files</span><span class="hljs-params">(options, type, key, required=<span class="hljs-keyword">true</span>)</span></span>
+    files = [options[key]].flatten.compact
+    stop_run <span class="hljs-string">"<span class="hljs-subst">#{type}</span> <span class="hljs-subst">#{key}</span> are blank."</span>, <span class="hljs-symbol">:red</span>   <span class="hljs-keyword">if</span> files.blank? &amp;&amp; required
+    array = <span class="hljs-constant">Array</span>.new
+    files.each <span class="hljs-keyword">do</span> |f|
+      file = get_absolute_path(f)
+      stop_run <span class="hljs-string">"<span class="hljs-subst">#{type}</span> <span class="hljs-subst">#{key}</span> <span class="hljs-subst">#{file.inspect}</span> is not a file."</span>, <span class="hljs-symbol">:red</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(file)
+      array.push(file)
+    <span class="hljs-keyword">end</span>
+    array
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_options_paths_from_files</span><span class="hljs-params">(options, type, key)</span></span>
+    files = get_options_files(options, type, key)
+    paths = files.map {|f| <span class="hljs-constant">File</span>.dirname(f)}
+    paths.each <span class="hljs-keyword">do</span> |path|
+      stop_run <span class="hljs-string">"<span class="hljs-subst">#{type}</span> <span class="hljs-subst">#{key}</span> <span class="hljs-subst">#{path.inspect}</span> is not a directory."</span>, <span class="hljs-symbol">:red</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(path)
+    <span class="hljs-keyword">end</span>
+    paths
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

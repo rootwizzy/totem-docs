@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/test/ability/base_models_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/test/ability/base_models_test"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/ability/base_models_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/ability/base_models_test.rb">src/thinkspace/api/thinkspace-casespace/test/ability/base_models_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'ability_helper'</span>
+<span class="hljs-constant">Test::Casespace::Seed</span>.load(<span class="hljs-symbol">config:</span> <span class="hljs-symbol">:ability</span>)
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Ability</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseModels</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveSupport::TestCase</span></span></span>
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Models</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Ability</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Assert</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Utility</span>
+
+  models         = [get_space(<span class="hljs-symbol">:ability_space_1</span>), get_assignment(<span class="hljs-symbol">:ability_assignment_1_1</span>), get_phase(<span class="hljs-symbol">:ability_phase_1_1_A</span>)]
+  read_actions   = alias_read_actions
+  modify_actions = [<span class="hljs-symbol">:update</span>]
+
+  describe <span class="hljs-string">'can read'</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@models</span>  = models
+    <span class="hljs-variable">@actions</span> = read_actions
+    <span class="hljs-variable">@users</span>   = get_users <span class="hljs-symbol">:read_1</span>, <span class="hljs-symbol">:update_1</span>, <span class="hljs-symbol">:owner_1</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">TestCan</span>
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'can update'</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@models</span>  = models
+    <span class="hljs-variable">@actions</span> = modify_actions
+    <span class="hljs-variable">@users</span>   = get_users <span class="hljs-symbol">:update_1</span>, <span class="hljs-symbol">:owner_1</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">TestCan</span>
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'cannot read'</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@models</span>  = models
+    <span class="hljs-variable">@actions</span> = read_actions
+    <span class="hljs-variable">@users</span>   = get_users <span class="hljs-symbol">:read_2</span>, <span class="hljs-symbol">:update_2</span>, <span class="hljs-symbol">:owner_2</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">TestCannot</span>
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'cannot update'</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@models</span>  = models
+    <span class="hljs-variable">@actions</span> = modify_actions
+    <span class="hljs-variable">@users</span>   = get_users <span class="hljs-symbol">:read_1</span>, <span class="hljs-symbol">:read_2</span>, <span class="hljs-symbol">:update_2</span>, <span class="hljs-symbol">:owner_2</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">TestCannot</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

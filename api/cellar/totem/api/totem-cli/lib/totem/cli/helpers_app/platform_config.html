@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-cli/lib/totem/cli/helpers_app/platform_config</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-cli/lib/totem/cli/helpers_app/platform_config"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_app/platform_config.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers_app/platform_config.rb">src/totem/api/totem-cli/lib/totem/cli/helpers_app/platform_config.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">HelpersApp</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PlatformConfig</span></span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Thor::Shell</span>  <span class="hljs-comment"># provides ask/say methods</span>
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Package</span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:spec</span>, <span class="hljs-symbol">:spec_path</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:run_options</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:erb</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(options={})</span></span>
+    <span class="hljs-variable">@spec</span>        = options[<span class="hljs-symbol">:spec</span>]
+    <span class="hljs-variable">@spec_path</span>   = options[<span class="hljs-symbol">:spec_path</span>]
+    <span class="hljs-variable">@run_options</span> = options[<span class="hljs-symbol">:run_options</span>]
+    say <span class="hljs-string">"Platform config <span class="hljs-subst">#{spec.name.inspect}</span> initialized."</span>, <span class="hljs-symbol">:green</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">framework?</span>;</span>   package_config[<span class="hljs-symbol">:is_framework</span>] == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">package?</span>;</span>     run_options[<span class="hljs-symbol">:package</span>] == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy?</span>;</span>      run_options[<span class="hljs-symbol">:deploy</span>] == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">vendor?</span>;</span>      package? || deploy?; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gemspec_name</span>;</span> spec.name; <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">alias</span> <span class="hljs-symbol">:platform_name</span> <span class="hljs-symbol">:gemspec_name</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gemspec_version</span>;</span> spec.version; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_options_file</span>;</span>     run_options[<span class="hljs-symbol">:run_options_file</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">app_root</span>;</span>             run_options[<span class="hljs-symbol">:app_root</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform_path</span>;</span>        run_options[<span class="hljs-symbol">:platform_path</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">package_vendor_path</span>;</span>  run_options[<span class="hljs-symbol">:package_vendor_path</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">package_config</span>;</span>       run_options[<span class="hljs-symbol">:current_package</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform_config</span>;</span>      run_options[<span class="hljs-symbol">:current_config</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">src_paths</span>;</span>            run_options[<span class="hljs-symbol">:src_paths</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">config_paths</span>;</span>         run_options[<span class="hljs-symbol">:config_paths</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ability_paths</span>;</span>        run_options[<span class="hljs-symbol">:ability_paths</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">template_paths</span>;</span>       run_options[<span class="hljs-symbol">:template_paths</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">template_dir</span>;</span>         run_options[<span class="hljs-symbol">:template_dir</span>]; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">route_root</span>;</span>     package_config[<span class="hljs-symbol">:route_root</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">route_concerns</span>;</span> package_config_array(<span class="hljs-symbol">:route_concerns</span>); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">inflections</span>;</span>    package_config_array(<span class="hljs-symbol">:inflections</span>); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">application_rb</span>;</span> [<span class="hljs-string">"\n"</span>] + package_config_array(<span class="hljs-symbol">:application_rb</span>); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform_config_to_yaml</span>;</span> platform_config.to_yaml; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">relative_run_options_file</span>;</span> <span class="hljs-variable">@_relative_run_options_file</span> ||= relative_path(run_options_file); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">relative_platform_path</span>;</span>    <span class="hljs-variable">@_relative_pathform_path</span>    ||= relative_path(platform_path); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">package_config_array</span><span class="hljs-params">(key)</span>;</span> make_array(package_config[key]); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_array</span><span class="hljs-params">(array)</span>;</span> <span class="hljs-constant">Array</span>.wrap(array).compact; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">relative_path</span><span class="hljs-params">(path, root=app_root)</span></span>
+    path = <span class="hljs-constant">Pathname</span>.new(path)
+    root = <span class="hljs-constant">Pathname</span>.new(root)
+    path.relative_path_from(root).to_s
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">vendor_path</span></span>
+    <span class="hljs-string">"vendor/totem/"</span> + (package_vendor_path.blank? ? gemspec_name <span class="hljs-symbol">:</span> package_vendor_path) + <span class="hljs-string">"-<span class="hljs-subst">#{gemspec_version}</span>"</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="config-packages">Config Packages.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Platform config path array options:</p>
+<ul>
+<li>path:  my_dir/my_path                  #=&gt; will find first scr_path where package exists and use File(src_dir, path)</li>
+<li>{path: my_dir/my_path src: myrepo/api} #=&gt; will use File.join(src, path)</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">packages</span></span>
+    <span class="hljs-variable">@_packages</span> ||= <span class="hljs-keyword">begin</span>
+      gems = <span class="hljs-constant">Array</span>.new
+      get_package_paths.each <span class="hljs-keyword">do</span> |hash|
+        src         = hash[<span class="hljs-symbol">:src</span>]
+        pkg         = hash[<span class="hljs-symbol">:pkg</span>]
+        source_path = src.blank? ? find_src_directory(pkg) <span class="hljs-symbol">:</span> get_absolute_path(src)
+        <span class="hljs-keyword">if</span> source_path.blank?
+          say <span class="hljs-string">"\n[WARNING] Package <span class="hljs-subst">#{pkg.to_s.inspect}</span> was not found in any source path and will be skipped.\n\n"</span>, <span class="hljs-symbol">:yellow</span>, <span class="hljs-symbol">:bold</span>
+          <span class="hljs-keyword">next</span>
+        <span class="hljs-keyword">end</span>
+        path = vendor? ? <span class="hljs-constant">File</span>.join(<span class="hljs-string">"./<span class="hljs-subst">#{vendor_path}</span>"</span>, pkg) <span class="hljs-symbol">:</span> source_path.dup
+        gems.push gem_package(pkg, source_path, path)
+      <span class="hljs-keyword">end</span>
+      gems
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_package_paths</span></span>
+    paths = package_config[<span class="hljs-symbol">:packages</span>].blank? ? platform_config[<span class="hljs-symbol">:paths</span>] <span class="hljs-symbol">:</span> package_config[<span class="hljs-symbol">:packages</span>]
+    paths = make_array(paths)
+    paths = add_base_package(paths)
+    paths = paths.map {|p| p.deep_dup.merge(<span class="hljs-symbol">pkg:</span> p[<span class="hljs-symbol">:path</span>].gsub(<span class="hljs-string">'/'</span>,<span class="hljs-string">'-'</span>).gsub(<span class="hljs-string">'_'</span>, <span class="hljs-string">'-'</span>))}
+    paths.sort_by {|p| p[<span class="hljs-symbol">:pkg</span>]}
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_base_package</span><span class="hljs-params">(paths)</span></span>
+    <span class="hljs-keyword">return</span> paths <span class="hljs-keyword">if</span> paths.find {|p| p[<span class="hljs-symbol">:path</span>] == gemspec_name}
+    [{<span class="hljs-symbol">path:</span> gemspec_name, <span class="hljs-symbol">src:</span> spec_path}] + paths
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gem_package</span><span class="hljs-params">(pkg, source_path, path)</span></span>
+    pkg_spec = get_package_spec(source_path)
+    {<span class="hljs-symbol">package:</span> pkg, <span class="hljs-symbol">path:</span> path, <span class="hljs-symbol">source_path:</span> source_path, <span class="hljs-symbol">pkg_spec:</span> pkg_spec}
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_package_spec</span><span class="hljs-params">(source_path)</span></span>
+    pkg_spec = <span class="hljs-keyword">nil</span>
+    <span class="hljs-constant">Dir</span>.chdir(source_path) <span class="hljs-keyword">do</span>
+      filename = <span class="hljs-constant">Dir</span>[<span class="hljs-string">'*.gemspec'</span>].first
+      pkg_spec = <span class="hljs-constant">Gem::Specification</span>.load(filename) <span class="hljs-keyword">if</span> filename.present?
+    <span class="hljs-keyword">end</span>
+    pkg_spec
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">secrets</span></span>
+    hash      = package_config[<span class="hljs-symbol">:secrets</span>]
+    variables = package_config[<span class="hljs-symbol">:variables</span>]
+    new_erb.erb_hash(hash, variables)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="platform-config-gems-eg-39gemfile39-key">Platform Config Gems (e.g. &#39;gemfile&#39; key).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">source_vendor_path</span>;</span> <span class="hljs-string">"<span class="hljs-subst">#{spec_path}</span>/vendor"</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Gem line can use:</p>
+<ul>
+<li>&quot;gem &#39;&lt;%=vendor_path%&gt;/xxxxxxxxxx&#39;&quot;</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform_gems</span></span>
+    array = package_config[<span class="hljs-symbol">:gemfile</span>]
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> array.blank?
+    path = vendor? ? <span class="hljs-string">"./<span class="hljs-subst">#{vendor_path}</span>/vendor"</span> <span class="hljs-symbol">:</span> source_vendor_path
+    new_erb.erb_array(array, <span class="hljs-symbol">vendor_path:</span> path)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="platform-templates">Platform Templates.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">source_template?</span><span class="hljs-params">(filename)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> template_dir.blank? || filename.blank?
+    file = <span class="hljs-constant">File</span>.join(template_dir, filename + <span class="hljs-string">'.tt'</span>)
+    <span class="hljs-constant">File</span>.file?(file)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">template</span><span class="hljs-params">(filename)</span></span>
+    tt_file    = <span class="hljs-constant">File</span>.join(template_dir, filename).to_s + <span class="hljs-string">'.tt'</span>
+    tt_content = <span class="hljs-constant">File</span>.file?(tt_file) ? <span class="hljs-constant">File</span>.read(tt_file) <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>
+    file       = find_src_file(filename, <span class="hljs-symbol">src_paths:</span> template_paths)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> file.blank?
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(file)
+    content = <span class="hljs-constant">File</span>.read(file)
+    <span class="hljs-keyword">return</span> content <span class="hljs-keyword">if</span> tt_content.blank?
+    new_erb.erb_text(tt_content, <span class="hljs-symbol">platform_name:</span> platform_name, <span class="hljs-symbol">template_content:</span> content)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_erb</span>;</span> <span class="hljs-constant">Helpers::PlatformErb</span>.new(<span class="hljs-keyword">self</span>); <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

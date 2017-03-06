@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-cli/lib/totem/cli/helpers_ember/app</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-cli/lib/totem/cli/helpers_ember/app"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_ember/app.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers_ember/app.rb">src/totem/api/totem-cli/lib/totem/cli/helpers_ember/app.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">HelpersEmber</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">App</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ember_cli_is_installed?</span>;</span>  ember_cli_is_installed; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_ember_app</span></span>
+    stop_run <span class="hljs-string">"ember-cli is not installed.  Please install and re-run."</span>  <span class="hljs-keyword">if</span> !ember_cli_is_installed?
+    <span class="hljs-variable">@public_is_installed</span> = <span class="hljs-keyword">false</span>
+    install_ember_application
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">install_ember_application</span></span>
+    say_message <span class="hljs-string">"Clean the bower and npm caches."</span>, run_message_color
+    run_ember_app_string_command <span class="hljs-string">'bower cache clean'</span>
+    run_ember_app_string_command <span class="hljs-string">'npm cache clean'</span>
+    name = set_color(<span class="hljs-variable">@app_name</span>.to_s.inspect, <span class="hljs-symbol">:bold</span>)
+    path = set_color(<span class="hljs-string">"in path <span class="hljs-subst">#{<span class="hljs-variable">@app_root</span>.inspect}</span>."</span>, do_message_color)
+    say_message <span class="hljs-string">"Creating ember-cli app <span class="hljs-subst">#{name}</span> <span class="hljs-subst">#{path}</span>"</span>, do_message_color
+    inside <span class="hljs-variable">@app_root</span> <span class="hljs-keyword">do</span>
+      run_ember_app_string_command <span class="hljs-string">"ember new <span class="hljs-subst">#{<span class="hljs-variable">@app_name</span>}</span>"</span>
+    <span class="hljs-keyword">end</span>
+    run_ember_app_commands
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_ember_app_commands</span></span>
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      all_commands.each <span class="hljs-keyword">do</span> |cmd|
+        run_ember_app_command(cmd)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_ember_app_command</span><span class="hljs-params">(cmd)</span></span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> (mod = skip_npm_uninstall?(cmd)).present?
+      say_message <span class="hljs-string">"Skipping uninstall command <span class="hljs-subst">#{cmd.inspect}</span>.  Node module <span class="hljs-subst">#{mod.inspect}</span> does not exist."</span>, <span class="hljs-symbol">:yellow</span>
+    <span class="hljs-keyword">when</span> cmd.kind_of?(<span class="hljs-constant">String</span>) &amp;&amp; cmd.strip == <span class="hljs-string">'noop'</span> <span class="hljs-comment"># e.g. - run: noop</span>
+      say_message <span class="hljs-string">"Running noop command."</span>
+    <span class="hljs-keyword">when</span> cmd.kind_of?(<span class="hljs-constant">String</span>)
+      say_message <span class="hljs-string">"String commands are depreciated.  <span class="hljs-subst">#{cmd.inspect}</span> should have been auto-converted into a hash :run command"</span>, <span class="hljs-symbol">:yellow</span>
+    <span class="hljs-keyword">when</span> cmd.kind_of?(<span class="hljs-constant">Hash</span>)
+      run_ember_app_hash_command(cmd)
+    <span class="hljs-keyword">else</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">skip_npm_uninstall?</span><span class="hljs-params">(cmd)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> cmd.kind_of?(<span class="hljs-constant">String</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> cmd.match(<span class="hljs-regexp">/^\s*npm\s+uninstall/</span>)
+    mod = cmd.split.select {|p| !p.start_with?(<span class="hljs-string">'-'</span>)}.last
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> mod.blank?
+    <span class="hljs-keyword">return</span> mod <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory? <span class="hljs-constant">File</span>.join(<span class="hljs-string">'node_modules'</span>, mod)
+    <span class="hljs-keyword">false</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_ember_app_string_command</span><span class="hljs-params">(cmd)</span></span>
+    say_message <span class="hljs-string">"    running: <span class="hljs-subst">#{cmd.inspect}</span>"</span>, <span class="hljs-symbol">:cyan</span>
+    run cmd, <span class="hljs-symbol">capture:</span> capture?, <span class="hljs-symbol">verbose:</span> verbose_run?  <span class="hljs-keyword">unless</span> dry_run?
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_ember_app_hash_command</span><span class="hljs-params">(cmd)</span></span>
+    command = cmd[<span class="hljs-symbol">:command</span>]
+    stop_run <span class="hljs-string">"Hash command <span class="hljs-subst">#{cmd.inspect}</span> does not have a command."</span>  <span class="hljs-keyword">if</span> command.blank?
+    <span class="hljs-keyword">case</span> command.to_sym
+
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:run</span>
+      command = bundle_lock_versions? ? get_bundle_command(cmd) <span class="hljs-symbol">:</span> cmd
+      command = command[<span class="hljs-symbol">:run_command</span>]
+      stop_run <span class="hljs-string">"Hash run command <span class="hljs-subst">#{cmd.inspect}</span> does not have a run_command key."</span>  <span class="hljs-keyword">if</span> command.blank?
+      stop_run <span class="hljs-string">"Hash run_command value <span class="hljs-subst">#{cmd.inspect}</span> is not a string."</span>  <span class="hljs-keyword">unless</span> command.is_a?(<span class="hljs-constant">String</span>)
+      run_ember_app_string_command(command)
+
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:prompt</span>
+      command = bundle_lock_versions? ? get_bundle_command(cmd) <span class="hljs-symbol">:</span> cmd
+      command = command[<span class="hljs-symbol">:prompt_command</span>]
+      sel_cmd = <span class="hljs-string">''</span>
+      stop_run <span class="hljs-string">"Prompt command missing."</span>  <span class="hljs-keyword">if</span> command.blank?
+      selections = [cmd[<span class="hljs-symbol">:select</span>]].flatten.compact
+      say_msg    = cmd[<span class="hljs-symbol">:say</span>]
+      <span class="hljs-keyword">if</span> selections.present?
+        <span class="hljs-keyword">if</span> selections.length == <span class="hljs-number">1</span>
+          sel_cmd = <span class="hljs-string">"echo '<span class="hljs-subst">#{selections.first}</span>' | "</span>
+        <span class="hljs-keyword">else</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Until find a solution to automate multiple selections, generate a message for the user.</p></div></div><div class="code"><div class="wrapper">          user_action_message say_msg  <span class="hljs-keyword">if</span> say_msg.present?
+          say_msg = <span class="hljs-string">"Following command requires multiple selections.  Recommended selections <span class="hljs-subst">#{selections.inspect}</span>."</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      user_action_message say_msg  <span class="hljs-keyword">if</span> say_msg.present?
+      say_message <span class="hljs-string">"    running: <span class="hljs-subst">#{sel_cmd}</span><span class="hljs-subst">#{command.inspect}</span>."</span>, <span class="hljs-symbol">:cyan</span>
+      run sel_cmd + command, <span class="hljs-symbol">capture:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">verbose:</span> verbose_run?  <span class="hljs-keyword">unless</span> dry_run?
+
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:comment</span>
+      args = [cmd[<span class="hljs-symbol">:args</span>] || []].flatten.compact.map {|a| a.is_a?(<span class="hljs-constant">String</span>) ? a.to_sym <span class="hljs-symbol">:</span> a}
+      say_message cmd[<span class="hljs-symbol">:say</span>], *args
+
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:bower_version</span>
+      file = <span class="hljs-string">'bower.json'</span>
+      stop_run <span class="hljs-string">"<span class="hljs-subst">#{file.inspect}</span> file does not exist."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(file)
+      hash = get_ember_command_json(file)
+      package = cmd[<span class="hljs-symbol">:package</span>]
+      stop_run <span class="hljs-string">"bower.json version requires a package."</span>  <span class="hljs-keyword">if</span> package.blank?
+      dependencies = hash[<span class="hljs-string">'dependencies'</span>]
+      stop_run <span class="hljs-string">"bower.json does not have a dependencies section."</span>  <span class="hljs-keyword">if</span> dependencies.blank?
+      from = dependencies[package]
+      to   = cmd[<span class="hljs-symbol">:to</span>] || get_ember_command_package_json_version(package)
+      stop_run <span class="hljs-string">"bower.json version requires a new to version."</span>  <span class="hljs-keyword">if</span> to.blank?
+      say_message <span class="hljs-string">"Change bower.json <span class="hljs-subst">#{package.inspect}</span> version from <span class="hljs-subst">#{from.inspect}</span> to <span class="hljs-subst">#{to.inspect}</span>"</span>, run_message_color
+      dependencies[package] = to
+      create_file file, get_ember_command_hash_to_json(hash), <span class="hljs-symbol">verbose:</span> verbose_run?  <span class="hljs-keyword">unless</span> dry_run?
+
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:clear_bower_components</span>
+      dir = <span class="hljs-string">'bower_components'</span>
+      stop_run <span class="hljs-string">"Bower components directory does not exist."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(dir)
+      say_message <span class="hljs-string">"Clearing bower components directory."</span>, run_message_color
+      inside dir <span class="hljs-keyword">do</span>
+        <span class="hljs-constant">::FileUtils</span>.rm_rf <span class="hljs-constant">Dir</span>.glob(<span class="hljs-string">"*"</span>)  <span class="hljs-keyword">unless</span> (pretend? <span class="hljs-keyword">or</span> dry_run?)
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:delete_file</span>
+      file = cmd[<span class="hljs-symbol">:file</span>]
+      stop_run <span class="hljs-string">"Delete file command 'file' key is blank."</span>  <span class="hljs-keyword">if</span> file.blank?
+      stop_run <span class="hljs-string">"Delete file command 'file' key cannot be an absolute path (e.g. start with a /)."</span>  <span class="hljs-keyword">if</span> file.start_with?(<span class="hljs-string">'/'</span>)
+      stop_run <span class="hljs-string">"Delete file command file <span class="hljs-subst">#{file.inspect}</span> does not exist."</span>  <span class="hljs-keyword">if</span> !<span class="hljs-constant">File</span>.file?(file) &amp;&amp; !dry_run?
+      say_message <span class="hljs-string">"Deleting file <span class="hljs-subst">#{file.inspect}</span>"</span>, run_message_color
+      <span class="hljs-constant">::FileUtils</span>.rm(file)  <span class="hljs-keyword">unless</span> (pretend? <span class="hljs-keyword">or</span> dry_run?)
+
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:clean_up_app_directory</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> dry_run?
+      dir = <span class="hljs-string">'app'</span>
+      stop_run <span class="hljs-string">"App directory does not exist."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(dir)
+      remove_files = [<span class="hljs-string">'router.js'</span>, <span class="hljs-string">'styles/app.css'</span>, <span class="hljs-string">'resolver.js'</span>]
+      compass      = cmd[<span class="hljs-symbol">:compass</span>] || <span class="hljs-keyword">false</span>
+      inside dir <span class="hljs-keyword">do</span>
+        app_dirs  = <span class="hljs-constant">Dir</span>.glob(<span class="hljs-string">'*'</span>).select {|d| <span class="hljs-constant">File</span>.directory?(d)}
+        app_dirs -= [<span class="hljs-string">'styles'</span>]
+        <span class="hljs-keyword">if</span> app_dirs.present?
+          say_message <span class="hljs-string">"  remove '<span class="hljs-subst">#{dir}</span>' directories <span class="hljs-subst">#{app_dirs.inspect}</span>."</span>
+          app_dirs.each <span class="hljs-keyword">do</span> |app_dir|
+            <span class="hljs-constant">::FileUtils</span>.rm_rf(app_dir)  <span class="hljs-keyword">unless</span> (pretend? <span class="hljs-keyword">or</span> dry_run?)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+        say_message <span class="hljs-string">"  remove '<span class="hljs-subst">#{dir}</span>' files <span class="hljs-subst">#{remove_files.inspect}</span>."</span>
+        remove_files.each <span class="hljs-keyword">do</span> |file|
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(file)
+          <span class="hljs-constant">::FileUtils</span>.rm(file)  <span class="hljs-keyword">unless</span> (pretend? <span class="hljs-keyword">or</span> dry_run?)
+        <span class="hljs-keyword">end</span>
+        file    = compass.present? ? <span class="hljs-string">"styles/<span class="hljs-subst">#{<span class="hljs-variable">@app_name</span>}</span>.scss"</span> <span class="hljs-symbol">:</span> <span class="hljs-string">"styles/app.scss"</span>
+        content = <span class="hljs-string">"@import 'master';\n"</span>
+        say_message <span class="hljs-string">"  creating '<span class="hljs-subst">#{dir}</span>/<span class="hljs-subst">#{file}</span>'."</span>
+        create_file file, content, <span class="hljs-symbol">verbose:</span> verbose_run?  <span class="hljs-keyword">unless</span> dry_run?
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:copy_public</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> dry_run?
+      source = cmd[<span class="hljs-symbol">:path</span>] || run_options[<span class="hljs-symbol">:public_path</span>]
+      stop_run <span class="hljs-string">"Public directory path was not specified (command 'path:' -or- package 'public_path:'."</span>  <span class="hljs-keyword">if</span> source.blank?
+      source = <span class="hljs-constant">File</span>.join(<span class="hljs-variable">@root_path</span>, source)
+      stop_run <span class="hljs-string">"Public directory <span class="hljs-subst">#{source.inspect}</span> does not exist."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(source)
+      destination = <span class="hljs-constant">File</span>.join(<span class="hljs-variable">@root_path</span>, <span class="hljs-variable">@app_path</span>, <span class="hljs-string">'public'</span>)
+      say_message <span class="hljs-string">"Copying 'public' directory contents from <span class="hljs-subst">#{source.inspect}</span> to <span class="hljs-subst">#{destination.inspect}</span>."</span>, run_message_color
+      directory source, destination, <span class="hljs-symbol">verbose:</span> verbose_run?  <span class="hljs-keyword">unless</span> dry_run?
+      <span class="hljs-variable">@public_is_installed</span> = <span class="hljs-keyword">true</span>
+
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:gsub_file</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> dry_run?
+      path    = cmd[<span class="hljs-symbol">:path</span>]
+      match   = cmd[<span class="hljs-symbol">:match</span>]
+      regex   = cmd[<span class="hljs-symbol">:regex</span>]
+      replace = cmd[<span class="hljs-symbol">:replace</span>] || <span class="hljs-string">''</span>
+      stop_run <span class="hljs-string">"gsub file command path is blank in command <span class="hljs-subst">#{cmd.inspect}</span>."</span>  <span class="hljs-keyword">if</span> path.blank?
+      stop_run <span class="hljs-string">"gsub file path <span class="hljs-subst">#{path.inspect}</span> does not exist."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(path)
+      stop_run <span class="hljs-string">"gsub file command cannot have both 'match' and 'regex' in command <span class="hljs-subst">#{cmd.inspect}</span>."</span>  <span class="hljs-keyword">if</span> match.present? &amp;&amp; regex.present?
+      <span class="hljs-keyword">if</span> match.present?
+        say_message <span class="hljs-string">"  file <span class="hljs-subst">#{path.inspect}</span> gsub with match [<span class="hljs-subst">#{match}</span>] and replace with [<span class="hljs-subst">#{replace}</span>]."</span>
+        replace_gsub = match
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">if</span> regex.start_with?(<span class="hljs-string">'/'</span>)
+          <span class="hljs-keyword">begin</span>
+            replace_gsub = eval <span class="hljs-string">"%r<span class="hljs-subst">#{regex}</span>"</span>
+          <span class="hljs-keyword">rescue</span> <span class="hljs-constant">SyntaxError</span> =&gt; e
+            say_message <span class="hljs-string">"Invalid gsub file command regex [<span class="hljs-subst">#{regex}</span>].  Do you have a slash before and after?"</span>, <span class="hljs-symbol">:red</span>
+            stop_run e.message
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">else</span>
+          replace_gsub = <span class="hljs-constant">Regexp</span>.new(regex)
+        <span class="hljs-keyword">end</span>
+        text = get_ember_indented_string(replace)
+        say_message <span class="hljs-string">"  file <span class="hljs-subst">#{path.inspect}</span> gsub with regex [<span class="hljs-subst">#{regex}</span>] and replace with:\n<span class="hljs-subst">#{text}</span>"</span>
+      <span class="hljs-keyword">end</span>
+      gsub_file path, replace_gsub, replace, <span class="hljs-symbol">verbose:</span> verbose_run?  <span class="hljs-keyword">unless</span> dry_run?
+
+    <span class="hljs-keyword">else</span>
+      stop_run <span class="hljs-string">"Unsupported hash command <span class="hljs-subst">#{command.inspect}</span> in <span class="hljs-subst">#{cmd.inspect}</span>."</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ember_indented_string</span><span class="hljs-params">(replace, color=<span class="hljs-symbol">:cyan</span>, indent=<span class="hljs-string">'    '</span>)</span></span>
+    <span class="hljs-keyword">return</span> replace <span class="hljs-keyword">unless</span> replace.is_a?(<span class="hljs-constant">String</span>)
+    text = <span class="hljs-string">''</span>
+    replace.each_line <span class="hljs-keyword">do</span> |line|
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> text.blank? <span class="hljs-keyword">and</span> line == <span class="hljs-string">"\n"</span>
+      text += indent + line
+    <span class="hljs-keyword">end</span>
+    set_color(text, color)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ember_command_package_json_version</span><span class="hljs-params">(package)</span></span>
+    get_ember_command_package_json(package)[<span class="hljs-string">'version'</span>]
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ember_command_package_json</span><span class="hljs-params">(package)</span></span>
+    node_path  = <span class="hljs-constant">File</span>.join(<span class="hljs-string">'node_modules'</span>, package, <span class="hljs-string">'package.json'</span>)
+    bower_path = <span class="hljs-constant">File</span>.join(<span class="hljs-string">'bower_components'</span>, package, <span class="hljs-string">'bower.json'</span>)
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-constant">File</span>.file?(node_path)
+      get_ember_command_json(node_path)
+    <span class="hljs-keyword">when</span> <span class="hljs-constant">File</span>.file?(bower_path)
+      get_ember_command_json(bower_path)
+    <span class="hljs-keyword">else</span>
+      stop_run <span class="hljs-string">"Package.json file for package <span class="hljs-subst">#{package.inspect}</span> not found."</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ember_command_hash_to_json</span><span class="hljs-params">(hash)</span></span>
+    <span class="hljs-constant">JSON</span>.pretty_generate(hash)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ember_command_json</span><span class="hljs-params">(path)</span></span>
+    content = <span class="hljs-constant">File</span>.read path
+    <span class="hljs-constant">JSON</span>.parse(content)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

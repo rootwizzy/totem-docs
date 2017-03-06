@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-readiness-assurance/addon/mixins/rm/initialize</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-readiness-assurance/addon/mixins/rm/initialize"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-readiness-assurance/addon/mixins/rm/initialize.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-readiness-assurance/addon/mixins/rm/initialize.coffee">src/thinkspace/client/thinkspace-readiness-assurance/addon/mixins/rm/initialize.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember       from <span class="hljs-string">'ember'</span>
+import ns          from <span class="hljs-string">'totem/ns'</span>
+import tc          from <span class="hljs-string">'totem/cache'</span>
+import ajax        from <span class="hljs-string">'totem/ajax'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+import question_manager from <span class="hljs-string">'thinkspace-readiness-assurance/managers/question'</span>
+import chat_manager     from <span class="hljs-string">'thinkspace-readiness-assurance/managers/chat'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">ready</span>: <span class="hljs-literal">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set in response_manager.create().</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">store</span>:  <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">tvo</span>:    <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">ttz</span>:    <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">pubsub</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">se</span>:     <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">question_manager_map</span>: <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">chat_manager_map</span>:     <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>(arguments...)
+    <span class="hljs-property">@tc</span> = tc <span class="hljs-comment"># set tc as object property</span>
+
+  <span class="hljs-attribute">init_manager</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@init_manager_properties</span>(options)
+      <span class="hljs-property">@init_assessment</span>(options)
+      <span class="hljs-property">@init_response_models</span>(options).<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@init_random_choices</span>(options)
+        <span class="hljs-property">@init_question_managers</span>(options)
+        <span class="hljs-property">@init_room</span>(options)
+        <span class="hljs-keyword">if</span> <span class="hljs-property">@is_trat</span>
+          <span class="hljs-property">@init_chat_managers</span>(options)
+          <span class="hljs-property">@init_room_users</span>(options).<span class="hljs-keyword">then</span> =&gt;
+            <span class="hljs-property">@set</span> <span class="hljs-string">'ready'</span>, <span class="hljs-literal">true</span>
+            resolve(@)
+          , <span class="hljs-function"><span class="hljs-params">(msg)</span> =&gt;</span> <span class="hljs-property">@error</span>(msg)
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-property">@set</span> <span class="hljs-string">'ready'</span>, <span class="hljs-literal">true</span>
+          resolve(@)
+      , <span class="hljs-function"><span class="hljs-params">(msg)</span> =&gt;</span>
+        <span class="hljs-property">@error</span>(msg)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="manager-properties">Manager Properties.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">init_manager_properties</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@init_maps</span>(options)
+    <span class="hljs-property">@init_readonly</span>(options)
+    <span class="hljs-property">@init_can_update_assessment</span>(options)
+    <span class="hljs-property">@init_ra_type</span>(options)
+    <span class="hljs-property">@set</span> <span class="hljs-string">'ready'</span>, <span class="hljs-literal">false</span>
+    <span class="hljs-property">@save_error</span>     = <span class="hljs-literal">false</span>
+    <span class="hljs-property">@current_user</span>   = totem_scope.get_current_user()
+    <span class="hljs-property">@title</span>          = options.title <span class="hljs-keyword">or</span> options.username <span class="hljs-keyword">or</span>  <span class="hljs-string">'unknown'</span>
+    <span class="hljs-property">@is_admin</span>       = options.admin <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>
+    <span class="hljs-property">@save_to_server</span> = <span class="hljs-keyword">not</span> (options.save_response == <span class="hljs-literal">false</span>)
+
+  <span class="hljs-attribute">init_maps</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@question_manager_map</span> = ember.Map.create()
+    <span class="hljs-property">@chat_manager_map</span>     = ember.Map.create()
+
+  <span class="hljs-attribute">init_readonly</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@readonly</span>   = (options.readonly == <span class="hljs-literal">true</span>)
+    <span class="hljs-property">@updateable</span> = <span class="hljs-keyword">not</span> <span class="hljs-property">@readonly</span>
+
+  <span class="hljs-attribute">init_can_update_assessment</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@can_update_assessment</span>    = options.can_update_assessment <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>
+    <span class="hljs-property">@cannot_update_assessment</span> = <span class="hljs-keyword">not</span> <span class="hljs-property">@can_update_assessment</span>
+
+  <span class="hljs-attribute">init_ra_type</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@is_irat</span> = options.irat <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>
+    <span class="hljs-property">@is_trat</span> = options.trat <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Both required option 'irat' or 'trat' are blank. Add either 'irat: true' or 'trat: true'."</span>  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@is_irat</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@is_trat</span>
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Both 'irat' or 'trat' options are present.  Specify only one."</span>  <span class="hljs-keyword">if</span> <span class="hljs-property">@is_irat</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@is_trat</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="models">Models.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">init_assessment</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@assessment</span> = options.assessment
+    <span class="hljs-property">@error</span> <span class="hljs-string">"Required assessment model in 'options.model' is blank."</span>  <span class="hljs-keyword">if</span> ember.isBlank(<span class="hljs-property">@assessment</span>)
+
+  <span class="hljs-attribute">init_response_models</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@init_response</span>(options).<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@init_status</span>().<span class="hljs-keyword">then</span> =&gt;
+          <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_trat</span>
+          <span class="hljs-property">@init_chat</span>().<span class="hljs-keyword">then</span> =&gt;
+            resolve()
+          , <span class="hljs-function"><span class="hljs-params">(msg)</span> =&gt;</span> reject(msg)
+        , <span class="hljs-function"><span class="hljs-params">(msg)</span> =&gt;</span> reject(msg)
+      , <span class="hljs-function"><span class="hljs-params">(msg)</span> =&gt;</span> reject(msg)
+
+  <span class="hljs-attribute">init_response</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      response = options.response
+      <span class="hljs-keyword">if</span> ember.isPresent(response)
+        <span class="hljs-property">@response</span> = response
+        <span class="hljs-keyword">return</span> resolve()
+      <span class="hljs-property">@tc</span>.view_load(<span class="hljs-property">@assessment</span>).<span class="hljs-keyword">then</span> (response) =&gt;
+        <span class="hljs-property">@response</span> = <span class="hljs-property">@assessment</span>.get(<span class="hljs-string">'responses.firstObject'</span>)  <span class="hljs-comment"># from filtered by ownerable association records</span>
+        <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@response</span>)
+        msg = <span class="hljs-string">"Assessment model [id: <span class="hljs-subst">#{<span class="hljs-property">@assessment</span>.get(<span class="hljs-string">'id'</span>)}</span>] response is blank <span class="hljs-subst">#{<span class="hljs-property">@ownerable_error_message</span>()}</span>."</span>
+        reject(msg)
+
+  <span class="hljs-attribute">init_status</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@response</span>.get(ns.to_p <span class="hljs-string">'ra:status'</span>).<span class="hljs-keyword">then</span> (status) =&gt;
+        <span class="hljs-property">@status</span> = status
+        <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@status</span>)
+        msg = <span class="hljs-string">"Assessment model [id: <span class="hljs-subst">#{<span class="hljs-property">@assessment</span>.get(<span class="hljs-string">'id'</span>)}</span>] status is blank for response [id: <span class="hljs-subst">#{<span class="hljs-property">@response</span>.get(<span class="hljs-string">'id'</span>)}</span>] <span class="hljs-subst">#{<span class="hljs-property">@ownerable_error_message</span>()}</span>."</span>
+        reject(msg)
+
+  <span class="hljs-attribute">init_random_choices</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@random_choices</span>   = options.random_choices <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>
+    <span class="hljs-property">@random_by_client</span> = options.random_by_client <span class="hljs-keyword">or</span> <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">init_question_managers</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    qn    = <span class="hljs-number">0</span>
+    <span class="hljs-property">@qids</span> = []
+    <span class="hljs-keyword">for</span> question <span class="hljs-keyword">in</span> <span class="hljs-property">@assessment</span>.get(<span class="hljs-string">'questions'</span>)
+      qn += <span class="hljs-number">1</span>
+      qm = question_manager.create
+        <span class="hljs-attribute">question_hash</span>: question
+        <span class="hljs-attribute">rm</span>:            @
+        <span class="hljs-attribute">response</span>:      <span class="hljs-property">@response</span>
+        <span class="hljs-attribute">status</span>:        <span class="hljs-property">@status</span>
+        <span class="hljs-attribute">qn</span>:            qn
+      id = question.id
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Assessment [id: <span class="hljs-subst">#{<span class="hljs-property">@assessment</span>.get(<span class="hljs-string">'id'</span>)}</span>] question 'id' is blank."</span>, question  <span class="hljs-keyword">if</span> ember.isBlank(id)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Assessment [id: <span class="hljs-subst">#{<span class="hljs-property">@assessment</span>.get(<span class="hljs-string">'id'</span>)}</span>] question id '<span class="hljs-subst">#{id}</span>' is a duplicate."</span>, question  <span class="hljs-keyword">if</span> <span class="hljs-property">@qids</span>.contains(id)
+      <span class="hljs-property">@qids</span>.push(id)
+      <span class="hljs-property">@question_manager_map</span>.set id, qm
+
+  <span class="hljs-attribute">init_room</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-property">@join_server_event_received_event</span>()
+    <span class="hljs-property">@room</span> = <span class="hljs-property">@init_get_room</span>(options)
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@is_trat</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@room</span>
+      <span class="hljs-property">@room_users_header</span> = options.room_users_header
+      <span class="hljs-property">@pubsub</span>.join <span class="hljs-attribute">room</span>: <span class="hljs-property">@room</span>
+      <span class="hljs-property">@join_response_received_event</span>()
+      <span class="hljs-property">@join_status_received_event</span>()
+      <span class="hljs-property">@join_chat_received_event</span>()
+
+  <span class="hljs-attribute">init_get_room</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    room = options.room <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+    room = <span class="hljs-property">@se</span>.phase_ownerable_room() <span class="hljs-keyword">if</span> <span class="hljs-property">@is_trat</span> <span class="hljs-keyword">and</span> ember.isBlank(room)
+    room</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="trat">TRAT.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">init_chat</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@response</span>.get(ns.to_p <span class="hljs-string">'ra:chat'</span>).<span class="hljs-keyword">then</span> (chat) =&gt;
+        <span class="hljs-property">@chat</span> = chat
+        <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isPresent(<span class="hljs-property">@chat</span>)
+        msg = <span class="hljs-string">"Assessment model [id: <span class="hljs-subst">#{<span class="hljs-property">@assessment</span>.get(<span class="hljs-string">'id'</span>)}</span>] chat is blank for response [id: <span class="hljs-subst">#{<span class="hljs-property">@response</span>.get(<span class="hljs-string">'id'</span>)}</span>] <span class="hljs-subst">#{<span class="hljs-property">@ownerable_error_message</span>()}</span>."</span>
+        reject(msg)
+
+  <span class="hljs-attribute">init_room_users</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      room_users = options.room_users
+      <span class="hljs-keyword">if</span> ember.isPresent(room_users)
+        <span class="hljs-property">@room_users</span> = room_users
+        <span class="hljs-keyword">return</span> resolve()
+      model      = <span class="hljs-property">@assessment</span>
+      id         = model.get(<span class="hljs-string">'id'</span>)
+      action     = <span class="hljs-string">'teams'</span>
+      verb       = <span class="hljs-string">'post'</span>
+      query      = {model, id, action, verb}
+      ajax.object(query).<span class="hljs-keyword">then</span> (data) =&gt;
+        <span class="hljs-keyword">return</span> reject(<span class="hljs-string">"Team room users are blank."</span>)      <span class="hljs-keyword">if</span> (!data <span class="hljs-keyword">or</span> data.length &lt; <span class="hljs-number">1</span>) <span class="hljs-keyword">and</span> <span class="hljs-property">@cannot_update_assessment</span>
+        <span class="hljs-keyword">return</span> rejest(<span class="hljs-string">"More than one team room users."</span>)  <span class="hljs-keyword">if</span> data.length &gt; <span class="hljs-number">1</span>
+        <span class="hljs-property">@room_users</span> = (data.get(<span class="hljs-string">'firstObject'</span>) <span class="hljs-keyword">or</span> {}).users
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> reject(error)
+
+  <span class="hljs-attribute">init_chat_managers</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> question <span class="hljs-keyword">in</span> <span class="hljs-property">@assessment</span>.get(<span class="hljs-string">'questions'</span>)
+      cm = chat_manager.create
+        <span class="hljs-attribute">question_hash</span>: question
+        <span class="hljs-attribute">rm</span>:            @
+        <span class="hljs-attribute">chat</span>:          <span class="hljs-property">@chat</span>
+        <span class="hljs-attribute">status</span>:        <span class="hljs-property">@status</span>
+      id = question.id
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Assessment [id: <span class="hljs-subst">#{<span class="hljs-property">@assessment</span>.get(<span class="hljs-string">'id'</span>)}</span>] question 'id' is blank."</span>, question  <span class="hljs-keyword">if</span> ember.isBlank(id)
+      <span class="hljs-property">@chat_manager_map</span>.set id, cm</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="init-helpers">Init Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">ownerable_error_message</span>: <span class="hljs-function">-&gt;</span>
+    ownerable = totem_scope.get_ownerable_record()
+    id        = ownerable.get(<span class="hljs-string">'id'</span>)
+    type      = totem_scope.get_record_path(ownerable)
+    <span class="hljs-string">"for ownerable [type: <span class="hljs-subst">#{type}</span> ] [id: <span class="hljs-subst">#{id}</span>]"</span></div></div></div></div></body></html>

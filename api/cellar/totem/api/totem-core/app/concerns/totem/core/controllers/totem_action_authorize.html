@@ -1,0 +1,656 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/app/concerns/totem/core/controllers/totem_action_authorize</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/app/concerns/totem/core/controllers/totem_action_authorize"><meta name="groc-project-path" content="src/totem/api/totem-core/app/concerns/totem/core/controllers/totem_action_authorize.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/concerns/totem/core/controllers/totem_action_authorize.rb">src/totem/api/totem-core/app/concerns/totem/core/controllers/totem_action_authorize.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controllers</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">TotemActionAuthorize</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Adds a class method to a controller class, that adds a before filter to authorize the record(s) and/or params.
+Options:</p>
+<ul>
+<li>Rails standard before_action options &#39;only&#39;, &#39;except&#39;, &#39;if&#39;, &#39;unless&#39;</li>
+<li>prepend:              [true|FALSE]</li>
+<li>authable_name:        [string|symbol] default :authable</li>
+<li>ownerable_name:       [string|symbol] default :ownerable</li>
+<li>module:               [string|symbol|TRUE|false] default :action_authorize</li>
+<li>module_before_method: [string|symbol] default :action_authorize!</li>
+<li>module_method:        [string|symbol] default :action_authorize!</li>
+<li>module_options:       [hash]</li>
+<li>module_only:          [true|FALSE]</li>
+<li>verify:               [true|FALSE]</li>
+<li>params_priorify:      [:auth|:root] default :root (e.g. params_root for the record)</li>
+<li>view_action:          [string|symbol]</li>
+<li>view_update_action:   [string|symbol]</li>
+<li>other keys:           e.g. :params_authable, etc.</li>
+</ul></div></div><div class="code"><div class="wrapper">        extend <span class="hljs-constant">::ActiveSupport::Concern</span>
+
+        <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ClassMethods</span></span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_action_authorize!</span><span class="hljs-params">(*args)</span></span>
+            options       = args.extract_options!.symbolize_keys
+            before_method = options[<span class="hljs-symbol">:prepend</span>] ? <span class="hljs-symbol">:prepend_before_action</span> <span class="hljs-symbol">:</span> <span class="hljs-symbol">:before_action</span>
+
+            auth_module   = options.has_key?(<span class="hljs-symbol">:module</span>) ? options[<span class="hljs-symbol">:module</span>] <span class="hljs-symbol">:</span> <span class="hljs-symbol">:action_authorize</span>
+            auth_module   = <span class="hljs-symbol">:action_authorize</span>  <span class="hljs-keyword">if</span> auth_module == <span class="hljs-keyword">true</span>
+            <span class="hljs-keyword">case</span>
+            <span class="hljs-keyword">when</span> auth_module == <span class="hljs-keyword">false</span>
+            <span class="hljs-keyword">when</span> auth_module.kind_of?(<span class="hljs-constant">String</span>)
+              auth_mod = auth_module.safe_constantize
+              raise <span class="hljs-string">"Authorize module <span class="hljs-subst">#{auth_module.inspect}</span> cannot be constantized."</span>  <span class="hljs-keyword">if</span> auth_mod.blank?
+            <span class="hljs-keyword">when</span> auth_module.kind_of?(<span class="hljs-constant">Symbol</span>)
+              platform_name = <span class="hljs-constant">::Totem::Settings</span>.engine.current_platform_name(<span class="hljs-keyword">self</span>)
+              raise <span class="hljs-string">"Platform name not defined for <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.inspect}</span>."</span>  <span class="hljs-keyword">if</span> platform_name.blank?
+              auth_mod = <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.send(platform_name).send(auth_module)
+            <span class="hljs-keyword">else</span>
+              raise <span class="hljs-string">"Options auth_module must be either a string or symbol."</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-keyword">self</span>.send(before_method, options.slice(<span class="hljs-symbol">:only</span>, <span class="hljs-symbol">:except</span>, <span class="hljs-symbol">:if</span>, <span class="hljs-symbol">:unless</span>)) <span class="hljs-keyword">do</span> |controller|
+              controller.send(<span class="hljs-symbol">:totem_action_authorize!</span>, auth_mod, options)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:totem_action_authorize</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_action_authorize!</span><span class="hljs-params">(auth_mod, options={})</span></span>
+          <span class="hljs-variable">@totem_action_authorize</span> = <span class="hljs-constant">Authorize</span>.new(<span class="hljs-keyword">self</span>, auth_mod, options)
+          totem_action_authorize.process
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">##########</h6>
+<p>Authorize Class. #</p>
+<h6 id="">##########</h6></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Encapsulate the authorization methods to prevent any collisions with existing controller methods.
+The platform specific authorize module only has access to methods in this class.
+CAUTION: The platform specific authorize module can override the instance methods in this class.
+         Good if by design, but bad if accidental.  Recommend to have a platform specific
+         string in the platform module&#39;s method names to prevent accidental overrides.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Authorize</span></span>
+
+          <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MethodMissing</span>  <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+          <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OptionError</span>    <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+          <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthorizeError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:controller</span>  <span class="hljs-comment"># current controller instance</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:options</span>     <span class="hljs-comment"># totem_action_authorize! options</span>
+
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:auth_module_included</span>           <span class="hljs-comment"># whether a platform authorize module was included (true|false)</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:auth_module_name</span>               <span class="hljs-comment"># platform authorize module's name</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:auth_module_controller_method</span>  <span class="hljs-comment"># method derived from the controller class name with underscores (and without ending 'controller')</span>
+
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:authable_name</span>    <span class="hljs-comment"># authable polymorphic name  (default :authable)</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:ownerable_name</span>   <span class="hljs-comment"># ownerable polymorphic name (default :ownerable)</span>
+
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:authable_ability</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:ownerable_ability</span>
+
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:current_record</span>   <span class="hljs-comment"># member route record</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:current_scope</span>    <span class="hljs-comment"># collection route records scope when params[:ids]</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:current_records</span>  <span class="hljs-comment"># collection route records scope.find(params[:ids])</span>
+
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:record_authable</span>, <span class="hljs-symbol">:record_ownerable</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:params_authable</span>, <span class="hljs-symbol">:params_ownerable</span>
+
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:can_update_record_authable</span> <span class="hljs-comment"># whether the current_user can update the record's authable (true|false)</span>
+
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:view_action</span>             <span class="hljs-comment"># ability action name when can read authable</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:view_update_action</span>      <span class="hljs-comment"># ability action name when can update authable</span>
+
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:view_actions</span>            <span class="hljs-comment"># view controller actions</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:read_actions</span>            <span class="hljs-comment"># read controller actions</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:sub_action</span>              <span class="hljs-comment"># params[:auth] sub_action</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set for a view action.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:params_view_ids</span>         <span class="hljs-comment"># params[:view_ids]</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:params_view_class</span>       <span class="hljs-comment"># params_ownerable.class</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:params_view_class_name</span>  <span class="hljs-comment"># params_ownerable.class.name</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:view_ability_action</span>     <span class="hljs-comment"># [:view|:view_update] depending whether the current user can update the authable</span>
+
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:authable_ability_action</span>         <span class="hljs-comment"># ability action to validate current user can 'action' the authable  (default :read)</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:ownerable_ability_action</span>        <span class="hljs-comment"># ability action to validate current user can 'action' the ownerable (default :read)</span>
+          <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:authable_ability_update_action</span>  <span class="hljs-comment"># ability action used to set can-update-authable (default :update)</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="initialize">Initialize.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(controller, auth_mod, options={})</span></span>
+            <span class="hljs-variable">@controller</span> = controller
+            <span class="hljs-variable">@options</span>    = options</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set option key value as a symbol (or the default).</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-variable">@authable_name</span>                  = string_or_symbol_option_to_sym(<span class="hljs-symbol">:authable_name</span>, <span class="hljs-symbol">:authable</span>)
+            <span class="hljs-variable">@ownerable_name</span>                 = string_or_symbol_option_to_sym(<span class="hljs-symbol">:ownerable_name</span>, <span class="hljs-symbol">:ownerable</span>)
+            <span class="hljs-variable">@authable_ability_action</span>        = string_or_symbol_option_to_sym(<span class="hljs-symbol">:authable_ability_action</span>, <span class="hljs-symbol">:read</span>)
+            <span class="hljs-variable">@authable_ability_update_action</span> = string_or_symbol_option_to_sym(<span class="hljs-symbol">:authable_ability_update_action</span>, <span class="hljs-symbol">:update</span>)
+            <span class="hljs-variable">@ownerable_ability_action</span>       = string_or_symbol_option_to_sym(<span class="hljs-symbol">:ownerable_ability_action</span>, <span class="hljs-symbol">:read</span>)
+            <span class="hljs-variable">@view_action</span>                    = string_or_symbol_option_to_sym(<span class="hljs-symbol">:view_action</span>, <span class="hljs-symbol">:view</span>)
+            <span class="hljs-variable">@view_update_action</span>             = string_or_symbol_option_to_sym(<span class="hljs-symbol">:view_update_action</span>, <span class="hljs-symbol">:view</span>)
+            <span class="hljs-variable">@read_actions</span>                   = [<span class="hljs-symbol">:index</span>, <span class="hljs-symbol">:show</span>, <span class="hljs-symbol">:select</span>, <span class="hljs-symbol">:view</span>] + [options[<span class="hljs-symbol">:read</span>]].flatten.compact.map {|a| a.to_sym}
+            <span class="hljs-variable">@view_actions</span>                   = [<span class="hljs-symbol">:view</span>] + [options[<span class="hljs-symbol">:view</span>]].flatten.compact.map {|a| a.to_sym}
+            <span class="hljs-variable">@authable_ability</span>               = <span class="hljs-constant">Hash</span>.new(<span class="hljs-keyword">false</span>)
+            <span class="hljs-variable">@ownerable_ability</span>              = <span class="hljs-constant">Hash</span>.new(<span class="hljs-keyword">false</span>)
+
+
+            <span class="hljs-keyword">if</span> auth_mod.present? <span class="hljs-comment"># add the platform specific authorize module methods to this class</span>
+              extend auth_mod
+              <span class="hljs-variable">@auth_module_name</span>              = auth_mod.name
+              <span class="hljs-variable">@auth_module_included</span>          = <span class="hljs-keyword">true</span>
+              <span class="hljs-variable">@auth_module_controller_method</span> = controller.<span class="hljs-keyword">class</span>.name.sub(<span class="hljs-regexp">/Controller$/</span>,<span class="hljs-string">''</span>).underscore.gsub(<span class="hljs-string">'/'</span>,<span class="hljs-string">'_'</span>).to_sym
+            <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">string_or_symbol_option_to_sym</span><span class="hljs-params">(key, default=<span class="hljs-keyword">nil</span>)</span></span>
+            value = options[key] || default
+            raise <span class="hljs-constant">OptionError</span>, <span class="hljs-string">"Value for options[<span class="hljs-subst">#{key.inspect}</span>] must be a string or symbol not <span class="hljs-subst">#{value.<span class="hljs-keyword">class</span>.name.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> ( value.instance_of?(<span class="hljs-constant">Symbol</span>) || value.instance_of?(<span class="hljs-constant">String</span>) )
+            value.to_sym
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Methods overriden in platform authorize module.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action_authorize!</span>;</span>           raise <span class="hljs-constant">MethodMissing</span>, <span class="hljs-string">"Method 'action_authorize!' not defined."</span>; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_authable_classes</span>;</span>  raise <span class="hljs-constant">MethodMissing</span>, <span class="hljs-string">"Method 'authorize_authable_classes' not defined."</span>; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_ownerable_classes</span>;</span> raise <span class="hljs-constant">MethodMissing</span>, <span class="hljs-string">"Method 'authorize_ownerable_classes' not defined."</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Options access/helper methods.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug?</span>;</span>               (options[<span class="hljs-symbol">:debug</span>] == <span class="hljs-keyword">true</span> || debug_to_log?); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_to_log?</span>;</span>         options[<span class="hljs-symbol">:debug_to_log</span>]    == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verify?</span>;</span>               options[<span class="hljs-symbol">:verify</span>]          == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">params_priority_auth?</span>;</span> options[<span class="hljs-symbol">:params_priority</span>] == <span class="hljs-symbol">:auth</span>; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">module_only?</span>;</span>          options[<span class="hljs-symbol">:module_only</span>]     == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">module_options</span>;</span>        options[<span class="hljs-symbol">:module_options</span>] || {}; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">module_method</span>;</span>         options[<span class="hljs-symbol">:module_method</span>]  || <span class="hljs-symbol">:action_authorize!</span>; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">module_before_method</span>;</span>  options[<span class="hljs-symbol">:module_before_method</span>] || <span class="hljs-keyword">false</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Controller access methods.  Using methods so only initialized when used.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_user</span>;</span>     <span class="hljs-variable">@current_user</span>     ||= controller.send(<span class="hljs-symbol">:current_user</span>); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_ability</span>;</span>  <span class="hljs-variable">@current_ability</span>  ||= controller.send(<span class="hljs-symbol">:current_ability</span>); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">params</span>;</span>           <span class="hljs-variable">@params</span>           ||= controller.params; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">params_data</span>;</span>      <span class="hljs-variable">@params_data</span>      ||= params[<span class="hljs-symbol">:data</span>] || {}; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">params_root</span>;</span>      <span class="hljs-variable">@params_root</span>      ||= params_data[<span class="hljs-symbol">:attributes</span>] || {}; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action</span>;</span>           <span class="hljs-variable">@action</span>           ||= controller.action_name.to_sym; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">model_class_name</span>;</span> <span class="hljs-variable">@model_class_name</span> ||= controller.send(<span class="hljs-symbol">:controller_model_class_name</span>); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">model_class</span>;</span>      <span class="hljs-variable">@model_class</span>      ||= controller.send(<span class="hljs-symbol">:controller_model_class</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pass through ability can? requests to controller.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">can?</span><span class="hljs-params">(*args)</span>;</span> controller.can?(*args); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize!</span><span class="hljs-params">(*args)</span>;</span> controller.authorize!(*args); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Ability helpers.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">can_update_record_authable?</span>;</span> can_update_record_authable; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_authable_ability</span><span class="hljs-params">(ability)</span>;</span>  authable_ability.merge!(ability.symbolize_keys); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_ownerable_ability</span><span class="hljs-params">(ability)</span>;</span> ownerable_ability.merge!(ability.symbolize_keys); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>General helpers.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_create?</span>;</span> action == <span class="hljs-symbol">:create</span>; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_view?</span>;</span>   view_actions.<span class="hljs-keyword">include</span>?(action); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_read?</span>;</span>   read_actions.<span class="hljs-keyword">include</span>?(action); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_modify?</span>;</span> !is_read?; <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">has_view_ids?</span>;</span> params_view_ids.present?; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auth_module_included?</span>;</span> auth_module_included; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self_respond_to?</span><span class="hljs-params">(method)</span>;</span> <span class="hljs-keyword">self</span>.respond_to?(method, <span class="hljs-keyword">true</span>); <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">msg_id</span><span class="hljs-params">(record)</span>;</span>       <span class="hljs-string">"[id: <span class="hljs-subst">#{record.respond_to?(<span class="hljs-symbol">:id</span>) ? record.id <span class="hljs-symbol">:</span> record}</span>]"</span>; <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">msg_class_id</span><span class="hljs-params">(record)</span>;</span> <span class="hljs-string">"[<span class="hljs-subst">#{record.<span class="hljs-keyword">class</span>.name}</span> id: <span class="hljs-subst">#{record.respond_to?(<span class="hljs-symbol">:id</span>) ? record.id <span class="hljs-symbol">:</span> record}</span>]"</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="main-process-method">MAIN process method.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If options[:module_only] = true, no base class authorize methods are called,
+only the module&#39;s authorize method, otherwise the standard action based authorize
+methods are called before the module&#39;s authorize method (if it was included).</p>
+<p>If present, the options[:module_before_method] will be called before processing.
+This can be used to alter instance values before processing begins (e.g. params, options, etc.).
+Caution should be used when doing this.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span>
+            process_platform_authorize_module_before_method
+            <span class="hljs-keyword">if</span> module_only?
+              debug_message(<span class="hljs-string">'-module only'</span>, <span class="hljs-string">"No default processing performed."</span>)  <span class="hljs-keyword">if</span> debug?
+              process_platform_authorize_module
+            <span class="hljs-keyword">else</span>
+              process_authorize
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="call-the-platform-specific-39before39-authorize-module-method">Call the platform specific &#39;before&#39; authorize module method.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_platform_authorize_module_before_method</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> module_before_method.blank?
+            access_denied(<span class="hljs-string">"Authorize module '<span class="hljs-subst">#{auth_module_name}</span>' does not respond to 'before' method <span class="hljs-subst">#{method.inspect}</span>."</span>)  <span class="hljs-keyword">unless</span> self_respond_to?(module_before_method)
+            debug_message(<span class="hljs-string">'&gt;calling before'</span>, <span class="hljs-string">"<span class="hljs-subst">#{auth_module_name}</span>#<span class="hljs-subst">#{module_before_method}</span>"</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">self</span>.send module_before_method  <span class="hljs-comment"># call the platform spcific authorize module's before method</span>
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="call-the-platform-specific-authorize-module-method">Call the platform specific authorize module method.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Unless options[:module] = false (e.g. no auth module loaded), call the platform authorize module&#39;s method.</p>
+<p>A module is called once based on the following order (when the module responds to the method):</p>
+<ol>
+<li>Controller method name (e.g. controller class name with underscores and without the ending &#39;controller&#39;).</li>
+<li>options[:module_method] value (or default :action_authorize!).</li>
+<li>Access denied.</li>
+</ol></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_platform_authorize_module</span></span>
+            <span class="hljs-keyword">if</span> auth_module_included?
+              method = auth_module_controller_method   <span class="hljs-comment"># first attempt the module method that matches the controller class name</span>
+              method = module_method  <span class="hljs-keyword">unless</span> self_respond_to?(method)
+              access_denied(<span class="hljs-string">"Authorize module '<span class="hljs-subst">#{auth_module_name}</span>' does not respond to <span class="hljs-subst">#{method.inspect}</span>."</span>)  <span class="hljs-keyword">unless</span> self_respond_to?(method)
+              debug_message(<span class="hljs-string">'&gt;calling method'</span>, <span class="hljs-string">"<span class="hljs-subst">#{auth_module_name}</span>#<span class="hljs-subst">#{method}</span>"</span>)  <span class="hljs-keyword">if</span> debug?
+              <span class="hljs-keyword">self</span>.send method  <span class="hljs-comment"># call the platform spcific authorize module's method</span>
+            <span class="hljs-keyword">else</span>
+              debug_message(<span class="hljs-string">'-no auth module'</span>, <span class="hljs-string">"No platform authorize module implemented."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="determine-what-to-authorize">Determine what to authorize.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_authorize</span></span>
+
+            <span class="hljs-keyword">case</span>
+
+            <span class="hljs-keyword">when</span> is_create?
+              set_current_record
+              process_params
+              process_record_association_attributes
+              process_action_authorize <span class="hljs-comment"># do after associations established</span>
+              process_record
+              verify_record
+              process_platform_authorize_module</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Do before params[:id] check since view_ids will also have an id.</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">when</span> is_view?
+              set_current_record
+              process_action_authorize
+              process_view_action
+              process_params
+              process_record
+              verify_record
+              <span class="hljs-variable">@view_ability_action</span> = can_update_record_authable? ? view_update_action <span class="hljs-symbol">:</span> view_action
+              access_denied(current_record, <span class="hljs-string">"View ability action is blank."</span>)  <span class="hljs-keyword">if</span> view_ability_action.blank?
+              debug_message(<span class="hljs-string">'#view ability'</span>, <span class="hljs-string">"set to [<span class="hljs-subst">#{view_ability_action.inspect}</span>]."</span>)   <span class="hljs-keyword">if</span> debug?
+              process_platform_authorize_module
+
+            <span class="hljs-keyword">when</span> params[<span class="hljs-symbol">:id</span>].present?
+              set_current_record
+              process_action_authorize
+              process_params
+              process_record
+              verify_record
+              process_platform_authorize_module
+
+            <span class="hljs-keyword">when</span> (ids = params[<span class="hljs-symbol">:ids</span>]).present?
+              set_current_records(ids)
+              process_params
+              current_records.each <span class="hljs-keyword">do</span> |record|
+                <span class="hljs-variable">@current_record</span> = record
+                process_action_authorize
+                process_record
+                verify_record
+                process_platform_authorize_module
+                debug_message(<span class="hljs-string">'-------'</span>)  <span class="hljs-keyword">if</span> debug? &amp;&amp; current_records.many?
+              <span class="hljs-keyword">end</span>
+
+            <span class="hljs-keyword">else</span>
+              set_params_authable  <span class="hljs-keyword">if</span> has_params_model_type_or_model_id_for_key?(authable_name)
+              set_params_ownerable <span class="hljs-keyword">if</span> has_params_model_type_or_model_id_for_key?(ownerable_name)
+              set_params_sub_action
+              process_platform_authorize_module
+            <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="view-action-model-type-and-ids">View action model type and ids.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_view_action</span></span>
+            view_type, view_ids = get_auth_params_view_model_type_and_ids
+            access_denied(current_record, <span class="hljs-string">"Action view params[:auth][:view_type] is blank."</span>)  <span class="hljs-keyword">if</span> view_type.blank?
+            access_denied(current_record, <span class="hljs-string">"Action view params[:auth][:view_ids] are blank."</span>)  <span class="hljs-keyword">if</span> view_ids.blank?
+            view_type_class = get_model_type_class(view_type)
+            access_denied(current_record, <span class="hljs-string">"Action view params[:auth][view_type: <span class="hljs-subst">#{view_type.inspect}</span> cannot be constantized."</span>)  <span class="hljs-keyword">if</span> view_type_class.blank?
+            access_denied(<span class="hljs-string">"Invalid view action class <span class="hljs-subst">#{view_type_class.name}</span>."</span>)  <span class="hljs-keyword">unless</span> valid_ownerable_class?(view_type_class)
+            <span class="hljs-variable">@params_view_ids</span>        = [view_ids].flatten.compact
+            <span class="hljs-variable">@params_view_class</span>      = view_type_class
+            <span class="hljs-variable">@params_view_class_name</span> = view_type_class.name  <span class="hljs-comment"># convience for where(ownerable_type: params_view_class_name)</span>
+            debug_message(<span class="hljs-string">'*params_view_class'</span>, <span class="hljs-string">"set to class [<span class="hljs-subst">#{params_view_class.name}</span>]."</span>)  <span class="hljs-keyword">if</span> debug?
+            debug_message(<span class="hljs-string">'*params_view_ids'</span>,   <span class="hljs-string">"set to ids <span class="hljs-subst">#{params_view_ids}</span>."</span>)           <span class="hljs-keyword">if</span> debug?
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="authorize-action-on-current-record-when-skipped-in-cancan-eg-onlyexcept-action">Authorize action on current_record when skipped in cancan (e.g. only/except action).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_action_authorize</span></span>
+            <span class="hljs-keyword">if</span> skipped_authorize_action?
+              access_denied(current_record, <span class="hljs-string">"Do not have ability to <span class="hljs-subst">#{action.inspect}</span> [<span class="hljs-subst">#{current_record.<span class="hljs-keyword">class</span>.name}</span>]."</span>)  <span class="hljs-keyword">unless</span> can?(action, current_record)
+              debug_message(<span class="hljs-string">'&lt;authorize action'</span>, <span class="hljs-string">"authorizing skipped action <span class="hljs-subst">#{action.inspect}</span> on [<span class="hljs-subst">#{current_record.<span class="hljs-keyword">class</span>.name}</span> id=<span class="hljs-subst">#{current_record.id.inspect}</span>]."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This is specific to CanCan 1.16.10.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">skipped_authorize_action?</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">unless</span> controller.<span class="hljs-keyword">class</span>.respond_to?(<span class="hljs-symbol">:cancan_skipper</span>)  <span class="hljs-comment"># authorize the action if does not have cancan skipper</span>
+            cancan_skipper = controller.<span class="hljs-keyword">class</span>.cancan_skipper[<span class="hljs-symbol">:authorize</span>]
+            cancan_skipper.each <span class="hljs-keyword">do</span> |key, values|
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> values.has_key?(<span class="hljs-symbol">:only</span>)   &amp;&amp; [values[<span class="hljs-symbol">:only</span>]].flatten.<span class="hljs-keyword">include</span>?(action)
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> values.has_key?(<span class="hljs-symbol">:except</span>) &amp;&amp; ![values[<span class="hljs-symbol">:except</span>]].flatten.<span class="hljs-keyword">include</span>?(action)
+            <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">false</span>
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="combine-common-process-methods-with-options-check">Combine common process methods with options check.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the authable and ownerable from the &#39;params&#39; hash model type and id.</p>
+<p>If options[:params_priority] != :auth, then the type and id are first taken from
+the record params and if blank, taken from the param[:auth] (e.g. record&#39;s hash) (and vice-versa).</p>
+<p>In a create action, the &#39;params&#39; authable and ownerable is used to set the record&#39;s
+polymorphic association (if they exist).
+An access_denied is raised if a record has the association and corresponding
+params authable/ownerable does not exist.</p>
+<p>In a view action, the &#39;params_ownerable&#39; is used to set the view class.
+An access_denied is raised if the params_ownerable does not exist.</p>
+<p>If options[:verfiy] = true, both the &#39;params_authable&#39; and &#39;params_ownerable&#39;
+will be checked against the record&#39;s authable and ownerable (if they exist).
+An access_denied is raised if they do not match.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_params</span></span>
+            set_params_authable   <span class="hljs-keyword">if</span> process_params_authable?
+            set_params_ownerable  <span class="hljs-keyword">if</span> process_params_ownerable?
+            set_params_sub_action
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Poplulate a record&#39;s associations from the params values.  Normally only done
+in a create record action.</p>
+<p>For new records, this process must be done to set the new record&#39;s associations
+before attempting to get a record&#39;s authable/ownerable.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_record_association_attributes</span></span>
+            set_record_association_attributes  <span class="hljs-keyword">if</span> process?(<span class="hljs-symbol">:record_attributes</span>)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the &#39;record_authable&#39; and &#39;record_ownerable&#39; from the record&#39;s associations.</p>
+<p>The record&#39;s authable/ownerable may be either a polymorphic association defined
+in the record&#39;s model or may be delegated to an associated record.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_record</span></span>
+            set_record_authable   <span class="hljs-keyword">if</span> process_record_authable?
+            set_record_ownerable  <span class="hljs-keyword">if</span> process_record_ownerable?
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Compare the &#39;params&#39; authable/ownerable against the record&#39;s authable/ownerable.</p>
+<p>Also ensure a record&#39;s &#39;user_id&#39; is set to the current_user.id.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verify_record</span></span>
+            verify_record_authable   <span class="hljs-keyword">if</span> verify_record_authable?
+            verify_record_ownerable  <span class="hljs-keyword">if</span> verify_record_ownerable?
+            verify_record_user       <span class="hljs-keyword">if</span> verify_record_user?
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="checks-to-determine-whether-to-process-an-authorize-method">Checks to determine whether to process an authorize method.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Typically, options are defaulted to &#39;true&#39; by not including a key in the options.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process?</span><span class="hljs-params">(key)</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">unless</span> options.has_key?(key)  <span class="hljs-comment"># default to true</span>
+            value = options[key]
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> value == <span class="hljs-keyword">false</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> value == <span class="hljs-keyword">true</span>
+            [value].flatten.compact.map {|a| a.to_sym}.<span class="hljs-keyword">include</span>?(action)  <span class="hljs-comment"># only process for certain controller actions</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_params_authable?</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> process?(<span class="hljs-symbol">:params_auth</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> process?(<span class="hljs-symbol">:params_authable</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:params_authable_required</span>] == <span class="hljs-keyword">true</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> is_create? &amp;&amp; record_has_authable_polymorphic?
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> has_params_model_type_or_model_id_for_key?(authable_name)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> verify?
+            <span class="hljs-keyword">false</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_params_ownerable?</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> process?(<span class="hljs-symbol">:params_auth</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> process?(<span class="hljs-symbol">:params_ownerable</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> process?(<span class="hljs-symbol">:params_ownerable_required</span>)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> has_params_model_type_or_model_id_for_key?(ownerable_name)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> record_has_authable_polymorphic?  <span class="hljs-comment"># authable records typically require an ownerable (disable with option 'params_ownerable_required')</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>  <span class="hljs-keyword">if</span> verify?
+            <span class="hljs-keyword">false</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_record_authable?</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> process?(<span class="hljs-symbol">:record_authable</span>)
+            record_respond_to_authable?
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_record_ownerable?</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> process?(<span class="hljs-symbol">:record_ownerable</span>)
+            record_respond_to_ownerable?
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verify_record_authable?</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> ( verify? &amp;&amp; process?(<span class="hljs-symbol">:verify_record_authable</span>) )
+            record_authable.present? &amp;&amp; params_authable.present?
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verify_record_ownerable?</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> ( verify? &amp;&amp; process?(<span class="hljs-symbol">:verify_record_ownerable</span>) )
+            record_ownerable.present? &amp;&amp; params_ownerable.present?
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verify_record_user?</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> ( verify? &amp;&amp; process?(<span class="hljs-symbol">:verify_record_user</span>) )
+            current_record.has_attribute?(<span class="hljs-symbol">:user_id</span>)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>respond_to? is true if the record has the polymophic or &#39;delegates&#39; the polymorphic.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">record_respond_to_ownerable?</span><span class="hljs-params">(record=current_record)</span>;</span>     record.respond_to?(ownerable_name); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">record_respond_to_authable?</span><span class="hljs-params">(record=current_record)</span>;</span>      record.respond_to?(authable_name); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check if the record has the belongs_to polymophic (e.g. not &#39;delegated&#39;).</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">record_has_authable_polymorphic?</span><span class="hljs-params">(record=current_record)</span>;</span>  record_has_polymorphic_association?(authable_name, record); <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">record_has_ownerable_polymorphic?</span><span class="hljs-params">(record=current_record)</span>;</span> record_has_polymorphic_association?(ownerable_name, record); <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">record_has_polymorphic_association?</span><span class="hljs-params">(assoc_key, record=current_record)</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> record.blank?
+            assoc = record.<span class="hljs-keyword">class</span>.reflect_on_association(assoc_key)
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> assoc.blank?
+            assoc.macro == <span class="hljs-symbol">:belongs_to</span> &amp;&amp; assoc.options[<span class="hljs-symbol">:polymorphic</span>]
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="set-the-current-record-member-route-from-the-controller39s-instance-variable">Set the current record (member route) from the controller&#39;s instance variable.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_current_record</span></span>
+            record_var      = <span class="hljs-string">'@'</span> + model_class.name.demodulize.underscore
+            <span class="hljs-variable">@current_record</span> = controller.instance_variable_get(record_var)
+            access_denied(<span class="hljs-string">"Instance variable for record <span class="hljs-subst">#{record_var.inspect}</span> is blank."</span>)  <span class="hljs-keyword">if</span> current_record.blank?
+            debug_message(<span class="hljs-string">'#current_record'</span>, <span class="hljs-string">"set to <span class="hljs-subst">#{msg_class_id current_record}</span> from <span class="hljs-subst">#{record_var}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="set-the-current-scope-and-current-records-collection-route-from-the-controller39s-instance-variable-and-params-ids">Set the current scope and current records (collection route) from the controller&#39;s instance variable and params ids.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_current_records</span><span class="hljs-params">(ids)</span></span>
+            access_denied(<span class="hljs-string">"Params record ids are blank."</span>)  <span class="hljs-keyword">if</span> ids.blank?
+            record_var     = <span class="hljs-string">'@'</span> + model_class.name.demodulize.underscore.pluralize
+            <span class="hljs-variable">@current_scope</span> = controller.instance_variable_get(record_var)
+            access_denied(<span class="hljs-string">"Instance variable for record scope <span class="hljs-subst">#{record_var.inspect}</span> is blank."</span>)  <span class="hljs-keyword">if</span> current_scope.blank?
+            <span class="hljs-variable">@current_records</span> = current_scope.find(ids)
+            controller.instance_variable_set(record_var, current_records)
+            debug_message(<span class="hljs-string">'#current_records'</span>, <span class="hljs-string">"set to [<span class="hljs-subst">#{current_records.first.<span class="hljs-keyword">class</span>.name}</span>] [ids: <span class="hljs-subst">#{ids}</span>] and set to <span class="hljs-subst">#{record_var}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="set-the-params-values-either-from-the-record39s-params-attributes-or-from-paramsauth">Set the params values (either from the record&#39;s params attributes or from params[:auth]).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_params_authable</span></span>
+            type, id, source = get_params_model_type_and_id_for_key(authable_name)
+            access_denied(<span class="hljs-string">"'authable' type in [<span class="hljs-subst">#{source}</span>] is blank."</span>)  <span class="hljs-keyword">if</span> type.blank?
+            access_denied(<span class="hljs-string">"'authable' id in [<span class="hljs-subst">#{source}</span>] is blank."</span>)    <span class="hljs-keyword">if</span> id.blank?
+            <span class="hljs-variable">@params_authable</span> = current_ability.get_record_by_model_type_and_model_id(type, id)
+            debug_message(<span class="hljs-string">'*params_authable'</span>, <span class="hljs-string">"set to <span class="hljs-subst">#{msg_class_id params_authable}</span> source: [<span class="hljs-subst">#{source}</span>]."</span>)  <span class="hljs-keyword">if</span> debug?
+            access_denied(<span class="hljs-string">"Invalid [<span class="hljs-subst">#{source}</span>] authable class <span class="hljs-subst">#{params_authable.<span class="hljs-keyword">class</span>.name}</span>."</span>)  <span class="hljs-keyword">unless</span> valid_authable_class?(params_authable)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_params_ownerable</span></span>
+            type, id, source = get_params_model_type_and_id_for_key(ownerable_name)
+            access_denied(<span class="hljs-string">"'ownerable' type in [<span class="hljs-subst">#{source}</span>] is blank."</span>)  <span class="hljs-keyword">if</span> type.blank?
+            access_denied(<span class="hljs-string">"'ownerable' id in [<span class="hljs-subst">#{source}</span>] is blank."</span>)    <span class="hljs-keyword">if</span> id.blank?
+            <span class="hljs-variable">@params_ownerable</span> = current_ability.get_record_by_model_type_and_model_id(type, id)
+            debug_message(<span class="hljs-string">'*params_ownerable'</span>, <span class="hljs-string">"set to <span class="hljs-subst">#{msg_class_id params_ownerable}</span> source: [<span class="hljs-subst">#{source}</span>]."</span>)  <span class="hljs-keyword">if</span> debug?
+            access_denied(<span class="hljs-string">"Invalid [<span class="hljs-subst">#{source}</span>] ownerable class <span class="hljs-subst">#{params_ownerable.<span class="hljs-keyword">class</span>.name}</span>."</span>)  <span class="hljs-keyword">unless</span> valid_ownerable_class?(params_ownerable)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="set-params-sub-action">Set params sub_action.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_params_sub_action</span></span>
+            <span class="hljs-variable">@sub_action</span> = get_params_sub_action
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="set-the-record39s-authable">Set the record&#39;s authable.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_record_authable</span><span class="hljs-params">(record=current_record)</span></span>
+            access_denied(<span class="hljs-string">"Record in set_record_authable is blank."</span>)       <span class="hljs-keyword">if</span> record.blank?
+            access_denied(record, <span class="hljs-string">"Record does not respond to authable."</span>)  <span class="hljs-keyword">unless</span> record_respond_to_authable?(record)
+            <span class="hljs-variable">@record_authable</span> = record.send(authable_name)
+            access_denied(record, <span class="hljs-string">"Record authable is blank."</span>)  <span class="hljs-keyword">if</span> record_authable.blank?
+            debug_message(<span class="hljs-string">'#record_authable'</span>, <span class="hljs-string">"set to <span class="hljs-subst">#{msg_class_id record_authable}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+            access_denied(record, <span class="hljs-string">"Invalid record authable class <span class="hljs-subst">#{record_authable.<span class="hljs-keyword">class</span>.name}</span>."</span>)  <span class="hljs-keyword">unless</span> valid_authable_class?(record_authable)
+            access_denied(record, <span class="hljs-string">"User cannot read authable <span class="hljs-subst">#{msg_class_id record_authable}</span>."</span>)   <span class="hljs-keyword">unless</span> can?(authable_ability_action, record_authable)
+            debug_message(<span class="hljs-string">'@authable_auth?'</span>, <span class="hljs-string">"user can [<span class="hljs-subst">#{authable_ability_action.inspect}</span>] authable."</span>)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-variable">@can_update_record_authable</span> = can?(authable_ability_update_action, record_authable)
+            set_authable_ability(authable_ability_update_action =&gt; can_update_record_authable)
+            debug_message(<span class="hljs-string">'@update_authable?'</span>, <span class="hljs-string">"set to [<span class="hljs-subst">#{can_update_record_authable.inspect}</span>] action [<span class="hljs-subst">#{authable_ability_update_action.inspect}</span>]."</span>)  <span class="hljs-keyword">if</span> debug?
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Validate the authable class matches one of the platform&#39;s allowed authable classes.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">valid_authable_class?</span><span class="hljs-params">(authable)</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">unless</span> auth_module_included?
+            access_denied(<span class="hljs-string">"Authable is blank in verify_authable_class."</span>)  <span class="hljs-keyword">if</span> authable.blank?
+            classes = authorize_authable_classes
+            access_denied(<span class="hljs-string">"Platform authable classes are blank."</span>)  <span class="hljs-keyword">if</span> classes.blank?
+            authable_class = authable.kind_of?(<span class="hljs-constant">Class</span>) ? authable <span class="hljs-symbol">:</span> authable.<span class="hljs-keyword">class</span>
+            [classes].flatten.<span class="hljs-keyword">include</span>?(authable_class)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="set-the-record39s-ownerable">Set the record&#39;s ownerable.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_record_ownerable</span><span class="hljs-params">(record=current_record)</span></span>
+            access_denied(<span class="hljs-string">"Record in set_record_ownerable is blank."</span>)       <span class="hljs-keyword">if</span> record.blank?
+            access_denied(record, <span class="hljs-string">"Record does not respond to ownerable."</span>)  <span class="hljs-keyword">unless</span> record_respond_to_ownerable?(record)
+            <span class="hljs-variable">@record_ownerable</span> = record.send(ownerable_name)
+            access_denied(record, <span class="hljs-string">"Record ownerable is blank."</span>)  <span class="hljs-keyword">if</span> record_ownerable.blank?
+            debug_message(<span class="hljs-string">'#record_ownerable'</span>, <span class="hljs-string">"set to <span class="hljs-subst">#{msg_class_id record_ownerable}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+            access_denied(record, <span class="hljs-string">"Invalid record ownerable class <span class="hljs-subst">#{record_ownerable.<span class="hljs-keyword">class</span>.name}</span>."</span>)  <span class="hljs-keyword">unless</span> valid_ownerable_class?(record_ownerable)
+            access_denied(record, <span class="hljs-string">"User cannot [<span class="hljs-subst">#{ownerable_ability_action.inspect}</span>] ownerable <span class="hljs-subst">#{msg_class_id record_ownerable}</span>."</span>)   <span class="hljs-keyword">unless</span> can?(ownerable_ability_action, record_ownerable)
+            debug_message(<span class="hljs-string">'@ownerable_auth?'</span>, <span class="hljs-string">"user can [<span class="hljs-subst">#{ownerable_ability_action.inspect}</span>] ownerable."</span>)  <span class="hljs-keyword">if</span> debug?
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Validate the ownerable class matches one of the platform&#39;s allowed ownerable classes.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">valid_ownerable_class?</span><span class="hljs-params">(ownerable)</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">unless</span> auth_module_included?
+            access_denied(<span class="hljs-string">"Ownerable is blank in verify_ownerable_class."</span>) <span class="hljs-keyword">if</span> ownerable.blank?
+            classes = authorize_ownerable_classes
+            access_denied(<span class="hljs-string">"Platform ownerable classes are blank."</span>)  <span class="hljs-keyword">if</span> classes.blank?
+            ownerable_class = ownerable.kind_of?(<span class="hljs-constant">Class</span>) ? ownerable <span class="hljs-symbol">:</span> ownerable.<span class="hljs-keyword">class</span>
+            [classes].flatten.<span class="hljs-keyword">include</span>?(ownerable_class)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="update-a-record39s-39belong-to39-associations-from-the-params">Update a record&#39;s &#39;belong_to&#39; associations from the params.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_record_association_attributes</span><span class="hljs-params">(record=current_record)</span></span>
+            access_denied(<span class="hljs-string">"Record in set_record_association_attributes is blank."</span>)  <span class="hljs-keyword">if</span> record.blank?
+            associations = record.<span class="hljs-keyword">class</span>.reflect_on_all_associations(<span class="hljs-symbol">:belongs_to</span>)
+            associations.each <span class="hljs-keyword">do</span> |assoc|
+              foreign_key = assoc.foreign_key
+              name        = assoc.name
+              polymorphic = assoc.options[<span class="hljs-symbol">:polymorphic</span>] || <span class="hljs-keyword">false</span>
+              <span class="hljs-keyword">case</span>
+              <span class="hljs-keyword">when</span> foreign_key == <span class="hljs-string">'user_id'</span>
+                record.user_id = current_user.id
+                debug_message(<span class="hljs-string">'+record.user_id'</span>, <span class="hljs-string">"set to current_user <span class="hljs-subst">#{msg_id current_user}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+              <span class="hljs-keyword">when</span> name == authable_name &amp;&amp; polymorphic
+                access_denied(record, <span class="hljs-string">"Record has authable association but params_authable is blank."</span>)  <span class="hljs-keyword">if</span> params_authable.blank?
+                record.send <span class="hljs-string">"<span class="hljs-subst">#{authable_name}</span>="</span>, params_authable
+                debug_message(<span class="hljs-string">'+record.authable'</span>, <span class="hljs-string">"set to <span class="hljs-subst">#{msg_class_id params_authable}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+              <span class="hljs-keyword">when</span> name == ownerable_name &amp;&amp; polymorphic
+                access_denied(record, <span class="hljs-string">"Record has ownerable association but params_ownerable is blank."</span>)  <span class="hljs-keyword">if</span> params_ownerable.blank?
+                record.send <span class="hljs-string">"<span class="hljs-subst">#{ownerable_name}</span>="</span>, params_ownerable
+                debug_message(<span class="hljs-string">'+record.ownerable'</span>, <span class="hljs-string">"set to <span class="hljs-subst">#{msg_class_id params_ownerable}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+              <span class="hljs-keyword">when</span> is_create? &amp;&amp; polymorphic
+                model_type, model_id = get_record_params_model_type_and_id_for_key(name)
+                <span class="hljs-keyword">if</span> model_type.blank? &amp;&amp; model_id.blank? &amp;&amp; blank_association_allowed?(name)
+                  debug_message(<span class="hljs-string">"-record.association"</span>, <span class="hljs-string">"polymorphic association name '<span class="hljs-subst">#{name}</span>' is blank and allowed to be blank."</span>)  <span class="hljs-keyword">if</span> debug?
+                  <span class="hljs-keyword">next</span>
+                <span class="hljs-keyword">end</span>
+                model_class = get_model_type_class(model_type)
+                record.send(<span class="hljs-string">"<span class="hljs-subst">#{name}</span>_type="</span>, model_class.name)
+                access_denied(record, <span class="hljs-string">"Record has polymorphic association <span class="hljs-subst">#{name.inspect}</span> but params_root id is blank."</span>)  <span class="hljs-keyword">if</span> model_id.blank?
+                record.send(<span class="hljs-string">"<span class="hljs-subst">#{name}</span>_id="</span>, model_id)
+                debug_message(<span class="hljs-string">"+record.<span class="hljs-subst">#{name}</span>"</span>, <span class="hljs-string">"polymorphic set to [<span class="hljs-subst">#{model_class.name}</span> id=<span class="hljs-subst">#{model_id}</span>]."</span>)  <span class="hljs-keyword">if</span> debug?
+              <span class="hljs-keyword">when</span> !polymorphic
+                method = <span class="hljs-string">"<span class="hljs-subst">#{foreign_key}</span>="</span>
+                path   = assoc.options[<span class="hljs-symbol">:class_name</span>].deconstantize.underscore + <span class="hljs-string">"/<span class="hljs-subst">#{foreign_key}</span>"</span>
+                id     = controller.params_association_path_id(path)
+                <span class="hljs-keyword">if</span> id.blank?
+                  <span class="hljs-keyword">if</span> blank_association_allowed?(foreign_key)
+                    record.send(method, <span class="hljs-keyword">nil</span>)
+                    debug_message(<span class="hljs-string">"-record.association"</span>, <span class="hljs-string">"'<span class="hljs-subst">#{foreign_key}</span>' is blank and allowed to be blank."</span>)  <span class="hljs-keyword">if</span> debug?
+                    <span class="hljs-keyword">next</span>
+                  <span class="hljs-keyword">end</span>
+                  access_denied(record, <span class="hljs-string">"Record has a blank association <span class="hljs-subst">#{path.inspect}</span> and it is not allowed."</span>)
+                <span class="hljs-keyword">end</span>
+                record.send(method, id)
+                debug_message(<span class="hljs-string">"+record.association"</span>, <span class="hljs-string">"'<span class="hljs-subst">#{foreign_key}</span>' set to [id=<span class="hljs-subst">#{id}</span>]."</span>)  <span class="hljs-keyword">if</span> debug?
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">blank_association_allowed?</span><span class="hljs-params">(assoc)</span></span>
+            <span class="hljs-variable">@allow_blank_associations</span> ||= (options[<span class="hljs-symbol">:allow_blank_associations</span>] || <span class="hljs-constant">Hash</span>.new)
+            access_denied(record, <span class="hljs-string">"Options 'allow_blank_associations' is not a hash [<span class="hljs-subst">#{<span class="hljs-variable">@allow_blank_associations</span>.inspect}</span>]."</span>)  <span class="hljs-keyword">unless</span> <span class="hljs-variable">@allow_blank_associations</span>.kind_of?(<span class="hljs-constant">Hash</span>)
+            [<span class="hljs-variable">@allow_blank_associations</span>[action]].flatten.<span class="hljs-keyword">include</span>?(assoc.to_sym)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="verify-the-current-record39s-associations-are-the-same-as-the-params-record39s-associations">Verify the current record&#39;s associations are the same as the params record&#39;s associations.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verify_record_authable</span><span class="hljs-params">(valid_authable=params_authable, authable=record_authable, record=current_record)</span></span>
+            access_denied(<span class="hljs-string">"Record in verify_record_authable is blank."</span>)  <span class="hljs-keyword">if</span> record.blank?
+            validate_same_record(valid_authable, authable, record, authable_name)
+            debug_message(<span class="hljs-string">'=record.authable'</span>, <span class="hljs-string">"verified to be [<span class="hljs-subst">#{valid_authable.<span class="hljs-keyword">class</span>.name}</span> id=<span class="hljs-subst">#{valid_authable.id.inspect}</span>]."</span>)  <span class="hljs-keyword">if</span> debug?
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verify_record_ownerable</span><span class="hljs-params">(valid_ownerable=params_ownerable, ownerable=record_ownerable, record=current_record)</span></span>
+            access_denied(<span class="hljs-string">"Record in verify_record_ownerable is blank."</span>)  <span class="hljs-keyword">if</span> record.blank?
+            validate_same_record(valid_ownerable, ownerable, record, ownerable_name)
+            debug_message(<span class="hljs-string">'=record.ownerable'</span>, <span class="hljs-string">"verified to be [<span class="hljs-subst">#{valid_ownerable.<span class="hljs-keyword">class</span>.name}</span> id=<span class="hljs-subst">#{valid_ownerable.id.inspect}</span>]."</span>)  <span class="hljs-keyword">if</span> debug?
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verify_record_user</span><span class="hljs-params">(record=current_record, user=current_user)</span></span>
+            access_denied(<span class="hljs-string">"Record in verify_record_user is blank."</span>)        <span class="hljs-keyword">if</span> record.blank?
+            access_denied(<span class="hljs-string">"Current user in verify_record_user is blank."</span>)  <span class="hljs-keyword">if</span> user.blank?
+            access_denied(record, <span class="hljs-string">"User_<span class="hljs-subst">#{msg_id record.user_id}</span> does not match current_user <span class="hljs-subst">#{msg_id current_user}</span>."</span>)  <span class="hljs-keyword">unless</span> record.user_id == current_user.id
+            debug_message(<span class="hljs-string">'=record.user_id'</span>, <span class="hljs-string">"verified to be set to current user <span class="hljs-subst">#{msg_id current_user}</span>."</span>)  <span class="hljs-keyword">if</span> debug?
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="model-type-and-model-id-from-the-params">Model type and model id from the params.</h3>
+<h3 id="either-from-the-params-record-path-or-paramsauth-based-on-optionsparams-priority-value">Either from the params record path or params[:auth] based on options[:params_priority] value.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">has_params_model_type_or_model_id_for_key?</span><span class="hljs-params">(key)</span></span>
+            type, id, source = get_params_model_type_and_id_for_key(key)
+            type.present? || id.present?
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_params_model_type_and_id_for_key</span><span class="hljs-params">(key)</span></span>
+            <span class="hljs-keyword">if</span> params_priority_auth?
+              source   = <span class="hljs-string">'params[:auth]'</span>
+              type, id = get_auth_params_model_type_and_id_for_key(key)
+              <span class="hljs-keyword">if</span> type.blank? &amp;&amp; id.blank?
+                source += <span class="hljs-string">' -- params_root'</span>
+                type, id = get_record_params_model_type_and_id_for_key(key)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">else</span>
+              source   = <span class="hljs-string">'params_root'</span>
+              type, id = get_record_params_model_type_and_id_for_key(key)
+              <span class="hljs-keyword">if</span> type.blank? || id.blank?
+                source   += <span class="hljs-string">' -- params[:auth]'</span>
+                type, id = get_auth_params_model_type_and_id_for_key(key)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+            [type, id, source]
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_auth_params_model_type_and_id_for_key</span><span class="hljs-params">(key)</span></span>
+            hash_model_type_and_id_for_key(params[<span class="hljs-symbol">:auth</span>] || {}, key)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_record_params_model_type_and_id_for_key</span><span class="hljs-params">(key)</span></span>
+            hash_model_type_and_id_for_key(params_root, key)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">hash_model_type_and_id_for_key</span><span class="hljs-params">(hash, key)</span></span>
+            [ hash[<span class="hljs-string">"<span class="hljs-subst">#{key}</span>_type"</span>], hash[<span class="hljs-string">"<span class="hljs-subst">#{key}</span>_id"</span>] ]
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_auth_params_view_model_type_and_ids</span></span>
+            view_params = params[<span class="hljs-symbol">:auth</span>] || {}
+            [ view_params[<span class="hljs-symbol">:view_type</span>], view_params[<span class="hljs-symbol">:view_ids</span>] ]
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_params_sub_action</span></span>
+            sub_action = params[<span class="hljs-symbol">:auth</span>] &amp;&amp; params[<span class="hljs-symbol">:auth</span>][<span class="hljs-symbol">:sub_action</span>]
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> sub_action.blank?
+            sub_action.to_sym
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="general-helpers">General helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_model_type_class</span><span class="hljs-params">(model_type)</span></span>
+            access_denied <span class="hljs-string">"Model type <span class="hljs-subst">#{model_type.inspect}</span> is not a string"</span>  <span class="hljs-keyword">unless</span> model_type.instance_of?(<span class="hljs-constant">String</span>)
+            model_type  = model_type.gsub(<span class="hljs-string">'.'</span>, <span class="hljs-string">'::'</span>).classify
+            model_type.safe_constantize
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_same_record</span><span class="hljs-params">(record_1, record_2, record=current_record, name=<span class="hljs-string">''</span>)</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> is_same_record?(record_1, record_2)
+            access_denied(record, <span class="hljs-string">"Record 1 is blank. [record_2: <span class="hljs-subst">#{record_2.inspect}</span>]"</span>)  <span class="hljs-keyword">if</span> record_1.blank?
+            access_denied(record, <span class="hljs-string">"Record 2 is blank. [record_1: <span class="hljs-subst">#{record_1.inspect}</span>]"</span>)  <span class="hljs-keyword">if</span> record_2.blank?
+            name = name.present? ? <span class="hljs-string">"<span class="hljs-subst">#{name.to_s.humanize}</span> "</span> <span class="hljs-symbol">:</span> <span class="hljs-string">''</span>
+            access_denied(record, <span class="hljs-string">"<span class="hljs-subst">#{name}</span> <span class="hljs-subst">#{msg_class_id record_1}</span> does not match <span class="hljs-subst">#{msg_class_id record_2}</span>."</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_same_record?</span><span class="hljs-params">(record_1, record_2)</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> record_1.blank? || record_2.blank?
+            record_1.<span class="hljs-keyword">class</span>.name == record_2.<span class="hljs-keyword">class</span>.name &amp;&amp; record_1.id == record_2.id
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>access_denied(authable, &#39;message&#39;, options)
+No arguments are required.
+Examples:
+ access_denied authable, &#39;message&#39;, user_message: &#39;friendly message&#39;, ownerable: msg_class_id(ownerable)
+ access_denied &#39;message&#39;, user_message: &#39;friendly message&#39;, ownerable: msg_class_id(ownerable)
+ access_denied authable, user_message: &#39;friendly message&#39;
+ access_denied user_message: &#39;friendly message&#39;
+ access_denied</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(*args)</span></span>
+            options = args.extract_options!
+            record  = args.shift
+            message = args.shift
+            <span class="hljs-keyword">if</span> message.blank? &amp;&amp; record.instance_of?(<span class="hljs-constant">String</span>)
+              message = record
+              record  = <span class="hljs-keyword">nil</span>
+            <span class="hljs-keyword">end</span>
+            options[<span class="hljs-symbol">:message</span>]  = message  <span class="hljs-keyword">if</span> message.present?
+            options[<span class="hljs-symbol">:authable</span>] = msg_class_id(record) <span class="hljs-keyword">if</span> record.present?
+            debug_message <span class="hljs-string">"[debug-authorize] Access denied message: [<span class="hljs-subst">#{message.inspect}</span>] [<span class="hljs-subst">#{options.inspect}</span>]"</span> <span class="hljs-keyword">if</span> debug?
+            subject = current_record.present? ? msg_class_id(current_record) <span class="hljs-symbol">:</span> model_class
+            controller.send(<span class="hljs-symbol">:raise_access_denied_exception</span>, <span class="hljs-keyword">nil</span>, action, subject, options)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="format-datetime-local-datetime">Format Date/Time (local date/time).</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fmt_time</span><span class="hljs-params">(time, fmt=<span class="hljs-string">'%B %e, %Y %l:%M%P %Z'</span>)</span>   <span class="hljs-comment"># default fmt: January 1, 2015 10:10am</span></span>
+            local_time = time.blank? || !time.kind_of?(<span class="hljs-constant">Time</span>) ? <span class="hljs-constant">Time</span>.now <span class="hljs-symbol">:</span> time.localtime
+            local_time.strftime(fmt)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fmt_date</span><span class="hljs-params">(date, fmt=<span class="hljs-string">'%B %e, %Y'</span>)</span>   <span class="hljs-comment"># default fmt: January 1, 2015</span></span>
+            <span class="hljs-keyword">case</span>
+            <span class="hljs-keyword">when</span> date.blank?
+              local_date = <span class="hljs-constant">Date</span>.current
+            <span class="hljs-keyword">when</span> date.kind_of?(<span class="hljs-constant">Time</span>)
+              local_date = date.localtime
+            <span class="hljs-keyword">when</span> date.kind_of?(<span class="hljs-constant">Date</span>)
+              local_date = date
+            <span class="hljs-keyword">else</span>
+              local_date = <span class="hljs-constant">Date</span>.current
+            <span class="hljs-keyword">end</span>
+            local_date.strftime(fmt)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="debug">Debug.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_message</span><span class="hljs-params">(message_key, message=<span class="hljs-string">''</span>)</span></span>
+            <span class="hljs-keyword">if</span> message.blank?
+              message     = message_key
+              message_key = <span class="hljs-string">''</span>
+            <span class="hljs-keyword">else</span>
+              message_key = <span class="hljs-string">"<span class="hljs-subst">#{message_key}</span>"</span>.ljust(<span class="hljs-number">20</span>)
+            <span class="hljs-keyword">end</span>
+            <span class="hljs-variable">@debug_message_count</span> ||= <span class="hljs-number">0</span>
+            puts <span class="hljs-string">"\n"</span>  <span class="hljs-keyword">if</span> <span class="hljs-variable">@debug_message_count</span> == <span class="hljs-number">0</span>
+            <span class="hljs-variable">@debug_message_count</span> += <span class="hljs-number">1</span>
+            name = controller.<span class="hljs-keyword">class</span>.name.demodulize.sub(<span class="hljs-regexp">/Controller$/</span>,<span class="hljs-string">''</span>)
+            msg  = <span class="hljs-string">"[debug-authorize] [<span class="hljs-subst">#{name}</span>#<span class="hljs-subst">#{action}</span>] <span class="hljs-subst">#{message_key}</span><span class="hljs-subst">#{message}</span>"</span>
+            puts msg
+            debug_message_to_log(msg)  <span class="hljs-keyword">if</span> debug_to_log?
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_message_to_log</span><span class="hljs-params">(message)</span>;</span> <span class="hljs-constant">::Rails</span>.logger.debug message; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

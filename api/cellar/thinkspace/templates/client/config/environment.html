@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/templates/client/config/environment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace/templates/client/config/environment"><meta name="groc-project-path" content="src/thinkspace/templates/client/config/environment.js"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/templates/client/config/environment.js">src/thinkspace/templates/client/config/environment.js</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> ENV = {
+    <span class="hljs-string">"modulePrefix"</span>: <span class="hljs-string">"&lt;%=module_prefix%&gt;"</span>,
+    <span class="hljs-string">"rootURL"</span>:      <span class="hljs-string">"&lt;%=rootURL%&gt;"</span>,
+    <span class="hljs-string">"locationType"</span>: <span class="hljs-string">"auto"</span>,
+    <span class="hljs-string">"EmberENV"</span>:     {
+        <span class="hljs-string">"ENABLE_DS_FILTER"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-string">"FEATURES"</span>: {
+        }
+    }
+  }
+
+  ENV.environment            = environment;
+  ENV.EmberENV.PLATFORM_NAME = ENV.modulePrefix;
+
+  ENV.APP = {
+    <span class="hljs-string">"customEvents"</span>: {
+        <span class="hljs-string">"sortable_dragend"</span>: <span class="hljs-string">"sortable_dragend"</span>,
+        <span class="hljs-string">"sortable_consume"</span>: <span class="hljs-string">"sortable_consume"</span>
+    }
+  }
+
+  ENV.i18n = {
+    <span class="hljs-string">"defaultLocale"</span>: <span class="hljs-string">"en"</span>
+  }
+
+  ENV[<span class="hljs-string">'ember-simple-auth'</span>] = {
+    <span class="hljs-string">"authenticationRoute"</span>: <span class="hljs-string">"login"</span>,
+    <span class="hljs-string">"routeAfterAuthentication"</span>: <span class="hljs-string">"spaces.index"</span>,
+    <span class="hljs-string">"routeIfAlreadyAuthenticated"</span>: <span class="hljs-string">"spaces.index"</span>
+  }
+
+  ENV.emblemOptions = {
+    <span class="hljs-string">"quiet"</span>: <span class="hljs-literal">true</span>
+  }
+
+  ENV.totem = {
+    <span class="hljs-string">"ajax_timeout"</span>: <span class="hljs-number">25000</span>,
+    <span class="hljs-string">"session_timeout"</span>: {
+        <span class="hljs-string">"time"</span>: <span class="hljs-number">30</span>,
+        <span class="hljs-string">"warning_time"</span>: <span class="hljs-number">2</span>,
+        <span class="hljs-string">"warning_decrement_by"</span>: <span class="hljs-number">1</span>,
+        <span class="hljs-string">"warning_message"</span>: <span class="hljs-string">"Your session is about to timeout!"</span>
+    },
+    <span class="hljs-string">"simple_auth"</span>: {
+        <span class="hljs-string">"login_route"</span>: <span class="hljs-string">"users.sign_in"</span>,
+        <span class="hljs-string">"validate_user_url"</span>: <span class="hljs-string">"api/thinkspace/common/users/validate"</span>,
+        <span class="hljs-string">"switch_user_whitelist_regexps"</span>: [
+            <span class="hljs-string">"\\/spaces\\/\\\\d+"</span>,
+            <span class="hljs-string">"\\/casespace\\/cases\\/\\\\d+"</span>
+        ]
+    },
+    <span class="hljs-string">"logger"</span>: {
+        <span class="hljs-string">"log_level"</span>: <span class="hljs-string">"none"</span>,
+        <span class="hljs-string">"log_trace"</span>: <span class="hljs-literal">false</span>
+    },
+    <span class="hljs-string">"messages"</span>: {
+        <span class="hljs-string">"suppress_all"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-string">"loading_template"</span>: <span class="hljs-string">"totem_message_outlet/loading"</span>,
+        <span class="hljs-string">"i18n_path_prefix"</span>: <span class="hljs-string">"casespace.api.success."</span>
+    },
+    <span class="hljs-string">"pdfjs"</span>: {
+        <span class="hljs-string">"worker_src"</span>: <span class="hljs-string">"/assets/pdfjs/pdf.worker.js"</span>
+    },
+    <span class="hljs-string">"stylized_platform_name"</span>: <span class="hljs-string">"ThinkSpace"</span>,
+    <span class="hljs-string">"grid"</span>: {
+        <span class="hljs-string">"classes"</span>: {
+            <span class="hljs-string">"columns"</span>: <span class="hljs-string">"ts-grid_columns"</span>,
+            <span class="hljs-string">"sticky"</span>: <span class="hljs-string">"ts-grid_sticky"</span>
+        }
+    },
+    <span class="hljs-string">"pusher_app_key"</span>: <span class="hljs-string">"7fa6139809cd49331925"</span>,
+    <span class="hljs-string">"pub_sub"</span>: {
+        <span class="hljs-string">"namespace"</span>: <span class="hljs-string">"&lt;%=pubsub.namespace%&gt;"</span>
+    },
+    <span class="hljs-string">"roles_map"</span>: {
+        <span class="hljs-string">"read"</span>: <span class="hljs-string">"Student"</span>,
+        <span class="hljs-string">"update"</span>: <span class="hljs-string">"Teaching Assistant"</span>,
+        <span class="hljs-string">"owner"</span>: <span class="hljs-string">"Instructor"</span>
+    }
+  }
+
+  <span class="hljs-keyword">if</span> (environment === <span class="hljs-string">'development'</span>) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ENV.APP.LOG_RESOLVER             = true;
+ENV.APP.LOG_ACTIVE_GENERATION    = true;
+ENV.APP.LOG_TRANSITIONS          = true;
+ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
+ENV.APP.LOG_VIEW_LOOKUPS         = true;</p></div></div><div class="code"><div class="wrapper">    ENV.totem.api_host                    = <span class="hljs-string">'&lt;%=dev.api_host%&gt;'</span>;
+    ENV.totem.asset_path                  = <span class="hljs-string">'&lt;%=dev.asset_path%&gt;'</span>;
+    ENV.totem.pub_sub.socketio_url        = <span class="hljs-string">'&lt;%=dev.sio_url%&gt;'</span>;
+    ENV.totem.pub_sub.socketio_client_cdn = <span class="hljs-string">'&lt;%=dev.sio_cdn%&gt;'</span>;
+
+    ENV.contentSecurityPolicy = {
+      <span class="hljs-string">"default-src"</span>: <span class="hljs-string">"* localhost:* 0.0.0.0:* 'unsafe-eval' 'unsafe-inline' data:"</span>,
+      <span class="hljs-string">"script-src"</span>: <span class="hljs-string">"* localhost:* 0.0.0.0:* 'unsafe-eval' 'unsafe-inline' data:"</span>,
+      <span class="hljs-string">"font-src"</span>: <span class="hljs-string">"* localhost:* 0.0.0.0:* 'unsafe-eval' 'unsafe-inline' data:"</span>,
+      <span class="hljs-string">"connect-src"</span>: <span class="hljs-string">"* localhost:* 0.0.0.0:* 'unsafe-eval' 'unsafe-inline' data:"</span>,
+      <span class="hljs-string">"img-src"</span>: <span class="hljs-string">"* localhost:* 0.0.0.0:* 'unsafe-eval' 'unsafe-inline' data:"</span>,
+      <span class="hljs-string">"style-src"</span>: <span class="hljs-string">"* localhost:* 0.0.0.0:* 'unsafe-eval' 'unsafe-inline' data:"</span>,
+      <span class="hljs-string">"media-src"</span>: <span class="hljs-string">"* localhost:* 0.0.0.0:* 'unsafe-eval' 'unsafe-inline' data:"</span>
+    }
+
+  }
+
+  <span class="hljs-keyword">if</span> (environment === <span class="hljs-string">'test'</span>) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Testem prefers this...</p></div></div><div class="code"><div class="wrapper">    ENV.locationType              = <span class="hljs-string">'none'</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>keep test console output quieter</p></div></div><div class="code"><div class="wrapper">    ENV.APP.LOG_ACTIVE_GENERATION = <span class="hljs-literal">false</span>;
+    ENV.APP.LOG_VIEW_LOOKUPS      = <span class="hljs-literal">false</span>;
+    ENV.APP.rootElement           = <span class="hljs-string">'#ember-testing'</span>;
+  }
+
+  <span class="hljs-keyword">if</span> (environment === <span class="hljs-string">'production'</span>) {
+    ENV.totem.api_host         = <span class="hljs-string">'PRODUCTION-API-HOST'</span>;
+    ENV.totem.asset_path       = <span class="hljs-string">'PRODUCTION-ASSET-PATH'</span>;
+  }</div></div></div></div></body></html>

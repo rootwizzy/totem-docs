@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/mixins/cache/view</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/mixins/cache/view"><meta name="groc-project-path" content="src/totem/client/totem/addon/mixins/cache/view.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/mixins/cache/view.coffee">src/totem/client/totem/addon/mixins/cache/view.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>View options &#39;default&#39; to the current totem scope &#39;ownerable&#39; and &#39;authable&#39;.
+See totem scope view query for option values and defaults.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>success -&gt; resolve()
+failure -&gt; reject(error)
+options: {reload: true) #=&gt; reload records regardless if already loaded
+If the records are already loaded then resolve (unless options.reload == true) else
+send an ajax request to get the payload, push the payload into the store and resolve.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">view_load</span>: <span class="hljs-function"><span class="hljs-params">(model, options={})</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@is_reload</span>(options)
+        query = <span class="hljs-property">@totem_scope</span>.get_view_query(model, options)
+      <span class="hljs-keyword">else</span>
+        query = <span class="hljs-property">@totem_scope</span>.get_unviewed_query(model, options)
+        <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> ember.isBlank(query) <span class="hljs-comment"># if the query is null, the record's ownerable data have already been loaded</span>
+      <span class="hljs-property">@ajax</span>.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        <span class="hljs-property">@push_payload</span>(payload)
+        resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        reject(error)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>success -&gt; resolve(payload)
+failure -&gt; reject(error)
+Will always send ajax request.
+Does NOT push the records into the store.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">view_payload</span>: <span class="hljs-function"><span class="hljs-params">(model, options={})</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      query = <span class="hljs-property">@totem_scope</span>.get_view_query(model, options)
+      <span class="hljs-property">@ajax</span>.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        resolve(payload)
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        reject(error)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>success -&gt; resolve(data-record)
+failure -&gt; reject(error)
+Will always send ajax request.
+Pushes the payload and returns the record in payload.data.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">view_data_record</span>: <span class="hljs-function"><span class="hljs-params">(model, options={})</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-property">@view_payload</span>(model, options).<span class="hljs-keyword">then</span> (payload) =&gt;
+        resolve <span class="hljs-property">@push_payload_and_return_data_record</span>(payload)
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span>
+        reject(error)</div></div></div></div></body></html>

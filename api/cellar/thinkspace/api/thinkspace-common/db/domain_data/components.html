@@ -1,0 +1,489 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-common/db/domain_data/components</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-common/db/domain_data/components"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-common/db/domain_data/components.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-common/db/domain_data/components.yml">src/thinkspace/api/thinkspace-common/db/domain_data/components.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">-<span class="ruby">--
+</span>-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">1</span>
+</span>  title: artifact-bucket
+  description: ''
+  value:
+    path:
+    -<span class="ruby"> artifact
+</span>    -<span class="ruby"> bucket
+</span>    ember:
+      engine: thinkspace-artifact
+    builder:
+      friendly_name: Student File Upload
+      paths:
+        content:
+        -<span class="ruby"> artifact
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> bucket
+</span>        -<span class="ruby"> content
+</span>        preview:
+        -<span class="ruby"> artifact
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> bucket
+</span>        -<span class="ruby"> preview
+</span>        settings:
+        -<span class="ruby"> artifact
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> bucket
+</span>        -<span class="ruby"> settings
+</span>  preprocessors:
+  created_at: 2015-07-26 17:28:06.765014000 Z
+  updated_at: 2016-04-13 20:46:08.657816000 Z
+-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">2</span>
+</span>  title: casespace-phase-header
+  description: ''
+  value:
+    path:
+    -<span class="ruby"> casespace
+</span>    -<span class="ruby"> phase
+</span>    -<span class="ruby"> header
+</span>    ember:
+      component: header
+    builder:
+      friendly_name: Phase Title
+      paths:
+        preview:
+        -<span class="ruby"> casespace
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> phase
+</span>        -<span class="ruby"> header
+</span>        -<span class="ruby"> preview
+</span>        content:
+        -<span class="ruby"> casespace
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> phase
+</span>        -<span class="ruby"> header
+</span>        -<span class="ruby"> content
+</span>  preprocessors:
+  created_at: 2015-07-26 17:28:06.771159000 Z
+  updated_at: 2016-04-13 20:46:08.664012000 Z
+-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">3</span>
+</span>  title: casespace-phase-submit
+  description: ''
+  value:
+    path:
+    -<span class="ruby"> casespace
+</span>    -<span class="ruby"> phase
+</span>    -<span class="ruby"> submit
+</span>    ember:
+      component: submit
+    builder:
+      friendly_name: Submit
+      paths:
+        preview:
+        -<span class="ruby"> casespace
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> phase
+</span>        -<span class="ruby"> submit
+</span>        -<span class="ruby"> preview
+</span>  preprocessors:
+  created_at: 2015-07-26 17:28:06.776511000 Z
+  updated_at: 2016-04-13 20:46:08.668681000 Z</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+<li>id: 4
+title: diagnostic-path-viewer
+description: &#39;&#39;
+value:
+  path:<ul>
+<li>diagnostic_path_viewer</li>
+<li>viewer
+ember:
+engine: thinkspace-diagnostic-expert-path
+builder:
+friendly_name: Expert Path (Old)
+paths:
+  content:<ul>
+<li>diagnostic_path_viewer</li>
+<li>builder</li>
+<li>viewer</li>
+<li>content
+preview:</li>
+<li>diagnostic_path_viewer</li>
+<li>builder</li>
+<li>viewer</li>
+<li>preview
+settings:</li>
+<li>diagnostic_path_viewer</li>
+<li>builder</li>
+<li>viewer</li>
+<li>settings
+preprocessors:
+created_at: 2015-07-26 17:28:06.809484000 Z
+updated_at: 2016-04-13 20:46:08.673308000 Z</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>id: 5
+title: diagnostic-path-viewer-ownerable
+description: &#39;&#39;
+value:
+  path:<ul>
+<li>diagnostic_path_viewer</li>
+<li>viewer_ownerable
+builder:
+friendly_name: Expert Path (Old)
+paths:
+  content:<ul>
+<li>diagnostic_path_viewer</li>
+<li>builder</li>
+<li>viewer</li>
+<li>content
+preview:</li>
+<li>diagnostic_path_viewer</li>
+<li>builder</li>
+<li>viewer</li>
+<li>preview
+settings:</li>
+<li>diagnostic_path_viewer</li>
+<li>builder</li>
+<li>viewer</li>
+<li>settings
+preprocessors:
+created_at: 2015-07-26 17:28:06.816762000 Z
+updated_at: 2016-04-13 20:46:08.677647000 Z</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>id: 6
+title: diagnostic-path
+description: &#39;&#39;
+value:
+  path:<ul>
+<li>diagnostic_path</li>
+<li>path
+ember:
+engine: thinkspace-diagnostic-path
+builder:
+friendly_name: Diagnostic Path (Old)
+paths:
+  content:<ul>
+<li>diagnostic_path</li>
+<li>builder</li>
+<li>path</li>
+<li>content
+preview:</li>
+<li>diagnostic_path</li>
+<li>builder</li>
+<li>path</li>
+<li>preview
+settings:</li>
+<li>diagnostic_path</li>
+<li>builder</li>
+<li>path</li>
+<li>settings
+preprocessors:
+created_at: 2015-07-26 17:28:06.820826000 Z
+updated_at: 2016-04-13 20:46:08.681921000 Z</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></div></div><div class="code"><div class="wrapper">-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">7</span>
+</span>  title: html
+  description: ''
+  value:
+    path:
+    -<span class="ruby"> html
+</span>    -<span class="ruby"> html
+</span>    ember:
+      engine: thinkspace-html
+    builder:
+      friendly_name: HTML
+      paths:
+        content:
+        -<span class="ruby"> html
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> html
+</span>        -<span class="ruby"> content
+</span>        preview:
+        -<span class="ruby"> html
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> html
+</span>        -<span class="ruby"> preview
+</span>  preprocessors:
+  -<span class="ruby"> <span class="hljs-symbol">attribute:</span> html_content
+</span>    paths:
+    -<span class="ruby"> - input_element
+</span>      -<span class="ruby"> preprocessors
+</span>      -<span class="ruby"> responses
+</span>    -<span class="ruby"> - input_element
+</span>      -<span class="ruby"> preprocessors
+</span>      -<span class="ruby"> carry_forward
+</span>  created_at: 2015-07-26 17:28:06.827969000 Z
+  updated_at: 2016-04-13 20:46:08.686899000 Z
+-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">8</span>
+</span>  title: html-only
+  description: ''
+  value:
+    path:
+    -<span class="ruby"> html
+</span>    -<span class="ruby"> html_only
+</span>    ember:
+      engine: thinkspace-html
+    builder:
+      friendly_name: HTML
+      paths:
+        content:
+        -<span class="ruby"> html
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> html
+</span>        -<span class="ruby"> content
+</span>        preview:
+        -<span class="ruby"> html
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> html
+</span>        -<span class="ruby"> preview
+</span>  preprocessors:
+  created_at: 2015-07-26 17:28:06.832959000 Z
+  updated_at: 2016-04-13 20:46:08.691856000 Z
+-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">9</span>
+</span>  title: html-select-text
+  description: ''
+  value:
+    path:
+    -<span class="ruby"> html
+</span>    -<span class="ruby"> html_select_text
+</span>    ember:
+      engine: thinkspace-html
+    builder:
+      friendly_name: HTML
+      paths:
+        content:
+        -<span class="ruby"> html
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> html
+</span>        -<span class="ruby"> content
+</span>        preview:
+        -<span class="ruby"> html
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> html
+</span>        -<span class="ruby"> preview
+</span>  preprocessors:
+  -<span class="ruby"> <span class="hljs-symbol">attribute:</span> html_content
+</span>    paths:
+    -<span class="ruby"> - input_element
+</span>      -<span class="ruby"> preprocessors
+</span>      -<span class="ruby"> responses
+</span>    -<span class="ruby"> - input_element
+</span>      -<span class="ruby"> preprocessors
+</span>      -<span class="ruby"> carry_forward
+</span>  created_at: 2015-07-26 17:28:06.836929000 Z
+  updated_at: 2016-04-13 20:46:08.697944000 Z
+-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">10</span>
+</span>  title: lab
+  description: ''
+  value:
+    path:
+    -<span class="ruby"> lab
+</span>    -<span class="ruby"> lab
+</span>    ember:
+      engine: thinkspace-lab-vet-med
+    builder:
+      friendly_name: Lab Chart
+      paths:
+        content:
+        -<span class="ruby"> lab
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> lab
+</span>        -<span class="ruby"> content
+</span>        preview:
+        -<span class="ruby"> lab
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> lab
+</span>        -<span class="ruby"> preview
+</span>        settings:
+        -<span class="ruby"> lab
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> lab
+</span>        -<span class="ruby"> settings
+</span>  preprocessors:
+  created_at: 2015-07-26 17:28:06.840987000 Z
+  updated_at: 2016-04-13 20:46:08.702631000 Z
+-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">11</span>
+</span>  title: observation-list
+  description: ''
+  value:
+    path:
+    -<span class="ruby"> observation_list
+</span>    -<span class="ruby"> list
+</span>    ember:
+      engine: thinkspace-observation-list
+    builder:
+      friendly_name: Observation List
+      paths:
+        preview:
+        -<span class="ruby"> observation_list
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> list
+</span>        -<span class="ruby"> preview
+</span>        settings:
+        -<span class="ruby"> observation_list
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> list
+</span>        -<span class="ruby"> settings
+</span>  preprocessors:
+  created_at: 2015-07-26 17:28:06.844879000 Z
+  updated_at: 2016-04-13 20:46:08.707756000 Z
+-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">12</span>
+</span>  title: weather-forecaster
+  description: Weather Forecaster Assessment
+  value:
+    path:
+    -<span class="ruby"> weather_forecaster
+</span>    -<span class="ruby"> assessment
+</span>    ember:
+      engine: thinkspace-weather-forecaster
+    builder:
+      friendly_name: Dynamic Weather Forecaster
+      paths:
+        content:
+        -<span class="ruby"> weather_forecaster
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> assessment
+</span>        -<span class="ruby"> content
+</span>        preview:
+        -<span class="ruby"> weather_forecaster
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> assessment
+</span>        -<span class="ruby"> preview
+</span>        settings:
+        -<span class="ruby"> weather_forecaster
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> assessment
+</span>        -<span class="ruby"> settings
+</span>  preprocessors:
+  created_at: 2015-07-26 17:28:06.848756000 Z
+  updated_at: 2016-04-13 20:46:08.714610000 Z
+-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">13</span>
+</span>  title: peer-assessment
+  description: Peer Assessment
+  value:
+    path:
+    -<span class="ruby"> peer_assessment
+</span>    -<span class="ruby"> assessment
+</span>    ember:
+      engine: thinkspace-peer-assessment-pe
+    builder:
+      friendly_name: Peer Evaluation
+      paths:
+        content:
+        -<span class="ruby"> peer_assessment
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> assessment
+</span>        -<span class="ruby"> content
+</span>        preview:
+        -<span class="ruby"> peer_assessment
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> assessment
+</span>        -<span class="ruby"> preview
+</span>        settings:
+        -<span class="ruby"> peer_assessment
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> assessment
+</span>        -<span class="ruby"> settings
+</span>  preprocessors:
+  created_at: 2015-07-13 12:53:52.745822000 Z
+  updated_at: 2016-04-13 20:46:08.737214000 Z
+-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">14</span>
+</span>  title: peer-assessment-overview
+  description: Anonymized peer assessment overviews.
+  value:
+    path:
+    -<span class="ruby"> peer_assessment
+</span>    -<span class="ruby"> overview
+</span>    ember:
+      engine: thinkspace-peer-assessment
+    builder:
+      friendly_name: Peer Evaluation Overview
+      paths:
+        preview:
+        -<span class="ruby"> peer_assessment
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> overview
+</span>        -<span class="ruby"> preview
+</span>        settings:
+        -<span class="ruby"> peer_assessment
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> overview
+</span>        -<span class="ruby"> settings
+</span>  preprocessors:
+  created_at: 2015-07-13 12:53:52.745822000 Z
+  updated_at: 2016-04-13 20:49:10.640351000 Z
+-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">15</span>
+</span>  title: simulation
+  description: Simulation Render
+  value:
+    path:
+    -<span class="ruby"> simulation
+</span>    -<span class="ruby"> simulation
+</span>    builder:
+      friendly_name: Simulation
+      paths:
+        preview:
+        -<span class="ruby"> simulation
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> simulation
+</span>        -<span class="ruby"> preview
+</span>        settings:
+        -<span class="ruby"> simulation
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> simulation
+</span>        -<span class="ruby"> settings
+</span>  preprocessors:
+  created_at: 2015-07-13 12:53:52.745822000 Z
+  updated_at: 2016-04-13 20:46:08.747032000 Z
+-<span class="ruby"> <span class="hljs-symbol">id:</span> <span class="hljs-number">16</span>
+</span>  title: indented-list
+  description: Indented List
+  value:
+    path:
+    -<span class="ruby"> indented_list
+</span>    -<span class="ruby"> list
+</span>    builder:
+      friendly_name: Diagnostic Path
+      paths:
+        preview:
+        -<span class="ruby"> indented_list
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> list
+</span>        -<span class="ruby"> preview
+</span>        settings:
+        -<span class="ruby"> indented_list
+</span>        -<span class="ruby"> builder
+</span>        -<span class="ruby"> list
+</span>        -<span class="ruby"> settings
+</span>  preprocessors:
+  created_at: 2016-03-23 12:53:52.745822000 Z
+  updated_at: 2016-04-13 20:46:08.751267000 Z</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Diagnostic Expert Path</p></div></div><div class="code"><div class="wrapper">-<span class="ruby"> <span class="hljs-symbol">id:</span>
+</span>  title: diagnostic-expert-path
+  description: Diagnostic Expert Path
+  value:
+    path:
+    -<span class="ruby"> indented_list
+</span>    -<span class="ruby"> list
+</span>    ember:
+      engine: thinkspace-diagnostic-expert-path
+    builder:
+      friendly_name: Diagnostic Expert Path
+  preprocessors:</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Diagnostic Path</p></div></div><div class="code"><div class="wrapper">-<span class="ruby"> <span class="hljs-symbol">id:</span>
+</span>  title: diagnostic-path
+  description: ''
+  value:
+    path:
+    -<span class="ruby"> indented_list
+</span>    -<span class="ruby"> list
+</span>    ember:
+      engine: thinkspace-diagnostic-path
+    builder:
+      friendly_name: Diagnostic Path
+  preprocessors:</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Readiness Assurance Component</p></div></div><div class="code"><div class="wrapper">-<span class="ruby"> <span class="hljs-symbol">id:</span>
+</span>  title: readiness-assurance
+  description: Readiness Assurance
+  value:
+    path:
+    -<span class="ruby"> readiness_assurance
+</span>    -<span class="ruby"> assessment
+</span>    ember:
+      engine: thinkspace-readiness-assurance
+  preprocessors:</div></div></div></div></body></html>

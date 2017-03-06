@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/test/helpers/controller/test_action</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/test/helpers/controller/test_action"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/helpers/controller/test_action.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/helpers/controller/test_action.rb">src/thinkspace/api/thinkspace-casespace/test/helpers/controller/test_action.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controller</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">TestAction</span></span>
+
+  extend <span class="hljs-constant">ActiveSupport::Concern</span>
+  included <span class="hljs-keyword">do</span>
+
+  it <span class="hljs-string">"..correct json models..<span class="hljs-subst">#{<span class="hljs-variable">@username</span>}</span><span class="hljs-subst">#{<span class="hljs-variable">@route</span>.test_it_name}</span>"</span> <span class="hljs-keyword">do</span>
+    hash = send_route_request
+    assert_equal json_model_keys, hash.keys.sort, <span class="hljs-string">'json includes only the correct models'</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">"..ids are the same..<span class="hljs-subst">#{<span class="hljs-variable">@username</span>}</span><span class="hljs-subst">#{<span class="hljs-variable">@route</span>.test_it_name}</span>"</span> <span class="hljs-keyword">do</span>
+    hash  = send_route_request
+    blank = get_let_value_array(<span class="hljs-symbol">:json_blank</span>)
+    json_models.each <span class="hljs-keyword">do</span> |name|
+      actual = json_column(hash, name, <span class="hljs-symbol">:id</span>)
+      <span class="hljs-keyword">if</span> blank.<span class="hljs-keyword">include</span>?(name)
+        assert_equal [], actual, <span class="hljs-string">"<span class="hljs-subst">#{name.inspect}</span> json key should be an empty array"</span>
+      <span class="hljs-keyword">else</span>
+        assert_equal extract_db_column(name, <span class="hljs-symbol">:id</span>), actual, <span class="hljs-string">"<span class="hljs-subst">#{name.inspect}</span> model ids are equal in json and db"</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

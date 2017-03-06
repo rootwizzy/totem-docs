@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/db/helpers/casespace_seed_config_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/db/helpers/casespace_seed_config_helper"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/helpers/casespace_seed_config_helper.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/helpers/casespace_seed_config_helper.rb">src/thinkspace/api/thinkspace-casespace/db/helpers/casespace_seed_config_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">public
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_configs_process</span></span>
+  set_common_seed_loader_namespaces
+  casespace_seed_config_require_seed_config_helpers
+  casespace_seed_config_require_seed_config_helper_classes
+  configs = <span class="hljs-constant">::SeedConfigHelperClass::CollectConfigs</span>.new(<span class="hljs-keyword">self</span>, <span class="hljs-variable">@seed</span>).process
+  <span class="hljs-variable">@seed</span>.message color_line(<span class="hljs-string">"&gt;&gt;Processing seed configs in this order: <span class="hljs-subst">#{configs.collect{|config| casespace_seed_config_name(config)}</span>}."</span>, <span class="hljs-symbol">:cyan</span>, <span class="hljs-symbol">:bold</span>)
+  casespace_seed_reset_all_model_column_info
+  casespace_seed_config_process_configs(configs)
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Ensure if any migrations add/remove columns, the model class column info is updated.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_reset_all_model_column_info</span></span>
+  model_classes = <span class="hljs-constant">ActiveRecord::Base</span>.descendants
+  model_classes.each <span class="hljs-keyword">do</span> |klass|
+    <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> klass.name.match(<span class="hljs-string">'Thinkspace'</span>)
+    klass.reset_column_information
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_config_models</span>;</span> <span class="hljs-variable">@casespace_config_models</span> ||= <span class="hljs-constant">CasespaceConfigModels</span>.new(<span class="hljs-keyword">self</span>, <span class="hljs-variable">@seed</span>); <span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_process_configs</span><span class="hljs-params">(configs)</span></span>
+  casespace_reset_assignments_created
+  configs.each <span class="hljs-keyword">do</span> |config|
+    casespace_seed_config_process(config)
+    casespace_config_models.print_config_models <span class="hljs-keyword">if</span> casespace_seed_config_process_print_config_models? || config[<span class="hljs-symbol">:print_models</span>] == <span class="hljs-keyword">true</span>
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-variable">@seed</span>.message color_line(<span class="hljs-string">"++All config processing."</span>, <span class="hljs-symbol">:cyan</span>, <span class="hljs-symbol">:bold</span>)
+  casespace_config_models.clear_find_by  <span class="hljs-comment"># do not add the find_by ids since doing db wide</span>
+  casespace_seed_config_process_add_phase_components
+  casespace_seed_config_process_auto_input(configs)
+  casespace_seed_config_process_builder(configs)
+  casespace_config_models.print_models <span class="hljs-keyword">if</span> casespace_seed_config_process_print_models?
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_process_print_config_models?</span>;</span> <span class="hljs-constant">ENV</span>[<span class="hljs-string">'PRINT_MODELS'</span>] == <span class="hljs-string">'config'</span> || <span class="hljs-constant">ENV</span>[<span class="hljs-string">'PM'</span>] == <span class="hljs-string">'config'</span>; <span class="hljs-keyword">end</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_process_print_models?</span>;</span>        <span class="hljs-constant">ENV</span>[<span class="hljs-string">'PRINT_MODELS'</span>] == <span class="hljs-string">'true'</span>   || <span class="hljs-constant">ENV</span>[<span class="hljs-string">'PM'</span>] == <span class="hljs-string">'true'</span>; <span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_process</span><span class="hljs-params">(config)</span></span>
+  casespace_seed_config_require_data_files(config)
+  methods = casespace_seed_config_get_config_methods
+  name    = color_line(casespace_seed_config_name(config), <span class="hljs-symbol">:bold</span>)
+  <span class="hljs-variable">@seed</span>.message color_line(<span class="hljs-string">"++Processing config ("</span>) + name + color_line(<span class="hljs-string">').'</span>) <span class="hljs-keyword">if</span> methods.present?
+  methods.each <span class="hljs-keyword">do</span> |method|
+    <span class="hljs-keyword">self</span>.send method, config
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_require_data_files</span><span class="hljs-params">(config)</span></span>
+  reqs = [config[<span class="hljs-symbol">:require_data_files</span>]].flatten.compact
+  reqs.each <span class="hljs-keyword">do</span> |req|
+    namespace = <span class="hljs-symbol">:casespace</span>
+    <span class="hljs-keyword">if</span> casespace_seed_config_value_string_or_symbol?(req)
+      test_data_dir = req
+    <span class="hljs-keyword">else</span>
+      namespace     = req[<span class="hljs-symbol">:namespace</span>] || namespace
+      test_data_dir = req[<span class="hljs-symbol">:test_data_dir</span>]
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-variable">@seed</span>.require_data_files(namespace, test_data_dir)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_value_string_or_symbol?</span><span class="hljs-params">(value)</span>;</span> value.instance_of?(<span class="hljs-constant">String</span>) || value.instance_of?(<span class="hljs-constant">Symbol</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Will run method: &quot;casespace<em>seed_config_add</em>#{ns_key.pluralize}&quot; with the &#39;config&#39; as a parameter.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_get_config_methods</span></span>
+  <span class="hljs-variable">@_casespace_seed_config_process_method_order</span> ||= <span class="hljs-keyword">begin</span>
+    casespace_methods = casespace_seed_config_casespace_process_method_order
+    methods           = casespace_methods.collect {|m| casespace_seed_config_get_config_method_from_key(m)}
+    <span class="hljs-variable">@seed</span>.namespace_lookup.keys.sort.each <span class="hljs-keyword">do</span> |key|
+      method = casespace_seed_config_get_config_method_from_key(key.to_s.pluralize)
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.respond_to?(method, <span class="hljs-keyword">true</span>)  <span class="hljs-comment"># add engine method</span>
+        methods.push method
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    methods
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_casespace_process_method_order</span></span>
+  [<span class="hljs-symbol">:users</span>, <span class="hljs-symbol">:spaces</span>, <span class="hljs-symbol">:space_users</span>, <span class="hljs-symbol">:repeat_space_users</span>, <span class="hljs-symbol">:assignments</span>, <span class="hljs-symbol">:phase_templates</span>, <span class="hljs-symbol">:phases</span>] <span class="hljs-comment"># base casespace methods in order of processing</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_get_config_method_from_key</span><span class="hljs-params">(key)</span>;</span> <span class="hljs-string">"casespace_seed_config_add_<span class="hljs-subst">#{key}</span>"</span>.to_sym; <span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_require_seed_config_helpers</span></span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-constant">ENV</span>[<span class="hljs-string">'SKIP_SEED_CONFIG_REQUIRE'</span>] == <span class="hljs-string">'true'</span>
+  dir = <span class="hljs-constant">File</span>.join(<span class="hljs-variable">@seed</span>.db_helpers_dir(<span class="hljs-symbol">:casespace</span>), <span class="hljs-string">'seed_config'</span>)
+  <span class="hljs-variable">@seed</span>.message <span class="hljs-string">"++Require seed config helpers in <span class="hljs-subst">#{dir.inspect}</span>"</span>
+  dir_files = <span class="hljs-constant">Dir</span>.glob(<span class="hljs-constant">File</span>.join(dir, <span class="hljs-string">'*_helper.rb'</span>))
+  dir_files.each <span class="hljs-keyword">do</span> |file|
+    <span class="hljs-keyword">require</span> file
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_require_seed_config_helper_classes</span></span>
+  dir = <span class="hljs-constant">File</span>.join(<span class="hljs-variable">@seed</span>.db_helpers_dir(<span class="hljs-symbol">:casespace</span>), <span class="hljs-string">'seed_config/classes'</span>)
+  <span class="hljs-variable">@seed</span>.message <span class="hljs-string">"++Require seed config helper classes in <span class="hljs-subst">#{dir.inspect}</span>"</span>
+  dir_files = <span class="hljs-constant">Dir</span>.glob(<span class="hljs-constant">File</span>.join(dir, <span class="hljs-string">'*.rb'</span>))
+  dir_files.each <span class="hljs-keyword">do</span> |file|
+    <span class="hljs-keyword">require</span> file
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">#########################################################################################</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="process-phase-components">Process Phase Components.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_process_add_phase_components</span></span>
+  <span class="hljs-variable">@seed</span>.message <span class="hljs-string">"++Adding seed config phase components. (all configs)"</span>
+  add_casespace_phase_components
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">#########################################################################################</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="process-auto-input">Process Auto Input.</h3>
+<h2 id="">#</h2>
+<p>Multiple configs may contain an &#39;auto_input&#39; section, but there can be only one
+to process all phases (e.g. neo).  The non-all-phase auto input configs (e.g. when do not
+have &#39;scope: all&#39;) perform auto input on the configs defined phases only.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_process_auto_input</span><span class="hljs-params">(configs)</span></span>
+  <span class="hljs-keyword">if</span> casespace_seed_config_auto_input?(configs)
+    auto_input_configs = casespace_seed_config_filter_auto_input_configs(configs)
+    <span class="hljs-keyword">if</span> auto_input_configs.present?
+      <span class="hljs-variable">@seed</span>.require_data_file(<span class="hljs-symbol">:casespace</span>, <span class="hljs-string">'auto_input/base.rb'</span>)
+      casespace_seed_config_require_data_files(<span class="hljs-symbol">require_data_files:</span> <span class="hljs-symbol">:auto_input</span>)
+      auto_input_configs.each <span class="hljs-keyword">do</span> |config|
+        casespace_seed_config_add_auto_input(config)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_filter_auto_input_configs</span><span class="hljs-params">(configs)</span></span>
+  auto_input_configs = <span class="hljs-constant">Array</span>.new
+  all_phases_configs = <span class="hljs-constant">Array</span>.new
+  configs.each <span class="hljs-keyword">do</span> |config|
+    auto_input = config[<span class="hljs-symbol">:auto_input</span>]
+    <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> auto_input.blank?
+    all_phases_configs.push(config) <span class="hljs-keyword">if</span> auto_input[<span class="hljs-symbol">:scope</span>].present? &amp;&amp; auto_input[<span class="hljs-symbol">:scope</span>].to_s == <span class="hljs-string">'all'</span>
+    auto_input_configs.push(config)
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">return</span> auto_input_configs  <span class="hljs-keyword">if</span> all_phases_configs.blank?
+  <span class="hljs-keyword">if</span> all_phases_configs.length &gt; <span class="hljs-number">1</span>
+    names = all_phases_configs.collect {|config| casespace_seed_config_name(config)}
+    casespace_seed_config_error <span class="hljs-string">"More than one seed config has auto input for all phases <span class="hljs-subst">#{names.inspect}</span>."</span>
+  <span class="hljs-keyword">end</span>
+  all_phases_configs
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_auto_input?</span><span class="hljs-params">(configs=[])</span></span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@seed</span>.test_config_auto_input?
+  names = configs.collect {|config| casespace_seed_config_name(config)}
+  names.<span class="hljs-keyword">include</span>?(<span class="hljs-string">'auto_input'</span>)  <span class="hljs-comment"># assume want to auto_input if included the config named 'auto_input'</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">#########################################################################################</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="builder">Builder.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_process_builder</span><span class="hljs-params">(configs)</span></span>
+  <span class="hljs-variable">@seed</span>.message <span class="hljs-string">"++Adding builder templates. (all spaces, assignments and phases)"</span>
+  create_builder_templates(configs)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">#########################################################################################</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="messageerror-helpers">Message/Error Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_name</span><span class="hljs-params">(config)</span>;</span> config[<span class="hljs-symbol">:_config_name</span>]; <span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_message</span><span class="hljs-params">(message, config=<span class="hljs-keyword">nil</span>)</span></span>
+  message += <span class="hljs-string">" (<span class="hljs-subst">#{casespace_seed_config_name(config)}</span>)"</span>  <span class="hljs-keyword">if</span> config.present?
+  <span class="hljs-variable">@seed</span>.message message
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_error</span><span class="hljs-params">(message, config=<span class="hljs-keyword">nil</span>)</span></span>
+  message = <span class="hljs-string">"[<span class="hljs-subst">#{casespace_seed_config_name(config)}</span>] "</span> + message  <span class="hljs-keyword">if</span> config.present?
+  <span class="hljs-variable">@seed</span>.error message
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

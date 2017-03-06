@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/app/concerns/totem/core/controllers/totem_filter</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/app/concerns/totem/core/controllers/totem_filter"><meta name="groc-project-path" content="src/totem/api/totem-core/app/concerns/totem/core/controllers/totem_filter.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/concerns/totem/core/controllers/totem_filter.rb">src/totem/api/totem-core/app/concerns/totem/core/controllers/totem_filter.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controllers</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">TotemFilter</span></span>
+
+        extend <span class="hljs-constant">::ActiveSupport::Concern</span>
+
+        <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ClassMethods</span></span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_filter</span><span class="hljs-params">(*args)</span></span>
+            cattr_reader <span class="hljs-symbol">:totem_filter</span>
+            options = args.extract_options!
+            <span class="hljs-keyword">self</span>.class_variable_set <span class="hljs-string">'@@totem_filter'</span>, <span class="hljs-constant">TotemControllerFilter</span>.new(<span class="hljs-keyword">self</span>, options)
+            before_method = <span class="hljs-symbol">:before_action</span>
+            <span class="hljs-keyword">self</span>.send(before_method, options.slice(<span class="hljs-symbol">:only</span>, <span class="hljs-symbol">:except</span>, <span class="hljs-symbol">:if</span>, <span class="hljs-symbol">:unless</span>)) <span class="hljs-keyword">do</span> |controller|
+              totem_filter.before_action_process(controller)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemControllerFilter</span></span>
+            <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:debug</span>
+            <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:filter_methods</span>
+            <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:controller_module_name</span>
+            <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:controller_resource_name</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(controller_class, options={})</span></span>
+              <span class="hljs-variable">@filter_methods</span>             = <span class="hljs-constant">Hash</span>.new
+              <span class="hljs-variable">@controller_module_name</span>     = controller_class.name.sub(<span class="hljs-string">'::Api'</span>, <span class="hljs-string">'::Concerns::Filters'</span>).sub(<span class="hljs-regexp">/Controller$/</span>, <span class="hljs-string">''</span>)
+              <span class="hljs-variable">@controller_resource_name</span>   = controller_class.name.demodulize.sub(<span class="hljs-regexp">/Controller$/</span>, <span class="hljs-string">''</span>).underscore
+              <span class="hljs-variable">@debug</span>                      = options[<span class="hljs-symbol">:debug</span>] == <span class="hljs-keyword">true</span>
+              options[<span class="hljs-symbol">:name</span>]              = options[<span class="hljs-symbol">:name</span>] || controller_resource_name
+              options[<span class="hljs-symbol">:is_controller</span>]     = <span class="hljs-keyword">true</span> <span class="hljs-comment"># allow non-controller modules to default to :name if :module_name is blank</span>
+              set_options_before_action(options, <span class="hljs-keyword">true</span>)
+              add_modules(options)
+            <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Public method called by the before_action to call the module methods.</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">before_action_process</span><span class="hljs-params">(controller)</span></span>
+              filter_methods.each <span class="hljs-keyword">do</span> |method_name, hash|
+                before_method = hash[<span class="hljs-symbol">:before_action</span>]
+                <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> before_method.blank?
+                action        = controller.action_name</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>before_method = before_method.to_s.gsub(&#39;[action]&#39;, action)</p></div></div><div class="code"><div class="wrapper">                before_method = <span class="hljs-symbol">:process_params_filters</span>
+                inst          = hash[<span class="hljs-symbol">:instance</span>]
+                raise_error <span class="hljs-string">"Module <span class="hljs-subst">#{method_name.inspect}</span> instance is blank."</span> <span class="hljs-keyword">if</span> inst.blank?
+                raise_error <span class="hljs-string">"Module <span class="hljs-subst">#{method_name.inspect}</span> does not respond to <span class="hljs-subst">#{before_method.inspect}</span>."</span> <span class="hljs-keyword">unless</span> inst.respond_to?(before_method)
+                totem_debug_message <span class="hljs-string">"before filter calling '<span class="hljs-subst">#{method_name}</span>#<span class="hljs-subst">#{before_method}</span>'"</span>  <span class="hljs-keyword">if</span> debug?
+                args = controller_args(controller)
+                <span class="hljs-keyword">if</span> has_filters?(args)
+                  inst.setup(args)
+                  inst.send before_method
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+
+            private
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_args</span><span class="hljs-params">(controller)</span></span>
+              args   = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+              params = controller.params
+              <span class="hljs-keyword">if</span> params[<span class="hljs-symbol">:id</span>].present?
+                record_var   = <span class="hljs-string">'@'</span> + controller_resource_name.singularize
+                args.scope   = controller.instance_variable_get(record_var)
+              <span class="hljs-keyword">else</span>
+                record_var   = <span class="hljs-string">'@'</span> + controller_resource_name
+                args.scope   = controller.instance_variable_get(record_var)
+              <span class="hljs-keyword">end</span>
+              args.params     = params
+              args.controller = controller
+              args.scope_name = record_var
+              args
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_options_before_action</span><span class="hljs-params">(options, default=<span class="hljs-keyword">false</span>)</span></span>
+              method = options[<span class="hljs-symbol">:before_action</span>]
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> method == <span class="hljs-keyword">false</span>
+              method = <span class="hljs-string">'[action]'</span> <span class="hljs-keyword">if</span> method == <span class="hljs-keyword">true</span> || (method.blank? &amp;&amp; default.present?)
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> method.blank?
+              raise_error <span class="hljs-string">"before_action: <span class="hljs-subst">#{method.inspect}</span> must be a string or symbol."</span>  <span class="hljs-keyword">unless</span> valid_value?(method)
+              options[<span class="hljs-symbol">:before_action</span>] = method.to_s.gsub(<span class="hljs-string">'[resource]'</span>, controller_resource_name)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_modules</span><span class="hljs-params">(options)</span></span>
+              totem_debug_message <span class="hljs-string">"adding filter modules:"</span>  <span class="hljs-keyword">if</span> debug?
+              standardize_modules_from_options(options).each <span class="hljs-keyword">do</span> |hash|
+                add_filter_instance_methods(hash)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">standardize_modules_from_options</span><span class="hljs-params">(options)</span></span>
+              array = <span class="hljs-constant">Array</span>.new
+              array.push(options.except(<span class="hljs-symbol">:add</span>))
+              [options[<span class="hljs-symbol">:add</span>]].flatten.compact.each <span class="hljs-keyword">do</span> |add|
+                array.push standardize_add_options(add)
+              <span class="hljs-keyword">end</span>
+              array
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">standardize_add_options</span><span class="hljs-params">(options)</span></span>
+              <span class="hljs-keyword">case</span>
+              <span class="hljs-keyword">when</span> options.kind_of?(<span class="hljs-constant">Hash</span>)
+                options
+              <span class="hljs-keyword">when</span> options.kind_of?(<span class="hljs-constant">String</span>) || options.kind_of?(<span class="hljs-constant">Symbol</span>)
+                {<span class="hljs-symbol">name:</span> options, <span class="hljs-symbol">module_name:</span> options}
+              <span class="hljs-keyword">else</span>
+                raise_error <span class="hljs-string">":add options not a hash, string or symbol [<span class="hljs-subst">#{options.inspect}</span>]."</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_filter_instance_methods</span><span class="hljs-params">(options)</span></span>
+              name = get_options_name(options)
+              mod  = get_options_module(options)
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> mod.blank?
+              inst = get_totem_filter_instance(mod)
+              raise_error <span class="hljs-string">"Name <span class="hljs-subst">#{name.inspect}</span> module instance is blank."</span> <span class="hljs-keyword">if</span> inst.blank?
+              set_options_before_action(options)
+              filter_methods[name] = {
+                <span class="hljs-symbol">instance:</span>      inst,
+                <span class="hljs-symbol">before_action:</span> options[<span class="hljs-symbol">:before_action</span>],
+              }
+              print_debug_add(name, mod, options)  <span class="hljs-keyword">if</span> debug?
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_options_module</span><span class="hljs-params">(options)</span></span>
+              mod   = options[<span class="hljs-symbol">:module</span>]
+              mname = options[<span class="hljs-symbol">:module_name</span>]
+              <span class="hljs-keyword">case</span> 
+              <span class="hljs-keyword">when</span> mod == <span class="hljs-keyword">false</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span>
+              <span class="hljs-keyword">when</span> mod.blank? &amp;&amp; mname.blank? &amp;&amp; !options[<span class="hljs-symbol">:is_controller</span>]
+                mod = get_controller_namespace_module(options[<span class="hljs-symbol">:name</span>])
+              <span class="hljs-keyword">when</span> mod.blank? &amp;&amp; mname.blank?
+                mod = controller_module_name
+              <span class="hljs-keyword">when</span> mod.present? &amp;&amp; mname.blank?
+                raise_error <span class="hljs-string">"module: <span class="hljs-subst">#{mod.inspect}</span> must be a string or symbol."</span>  <span class="hljs-keyword">unless</span> valid_value?(mod)
+                mod = mod.to_s
+              <span class="hljs-keyword">when</span> mod.blank? &amp;&amp; mname.present?
+                raise_error <span class="hljs-string">"module_name: <span class="hljs-subst">#{mname.inspect}</span> must be a string or symbol."</span>  <span class="hljs-keyword">unless</span> valid_value?(mname)
+                mod = get_controller_namespace_module(mname)
+              <span class="hljs-keyword">else</span>
+                raise_error <span class="hljs-string">"Cannot use both 'module: <span class="hljs-subst">#{mod.inspect}</span>' and 'module_name: <span class="hljs-subst">#{mname.inspect}</span>' in same add definition."</span>
+              <span class="hljs-keyword">end</span>
+              raise_error <span class="hljs-string">"Module is blank for name <span class="hljs-subst">#{name.inspect}</span>."</span> <span class="hljs-keyword">if</span> mod.blank?
+              f_mod = mod.safe_constantize
+              raise_error <span class="hljs-string">"Module <span class="hljs-subst">#{mod.inspect}</span> cannot be constantized."</span>  <span class="hljs-keyword">if</span> f_mod.blank?
+              f_mod
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_options_name</span><span class="hljs-params">(options)</span></span>
+              name = options[<span class="hljs-symbol">:name</span>]
+              raise_error <span class="hljs-string">"Name is blank in <span class="hljs-subst">#{options.inspect}</span>."</span>  <span class="hljs-keyword">if</span> name.blank?
+              raise_error <span class="hljs-string">"name: <span class="hljs-subst">#{name.inspect}</span> must be a string or symbol."</span>  <span class="hljs-keyword">unless</span> valid_value?(name)
+              raise_error <span class="hljs-string">"Name <span class="hljs-subst">#{name.inspect}</span> already exists."</span>  <span class="hljs-keyword">if</span> filter_methods.keys.<span class="hljs-keyword">include</span>?(name)
+              name.to_sym
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_totem_filter_instance</span><span class="hljs-params">(mod)</span></span>
+              <span class="hljs-constant">TotemFilter</span>.new(mod)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_controller_namespace_module</span><span class="hljs-params">(name)</span></span>
+              controller_module_name.deconstantize + <span class="hljs-string">'::'</span> + name.to_s.camelize  <span class="hljs-comment"># replace controller's name with module name (in same namespace)</span>
+            <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug?</span>;</span> debug; <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">valid_value?</span><span class="hljs-params">(value)</span>;</span> value.kind_of?(<span class="hljs-constant">String</span>) || value.kind_of?(<span class="hljs-constant">Symbol</span>); <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">has_filters?</span><span class="hljs-params">(args)</span>;</span> args.params.has_key?(<span class="hljs-symbol">:filter</span>); <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_debug_message</span><span class="hljs-params">(message)</span>;</span> debug_message <span class="hljs-string">"totem_filter: <span class="hljs-subst">#{message}</span>"</span>; <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_message</span><span class="hljs-params">(message)</span>;</span> puts <span class="hljs-string">"[debug] <span class="hljs-subst">#{message}</span>"</span>; <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_error</span><span class="hljs-params">(message)</span>;</span> raise <span class="hljs-constant">OptionsError</span>, message; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="errors">Errors</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">            <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OptionsError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="totemfilter">TotemFilter</h3>
+<p>Encapsulate a filer module in a class.
+Provides method name isolation if multiple filter modules are included in a controller (via add:).</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemFilter</span></span>
+              <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:params</span>
+              <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:controller</span>
+              <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:scope_name</span>
+              <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:params_filters</span>
+              <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:original_scope</span>
+
+              <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:results</span>
+              <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:scope</span>
+              <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:current_results</span>
+
+              <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(mod)</span></span>
+                raise <span class="hljs-constant">TotemFilterOptionsError</span>, <span class="hljs-string">"Module <span class="hljs-subst">#{mod.inspect}</span> is not a module."</span>  <span class="hljs-keyword">unless</span> mod.kind_of?(<span class="hljs-constant">Module</span>)
+                extend mod
+              <span class="hljs-keyword">end</span>
+
+              <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup</span><span class="hljs-params">(args)</span></span>
+                <span class="hljs-variable">@params</span>         = args.params
+                <span class="hljs-variable">@params_filters</span> = <span class="hljs-constant">JSON</span>.parse(params[<span class="hljs-symbol">:filter</span>])
+                <span class="hljs-variable">@controller</span>     = args.controller
+                <span class="hljs-variable">@original_scope</span> = args.scope
+                <span class="hljs-variable">@scope_name</span>     = args.scope_name
+                <span class="hljs-variable">@scope</span>          = original_scope <span class="hljs-comment"># Used to modify the original scope.</span>
+                <span class="hljs-variable">@results</span>        = []
+              <span class="hljs-keyword">end</span>
+
+              <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_scope</span><span class="hljs-params">(value)</span></span>
+                controller.instance_variable_set scope_name, value
+              <span class="hljs-keyword">end</span>
+
+
+              <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_params_filters</span></span>
+                params_filters.each { |f| process_or_filters(f) }
+                generate_scope
+              <span class="hljs-keyword">end</span>
+
+              <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_or_filters</span><span class="hljs-params">(filters)</span></span>
+                <span class="hljs-variable">@current_results</span> = {}
+                filters.each { |filter| process_filter(filter) }
+                <span class="hljs-variable">@results</span> &lt;&lt; current_results <span class="hljs-keyword">if</span> current_results.present?
+              <span class="hljs-keyword">end</span>
+
+              <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_filter</span><span class="hljs-params">(filter)</span></span>
+                method = filter[<span class="hljs-string">'method'</span>]
+                values = filter[<span class="hljs-string">'values'</span>]
+                <span class="hljs-keyword">self</span>.send method, values <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.respond_to?(method) <span class="hljs-keyword">and</span> method.<span class="hljs-keyword">include</span>?(<span class="hljs-string">'scope_by'</span>) <span class="hljs-comment"># Ensure it is valid and includes `scope_by` for safety.</span>
+              <span class="hljs-keyword">end</span>
+
+              <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_result</span><span class="hljs-params">(key, values)</span></span>
+                values = <span class="hljs-constant">Array</span>.wrap(values)
+                <span class="hljs-variable">@current_results</span>[key] ||= []
+                <span class="hljs-variable">@current_results</span>[key] &lt;&lt; values
+                <span class="hljs-variable">@current_results</span>[key].flatten!.uniq!
+              <span class="hljs-keyword">end</span>
+
+              <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_scope</span></span>
+                <span class="hljs-variable">@results</span>.each <span class="hljs-keyword">do</span> |result|
+                  result.each <span class="hljs-keyword">do</span> |column, value|
+                    query         = {}
+                    query[column] = value
+                    <span class="hljs-variable">@scope</span>        = scope.where(query)
+                  <span class="hljs-keyword">end</span>
+                <span class="hljs-keyword">end</span>
+                set_scope(<span class="hljs-variable">@scope</span>)
+              <span class="hljs-keyword">end</span>
+
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

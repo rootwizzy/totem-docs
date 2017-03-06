@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/db/test_data/staging/imports/labs</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/db/test_data/staging/imports/labs"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/staging/imports/labs.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/staging/imports/labs.yml">src/thinkspace/api/thinkspace-casespace/db/test_data/staging/imports/labs.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">lab_chart:
+  title: <span class="hljs-type">Lab</span> <span class="hljs-type">Chart</span>
+  categories:
+    - title: <span class="hljs-type">Lab</span> A
+      blueprint: category
+      results:
+       - blueprint: result_rbc
+       - blueprint: result_hgb
+       - blueprint: result_hct
+       - blueprint: result_mcv
+       - blueprint: result_mcv2
+       - blueprint: result_wbc
+       - blueprint: result_retic
+    - title: <span class="hljs-type">Lab</span> B
+      blueprint: category
+      results:
+       - blueprint: result_rbc
+       - blueprint: result_hgb
+       - blueprint: result_hct
+       - blueprint: result_mcv
+       - blueprint: result_mcv2
+       - blueprint: result_wbc
+       - blueprint: result_retic
+
+
+blueprints:
+  category:
+    value:
+      component: vet_med
+      columns:
+        - {heading: <span class="hljs-type">Test</span> <span class="hljs-type">Name</span>,   source: title}
+        - {heading: <span class="hljs-type">Test</span> <span class="hljs-type">Result</span>, source: <span class="hljs-literal">result</span>}
+        - {heading: <span class="hljs-type">Units</span>,       source: units}
+        - {heading: <span class="hljs-type">Range</span>,       source: ratings, <span class="hljs-type">range</span>: <span class="hljs-literal">true</span>}
+        - {heading: <span class="hljs-type">Analysis</span>,         observation: analysis}
+        - {heading: <span class="hljs-type">Abnormality</span> <span class="hljs-type">Name</span>, observation: abnormality}
+      correctable_prompt: <span class="hljs-type">Should</span> this be corrected?
+    metadata: {}
+
+  result_rbc:
+    title:    <span class="hljs-type">RBC</span>
+    position: <span class="hljs-number">1</span>
+    value:    
+      <span class="hljs-keyword">type</span>:        <span class="hljs-literal">result</span>
+      description: <span class="hljs-type">Red</span> <span class="hljs-type">Blood</span> <span class="hljs-type">Cell</span> <span class="hljs-type">Count</span>
+      columns:     
+        units:   'n*<span class="hljs-number">10</span>^<span class="hljs-number">6</span>/ul'
+        <span class="hljs-literal">result</span>:  '<span class="hljs-number">13</span>.<span class="hljs-number">1</span>'
+        ratings: {lower: '<span class="hljs-number">6</span>', upper: '<span class="hljs-number">12</span>'}
+      observations:
+        analysis:
+          input_type: select
+          selections: [{id: normal, label: <span class="hljs-type">Normal</span>}, {id: high, label: <span class="hljs-type">High</span>}, {id: low, label: <span class="hljs-type">Low</span>}]
+          normal:     normal
+        abnormality:
+          input_type: input
+    metadata:
+      analysis:
+        validate: {correct: high}
+      abnormality:
+        validate:     {correct: [kitten, <span class="hljs-type">Kitty</span>, <span class="hljs-type">Cat</span>]}
+        max_attempts: <span class="hljs-number">3</span>
+
+  result_hgb:
+    title:    <span class="hljs-type">HGB</span>
+    position: <span class="hljs-number">2</span>
+    value:    
+      <span class="hljs-keyword">type</span>:        <span class="hljs-literal">result</span>
+      description: <span class="hljs-type">Hemoglobin</span>
+      columns:     
+        units:   g/dl
+        <span class="hljs-literal">result</span>:  '<span class="hljs-number">19</span>'
+        ratings: {lower: '<span class="hljs-number">10</span>', upper: '<span class="hljs-number">18</span>'}
+      observations:
+        analysis:
+          input_type: select
+          selections: [{id: normal, label: <span class="hljs-type">Normal</span>}, {id: high, label: <span class="hljs-type">High</span>}, {id: low, label: <span class="hljs-type">Low</span>}]
+          normal:     normal
+        abnormality:
+          input_type: input
+    metadata:
+      analysis:
+        validate: {correct: high}
+      abnormality:
+        validate:     {correct: [kitten, <span class="hljs-type">Kitty</span>, <span class="hljs-type">Cat</span>]}
+        max_attempts: <span class="hljs-number">3</span>
+
+  result_hct:
+    title:    <span class="hljs-type">HCT</span>
+    position: <span class="hljs-number">3</span>
+    value:    
+      <span class="hljs-keyword">type</span>:        <span class="hljs-literal">result</span>
+      description: <span class="hljs-type">Hematocrit</span>
+      columns:     
+        units:   '%'
+        <span class="hljs-literal">result</span>:  '<span class="hljs-number">52</span>'
+        ratings: {lower: '<span class="hljs-number">32</span>', upper: '<span class="hljs-number">48</span>'}
+      observations:
+        analysis:
+          input_type: select
+          selections: [{id: normal, label: <span class="hljs-type">Normal</span>}, {id: high, label: <span class="hljs-type">High</span>}, {id: low, label: <span class="hljs-type">Low</span>}]
+          normal:     normal
+        abnormality:
+          input_type: input
+    metadata:
+      analysis:
+        validate: {correct: high}
+      abnormality:
+        validate:     {correct: [dog, puppy]}
+        max_attempts: <span class="hljs-number">3</span>
+
+  result_mcv:
+    title:    <span class="hljs-type">MCV</span>
+    position: <span class="hljs-number">4</span>
+    value:    
+      <span class="hljs-keyword">type</span>:        <span class="hljs-literal">result</span>
+      description: <span class="hljs-type">Mean</span> <span class="hljs-type">Corpuscular</span> <span class="hljs-type">Volume</span>
+      columns:     
+        units:   fl
+        <span class="hljs-literal">result</span>:  '<span class="hljs-number">39</span>.<span class="hljs-number">7</span>'
+        ratings: {lower: '<span class="hljs-number">34</span>', upper: '<span class="hljs-number">58</span>'}
+      observations:
+        analysis:
+          input_type: select
+          selections: [{id: normal, label: <span class="hljs-type">Normal</span>}, {id: high, label: <span class="hljs-type">High</span>}, {id: low, label: <span class="hljs-type">Low</span>}]
+          normal:     normal
+        abnormality:
+          input_type: input
+    metadata:
+      analysis:
+        validate: {correct: normal}
+      abnormality:
+        validate:     {correct: [normal, normalish]}
+        max_attempts: <span class="hljs-number">3</span>
+
+  result_mcv2:
+    title:    <span class="hljs-type">MCV2</span>
+    position: <span class="hljs-number">5</span>
+    value:    
+      <span class="hljs-keyword">type</span>:        <span class="hljs-literal">result</span>
+      description: <span class="hljs-type">Mean</span> <span class="hljs-type">Corpuscular</span> <span class="hljs-type">Volume2</span>
+      columns:     
+        units:   fl
+        <span class="hljs-literal">result</span>:  '<span class="hljs-number">39</span>.<span class="hljs-number">7</span>'
+        ratings: {lower: '<span class="hljs-number">34</span>', upper: '<span class="hljs-number">58</span>'}
+      observations:
+        analysis:
+          input_type: select
+          selections: [{id: normal, label: <span class="hljs-type">Normal</span>}, {id: high, label: <span class="hljs-type">High</span>}, {id: low, label: <span class="hljs-type">Low</span>}]
+          normal:     normal
+        abnormality:
+          input_type: input
+    metadata:
+      analysis:
+        validate: {correct: normal}
+
+  result_wbc:
+    title:    <span class="hljs-type">WBC</span> <span class="hljs-type">MORPH</span>
+    position: <span class="hljs-number">6</span>
+    value:    
+      <span class="hljs-keyword">type</span>:        html_result
+      description: <span class="hljs-type">WHITE</span> <span class="hljs-type">BLOOD</span> <span class="hljs-type">CELL</span> <span class="hljs-type">MORPHOLOGY</span>
+      columns:     
+        <span class="hljs-literal">result</span>:  '&lt;h6&gt;some html would be added here&lt;/h6&gt;'
+      observations: {}
+    metadata: {}
+
+  result_retic:
+    title: <span class="hljs-type">RETIC</span>
+    position: <span class="hljs-number">7</span>
+    value:    
+      <span class="hljs-keyword">type</span>: adjusted_result
+      description: <span class="hljs-type">Reticulocyte</span> <span class="hljs-type">Count</span>
+      columns:
+        units: <span class="hljs-string">"%"</span>
+        <span class="hljs-literal">result</span>: '<span class="hljs-number">1</span>.<span class="hljs-number">5</span>'
+        ratings:
+          lower: '<span class="hljs-number">0</span>.<span class="hljs-number">0</span>'
+          upper: '<span class="hljs-number">1</span>.<span class="hljs-number">5</span>'
+      observations:
+        analysis:
+          input_type: correctable
+        abnormality:
+          input_type: none
+    metadata:
+      analysis:
+        validate:     {correct_method: standard_adjusted, correct: <span class="hljs-number">0</span>.<span class="hljs-number">9</span>}
+        max_attempts: <span class="hljs-number">3</span>
+        lock_on_max_attempts: <span class="hljs-literal">false</span>
+      abnormality:
+        no_value: <span class="hljs-literal">true</span></div></div></div></div></body></html>

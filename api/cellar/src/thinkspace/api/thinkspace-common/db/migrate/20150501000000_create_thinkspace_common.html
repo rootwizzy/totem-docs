@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-common/db/migrate/20150501000000_create_thinkspace_common</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-common/db/migrate/20150501000000_create_thinkspace_common"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-common/db/migrate/20150501000000_create_thinkspace_common.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-common/db/migrate/20150501000000_create_thinkspace_common.rb">src/thinkspace/api/thinkspace-common/db/migrate/20150501000000_create_thinkspace_common.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CreateThinkspaceCommon</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Migration</span></span></span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">change</span></span>
+
+    create_table <span class="hljs-symbol">:thinkspace_common_api_sessions</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+      t.references  <span class="hljs-symbol">:user</span>
+      t.string      <span class="hljs-symbol">:authentication_token</span>
+      t.timestamps
+      t.index  [<span class="hljs-symbol">:user_id</span>], <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_common_api_sessions_on_user</span>
+    <span class="hljs-keyword">end</span>
+
+    create_table <span class="hljs-symbol">:thinkspace_common_components</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+      t.string      <span class="hljs-symbol">:title</span>
+      t.text        <span class="hljs-symbol">:description</span>
+      t.json        <span class="hljs-symbol">:value</span>
+      t.json        <span class="hljs-symbol">:preprocessors</span>
+      t.timestamps
+      t.index  [<span class="hljs-symbol">:title</span>], <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_common_components_on_title</span>
+    <span class="hljs-keyword">end</span>
+
+    create_table <span class="hljs-symbol">:thinkspace_common_configurations</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+      t.references  <span class="hljs-symbol">:configurable</span>, <span class="hljs-symbol">polymorphic:</span> <span class="hljs-keyword">true</span>
+      t.json        <span class="hljs-symbol">:settings</span>, <span class="hljs-symbol">default:</span> {}
+      t.timestamps
+      t.index  [<span class="hljs-symbol">:configurable_id</span>, <span class="hljs-symbol">:configurable_type</span>],  <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_common_configurations_on_configurable</span>
+    <span class="hljs-keyword">end</span>
+
+    create_table <span class="hljs-symbol">:thinkspace_common_space_space_types</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+      t.references  <span class="hljs-symbol">:space</span>
+      t.references  <span class="hljs-symbol">:space_type</span>
+      t.timestamps
+      t.index  [<span class="hljs-symbol">:space_id</span>],         <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_common_space_space_types_on_space</span>
+      t.index  [<span class="hljs-symbol">:space_type_id</span>],    <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_common_space_space_types_on_space_type</span>
+    <span class="hljs-keyword">end</span>
+
+    create_table <span class="hljs-symbol">:thinkspace_common_space_types</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+      t.string      <span class="hljs-symbol">:title</span>
+      t.string      <span class="hljs-symbol">:lookup_model</span>
+      t.timestamps
+    <span class="hljs-keyword">end</span>
+
+    create_table <span class="hljs-symbol">:thinkspace_common_space_users</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+      t.references  <span class="hljs-symbol">:space</span>
+      t.references  <span class="hljs-symbol">:user</span>
+      t.string      <span class="hljs-symbol">:role</span>
+      t.timestamps
+      t.index  [<span class="hljs-symbol">:space_id</span>, <span class="hljs-symbol">:user_id</span>],   <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_common_space_users_on_space_user</span>
+    <span class="hljs-keyword">end</span>
+
+    create_table <span class="hljs-symbol">:thinkspace_common_spaces</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+      t.string      <span class="hljs-symbol">:title</span>
+      t.timestamps
+    <span class="hljs-keyword">end</span>
+    
+    create_table <span class="hljs-symbol">:thinkspace_common_users</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+      t.references  <span class="hljs-symbol">:oauth_user</span>
+      t.string      <span class="hljs-symbol">:oauth_access_token</span>
+      t.string      <span class="hljs-symbol">:first_name</span>
+      t.string      <span class="hljs-symbol">:last_name</span>
+      t.string      <span class="hljs-symbol">:email</span>,  <span class="hljs-symbol">default:</span> <span class="hljs-string">""</span>, <span class="hljs-symbol">null:</span> <span class="hljs-keyword">false</span>
+      t.timestamps
+      t.index  [<span class="hljs-symbol">:email</span>],      <span class="hljs-symbol">name:</span> <span class="hljs-symbol">:idx_thinkspace_common_users_on_email</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

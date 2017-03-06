@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/support/authentication/authentication_02_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/support/authentication/authentication_02_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/authentication/authentication_02_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/authentication/authentication_02_test.rb">src/totem/api/totem-core/test/support/authentication/authentication_02_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../authentication_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+describe <span class="hljs-string">'02: authentication.rb with platform overrides'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_authentication_common(<span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'value/02_*'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: current session'</span> <span class="hljs-keyword">do</span>
+    expect = {<span class="hljs-symbol">timeout_time:</span> <span class="hljs-number">600</span>, <span class="hljs-symbol">expire_after_time:</span> <span class="hljs-number">3600</span>, <span class="hljs-symbol">sample_key:</span> <span class="hljs-string">'platform'</span>}
+    assert_equal expect, <span class="hljs-variable">@auth</span>.current_session(user)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: current session timeout'</span> <span class="hljs-keyword">do</span>
+    assert_equal <span class="hljs-number">10</span>.minutes, <span class="hljs-variable">@auth</span>.current_session_timeout(user)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: current session expire after'</span> <span class="hljs-keyword">do</span>
+    assert_equal <span class="hljs-number">1</span>.hours, <span class="hljs-variable">@auth</span>.current_session_expire_after(user)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'02: authentication.rb platform oauth providers'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_authentication_common(<span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'value/02_*'</span>)
+    set_secrets_oauth_providers(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'value/secrets/02_'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: all configs regardless of active status'</span> <span class="hljs-keyword">do</span>
+    expect = {
+      <span class="hljs-string">'test_oauth_1'</span>=&gt;{<span class="hljs-string">'site'</span>=&gt;<span class="hljs-string">'http://localhost:1111'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>},
+      <span class="hljs-string">'test_oauth_2'</span>=&gt;{<span class="hljs-string">'site'</span>=&gt;<span class="hljs-string">'http://localhost:2222'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>},
+      <span class="hljs-string">'test_oauth_3'</span>=&gt;{<span class="hljs-string">'site'</span>=&gt;<span class="hljs-string">'http://localhost:3333'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">false</span>},
+      <span class="hljs-string">'test_oauth_4'</span>=&gt;{<span class="hljs-string">'site'</span>=&gt;<span class="hljs-string">'http://localhost:4444'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>},
+    }
+    assert_equal expect, <span class="hljs-variable">@auth</span>.oauth_configs
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: active platform configs'</span> <span class="hljs-keyword">do</span>
+    expect = {
+      <span class="hljs-string">'test_oauth_1'</span>=&gt;{<span class="hljs-string">'site'</span>=&gt;<span class="hljs-string">'http://localhost:1111'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>},
+      <span class="hljs-string">'test_oauth_4'</span>=&gt;{<span class="hljs-string">'site'</span>=&gt;<span class="hljs-string">'http://localhost:4444'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>},
+    }
+    assert_equal expect, <span class="hljs-variable">@auth</span>.platform_oauth_configs(<span class="hljs-string">'test_platform'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: same active platform configs with current object'</span> <span class="hljs-keyword">do</span>
+    expect = {
+      <span class="hljs-string">'test_oauth_1'</span>=&gt;{<span class="hljs-string">'site'</span>=&gt;<span class="hljs-string">'http://localhost:1111'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>},
+      <span class="hljs-string">'test_oauth_4'</span>=&gt;{<span class="hljs-string">'site'</span>=&gt;<span class="hljs-string">'http://localhost:4444'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>},
+    }
+    assert_equal expect, <span class="hljs-variable">@auth</span>.current_platform_oauth_configs(user)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: active platform secrets'</span> <span class="hljs-keyword">do</span>
+    expect = {
+      <span class="hljs-string">'test_oauth_1'</span>=&gt;{<span class="hljs-string">'client_id'</span>=&gt;<span class="hljs-string">'1111-123456789'</span>, <span class="hljs-string">'client_secret'</span>=&gt;<span class="hljs-string">'1111-987654321'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>},
+      <span class="hljs-string">'test_oauth_4'</span>=&gt;{<span class="hljs-string">'client_id'</span>=&gt;<span class="hljs-string">'4444-123456789'</span>, <span class="hljs-string">'client_secret'</span>=&gt;<span class="hljs-string">'4444-987654321'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>},
+    }
+    assert_equal expect, <span class="hljs-variable">@auth</span>.platform_oauth_secrets(<span class="hljs-string">'test_platform'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: same active platform secrets with current object'</span> <span class="hljs-keyword">do</span>
+    expect = {
+      <span class="hljs-string">'test_oauth_1'</span>=&gt;{<span class="hljs-string">'client_id'</span>=&gt;<span class="hljs-string">'1111-123456789'</span>, <span class="hljs-string">'client_secret'</span>=&gt;<span class="hljs-string">'1111-987654321'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>},
+      <span class="hljs-string">'test_oauth_4'</span>=&gt;{<span class="hljs-string">'client_id'</span>=&gt;<span class="hljs-string">'4444-123456789'</span>, <span class="hljs-string">'client_secret'</span>=&gt;<span class="hljs-string">'4444-987654321'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>},
+    }
+    assert_equal expect, <span class="hljs-variable">@auth</span>.current_platform_oauth_secrets(user)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: oauth platform secrets for test_oauth_1'</span> <span class="hljs-keyword">do</span>
+    expect = {<span class="hljs-string">'client_id'</span>=&gt;<span class="hljs-string">'1111-123456789'</span>, <span class="hljs-string">'client_secret'</span>=&gt;<span class="hljs-string">'1111-987654321'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>}
+    assert_equal expect, <span class="hljs-variable">@auth</span>.oauth_platform_secrets_for_provider(<span class="hljs-string">'test_platform'</span>, <span class="hljs-string">'test_oauth_1'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: oauth platform secrets for test_oauth_2'</span> <span class="hljs-keyword">do</span>
+    assert_equal <span class="hljs-constant">Hash</span>.new, <span class="hljs-variable">@auth</span>.oauth_platform_secrets_for_provider(<span class="hljs-string">'test_platform'</span>, <span class="hljs-string">'test_oauth_2'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: oauth platform secrets for test_oauth_3'</span> <span class="hljs-keyword">do</span>
+    assert_equal <span class="hljs-constant">Hash</span>.new, <span class="hljs-variable">@auth</span>.oauth_platform_secrets_for_provider(<span class="hljs-string">'test_platform'</span>, <span class="hljs-string">'test_oauth_3'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: oauth platform secrets for test_oauth_4'</span> <span class="hljs-keyword">do</span>
+    expect = {<span class="hljs-string">'client_id'</span>=&gt;<span class="hljs-string">'4444-123456789'</span>, <span class="hljs-string">'client_secret'</span>=&gt;<span class="hljs-string">'4444-987654321'</span>, <span class="hljs-string">'active'</span>=&gt;<span class="hljs-keyword">true</span>}
+    assert_equal expect, <span class="hljs-variable">@auth</span>.oauth_platform_secrets_for_provider(<span class="hljs-string">'test_platform'</span>, <span class="hljs-string">'test_oauth_4'</span>)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'02: authentication.rb ominiauth strategies'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_authentication_common(<span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'value/02_*'</span>)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'03: active provider stategy classes added'</span> <span class="hljs-keyword">do</span>
+    set_secrets_oauth_providers(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'value/secrets/03_'</span>)
+    set_oauth_providers
+    expect = [<span class="hljs-symbol">:TestOauth1</span>].sort
+    assert_equal expect, <span class="hljs-constant">OmniAuth::Strategies</span>.constants.grep(<span class="hljs-regexp">/Test/</span>).sort
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'02: active provider stategy classes added'</span> <span class="hljs-keyword">do</span>
+    set_secrets_oauth_providers(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'value/secrets/02_'</span>)
+    set_oauth_providers
+    expect = [<span class="hljs-symbol">:TestOauth1</span>, <span class="hljs-symbol">:TestOauth2</span>, <span class="hljs-symbol">:TestOauth4</span>].sort
+    assert_equal expect, <span class="hljs-constant">OmniAuth::Strategies</span>.constants.grep(<span class="hljs-regexp">/Test/</span>).sort
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

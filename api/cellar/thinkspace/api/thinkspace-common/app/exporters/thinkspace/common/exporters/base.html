@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-common/app/exporters/thinkspace/common/exporters/base</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-common/app/exporters/thinkspace/common/exporters/base"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-common/app/exporters/thinkspace/common/exporters/base.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-common/app/exporters/thinkspace/common/exporters/base.rb">src/thinkspace/api/thinkspace-common/app/exporters/thinkspace/common/exporters/base.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Common</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Exporters</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="filename-helpers">Filename helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sanitize_filename</span><span class="hljs-params">(filename)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Pull out into a common helper.
+Reference: <a href="http://stackoverflow.com/questions/1939333/how-to-make-a-ruby-string-safe-for-a-filesystem">http://stackoverflow.com/questions/1939333/how-to-make-a-ruby-string-safe-for-a-filesystem</a></p></div></div><div class="code"><div class="wrapper">    filename.gsub!(<span class="hljs-regexp">/^.*(\\|\/)/</span>, <span class="hljs-string">''</span>)
+    filename.gsub!(<span class="hljs-regexp">/[^0-9A-Za-z.\-]/</span>, <span class="hljs-string">'_'</span>)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="header-helpers">Header helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_header_to_sheet</span><span class="hljs-params">(sheet, *args)</span></span>
+    sheet.update_row <span class="hljs-number">0</span>, *args
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_sheet_header_identifier</span>;</span> <span class="hljs-string">'Identifier'</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="find-or-create-helpers">Find or create helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_worksheet_for_phase</span><span class="hljs-params">(book, phase, additions)</span></span>
+    name  = standard_sheet_name_for_record(phase, additions)
+    find_or_create_worksheet_for_name(book, name)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_worksheet_for_assignment</span><span class="hljs-params">(book, assignment, additions)</span></span>
+    name = standard_sheet_name_for_record(assignment, additions)
+    find_or_create_worksheet_for_name(book, name)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_worksheet_for_name</span><span class="hljs-params">(book, name)</span></span>
+    name.gsub!(<span class="hljs-regexp">/[^0-9a-z\s-]/i</span>, <span class="hljs-string">''</span>)
+    sheet = book.worksheet name
+    sheet.present? ? sheet <span class="hljs-symbol">:</span> book.create_worksheet(<span class="hljs-symbol">name:</span> name)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="sheetbook-helpers">Sheet/book helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_book_for_record</span><span class="hljs-params">(record)</span></span>
+    assignment = record.thinkspace_casespace_assignment <span class="hljs-keyword">if</span> record.is_a?(phase_class)
+    assignment = record <span class="hljs-keyword">if</span> record.is_a?(assignment_class)
+    book       = books[assignment]
+    <span class="hljs-keyword">return</span> book <span class="hljs-keyword">if</span> book.present? &amp;&amp; book.is_a?(workbook_class)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a new book for the assignment if it does not exist.</p></div></div><div class="code"><div class="wrapper">    book              = workbook_class.new
+    books[assignment] = book
+    book
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">standard_sheet_name_for_record</span><span class="hljs-params">(record, additions=<span class="hljs-string">''</span>)</span></span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> record.is_a?(phase_class)
+      name = get_sheet_name_for_phase(record, additions)  
+    <span class="hljs-keyword">when</span> record.is_a?(assignment_class)
+      name = get_sheet_name_for_assignment(record, additions)
+    <span class="hljs-keyword">end</span>
+    name
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_sheet_name_for_phase</span><span class="hljs-params">(phase, additions)</span></span>
+    <span class="hljs-string">"<span class="hljs-subst">#{phase.position}</span> - <span class="hljs-subst">#{phase.title}</span> - <span class="hljs-subst">#{additions}</span>"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_sheet_name_for_assignment</span><span class="hljs-params">(assignment, additions)</span></span>
+    <span class="hljs-string">"<span class="hljs-subst">#{assignment.title}</span> - <span class="hljs-subst">#{additions}</span>"</span>
+  <span class="hljs-keyword">end</span>  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="exporters-class-finding">Exporters class finding</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_exporter_class_for_componentable</span><span class="hljs-params">(componentable)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> componentable.present?
+    name  = componentable.<span class="hljs-keyword">class</span>.name
+    parts = name.split(<span class="hljs-string">'::'</span>)
+    model = parts.pop
+    klass = parts.join(<span class="hljs-string">'::'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">unless</span> klass.present?
+    klass = <span class="hljs-string">"<span class="hljs-subst">#{klass}</span>::<span class="hljs-subst">#{get_exporter_namespace}</span>::<span class="hljs-subst">#{model}</span>"</span>
+    get_exporter_class_from_name(klass)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_exporter_class_from_name</span><span class="hljs-params">(name)</span></span>
+    name.safe_constantize
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_exporter_namespace</span>;</span> <span class="hljs-string">'Exporters'</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="ownerable-helpers">Ownerable helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ownerable_identifier</span><span class="hljs-params">(ownerable)</span></span>
+    ownerable.is_a?(team_class) ? ownerable.title <span class="hljs-symbol">:</span> ownerable.email
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/test/support/configuration/configuration_config_files_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/test/support/configuration/configuration_config_files_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/configuration/configuration_config_files_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/configuration/configuration_config_files_test.rb">src/totem/api/totem-core/test/support/configuration/configuration_config_files_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../configuration_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+describe <span class="hljs-string">'C01: configuration.rb find framework using config files'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_configuration_common(
+      <span class="hljs-symbol">fixtures_dir:</span> <span class="hljs-string">'fixtures_configs/use_config_files'</span>,  <span class="hljs-comment"># where to find the 'config_files' file</span>
+      <span class="hljs-symbol">filename:</span>     <span class="hljs-string">'01_config_files'</span>,  <span class="hljs-comment"># filename that contains path of framework/platform config.yml files</span>
+      <span class="hljs-symbol">relative_to:</span>  <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../fixtures_configs"</span>, __FILE_<span class="hljs-number">_</span>),  <span class="hljs-comment"># filename's content paths relative to this path</span>
+      <span class="hljs-symbol">file_ext:</span>     <span class="hljs-string">'01_framework*'</span>,  <span class="hljs-comment"># config.yml files to load</span>
+    )
+    <span class="hljs-variable">@framework</span> = <span class="hljs-variable">@config</span>.platforms[<span class="hljs-symbol">:test_framework</span>]
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'C01: should be valid'</span> <span class="hljs-keyword">do</span>
+    assert_kind_of <span class="hljs-constant">Hash</span>, <span class="hljs-variable">@framework</span>
+    refute_empty <span class="hljs-variable">@framework</span>, <span class="hljs-string">'Framework should be populated.'</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'C01: should match config'</span> <span class="hljs-keyword">do</span>
+    using_config_files = <span class="hljs-variable">@framework</span>.deep_dup
+    before_configuration_common(<span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'value/01_framework*'</span>)
+    expect = <span class="hljs-variable">@config</span>.platforms[<span class="hljs-symbol">:test_framework</span>]
+    assert_equal expect, using_config_files
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'C02: configuration.rb find platform using config files'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_configuration_common(
+      <span class="hljs-symbol">fixtures_dir:</span> <span class="hljs-string">'fixtures_configs/use_config_files'</span>,  <span class="hljs-comment"># where to find the 'config_files' file</span>
+      <span class="hljs-symbol">filename:</span>     <span class="hljs-string">'01_config_files'</span>,  <span class="hljs-comment"># filename that contains path of framework/platform config.yml files</span>
+      <span class="hljs-symbol">relative_to:</span>  <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../fixtures_configs"</span>, __FILE_<span class="hljs-number">_</span>),  <span class="hljs-comment"># filename's content paths relative to this path</span>
+      <span class="hljs-symbol">file_ext:</span>     <span class="hljs-string">'01_platform*'</span>,  <span class="hljs-comment"># config.yml files to load</span>
+    )
+    <span class="hljs-variable">@platform</span> = <span class="hljs-variable">@config</span>.platforms[<span class="hljs-symbol">:test_platform</span>]
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'C02: should be valid'</span> <span class="hljs-keyword">do</span>
+    assert_kind_of <span class="hljs-constant">Hash</span>, <span class="hljs-variable">@platform</span>
+    refute_empty <span class="hljs-variable">@platform</span>, <span class="hljs-string">'Platform should be populated.'</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'C02: should match config'</span> <span class="hljs-keyword">do</span>
+    using_config_files = <span class="hljs-variable">@platform</span>.deep_dup
+    before_configuration_common(<span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'value/01_platform*'</span>)
+    expect = <span class="hljs-variable">@config</span>.platforms[<span class="hljs-symbol">:test_platform</span>]
+    assert_equal expect, using_config_files
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'C03: configuration.rb find framework and platform using config files'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_configuration_common(
+      <span class="hljs-symbol">fixtures_dir:</span> <span class="hljs-string">'fixtures_configs/use_config_files'</span>,  <span class="hljs-comment"># where to find the 'config_files' file</span>
+      <span class="hljs-symbol">filename:</span>     <span class="hljs-string">'01_config_files'</span>,  <span class="hljs-comment"># filename that contains path of framework/platform config.yml files</span>
+      <span class="hljs-symbol">relative_to:</span>  <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../fixtures_configs"</span>, __FILE_<span class="hljs-number">_</span>),  <span class="hljs-comment"># filename's content paths relative to this path</span>
+      <span class="hljs-symbol">file_ext:</span>     <span class="hljs-string">'01_*'</span>,  <span class="hljs-comment"># config.yml files to load</span>
+    )
+    <span class="hljs-variable">@platforms</span> = <span class="hljs-variable">@config</span>.platforms
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'C03: should be valid'</span> <span class="hljs-keyword">do</span>
+    assert_kind_of <span class="hljs-constant">Hash</span>, <span class="hljs-variable">@platforms</span>
+    refute_empty <span class="hljs-variable">@platforms</span>, <span class="hljs-string">'Config should be populated.'</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'C03: should match config'</span> <span class="hljs-keyword">do</span>
+    using_config_files = <span class="hljs-variable">@platforms</span>.deep_dup
+    before_configuration_common(<span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'value/01_*'</span>)
+    expect = <span class="hljs-variable">@config</span>.platforms
+    assert_equal expect, using_config_files
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'C04: configuration.rb find config files in multiple directories'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    before_configuration_common(
+      <span class="hljs-symbol">fixtures_dir:</span> <span class="hljs-string">'fixtures_configs/use_config_files'</span>,  <span class="hljs-comment"># where to find the 'config_files' file</span>
+      <span class="hljs-symbol">filename:</span>     <span class="hljs-string">'02_config_files'</span>,  <span class="hljs-comment"># filename that contains path of framework/platform config.yml files</span>
+      <span class="hljs-symbol">relative_to:</span>  <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../fixtures_configs"</span>, __FILE_<span class="hljs-number">_</span>),  <span class="hljs-comment"># filename's content paths relative to this path</span>
+      <span class="hljs-symbol">file_ext:</span>     <span class="hljs-string">'02_merge*'</span>,  <span class="hljs-comment"># config.yml files to load</span>
+    )
+    <span class="hljs-variable">@platform</span> = <span class="hljs-variable">@config</span>.platforms[<span class="hljs-symbol">:test_platform</span>]
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'C04: should be valid'</span> <span class="hljs-keyword">do</span>
+    assert_kind_of <span class="hljs-constant">Hash</span>, <span class="hljs-variable">@platform</span>
+    refute_empty <span class="hljs-variable">@platform</span>, <span class="hljs-string">'Platform should be populated.'</span>
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'C04: should include all config files'</span> <span class="hljs-keyword">do</span>
+    assert_equal <span class="hljs-string">'Test::Platform::Core::ApplicationController'</span>, <span class="hljs-variable">@platform</span>[<span class="hljs-symbol">:classes</span>][<span class="hljs-symbol">:merge_03</span>]
+    expect = <span class="hljs-variable">@platform</span>[<span class="hljs-symbol">:paths</span>].select {|p| p[<span class="hljs-symbol">:path</span>] == <span class="hljs-string">'test/platform/merge_03'</span>}
+    refute_empty expect, <span class="hljs-string">'Multiple config files should include path test/platform/merge_03'</span>
+    assert_equal expect.length, <span class="hljs-number">1</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

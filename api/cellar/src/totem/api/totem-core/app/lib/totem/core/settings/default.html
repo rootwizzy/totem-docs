@@ -1,0 +1,114 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/lib/totem/core/settings/default</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/lib/totem/core/settings/default"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/settings/default.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/settings/default.rb">src/totem/api/totem-core/app/lib/totem/core/settings/default.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>IMPORTANT: When setting values such as classes, make sure to do in dependency order.
+For example: Totem.Authentication::Api::AuthenticationController depends on
+the Totem::Authentication::Api::BaseController, so must set the base controller first.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Settings</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Default</span></span>
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:totem_settings</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(env)</span></span>
+          <span class="hljs-variable">@totem_settings</span> = env
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">defaults</span>;</span> <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>    <span class="hljs-comment"># define defaults</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform_settings</span><span class="hljs-params">(platform_name)</span></span>
+          error <span class="hljs-string">"Framework has not been set"</span>  <span class="hljs-keyword">if</span> framework_name.blank?
+          set_module_settings(platform_name)  <span class="hljs-comment"># modules before classes since a class will be constantized and include modules</span>
+          set_class_settings(platform_name)
+          set_authentication_settings(platform_name)
+          set_authorization_settings(platform_name)
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_class_settings</span><span class="hljs-params">(platform_name)</span></span>
+          framework_classes = totem_settings.config.classes(framework_name) || {}
+          warning <span class="hljs-string">"No framework [<span class="hljs-subst">#{framework_name}</span>] configuration classes in configuration file"</span>  <span class="hljs-keyword">if</span> framework_classes.blank?
+          platform_classes = totem_settings.config.classes(platform_name) || {}
+          result_classes   = <span class="hljs-constant">HashWithIndifferentAccess</span>.new( framework_classes.deep_merge(platform_classes) )     <span class="hljs-comment"># use framework as base</span>
+          settings         = totem_settings.<span class="hljs-keyword">class</span>[platform_name] = <span class="hljs-constant">ConfigClass</span>.new
+          result_classes.each_pair <span class="hljs-keyword">do</span> |key, class_name|
+            settings.set_class(key, class_name)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_module_settings</span><span class="hljs-params">(platform_name)</span></span>
+          framework_modules = totem_settings.config.modules(framework_name) || {}
+          warning <span class="hljs-string">"No framework [<span class="hljs-subst">#{framework_name}</span>] configuration modules in configuration file"</span>  <span class="hljs-keyword">if</span> framework_modules.blank?
+          platform_modules = totem_settings.config.modules(platform_name) || {}
+          result_modules   = <span class="hljs-constant">HashWithIndifferentAccess</span>.new( framework_modules.deep_merge(platform_modules) )     <span class="hljs-comment"># use framework as base</span>
+          settings         = totem_settings.<span class="hljs-keyword">module</span>[platform_name] = <span class="hljs-constant">ConfigModule</span>.new
+          result_modules.each_pair <span class="hljs-keyword">do</span> |key, module_name|
+            settings.set_module(key, module_name)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_authentication_settings</span><span class="hljs-params">(platform_name)</span></span>
+          error <span class="hljs-string">"Authentication settings for [<span class="hljs-subst">#{platform_name}</span>] already exist"</span>  <span class="hljs-keyword">if</span> totem_settings.authentication.platform(platform_name).present?
+          settings       = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+          framework_auth = totem_settings.config.authentication(framework_name) || {}
+          warning <span class="hljs-string">"No framework [<span class="hljs-subst">#{framework_name}</span>] authentication values in configuration file"</span>  <span class="hljs-keyword">if</span> framework_auth.blank?
+          platform_auth   = totem_settings.config.authentication(platform_name) || {}
+          result_settings = <span class="hljs-constant">HashWithIndifferentAccess</span>.new( framework_auth.deep_merge(platform_auth) )
+          settings        = add_ordered_options(platform_name, result_settings, settings, <span class="hljs-keyword">true</span>)
+          warning <span class="hljs-string">"Missing authentication settings for [<span class="hljs-subst">#{platform_name}</span>]"</span>  <span class="hljs-keyword">if</span> settings.blank?
+          totem_settings.authentication.set_platform(platform_name, settings)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_authorization_settings</span><span class="hljs-params">(platform_name)</span></span>
+          error <span class="hljs-string">"Authorization settings for [<span class="hljs-subst">#{platform_name}</span>] already exist"</span>  <span class="hljs-keyword">if</span> totem_settings.authorization.platform(platform_name).present?
+          settings       = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+          framework_auth = totem_settings.config.authorization(framework_name) || {}
+          warning <span class="hljs-string">"No framework [<span class="hljs-subst">#{framework_name}</span>] authentication values in configuration file"</span>  <span class="hljs-keyword">if</span> framework_auth.blank?
+          platform_auth   = totem_settings.config.authorization(platform_name) || {}
+          result_settings = <span class="hljs-constant">HashWithIndifferentAccess</span>.new( framework_auth.deep_merge(platform_auth) )
+          settings        = add_ordered_options(platform_name, result_settings, settings, <span class="hljs-keyword">true</span>)
+          warning <span class="hljs-string">"Missing authorization settings for [<span class="hljs-subst">#{platform_name}</span>]"</span>  <span class="hljs-keyword">if</span> settings.blank?
+          totem_settings.authorization.set_platform(platform_name, settings)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_ordered_options</span><span class="hljs-params">(platform_name, result_settings, settings, nest_options=<span class="hljs-keyword">false</span>, nested_classes=<span class="hljs-keyword">false</span>, nested_modules=<span class="hljs-keyword">false</span>)</span></span>
+          result_settings.each_pair <span class="hljs-keyword">do</span> |key, value|
+            <span class="hljs-keyword">if</span> value.kind_of?(<span class="hljs-constant">Hash</span>) &amp;&amp; nest_options
+              <span class="hljs-keyword">if</span> key == <span class="hljs-string">'classes'</span>
+                settings[key] = <span class="hljs-constant">ConfigClass</span>.new
+                add_ordered_options(platform_name, value, settings[key], <span class="hljs-keyword">true</span>, <span class="hljs-keyword">true</span>)
+              <span class="hljs-keyword">elsif</span> key == <span class="hljs-string">'modules'</span>
+                settings[key] = <span class="hljs-constant">ConfigModule</span>.new
+                add_ordered_options(platform_name, value, settings[key], <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">true</span>)
+              <span class="hljs-keyword">else</span>
+                settings[key] = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+                add_ordered_options(platform_name, value, settings[key], <span class="hljs-keyword">true</span>)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">else</span>
+              <span class="hljs-keyword">if</span> nested_classes
+                settings.set_class(key, value)
+              <span class="hljs-keyword">elsif</span> nested_modules
+                settings.set_module(key, value)
+              <span class="hljs-keyword">else</span>
+                settings[key] = value
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+          settings
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">framework_name</span></span>
+          totem_settings.registered.framework_name
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_class</span><span class="hljs-params">(name)</span></span>
+          error <span class="hljs-string">"Cannot contantize blank class name"</span>    <span class="hljs-keyword">if</span> name.blank?
+          klass = name.safe_constantize
+          error <span class="hljs-string">"Cannot contantize class name <span class="hljs-subst">#{name}</span>"</span>  <span class="hljs-keyword">if</span> klass.blank?
+          klass
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Core::Support::Shared</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

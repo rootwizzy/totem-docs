@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/mixins/cache/store</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/mixins/cache/store"><meta name="groc-project-path" content="src/totem/client/totem/addon/mixins/cache/store.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/mixins/cache/store.coffee">src/totem/client/totem/addon/mixins/cache/store.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">create_record</span>: <span class="hljs-function"><span class="hljs-params">(model_name, props)</span> -&gt;</span> <span class="hljs-property">@store</span>.createRecord(model_name, props)
+
+  <span class="hljs-attribute">delete_record</span>: <span class="hljs-function"><span class="hljs-params">(record)</span> -&gt;</span> <span class="hljs-property">@store</span>.deleteRecord(record)
+
+  <span class="hljs-attribute">has_record_for_id</span>: <span class="hljs-function"><span class="hljs-params">(model_name, id)</span> -&gt;</span> <span class="hljs-property">@store</span>.hasRecordForId(model_name, id)
+
+  <span class="hljs-attribute">model_for</span>: <span class="hljs-function"><span class="hljs-params">(model_name)</span> -&gt;</span> <span class="hljs-property">@store</span>.modelFor(model_name)
+
+  <span class="hljs-attribute">normalize</span>: <span class="hljs-function"><span class="hljs-params">(model_name, payload)</span> -&gt;</span> <span class="hljs-property">@store</span>.normalize(model_name, payload)
+
+  <span class="hljs-attribute">peek_record</span>: <span class="hljs-function"><span class="hljs-params">(model_name, id)</span> -&gt;</span> <span class="hljs-property">@store</span>.peekRecord(model_name, id)
+
+  <span class="hljs-attribute">peek_all</span>: <span class="hljs-function"><span class="hljs-params">(model_name)</span> -&gt;</span> <span class="hljs-property">@store</span>.peekAll(model_name)
+
+  <span class="hljs-attribute">push</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span> <span class="hljs-property">@store</span>.push(data) <span class="hljs-comment"># push normalized JSON API data</span>
+  
+  <span class="hljs-attribute">push_payload</span>:  <span class="hljs-function"><span class="hljs-params">(model_name, payload)</span> -&gt;</span> <span class="hljs-property">@store</span>.pushPayload(model_name, payload)
+  
+  <span class="hljs-attribute">record_is_loaded</span>: <span class="hljs-function"><span class="hljs-params">(model_name, id)</span> -&gt;</span> <span class="hljs-property">@has_record_for_id</span>(model_name, id) <span class="hljs-comment"># alias for has_record_for_id</span>
+
+  <span class="hljs-attribute">unload_all</span>:    <span class="hljs-function"><span class="hljs-params">(model_name)</span> -&gt;</span> <span class="hljs-property">@store</span>.unloadAll(model_name)
+  
+  <span class="hljs-attribute">unload_record</span>: <span class="hljs-function"><span class="hljs-params">(record)</span> -&gt;</span> <span class="hljs-property">@store</span>.unloadRecord(record)
+
+  <span class="hljs-attribute">push_many</span>:     <span class="hljs-function"><span class="hljs-params">(args...)</span> -&gt;</span> <span class="hljs-property">@warn</span>(<span class="hljs-string">'Store [push_many] not implemented.'</span>, args)</div></div></div></div></body></html>

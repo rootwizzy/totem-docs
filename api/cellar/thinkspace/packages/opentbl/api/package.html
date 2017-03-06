@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/packages/opentbl/api/package</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace/packages/opentbl/api/package"><meta name="groc-project-path" content="src/thinkspace/packages/opentbl/api/package.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/packages/opentbl/api/package.yml">src/thinkspace/packages/opentbl/api/package.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-attribute">variables</span>:
+  <span class="hljs-attribute">oauth_client_id</span>:     <span class="hljs-string">'66e57323a61e3380f4391b95577ecd38a42aa33b9d8cec88438405f75025bc86'</span>
+  <span class="hljs-attribute">oauth_client_secret</span>: <span class="hljs-string">'33379624163cec4b066fa02c273fc23e31da96a4976cd8aefe349123aaf0eac1'</span>
+  <span class="hljs-attribute">oauth_site</span>:          <span class="hljs-attribute">http</span>:<span class="hljs-comment">//localhost:3333</span>
+  <span class="hljs-attribute">redis_url</span>:           <span class="hljs-attribute">redis</span>:<span class="hljs-comment">//localhost:6379</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="gemfile">Gemfile</h1>
+<p>Which gems to add to the platform&#39;s specific Gemfile (e.g. <code>Gemfile_thinkspace.rb</code>).</p></div></div><div class="code"><div class="wrapper">gemfile:
+  -<span class="ruby"> <span class="hljs-string">"gem 'paperclip'"</span>
+</span>  -<span class="ruby"> <span class="hljs-string">"gem 'spreadsheet'"</span>
+</span>  -<span class="ruby"> <span class="hljs-string">"gem 'has_secure_token'"</span>
+</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="application">Application</h2>
+<p>What to add to the <code>config/application.rb</code> file for Rails.</p></div></div><div class="code"><div class="wrapper">application_rb:
+  -<span class="ruby"> <span class="hljs-string">"config.active_job.queue_adapter = :delayed_job"</span>
+</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Template for the <code>config/secrets.yml</code> file for Rails.</p></div></div><div class="code"><div class="wrapper">secrets:
+
+  development:
+    secret_key_base: d01f9aa6064531cbcff49802c38bbfd8e9635643ac8b4c079cc63568d5898c536fa91004af21ad8e09d84562e6bb91fb3d0a990ae56b0aacd0b1e4d1a275b453
+    totem_database:
+      name:     ts_development
+      username: ts_user
+      password: password
+    totem_oauth_providers:
+      totem_oauth_1:
+        _config:
+          site:   &lt;<span class="hljs-variable">%=</span>oauth_site<span class="hljs-variable">%&gt;</span>
+          active: true
+        opentbl:
+          client_id:     &lt;<span class="hljs-variable">%=</span>oauth_client_id<span class="hljs-variable">%&gt;</span>
+          client_secret: &lt;<span class="hljs-variable">%=</span>oauth_client_secret<span class="hljs-variable">%&gt;</span>
+          active:        true
+    aws:
+      sqs:
+        access_key:        KEY-GOES-HERE
+        secret_access_key: KEY-GOES-HERE
+        queue_name:        QUEUE-GOES-HERE
+      s3:
+        paperclip:
+          access_key:        VALUE-HERE
+          secret_access_key: VALUE-HERE
+          bucket_name:       VALUE-HERE
+    discourse:
+      username:   USERNAME-HERE
+      key:        KEY-HERE
+      host:       HOST-HERE
+      sso_secret: SSO-SECRET-HERE
+      categories:
+        support:
+          title: testing-support-api
+          messages:
+            success: Your request has been recieved and we will get back to you as soon as we can.
+    smtp:
+      postmark:
+        username: USERNAME-HERE
+        password: PASSWORD-HERE
+        domain:   DOMAIN-HERE
+    pub_sub:
+      url: &lt;<span class="hljs-variable">%=</span>redis_url<span class="hljs-variable">%&gt;</span>
+
+  test:
+    secret_key_base: <span class="hljs-number">665</span>b6cfe0ab56f2f2a57e8d15d1ec0c28dfe25a2a5b460bec0d53d23ee8bc06eeaec2ccc531d5642a4dcb9f473cd34d443c5b7b103ad400766848517eacc994c
+    totem_database:
+      name:     ts_test
+      username: ts_user
+      password: password
+    totem_oauth_providers:
+      totem_oauth_1:
+        _config:
+          site:   &lt;<span class="hljs-variable">%=</span>oauth_site<span class="hljs-variable">%&gt;</span>
+          active: true
+        opentbl:
+          client_id:     &lt;<span class="hljs-variable">%=</span>oauth_client_id<span class="hljs-variable">%&gt;</span>
+          client_secret: &lt;<span class="hljs-variable">%=</span>oauth_client_secret<span class="hljs-variable">%&gt;</span>
+          active:        true
+    aws:
+      sqs:
+        access_key:        KEY-GOES-HERE
+        secret_access_key: KEY-GOES-HERE
+        queue_name:        QUEUE-GOES-HERE
+      s3:
+        paperclip:
+          access_key:        VALUE-HERE
+          secret_access_key: VALUE-HERE
+          bucket_name:       VALUE-HERE
+    discourse:
+      username:   USERNAME-HERE
+      key:        KEY-HERE
+      host:       HOST-HERE
+      sso_secret: SSO-SECRET-HERE
+      categories:
+        support:
+          title: testing-support-api
+          messages:
+            success: Your request has been recieved and we will get back to you as soon as we can.
+    smtp:
+      postmark:
+        username: USERNAME-HERE
+        password: PASSWORD-HERE
+        domain:   DOMAIN-HERE
+    pub_sub:
+      url: &lt;<span class="hljs-variable">%=</span>redis_url<span class="hljs-variable">%&gt;</span>
+
+  production:
+    secret_key_base: &lt;<span class="hljs-variable">%=</span> ENV[<span class="hljs-string">"SECRET_KEY_BASE"</span>] <span class="hljs-variable">%&gt;</span>
+    totem_database:
+      name:     <span class="hljs-string">"&lt;%= ENV['TOTEM_DATABASE_NAME'] %&gt;"</span>
+      username: <span class="hljs-string">"&lt;%= ENV['TOTEM_DATABASE_USERNAME'] %&gt;"</span>
+      password: <span class="hljs-string">"&lt;%= ENV['TOTEM_DATABASE_PASSWORD'] %&gt;"</span>
+    totem_oauth_providers:
+      totem_oauth_1:
+        _config:
+          site: https:<span class="hljs-comment">//auth.thinkspace.org</span>
+          active: true
+        thinkspace:
+          client_id:     <span class="hljs-string">"&lt;%=ENV['TOTEM_OAUTH_TOTEM_OAUTH_1_THINKSPACE_CLIENT_ID']%&gt;"</span>
+          client_secret: <span class="hljs-string">"&lt;%=ENV['TOTEM_OAUTH_TOTEM_OAUTH_1_THINKSPACE_CLIENT_SECRET']%&gt;"</span>
+          active:        <span class="hljs-string">"&lt;%=ENV['TOTEM_OAUTH_TOTEM_OAUTH_1_THINKSPACE_ACTIVE']%&gt;"</span>
+    aws:
+      sqs:
+        access_key:        &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'AWS_SQS_ACCESS_KEY'</span>] <span class="hljs-variable">%&gt;</span>
+        secret_access_key: &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'AWS_SQS_SECRET_ACCESS_KEY'</span>] <span class="hljs-variable">%&gt;</span>
+        queue_name:        &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'AWS_SQS_QUEUE_NAME'</span>] <span class="hljs-variable">%&gt;</span>
+      s3:
+        paperclip:
+          access_key:        &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'AWS_S3_ACCESS_KEY'</span>] <span class="hljs-variable">%&gt;</span>
+          secret_access_key: &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'AWS_S3_SECRET_ACCESS_KEY'</span>] <span class="hljs-variable">%&gt;</span>
+          bucket_name:       &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'AWS_S3_PAPERCLIP_BUCKET_NAME'</span>] <span class="hljs-variable">%&gt;</span>
+    redis_url: &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'THINKSPACE_REDIS_URL'</span>] <span class="hljs-variable">%&gt;</span>
+    discourse:
+      username:   &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'DISCOURSE_USERNAME'</span>] <span class="hljs-variable">%&gt;</span>
+      key:        &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'DISCOURSE_KEY'</span>] <span class="hljs-variable">%&gt;</span>
+      host:       &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'DISCOURSE_HOST'</span>] <span class="hljs-variable">%&gt;</span>
+      sso_secret: &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'DISCOURSE_SSO_SECRET'</span>] <span class="hljs-variable">%&gt;</span>
+      categories:
+        support:
+          title: &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'DISCOURSE_CATEGORIES_SUPPORT_TITLE'</span>] <span class="hljs-variable">%&gt;</span>
+          messages:
+            success: Your request has been recieved and we will get back to you as soon as we can.
+    smtp:
+      postmark:
+        username: &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'SMTP_POSTMARK_USERNAME'</span>] <span class="hljs-variable">%&gt;</span>
+        password: &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'SMTP_POSTMARK_PASSWORD'</span>] <span class="hljs-variable">%&gt;</span>
+        domain:   &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'SMTP_POSTMARK_DOMAIN'</span>] <span class="hljs-variable">%&gt;</span>
+    pub_sub:
+      url: &lt;<span class="hljs-variable">%%</span>= ENV[<span class="hljs-string">'PUB_SUB_URL'</span>] <span class="hljs-variable">%&gt;</span></div></div></div></div></body></html>

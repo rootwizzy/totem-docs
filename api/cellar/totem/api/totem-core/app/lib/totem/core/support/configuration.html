@@ -1,0 +1,336 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/app/lib/totem/core/support/configuration</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/app/lib/totem/core/support/configuration"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/support/configuration.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/support/configuration.rb">src/totem/api/totem-core/app/lib/totem/core/support/configuration.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Support</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Configuration</span></span>
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:totem_settings</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Should always use the public methods to access these instance variables.
+Listing the instance variables used to provide easily access if needed.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:all_platform_configurations</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(env)</span></span>
+          <span class="hljs-variable">@totem_settings</span> = env
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">startup_quiet?</span>;</span> <span class="hljs-variable">@_startup_quiet</span> ||= (<span class="hljs-constant">Rails</span>.env.production? || <span class="hljs-constant">ENV</span>[<span class="hljs-string">'TOTEM_STARTUP_QUIET'</span>] == <span class="hljs-string">'true'</span>); <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">startup_no_associations?</span>;</span> <span class="hljs-variable">@_startup_no_assocations</span> ||= <span class="hljs-constant">ENV</span>[<span class="hljs-string">'TOTEM_STARTUP_NO_ASSOCIATIONS'</span>] == <span class="hljs-string">'true'</span>; <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">startup_no_serializers?</span>;</span>  <span class="hljs-variable">@_startup_no_serializers</span> ||= <span class="hljs-constant">ENV</span>[<span class="hljs-string">'TOTEM_STARTUP_NO_SERIALIZERS'</span>] == <span class="hljs-string">'true'</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Public</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>define config.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">config</span>;</span> <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>platform values as defined in config files for all platforms</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform_configurations</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Sets the @all_platform_configurations variable and is referenced in a number of methods
+via the &#39;platforms&#39; method during the configuration load process (e.g. why it is not ||=).</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-variable">@all_platform_configurations</span> || set_platform_configurations
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platforms</span>;</span> platform_configurations; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform</span><span class="hljs-params">(platform_name)</span></span>
+          platform_configurations[platform_name.downcase.to_sym] || <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Array of path settings for the platform name (after resolution)</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">paths</span><span class="hljs-params">(platform_name)</span></span>
+          platform(platform_name).paths
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">model_access</span><span class="hljs-params">(platform_name)</span></span>
+          platform(platform_name).model_access
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">classes</span><span class="hljs-params">(platform_name)</span></span>
+          platform(platform_name).classes
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">modules</span><span class="hljs-params">(platform_name)</span></span>
+          platform(platform_name).modules
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">seed_order</span><span class="hljs-params">(platform_name)</span></span>
+          platform(platform_name).seed_order
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authentication</span><span class="hljs-params">(platform_name)</span></span>
+          platform(platform_name).authentication
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorization</span><span class="hljs-params">(platform_name)</span></span>
+          platform(platform_name).authorization
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">routes</span><span class="hljs-params">(platform_name)</span></span>
+          platform(platform_name).routes
+        <span class="hljs-keyword">end</span>
+
+        private</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Set Platform Configuration Files</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Merge all configuration files -&gt; files ending in &#39;.config.yml&#39; from any directory in the rails application.
+Configuration files must start with the platform name followed by a dot such as &#39;platform.config.yml&#39;.
+Filename structure (with example full file name: platform.01.config.yml):
+  plaform-name:      (required) e.g. totem
+  merge-order:       (optional) e.g. 01
+  config-identifier: (required) e.g. config.yml  (note: MUST match totem_settings.option.configuration_file_extension)
+The files are merged based on merge order or will be merged in the Ruby Dir class order.
+If order is important, all the platform&#39;s files must have a merge order in the filename.
+If order is not important, the base config filename must end in &#39;.config.yml&#39; (e.g. platform.config.yml) and
+the platform&#39;s other filenames platform.some-descriptive-name.config.yml (e.g. platform.casespace.config.yml).
+Be sure to remove or rename any old/alternative/testing/etc. config files.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_platform_configurations</span></span>
+          <span class="hljs-variable">@all_platform_configurations</span> = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+          platform_names_processed     = <span class="hljs-constant">Array</span>.new
+          platform_configs             = get_platform_configs_with_merge_configs
+          platform_configs.each_pair <span class="hljs-keyword">do</span> |orig_platform_name, merge_configs|
+            previous_configs_for_debug = []
+            current_platform_path      = <span class="hljs-keyword">nil</span>
+            current_platform_name      = <span class="hljs-keyword">nil</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>merge_configs is a hash:
+ key   = merge order value
+ value = filename
+Sort the merge config keys in merge ascending order.  Base config will be first.</p></div></div><div class="code"><div class="wrapper">            merge_configs.keys.sort.each <span class="hljs-keyword">do</span> |merge_order|
+              file          = merge_configs[merge_order]
+              file_contents = <span class="hljs-constant">File</span>.read(file)
+              config        = <span class="hljs-constant">HashWithIndifferentAccess</span>.new( <span class="hljs-constant">YAML</span>.load(file_contents) )
+              platform_name, platform_path = get_platform_name_and_path_from_config(orig_platform_name, config)
+              current_platform_path ||= platform_path
+              current_platform_name ||= platform_name
+              <span class="hljs-keyword">unless</span> (current_platform_name == platform_name &amp;&amp; current_platform_path == platform_path)
+                error <span class="hljs-string">"Platform path [<span class="hljs-subst">#{current_platform_path}</span>] has path mis-match [<span class="hljs-subst">#{platform_path}</span>] in config file [<span class="hljs-subst">#{file}</span>]"</span>
+              <span class="hljs-keyword">end</span>
+              platform_config = platform_configurations[platform_name] ||= <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+              platform_config.platform_name = platform_name
+              platform_config.platform_path = platform_path
+              process_platform_config(platform_config, config)
+              merge_config_debug_message(file, previous_configs_for_debug) <span class="hljs-keyword">unless</span> <span class="hljs-constant">::Rails</span>.env.production?
+            <span class="hljs-keyword">end</span>
+            error <span class="hljs-string">"Duplicate platform name [<span class="hljs-subst">#{current_platform_name}</span>] in config [<span class="hljs-subst">#{orig_platform_name}</span>]"</span>  <span class="hljs-keyword">if</span> platform_names_processed.<span class="hljs-keyword">include</span>?(current_platform_name)
+            platform_names_processed.push current_platform_name
+          <span class="hljs-keyword">end</span>
+          resolve_path_references  <span class="hljs-comment"># resolve any cross platform references</span>
+          basic_validation
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_platform_name_and_path_from_config</span><span class="hljs-params">(orig_platform_name, config)</span></span>
+          name = config[<span class="hljs-symbol">:platform_name</span>]
+          path = config[<span class="hljs-symbol">:platform_path</span>]
+          <span class="hljs-keyword">case</span>
+          <span class="hljs-keyword">when</span> name.present? &amp;&amp; path.present?  <span class="hljs-comment"># verify they are correct</span>
+            path_name = path.to_s.gsub(<span class="hljs-regexp">/\//</span>, <span class="hljs-string">'_'</span>)
+            error <span class="hljs-string">"Platform path [<span class="hljs-subst">#{path}</span>] does not match platform name [<span class="hljs-subst">#{name}</span>] in [<span class="hljs-subst">#{orig_platform_name}</span>]"</span>  <span class="hljs-keyword">unless</span> path_name == name
+          <span class="hljs-keyword">when</span> name.blank? &amp;&amp; path.present?
+            name = path.to_s.gsub(<span class="hljs-regexp">/\//</span>, <span class="hljs-string">'_'</span>) <span class="hljs-comment"># best to specify the path rather than only the name</span>
+          <span class="hljs-keyword">when</span> name.present? &amp;&amp; path.blank?
+            path = name.to_s.gsub(<span class="hljs-string">'_'</span>, <span class="hljs-string">'/'</span>)  <span class="hljs-comment"># best guess; will be incorrect if each word is not a path (e.g. a_b_c_d -&gt; a/b/c/d but should be a/b_c/d)</span>
+            warning <span class="hljs-string">"Platform path [<span class="hljs-subst">#{path.inspect}</span>] assumed from platform name [<span class="hljs-subst">#{name.inspect}</span>].  Best to use the 'platform_path' key"</span>
+          <span class="hljs-keyword">when</span> name.blank? &amp;&amp; path.blank?
+            name = orig_platform_name.to_s
+            path = name.gsub(<span class="hljs-string">'_'</span>, <span class="hljs-string">'/'</span>)  <span class="hljs-comment"># see comment above for possible errors</span>
+            warning <span class="hljs-string">"Platform path [<span class="hljs-subst">#{path.inspect}</span>] assumed from platform name [<span class="hljs-subst">#{name.inspect}</span>] (taken from filename).  Best to use the 'platform_path' key"</span>
+          <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">return</span> [name.to_s.downcase, path.to_s.downcase]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_platform_configs_with_merge_configs</span></span>
+          file_ext = totem_settings.option.configuration_file_extension
+          error <span class="hljs-string">"The configuration_file_extension has not been set"</span>  <span class="hljs-keyword">if</span> file_ext.blank?
+          search_dirs = totem_settings.option.configuration_file_directory_search
+          error <span class="hljs-string">"The configuration_file_directory_search has not been set"</span>  <span class="hljs-keyword">if</span> search_dirs.blank?
+          filename     = totem_settings.option.configuration_files_filename
+          relative_to  = totem_settings.option.configuration_files_relative_to
+          config_files = shared_configuration_files(search_dirs, file_ext, <span class="hljs-symbol">filename:</span> filename, <span class="hljs-symbol">relative_to:</span> relative_to)
+          error <span class="hljs-string">"No config files found"</span>  <span class="hljs-keyword">if</span> config_files.blank?
+          platform_configs = <span class="hljs-constant">Hash</span>.new
+          merge_count      = <span class="hljs-constant">Hash</span>.new(<span class="hljs-number">0</span>)
+          config_files.sort.each <span class="hljs-keyword">do</span> |file|
+            basename       = <span class="hljs-constant">File</span>.basename(file, <span class="hljs-string">'.config.yml'</span>)
+            basename_parts = basename.split(<span class="hljs-regexp">/\./</span>)
+            platform_name  = basename_parts.shift
+            merge_order    = basename_parts.shift
+            <span class="hljs-keyword">if</span> merge_order.present?
+              <span class="hljs-keyword">if</span> merge_order.match(<span class="hljs-regexp">/\D/</span>)  <span class="hljs-comment"># non numeric merge order</span>
+                merge_order = (merge_count[platform_name] += <span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">4</span>,<span class="hljs-string">'0'</span>)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">else</span>
+              merge_order = platform_configs[platform_name].blank? ? <span class="hljs-string">'0000'</span> <span class="hljs-symbol">:</span> (merge_count[platform_name] += <span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">4</span>,<span class="hljs-string">'0'</span>)
+            <span class="hljs-keyword">end</span>
+            platform_configs[platform_name] ||= <span class="hljs-constant">Hash</span>.new
+            has_file = platform_configs[platform_name][merge_order]
+            error <span class="hljs-string">"Config file [<span class="hljs-subst">#{file}</span>] has a merge order [<span class="hljs-subst">#{merge_order}</span>] which duplicates file [<span class="hljs-subst">#{has_file}</span>]"</span>  <span class="hljs-keyword">if</span> has_file.present?
+            platform_configs[platform_name][merge_order] = file
+          <span class="hljs-keyword">end</span>
+          platform_configs
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">merge_config_debug_message</span><span class="hljs-params">(file, files)</span></span>
+          file_path = <span class="hljs-constant">Pathname</span>.new(file).relative_path_from(<span class="hljs-constant">Rails</span>.root).to_s.sub(<span class="hljs-regexp">/\.config\.yml$/</span>, <span class="hljs-string">''</span>)
+          <span class="hljs-keyword">if</span> files.blank?
+            debug <span class="hljs-string">"Processing config file [<span class="hljs-subst">#{file_path}</span>]"</span>
+          <span class="hljs-keyword">else</span>
+            last_file_path = <span class="hljs-constant">Pathname</span>.new(files.last).relative_path_from(<span class="hljs-constant">Rails</span>.root).to_s.sub(<span class="hljs-regexp">/\.config\.yml$/</span>, <span class="hljs-string">''</span>)
+            debug <span class="hljs-string">"Merging config file [<span class="hljs-subst">#{file_path}</span>] with config [<span class="hljs-subst">#{last_file_path}</span>]"</span>
+          <span class="hljs-keyword">end</span>
+          files.push file
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Platform Configuration Values</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_platform_config</span><span class="hljs-params">(platform_config, config)</span></span>
+          platform_config.classes        = simple_key_merge(<span class="hljs-symbol">:classes</span>, platform_config, config)
+          platform_config.modules        = simple_key_merge(<span class="hljs-symbol">:modules</span>, platform_config, config)
+          platform_config.routes         = simple_key_merge(<span class="hljs-symbol">:routes</span>, platform_config, config)
+          platform_config.authentication = get_authentication(platform_config, config)
+          platform_config.authorization  = simple_key_merge(<span class="hljs-symbol">:authorization</span>, platform_config, config)
+          platform_config.model_access   = simple_merge(<span class="hljs-symbol">:model_access</span>, platform_config, config)
+          platform_config.seed_order     = get_seed_order(platform_config, config)
+          platform_config.paths          = get_paths(platform_config, config)  <span class="hljs-comment"># do last since uses other values such as routes</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Authentication</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_authentication</span><span class="hljs-params">(platform_config, config)</span></span>
+          authentication          = simple_key_merge(<span class="hljs-symbol">:authentication</span>, platform_config, config)
+          config_session          = (config[<span class="hljs-symbol">:authentication</span>] || <span class="hljs-constant">Hash</span>.new)[<span class="hljs-symbol">:session</span>] || <span class="hljs-constant">Hash</span>.new
+          platform_config_session = (platform_config[<span class="hljs-symbol">:authentication</span>] || <span class="hljs-constant">Hash</span>.new)[<span class="hljs-symbol">:session</span>] || <span class="hljs-constant">Hash</span>.new
+          session                 = config_session.deep_merge(platform_config_session)
+          authentication.session  = convert_key_time_values_to_numeric_seconds(session)
+          authentication
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Seed Order</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Combine seed order arrays together.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_seed_order</span><span class="hljs-params">(platform_config, config)</span></span>
+          config_seed_order = config[<span class="hljs-symbol">:seed_order</span>]
+          seed_order = [ platform_config[<span class="hljs-symbol">:seed_order</span>], config_seed_order ].flatten.compact.uniq</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>allow empty seed_order array to mean &#39;no&#39; seed order rather than default to paths</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> config_seed_order.<span class="hljs-keyword">nil</span>? &amp;&amp; seed_order.blank?
+          seed_order
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Platform Paths</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_paths</span><span class="hljs-params">(platform_config, config)</span></span>
+          platform_paths = platform_config[<span class="hljs-symbol">:paths</span>] || <span class="hljs-constant">Array</span>.new
+          config_paths   = config[<span class="hljs-symbol">:paths</span>]          || <span class="hljs-constant">Array</span>.new
+          platform_paths = <span class="hljs-constant">Array</span>.new <span class="hljs-keyword">if</span> config_paths.present? &amp;&amp; override_paths(config)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Temporarily store all of this configs&#39;s paths and their values so can expand wildcard paths</p></div></div><div class="code"><div class="wrapper">          temp_values = <span class="hljs-constant">Hash</span>.new    <span class="hljs-comment"># temp store of the path values by path key</span>
+          temp_paths  = <span class="hljs-constant">Array</span>.new
+
+          config_paths.each <span class="hljs-keyword">do</span> |path_hash|
+            path_hash ||= <span class="hljs-constant">Hash</span>.new
+            path        = path_hash[<span class="hljs-symbol">:path</span>]
+            error <span class="hljs-string">"Platform [<span class="hljs-subst">#{platform_config.platform_name}</span>] entry does not have a path value [<span class="hljs-subst">#{path_hash}</span>]"</span>  <span class="hljs-keyword">if</span> path.blank?
+            temp_paths.push path
+            temp_values[path] = path_hash
+          <span class="hljs-keyword">end</span>
+          all_paths = shared_expand_wildcard_engine_paths(temp_paths)  <span class="hljs-comment"># expand any wildcard paths into each path</span>
+
+          all_paths.each <span class="hljs-keyword">do</span> |path|
+            path_config = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+            path_hash   = temp_values[path] || wildcard_path_values(path, temp_paths, temp_values) || {}
+            engine_name = shared_engine_path_to_engine_name(path)
+            path_config.path         = path
+            path_config.is_engine    = totem_settings.engine.find_by_name(engine_name).present?
+            path_config.is_reference = <span class="hljs-keyword">true</span>  <span class="hljs-keyword">unless</span> path.starts_with?(platform_config.platform_path.to_s)
+            path_config.engine_name  = engine_name  <span class="hljs-keyword">if</span> path_config.is_engine
+            path_config.routes       = get_path_route_values(platform_config, path_config, path_hash)
+
+            platform_paths.push path_config  <span class="hljs-comment"># add each to path config to the array</span>
+          <span class="hljs-keyword">end</span>
+          platform_paths
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">wildcard_path_values</span><span class="hljs-params">(path, paths, values)</span></span>
+          paths.each <span class="hljs-keyword">do</span> |match_path|
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> match_path.ends_with?(<span class="hljs-string">'*'</span>)
+            <span class="hljs-keyword">return</span> values[match_path]  <span class="hljs-keyword">if</span> path.starts_with?(match_path.chop)
+          <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">nil</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">override_paths</span><span class="hljs-params">(config)</span></span>
+          config[<span class="hljs-symbol">:override_paths</span>] == <span class="hljs-keyword">true</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Path Routes</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Merges any main :routes section values into the path routes.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_path_route_values</span><span class="hljs-params">(platform_config, path_config, path_hash)</span></span>
+          routes          = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+          path_routes     = (path_hash[<span class="hljs-symbol">:routes</span>] || <span class="hljs-constant">HashWithIndifferentAccess</span>.new).deep_dup
+          platform_routes = platform_config[<span class="hljs-symbol">:routes</span>] || <span class="hljs-constant">Hash</span>.new
+          validate_is_blank_or_hash(path_routes, <span class="hljs-symbol">:mount</span>, platform_config, path_config)
+          validate_is_blank_or_hash(path_routes, <span class="hljs-symbol">:match</span>, platform_config, path_config)
+          routes.mount    = simple_merge_ordered_hash(<span class="hljs-symbol">:mount</span>, path_routes, platform_routes)
+          routes.match    = simple_merge_ordered_hash(<span class="hljs-symbol">:match</span>, path_routes, {})  <span class="hljs-comment"># do not inherit match values from platform</span>
+          routes.url      = (path_hash[<span class="hljs-symbol">:routes</span>] &amp;&amp; path_hash[<span class="hljs-symbol">:routes</span>][<span class="hljs-symbol">:url</span>]) || platform_routes[<span class="hljs-symbol">:url</span>]
+          remove_blank_path_routes_values(routes, path_routes) <span class="hljs-keyword">if</span> path_config.is_reference
+          routes
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_is_blank_or_hash</span><span class="hljs-params">(values, key, platform_config, path_config)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> values[key].blank? || values[key].kind_of?(<span class="hljs-constant">Hash</span>)
+          platform_name = platform_config[<span class="hljs-symbol">:platform_name</span>]
+          path          = path_config.path
+          error <span class="hljs-string">"Platform <span class="hljs-subst">#{platform_name.inspect}</span> path <span class="hljs-subst">#{path.inspect}</span> is not blank or a hash."</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Remove any keys with blank value that were inherited from the platform.
+Allow the reference to populate them.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">remove_blank_path_routes_values</span><span class="hljs-params">(routes, path_routes)</span></span>
+          routes.delete(<span class="hljs-symbol">:mount</span>)  <span class="hljs-keyword">if</span> path_routes[<span class="hljs-symbol">:mount</span>].blank?
+          routes.delete(<span class="hljs-symbol">:match</span>)  <span class="hljs-keyword">if</span> path_routes[<span class="hljs-symbol">:match</span>].blank?
+          routes.delete(<span class="hljs-symbol">:url</span>)    <span class="hljs-keyword">if</span> path_routes[<span class="hljs-symbol">:url</span>].blank?
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Resolve Path References</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Performed after all the configurations have been processed.
+The referenced platform values are duplicated and inserted into the platform&#39;s values.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">resolve_path_references</span></span>
+          platform_configurations.each_key <span class="hljs-keyword">do</span> |platform_name|
+            platform_paths = paths(platform_name) || <span class="hljs-constant">Array</span>.new
+            platform_paths_dup_check = <span class="hljs-constant">Array</span>.new
+            platform_paths.each <span class="hljs-keyword">do</span> |path_config|
+              path = path_config.path
+              <span class="hljs-keyword">if</span> platform_paths_dup_check.<span class="hljs-keyword">include</span>?(path)
+                error <span class="hljs-string">"Platform <span class="hljs-subst">#{platform_name.inspect}</span> has a duplicate path <span class="hljs-subst">#{path.inspect}</span>."</span>
+              <span class="hljs-keyword">else</span>
+                platform_paths_dup_check.push(path)
+              <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> path_config.is_reference
+              validate_engine_path_and_engine_class(path)  <span class="hljs-keyword">if</span> path_config.is_engine  <span class="hljs-comment"># check to make sure engine name matches its class</span>
+              ref_platform_path = path.split(<span class="hljs-string">'/'</span>)
+              ref_platform_path.pop  <span class="hljs-comment"># remove the sub platform name and leave the platform name</span>
+              ref_platform_name = ref_platform_path.join(<span class="hljs-string">'_'</span>)
+              <span class="hljs-keyword">if</span> (ref_platform = platform(ref_platform_name)).blank?
+                error <span class="hljs-string">"Platform [<span class="hljs-subst">#{platform_name.inspect}</span>] has a reference to path [<span class="hljs-subst">#{path}</span>] that can not be resolved"</span>
+              <span class="hljs-keyword">end</span>
+              ref_config = ref_platform.paths.select{|p| p.path == path}.first
+              error <span class="hljs-string">"Reference in platform [<span class="hljs-subst">#{platform_name.inspect}</span>] for [<span class="hljs-subst">#{path}</span>] not found in [<span class="hljs-subst">#{ref_platform_name}</span>]"</span>  <span class="hljs-keyword">if</span> ref_config.blank?
+              new_config = ref_config.deep_merge(path_config)
+              path_config.deep_merge! new_config.merge(<span class="hljs-symbol">is_reference:</span> <span class="hljs-keyword">true</span>)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Validation</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">basic_validation</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>possibly do something here in the future</p></div></div><div class="code"><div class="wrapper">          basic_path_validation
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">basic_path_validation</span></span>
+          platform_configurations.each_key <span class="hljs-keyword">do</span> |platform_name|
+            platform_paths = paths(platform_name) || <span class="hljs-constant">Array</span>.new
+            platform_paths.each <span class="hljs-keyword">do</span> |path_config|
+              <span class="hljs-keyword">if</span> path_config.is_engine
+                <span class="hljs-keyword">if</span> totem_settings.engine.loaded?(path_config.engine_name)
+                  validate_engine_path_and_engine_class(path_config.path) <span class="hljs-comment"># check to make sure engine name matches its class</span>
+                <span class="hljs-keyword">else</span>
+                  warning <span class="hljs-string">"Platform [<span class="hljs-subst">#{platform_config.platform_name}</span>] includes path [<span class="hljs-subst">#{path_config.path}</span>] but the engine is not loaded"</span>
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">if</span> path_config.routes.url.<span class="hljs-keyword">nil</span>?
+                warning <span class="hljs-string">"Platform [<span class="hljs-subst">#{platform_name}</span>] url value is blank for path [<span class="hljs-subst">#{path_config.path}</span>]"</span>  <span class="hljs-keyword">unless</span> platform_name == <span class="hljs-symbol">:totem</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Validate an engine&#39;s path matches the engine&#39;s class (totem/core engine defined as Totem::Core)</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_engine_path_and_engine_class</span><span class="hljs-params">(path)</span></span>
+          engine_class = totem_settings.engine.name_and_class[shared_engine_path_to_engine_name(path)]
+          <span class="hljs-keyword">if</span> engine_class.blank?
+            error <span class="hljs-string">"Engine path [<span class="hljs-subst">#{path.inspect}</span>] does not exist"</span>
+          <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">if</span> engine_class.underscore != path
+            error <span class="hljs-string">"Engine path [<span class="hljs-subst">#{path.inspect}</span>] does not match engine class [<span class="hljs-subst">#{engine_class}</span>]"</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Helpers
+Convert a hash string time value(s) to a Rails Fixnum seconds object e.g. &#39;10.minutes&#39;</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">convert_key_time_values_to_numeric_seconds</span><span class="hljs-params">(hash)</span></span>
+          hash.each_pair <span class="hljs-keyword">do</span> |key, value|
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> key.to_s.ends_with?(<span class="hljs-string">'_time'</span>)
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> value.is_a?(<span class="hljs-constant">Fixnum</span>)
+            i, time_units = value.split(<span class="hljs-string">'.'</span>, <span class="hljs-number">2</span>) <span class="hljs-comment"># e.g. 10, minutes</span>
+            i = i.to_i
+            error(<span class="hljs-string">"Invalid authentication session time value for key [<span class="hljs-subst">#{key.inspect}</span>] value [<span class="hljs-subst">#{value.inspect}</span>]."</span>)  <span class="hljs-keyword">if</span> i &lt;= <span class="hljs-number">0</span>
+            error(<span class="hljs-string">"Invalid authentication session time_unit value for key [<span class="hljs-subst">#{key.inspect}</span>] value [<span class="hljs-subst">#{value.inspect}</span>]."</span>)  <span class="hljs-keyword">unless</span> i.respond_to?(time_units)
+            hash[key] = i.send(time_units)
+          <span class="hljs-keyword">end</span>
+          hash
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Can use when all keys are standard ruby variable names, otherwise use simple_merge.
+If use this on keys like &#39;platform/assignment&#39; will need to symbolize the string and use []
+(e.g. config.model_access[&#39;isu/vet_med/ts&#39;.to_sym]).</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">simple_key_merge</span><span class="hljs-params">(key, platform_config, config)</span></span>
+          hash = <span class="hljs-constant">Hash</span>[(config[key] || <span class="hljs-constant">Hash</span>.new).deep_merge(platform_config[key] || <span class="hljs-constant">Hash</span>.new)]
+          <span class="hljs-constant">ActiveSupport::OrderedOptions</span>[hash.deep_symbolize_keys]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">simple_merge</span><span class="hljs-params">(key, platform_config, config)</span></span>
+          <span class="hljs-constant">HashWithIndifferentAccess</span>[(config[key] || <span class="hljs-constant">Hash</span>.new).deep_merge(platform_config[key] || <span class="hljs-constant">Hash</span>.new)]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">simple_merge_ordered_hash</span><span class="hljs-params">(key, platform_config, config)</span></span>
+          <span class="hljs-constant">ActiveSupport::OrderedHash</span>[(config[key] || <span class="hljs-constant">Hash</span>.new).deep_merge(platform_config[key] || <span class="hljs-constant">Hash</span>.new)]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">Shared</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

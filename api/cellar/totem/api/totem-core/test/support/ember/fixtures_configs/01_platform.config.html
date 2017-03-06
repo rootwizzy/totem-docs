@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/support/ember/fixtures_configs/01_platform.config</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/support/ember/fixtures_configs/01_platform.config"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/ember/fixtures_configs/01_platform.config.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/ember/fixtures_configs/01_platform.config.yml">src/totem/api/totem-core/test/support/ember/fixtures_configs/01_platform.config.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-attribute">platform_path</span>: <span class="hljs-string">test/platform</span>
+
+<span class="crystal"><span class="hljs-symbol">paths:</span>               
+  - <span class="hljs-symbol">path:</span> test/platform/main
+
+<span class="hljs-symbol">routes:</span>
+  <span class="hljs-symbol">url:</span>        api
+  <span class="hljs-symbol">glob_match:</span> <span class="hljs-string">'*ember'</span>
+
+<span class="hljs-symbol">ember:</span>
+
+  <span class="hljs-symbol">default_fatal_message:</span> <span class="hljs-string">'A fatal platform error occurred.'</span>
+
+  <span class="hljs-symbol">path_namespaces:</span>
+    - <span class="hljs-symbol">path:</span> test/platform/special/namespace
+
+  <span class="hljs-symbol">template_paths:</span>
+    <span class="hljs-symbol">template_path_1:</span> test/platform/path1
+    <span class="hljs-symbol">template_path_2:</span> test/platform/path2
+    <span class="hljs-symbol">template_path_3:</span> test/platform/path3
+
+  <span class="hljs-symbol">auth:</span>
+    <span class="hljs-symbol">sign_out_url:</span>   /test/platform/main/home/sign_out
+    <span class="hljs-symbol">user_namespace:</span> test.platform.main.user_ns
+
+    <span class="hljs-symbol">signInEndPoint:</span>     /test/platform/main/users/sign_in
+    <span class="hljs-symbol">actionRedirectable:</span> 
+      <span class="hljs-symbol">signInRoute:</span> test/platform/main/sign_in_route
+
+  <span class="hljs-symbol">route_map_paths:</span>
+    - test/platform/main/config/routes
+    - test/platform/one/config/routes
+    - test/platform/two/config/routes
+
+  <span class="hljs-symbol">require_paths:</span>
+    test/platform/<span class="hljs-symbol">main:</span>
+      test.platform.<span class="hljs-symbol">module_1:</span> test/platform/main/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">module_1</span></span>
+      test.platform.<span class="hljs-symbol">module_2:</span> test/platform/main/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">module_2</span></span>
+      platform.<span class="hljs-symbol">locales:</span>       test/platform/main/locales/locales
+    test/platform/<span class="hljs-symbol">one:</span>
+      test.platform.one.<span class="hljs-symbol">module_1:</span> test/platform/one/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">module_1</span></span>
+      test.platform.one.<span class="hljs-symbol">module_2:</span> test/platform/one/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">module_1</span></span>
+    test/platform/<span class="hljs-symbol">two:</span>
+      test.platform.two.<span class="hljs-symbol">module_1:</span> test/platform/two/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">module_1</span></span>
+  <span class="hljs-symbol">css:</span>
+    <span class="hljs-symbol">body_class:</span> test-platform
+    <span class="hljs-symbol">another_class:</span> test-platform-another
+</span></div></div></div></div></body></html>

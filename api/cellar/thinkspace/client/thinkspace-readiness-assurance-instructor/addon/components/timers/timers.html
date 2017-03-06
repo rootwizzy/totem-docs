@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/timers/timers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/timers/timers"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/timers/timers.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/timers/timers.coffee">src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/timers/timers.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-readiness-assurance-instructor/components/base'</span>
+import totem_timer from <span class="hljs-string">'totem/timer'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">timers</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@am</span>.pubsub_active
+    <span class="hljs-property">@set_ready_on</span>()
+
+  <span class="hljs-attribute">willInsertElement</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_timer_list</span>()
+
+  <span class="hljs-attribute">add_refresh_timer</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@refresh_timer</span> = totem_timer.start(<span class="hljs-attribute">source</span>: @, <span class="hljs-attribute">method</span>: <span class="hljs-string">'get_timer_list'</span>, <span class="hljs-attribute">interval</span>: <span class="hljs-number">15000</span>)
+
+  <span class="hljs-attribute">get_timer_list</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@am</span>.pubsub_active
+    socket = <span class="hljs-property">@pubsub</span>.get_socket()
+    cevent = <span class="hljs-property">@pubsub</span>.client_event(<span class="hljs-string">'timer_list'</span>)
+    sevent = <span class="hljs-property">@pubsub</span>.server_event(<span class="hljs-string">'timer_list'</span>)
+    <span class="hljs-property">@pubsub</span>.<span class="hljs-literal">on</span>(socket, sevent, @, <span class="hljs-string">'handle_timer_list'</span>)
+    socket.emit(cevent)
+
+  <span class="hljs-attribute">handle_timer_list</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.info <span class="hljs-string">'handle_timer_list:'</span>, data
+    <span class="hljs-property">@set_timers</span>(data).<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@add_refresh_timer</span>()
+
+  <span class="hljs-attribute">set_timers</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      values   = data.value <span class="hljs-keyword">or</span> []
+      values   = values.sortBy <span class="hljs-string">'timer.settings.end_at'</span>
+      promises = (<span class="hljs-property">@format_timer_value</span>(value) <span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> values)
+      ember.RSVP.all(promises).<span class="hljs-keyword">then</span> (timers) =&gt;
+        <span class="hljs-property">@set</span> <span class="hljs-string">'timers'</span>, timers
+        <span class="hljs-property">@set_ready_on</span>()
+        resolve()
+
+  <span class="hljs-attribute">format_timer_value</span>: <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      settings = value.timer <span class="hljs-keyword">or</span> {}
+      rooms    = value.rooms
+      id       = settings.id
+      title    = settings.title <span class="hljs-keyword">or</span> <span class="hljs-string">'no-title'</span>
+      type     = settings.type
+      interval = settings.interval
+      unit     = settings.unit
+      end_date = <span class="hljs-keyword">new</span> Date(settings.end_at)
+      end_at   = <span class="hljs-property">@am</span>.format_time(end_date)
+      from_now = <span class="hljs-property">@am</span>.minutes_from_now(end_date)
+      <span class="hljs-keyword">if</span> from_now &gt; <span class="hljs-number">0</span>
+        from_units = <span class="hljs-property">@am</span>.pluralize(from_now, unit)
+        from_now   = <span class="hljs-string">"<span class="hljs-subst">#{from_now}</span> <span class="hljs-subst">#{from_units}</span>"</span>
+        from_class = <span class="hljs-string">''</span>
+      <span class="hljs-keyword">else</span>
+        from_class = <span class="hljs-string">'ts-ra_admin-timer-about-to-fire'</span>
+        from_now   = <span class="hljs-string">"under 1 <span class="hljs-subst">#{unit}</span>"</span>
+      resolve {settings, rooms, title, end_at, type, from_now, from_class}
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">cancel</span>: <span class="hljs-function"><span class="hljs-params">(timer)</span> -&gt;</span>
+      <span class="hljs-built_in">console</span>.warn <span class="hljs-string">'cancel:'</span>, timer
+      timer.settings.rooms = timer.rooms
+      <span class="hljs-property">@am</span>.send_timer_cancel(<span class="hljs-attribute">timer</span>: timer.settings).<span class="hljs-keyword">then</span> =&gt;
+        <span class="hljs-property">@get_timer_list</span>()</div></div></div></div></body></html>

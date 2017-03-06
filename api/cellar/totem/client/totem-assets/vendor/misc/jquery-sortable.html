@@ -1,0 +1,629 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-assets/vendor/misc/jquery-sortable</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-assets/vendor/misc/jquery-sortable"><meta name="groc-project-path" content="src/totem/client/totem-assets/vendor/misc/jquery-sortable.js"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-assets/vendor/misc/jquery-sortable.js">src/totem/client/totem-assets/vendor/misc/jquery-sortable.js</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>===================================================
+ jquery-sortable.js v0.9.13</p>
+<h1 id="-http-johnny-github-com-jquery-sortable-"> <a href="http://johnny.github.com/jquery-sortable/">http://johnny.github.com/jquery-sortable/</a></h1>
+<p> Copyright (c) 2012 Jonas von Andrian
+ All rights reserved.</p>
+<p> Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:</p>
+<ul>
+<li>Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.</li>
+<li>Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.</li>
+<li><p>The name of the author may not be used to endorse or promote products
+derived from this software without specific prior written permission.</p>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</p>
+<h1 id="software-even-if-advised-of-the-possibility-of-such-damage">SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</h1>
+</li>
+</ul></div></div><div class="code"><div class="wrapper">!<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"> $, window, pluginName, undefined</span>)</span>{
+  <span class="hljs-keyword">var</span> containerDefaults = {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If true, items can be dragged from this container</p></div></div><div class="code"><div class="wrapper">    drag: <span class="hljs-literal">true</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If true, items can be droped onto this container</p></div></div><div class="code"><div class="wrapper">    drop: <span class="hljs-literal">true</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Exclude items from being draggable, if the
+selector matches the item</p></div></div><div class="code"><div class="wrapper">    exclude: <span class="hljs-string">""</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If true, search for nested containers within an item.If you nest containers,
+either the original selector with which you call the plugin must only match the top containers,
+or you need to specify a group (see the bootstrap nav example)</p></div></div><div class="code"><div class="wrapper">    nested: <span class="hljs-literal">true</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If true, the items are assumed to be arranged vertically</p></div></div><div class="code"><div class="wrapper">    vertical: <span class="hljs-literal">true</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Totem overrides
+If true, dragged items are cloned uppon dragging.</p></div></div><div class="code"><div class="wrapper">    clone: <span class="hljs-literal">false</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If true, removes the dragged item from the DOM upon drop.</p></div></div><div class="code"><div class="wrapper">    consume: <span class="hljs-literal">false</span>
+  }, <span class="hljs-comment">// end container defaults</span>
+  groupDefaults = {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This is executed after the placeholder has been moved.
+$closestItemOrContainer contains the closest item, the placeholder
+has been put at or the closest empty Container, the placeholder has
+been appended to.</p></div></div><div class="code"><div class="wrapper">    afterMove: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$placeholder, container, $closestItemOrContainer</span>) </span>{
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The exact css path between the container and its items, e.g. &quot;&gt; tbody&quot;</p></div></div><div class="code"><div class="wrapper">    containerPath: <span class="hljs-string">""</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The css selector of the containers</p></div></div><div class="code"><div class="wrapper">    containerSelector: <span class="hljs-string">"ol, ul"</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Distance the mouse has to travel to start dragging</p></div></div><div class="code"><div class="wrapper">    distance: <span class="hljs-number">0</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Time in milliseconds after mousedown until dragging should start.
+This option can be used to prevent unwanted drags when clicking on an element.</p></div></div><div class="code"><div class="wrapper">    delay: <span class="hljs-number">0</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The css selector of the drag handle</p></div></div><div class="code"><div class="wrapper">    handle: <span class="hljs-string">""</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The exact css path between the item and its subcontainers.
+It should only match the immediate items of a container.
+No item of a subcontainer should be matched. E.g. for ol&gt;div&gt;li the itemPath is &quot;&gt; div&quot;</p></div></div><div class="code"><div class="wrapper">    itemPath: <span class="hljs-string">""</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The css selector of the items</p></div></div><div class="code"><div class="wrapper">    itemSelector: <span class="hljs-string">"li"</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The class given to &quot;body&quot; while an item is being dragged</p></div></div><div class="code"><div class="wrapper">    bodyClass: <span class="hljs-string">"dragging"</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The class giving to an item while being dragged</p></div></div><div class="code"><div class="wrapper">    draggedClass: <span class="hljs-string">"dragged"</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check if the dragged item may be inside the container.
+Use with care, since the search for a valid container entails a depth first search
+and may be quite expensive.</p></div></div><div class="code"><div class="wrapper">    isValidTarget: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$item, container</span>) </span>{
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Executed before onDrop if placeholder is detached.
+This happens if pullPlaceholder is set to false and the drop occurs outside a container.</p></div></div><div class="code"><div class="wrapper">    onCancel: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$item, container, _super, event</span>) </span>{
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Executed at the beginning of a mouse move event.
+The Placeholder has not been moved yet.</p></div></div><div class="code"><div class="wrapper">    onDrag: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$item, position, _super, event</span>) </span>{
+      $item.css(position)
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Called after the drag has been started,
+that is the mouse button is being held down and
+the mouse is moving.
+The container is the closest initialized container.
+Therefore it might not be the container, that actually contains the item.</p></div></div><div class="code"><div class="wrapper">    onDragStart: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$item, container, _super, event</span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Totem additions
+Minor change, added visibility: visible</p></div></div><div class="code"><div class="wrapper">      $item.css({
+        height:     $item.outerHeight(),
+        width:      $item.outerWidth(),
+        visibility: <span class="hljs-string">'visible'</span>
+      })</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>END Totem additions</p></div></div><div class="code"><div class="wrapper">      $item.addClass(container.group.options.draggedClass)
+      $(<span class="hljs-string">"body"</span>).addClass(container.group.options.bodyClass)
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Called when the mouse button is being released</p></div></div><div class="code"><div class="wrapper">    onDrop: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$item, container, _super, event</span>) </span>{</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Totem additions</p></div></div><div class="code"><div class="wrapper">      $prev_item = container.prevItem</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if ($item[0] === $prev_item[0])</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> ($prev_item &amp;&amp; ($item[<span class="hljs-number">0</span>] === $prev_item[<span class="hljs-number">0</span>]))
+        $prev_item = $item.prevAll(<span class="hljs-string">'li'</span>).first()
+
+      $item.trigger({
+        type: <span class="hljs-string">'sortable_dragend'</span>,
+        dragged_item: $item,
+        dropped_container: container,
+        prev_item: $prev_item
+      })</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>END Totem additions</p></div></div><div class="code"><div class="wrapper">      $item.removeClass(container.group.options.draggedClass).removeAttr(<span class="hljs-string">"style"</span>)
+      $(<span class="hljs-string">"body"</span>).removeClass(container.group.options.bodyClass)
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Called on mousedown. If falsy value is returned, the dragging will not start.
+Ignore if element clicked is input, select or textarea</p></div></div><div class="code"><div class="wrapper">    onMousedown: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$item, _super, event</span>) </span>{
+      <span class="hljs-keyword">if</span> (!event.target.nodeName.match(<span class="hljs-regexp">/^(input|select|textarea)$/i</span>)) {
+        event.preventDefault()
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+      }
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The class of the placeholder (must match placeholder option markup)</p></div></div><div class="code"><div class="wrapper">    placeholderClass: <span class="hljs-string">"placeholder"</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Template for the placeholder. Can be any valid jQuery input
+e.g. a string, a DOM element.
+The placeholder must have the class &quot;placeholder&quot;</p></div></div><div class="code"><div class="wrapper">    placeholder: <span class="hljs-string">'&lt;li class="placeholder"&gt;&lt;/li&gt;'</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If true, the position of the placeholder is calculated on every mousemove.
+If false, it is only calculated when the mouse is above a container.</p></div></div><div class="code"><div class="wrapper">    pullPlaceholder: <span class="hljs-literal">true</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Specifies serialization of the container group.
+The pair $parent/$children is either container/items or item/subcontainers.</p></div></div><div class="code"><div class="wrapper">    serialize: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$parent, $children, parentIsContainer</span>) </span>{
+      <span class="hljs-keyword">var</span> result = $.extend({}, $parent.data())
+
+      <span class="hljs-keyword">if</span>(parentIsContainer)
+        <span class="hljs-keyword">return</span> [$children]
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ($children[<span class="hljs-number">0</span>]){
+        result.children = $children
+      }
+
+      <span class="hljs-keyword">delete</span> result.subContainers
+      <span class="hljs-keyword">delete</span> result.sortable
+
+      <span class="hljs-keyword">return</span> result
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set tolerance while dragging. Positive values decrease sensitivity,
+negative values increase it.</p></div></div><div class="code"><div class="wrapper">    tolerance: <span class="hljs-number">0</span>
+  }, <span class="hljs-comment">// end group defaults</span>
+  containerGroups = {},
+  groupCounter = <span class="hljs-number">0</span>,
+  emptyBox = {
+    left: <span class="hljs-number">0</span>,
+    top: <span class="hljs-number">0</span>,
+    bottom: <span class="hljs-number">0</span>,
+    right:<span class="hljs-number">0</span>
+  },
+  eventNames = {
+    start: <span class="hljs-string">"touchstart.sortable mousedown.sortable"</span>,
+    drop: <span class="hljs-string">"touchend.sortable touchcancel.sortable mouseup.sortable"</span>,
+    drag: <span class="hljs-string">"touchmove.sortable mousemove.sortable"</span>,
+    scroll: <span class="hljs-string">"scroll.sortable"</span>
+  },
+  subContainerKey = <span class="hljs-string">"subContainers"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>a is Array [left, right, top, bottom]
+b is array [left, top]</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">d</span>(<span class="hljs-params">a,b</span>) </span>{
+    <span class="hljs-keyword">var</span> x = <span class="hljs-built_in">Math</span>.max(<span class="hljs-number">0</span>, a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>] - a[<span class="hljs-number">1</span>]),
+    y = <span class="hljs-built_in">Math</span>.max(<span class="hljs-number">0</span>, a[<span class="hljs-number">2</span>] - b[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>] - a[<span class="hljs-number">3</span>])
+    <span class="hljs-keyword">return</span> x+y;
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setDimensions</span>(<span class="hljs-params">array, dimensions, tolerance, useOffset</span>) </span>{
+    <span class="hljs-keyword">var</span> i = array.length,
+    offsetMethod = useOffset ? <span class="hljs-string">"offset"</span> : <span class="hljs-string">"position"</span>
+    tolerance = tolerance || <span class="hljs-number">0</span>
+
+    <span class="hljs-keyword">while</span>(i--){
+      <span class="hljs-keyword">var</span> el = array[i].el ? array[i].el : $(array[i]),</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>use fitting method</p></div></div><div class="code"><div class="wrapper">      pos = el[offsetMethod]()
+      pos.left += <span class="hljs-built_in">parseInt</span>(el.css(<span class="hljs-string">'margin-left'</span>), <span class="hljs-number">10</span>)
+      pos.top += <span class="hljs-built_in">parseInt</span>(el.css(<span class="hljs-string">'margin-top'</span>),<span class="hljs-number">10</span>)
+      dimensions[i] = [
+        pos.left - tolerance,
+        pos.left + el.outerWidth() + tolerance,
+        pos.top - tolerance,
+        pos.top + el.outerHeight() + tolerance
+      ]
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRelativePosition</span>(<span class="hljs-params">pointer, element</span>) </span>{
+    <span class="hljs-keyword">var</span> offset = element.offset()
+    <span class="hljs-keyword">return</span> {
+      left: pointer.left - offset.left,
+      top: pointer.top - offset.top
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sortByDistanceDesc</span>(<span class="hljs-params">dimensions, pointer, lastPointer</span>) </span>{
+    pointer = [pointer.left, pointer.top]
+    lastPointer = lastPointer &amp;&amp; [lastPointer.left, lastPointer.top]
+
+    <span class="hljs-keyword">var</span> dim,
+    i = dimensions.length,
+    distances = []
+
+    <span class="hljs-keyword">while</span>(i--){
+      dim = dimensions[i]
+      distances[i] = [i,d(dim,pointer), lastPointer &amp;&amp; d(dim, lastPointer)]
+    }
+    distances = distances.sort(<span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">a,b</span>) </span>{
+      <span class="hljs-keyword">return</span> b[<span class="hljs-number">1</span>] - a[<span class="hljs-number">1</span>] || b[<span class="hljs-number">2</span>] - a[<span class="hljs-number">2</span>] || b[<span class="hljs-number">0</span>] - a[<span class="hljs-number">0</span>]
+    })</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>last entry is the closest</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">return</span> distances
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ContainerGroup</span>(<span class="hljs-params">options</span>) </span>{
+    <span class="hljs-keyword">this</span>.options = $.extend({}, groupDefaults, options)
+    <span class="hljs-keyword">this</span>.containers = []
+
+    <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.options.rootGroup){
+      <span class="hljs-keyword">this</span>.scrollProxy = $.proxy(<span class="hljs-keyword">this</span>.scroll, <span class="hljs-keyword">this</span>)
+      <span class="hljs-keyword">this</span>.dragProxy = $.proxy(<span class="hljs-keyword">this</span>.drag, <span class="hljs-keyword">this</span>)
+      <span class="hljs-keyword">this</span>.dropProxy = $.proxy(<span class="hljs-keyword">this</span>.drop, <span class="hljs-keyword">this</span>)
+      <span class="hljs-keyword">this</span>.placeholder = $(<span class="hljs-keyword">this</span>.options.placeholder)
+
+      <span class="hljs-keyword">if</span>(!options.isValidTarget)
+        <span class="hljs-keyword">this</span>.options.isValidTarget = <span class="hljs-literal">undefined</span>
+    }
+  }
+
+  ContainerGroup.get = <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">options</span>) </span>{
+    <span class="hljs-keyword">if</span>(!containerGroups[options.group]) {
+      <span class="hljs-keyword">if</span>(options.group === <span class="hljs-literal">undefined</span>)
+        options.group = groupCounter ++
+
+      containerGroups[options.group] = <span class="hljs-keyword">new</span> ContainerGroup(options)
+    }
+
+    <span class="hljs-keyword">return</span> containerGroups[options.group]
+  }
+
+  ContainerGroup.prototype = {
+    dragInit: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">e, itemContainer</span>) </span>{
+      <span class="hljs-keyword">this</span>.$<span class="hljs-built_in">document</span> = $(itemContainer.el[<span class="hljs-number">0</span>].ownerDocument)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>get item to drag</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> closestItem = $(e.target).closest(<span class="hljs-keyword">this</span>.options.itemSelector);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>using the length of this item, prevents the plugin from being started if there is no handle being clicked on.
+this may also be helpful in instantiating multidrag.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (closestItem.length) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Totem additions</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> (itemContainer.options.clone) {
+          original_width = closestItem.outerWidth()
+          $cloned_item   = closestItem.clone(<span class="hljs-literal">true</span>, <span class="hljs-literal">true</span>)
+          $cloned_item.addClass(<span class="hljs-string">'clone'</span>)
+          $cloned_item.css(<span class="hljs-string">'visibility'</span>, <span class="hljs-string">'hidden'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Moving the cloned_item to the &#39;body&#39; removes the width restriction.
+The width was calculated via Foundation&#39;s grid, thus being a percentage - it will be 100% width when attached to the body.</p></div></div><div class="code"><div class="wrapper">          $cloned_item.css(<span class="hljs-string">'width'</span>, original_width)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>$cloned_item.find(&#39;ol&#39;).remove() // Remove the nested children.</p></div></div><div class="code"><div class="wrapper">          $(<span class="hljs-string">'body'</span>).append($cloned_item)
+          <span class="hljs-keyword">this</span>.item = $cloned_item
+          closestItem.addClass(<span class="hljs-string">'sortable-original-item'</span>)
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-keyword">this</span>.item = closestItem;
+        }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>END Totem additions</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-comment">//this.item = closestItem;</span>
+
+        <span class="hljs-keyword">this</span>.itemContainer = itemContainer;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.item.is(<span class="hljs-keyword">this</span>.options.exclude) || !<span class="hljs-keyword">this</span>.options.onMousedown(<span class="hljs-keyword">this</span>.item, groupDefaults.onMousedown, e)) {
+            <span class="hljs-keyword">return</span>;
+        }
+        <span class="hljs-keyword">this</span>.setPointer(e);
+        <span class="hljs-keyword">this</span>.toggleListeners(<span class="hljs-string">'on'</span>);
+        <span class="hljs-keyword">this</span>.setupDelayTimer();
+        <span class="hljs-keyword">this</span>.dragInitDone = <span class="hljs-literal">true</span>;
+      }
+    },
+    drag: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">e</span>) </span>{
+      <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.dragging){
+        <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.distanceMet(e) || !<span class="hljs-keyword">this</span>.delayMet)
+          <span class="hljs-keyword">return</span>
+
+        <span class="hljs-keyword">this</span>.options.onDragStart(<span class="hljs-keyword">this</span>.item, <span class="hljs-keyword">this</span>.itemContainer, groupDefaults.onDragStart, e)
+        <span class="hljs-keyword">this</span>.item.before(<span class="hljs-keyword">this</span>.placeholder)
+        <span class="hljs-keyword">this</span>.dragging = <span class="hljs-literal">true</span>
+      }
+
+      <span class="hljs-keyword">this</span>.setPointer(e)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>place item under the cursor</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">this</span>.options.onDrag(<span class="hljs-keyword">this</span>.item,
+                          getRelativePosition(<span class="hljs-keyword">this</span>.pointer, <span class="hljs-keyword">this</span>.item.offsetParent()),
+                          groupDefaults.onDrag,
+                          e)
+
+      <span class="hljs-keyword">var</span> p = <span class="hljs-keyword">this</span>.getPointer(e),
+      box = <span class="hljs-keyword">this</span>.sameResultBox,
+      t = <span class="hljs-keyword">this</span>.options.tolerance
+
+      <span class="hljs-keyword">if</span>(!box || box.top - t &gt; p.top || box.bottom + t &lt; p.top || box.left - t &gt; p.left || box.right + t &lt; p.left)
+        <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.searchValidTarget()){
+          <span class="hljs-keyword">this</span>.placeholder.detach()
+          <span class="hljs-keyword">this</span>.lastAppendedItem = <span class="hljs-literal">undefined</span>
+        }
+    },
+    drop: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">e</span>) </span>{
+      <span class="hljs-keyword">this</span>.toggleListeners(<span class="hljs-string">'off'</span>)
+
+      <span class="hljs-keyword">this</span>.dragInitDone = <span class="hljs-literal">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Totem additions</p></div></div><div class="code"><div class="wrapper">      $(<span class="hljs-string">'.sortable-original-item'</span>).removeClass(<span class="hljs-string">'sortable-original-item'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>END Totem additions</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.dragging){</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>processing Drop, check if placeholder is detached</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.placeholder.closest(<span class="hljs-string">"html"</span>)[<span class="hljs-number">0</span>]){
+          <span class="hljs-keyword">this</span>.placeholder.before(<span class="hljs-keyword">this</span>.item).detach()
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-keyword">this</span>.options.onCancel(<span class="hljs-keyword">this</span>.item, <span class="hljs-keyword">this</span>.itemContainer, groupDefaults.onCancel, e)
+        }
+        <span class="hljs-keyword">this</span>.options.onDrop(<span class="hljs-keyword">this</span>.item, <span class="hljs-keyword">this</span>.getContainer(<span class="hljs-keyword">this</span>.item), groupDefaults.onDrop, e)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>cleanup</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">this</span>.clearDimensions()
+        <span class="hljs-keyword">this</span>.clearOffsetParent()
+        <span class="hljs-keyword">this</span>.lastAppendedItem = <span class="hljs-keyword">this</span>.sameResultBox = <span class="hljs-literal">undefined</span>
+        <span class="hljs-keyword">this</span>.dragging = <span class="hljs-literal">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Totem additions</p></div></div><div class="code"><div class="wrapper">        container = <span class="hljs-keyword">this</span>.itemContainer || <span class="hljs-keyword">this</span>.getContainer(<span class="hljs-keyword">this</span>.item)
+        <span class="hljs-keyword">if</span> (container.options.consume &amp;&amp; container.options.clone) {<span class="hljs-keyword">this</span>.item.remove()}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>END Totem additions</p></div></div><div class="code"><div class="wrapper">      }
+    },
+    searchValidTarget: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">pointer, lastPointer</span>) </span>{
+      <span class="hljs-keyword">if</span>(!pointer){
+        pointer = <span class="hljs-keyword">this</span>.relativePointer || <span class="hljs-keyword">this</span>.pointer
+        lastPointer = <span class="hljs-keyword">this</span>.lastRelativePointer || <span class="hljs-keyword">this</span>.lastPointer
+      }
+
+      <span class="hljs-keyword">var</span> distances = sortByDistanceDesc(<span class="hljs-keyword">this</span>.getContainerDimensions(),
+                                         pointer,
+                                         lastPointer),
+      i = distances.length
+
+      <span class="hljs-keyword">while</span>(i--){
+        <span class="hljs-keyword">var</span> index = distances[i][<span class="hljs-number">0</span>],
+        distance = distances[i][<span class="hljs-number">1</span>]
+
+        <span class="hljs-keyword">if</span>(!distance || <span class="hljs-keyword">this</span>.options.pullPlaceholder){
+          <span class="hljs-keyword">var</span> container = <span class="hljs-keyword">this</span>.containers[index]
+          <span class="hljs-keyword">if</span>(!container.disabled){
+            <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.$getOffsetParent()){
+              <span class="hljs-keyword">var</span> offsetParent = container.getItemOffsetParent()
+              pointer = getRelativePosition(pointer, offsetParent)
+              lastPointer = getRelativePosition(lastPointer, offsetParent)
+            }
+            <span class="hljs-keyword">if</span>(container.searchValidTarget(pointer, lastPointer))
+              <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+          }
+        }
+      }
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.sameResultBox)
+        <span class="hljs-keyword">this</span>.sameResultBox = <span class="hljs-literal">undefined</span>
+    },
+    movePlaceholder: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">container, item, method, sameResultBox</span>) </span>{
+      <span class="hljs-keyword">var</span> lastAppendedItem = <span class="hljs-keyword">this</span>.lastAppendedItem
+      <span class="hljs-keyword">if</span>(!sameResultBox &amp;&amp; lastAppendedItem &amp;&amp; lastAppendedItem[<span class="hljs-number">0</span>] === item[<span class="hljs-number">0</span>])
+        <span class="hljs-keyword">return</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Totem additions</p></div></div><div class="code"><div class="wrapper">      $parent_node = $(item[<span class="hljs-number">0</span>].parentNode)
+      <span class="hljs-keyword">if</span>($parent_node.hasClass(<span class="hljs-string">'diag-path_list'</span>)) {
+        <span class="hljs-keyword">if</span>(method === <span class="hljs-string">'before'</span>) {
+          item.prepend(<span class="hljs-keyword">this</span>.placeholder)
+          container.prevItem = <span class="hljs-keyword">this</span>.placeholder.parent().prevAll(<span class="hljs-string">'li'</span>).first()
+        }
+
+        <span class="hljs-keyword">if</span>(method === <span class="hljs-string">'after'</span>) {
+          item.append(<span class="hljs-keyword">this</span>.placeholder)
+          container.prevItem = <span class="hljs-keyword">this</span>.placeholder.parent(<span class="hljs-string">'li'</span>).first()
+        }
+
+      } <span class="hljs-keyword">else</span> {
+        item[method](<span class="hljs-keyword">this</span>.placeholder)
+        container.prevItem = <span class="hljs-keyword">this</span>.placeholder.prevAll(<span class="hljs-string">'li'</span>).first()
+      }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>END Totem additions</p></div></div><div class="code"><div class="wrapper">      item[method](<span class="hljs-keyword">this</span>.placeholder)
+      <span class="hljs-keyword">this</span>.lastAppendedItem = item
+      <span class="hljs-keyword">this</span>.sameResultBox = sameResultBox
+      <span class="hljs-keyword">this</span>.options.afterMove(<span class="hljs-keyword">this</span>.placeholder, container, item)
+    },
+    getContainerDimensions: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.containerDimensions)
+        setDimensions(<span class="hljs-keyword">this</span>.containers, <span class="hljs-keyword">this</span>.containerDimensions = [], <span class="hljs-keyword">this</span>.options.tolerance, !<span class="hljs-keyword">this</span>.$getOffsetParent())
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.containerDimensions
+    },
+    getContainer: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">element</span>) </span>{
+      <span class="hljs-keyword">return</span> element.closest(<span class="hljs-keyword">this</span>.options.containerSelector).data(pluginName)
+    },
+    $getOffsetParent: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.offsetParent === <span class="hljs-literal">undefined</span>){
+        <span class="hljs-keyword">var</span> i = <span class="hljs-keyword">this</span>.containers.length - <span class="hljs-number">1</span>,
+        offsetParent = <span class="hljs-keyword">this</span>.containers[i].getItemOffsetParent()
+
+        <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.options.rootGroup){
+          <span class="hljs-keyword">while</span>(i--){
+            <span class="hljs-keyword">if</span>(offsetParent[<span class="hljs-number">0</span>] != <span class="hljs-keyword">this</span>.containers[i].getItemOffsetParent()[<span class="hljs-number">0</span>]){</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If every container has the same offset parent,
+use position() which is relative to this parent,
+otherwise use offset()
+compare #setDimensions</p></div></div><div class="code"><div class="wrapper">              offsetParent = <span class="hljs-literal">false</span>
+              <span class="hljs-keyword">break</span>;
+            }
+          }
+        }
+
+        <span class="hljs-keyword">this</span>.offsetParent = offsetParent
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.offsetParent
+    },
+    setPointer: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+      <span class="hljs-keyword">var</span> pointer = <span class="hljs-keyword">this</span>.getPointer(e)
+
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.$getOffsetParent()){
+        <span class="hljs-keyword">var</span> relativePointer = getRelativePosition(pointer, <span class="hljs-keyword">this</span>.$getOffsetParent())
+        <span class="hljs-keyword">this</span>.lastRelativePointer = <span class="hljs-keyword">this</span>.relativePointer
+        <span class="hljs-keyword">this</span>.relativePointer = relativePointer
+      }
+
+      <span class="hljs-keyword">this</span>.lastPointer = <span class="hljs-keyword">this</span>.pointer
+      <span class="hljs-keyword">this</span>.pointer = pointer
+    },
+    distanceMet: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+      <span class="hljs-keyword">var</span> currentPointer = <span class="hljs-keyword">this</span>.getPointer(e)
+      <span class="hljs-keyword">return</span> (<span class="hljs-built_in">Math</span>.max(
+        <span class="hljs-built_in">Math</span>.abs(<span class="hljs-keyword">this</span>.pointer.left - currentPointer.left),
+        <span class="hljs-built_in">Math</span>.abs(<span class="hljs-keyword">this</span>.pointer.top - currentPointer.top)
+      ) &gt;= <span class="hljs-keyword">this</span>.options.distance)
+    },
+    getPointer: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>{
+      <span class="hljs-keyword">var</span> o = e.originalEvent || e.originalEvent.touches &amp;&amp; e.originalEvent.touches[<span class="hljs-number">0</span>]
+      <span class="hljs-keyword">return</span> {
+        left: e.pageX || o.pageX,
+        top: e.pageY || o.pageY
+      }
+    },
+    setupDelayTimer: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>
+      <span class="hljs-keyword">this</span>.delayMet = !<span class="hljs-keyword">this</span>.options.delay</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>init delay timer if needed</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.delayMet) {
+        clearTimeout(<span class="hljs-keyword">this</span>._mouseDelayTimer);
+        <span class="hljs-keyword">this</span>._mouseDelayTimer = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+          that.delayMet = <span class="hljs-literal">true</span>
+        }, <span class="hljs-keyword">this</span>.options.delay)
+      }
+    },
+    scroll: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">e</span>) </span>{
+      <span class="hljs-keyword">this</span>.clearDimensions()
+      <span class="hljs-keyword">this</span>.clearOffsetParent() <span class="hljs-comment">// TODO is this needed?</span>
+    },
+    toggleListeners: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">method</span>) </span>{
+      <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+      events = [<span class="hljs-string">'drag'</span>,<span class="hljs-string">'drop'</span>,<span class="hljs-string">'scroll'</span>]
+
+      $.each(events,<span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">i,event</span>) </span>{
+        that.$<span class="hljs-built_in">document</span>[method](eventNames[event], that[event + <span class="hljs-string">'Proxy'</span>])
+      })
+    },
+    clearOffsetParent: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">this</span>.offsetParent = <span class="hljs-literal">undefined</span>
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Recursively clear container and item dimensions</p></div></div><div class="code"><div class="wrapper">    clearDimensions: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">this</span>.traverse(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">object</span>)</span>{
+        object._clearDimensions()
+      })
+    },
+    traverse: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">callback</span>) </span>{
+      callback(<span class="hljs-keyword">this</span>)
+      <span class="hljs-keyword">var</span> i = <span class="hljs-keyword">this</span>.containers.length
+      <span class="hljs-keyword">while</span>(i--){
+        <span class="hljs-keyword">this</span>.containers[i].traverse(callback)
+      }
+    },
+    _clearDimensions: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+      <span class="hljs-keyword">this</span>.containerDimensions = <span class="hljs-literal">undefined</span>
+    },
+    _destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+      containerGroups[<span class="hljs-keyword">this</span>.options.group] = <span class="hljs-literal">undefined</span>
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Container</span>(<span class="hljs-params">element, options</span>) </span>{
+    <span class="hljs-keyword">this</span>.el = element
+    <span class="hljs-keyword">this</span>.options = $.extend( {}, containerDefaults, options)
+
+    <span class="hljs-keyword">this</span>.group = ContainerGroup.get(<span class="hljs-keyword">this</span>.options)
+    <span class="hljs-keyword">this</span>.rootGroup = <span class="hljs-keyword">this</span>.options.rootGroup || <span class="hljs-keyword">this</span>.group
+    <span class="hljs-keyword">this</span>.handle = <span class="hljs-keyword">this</span>.rootGroup.options.handle || <span class="hljs-keyword">this</span>.rootGroup.options.itemSelector
+
+    <span class="hljs-keyword">var</span> itemPath = <span class="hljs-keyword">this</span>.rootGroup.options.itemPath
+    <span class="hljs-keyword">this</span>.target = itemPath ? <span class="hljs-keyword">this</span>.el.find(itemPath) : <span class="hljs-keyword">this</span>.el
+
+    <span class="hljs-keyword">this</span>.target.on(eventNames.start, <span class="hljs-keyword">this</span>.handle, $.proxy(<span class="hljs-keyword">this</span>.dragInit, <span class="hljs-keyword">this</span>))
+
+    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.options.drop)
+      <span class="hljs-keyword">this</span>.group.containers.push(<span class="hljs-keyword">this</span>)
+  }
+
+  Container.prototype = {
+    dragInit: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">e</span>) </span>{
+      <span class="hljs-keyword">var</span> rootGroup = <span class="hljs-keyword">this</span>.rootGroup
+
+      <span class="hljs-keyword">if</span>( !<span class="hljs-keyword">this</span>.disabled &amp;&amp;
+          !rootGroup.dragInitDone &amp;&amp;
+          <span class="hljs-keyword">this</span>.options.drag &amp;&amp;
+          <span class="hljs-keyword">this</span>.isValidDrag(e)) {
+        rootGroup.dragInit(e, <span class="hljs-keyword">this</span>)
+      }
+    },
+    isValidDrag: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>{
+      <span class="hljs-keyword">return</span> e.which == <span class="hljs-number">1</span> ||
+        e.type == <span class="hljs-string">"touchstart"</span> &amp;&amp; e.originalEvent.touches.length == <span class="hljs-number">1</span>
+    },
+    searchValidTarget: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">pointer, lastPointer</span>) </span>{
+      <span class="hljs-keyword">var</span> distances = sortByDistanceDesc(<span class="hljs-keyword">this</span>.getItemDimensions(),
+                                         pointer,
+                                         lastPointer),
+      i = distances.length,
+      rootGroup = <span class="hljs-keyword">this</span>.rootGroup,
+      validTarget = !rootGroup.options.isValidTarget ||
+        rootGroup.options.isValidTarget(rootGroup.item, <span class="hljs-keyword">this</span>)
+
+      <span class="hljs-keyword">if</span>(!i &amp;&amp; validTarget){
+        rootGroup.movePlaceholder(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">this</span>.target, <span class="hljs-string">"append"</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+      } <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">while</span>(i--){
+          <span class="hljs-keyword">var</span> index = distances[i][<span class="hljs-number">0</span>],
+          distance = distances[i][<span class="hljs-number">1</span>]
+          <span class="hljs-keyword">if</span>(!distance &amp;&amp; <span class="hljs-keyword">this</span>.hasChildGroup(index)){
+            <span class="hljs-keyword">var</span> found = <span class="hljs-keyword">this</span>.getContainerGroup(index).searchValidTarget(pointer, lastPointer)
+            <span class="hljs-keyword">if</span>(found)
+              <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+          }
+          <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(validTarget){
+            <span class="hljs-keyword">this</span>.movePlaceholder(index, pointer)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+          }
+        }
+    },
+    movePlaceholder: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">index, pointer</span>) </span>{
+      <span class="hljs-keyword">var</span> item = $(<span class="hljs-keyword">this</span>.items[index]),
+      dim = <span class="hljs-keyword">this</span>.itemDimensions[index],
+      method = <span class="hljs-string">"after"</span>,
+      width = item.outerWidth(),
+      height = item.outerHeight(),
+      offset = item.offset(),
+      sameResultBox = {
+        left: offset.left,
+        right: offset.left + width,
+        top: offset.top,
+        bottom: offset.top + height
+      }
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.options.vertical){
+        <span class="hljs-keyword">var</span> yCenter = (dim[<span class="hljs-number">2</span>] + dim[<span class="hljs-number">3</span>]) / <span class="hljs-number">2</span>,
+        inUpperHalf = pointer.top &lt;= yCenter
+        <span class="hljs-keyword">if</span>(inUpperHalf){
+          method = <span class="hljs-string">"before"</span>
+          sameResultBox.bottom -= height / <span class="hljs-number">2</span>
+        } <span class="hljs-keyword">else</span>
+          sameResultBox.top += height / <span class="hljs-number">2</span>
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">var</span> xCenter = (dim[<span class="hljs-number">0</span>] + dim[<span class="hljs-number">1</span>]) / <span class="hljs-number">2</span>,
+        inLeftHalf = pointer.left &lt;= xCenter
+        <span class="hljs-keyword">if</span>(inLeftHalf){
+          method = <span class="hljs-string">"before"</span>
+          sameResultBox.right -= width / <span class="hljs-number">2</span>
+        } <span class="hljs-keyword">else</span>
+          sameResultBox.left += width / <span class="hljs-number">2</span>
+      }
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.hasChildGroup(index))
+        sameResultBox = emptyBox
+      <span class="hljs-keyword">this</span>.rootGroup.movePlaceholder(<span class="hljs-keyword">this</span>, item, method, sameResultBox)
+    },
+    getItemDimensions: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>.itemDimensions){
+        <span class="hljs-keyword">this</span>.items = <span class="hljs-keyword">this</span>.$getChildren(<span class="hljs-keyword">this</span>.el, <span class="hljs-string">"item"</span>).filter(
+          <span class="hljs-string">":not(."</span> + <span class="hljs-keyword">this</span>.group.options.placeholderClass + <span class="hljs-string">", ."</span> + <span class="hljs-keyword">this</span>.group.options.draggedClass + <span class="hljs-string">")"</span>
+        ).get()
+        setDimensions(<span class="hljs-keyword">this</span>.items, <span class="hljs-keyword">this</span>.itemDimensions = [], <span class="hljs-keyword">this</span>.options.tolerance)
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.itemDimensions
+    },
+    getItemOffsetParent: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">var</span> offsetParent,
+      el = <span class="hljs-keyword">this</span>.el</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Since el might be empty we have to check el itself and
+can not do something like el.children().first().offsetParent()</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span>(el.css(<span class="hljs-string">"position"</span>) === <span class="hljs-string">"relative"</span> || el.css(<span class="hljs-string">"position"</span>) === <span class="hljs-string">"absolute"</span>  || el.css(<span class="hljs-string">"position"</span>) === <span class="hljs-string">"fixed"</span>)
+        offsetParent = el
+      <span class="hljs-keyword">else</span>
+        offsetParent = el.offsetParent()
+      <span class="hljs-keyword">return</span> offsetParent
+    },
+    hasChildGroup: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index</span>) </span>{
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.options.nested &amp;&amp; <span class="hljs-keyword">this</span>.getContainerGroup(index)
+    },
+    getContainerGroup: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params">index</span>) </span>{
+      <span class="hljs-keyword">var</span> childGroup = $.data(<span class="hljs-keyword">this</span>.items[index], subContainerKey)
+      <span class="hljs-keyword">if</span>( childGroup === <span class="hljs-literal">undefined</span>){
+        <span class="hljs-keyword">var</span> childContainers = <span class="hljs-keyword">this</span>.$getChildren(<span class="hljs-keyword">this</span>.items[index], <span class="hljs-string">"container"</span>)
+        childGroup = <span class="hljs-literal">false</span>
+
+        <span class="hljs-keyword">if</span>(childContainers[<span class="hljs-number">0</span>]){
+          <span class="hljs-keyword">var</span> options = $.extend({}, <span class="hljs-keyword">this</span>.options, {
+            rootGroup: <span class="hljs-keyword">this</span>.rootGroup,
+            group: groupCounter ++
+          })
+          childGroup = childContainers[pluginName](options).data(pluginName).group
+        }
+        $.data(<span class="hljs-keyword">this</span>.items[index], subContainerKey, childGroup)
+      }
+      <span class="hljs-keyword">return</span> childGroup
+    },
+    $getChildren: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">parent, type</span>) </span>{
+      <span class="hljs-keyword">var</span> options = <span class="hljs-keyword">this</span>.rootGroup.options,
+      path = options[type + <span class="hljs-string">"Path"</span>],
+      selector = options[type + <span class="hljs-string">"Selector"</span>]
+
+      parent = $(parent)
+      <span class="hljs-keyword">if</span>(path)
+        parent = parent.find(path)
+
+      <span class="hljs-keyword">return</span> parent.children(selector)
+    },
+    _serialize: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">parent, isContainer</span>) </span>{
+      <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>,
+      childType = isContainer ? <span class="hljs-string">"item"</span> : <span class="hljs-string">"container"</span>,
+
+      children = <span class="hljs-keyword">this</span>.$getChildren(parent, childType).not(<span class="hljs-keyword">this</span>.options.exclude).map(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">return</span> that._serialize($(<span class="hljs-keyword">this</span>), !isContainer)
+      }).get()
+
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.rootGroup.options.serialize(parent, children, isContainer)
+    },
+    traverse: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">callback</span>) </span>{
+      $.each(<span class="hljs-keyword">this</span>.items || [], <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">item</span>)</span>{
+        <span class="hljs-keyword">var</span> group = $.data(<span class="hljs-keyword">this</span>, subContainerKey)
+        <span class="hljs-keyword">if</span>(group)
+          group.traverse(callback)
+      });
+
+      callback(<span class="hljs-keyword">this</span>)
+    },
+    _clearDimensions: <span class="hljs-function"><span class="hljs-keyword">function</span>  (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">this</span>.itemDimensions = <span class="hljs-literal">undefined</span>
+    },
+    _destroy: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">var</span> that = <span class="hljs-keyword">this</span>;
+
+      <span class="hljs-keyword">this</span>.target.off(eventNames.start, <span class="hljs-keyword">this</span>.handle);
+      <span class="hljs-keyword">this</span>.el.removeData(pluginName)
+
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.options.drop)
+        <span class="hljs-keyword">this</span>.group.containers = $.grep(<span class="hljs-keyword">this</span>.group.containers, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">val</span>)</span>{
+          <span class="hljs-keyword">return</span> val != that
+        })
+
+      $.each(<span class="hljs-keyword">this</span>.items || [], <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        $.removeData(<span class="hljs-keyword">this</span>, subContainerKey)
+      })
+    }
+  }
+
+  <span class="hljs-keyword">var</span> API = {
+    enable: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">this</span>.traverse(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">object</span>)</span>{
+        object.disabled = <span class="hljs-literal">false</span>
+      })
+    },
+    disable: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span>{
+      <span class="hljs-keyword">this</span>.traverse(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">object</span>)</span>{
+        object.disabled = <span class="hljs-literal">true</span>
+      })
+    },
+    serialize: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._serialize(<span class="hljs-keyword">this</span>.el, <span class="hljs-literal">true</span>)
+    },
+    refresh: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">this</span>.traverse(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">object</span>)</span>{
+        object._clearDimensions()
+      })
+    },
+    destroy: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-keyword">this</span>.traverse(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">object</span>)</span>{
+        object._destroy();
+      })
+    }
+  }
+
+  $.extend(Container.prototype, API)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>jQuery API</p>
+<p>Parameters are
+  either options on init
+  or a method name followed by arguments to pass to the method</p></div></div><div class="code"><div class="wrapper">  $.fn[pluginName] = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">methodOrOptions</span>) </span>{
+    <span class="hljs-keyword">var</span> args = <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">1</span>)
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+      <span class="hljs-keyword">var</span> $t = $(<span class="hljs-keyword">this</span>),
+      object = $t.data(pluginName)
+
+      <span class="hljs-keyword">if</span>(object &amp;&amp; API[methodOrOptions])
+        <span class="hljs-keyword">return</span> API[methodOrOptions].apply(object, args) || <span class="hljs-keyword">this</span>
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(!object &amp;&amp; (methodOrOptions === <span class="hljs-literal">undefined</span> ||
+                          <span class="hljs-keyword">typeof</span> methodOrOptions === <span class="hljs-string">"object"</span>))
+        $t.data(pluginName, <span class="hljs-keyword">new</span> Container($t, methodOrOptions))
+
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>
+    });
+  };
+
+}(jQuery, <span class="hljs-built_in">window</span>, <span class="hljs-string">'sortable'</span>);</div></div></div></div></body></html>

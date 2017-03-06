@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-cli/lib/totem/cli/helpers_copy/print_results</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-cli/lib/totem/cli/helpers_copy/print_results"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_copy/print_results.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers_copy/print_results.rb">src/totem/api/totem-cli/lib/totem/cli/helpers_copy/print_results.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">HelpersCopy</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PrintResults</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_quiet?</span>;</span> options[<span class="hljs-symbol">:quiet</span>]; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_filename</span><span class="hljs-params">(filename, color=<span class="hljs-symbol">:yellow</span>)</span></span>
+    <span class="hljs-variable">@total_files_copied</span> += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> print_files_copied?
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> print_quiet?
+    full = <span class="hljs-constant">Pathname</span>.new(filename.to_s)
+    root = <span class="hljs-constant">Pathname</span>.new(run_dir_pwd)
+    file = full.relative_path_from(root)
+    say_message <span class="hljs-string">"File: <span class="hljs-subst">#{file.to_s.inspect}</span>"</span>, color
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_file_content_summary</span></span>
+    say <span class="hljs-string">''</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> print_quiet?
+    <span class="hljs-keyword">if</span> <span class="hljs-variable">@gsub_file_content_change_counts</span>.blank?
+      say <span class="hljs-string">"No summary file content changes made."</span>, <span class="hljs-symbol">:yellow</span>
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">end</span>
+    say <span class="hljs-string">"File content changes:"</span>, <span class="hljs-symbol">:cyan</span>
+    files = <span class="hljs-variable">@gsub_file_content_change_counts</span>.keys.sort
+    files.each <span class="hljs-keyword">do</span> |file|
+      changes = <span class="hljs-variable">@gsub_file_content_change_counts</span>[file]
+      print_filename(file)
+      changes.each <span class="hljs-keyword">do</span> |from, to_changes|
+        to_changes.each <span class="hljs-keyword">do</span> |to, count|
+          key   = get_summary_change_key(<span class="hljs-symbol">from:</span> from, <span class="hljs-symbol">to:</span> to)
+          cnt = <span class="hljs-string">"(<span class="hljs-subst">#{count}</span>) "</span>.ljust(<span class="hljs-number">6</span>)
+          say <span class="hljs-string">"  <span class="hljs-subst">#{cnt}</span> <span class="hljs-subst">#{key}</span>"</span>, <span class="hljs-symbol">:cyan</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_summary</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> print_quiet?
+    say <span class="hljs-string">''</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-variable">@gsub_content_change_counts</span>.blank?
+      say <span class="hljs-string">"No summary changes made."</span>, <span class="hljs-symbol">:yellow</span>
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">end</span>
+    say <span class="hljs-string">"Summary of changes (files copied: <span class="hljs-subst">#{<span class="hljs-variable">@total_files_copied</span>}</span>):"</span>, <span class="hljs-symbol">:green</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>total count and file count of each conversion from/to</p></div></div><div class="code"><div class="wrapper">    total_counts = <span class="hljs-constant">Hash</span>.new(<span class="hljs-number">0</span>)
+    file_counts  = <span class="hljs-constant">Hash</span>.new(<span class="hljs-number">0</span>)
+    <span class="hljs-variable">@gsub_content_change_counts</span>.each <span class="hljs-keyword">do</span> |from, to_changes|
+      to_changes.each <span class="hljs-keyword">do</span> |to, count|
+        key               = get_summary_change_key(<span class="hljs-symbol">from:</span> from, <span class="hljs-symbol">to:</span> to)
+        total_counts[key] = count
+        from_values       = <span class="hljs-variable">@gsub_file_content_change_counts</span>.values.select{|hash| hash.has_key?(from)}
+        file_counts[key]  = from_values.length
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>get max from/to string lengths</p></div></div><div class="code"><div class="wrapper">    from_len    = <span class="hljs-number">0</span>
+    to_len      = <span class="hljs-number">0</span>
+    conversions = get_content_conversions
+    conversions.each <span class="hljs-keyword">do</span> |hash|
+      kl       = hash.keys.collect {|k| k.to_s.length}.max
+      vl       = hash.values.collect {|v| v.to_s.length}.max
+      from_len = kl <span class="hljs-keyword">if</span> kl &gt; from_len
+      to_len   = vl <span class="hljs-keyword">if</span> vl &gt; to_len
+    <span class="hljs-keyword">end</span>
+    c_count = <span class="hljs-number">0</span>
+    conversions.each <span class="hljs-keyword">do</span> |hash|
+      hash.each <span class="hljs-keyword">do</span> |from, to|
+        num       = (c_count += <span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">3</span>)
+        count_key = get_summary_change_key(<span class="hljs-symbol">from:</span> from, <span class="hljs-symbol">to:</span> to)
+        c_from    = from.to_s.ljust(from_len)
+        c_to      = to.to_s.ljust(to_len)
+        change    = <span class="hljs-string">"<span class="hljs-subst">#{c_from}</span> =&gt; <span class="hljs-subst">#{c_to}</span>"</span>
+        file_cnt  = file_counts[count_key].to_s.rjust(<span class="hljs-number">5</span>)
+        chg_cnt   = total_counts[count_key].to_s.rjust(<span class="hljs-number">5</span>)
+        say <span class="hljs-string">"<span class="hljs-subst">#{num}</span>. <span class="hljs-subst">#{change}</span>  File count: <span class="hljs-subst">#{file_cnt}</span>  Change count: <span class="hljs-subst">#{chg_cnt}</span>"</span>, <span class="hljs-symbol">:green</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_summary_change_key</span><span class="hljs-params">(change)</span></span>
+    from = change[<span class="hljs-symbol">:from</span>].to_s.sub(<span class="hljs-regexp">/^\//</span>,<span class="hljs-string">''</span>).sub(<span class="hljs-regexp">/\/$/</span>,<span class="hljs-string">''</span>)
+    to   = change[<span class="hljs-symbol">:to</span>]
+    <span class="hljs-string">"<span class="hljs-subst">#{from}</span> =&gt; <span class="hljs-subst">#{to}</span>"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_no_gsub_directories</span></span>
+    <span class="hljs-keyword">if</span> <span class="hljs-variable">@no_gsub_directories</span>.blank?
+      say <span class="hljs-string">''</span>
+      say <span class="hljs-string">"All directory files had gsub performed."</span>, <span class="hljs-symbol">:yellow</span>
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">end</span>
+    say <span class="hljs-string">''</span>
+    say <span class="hljs-string">"Directories without gsub performed:"</span>, <span class="hljs-symbol">:green</span>
+    <span class="hljs-variable">@no_gsub_directories</span>.uniq.sort.each <span class="hljs-keyword">do</span> |dir|
+      say <span class="hljs-string">"   <span class="hljs-subst">#{dir}</span>"</span>, <span class="hljs-symbol">:green</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

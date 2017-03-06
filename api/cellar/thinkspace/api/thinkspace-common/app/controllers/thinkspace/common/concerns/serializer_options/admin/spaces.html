@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-common/app/controllers/thinkspace/common/concerns/serializer_options/admin/spaces</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-common/app/controllers/thinkspace/common/concerns/serializer_options/admin/spaces"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-common/app/controllers/thinkspace/common/concerns/serializer_options/admin/spaces.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-common/app/controllers/thinkspace/common/concerns/serializer_options/admin/spaces.rb">src/thinkspace/api/thinkspace-common/app/controllers/thinkspace/common/concerns/serializer_options/admin/spaces.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Common</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Concerns</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">SerializerOptions</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Admin</span></span>
+          <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Spaces</span></span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">common_admin_serializer_options</span><span class="hljs-params">(serializer_options)</span></span>
+              serializer_options.include_metadata
+              serializer_options.remove_association  <span class="hljs-symbol">:thinkspace_common_users</span>,  <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
+              serializer_options.remove_association  <span class="hljs-symbol">:thinkspace_common_spaces</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:thinkspace_common_users</span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_common_space_types</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_common_owners</span>,      <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
+
+              serializer_options.ability_actions  <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
+              serializer_options.authorize_action <span class="hljs-symbol">:read_space_owners</span>, <span class="hljs-symbol">:thinkspace_common_owners</span>,      <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
+              serializer_options.authorize_action <span class="hljs-symbol">:read_space_owners</span>, <span class="hljs-symbol">:thinkspace_common_space_users</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Scope the assignments association to include &#39;inactive&#39; assignment &#39;ids&#39; only when can update the space.</p></div></div><div class="code"><div class="wrapper">              serializer_options.scope_association(<span class="hljs-symbol">:thinkspace_wips_casespace_assignments</span>,
+                <span class="hljs-symbol">scope_assignment_association:</span> [<span class="hljs-symbol">:record</span>, <span class="hljs-symbol">:current_ability</span>]
+              )
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span><span class="hljs-params">(serializer_options)</span></span>
+              common_admin_serializer_options(serializer_options)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span><span class="hljs-params">(serializer_options)</span></span>
+              common_admin_serializer_options(serializer_options)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone</span><span class="hljs-params">(serializer_options)</span></span>
+              common_admin_serializer_options(serializer_options)
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">roster</span><span class="hljs-params">(serializer_options)</span></span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_common_space_users</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_common_user</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:thinkspace_common_space_users</span>
+              serializer_options.remove_all_except(
+                <span class="hljs-symbol">:thinkspace_common_space_users</span>,
+                <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:thinkspace_common_users</span>
+              )
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invitations</span><span class="hljs-params">(serializer_options)</span></span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_common_invitations</span>
+              serializer_options.scope_association <span class="hljs-symbol">:thinkspace_common_invitations</span>, <span class="hljs-symbol">where:</span> {<span class="hljs-symbol">accepted_at:</span> <span class="hljs-keyword">nil</span>}
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">teams</span><span class="hljs-params">(serializer_options)</span></span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_team_teams</span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_team_category</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:thinkspace_team_teams</span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_common_users</span>, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:thinkspace_team_teams</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_sets</span><span class="hljs-params">(serializer_options)</span></span>
+              serializer_options.include_association <span class="hljs-symbol">:thinkspace_team_team_sets</span>
+              <span class="hljs-comment">#serializer_options.include_association :thinkspace_team_teams, scope: :thinkspace_team_team_sets</span>
+              <span class="hljs-comment">#serializer_options.include_association :thinkspace_team_team_users, scope: :thinkspace_team_teams</span>
+              <span class="hljs-comment">#serializer_options.include_association :thinkspace_common_users, scope: :root</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invite</span>;</span> <span class="hljs-keyword">end</span>
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">import</span>;</span> <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

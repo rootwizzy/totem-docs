@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-readiness-assurance/addon/mixins/qm/initialize</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-readiness-assurance/addon/mixins/qm/initialize"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-readiness-assurance/addon/mixins/qm/initialize.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-readiness-assurance/addon/mixins/qm/initialize.coffee">src/thinkspace/client/thinkspace-readiness-assurance/addon/mixins/qm/initialize.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">readonly</span>: ember.computed.reads <span class="hljs-string">'rm.readonly'</span>
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>(arguments...)
+    <span class="hljs-property">@init_manager_properties</span>()
+    <span class="hljs-property">@init_question_hash_values</span>()
+    <span class="hljs-property">@init_response_path_values</span>()
+    <span class="hljs-property">@init_choices</span>()
+    <span class="hljs-property">@init_values</span>()
+
+  <span class="hljs-attribute">init_manager_properties</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@callbacks</span> = ember.Map.create()
+
+  <span class="hljs-attribute">init_question_hash_values</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@qid</span>      = <span class="hljs-property">@get</span>(<span class="hljs-string">'question_hash.id'</span>)
+    <span class="hljs-property">@question</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'question_hash.question'</span>)
+    <span class="hljs-property">@qchoices</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'question_hash.choices'</span>)
+    <span class="hljs-property">@qrandom</span>  = <span class="hljs-property">@get</span>(<span class="hljs-string">'question_hash.questions.random'</span>)
+    <span class="hljs-property">@is_ifat</span>  = <span class="hljs-property">@get</span>(<span class="hljs-string">'question_hash.questions.ifat'</span>) == <span class="hljs-literal">true</span>
+    <span class="hljs-property">@has_justification</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'question_hash.questions.justification'</span>) == <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">init_response_path_values</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@answer_path</span>        = <span class="hljs-string">"response.answers.<span class="hljs-subst">#{<span class="hljs-property">@qid</span>}</span>"</span>
+    <span class="hljs-property">@justification_path</span> = <span class="hljs-string">"response.justifications.<span class="hljs-subst">#{<span class="hljs-property">@qid</span>}</span>"</span>
+    <span class="hljs-property">@status_path</span>        = <span class="hljs-string">"status.questions.<span class="hljs-subst">#{<span class="hljs-property">@qid</span>}</span>"</span>
+    <span class="hljs-property">@random_path</span>        = <span class="hljs-string">"status.settings.choices.order.<span class="hljs-subst">#{<span class="hljs-property">@qid</span>}</span>"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>&#39;rm.random_by_client&#39; or &#39;rm.random_choices&#39; (from the rm initialize options) overrides any other value and applies to all questions</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">init_choices</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@rm</span>.random_by_client <span class="hljs-keyword">or</span> <span class="hljs-property">@qrandom</span> == <span class="hljs-string">'client'</span>
+      <span class="hljs-property">@choices</span> = <span class="hljs-property">@randomize_choices</span>()
+      <span class="hljs-keyword">return</span>
+    random = <span class="hljs-property">@rm</span>.random_choices <span class="hljs-keyword">or</span> <span class="hljs-property">@qrandom</span>
+    <span class="hljs-keyword">if</span> ember.isBlank(random) <span class="hljs-keyword">or</span> random == <span class="hljs-literal">false</span>  <span class="hljs-comment"># false or not set in rm or in question hash</span>
+      <span class="hljs-property">@choices</span> = <span class="hljs-property">@qchoices</span>
+      <span class="hljs-keyword">return</span>
+    ids      = <span class="hljs-property">@get</span> <span class="hljs-property">@random_path</span>   <span class="hljs-comment"># status.settings.choices[qid]</span>
+    <span class="hljs-property">@choices</span> = <span class="hljs-keyword">if</span> ember.isPresent(ids) <span class="hljs-keyword">then</span> <span class="hljs-property">@init_random_choices</span>(ids) <span class="hljs-keyword">else</span> <span class="hljs-property">@randomize_choices</span>()
+
+  <span class="hljs-attribute">init_random_choices</span>: <span class="hljs-function"><span class="hljs-params">(ids)</span> -&gt;</span>
+    random_choices = []
+    <span class="hljs-keyword">for</span> id <span class="hljs-keyword">in</span> ids
+      choice = <span class="hljs-property">@qchoices</span>.findBy(<span class="hljs-string">'id'</span>, id)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Choice id '<span class="hljs-subst">#{id}</span>' not found in assessment choices."</span>  <span class="hljs-keyword">unless</span> choice
+      random_choices.push(choice)
+    <span class="hljs-property">@validate_random_choices</span>(random_choices)
+    random_choices
+
+  <span class="hljs-attribute">validate_random_choices</span>: <span class="hljs-function"><span class="hljs-params">(random_choices)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> choice <span class="hljs-keyword">in</span> <span class="hljs-property">@qchoices</span>
+      id    = choice.id
+      found = random_choices.findBy(<span class="hljs-string">'id'</span>, id)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>FWIW: if not found, could just add to the random choices rather than generating an error</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-property">@error</span> <span class="hljs-string">"Choice id '<span class="hljs-subst">#{id}</span>' not included in random choices."</span>  <span class="hljs-keyword">unless</span> found
+
+  <span class="hljs-attribute">randomize_choices</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> ember.isBlank(<span class="hljs-property">@qchoices</span>)
+    length = <span class="hljs-property">@qchoices</span>.length
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@qchoices</span> <span class="hljs-keyword">unless</span> length &gt; <span class="hljs-number">1</span>
+    irandom = [<span class="hljs-number">0.</span>.(length-<span class="hljs-number">1</span>)]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.(length-<span class="hljs-number">1</span>)]
+      ri          = Math.floor Math.random() * i
+      temp        = irandom[i]
+      irandom[i]  = irandom[ri]
+      irandom[ri] = temp
+    (<span class="hljs-property">@qchoices</span>[i] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> irandom)</div></div></div></div></body></html>

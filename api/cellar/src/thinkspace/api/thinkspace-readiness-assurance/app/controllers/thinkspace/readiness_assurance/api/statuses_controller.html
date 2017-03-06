@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/statuses_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/statuses_controller"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/statuses_controller.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/statuses_controller.rb">src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/statuses_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReadinessAssurance</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StatusesController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+        totem_action_authorize!
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">lock</span></span>
+          status = validate_and_get_question_status
+          status.merge!(<span class="hljs-symbol">locked:</span> current_user_json)
+          save_status
+          publish(status)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock</span></span>
+          status = validate_and_get_question_status
+          status.delete(<span class="hljs-string">'locked'</span>)
+          save_status
+          publish(status)
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::ControllerHelpers::Base</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_and_get_question_status</span></span>
+          response = <span class="hljs-variable">@status</span>.thinkspace_readiness_assurance_response
+          access_denied <span class="hljs-string">"Status id <span class="hljs-subst">#{<span class="hljs-variable">@chat</span>.id}</span> response is blank."</span>  <span class="hljs-keyword">if</span> response.blank?
+          <span class="hljs-variable">@assessment</span> = response.thinkspace_readiness_assurance_assessment
+          questions   = <span class="hljs-variable">@status</span>.questions
+          access_denied <span class="hljs-string">"Status questions is not a Hash."</span>  <span class="hljs-keyword">unless</span> questions.is_a?(<span class="hljs-constant">Hash</span>)
+          question_status = (questions[question_id] ||= <span class="hljs-constant">Hash</span>.new)
+          access_denied <span class="hljs-string">"Status question is not a hash."</span>  <span class="hljs-keyword">unless</span> question_status.is_a?(<span class="hljs-constant">Hash</span>)
+          question_status
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">save_status</span></span>
+          access_denied <span class="hljs-string">"Could not save status.  Validation errors: <span class="hljs-subst">#{<span class="hljs-variable">@status</span>.errors.messages}</span>."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-variable">@status</span>.save
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish</span><span class="hljs-params">(status)</span></span>
+          pubsub.data.
+            room(pubsub_room).
+            room_event(<span class="hljs-symbol">:status</span>).
+            value({<span class="hljs-symbol">question_id:</span> question_id, <span class="hljs-symbol">status:</span> status}).
+            publish
+          controller_render_no_content
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

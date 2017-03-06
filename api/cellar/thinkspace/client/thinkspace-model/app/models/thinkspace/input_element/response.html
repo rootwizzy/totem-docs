@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-model/app/models/thinkspace/input_element/response</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-model/app/models/thinkspace/input_element/response"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-model/app/models/thinkspace/input_element/response.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-model/app/models/thinkspace/input_element/response.coffee">src/thinkspace/client/thinkspace-model/app/models/thinkspace/input_element/response.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ta from <span class="hljs-string">'totem/ds/associations'</span>
+
+export default ta.Model.extend ta.add(
+    ta.belongs_to <span class="hljs-string">'element'</span>, <span class="hljs-attribute">reads</span>: {<span class="hljs-attribute">name</span>: <span class="hljs-string">'input_element'</span>}
+  ),
+
+  <span class="hljs-attribute">value</span>:          ta.attr(<span class="hljs-string">'string'</span>)
+  <span class="hljs-attribute">ownerable_id</span>:   ta.attr(<span class="hljs-string">'number'</span>)
+  <span class="hljs-attribute">ownerable_type</span>: ta.attr(<span class="hljs-string">'string'</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This is a fix for an issue regarding totem_scope and carry_forward.
+=&gt; If you load in a certain order, it causes an issue with the element&#39;s response_ids getting reset.
+=&gt; To replicate (with this observer commented out):
+    =&gt; 1) Go to a phase without carry forward or the inputs themselves.
+    =&gt; 2) Go to a phase with the carry forward only.
+    =&gt; 3) Go to a phase with the inputs themselves.
+=&gt; At this point, it makes a request to /contents/:id then to contents/:id/view_users
+=&gt; The initial call to /contents/:id is for current_user&#39;s data and resets the element&#39;s response_ids.
+=&gt; Some of the records from view_users have already been loaded (does NOT retrigger didLoad), causing them to never be pushed back onto the parent.
+response_change: ember.observer &quot;#{ta.to_p(&#39;element&#39;)}.#{ta.to_p(&#39;responses&#39;)}&quot;, -&gt;  @didLoad()</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>didCreate: -&gt; @didLoad()</p>
+<p>didLoad: -&gt;
+  @get(ta.to_p &#39;element&#39;).then (element) =&gt;
+    if element
+      element.get(ta.to_p &#39;responses&#39;).then (responses) =&gt;
+        responses.pushObject(@) if responses and not responses.includes(@)</p></div></div></div></div></body></html>

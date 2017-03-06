@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-gradebook/addon/managers/calc</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-gradebook/addon/managers/calc"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-gradebook/addon/managers/calc.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-gradebook/addon/managers/calc.coffee">src/thinkspace/client/thinkspace-gradebook/addon/managers/calc.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Object.create
+
+  <span class="hljs-attribute">values</span>: <span class="hljs-function"><span class="hljs-params">(value_array)</span> -&gt;</span>
+    vals           = ember.makeArray(value_array)
+    result         = {}
+    result.count   = <span class="hljs-property">@count</span>(vals)
+    result.total   = <span class="hljs-property">@total</span>(vals)
+    result.average = <span class="hljs-property">@average</span>(result.total, result.count)
+    result.median  = <span class="hljs-property">@median</span>(vals)
+    result
+
+  <span class="hljs-attribute">count</span>: <span class="hljs-function"><span class="hljs-params">(value_array)</span> -&gt;</span> ember.makeArray(value_array).get(<span class="hljs-string">'length'</span>)
+
+  <span class="hljs-attribute">count_uniq</span>: <span class="hljs-function"><span class="hljs-params">(value_array)</span> -&gt;</span> ember.makeArray(value_array).uniq().get(<span class="hljs-string">'length'</span>)
+
+  <span class="hljs-attribute">total</span>: <span class="hljs-function"><span class="hljs-params">(value_array, total=<span class="hljs-number">0</span>)</span> -&gt;</span>
+    total = total + value <span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> ember.makeArray(value_array)
+    total
+
+  <span class="hljs-attribute">average</span>: <span class="hljs-function"><span class="hljs-params">(total, count)</span> -&gt;</span> (count <span class="hljs-keyword">and</span> (total / count)) <span class="hljs-keyword">or</span> <span class="hljs-number">0</span>
+
+  <span class="hljs-attribute">median</span>: <span class="hljs-function"><span class="hljs-params">(value_array)</span> -&gt;</span>
+    sort_values = ember.makeArray(value_array).sort()
+    half        = Math.floor(sort_values.length / <span class="hljs-number">2</span>)
+    <span class="hljs-keyword">return</span> sort_values[half]  <span class="hljs-keyword">if</span> sort_values.get(<span class="hljs-string">'length'</span>) % <span class="hljs-number">2</span> 
+    (sort_values[half-<span class="hljs-number">1</span>] + sort_values[half]) / <span class="hljs-number">2.0</span>
+
+  <span class="hljs-attribute">count_uniq_key_values</span>: <span class="hljs-function"><span class="hljs-params">(hash_array, key)</span> -&gt;</span> ember.makeArray(hash_array).mapBy(key).uniq().get(<span class="hljs-string">'length'</span>)
+
+  <span class="hljs-attribute">non_zero_values</span>: <span class="hljs-function"><span class="hljs-params">(value_array)</span> -&gt;</span> <span class="hljs-property">@values</span>(value_array.filter (value) -&gt; value &gt; <span class="hljs-number">0</span>)
+
+  <span class="hljs-attribute">count_non_zero_uniq_key_values</span>: <span class="hljs-function"><span class="hljs-params">(hash_array, non_zero_key, key)</span> -&gt;</span>
+    non_zero_hash_array = ember.makeArray(hash_array).filter (hash) -&gt; hash.get(non_zero_key) &gt; <span class="hljs-number">0</span>
+    <span class="hljs-property">@count_uniq_key_values</span>(non_zero_hash_array, key)</div></div></div></div></body></html>

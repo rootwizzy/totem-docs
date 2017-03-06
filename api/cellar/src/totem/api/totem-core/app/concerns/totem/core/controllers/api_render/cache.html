@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render/cache</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render/cache"><meta name="groc-project-path" content="src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render/cache.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render/cache.rb">src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render/cache.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controllers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ApiRender</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cache</span></span>
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ApiRender::CacheQueryKey</span>
+
+  <span class="hljs-constant">CONTROLLER_CACHE_DEFAULTS</span> = {
+    <span class="hljs-symbol">expires_in:</span> <span class="hljs-number">5</span>.days,
+  }.freeze
+
+  extend <span class="hljs-constant">::ActiveSupport::Concern</span>
+
+  included <span class="hljs-keyword">do</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache?</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>controller_cache_clear  # clear all of the controller cache</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">::Rails</span>.configuration.action_controller.perform_caching.present?
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> cache_store.present?
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> serializer_options_defined?
+      serializer_options.cache?
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="public-method">Public method.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_json</span><span class="hljs-params">(record_or_scope, options={})</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>options[:debug] = true
+options[:debug] = :key</p></div></div><div class="code"><div class="wrapper">    key_options       = serializer_options.cache_options.merge(options)
+    str_key           = controller_cache_key(record_or_scope, key_options)
+    key               = controller_cache_key_digest(str_key)
+    cache_options     = key_options.slice(<span class="hljs-symbol">:expires_in</span>).reverse_merge(<span class="hljs-constant">CONTROLLER_CACHE_DEFAULTS</span>)
+    from_cache        = <span class="hljs-keyword">true</span>
+    json = cache(key, cache_options) <span class="hljs-keyword">do</span>
+      from_cache = <span class="hljs-keyword">false</span>
+      cache_json = options[<span class="hljs-symbol">:json</span>] || controller_call_json_method(record_or_scope, options)
+      <span class="hljs-keyword">if</span> controller_can_cache_record_data?
+        serializer_options.collect_cache_module_data
+        controller_add_collect_data_to_json(serializer_options.cache_keys, cache_json)
+      <span class="hljs-keyword">end</span>
+      cache_json
+    <span class="hljs-keyword">end</span>
+    json = json.deep_dup  <span class="hljs-keyword">unless</span> <span class="hljs-constant">::Rails</span>.env.production?  <span class="hljs-comment"># a dev 'memory_store' returns the cached object; if updated then updates cache</span>
+    controller_cache_debug(json, str_key, key, from_cache, key_options, cache_options) <span class="hljs-keyword">if</span> key_options[<span class="hljs-symbol">:debug</span>].present?
+    controller_cache_create_record_data(json, record_or_scope, options) <span class="hljs-keyword">if</span> from_cache
+    json
+  <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_can_cache_record_data?</span></span>
+    serializer_options.cache_ownerable?
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Since the json was in the cache, the records where not serialized e.g. the purpose of caching.
+Need to collect the record data (e.g. abilities and metadata) in the serializer options (don&#39;t need the json itself)
+to add to the cache json by after_json.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_create_record_data</span><span class="hljs-params">(json, record_or_scope, options)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> serializer_options.serialize_record_data? <span class="hljs-comment"># no data to collect</span>
+    serializer_options.collect_only  <span class="hljs-comment"># set to all possible collectable data</span>
+    serializer_options.data_not_cached  <span class="hljs-keyword">if</span> controller_can_cache_record_data?  <span class="hljs-comment"># keep keys that could be cached but are false in cache options</span>
+    <span class="hljs-keyword">if</span> serializer_options.cacheable_data?
+      controller_call_json_method(record_or_scope, options)  <span class="hljs-comment"># set the data not cached to be included in after_json</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="cache-key">Cache Key.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If have options[:cache_key], it will become the key (no other key parts are added other than options[:cache_keys]).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_key</span><span class="hljs-params">(record_or_scope, options)</span></span>
+    parts = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-keyword">if</span> (key = options[<span class="hljs-symbol">:cache_key</span>]).present?
+      controller_cache_convert_timestamp_to_keys(parts, key)
+      controller_cache_add_generic_keys(parts, options)
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> controller_cache_record_or_scope_is_a_scope?(record_or_scope)
+        controller_cache_add_collection_key(parts, record_or_scope, options)
+      <span class="hljs-keyword">when</span> record_or_scope.is_a?(<span class="hljs-constant">Array</span>)
+        controller_cache_add_collection_key(parts, record_or_scope, options)
+      <span class="hljs-keyword">else</span>
+        controller_cache_add_member_key(parts, record_or_scope, options)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    parts.join(<span class="hljs-string">'/'</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_record_or_scope_is_a_scope?</span><span class="hljs-params">(record_or_scope)</span>;</span> record_or_scope.is_a?(<span class="hljs-constant">::ActiveRecord::Relation</span>); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_key_digest</span><span class="hljs-params">(key)</span></span>
+    digest = <span class="hljs-constant">Digest::MD5</span>.new  <span class="hljs-comment"># other digest options: Digest::SHA1.new, Digest::SHA256.new</span>
+    digest.update(key)
+    digest.hexdigest
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_add_collection_key</span><span class="hljs-params">(parts, scope, options)</span></span>
+    controller_cache_add_controller_key(parts, options)
+    controller_cache_additional_keys(parts, scope, options)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_add_member_key</span><span class="hljs-params">(parts, record, options)</span></span>
+    controller_cache_add_controller_key(parts, options)
+    parts.push record.id
+    controller_cache_additional_keys(parts, record, options)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_add_controller_key</span><span class="hljs-params">(parts, options)</span></span>
+    parts.push <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name.underscore
+    parts.push <span class="hljs-keyword">self</span>.action_name
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_additional_keys</span><span class="hljs-params">(parts, record_or_scope, options)</span></span>
+    controller_cache_add_controller_sub_action_key(parts, options)
+    controller_cache_add_model_ids_key(parts, options)
+    controller_cache_add_ownerable_key(parts, options)
+    controller_cache_add_generic_keys(parts, options)
+    controller_cache_add_model_query_key(parts, record_or_scope, options)
+    controller_cache_add_serializer_options_cache_values(parts, options)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="special-cache-key-parts-eg-ownerable-ids-sub-action">Special Cache Key Parts (e.g. ownerable, ids, sub_action).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_add_ownerable_key</span><span class="hljs-params">(parts, options)</span></span>
+    ownerable = options[<span class="hljs-symbol">:ownerable</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ownerable.blank?
+    parts.push <span class="hljs-symbol">:ownerable</span>
+    parts.push ownerable.<span class="hljs-keyword">class</span>.name.underscore
+    parts.push ownerable.id
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_add_model_ids_key</span><span class="hljs-params">(parts, options)</span></span>
+    ids = options[<span class="hljs-symbol">:ids</span>] || serializer_options.params_ids
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ids.blank?
+    parts.push <span class="hljs-constant">Array</span>(ids).map {|id| id.to_s}
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_add_controller_sub_action_key</span><span class="hljs-params">(parts, options)</span></span>
+    sub_action = options[<span class="hljs-symbol">:sub_action</span>] || serializer_options.params_auth_sub_action
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> sub_action.blank?
+    parts.push <span class="hljs-constant">Array</span>(sub_action).map {|sa| sa.to_s}
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="generic-cache-key-parts-optionscache-keys-can-be-any-time-or-an-object-with-a-to-s-method-eg-string-symbol">Generic Cache Key Parts (options[:cache_keys]).  Can be any time or an object with a to_s method e.g. string, symbol.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_add_generic_keys</span><span class="hljs-params">(parts, options)</span></span>
+    keys = options[<span class="hljs-symbol">:cache_keys</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> keys.blank?
+    controller_cache_convert_timestamp_to_keys(parts, keys)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="model-cache-query-key-parts">Model Cache Query Key Parts</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_add_model_query_key</span><span class="hljs-params">(parts, record_or_scope, options)</span></span>
+    query_key = controller_cache_model_query_key(record_or_scope, options)
+    <span class="hljs-keyword">if</span> query_key.<span class="hljs-keyword">include</span>?(<span class="hljs-keyword">nil</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the query_key has a nil value (e.g. no records created yet), try calling
+the json method to see if it populates the records.</p></div></div><div class="code"><div class="wrapper">      options[<span class="hljs-symbol">:json</span>] = controller_call_json_method(record_or_scope, options)
+      query_key      = controller_cache_model_query_key(record_or_scope, options)
+    <span class="hljs-keyword">end</span>
+    raise_controller_cache_error <span class="hljs-string">"query_key has a nil value <span class="hljs-subst">#{query_key.inspect}</span>."</span> <span class="hljs-keyword">if</span> query_key.<span class="hljs-keyword">include</span>?(<span class="hljs-keyword">nil</span>)
+    controller_cache_convert_timestamp_to_keys(parts, query_key)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the cache_options contain :query_key, then call the CacheQueryKey module,
+otherwise call the model method.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_model_query_key</span><span class="hljs-params">(record_or_scope, options)</span></span>
+    query_key = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-keyword">if</span> serializer_options.cache_query?
+      query_key += controller_cache_query_key(record_or_scope, options)
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">return</span> query_key  <span class="hljs-keyword">if</span> query_key.present? &amp;&amp; !serializer_options.add_model_cache_query_key?
+    method = controller_cache_model_query_key_method(record_or_scope, options)
+    raise_controller_cache_error <span class="hljs-string">"model does not respond to query_key method [<span class="hljs-subst">#{method}</span>]."</span>  <span class="hljs-keyword">if</span> serializer_options.add_model_cache_query_key? &amp;&amp; !record_or_scope.respond_to?(method)
+    <span class="hljs-keyword">if</span> record_or_scope.respond_to?(method)
+      query_key += record_or_scope.send(method, record_or_scope, serializer_options.cache_ownerable, options)
+    <span class="hljs-keyword">end</span>
+    raise_controller_cache_error <span class="hljs-string">"invalid model query_key method [<span class="hljs-subst">#{method}</span>]."</span>  <span class="hljs-keyword">if</span> query_key.blank?  <span class="hljs-comment"># no cache query key value or model key value</span>
+    <span class="hljs-variable">@_totem_query_key_method</span> = method <span class="hljs-comment"># setting instance var for for debug message</span>
+    query_key
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_model_query_key_method</span><span class="hljs-params">(record_or_scope, options)</span></span>
+    method = options[<span class="hljs-symbol">:query_key_method</span>]
+    <span class="hljs-keyword">return</span> method <span class="hljs-keyword">if</span> method.present?
+    default_method = <span class="hljs-symbol">:totem_cache_query_key</span>
+    action         = <span class="hljs-keyword">self</span>.action_name || <span class="hljs-string">''</span>
+    <span class="hljs-string">"<span class="hljs-subst">#{default_method}</span>_<span class="hljs-subst">#{action}</span>"</span>.to_sym
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_convert_timestamp_to_keys</span><span class="hljs-params">(parts, query_key)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> query_key.blank?
+    <span class="hljs-constant">Array</span>(query_key).collect {|value| parts.push value.is_a?(<span class="hljs-constant">Time</span>) ? value.utc.to_s(<span class="hljs-symbol">:nsec</span>) <span class="hljs-symbol">:</span> value.to_s}
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="cache-options-key-parts">Cache Options Key Parts.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Convert the serializer options cache related values into a key part.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_add_serializer_options_cache_values</span><span class="hljs-params">(parts, options)</span></span>
+    cache_options     = controller_cache_convert_hash_to_cache_key(serializer_options.cache_options.except(<span class="hljs-symbol">:debug</span>))
+    cache_options_key = [<span class="hljs-symbol">:cache_options</span>, cache_options]
+    parts.push cache_options_key.join(<span class="hljs-string">':'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> serializer_options.collect_cache_key_options_exists?
+    cache_key_options = serializer_options.collect_cache_key_options
+    keys              = cache_key_options.keys.sort
+    keys.each <span class="hljs-keyword">do</span> |key|
+      array = cache_key_options[key]
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> array.blank?
+      key_parts = <span class="hljs-constant">Array</span>.new
+      key_parts.push(key.to_s)
+      array.each <span class="hljs-keyword">do</span> |hash|
+        key_parts.push controller_cache_convert_hash_to_cache_key(hash)
+      <span class="hljs-keyword">end</span>
+      parts.push key_parts.join(<span class="hljs-string">':'</span>)  <span class="hljs-keyword">if</span> key_parts.present?
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_convert_hash_to_cache_key</span><span class="hljs-params">(hash)</span></span>
+    hash_parts = <span class="hljs-constant">Array</span>.new
+    hash.keys.sort.each <span class="hljs-keyword">do</span> |key|
+      value = hash[key]
+      <span class="hljs-keyword">if</span> controller_cache_active_record?(value)
+        hash_parts.push <span class="hljs-string">"<span class="hljs-subst">#{key}</span>=<span class="hljs-subst">#{value.<span class="hljs-keyword">class</span>.name}</span>.<span class="hljs-subst">#{value.id}</span>"</span>
+      <span class="hljs-keyword">else</span>
+        hash_parts.push <span class="hljs-string">"<span class="hljs-subst">#{key}</span>=<span class="hljs-subst">#{value}</span>"</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    hash_parts
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_clear</span>;</span>   cache_store.clear; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cashe_cleanup</span>;</span> cache_store.cleanup; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_active_record?</span><span class="hljs-params">(value)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> value.is_a?(<span class="hljs-constant">Class</span>)
+    value.<span class="hljs-keyword">class</span>.ancestors.<span class="hljs-keyword">include</span>?(<span class="hljs-constant">::ActiveRecord::Base</span>) &amp;&amp; value.respond_to?(<span class="hljs-symbol">:id</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache_debug</span><span class="hljs-params">(json, str_key, key, from_cache, options, cache_options)</span></span>
+    <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:debug</span>] == <span class="hljs-symbol">:key</span>
+      message = <span class="hljs-string">"From cache: <span class="hljs-subst">#{from_cache.inspect.upcase}</span>  Cache digest: <span class="hljs-subst">#{key}</span>"</span>
+      controller_debug_message (<span class="hljs-string">'-'</span> * message.length)
+      controller_debug_message message
+      controller_debug_message (<span class="hljs-string">'-'</span> * message.length)
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">end</span>
+    option_keys = [<span class="hljs-symbol">:cache_key</span>, <span class="hljs-symbol">:cache_keys</span>, <span class="hljs-symbol">:ids</span>, <span class="hljs-symbol">:sub_action</span>, <span class="hljs-symbol">:ownerable</span>, <span class="hljs-symbol">:query_key_method</span>, <span class="hljs-symbol">:json_method</span>]
+    key_options = controller_cache_convert_hash_to_cache_key options.slice(*option_keys)
+    puts <span class="hljs-string">"\n"</span>
+    controller_debug_message (<span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>)
+    controller_debug_message <span class="hljs-string">"From cache   : <span class="hljs-subst">#{from_cache.inspect.upcase}</span>"</span>
+    controller_debug_message <span class="hljs-string">"Controller   : <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name}</span>#<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.action_name}</span>"</span>
+    controller_debug_message <span class="hljs-string">"Cache options: <span class="hljs-subst">#{cache_options.inspect}</span>"</span>
+    controller_debug_message <span class="hljs-string">"Key options  : <span class="hljs-subst">#{key_options.join(<span class="hljs-string">', '</span>)}</span>"</span>
+    controller_debug_message <span class="hljs-string">"Model method : <span class="hljs-subst">#{<span class="hljs-variable">@_totem_query_key_method</span>}</span>"</span>        <span class="hljs-keyword">if</span> <span class="hljs-variable">@_totem_query_key_method</span>.present?
+    controller_debug_message <span class="hljs-string">"Cache query  : <span class="hljs-subst">#{serializer_options.cache_query}</span>"</span>  <span class="hljs-keyword">if</span> serializer_options.cache_query?
+    controller_debug_message <span class="hljs-string">"JSON keys    : <span class="hljs-subst">#{json.keys.sort}</span>"</span>
+    controller_debug_message <span class="hljs-string">"Cache str key: <span class="hljs-subst">#{str_key}</span>"</span>
+    controller_debug_message <span class="hljs-string">"Cache digest : <span class="hljs-subst">#{key}</span>"</span>
+    controller_debug_message <span class="hljs-string">"<span class="hljs-subst">#{(<span class="hljs-string">'-'</span> * <span class="hljs-number">100</span>)}</span>\n\n"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">raise_controller_cache_error</span><span class="hljs-params">(message)</span>;</span> raise <span class="hljs-constant">CacheError</span>, <span class="hljs-string">"Controller <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name.inspect}</span>: <span class="hljs-subst">#{message}</span>"</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

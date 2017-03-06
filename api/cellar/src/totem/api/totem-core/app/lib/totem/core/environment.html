@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/lib/totem/core/environment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/lib/totem/core/environment"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/environment.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/environment.rb">src/totem/api/totem-core/app/lib/totem/core/environment.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Environment</span></span>
+
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:configuration_support</span>
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:defaults_support</span>
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:registration_support</span>
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:engines_support</span>
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:authentication_support</span>
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:oauth_support</span>
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:authorization_support</span>
+
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:associations</span>
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:seeds_support</span>
+
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:option_ordered_options</span>
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:class_ordered_options</span>
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:module_ordered_options</span>
+      <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:test_ordered_options</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span></span>
+        <span class="hljs-variable">@configuration_support</span>  = <span class="hljs-constant">Totem::Core::Support::Configuration</span>.new(<span class="hljs-keyword">self</span>)
+        <span class="hljs-variable">@defaults_support</span>       = <span class="hljs-constant">Totem::Core::Settings::Default</span>.new(<span class="hljs-keyword">self</span>)
+        <span class="hljs-variable">@registration_support</span>   = <span class="hljs-constant">Totem::Core::Support::Registration</span>.new(<span class="hljs-keyword">self</span>)
+        <span class="hljs-variable">@engines_support</span>        = <span class="hljs-constant">Totem::Core::Support::Engines</span>.new(<span class="hljs-keyword">self</span>)
+        <span class="hljs-variable">@authentication_support</span> = <span class="hljs-constant">Totem::Core::Support::Authentication</span>.new(<span class="hljs-keyword">self</span>)
+        <span class="hljs-variable">@oauth_support</span>          = <span class="hljs-constant">Totem::Core::Support::Oauth</span>.new(<span class="hljs-keyword">self</span>)
+        <span class="hljs-variable">@authorization_support</span>  = <span class="hljs-constant">Totem::Core::Support::Authorization</span>.new(<span class="hljs-keyword">self</span>)
+        <span class="hljs-variable">@seeds_support</span>          = <span class="hljs-constant">Totem::Core::Support::Seeds</span>.new(<span class="hljs-keyword">self</span>)
+        <span class="hljs-variable">@associations</span>           = <span class="hljs-constant">Totem::Core::Models::Associations</span>.new(<span class="hljs-keyword">self</span>)  <span class="hljs-comment"># Totem::Settings.associations</span>
+
+        <span class="hljs-variable">@option_ordered_options</span> = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+        <span class="hljs-variable">@class_ordered_options</span>  = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+        <span class="hljs-variable">@module_ordered_options</span> = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+        <span class="hljs-variable">@test_ordered_options</span>   = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Support classes</p></div></div><div class="code"><div class="wrapper">      delegate <span class="hljs-symbol">:config</span>,         <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:configuration_support</span>  <span class="hljs-comment"># Totem::Settings.config</span>
+
+      delegate <span class="hljs-symbol">:defaults</span>,       <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:defaults_support</span>       <span class="hljs-comment"># Totem::Settings.defaults</span>
+
+      delegate <span class="hljs-symbol">:register</span>,       <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:registration_support</span>   <span class="hljs-comment"># Totem::Settings.register</span>
+      delegate <span class="hljs-symbol">:registered</span>,     <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:registration_support</span>   <span class="hljs-comment"># Totem::Settings.registered #=&gt; alias for 'register'</span>
+
+      delegate <span class="hljs-symbol">:authentication</span>, <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:authentication_support</span> <span class="hljs-comment"># Totem::Settings.authentication</span>
+      delegate <span class="hljs-symbol">:oauth</span>,          <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:oauth_support</span>          <span class="hljs-comment"># Totem::Settings.oauth</span>
+      delegate <span class="hljs-symbol">:authorization</span>,  <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:authorization_support</span>  <span class="hljs-comment"># Totem::Settings.authorization</span>
+
+      delegate <span class="hljs-symbol">:engine</span>,         <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:engines_support</span>        <span class="hljs-comment"># Totem::Settings.engine</span>
+      delegate <span class="hljs-symbol">:engines</span>,        <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:engines_support</span>        <span class="hljs-comment"># Totem::Settings.engines</span>
+
+      delegate <span class="hljs-symbol">:seed</span>,           <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:seeds_support</span>          <span class="hljs-comment"># Totem::Settings.seed</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Ordered Options</p></div></div><div class="code"><div class="wrapper">      alias_attribute <span class="hljs-symbol">:option</span>, <span class="hljs-symbol">:option_ordered_options</span>     <span class="hljs-comment"># Totem::Settings.option</span>
+
+      alias_attribute <span class="hljs-symbol">:class</span>,  <span class="hljs-symbol">:class_ordered_options</span>      <span class="hljs-comment"># Totem::Settings.class</span>
+      alias_attribute <span class="hljs-symbol">:classes</span>,<span class="hljs-symbol">:class_ordered_options</span>      <span class="hljs-comment"># Totem::Settings.classes  #=&gt; alias for 'class'</span>
+
+      alias_attribute <span class="hljs-symbol">:module</span>, <span class="hljs-symbol">:module_ordered_options</span>     <span class="hljs-comment"># Totem::Settings.module</span>
+
+      alias_attribute <span class="hljs-symbol">:test</span>, <span class="hljs-symbol">:test_ordered_options</span>         <span class="hljs-comment"># Totem::Settings.test (only used by Totem::Test engine)</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

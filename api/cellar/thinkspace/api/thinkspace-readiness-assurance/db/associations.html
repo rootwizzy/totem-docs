@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-readiness-assurance/db/associations</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-readiness-assurance/db/associations"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-readiness-assurance/db/associations.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-readiness-assurance/db/associations.yml">src/thinkspace/api/thinkspace-readiness-assurance/db/associations.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">- <span class="hljs-string">model:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>assessment
+<span class="hljs-label">  associations:</span>
+    - {<span class="hljs-string">belongs_to:</span> authable, <span class="hljs-string">polymorphic:</span> <span class="hljs-literal">true</span>}
+    - {<span class="hljs-string">belongs_to:</span> thinkspace<span class="hljs-regexp">/common/</span>user, <span class="hljs-string">readonly:</span> <span class="hljs-literal">true</span>}
+    - {<span class="hljs-string">has_many:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>responses, <span class="hljs-string">dependent:</span> destroy}
+<span class="hljs-label">  serializers:</span>
+    - <span class="hljs-string">attributes:</span> [id, title, authable_type, authable_id, question_settings, ra_type]
+
+- <span class="hljs-string">model:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>response
+<span class="hljs-label">  delegate:</span>
+    - {<span class="hljs-string">method:</span> authable, <span class="hljs-string">to:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>assessment}
+<span class="hljs-label">  associations:</span>
+    - {<span class="hljs-string">belongs_to:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>assessment}
+    - {<span class="hljs-string">belongs_to:</span> ownerable, <span class="hljs-string">polymorphic:</span> <span class="hljs-literal">true</span>}
+    - {<span class="hljs-string">belongs_to:</span> thinkspace<span class="hljs-regexp">/common/</span>user, <span class="hljs-string">readonly:</span> <span class="hljs-literal">true</span>}
+    - {<span class="hljs-string">has_one:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>status, <span class="hljs-string">dependent:</span> destroy}
+    - {<span class="hljs-string">has_one:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>chat,   <span class="hljs-string">dependent:</span> destroy}
+<span class="hljs-label">  serializers:</span>
+    - <span class="hljs-string">attributes:</span> [id, ownerable_type, ownerable_id, answers, justifications, userdata]
+
+- <span class="hljs-string">model:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>chat
+<span class="hljs-label">  delegate:</span>
+    - {<span class="hljs-string">method:</span> authable,  <span class="hljs-string">to:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>response}
+    - {<span class="hljs-string">method:</span> ownerable, <span class="hljs-string">to:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>response}
+<span class="hljs-label">  associations:</span>
+    - {<span class="hljs-string">belongs_to:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>response}
+<span class="hljs-label">  serializers:</span>
+    - <span class="hljs-string">attributes:</span>  [id, messages]
+
+- <span class="hljs-string">model:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>status
+<span class="hljs-label">  delegate:</span>
+    - {<span class="hljs-string">method:</span> authable,  <span class="hljs-string">to:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>response}
+    - {<span class="hljs-string">method:</span> ownerable, <span class="hljs-string">to:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>response}
+<span class="hljs-label">  associations:</span>
+    - {<span class="hljs-string">belongs_to:</span> thinkspace<span class="hljs-regexp">/readiness_assurance/</span>response}
+<span class="hljs-label">  serializers:</span>
+    - <span class="hljs-string">attributes:</span> [id, settings, questions]</div></div></div></div></body></html>

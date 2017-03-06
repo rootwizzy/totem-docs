@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/app/concerns/action_authorize_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/app/concerns/action_authorize_helper"><meta name="groc-project-path" content="src/totem/api/totem-core/test/app/concerns/action_authorize_helper.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/app/concerns/action_authorize_helper.rb">src/totem/api/totem-core/test/app/concerns/action_authorize_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-variable">$:</span>.push <span class="hljs-constant">ENV</span>[<span class="hljs-string">'TOTEM_TEST_HELPER'</span>]  <span class="hljs-comment"># add totem's test_helper.rb to the load path before requiring it</span>
+
+<span class="hljs-keyword">require</span> <span class="hljs-string">'test_helper'</span>
+<span class="hljs-keyword">require</span> <span class="hljs-string">'pp'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ActionAuthorize</span></span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rt_error</span>;</span> <span class="hljs-constant">RuntimeError</span>; <span class="hljs-keyword">end</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test::ActionAuthorize::ControllerBase</span></span>
+  cattr_accessor <span class="hljs-symbol">:before_action_block</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">new_aa</span><span class="hljs-params">(options)</span></span>
+    send <span class="hljs-symbol">:totem_action_authorize!</span>, options
+    <span class="hljs-keyword">self</span>.new
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">before_action</span><span class="hljs-params">(options, &amp;blk)</span></span>
+    <span class="hljs-keyword">self</span>.before_action_block = blk
+    invalid_keys = options.keys - [<span class="hljs-symbol">:only</span>, <span class="hljs-symbol">:except</span>, <span class="hljs-symbol">:if</span>, <span class="hljs-symbol">:unless</span>]
+    raise <span class="hljs-string">"Before filter has invalid keys <span class="hljs-subst">#{invalid_keys.inspect}</span>"</span>  <span class="hljs-keyword">unless</span> invalid_keys.blank? || blk.blank?
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:params</span>
+  <span class="hljs-keyword">attr_accessor</span> <span class="hljs-symbol">:action_name</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run_before_action</span><span class="hljs-params">(controller)</span></span>
+    before_action_block.call(controller)
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-constant">Test::ActionAuthorize::ControllerBase</span>.class_eval <span class="hljs-keyword">do</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Core::Controllers::TotemActionAuthorize</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::ActionAuthorize::AuthorizeUsers</span></span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_action_authorize_record_from_params!</span>;</span> raise <span class="hljs-string">"totem_action_authorize_record_from_params! method called"</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_action_authorize_ownerable_record_from_params!</span>;</span> raise <span class="hljs-string">"totem_action_authorize_ownerable_record_from_params! method called"</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_action_authorize_view_type_from_params!</span>;</span> raise <span class="hljs-string">"totem_action_authorize_view_type_from_params! method called"</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_action_authorize_verify_record_ownerable!</span><span class="hljs-params">(controller, polymorphic)</span>;</span> raise <span class="hljs-string">"totem_action_authorize_verify_record_ownerable! method called with polymorphic <span class="hljs-subst">#{polymorphic.inspect}</span>"</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">action_authorize!</span>;</span> raise <span class="hljs-string">"action_authorize! method called"</span>; <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test::ActionAuthorize::UsersController</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Test::ActionAuthorize</span></span>::<span class="hljs-title">ControllerBase</span></span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Test::ActionAuthorize::AuthorizeUsers</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test::ActionAuthorize::NoOverridesController</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Test::ActionAuthorize</span></span>::<span class="hljs-title">ControllerBase</span></span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_aa_controller</span><span class="hljs-params">(options, klass=<span class="hljs-constant">Test::ActionAuthorize::UsersController</span>)</span></span>
+  except_keys = []
+  c = klass.new_aa(options.except(*except_keys))
+  c.action_name = options[<span class="hljs-symbol">:action_name</span>]
+  c
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_no_overrides_aa_controller</span><span class="hljs-params">(options)</span></span>
+  get_aa_controller(options, <span class="hljs-constant">Test::ActionAuthorize::NoOverridesController</span>)
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

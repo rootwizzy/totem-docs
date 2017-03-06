@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/support/configuration/configuration_error_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/support/configuration/configuration_error_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/configuration/configuration_error_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/configuration/configuration_error_test.rb">src/totem/api/totem-core/test/support/configuration/configuration_error_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../configuration_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+describe <span class="hljs-string">'configuration.rb errors'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    set_environment
+    <span class="hljs-variable">@config</span> = <span class="hljs-variable">@env</span>.config
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'no search directory'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file:</span> <span class="hljs-keyword">false</span>)}
+    assert_match(<span class="hljs-regexp">/directory_search.*not been set/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'no file extension'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file_ext:</span> <span class="hljs-keyword">false</span>)}
+    assert_match(<span class="hljs-regexp">/file_extension.*not been set/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'no config files'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'bad_ext'</span>)}
+    assert_match(<span class="hljs-regexp">/no config files found/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E01: path and name mismatch single file'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/01_*'</span>)}
+    assert_match(<span class="hljs-regexp">/path.*does not match.*name/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E02: path and name mismatch merge files'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/02_*'</span>)}
+    assert_match(<span class="hljs-regexp">/path mis-match/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E03: duplicate merge order'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/03_*'</span>)}
+    assert_match(<span class="hljs-regexp">/merge order.*duplicates/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E04: duplicate platform name in different file names'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/04_*'</span>)}
+    assert_match(<span class="hljs-regexp">/duplicate platform name/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E05: missing path value in paths section'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/05_*'</span>)}
+    assert_match(<span class="hljs-regexp">/entry does not have a path value/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E06: path has invalid platform reference'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/06_*'</span>)}
+    assert_match(<span class="hljs-regexp">/path.*can not be resolved/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E07: path has invalid path reference'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/07_*'</span>)}
+    assert_match(<span class="hljs-regexp">/reference.*test_platform.*bad.*not found.*test_framework/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E08: engine name class is blank'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      clear_engine_instances
+      register_engine
+      <span class="hljs-variable">@env</span>.engine.instance_variable_set(<span class="hljs-string">"@engine_name_and_class"</span>, {})
+      load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/08_*'</span>, <span class="hljs-symbol">clear_engines:</span> <span class="hljs-keyword">false</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/engine path.*does not exist/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E09: engine path does not match engine class'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      clear_engine_instances</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Must create a new unique class name for this test with a mis-matched engine name since the
+mock engine methods will not override an existing class&#39;s method that provides the correct railtie name.</p></div></div><div class="code"><div class="wrapper">      register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/unique_class_mismatch'</span>, <span class="hljs-symbol">engine_name:</span> <span class="hljs-string">'test_platform_engine_path_mismatch'</span>)
+      <span class="hljs-variable">@env</span>.engine.instance_variable_set(<span class="hljs-string">"@engine_name_and_class"</span>, {<span class="hljs-string">'test_platform_engine_path_mismatch'</span> =&gt; <span class="hljs-string">'Test::Platform::Main'</span>})
+      load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/09_*'</span>, <span class="hljs-symbol">clear_engines:</span> <span class="hljs-keyword">false</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/engine path.*does not match engine class/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E10: duplicate path'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/10_*'</span>)}
+    assert_match(<span class="hljs-regexp">/test_platform.*duplicate path/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E11: config_files with bad path'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) {load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/10_*'</span>)}
+    assert_match(<span class="hljs-regexp">/test_platform.*duplicate path/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

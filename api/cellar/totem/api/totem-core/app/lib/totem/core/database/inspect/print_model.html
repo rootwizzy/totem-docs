@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/app/lib/totem/core/database/inspect/print_model</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/app/lib/totem/core/database/inspect/print_model"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/database/inspect/print_model.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/database/inspect/print_model.rb">src/totem/api/totem-core/app/lib/totem/core/database/inspect/print_model.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Database</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Inspect</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PrintModel</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Print Table records.
+See documentation at end of this file or run a rake task with [help].</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">require</span> <span class="hljs-string">'pp'</span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:run_model_class</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:run_scope</span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:arg_ids</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:arg_order</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:arg_scopes</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:arg_columns</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:arg_to_yaml</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:arg_show_help</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:arg_quiet</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:arg_str</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span></span>
+    <span class="hljs-variable">@arg_ids</span>       = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-variable">@arg_order</span>     = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-variable">@arg_scopes</span>    = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-variable">@arg_columns</span>   = <span class="hljs-constant">Array</span>.new
+    <span class="hljs-variable">@arg_to_yaml</span>   = <span class="hljs-keyword">false</span>
+    <span class="hljs-variable">@arg_show_help</span> = <span class="hljs-keyword">false</span>
+    <span class="hljs-variable">@arg_quiet</span>     = <span class="hljs-keyword">false</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(args=<span class="hljs-keyword">nil</span>)</span></span>
+    extract_args(args)
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> show_help?
+      print_help
+    <span class="hljs-keyword">when</span> arg_to_yaml
+      print_sep
+      record_attributes = run_scope.map {|record| record.attributes}
+      puts record_attributes.to_yaml
+    <span class="hljs-keyword">else</span> 
+      print_sep
+      run_scope.each <span class="hljs-keyword">do</span> |record|
+        print_record(record)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extract_args</span><span class="hljs-params">(args)</span></span>
+    args     = [args].flatten.compact.collect {|v| v.strip}
+    <span class="hljs-variable">@arg_str</span> = args.join(<span class="hljs-string">','</span>)
+    <span class="hljs-keyword">if</span> args.<span class="hljs-keyword">include</span>?(<span class="hljs-string">'help'</span>) || args.<span class="hljs-keyword">include</span>?(<span class="hljs-string">'h'</span>)
+      <span class="hljs-variable">@arg_show_help</span> = <span class="hljs-keyword">true</span>
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">end</span>
+    set_model_class(args)
+    set_run_scope(args)
+    print_run_values
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_model_class</span><span class="hljs-params">(args)</span></span>
+    model_name = args.shift
+    stop_run <span class="hljs-string">"Model class is blank.  The first arg must the model class."</span> <span class="hljs-keyword">if</span> model_name.blank?
+    <span class="hljs-variable">@run_model_class</span> = model_name.classify.safe_constantize
+    stop_run <span class="hljs-string">"Model class <span class="hljs-subst">#{model_name.inspect}</span> cannot be constantized."</span> <span class="hljs-keyword">if</span> run_model_class.blank?
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_run_scope</span><span class="hljs-params">(args)</span></span>
+    scope = run_model_class.all
+    args.each <span class="hljs-keyword">do</span> |arg|
+      key, value = get_arg_values(arg)
+      <span class="hljs-keyword">case</span> key
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'order'</span>, <span class="hljs-string">'o'</span>
+        order       = get_arg_values(arg).last
+        order, sort = get_arg_values(order)
+        order       = <span class="hljs-string">"<span class="hljs-subst">#{order}</span> <span class="hljs-subst">#{sort}</span>"</span>  <span class="hljs-keyword">if</span> sort.present?
+        arg_order.push(order)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'offset'</span>
+        num   = get_arg_number(arg)
+        scope = scope.offset(num)
+        arg_scopes.push(<span class="hljs-string">"offset(<span class="hljs-subst">#{num}</span>)"</span>)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'limit'</span>, <span class="hljs-string">'l'</span>
+        num   = get_arg_number(arg)
+        scope = scope.limit(num)
+        arg_scopes.push(<span class="hljs-string">"limit(<span class="hljs-subst">#{num}</span>)"</span>)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'column'</span>, <span class="hljs-string">'c'</span>
+        arg_columns.push(value)
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'yaml'</span>, <span class="hljs-string">'yml'</span>
+        <span class="hljs-variable">@arg_to_yaml</span> = <span class="hljs-keyword">true</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-string">'quiet'</span>, <span class="hljs-string">'q'</span>
+        <span class="hljs-variable">@arg_quiet</span> = <span class="hljs-keyword">true</span>
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">if</span> is_digits?(arg)
+          arg_ids.push(arg.to_i)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    scope      = scope.where(<span class="hljs-symbol">id:</span> arg_ids)  <span class="hljs-keyword">if</span> arg_ids.present?
+    scope      = scope.order(arg_order)    <span class="hljs-keyword">if</span> arg_order.present?
+    <span class="hljs-variable">@run_scope</span> = scope
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_arg_values</span><span class="hljs-params">(arg)</span>;</span> arg.split(<span class="hljs-string">':'</span>,<span class="hljs-number">2</span>); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_arg_number</span><span class="hljs-params">(arg)</span></span>
+    key, value = get_arg_values(arg)
+    stop_run <span class="hljs-string">"Arg <span class="hljs-subst">#{arg.inspect}</span> must have a number value not <span class="hljs-subst">#{value.inspect}</span>."</span> <span class="hljs-keyword">unless</span> is_digits?(value)
+    value.to_i
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_digits?</span><span class="hljs-params">(arg)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> arg.blank?
+    arg.match(<span class="hljs-regexp">/^\d+$/</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show_help?</span>;</span> arg_show_help.present?; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">quiet?</span>;</span>     arg_quiet.present?; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="print-helpers">Print Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_run_values</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> quiet?
+    puts <span class="hljs-string">"\nRun values:"</span>
+    print_run_value <span class="hljs-string">'Class'</span>,        run_model_class.name
+    print_run_value <span class="hljs-string">'Arg string'</span>,   (arg_str || <span class="hljs-string">''</span>).inspect
+    print_run_value <span class="hljs-string">'Ids'</span>,          arg_ids
+    print_run_value <span class="hljs-string">'Order'</span>,        arg_order
+    print_run_value <span class="hljs-string">'Columns'</span>,      arg_columns
+    print_run_value <span class="hljs-string">'Scopes'</span>,       arg_scopes
+    print_run_value <span class="hljs-string">'Quiet'</span>,        arg_quiet
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_run_value</span><span class="hljs-params">(text, values, sub_text=<span class="hljs-string">''</span>)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> values.blank?
+    len = <span class="hljs-number">20</span>
+    puts <span class="hljs-string">"   <span class="hljs-subst">#{text}</span><span class="hljs-subst">#{sub_text}</span>"</span>.ljust(len) + <span class="hljs-string">": <span class="hljs-subst">#{values}</span>"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_sep</span></span>
+    sep = <span class="hljs-string">"<span class="hljs-subst">#{run_model_class.name.pluralize.gsub(<span class="hljs-string">'::'</span>,<span class="hljs-string">' '</span>)}</span>"</span> + <span class="hljs-string">'-'</span> * <span class="hljs-number">80</span>
+    puts <span class="hljs-string">"\n#--"</span> + sep + <span class="hljs-string">"\n\n"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_record</span><span class="hljs-params">(record)</span></span>
+    <span class="hljs-keyword">if</span> arg_columns.blank?
+      print_record_header(record)
+      pp record
+    <span class="hljs-keyword">else</span>
+      print_record_header(record)
+      print_columns(record)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_columns</span><span class="hljs-params">(record)</span></span>
+    <span class="hljs-variable">@_max_col_len</span> ||= arg_columns.map{|c| c.to_s.length}.max + <span class="hljs-number">2</span>
+    arg_columns.each <span class="hljs-keyword">do</span> |col|
+      value = record[col]
+      puts <span class="hljs-string">"  <span class="hljs-subst">#{col.ljust(<span class="hljs-variable">@_max_col_len</span>,<span class="hljs-string">'.'</span>)}</span><span class="hljs-subst">#{value.inspect}</span>"</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_record_header</span><span class="hljs-params">(record)</span></span>
+    title = record.respond_to?(<span class="hljs-symbol">:title</span>) ? <span class="hljs-string">"title: <span class="hljs-subst">#{record.title}</span>"</span> <span class="hljs-symbol">:</span> <span class="hljs-string">''</span>
+    hdr   = <span class="hljs-string">"--id:<span class="hljs-subst">#{record.id}</span> <span class="hljs-subst">#{title}</span>"</span>
+    puts hdr.ljust(<span class="hljs-number">60</span>,<span class="hljs-string">'-'</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">stop_run</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span></span>
+    puts <span class="hljs-string">"\n"</span>
+    puts <span class="hljs-string">"Run stopped. "</span> + message
+    exit
+  <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_help</span></span>
+          help = &lt;&lt;<span class="hljs-constant">HELP</span>
+<span class="hljs-constant">Run</span> <span class="hljs-symbol">help:</span>
+  rake task <span class="hljs-symbol">options:</span>
+    [help|h] print help
+
+    * model <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">must</span> <span class="hljs-title">be</span> <span class="hljs-title">the</span> <span class="hljs-title">first</span> <span class="hljs-title">argument</span></span>
+    * other options can be <span class="hljs-keyword">in</span> any order <span class="hljs-keyword">in</span> the argument string
+
+    [model-<span class="hljs-class"><span class="hljs-keyword">class</span>]     <span class="hljs-title">model</span> <span class="hljs-title">class</span> <span class="hljs-title">name</span> <span class="hljs-title">e</span>.<span class="hljs-title">g</span>. <span class="hljs-title">Thinkspace::Common::User</span> <span class="hljs-title">or</span> <span class="hljs-title">thinkspace</span>/<span class="hljs-title">common</span>/<span class="hljs-title">user</span></span>
+
+    scope-<span class="hljs-symbol">related:</span>     
+      [<span class="hljs-comment">#,#,...]         record ids for the main run class e.g item, assessment_item</span>
+      [<span class="hljs-symbol">limit:</span><span class="hljs-comment">#|l:#]     limit records to #</span>
+      [<span class="hljs-symbol">offset:</span><span class="hljs-comment">#]        offset records starting at #</span>
+      [<span class="hljs-symbol">order:</span>col|<span class="hljs-symbol">o:</span>col] order by column; each column value can add a sort order [asc|desc] e.g. <span class="hljs-symbol">order:</span><span class="hljs-symbol">id:</span>desc,<span class="hljs-symbol">order:</span><span class="hljs-symbol">title:</span>asc
+
+    column-<span class="hljs-symbol">related:</span>
+      [<span class="hljs-symbol">c:</span>col1,<span class="hljs-symbol">c:</span>col2,...]   column names to print
+
+    <span class="hljs-symbol">print_related:</span>
+      [yaml|yml]        print <span class="hljs-keyword">in</span> yaml format
+      [quiet|q]         <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> print run values
+
+  <span class="hljs-constant">Examples</span><span class="hljs-symbol">:</span>
+    rake <span class="hljs-symbol">totem:</span><span class="hljs-symbol">db:</span><span class="hljs-symbol">inspect:</span>print[<span class="hljs-constant">Thinkspace::Common::User</span>]                 <span class="hljs-comment">#=&gt; print all</span>
+    rake <span class="hljs-symbol">totem:</span><span class="hljs-symbol">db:</span><span class="hljs-symbol">inspect:</span>print[<span class="hljs-constant">Thinkspace::Common::User</span>,<span class="hljs-symbol">l:</span><span class="hljs-number">3</span>,<span class="hljs-symbol">o:</span>title]     <span class="hljs-comment">#=&gt; print 3 records order by title</span>
+    rake <span class="hljs-symbol">totem:</span><span class="hljs-symbol">db:</span><span class="hljs-symbol">inspect:</span>print[<span class="hljs-constant">Thinkspace::Common::User</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-symbol">o:</span>title]   <span class="hljs-comment">#=&gt; print ids [1,2,3] order by title</span>
+
+  <span class="hljs-constant">Redirect</span> <span class="hljs-symbol">ouput:</span>
+    rake .... &gt;  myfile.txt  <span class="hljs-comment"># create myfile.txt</span>
+    rake .... <span class="hljs-prompt">&gt;&gt; </span>myfile.txt  <span class="hljs-comment"># append myfile.txt</span>
+
+<span class="hljs-constant">HELP</span>
+          puts help
+        <span class="hljs-keyword">end</span>
+
+
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

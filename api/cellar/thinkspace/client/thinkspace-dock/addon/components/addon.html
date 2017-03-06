@@ -1,0 +1,12 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-dock/addon/components/addon</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-dock/addon/components/addon"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-dock/addon/components/addon.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-dock/addon/components/addon.coffee">src/thinkspace/client/thinkspace-dock/addon/components/addon.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base.extend
+  <span class="hljs-attribute">tagName</span>: <span class="hljs-string">''</span>
+
+  <span class="hljs-attribute">active</span>: ember.computed.bool <span class="hljs-string">'addon.active'</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">select</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'addons'</span>).toggle_addon <span class="hljs-property">@get</span>(<span class="hljs-string">'addon'</span>); <span class="hljs-keyword">return</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="-testing-only">### TESTING ONLY</h1>
+<p>init_base: -&gt;
+  @send &#39;select&#39; if @addon.engine == &#39;thinkspace-resource&#39;</p></div></div></div></div></body></html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-config/addon/mixins</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="totem/client/totem-config/addon/mixins"><meta name="groc-project-path" content="src/totem/client/totem-config/addon/mixins.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-config/addon/mixins.coffee">src/totem/client/totem-config/addon/mixins.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import util  from <span class="hljs-string">'totem/util'</span>
+import tc    from <span class="hljs-string">'totem-config/configs'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TotemMixins</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@target_cache</span>  = {}
+    <span class="hljs-property">@mixin_cache</span>   = {}
+    <span class="hljs-property">@target_mixins</span> = {}
+    <span class="hljs-property">@show_warnings</span> = <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">process</span>: <span class="hljs-function">-&gt;</span>
+    config_mixins = tc.collect_by(<span class="hljs-string">'mixins'</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(config_mixins)
+    config_mixins = util.flatten_array(config_mixins)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(config_mixins)
+    <span class="hljs-keyword">for</span> hash <span class="hljs-keyword">in</span> config_mixins
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Config mixins must be a hash."</span>, hash <span class="hljs-keyword">unless</span> util.is_hash(hash)
+      targets = hash.target
+      mixins  = hash.mixin
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Config mixins must include a 'target' property."</span>, hash <span class="hljs-keyword">if</span> ember.isBlank(targets)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"Config mixins must include a 'mixin' property."</span>, hash  <span class="hljs-keyword">if</span> ember.isBlank(mixins)
+      <span class="hljs-keyword">for</span> target <span class="hljs-keyword">in</span> ember.makeArray(targets)
+        <span class="hljs-keyword">for</span> mixin <span class="hljs-keyword">in</span> ember.makeArray(mixins)
+          <span class="hljs-property">@add</span>(target, mixin, <span class="hljs-attribute">set</span>: hash.set)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="public-methods">Public Methods.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">add</span>:    <span class="hljs-function"><span class="hljs-params">(target_paths, mixin_paths, options={})</span> -&gt;</span> <span class="hljs-property">@add_mixins</span>(target_paths, mixin_paths, options)
+  <span class="hljs-attribute">add_to</span>: <span class="hljs-function"><span class="hljs-params">(mixin_paths, target_paths, options={})</span> -&gt;</span> <span class="hljs-property">@add_mixins</span>(target_paths, mixin_paths, options)
+
+  <span class="hljs-attribute">turn_warnings_on</span>:  <span class="hljs-function">-&gt;</span> <span class="hljs-property">@show_warnings</span> = <span class="hljs-literal">true</span>
+  <span class="hljs-attribute">turn_warnings_off</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@show_warnings</span> = <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">app_path</span>:       <span class="hljs-function"><span class="hljs-params">(path)</span> -&gt;</span> util.app_path(path)
+  <span class="hljs-attribute">app_mixin_path</span>: <span class="hljs-function"><span class="hljs-params">(path)</span> -&gt;</span> <span class="hljs-property">@app_path</span> <span class="hljs-string">"mixins/<span class="hljs-subst">#{path}</span>"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="internal-methods">Internal Methods.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">add_mixins</span>: <span class="hljs-function"><span class="hljs-params">(target_paths, mixin_paths, options)</span> -&gt;</span>
+    <span class="hljs-property">@error</span> <span class="hljs-string">"must pass 'target paths' to add mixins [<span class="hljs-subst">#{<span class="hljs-property">@stringify</span>(target_paths)}</span>]."</span>  <span class="hljs-keyword">if</span> ember.isBlank(target_paths)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"must pass 'mixin paths' to add mixins [<span class="hljs-subst">#{<span class="hljs-property">@stringify</span>(mixin_paths)}</span>]."</span>    <span class="hljs-keyword">if</span> ember.isBlank(mixin_paths)
+    <span class="hljs-keyword">for</span> target_path <span class="hljs-keyword">in</span> ember.makeArray(target_paths)
+      <span class="hljs-keyword">for</span> mixin_path <span class="hljs-keyword">in</span> ember.makeArray(mixin_paths)
+        <span class="hljs-property">@add_mixin</span>(target_path, mixin_path, options)
+
+  <span class="hljs-attribute">add_mixin</span>: <span class="hljs-function"><span class="hljs-params">(target_path, mixin_path, options)</span> -&gt;</span>
+    <span class="hljs-property">@error</span> <span class="hljs-string">"'target_path' is blank or not a string [<span class="hljs-subst">#{<span class="hljs-property">@stringify</span>(target_path)}</span>]."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-property">@valid_path</span>(target_path)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"'mixin_path' is blank or not a string [<span class="hljs-subst">#{<span class="hljs-property">@stringify</span>(mixin_path)}</span>]."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-property">@valid_path</span>(mixin_path)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"'options' is not a hash [<span class="hljs-subst">#{<span class="hljs-property">@stringify</span>(options)}</span>]."</span>  <span class="hljs-keyword">unless</span> util.is_hash(options)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@target_has_mixin</span>(target_path, mixin_path)
+    target = <span class="hljs-property">@require_target</span>(target_path)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"target at path '<span class="hljs-subst">#{path}</span>' is invalid -- a target must be a class or mixin.'"</span>  <span class="hljs-keyword">unless</span> <span class="hljs-property">@valid_target</span>(target)
+    mixin = <span class="hljs-property">@require_mixin</span>(mixin_path)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"mixin at path '<span class="hljs-subst">#{mixin_path}</span>' is not a mixin."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_mixin</span>(mixin)
+    set_props = options.set <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">if</span> ember.isPresent(set_props)
+      <span class="hljs-property">@error</span> <span class="hljs-string">"mixin at path '<span class="hljs-subst">#{mixin_path}</span>' set properties is not a hash."</span>, set_props, options  <span class="hljs-keyword">unless</span> util.is_hash(set_props)
+      prop_mixin = ember.Mixin.create(set_props)
+      target.reopen(mixin, prop_mixin)
+    <span class="hljs-keyword">else</span>
+      target.reopen(mixin)
+
+  <span class="hljs-attribute">target_has_mixin</span>: <span class="hljs-function"><span class="hljs-params">(target_path, mixin_path)</span> -&gt;</span>
+    mixins = (<span class="hljs-property">@target_mixins</span>[target_path] ?= [])
+    <span class="hljs-keyword">if</span> mixins.includes(mixin_path)
+      <span class="hljs-property">@warn</span> <span class="hljs-string">"'<span class="hljs-subst">#{target_path}</span>' has a duplicate mixin request for '<span class="hljs-subst">#{mixin_path}</span>'.  Ignoring."</span>
+      <span class="hljs-literal">true</span>
+    <span class="hljs-keyword">else</span>
+      mixins.push(mixin_path)
+      <span class="hljs-literal">false</span>
+
+  <span class="hljs-attribute">require_target</span>: <span class="hljs-function"><span class="hljs-params">(path)</span> -&gt;</span>
+    target = <span class="hljs-property">@target_cache</span>[path]
+    <span class="hljs-keyword">return</span> target <span class="hljs-keyword">if</span> target
+    target = <span class="hljs-property">@require_module</span>(path)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"target module at path '<span class="hljs-subst">#{path}</span>' not found."</span>  <span class="hljs-keyword">unless</span> target
+    <span class="hljs-property">@target_cache</span>[path] = target
+    target
+
+  <span class="hljs-attribute">require_mixin</span>: <span class="hljs-function"><span class="hljs-params">(path)</span> -&gt;</span>
+    mixin = <span class="hljs-property">@mixin_cache</span>[path]
+    <span class="hljs-keyword">return</span> mixin <span class="hljs-keyword">if</span> mixin
+    mixin = <span class="hljs-property">@require_module</span>(path)
+    <span class="hljs-property">@error</span> <span class="hljs-string">"mixin module at path '<span class="hljs-subst">#{path}</span>' not found."</span>  <span class="hljs-keyword">unless</span> mixin
+    <span class="hljs-property">@mixin_cache</span>[path] = mixin
+    mixin
+
+  <span class="hljs-attribute">require_module</span>: <span class="hljs-function"><span class="hljs-params">(path)</span> -&gt;</span>
+    mod = util.require_module(path)  <span class="hljs-comment"># first try without app prefix e.g. in the addon folder</span>
+    <span class="hljs-keyword">return</span> mod <span class="hljs-keyword">if</span> mod
+    app_path = <span class="hljs-property">@app_path</span>(path)
+    util.require_module(app_path)    <span class="hljs-comment"># second (and last) try with app prefix e.g. orchid/</span>
+
+  <span class="hljs-attribute">valid_path</span>:   <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span> obj <span class="hljs-keyword">and</span> <span class="hljs-keyword">typeof</span>(obj) == <span class="hljs-string">'string'</span>
+  <span class="hljs-attribute">valid_target</span>: <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span> obj <span class="hljs-keyword">and</span> (obj.isClass <span class="hljs-keyword">or</span> <span class="hljs-property">@is_mixin</span>(obj))
+  <span class="hljs-attribute">is_mixin</span>:     <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span> obj <span class="hljs-keyword">and</span> obj <span class="hljs-keyword">instanceof</span> ember.Mixin</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="warningserrors">Warnings/Errors.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">warn</span>:  <span class="hljs-function">-&gt;</span> util.warn(@, arguments...)
+  <span class="hljs-attribute">error</span>: <span class="hljs-function">-&gt;</span> util.error(@, arguments...)
+
+  <span class="hljs-attribute">stringify</span>: <span class="hljs-function"><span class="hljs-params">(obj)</span> -&gt;</span> util.stringify(obj)
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'TotemMixins'</span>
+
+export default <span class="hljs-keyword">new</span> TotemMixins</div></div></div></div></body></html>

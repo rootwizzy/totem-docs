@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-cli/lib/totem/cli/helpers_ember/links</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_ember/links"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_ember/links.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers_ember/links.rb">src/totem/api/totem-cli/lib/totem/cli/helpers_ember/links.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">HelpersEmber</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Links</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ember_unlink_packages</span></span>
+    pkgs = get_ember_unlink_packages
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> pkgs.blank?
+    max     = pkgs.map {|p| p.to_s.length}.max + <span class="hljs-number">2</span>
+    app_dir = <span class="hljs-constant">File</span>.join(<span class="hljs-variable">@app_path</span>, <span class="hljs-string">'node_modules'</span>)
+    stop_run <span class="hljs-string">"Ember application <span class="hljs-subst">#{app_dir.inspect}</span> is not a directory."</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(app_dir)
+    say_message <span class="hljs-string">"  Unlinking packages in <span class="hljs-subst">#{app_dir.inspect}</span>."</span>, run_message_color
+    inside app_dir <span class="hljs-keyword">do</span>
+      pkgs.each_with_index <span class="hljs-keyword">do</span> |pkg, index|
+        <span class="hljs-keyword">if</span> !<span class="hljs-constant">File</span>.symlink?(pkg)
+          say_message <span class="hljs-string">"    <span class="hljs-subst">#{(index+<span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">2</span>)}</span>. <span class="hljs-subst">#{pkg.ljust(max, <span class="hljs-string">'.'</span>)}</span> not symlink -- skipping unlink"</span>, <span class="hljs-symbol">:yellow</span> <span class="hljs-keyword">if</span> verbose?
+          <span class="hljs-keyword">next</span>
+        <span class="hljs-keyword">end</span>
+        say_message <span class="hljs-string">"    <span class="hljs-subst">#{(index+<span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">2</span>)}</span>. <span class="hljs-subst">#{pkg.ljust(max, <span class="hljs-string">'.'</span>)}</span>"</span>, run_message_color <span class="hljs-keyword">if</span> verbose?
+        cmd = <span class="hljs-string">"unlink <span class="hljs-subst">#{pkg}</span>"</span>
+        run cmd, <span class="hljs-symbol">capture:</span> capture?, <span class="hljs-symbol">verbose:</span> verbose_run?  <span class="hljs-keyword">unless</span> dry_run?
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ember_link_packages</span></span>
+    pkgs = get_ember_link_packages
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> pkgs.blank?
+    max     = pkgs.map {|p| p.to_s.length}.max + <span class="hljs-number">2</span>
+    app_dir = <span class="hljs-constant">File</span>.join(<span class="hljs-variable">@app_path</span>, <span class="hljs-string">'node_modules'</span>)
+    stop_run <span class="hljs-string">"Ember application <span class="hljs-subst">#{app_dir.inspect}</span> is not a directory."</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(app_dir)
+    say_message <span class="hljs-string">"  Linking packages in <span class="hljs-subst">#{app_dir.inspect}</span>."</span>, run_message_color
+    inside app_dir <span class="hljs-keyword">do</span>
+      pkgs.each_with_index <span class="hljs-keyword">do</span> |pkg, index|
+        hash = all_packages[pkg]
+        dir  = hash[<span class="hljs-symbol">:dir</span>]
+        stop_run <span class="hljs-string">"Ember package file <span class="hljs-subst">#{dir.inspect}</span> does not exist."</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(dir)
+        say_message <span class="hljs-string">"    <span class="hljs-subst">#{(index+<span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">2</span>)}</span>. <span class="hljs-subst">#{pkg.ljust(max, <span class="hljs-string">'.'</span>)}</span><span class="hljs-subst">#{dir}</span>"</span>, run_message_color
+        cmd = <span class="hljs-string">"ln -s <span class="hljs-subst">#{dir}</span> <span class="hljs-subst">#{pkg}</span>"</span>
+        run cmd, <span class="hljs-symbol">capture:</span> capture?, <span class="hljs-symbol">verbose:</span> verbose_run?  <span class="hljs-keyword">unless</span> dry_run?
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ember_update_package_json</span></span>
+    dev_pkgs   = get_ember_app_package_json_platform_packages
+    pkgs       = get_ember_link_packages
+    added      = pkgs - dev_pkgs
+    removed    = dev_pkgs - pkgs
+    deps, json = get_ember_app_dev_dependencies
+    removed.each {|p| deps.delete(p)}
+    pkgs.each <span class="hljs-keyword">do</span> |pkg|
+      hash    = all_packages[pkg] || {}
+      version = hash[<span class="hljs-symbol">:version</span>]
+      deps[pkg] = version
+    <span class="hljs-keyword">end</span>
+    file = get_app_package_json_filename
+    say_message <span class="hljs-string">"  Updating package.json file <span class="hljs-subst">#{file.inspect}</span>."</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> dry_run?
+    stop_run <span class="hljs-string">"Ember application package.json file <span class="hljs-subst">#{file.inspect}</span> does not exist."</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(file)
+    json[<span class="hljs-string">'devDependencies'</span>] = <span class="hljs-constant">Hash</span>[deps.sort]
+    create_file file, <span class="hljs-constant">JSON</span>.pretty_generate(json), <span class="hljs-symbol">verbose:</span> verbose_run?  <span class="hljs-keyword">unless</span> dry_run?
+    <span class="hljs-keyword">if</span> added.present? &amp;&amp; verbose?
+      say_message <span class="hljs-string">"  Added packages:"</span>, <span class="hljs-symbol">:green</span>
+      added.sort.each_with_index <span class="hljs-keyword">do</span> |pkg, index|
+        say <span class="hljs-string">"    <span class="hljs-subst">#{(index+<span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">2</span>)}</span>. <span class="hljs-subst">#{pkg}</span>"</span>, <span class="hljs-symbol">:green</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> removed.present?
+      say set_color(<span class="hljs-string">"  Removed packages:"</span>, <span class="hljs-symbol">:red</span>, <span class="hljs-symbol">:bold</span>)
+      removed.sort.each_with_index <span class="hljs-keyword">do</span> |pkg, index|
+        say_message <span class="hljs-string">"    <span class="hljs-subst">#{(index+<span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">2</span>)}</span>. <span class="hljs-subst">#{pkg}</span>"</span>, <span class="hljs-symbol">:red</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ember_link_packages</span>;</span> all_packages.keys.sort; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ember_unlink_packages</span></span>
+    pkgs     = get_ember_link_packages
+    app_pkgs = get_ember_app_package_json_platform_packages <span class="hljs-comment"># get existing platform packages (even when not in current packages).</span>
+    (app_pkgs + pkgs).uniq.sort
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ember_app_package_json_platform_packages</span></span>
+    platforms  = get_ember_platforms
+    deps, hash = get_ember_app_dev_dependencies
+    array      = <span class="hljs-constant">Array</span>.new
+    deps.keys.sort.each <span class="hljs-keyword">do</span> |pkg|
+      platforms.each <span class="hljs-keyword">do</span> |platform|
+        <span class="hljs-keyword">if</span> pkg.to_s.start_with?(platform)
+          array.push(pkg)
+          <span class="hljs-keyword">break</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    array
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ember_platforms</span></span>
+    <span class="hljs-variable">@_ember_platforms</span> ||= <span class="hljs-keyword">begin</span>
+      platforms = run_options[<span class="hljs-symbol">:platforms</span>]
+      <span class="hljs-keyword">if</span> platforms.blank?
+        platforms = <span class="hljs-constant">Array</span>.new
+        run_options[<span class="hljs-symbol">:src_paths</span>].each <span class="hljs-keyword">do</span> |path|
+          dir  = <span class="hljs-constant">File</span>.dirname(path)
+          name = <span class="hljs-constant">File</span>.basename(dir)
+          platforms.push(name) <span class="hljs-keyword">if</span> name.present? &amp;&amp; <span class="hljs-constant">File</span>.basename(path) == <span class="hljs-string">'client'</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-constant">Array</span>.wrap(platforms).uniq
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ember_app_dev_dependencies</span></span>
+    hash = get_app_package_json
+    <span class="hljs-keyword">return</span> {} <span class="hljs-keyword">unless</span> hash.is_a?(<span class="hljs-constant">Hash</span>)
+    deps = hash[<span class="hljs-string">'devDependencies'</span>] ||= {}
+    [deps, hash]
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_app_package_json</span>;</span> get_ember_package_hash(get_app_package_json_filename); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_app_package_json_filename</span>;</span> <span class="hljs-constant">File</span>.join(<span class="hljs-variable">@app_path</span>, <span class="hljs-string">'package.json'</span>); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ember_package_hash</span><span class="hljs-params">(file)</span></span>
+    <span class="hljs-keyword">return</span> {} <span class="hljs-keyword">if</span> dry_run? &amp;&amp; !<span class="hljs-constant">File</span>.file?(file)
+    stop_run <span class="hljs-string">"Ember application does not have a package.json file."</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(file)
+    content = <span class="hljs-constant">File</span>.read(file)
+    <span class="hljs-constant">JSON</span>.parse(content)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

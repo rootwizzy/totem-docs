@@ -1,0 +1,13 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/db/migrate/20140708003100_create_versions</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/db/migrate/20140708003100_create_versions"><meta name="groc-project-path" content="src/totem/api/totem-core/db/migrate/20140708003100_create_versions.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/db/migrate/20140708003100_create_versions.rb">src/totem/api/totem-core/db/migrate/20140708003100_create_versions.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CreateVersions</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Migration</span></span></span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">change</span></span>
+    create_table <span class="hljs-symbol">:versions</span>, <span class="hljs-symbol">force:</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">do</span> |t|
+      t.string   <span class="hljs-symbol">:item_type</span>, <span class="hljs-symbol">:null</span> =&gt; <span class="hljs-keyword">false</span>
+      t.integer  <span class="hljs-symbol">:item_id</span>,   <span class="hljs-symbol">:null</span> =&gt; <span class="hljs-keyword">false</span>
+      t.string   <span class="hljs-symbol">:event</span>,     <span class="hljs-symbol">:null</span> =&gt; <span class="hljs-keyword">false</span>
+      t.string   <span class="hljs-symbol">:whodunnit</span>
+      t.text     <span class="hljs-symbol">:object</span>
+      t.datetime <span class="hljs-symbol">:created_at</span>
+    <span class="hljs-keyword">end</span>
+    add_index <span class="hljs-symbol">:versions</span>, [<span class="hljs-symbol">:item_type</span>, <span class="hljs-symbol">:item_id</span>]
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

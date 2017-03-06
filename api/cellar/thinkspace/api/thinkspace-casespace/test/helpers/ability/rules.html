@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/test/helpers/ability/rules</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/test/helpers/ability/rules"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/helpers/ability/rules.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/helpers/ability/rules.rb">src/thinkspace/api/thinkspace-casespace/test/helpers/ability/rules.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test::Ability::Rules</span></span>
+  extend <span class="hljs-constant">ActiveSupport::Concern</span>
+  included <span class="hljs-keyword">do</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ability_rules</span><span class="hljs-params">(username)</span>;</span> get_ability(username).send(<span class="hljs-symbol">:rules</span>); <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ability_actions</span><span class="hljs-params">(username)</span></span>
+      hash = map_ability_model_rules(username)
+      names = hash.keys.sort
+      names.each <span class="hljs-keyword">do</span> |name|
+        hash[name] = hash[name].keys.sort
+      <span class="hljs-keyword">end</span>
+      hash
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ability_rules_for_class</span><span class="hljs-params">(username, klass)</span>;</span> get_ability_rules(username).select {|r| r.subjects.<span class="hljs-keyword">include</span>?(klass)}; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_ability_rules</span><span class="hljs-params">(username)</span></span>
+      user       = get_user(username)
+      messages   = <span class="hljs-constant">Array</span>.new
+      rules_hash = map_ability_model_rules(username, messages)
+      puts <span class="hljs-string">"\n"</span>
+      puts color_line <span class="hljs-string">"--Ability rules for <span class="hljs-subst">#{user.first_name.inspect}</span>"</span>.ljust(<span class="hljs-number">80</span>,<span class="hljs-string">'-'</span>), <span class="hljs-symbol">:cyan</span>, <span class="hljs-symbol">:bold</span>
+      rules_hash.keys.sort.each <span class="hljs-keyword">do</span> |name|
+        hash = rules_hash[name]
+        puts <span class="hljs-string">"\n"</span>
+        puts color_line <span class="hljs-string">"  <span class="hljs-subst">#{name}</span>"</span>, <span class="hljs-symbol">:green</span>
+        actions = hash.keys.sort
+        actions.each <span class="hljs-keyword">do</span> |action|
+          condition = hash[action]
+          puts <span class="hljs-string">"    <span class="hljs-subst">#{action.to_s.ljust(<span class="hljs-number">20</span>,<span class="hljs-string">'.'</span>)}</span><span class="hljs-subst">#{condition}</span>"</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      print_ability_rule_messages(messages, <span class="hljs-string">'--Ability rule messages:'</span>)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">compare_ability_rules</span><span class="hljs-params">(username1, username2)</span></span>
+      messages = <span class="hljs-constant">Array</span>.new
+      user1    = get_user(username1)
+      user2    = get_user(username2)
+      name1    = user1.first_name
+      name2    = user2.first_name
+      h1       = map_ability_model_rules(user1, messages)
+      h2       = map_ability_model_rules(user2, messages)
+      nl       = [name1.length, name2.length].max + <span class="hljs-number">2</span>
+      names    = h1.keys + h2.keys
+      puts <span class="hljs-string">"\n"</span>
+      puts <span class="hljs-string">"--Compare ability rules for <span class="hljs-subst">#{name1.inspect}</span> and <span class="hljs-subst">#{name2.inspect}</span>"</span>.ljust(<span class="hljs-number">80</span>,<span class="hljs-string">'-'</span>)
+      names.uniq.sort.each <span class="hljs-keyword">do</span> |name|
+        name_header = <span class="hljs-keyword">false</span>
+        <span class="hljs-keyword">case</span>
+        <span class="hljs-keyword">when</span> h1.has_key?(name)  &amp;&amp; h2.has_key?(name)
+          a1 = h1[name].keys.sort
+          a2 = h2[name].keys.sort
+          <span class="hljs-keyword">if</span> a1 == a2
+            a1.each <span class="hljs-keyword">do</span> |a|
+              c1 = h1[name][a]
+              c2 = h2[name][a]
+              <span class="hljs-keyword">unless</span> c1 == c2
+                puts <span class="hljs-string">"\n"</span>
+                puts <span class="hljs-string">"<span class="hljs-subst">#{name}</span>"</span>  <span class="hljs-keyword">unless</span> name_header
+                name_header = <span class="hljs-keyword">true</span>
+                puts <span class="hljs-string">"  -- conditions differ:"</span>
+                puts <span class="hljs-string">"      #<span class="hljs-subst">#{a}</span>"</span>
+                puts <span class="hljs-string">"          <span class="hljs-subst">#{name1.ljust(nl,<span class="hljs-string">'.'</span>)}</span><span class="hljs-subst">#{c1}</span>"</span>
+                puts <span class="hljs-string">"          <span class="hljs-subst">#{name2.ljust(nl,<span class="hljs-string">'.'</span>)}</span><span class="hljs-subst">#{c2}</span>"</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">else</span>
+            puts <span class="hljs-string">"\n"</span>
+            puts <span class="hljs-string">"<span class="hljs-subst">#{name}</span>"</span>  <span class="hljs-keyword">unless</span> name_header
+            name_header = <span class="hljs-keyword">true</span>
+            puts <span class="hljs-string">"  -- actions differ:"</span>
+            puts <span class="hljs-string">"     <span class="hljs-subst">#{name1.ljust(nl,<span class="hljs-string">'.'</span>)}</span><span class="hljs-subst">#{a1}</span>"</span>
+            puts <span class="hljs-string">"     <span class="hljs-subst">#{name2.ljust(nl,<span class="hljs-string">'.'</span>)}</span><span class="hljs-subst">#{a2}</span>"</span>
+            a1diff = a1 - a2
+            a2diff = a2 - a1
+            puts <span class="hljs-string">"     <span class="hljs-subst">#{name1.ljust(nl,<span class="hljs-string">'+'</span>)}</span><span class="hljs-subst">#{a1diff}</span>"</span>  <span class="hljs-keyword">if</span> a1diff.present?
+            puts <span class="hljs-string">"     <span class="hljs-subst">#{name2.ljust(nl,<span class="hljs-string">'+'</span>)}</span><span class="hljs-subst">#{a2diff}</span>"</span>  <span class="hljs-keyword">if</span> a2diff.present?
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">when</span> h1.has_key?(name)  &amp;&amp; !h2.has_key?(name)
+          messages.push <span class="hljs-string">"Only <span class="hljs-subst">#{user1.first_name.inspect}</span> has ability for <span class="hljs-subst">#{name.inspect}</span>"</span>
+        <span class="hljs-keyword">when</span> !h1.has_key?(name) &amp;&amp; h2.has_key?(name)
+          messages.push <span class="hljs-string">"Only <span class="hljs-subst">#{user2.first_name.inspect}</span> has ability for <span class="hljs-subst">#{name.inspect}</span>"</span>
+        <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      print_ability_rule_messages(messages, <span class="hljs-string">'--Compare ability messages:'</span>)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_cancan_rules</span><span class="hljs-params">(model_class, *args)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> args.blank?
+      get_ability(args.first)  <span class="hljs-comment"># load the ability class with debug messages so not in print</span>
+      puts <span class="hljs-string">"\n"</span>
+      puts <span class="hljs-string">"--<span class="hljs-subst">#{model_class.name.inspect}</span> ability rules"</span>.ljust(<span class="hljs-number">80</span>,<span class="hljs-string">'-'</span>)
+      args.each <span class="hljs-keyword">do</span> |username|
+        user  = get_user(username)
+        puts <span class="hljs-string">"\n"</span>
+        puts <span class="hljs-string">"--cancan rules for <span class="hljs-subst">#{user.first_name.inspect}</span>:"</span>.ljust(<span class="hljs-number">40</span>,<span class="hljs-string">'-'</span>)
+        puts <span class="hljs-string">"\n"</span>
+        pp get_ability_rules_for_class(user, model_class)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_ability_rule_messages</span><span class="hljs-params">(messages, title=<span class="hljs-string">''</span>)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> messages.blank?
+      puts <span class="hljs-string">"\n"</span>
+      puts <span class="hljs-string">"--<span class="hljs-subst">#{title}</span>:"</span>
+      messages.each_with_index <span class="hljs-keyword">do</span> |msg, index|
+        puts <span class="hljs-string">"<span class="hljs-subst">#{(index+<span class="hljs-number">1</span>).to_s.rjust(<span class="hljs-number">4</span>)}</span>. <span class="hljs-subst">#{msg}</span>"</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">map_ability_model_rules</span><span class="hljs-params">(username, messages=[])</span></span>
+      user  = get_user(username)
+      rules = get_ability_rules(user)
+      map_ability_rules(user, rules, messages)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">map_ability_rules</span><span class="hljs-params">(user, rules, messages=[])</span></span>
+      hash = <span class="hljs-constant">Hash</span>.new
+      rules.each <span class="hljs-keyword">do</span> |rule|
+        rule.subjects.each <span class="hljs-keyword">do</span> |subject|
+          name      = subject.name
+          name_hash = hash[name]
+          name_hash = hash[name] = <span class="hljs-constant">Hash</span>.new  <span class="hljs-keyword">if</span> name_hash.blank?
+          rule.actions.each <span class="hljs-keyword">do</span> |action|
+            <span class="hljs-keyword">if</span> name_hash.has_key?(action)
+              messages.push <span class="hljs-string">"Duplicate action <span class="hljs-subst">#{action.inspect}</span> for class <span class="hljs-subst">#{name.inspect}</span> user <span class="hljs-subst">#{user.first_name.inspect}</span>"</span>
+            <span class="hljs-keyword">end</span>
+            name_hash[action] = rule.conditions
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      hash
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span> <span class="hljs-comment"># included</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-authorization/app/concerns/thinkspace/authorization/controller_data</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-authorization/app/concerns/thinkspace/authorization/controller_data"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-authorization/app/concerns/thinkspace/authorization/controller_data.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-authorization/app/concerns/thinkspace/authorization/controller_data.rb">src/thinkspace/api/thinkspace-authorization/app/concerns/thinkspace/authorization/controller_data.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authorization</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ControllerData</span></span>
+
+  public
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_serializer_options</span>;</span> serializer_options; <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_data_name</span>;</span> data_name; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auth</span>;</span>           params[<span class="hljs-symbol">:auth</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">source</span>;</span>         auth[<span class="hljs-symbol">:source</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">source_method</span>;</span>  auth[<span class="hljs-symbol">:source_method</span>]; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">record_data?</span>;</span> auth[<span class="hljs-symbol">:model_type</span>].present? &amp;&amp; auth[<span class="hljs-symbol">:model_id</span>].present?; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_data</span></span>
+    access_denied <span class="hljs-string">"Controller data_name is blank."</span>  <span class="hljs-keyword">if</span> get_data_name.blank?
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> record_data?     <span class="hljs-keyword">then</span> get_record_data
+    <span class="hljs-keyword">when</span> source.present?  <span class="hljs-keyword">then</span> get_source_data
+    <span class="hljs-keyword">else</span>
+      access_denied <span class="hljs-string">"<span class="hljs-subst">#{get_data_name}</span> module record data is blank and sub action is blank."</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_source_data</span></span>
+    path   = source
+    mod    = get_serializer_options_module(path)
+    method = get_source_method(path)
+    access_denied <span class="hljs-string">"<span class="hljs-subst">#{get_data_name}</span> module <span class="hljs-subst">#{mod.name.inspect}</span> does not respond to <span class="hljs-subst">#{method.to_s.inspect}</span> for source <span class="hljs-subst">#{path.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> mod.respond_to?(method)
+    ownerable = get_ownerable
+    mod.send method, <span class="hljs-keyword">self</span>, ownerable
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_record_data</span></span>
+    record   = get_data_record
+    authable = record.respond_to?(<span class="hljs-symbol">:authable</span>) ? record.authable <span class="hljs-symbol">:</span> record
+    access_denied <span class="hljs-string">"<span class="hljs-subst">#{get_data_name}</span> cannot read authable for record <span class="hljs-subst">#{record.<span class="hljs-keyword">class</span>.name.inspect}</span> id <span class="hljs-subst">#{record.id}</span>."</span>  <span class="hljs-keyword">unless</span> can?(<span class="hljs-symbol">:read</span>, authable)
+    path   = source.present? ? source <span class="hljs-symbol">:</span> record.<span class="hljs-keyword">class</span>.name.underscore.pluralize
+    mod    = get_serializer_options_module(path)
+    method = get_source_method(path.singularize)
+    access_denied <span class="hljs-string">"<span class="hljs-subst">#{get_data_name}</span> module <span class="hljs-subst">#{mod.name.inspect}</span> does not respond to <span class="hljs-subst">#{method.to_s.inspect}</span> for source <span class="hljs-subst">#{path.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> mod.respond_to?(method)
+    ownerable = get_ownerable
+    mod.send method, <span class="hljs-keyword">self</span>, record, ownerable
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_source_method</span><span class="hljs-params">(path)</span></span>
+    method = source_method.present? ? source_method <span class="hljs-symbol">:</span> path.camelize.demodulize.downcase
+    <span class="hljs-string">"<span class="hljs-subst">#{get_data_name}</span>_<span class="hljs-subst">#{method}</span>"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_serializer_options_module</span><span class="hljs-params">(path)</span></span>
+    namespace, const = get_path_parts(path)
+    mod_name         = <span class="hljs-string">"<span class="hljs-subst">#{namespace}</span>::Concerns::SerializerOptions::<span class="hljs-subst">#{const}</span>"</span>
+    mod              = mod_name.safe_constantize
+    access_denied <span class="hljs-string">"<span class="hljs-subst">#{get_data_name}</span> module <span class="hljs-subst">#{mod_name.inspect}</span> cannot be constantized."</span>  <span class="hljs-keyword">if</span> mod.blank?
+    mod
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_path_parts</span><span class="hljs-params">(path)</span></span>
+    name = path.camelize
+    [name.deconstantize, name.demodulize]
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ownerable</span>;</span>   get_record_by_type_and_id(<span class="hljs-symbol">:ownerable</span>); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_data_record</span>;</span> get_record_by_type_and_id(<span class="hljs-symbol">:model</span>); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_record_by_type_and_id</span><span class="hljs-params">(key)</span></span>
+    type = auth[<span class="hljs-string">"<span class="hljs-subst">#{key}</span>_type"</span>]
+    id   = auth[<span class="hljs-string">"<span class="hljs-subst">#{key}</span>_id"</span>]
+    access_denied <span class="hljs-string">"<span class="hljs-subst">#{key.inspect}</span> type is blank."</span>  <span class="hljs-keyword">if</span> type.blank?
+    access_denied <span class="hljs-string">"<span class="hljs-subst">#{key.inspect}</span> id is blank."</span>    <span class="hljs-keyword">if</span> id.blank?
+    model_class_name = type.classify
+    model_class      = model_class_name.safe_constantize
+    access_denied <span class="hljs-string">"Cannot constantize class <span class="hljs-subst">#{model_class_name.inspect}</span>"</span>  <span class="hljs-keyword">if</span> model_class.blank?
+    record = model_class.find_by(<span class="hljs-symbol">id:</span> id)
+    access_denied <span class="hljs-string">"<span class="hljs-subst">#{key}</span> <span class="hljs-subst">#{model_class_name}</span>.<span class="hljs-subst">#{id}</span> not found."</span> <span class="hljs-keyword">if</span> record.blank?
+    record
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(message, user_message=<span class="hljs-string">''</span>)</span></span>
+    action = (<span class="hljs-keyword">self</span>.action_name || <span class="hljs-string">''</span>).to_sym
+    model  = <span class="hljs-string">"thinkspace/authorization/<span class="hljs-subst">#{get_data_name}</span>"</span>.classify
+    raise_access_denied_exception(message, action, model,  <span class="hljs-symbol">user_message:</span> user_message)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

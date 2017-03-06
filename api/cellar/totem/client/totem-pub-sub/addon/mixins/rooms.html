@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-pub-sub/addon/mixins/rooms</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/client/totem-pub-sub/addon/mixins/rooms"><meta name="groc-project-path" content="src/totem/client/totem-pub-sub/addon/mixins/rooms.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-pub-sub/addon/mixins/rooms.coffee">src/totem/client/totem-pub-sub/addon/mixins/rooms.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import util  from <span class="hljs-string">'totem/util'</span>
+import totem_scope from <span class="hljs-string">'totem/scope'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="public-api">Public API.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">join</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@pubsub_active</span>
+    source    = <span class="hljs-property">@get_options_source</span>(options)
+    rooms     = <span class="hljs-property">@get_options_rooms</span>(options)
+    callbacks = <span class="hljs-property">@get_options_callbacks</span>(options) <span class="hljs-keyword">or</span> []
+    room_type = <span class="hljs-property">@get_options_room_type</span>(options)
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"Join rooms are blank."</span>) <span class="hljs-keyword">if</span> ember.isBlank(rooms)
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"Must supply a 'source:' option for callbacks."</span>) <span class="hljs-keyword">if</span> ember.isPresent(callbacks) <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> source
+    options.authenticate_callback = <span class="hljs-string">'room_join_authenticate_callback'</span>
+    options.authorize_callback    = <span class="hljs-string">'room_join_authorize_callback'</span>
+    <span class="hljs-property">@delete_join_room_event_only_keys</span>(options)
+    socket = <span class="hljs-property">@get_socket</span>(options)
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+      event    = <span class="hljs-property">@room_event</span>(room, options)
+      callback = callbacks.shift()
+      <span class="hljs-property">@on</span>(socket, event, source, callback)  <span class="hljs-keyword">if</span> callback
+      <span class="hljs-property">@add_after_authorize_callback_event</span>(socket, source, event, options)
+    socket
+
+  <span class="hljs-attribute">add_after_authorize_callback_event</span>: <span class="hljs-function"><span class="hljs-params">(socket, source, event, options)</span> -&gt;</span>
+    after_authorize_callback = options.after_authorize_callback
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(after_authorize_callback)
+    auth_event = <span class="hljs-property">@get_after_authorize_callback_event</span>(event)
+    <span class="hljs-property">@add_current_event</span>(socket, auth_event, source, after_authorize_callback)
+
+  <span class="hljs-attribute">leave</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@pubsub_active</span>
+    rooms = <span class="hljs-property">@get_options_rooms</span>(options)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(rooms)
+    room_type = <span class="hljs-property">@get_options_room_type</span>(options)
+    socket    = <span class="hljs-property">@get_socket</span>(options)
+    event     = <span class="hljs-property">@client_event</span>(<span class="hljs-string">'leave_room'</span>)
+    <span class="hljs-property">@set_rooms_unauthorized</span>(socket, rooms, room_type)
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+      data           = {room}
+      data.room_type = room_type  <span class="hljs-keyword">if</span> room_type
+      socket.emit(event, data)
+
+  <span class="hljs-attribute">leave_all</span>: <span class="hljs-function"><span class="hljs-params">(options={})</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@pubsub_active</span>
+    url = <span class="hljs-property">@get_pubsub_url</span>(options)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(url)
+    socket = <span class="hljs-property">@url_to_socket_map</span>.get(url)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(socket)
+    auth_rooms = <span class="hljs-property">@get_authorized_rooms</span>(socket)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(auth_rooms)
+    except = ember.makeArray(options.except <span class="hljs-keyword">or</span> [])
+    rooms  = <span class="hljs-property">@get_object_keys</span>(auth_rooms).map (room) -&gt; room.split(<span class="hljs-string">'::'</span>)
+    <span class="hljs-keyword">for</span> [room, room_type] <span class="hljs-keyword">in</span> rooms
+      <span class="hljs-property">@leave</span> {room, room_type} <span class="hljs-keyword">unless</span> except.includes(room)
+
+  <span class="hljs-attribute">message_to_room</span>:    <span class="hljs-function"><span class="hljs-params">(room, data)</span>  -&gt;</span> <span class="hljs-property">@message_to_rooms</span>(room, data)
+  <span class="hljs-attribute">broadcast_to_room</span>:  <span class="hljs-function"><span class="hljs-params">(room, data)</span>  -&gt;</span> <span class="hljs-property">@broadcast_to_rooms</span>(room, data)
+  <span class="hljs-attribute">message_to_rooms</span>:   <span class="hljs-function"><span class="hljs-params">(rooms, data)</span> -&gt;</span> <span class="hljs-property">@message_to_rooms_members</span> <span class="hljs-property">@room_message_event</span>(),   rooms, data
+  <span class="hljs-attribute">broadcast_to_rooms</span>: <span class="hljs-function"><span class="hljs-params">(rooms, data)</span> -&gt;</span> <span class="hljs-property">@message_to_rooms_members</span> <span class="hljs-property">@room_broadcast_event</span>(), rooms, data
+
+  <span class="hljs-attribute">message_to_room_members</span>:  <span class="hljs-function"><span class="hljs-params">(event, room, data)</span>  -&gt;</span> <span class="hljs-property">@message_to_rooms_members</span>(event, room, data)
+  <span class="hljs-attribute">message_to_rooms_members</span>: <span class="hljs-function"><span class="hljs-params">(event, rooms, data)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@pubsub_active</span>
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"Member room message events are blank."</span>) <span class="hljs-keyword">if</span> ember.isBlank(event)
+    <span class="hljs-property">@error</span>(<span class="hljs-string">"Event '<span class="hljs-subst">#{event}</span>' rooms are blank."</span>)     <span class="hljs-keyword">if</span> ember.isBlank(rooms)
+    rooms     = ember.makeArray(rooms)
+    room_type = <span class="hljs-property">@get_options_room_type</span>(data)
+    socket    = <span class="hljs-property">@get_socket</span>()
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@is_authenticated</span>(socket) <span class="hljs-keyword">and</span> <span class="hljs-property">@are_rooms_authorized</span>(socket, rooms, room_type)
+      data.rooms = rooms
+      socket.emit event, data
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-property">@queue_events_room_data</span>(data, <span class="hljs-attribute">rooms</span>: rooms, <span class="hljs-attribute">room_type</span>: room_type, <span class="hljs-attribute">events</span>: event)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="public-api-room-event-helpers-">Public API: Room Event Helpers. ###</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">room_message_event</span>:   <span class="hljs-function">-&gt;</span> <span class="hljs-property">@client_event</span>(<span class="hljs-string">'room_message'</span>)
+  <span class="hljs-attribute">room_broadcast_event</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@client_event</span>(<span class="hljs-string">'room_broadcast'</span>)
+
+  <span class="hljs-attribute">room_event</span>: <span class="hljs-function"><span class="hljs-params">(room, options={})</span> -&gt;</span>
+    event = [room]
+    event.push options.room_type  <span class="hljs-keyword">if</span> options.room_type
+    event.push options.room_event <span class="hljs-keyword">if</span> options.room_event
+    <span class="hljs-property">@server_event</span>(event...)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="public-api-room-name-helpers-">Public API: Room Name Helpers. ###</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">room_with_current_user</span>: <span class="hljs-function"><span class="hljs-params">(arg, args...)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(arg)
+    user = totem_scope.get_current_user()
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> user
+    args.unshift user.get(<span class="hljs-string">'id'</span>)
+    args.unshift <span class="hljs-property">@model_path</span>(user)
+    <span class="hljs-property">@room_for</span>(arg, args)
+
+  <span class="hljs-attribute">room_with_ownerable</span>: <span class="hljs-function"><span class="hljs-params">(arg, args...)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(arg)
+    ownerable = totem_scope.get_ownerable_record()
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">unless</span> ownerable
+    args.unshift ownerable.get(<span class="hljs-string">'id'</span>)
+    args.unshift <span class="hljs-property">@model_path</span>(ownerable)
+    <span class="hljs-property">@room_for</span>(arg, args)
+
+  <span class="hljs-attribute">room_for</span>: <span class="hljs-function"><span class="hljs-params">(arg, args...)</span> -&gt;</span>
+    <span class="hljs-keyword">switch</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-property">@is_string</span>(arg)  <span class="hljs-keyword">then</span> room = arg
+      <span class="hljs-keyword">when</span> <span class="hljs-property">@is_record</span>(arg)  <span class="hljs-keyword">then</span> room = <span class="hljs-property">@room_for_model</span>(arg)
+      <span class="hljs-keyword">else</span> room = <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> ember.isBlank(room)
+    <span class="hljs-keyword">return</span> room <span class="hljs-keyword">if</span> ember.isBlank(args)
+    args = util.flatten_array(args)
+    room + <span class="hljs-string">'/'</span> + args.join(<span class="hljs-string">'/'</span>)
+
+  <span class="hljs-attribute">room_for_model</span>: <span class="hljs-function"><span class="hljs-params">(record)</span> -&gt;</span> <span class="hljs-property">@model_path</span>(record) + <span class="hljs-string">"/<span class="hljs-subst">#{record.get(<span class="hljs-string">'id'</span>)}</span>"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="private">Private.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">delete_join_room_event_only_keys</span>: <span class="hljs-function"><span class="hljs-params">(options)</span> -&gt;</span>
+    <span class="hljs-keyword">delete</span>(options.source)
+    <span class="hljs-keyword">delete</span>(options.callback)
+    <span class="hljs-keyword">delete</span>(options.callbacks)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="callbacks">Callbacks.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">room_join_authenticate_callback</span>: <span class="hljs-function"><span class="hljs-params">(socket, data)</span> -&gt;</span>
+    options       = <span class="hljs-property">@get_data_auth_key_options</span>(data)
+    rooms         = <span class="hljs-property">@get_options_rooms</span>(options)
+    room_type     = <span class="hljs-property">@get_options_room_type</span>(options)
+    room_event    = <span class="hljs-property">@get_options_room_event</span>(options)
+    room_observer = <span class="hljs-property">@get_options_room_observer</span>(options)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(rooms)
+    <span class="hljs-property">@clean_up_current_events_map</span>(socket)
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@are_rooms_authorized</span>(socket, rooms, room_type)
+      <span class="hljs-property">@emit_queued_room_events</span>()
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@are_rooms_pending_authorization</span>(socket, rooms, room_type)
+    <span class="hljs-property">@set_rooms_pending_authorization</span>(socket, rooms, room_type)
+    auth     = <span class="hljs-property">@get_auth_query</span>()
+    auth_key = <span class="hljs-property">@get_data_auth_key</span>(data)
+    socket.emit <span class="hljs-property">@client_event</span>(<span class="hljs-string">'authorize'</span>), {auth, auth_key, rooms, room_type, room_event, room_observer}
+
+  <span class="hljs-attribute">room_join_authorize_callback</span>: <span class="hljs-function"><span class="hljs-params">(socket, data)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-property">@is_authenticated</span>(socket)
+    options   = <span class="hljs-property">@get_data_auth_key_options</span>(data)
+    rooms     = <span class="hljs-property">@get_options_rooms</span>(options)
+    room_type = <span class="hljs-property">@get_options_room_type</span>(options)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(rooms)
+    <span class="hljs-property">@set_rooms_authorized</span>(socket, rooms, room_type)
+    <span class="hljs-property">@emit_queued_room_events</span>(socket)
+    <span class="hljs-property">@after_authorize_callback</span>(socket, options, rooms, room_type, data)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>An authorize callback is useful when the node-socketio server is restarted.
+After a restart of the node-socketio server, each authorize request is re-sent
+and the after_authorize-callback called.  Typically, the callback would send
+a socketio request to populate some data (is only applicable when this is needed).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">after_authorize_callback</span>: <span class="hljs-function"><span class="hljs-params">(socket, options, rooms, room_type, data)</span> -&gt;</span>
+    callback = options.after_authorize_callback
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(callback)
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+      event      = <span class="hljs-property">@room_event</span>(room, options)
+      auth_event = <span class="hljs-property">@get_after_authorize_callback_event</span>(event)
+      events_map = <span class="hljs-property">@current_events_map</span>.get(socket)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(events_map)
+      source_map = events_map.get(auth_event)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(source_map)
+      source_map.forEach (temp, source) =&gt;
+        source[callback](options) <span class="hljs-keyword">if</span> <span class="hljs-property">@is_active</span>(source) <span class="hljs-keyword">and</span> <span class="hljs-property">@is_function</span>(source[callback])
+
+  <span class="hljs-attribute">get_after_authorize_callback_event</span>: <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
+    auth_event = <span class="hljs-keyword">if</span> ember.isBlank(event) <span class="hljs-keyword">then</span> <span class="hljs-string">'auth_event'</span> <span class="hljs-keyword">else</span> <span class="hljs-string">"<span class="hljs-subst">#{event}</span>"</span>
+    <span class="hljs-string">"<span class="hljs-subst">#{auth_event}</span>:after_authorize_callback"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="queue-events-and-rooms-data">Queue Events and Rooms Data.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<p>event_room_data_map[event] -&gt;
+    map[room_id] -&gt; [data, data, ...]</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">event_room_data_map</span>: ember.Map.create()
+
+  <span class="hljs-attribute">queue_events_room_data</span>: <span class="hljs-function"><span class="hljs-params">(data, options)</span> -&gt;</span>
+    rooms     = <span class="hljs-property">@get_options_rooms</span>(options)
+    room_type = <span class="hljs-property">@get_options_room_type</span>(options)
+    events    = <span class="hljs-property">@get_options_events</span>(options)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(rooms)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(events)
+    <span class="hljs-keyword">for</span> event <span class="hljs-keyword">in</span> events
+      room_map = <span class="hljs-property">@get_key_map</span>(<span class="hljs-property">@event_room_data_map</span>, event)
+      <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+        room_id = <span class="hljs-property">@get_authorized_room_id</span>(room, room_type)
+        room_data_array = <span class="hljs-property">@get_key_map_value_array</span>(room_map, room_id)
+        room_data_array.push(ember.merge {}, data)
+
+  <span class="hljs-attribute">emit_queued_room_events</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span>
+    <span class="hljs-property">@event_room_data_map</span>.forEach (room_map, event) =&gt;
+      room_map.forEach (data_array, room) =&gt;
+        <span class="hljs-keyword">if</span> <span class="hljs-property">@are_rooms_authorized</span>(socket, [room])
+          room_map.<span class="hljs-keyword">delete</span>(room)
+          room = room.split(<span class="hljs-string">'::'</span>)[<span class="hljs-number">0</span>]  <span class="hljs-comment"># remove the room_type (if exists)</span>
+          <span class="hljs-keyword">if</span> ember.isBlank(data_array)
+            socket.emit(event, {room})
+          <span class="hljs-keyword">else</span>
+            <span class="hljs-keyword">for</span> data <span class="hljs-keyword">in</span> data_array
+              data.rooms = room
+              socket.emit(event, data)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">set_rooms_authorized</span>:            <span class="hljs-function"><span class="hljs-params">(socket, rooms, room_type=<span class="hljs-literal">null</span>)</span> -&gt;</span> <span class="hljs-property">@set_rooms_authorized_value</span>(socket, rooms, room_type, <span class="hljs-literal">true</span>)
+  <span class="hljs-attribute">set_rooms_pending_authorization</span>: <span class="hljs-function"><span class="hljs-params">(socket, rooms, room_type=<span class="hljs-literal">null</span>)</span> -&gt;</span> <span class="hljs-property">@set_rooms_authorized_value</span>(socket, rooms, room_type, <span class="hljs-string">'pending'</span>)
+
+  <span class="hljs-attribute">set_rooms_unauthorized</span>: <span class="hljs-function"><span class="hljs-params">(socket, rooms, room_type=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    authorized = <span class="hljs-property">@get_authorized_rooms</span>(socket)
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+      room_id = <span class="hljs-property">@get_authorized_room_id</span>(room, room_type)
+      <span class="hljs-property">@delete_current_events_for_room</span>(socket, room, room_type)
+      <span class="hljs-property">@delete_auth_callbacks_for_room</span>(socket, room, room_type)
+      <span class="hljs-keyword">delete</span>(authorized[room_id])
+
+  <span class="hljs-attribute">delete_auth_callbacks_for_room</span>: <span class="hljs-function"><span class="hljs-params">(socket, room, room_type)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Delete any authorization requests for the room being unauthorized
+to prevent retrying the authorization when the socket.io server is restarted.
+e.g. trat -&gt; irat -&gt; restart node server (team room is not authorized on the irat)</p></div></div><div class="code"><div class="wrapper">    delete_auth_keys = []
+    <span class="hljs-property">@auth_options_map</span>.forEach (options, auth_key) =&gt;
+      map_rooms     = <span class="hljs-property">@get_options_rooms</span>(options)
+      map_room_type = <span class="hljs-property">@get_options_room_type</span>(options) <span class="hljs-keyword">or</span> <span class="hljs-literal">null</span>
+      <span class="hljs-keyword">if</span> ember.isPresent(map_rooms) <span class="hljs-keyword">and</span> ember.isArray(map_rooms)
+        <span class="hljs-keyword">if</span> room_type == map_room_type
+          map_rooms = map_rooms.without(room)
+          <span class="hljs-keyword">if</span> ember.isBlank(map_rooms)
+            delete_auth_keys.push(auth_key)
+          <span class="hljs-keyword">else</span>
+            <span class="hljs-keyword">delete</span>(options.room)
+            <span class="hljs-keyword">delete</span>(options.rooms)
+            options.rooms = map_rooms <span class="hljs-comment"># keep rooms other than for the deleted room</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@debugging_delete_events</span>
+      <span class="hljs-built_in">console</span>.warn <span class="hljs-string">'====delete auth callbacks:'</span>
+      <span class="hljs-built_in">console</span>.info(<span class="hljs-string">'   '</span>, <span class="hljs-property">@auth_options_map</span>.get(key)) <span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> delete_auth_keys
+    <span class="hljs-property">@auth_options_map</span>.<span class="hljs-keyword">delete</span>(auth_key) <span class="hljs-keyword">for</span> auth_key <span class="hljs-keyword">in</span> delete_auth_keys
+
+  <span class="hljs-attribute">are_rooms_authorized</span>: <span class="hljs-function"><span class="hljs-params">(socket, rooms, room_type=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    authorized = <span class="hljs-property">@get_authorized_rooms</span>(socket)
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+      room_id = <span class="hljs-property">@get_authorized_room_id</span>(room, room_type)
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">if</span> authorized[room_id] != <span class="hljs-literal">true</span>
+    <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">are_rooms_pending_authorization</span>: <span class="hljs-function"><span class="hljs-params">(socket, rooms, room_type=<span class="hljs-literal">null</span>)</span> -&gt;</span>
+    authorized = <span class="hljs-property">@get_authorized_rooms</span>(socket)
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+      room_id = <span class="hljs-property">@get_authorized_room_id</span>(room, room_type)
+      state   = authorized[room_id]
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> (state == <span class="hljs-literal">true</span> <span class="hljs-keyword">or</span> state == <span class="hljs-string">'pending'</span>)
+    <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">get_authorized_room_id</span>: <span class="hljs-function"><span class="hljs-params">(room, room_type)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> room <span class="hljs-keyword">unless</span> room_type
+    room + <span class="hljs-string">'::'</span> + room_type
+
+  <span class="hljs-attribute">set_rooms_authorized_value</span>: <span class="hljs-function"><span class="hljs-params">(socket, rooms, room_type, value)</span> -&gt;</span>
+    authorized = <span class="hljs-property">@get_authorized_rooms</span>(socket)
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+      room_id             = <span class="hljs-property">@get_authorized_room_id</span>(room, room_type)
+      authorized[room_id] = value
+
+  <span class="hljs-attribute">get_authorized_rooms</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span>
+    authorized = <span class="hljs-property">@get_authorized</span>(socket)
+    authorized.rooms <span class="hljs-keyword">or</span> (authorized.rooms = {})
+
+  <span class="hljs-attribute">print_event_room_data</span>: <span class="hljs-function"><span class="hljs-params">(title=<span class="hljs-string">''</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@event_room_data_map</span>.size &gt; <span class="hljs-number">0</span>
+      <span class="hljs-built_in">console</span>.warn <span class="hljs-string">"Event Room Data<span class="hljs-subst">#{title}</span>:"</span>
+      <span class="hljs-property">@event_room_data_map</span>.forEach (room_map, event) =&gt;
+        <span class="hljs-built_in">console</span>.info <span class="hljs-string">'   *event:'</span>, event
+        <span class="hljs-keyword">if</span> room_map.size &gt; <span class="hljs-number">0</span>
+          room_map.forEach (data, room) =&gt;
+            <span class="hljs-built_in">console</span>.info <span class="hljs-string">'      *room:'</span>, room
+            <span class="hljs-built_in">console</span>.info <span class="hljs-string">'         *data:'</span>, data
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-built_in">console</span>.info <span class="hljs-string">'      *No rooms.'</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-built_in">console</span>.warn <span class="hljs-string">"Event Room Data<span class="hljs-subst">#{title}</span>: None."</span></div></div></div></div></body></html>

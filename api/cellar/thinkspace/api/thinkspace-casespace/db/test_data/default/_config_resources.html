@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/db/test_data/default/_config_resources</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/db/test_data/default/_config_resources"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_resources.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_resources.yml">src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_resources.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">variables:
+  -<span class="ruby"> &amp;<span class="hljs-constant">SPACE</span> resources
+</span>  -<span class="ruby"> <span class="hljs-symbol">tags:</span> &amp;<span class="hljs-constant">RESOURCE_TAGS_ASSIGNMENT</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">title:</span> <span class="hljs-constant">Syllabus</span>
+</span>      links:
+        -<span class="ruby"> {<span class="hljs-symbol">title:</span> iowa state, <span class="hljs-symbol">url:</span> <span class="hljs-string">'http://iastate.edu'</span>}
+</span>        -<span class="ruby"> {<span class="hljs-symbol">title:</span> thinkspace, <span class="hljs-symbol">url:</span> <span class="hljs-string">'http://thinkspace.org'</span>}
+</span>      files:
+        -<span class="ruby"> {<span class="hljs-symbol">source:</span> file.pdf, <span class="hljs-symbol">name:</span> syllabus.pdf}
+</span>  -<span class="ruby"> <span class="hljs-symbol">tags:</span> &amp;<span class="hljs-constant">RESOURCE_TAGS_PHASE</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">title:</span> <span class="hljs-constant">Phase</span> <span class="hljs-constant">Resources</span>
+</span>      links:
+        -<span class="ruby"> {<span class="hljs-symbol">title:</span> thinkspace, <span class="hljs-symbol">url:</span> <span class="hljs-string">'http://thinkspace.org'</span>}
+</span>      files:
+        -<span class="ruby"> {<span class="hljs-symbol">source:</span> file.pdf, <span class="hljs-symbol">name:</span> work sheet <span class="hljs-number">1</span>.pdf}
+</span>        -<span class="ruby"> {<span class="hljs-symbol">source:</span> file.pdf, <span class="hljs-symbol">name:</span> work sheet <span class="hljs-number">2</span>.pdf}
+</span>        -<span class="ruby"> {<span class="hljs-symbol">source:</span> file.txt, <span class="hljs-symbol">name:</span> work sheet <span class="hljs-number">3</span>.txt}
+</span>        -<span class="ruby"> {<span class="hljs-symbol">source:</span> file.txt, <span class="hljs-symbol">name:</span> work sheet <span class="hljs-number">4</span>.txt}
+</span>
+spaces:
+  -<span class="ruby"> <span class="hljs-symbol">title:</span> *<span class="hljs-constant">SPACE</span>
+</span>
+space_users:
+  -<span class="ruby"> <span class="hljs-symbol">spaces:</span> *<span class="hljs-constant">SPACE</span>
+</span>    users: import[users@space_1]
+
+assignments:
+  -<span class="ruby"> {<span class="hljs-symbol">title:</span> assignment_resources, <span class="hljs-symbol">space:</span> *<span class="hljs-constant">SPACE</span>}
+</span>  -<span class="ruby"> <span class="hljs-symbol">title:</span> phase_resources
+</span>  -<span class="ruby"> <span class="hljs-symbol">title:</span> assignment_and_phase_resources
+</span>
+phases:
+  -<span class="ruby"> <span class="hljs-symbol">assignment:</span>    assignment_resources
+</span>    title:         assignment_resources_A
+    template_name: template_resource
+
+  -<span class="ruby"> <span class="hljs-symbol">assignment:</span>    phase_resources
+</span>    title:         phase_resources_A
+  -<span class="ruby"> <span class="hljs-symbol">title:</span>         phase_resources_B
+</span>
+  -<span class="ruby"> <span class="hljs-symbol">assignment:</span>    assignment_and_phase_resources
+</span>    title:         assignment_and_phase_resources_A
+  -<span class="ruby"> <span class="hljs-symbol">title:</span>         assignment_and_phase_resources_B
+</span>
+phase_templates:
+  -<span class="ruby"> <span class="hljs-symbol">title:</span> <span class="hljs-constant">Resource</span> template
+</span>    name: template_resource
+    template: |
+      #{<span class="ruby">casespace_phase_header}</span>
+      &lt;row&gt;
+        &lt;column&gt;
+        &lt;/column&gt;
+      &lt;/row&gt;
+      #{<span class="ruby">casespace_phase_submit}</span>
+
+resource_tags:
+
+  -<span class="ruby"> <span class="hljs-symbol">assignment:</span> assignment_resources
+</span>    user: {first_name: update_2}
+    tags: *RESOURCE_TAGS_ASSIGNMENT
+
+  -<span class="ruby"> <span class="hljs-symbol">phase:</span> phase_resources_A
+</span>    user: {first_name: update_2}
+    tags: *RESOURCE_TAGS_PHASE
+
+  -<span class="ruby"> <span class="hljs-symbol">phase:</span> phase_resources_B
+</span>    user: {first_name: update_2}
+    tags: *RESOURCE_TAGS_PHASE
+
+  -<span class="ruby"> <span class="hljs-symbol">assignment:</span> assignment_and_phase_resources
+</span>    user: {first_name: update_2}
+    tags: *RESOURCE_TAGS_ASSIGNMENT
+
+  -<span class="ruby"> <span class="hljs-symbol">phase:</span> assignment_and_phase_resources_A
+</span>    user: {first_name: update_2}
+    tags: *RESOURCE_TAGS_PHASE
+
+  -<span class="ruby"> <span class="hljs-symbol">phase:</span> assignment_and_phase_resources_B
+</span>    user: {first_name: update_2}
+    tags: *RESOURCE_TAGS_PHASE</div></div></div></div></body></html>

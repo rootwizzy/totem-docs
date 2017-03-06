@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-cli/lib/totem/cli/helpers/run_helpers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers/run_helpers"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers/run_helpers.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers/run_helpers.rb">src/totem/api/totem-cli/lib/totem/cli/helpers/run_helpers.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Helpers</span>;</span>  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">RunHelpers</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Thor run time options</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">force?</span>;</span>   run_options[<span class="hljs-symbol">:force</span>]; <span class="hljs-keyword">end</span>    <span class="hljs-comment"># overwrite files that alreay exist</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pretend?</span>;</span> run_options[<span class="hljs-symbol">:pretend</span>]; <span class="hljs-keyword">end</span>  <span class="hljs-comment"># run but do not make any changes</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">quiet?</span>;</span>   run_options[<span class="hljs-symbol">:quiet</span>]; <span class="hljs-keyword">end</span>    <span class="hljs-comment"># suppress status output</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">skip?</span>;</span>    run_options[<span class="hljs-symbol">:skip</span>]; <span class="hljs-keyword">end</span>     <span class="hljs-comment"># skip files that already exist</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Run Options</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug?</span>;</span>        run_options[<span class="hljs-symbol">:debug</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new?</span>;</span>          run_options[<span class="hljs-symbol">:new</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">onew?</span>;</span>         options[<span class="hljs-symbol">:new</span>] == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>  <span class="hljs-comment"># command line options (e.g. not run options override)</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deploy?</span>;</span>       run_options[<span class="hljs-symbol">:deploy</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">package?</span>;</span>      run_options[<span class="hljs-symbol">:package</span>]; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verify?</span>;</span>       run_options[<span class="hljs-symbol">:verify</span>] &amp;&amp; !quiet?; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verbose_copy?</span>;</span> run_options[<span class="hljs-symbol">:verbose_copy</span>] &amp;&amp; !quiet?; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verbose_debug?</span>;</span> debug? &amp;&amp; verbose_copy?; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">skip_exist_check?</span>;</span> run_options[<span class="hljs-symbol">:skip_exist_check</span>]; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">capture_output?</span>;</span> <span class="hljs-keyword">not</span> (verbose_copy? || debug?); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">skip_package?</span><span class="hljs-params">(pkg)</span>;</span> pkg &amp;&amp; pkg.start_with?(<span class="hljs-string">'--'</span>); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_class_group_run_options</span><span class="hljs-params">(group)</span></span>
+    group_options   = <span class="hljs-constant">Array</span>.new
+    thor_group_name = group.to_s.capitalize  <span class="hljs-comment"># Thor typically uses 'group' to print options so is human friendly</span>
+    <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.class_options.each <span class="hljs-keyword">do</span> |key, opt|
+      group_options.push(key) <span class="hljs-keyword">if</span> opt.group == thor_group_name
+    <span class="hljs-keyword">end</span>
+    group_options
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_thor_options_from_run_options</span></span>
+    {<span class="hljs-symbol">force:</span> force?, <span class="hljs-symbol">quiet:</span> quiet?, <span class="hljs-symbol">pretend:</span> pretend?, <span class="hljs-symbol">skip:</span> skip?}
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_printable_run_options</span></span>
+    special_keys = []
+    text         = <span class="hljs-string">''</span>
+    keys         = run_options.keys.sort.select {|k| !k.to_s.start_with?(<span class="hljs-string">'_'</span>) || !special_keys.<span class="hljs-keyword">include</span>?(k)}
+    hash_keys    = keys.select {|k| run_options[k].is_a?(<span class="hljs-constant">Hash</span>)}
+    (keys-hash_keys).each <span class="hljs-keyword">do</span> |key|
+      text += format_printable_option(key, run_options[key])
+    <span class="hljs-keyword">end</span>
+    hash_keys -=  [<span class="hljs-symbol">:current_config</span>, <span class="hljs-symbol">:current_package</span>, <span class="hljs-symbol">:ember_cli_build</span>, <span class="hljs-symbol">:environment</span>] <span class="hljs-comment"># do not print the large configs</span>
+    hash_keys.each <span class="hljs-keyword">do</span> |key|
+      text += format_printable_option(key, run_options[key], <span class="hljs-symbol">key_color:</span> <span class="hljs-symbol">:cyan</span>)
+    <span class="hljs-keyword">end</span>
+    special_keys.each <span class="hljs-keyword">do</span> |key|
+      opts = run_options[key]
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> opts.blank?
+      keys = opts.keys.sort
+      text += format_printable_option(key, <span class="hljs-string">''</span>)
+      keys.each <span class="hljs-keyword">do</span> |key|
+        text += format_printable_option(key, opts[key])
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    text
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_printable_hash</span><span class="hljs-params">(hash, options={})</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">''</span> <span class="hljs-keyword">unless</span> hash.is_a?(<span class="hljs-constant">Hash</span>)
+    text = <span class="hljs-string">''</span>
+    hash.keys.sort.each <span class="hljs-keyword">do</span> |key|
+      text += format_printable_option(key, hash[key], options)
+    <span class="hljs-keyword">end</span>
+    text
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">format_printable_option</span><span class="hljs-params">(key, value, options={})</span></span>
+    width      = options[<span class="hljs-symbol">:width</span>]  || <span class="hljs-number">30</span>
+    indent     = options[<span class="hljs-symbol">:indent</span>] || <span class="hljs-string">'  '</span>
+    fmt_array  = options[<span class="hljs-symbol">:format_arrays</span>]
+    key_color  = [options[<span class="hljs-symbol">:key_color</span>]   || options[<span class="hljs-symbol">:color</span>] || <span class="hljs-symbol">:yellow</span>].flatten
+    val_color  = value == <span class="hljs-keyword">false</span> ? [<span class="hljs-symbol">:red</span>] <span class="hljs-symbol">:</span> value == <span class="hljs-keyword">true</span> ? [<span class="hljs-symbol">:green</span>] <span class="hljs-symbol">:</span> [options[<span class="hljs-symbol">:value_color</span>] || options[<span class="hljs-symbol">:color</span>] || <span class="hljs-symbol">:yellow</span>].flatten
+    akey_color = [options[<span class="hljs-symbol">:array_key_color</span>]  || key_color].flatten
+    text       = <span class="hljs-string">''</span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> value.is_a?(<span class="hljs-constant">Hash</span>)
+      key_text = set_color key.to_s.ljust(width, <span class="hljs-string">'.'</span>), *key_color
+      text    += indent + <span class="hljs-string">"<span class="hljs-subst">#{key_text}</span>\n"</span>
+      text    += set_color indent_pp_outout(value, indent+indent), *val_color
+    <span class="hljs-keyword">when</span> value.is_a?(<span class="hljs-constant">Array</span>) &amp;&amp; value.present? &amp;&amp; fmt_array
+      key_text = set_color key.to_s.ljust(width, <span class="hljs-string">'.'</span>), *akey_color
+      text += indent + <span class="hljs-string">"<span class="hljs-subst">#{key_text}</span>\n"</span>
+      text += set_color indent_pp_outout(value, indent+indent), *val_color
+    <span class="hljs-keyword">else</span>
+      val_color  = [<span class="hljs-symbol">:cyan</span>, <span class="hljs-symbol">:bold</span>]  <span class="hljs-keyword">if</span> key.to_s.start_with?(<span class="hljs-string">'app_'</span>) || key.to_s.end_with?(<span class="hljs-string">'_dir'</span>) || key == <span class="hljs-symbol">:run_options_file</span>
+      val_color  = [<span class="hljs-symbol">:green</span>, <span class="hljs-symbol">:bold</span>] <span class="hljs-keyword">if</span> key == <span class="hljs-symbol">:app_name</span>
+      key_color  = [<span class="hljs-symbol">:green</span>] <span class="hljs-keyword">if</span> value == <span class="hljs-keyword">true</span>
+      key_text   = set_color key.to_s.ljust(width, <span class="hljs-string">'.'</span>), *key_color
+      val_text   = set_color value.to_s, *val_color
+      text      += indent + <span class="hljs-string">"<span class="hljs-subst">#{key_text}</span> <span class="hljs-subst">#{val_text}</span>\n"</span>
+    <span class="hljs-keyword">end</span>
+    text
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">indent_pp_outout</span><span class="hljs-params">(value, indent=<span class="hljs-string">''</span>)</span></span>
+    text    = <span class="hljs-string">''</span>
+    pp_text = <span class="hljs-constant">PP</span>.pp(value,<span class="hljs-string">''</span>)
+    pp_text.split(<span class="hljs-string">"\n"</span>).each {|l| text += indent+l+<span class="hljs-string">"\n"</span>}
+    text
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

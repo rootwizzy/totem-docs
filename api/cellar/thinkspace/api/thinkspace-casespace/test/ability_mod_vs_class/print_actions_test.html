@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/test/ability_mod_vs_class/print_actions_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/test/ability_mod_vs_class/print_actions_test"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/ability_mod_vs_class/print_actions_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/ability_mod_vs_class/print_actions_test.rb">src/thinkspace/api/thinkspace-casespace/test/ability_mod_vs_class/print_actions_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'ability_helper'</span>
+<span class="hljs-constant">Test::Casespace::Seed</span>.load(<span class="hljs-symbol">config:</span> <span class="hljs-symbol">:ability</span>)
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">AbilityModVsClass</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PrintActions</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveSupport::TestCase</span></span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="must-add-39test39-to-the-module-name-in-the-mods-directory-files">MUST ADD &#39;TEST&#39; TO THE MODULE NAME IN THE MODS DIRECTORY FILES!</h3>
+<p>e.g. rename: &#39;module Thinkspace&#39; to &#39;module TestThinkspace&#39;
+Un-comment the &#39;it&#39; tests wanted.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">mod_files</span>;</span> <span class="hljs-constant">Dir</span>.glob(<span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">"../mods/**/*.rb"</span>, __FILE_<span class="hljs-number">_</span>)); <span class="hljs-keyword">end</span>
+
+  mod_files.each <span class="hljs-keyword">do</span> |file|
+    <span class="hljs-keyword">require</span> file
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">get_mod_ability</span><span class="hljs-params">(user)</span></span>
+    klass = <span class="hljs-constant">ModAbility</span>
+    mod_files.each <span class="hljs-keyword">do</span> |file|
+      basename = <span class="hljs-constant">File</span>.basename(file, <span class="hljs-string">'.rb'</span>)
+      mod_name = <span class="hljs-string">"TestThinkspace::Authorization::<span class="hljs-subst">#{basename.camelize}</span>"</span>
+      mod      = mod_name.safe_constantize
+      klass.send(<span class="hljs-symbol">:include</span>, mod)
+    <span class="hljs-keyword">end</span>
+    klass.new(user)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ModAbility</span></span>
+    <span class="hljs-keyword">include</span> <span class="hljs-constant">::CanCan::Ability</span>
+    <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:user</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(muser=<span class="hljs-keyword">nil</span>)</span></span>
+      <span class="hljs-variable">@user</span> = muser
+      thinkspace_casespace_ability
+      thinkspace_weather_forecaster_ability  <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.respond_to?(<span class="hljs-symbol">:thinkspace_weather_forecaster_ability</span>)
+    <span class="hljs-keyword">end</span>
+    private
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_user_role</span><span class="hljs-params">(role)</span>;</span> <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_crud_alias_actions</span>;</span> alias_action <span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:destroy</span>, <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:crud</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_read_alias_actions</span>;</span> alias_action <span class="hljs-symbol">:index</span>, <span class="hljs-symbol">:show</span>, <span class="hljs-symbol">:select</span>, <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:read</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::TerminalColors</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Ability</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Models</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Casespace::Utility</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Ability::Rules</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_class_vs_mod</span><span class="hljs-params">(user)</span></span>
+    class_hash = map_ability_model_rules(user)
+    mod_rules  = <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.get_mod_ability(user).send(<span class="hljs-symbol">:rules</span>)
+    mod_hash   = map_ability_rules(user, mod_rules)
+    messages   = <span class="hljs-constant">Array</span>.new
+    messages  += print_class_vs_mod_classes(class_hash, mod_hash)
+    messages  += print_class_vs_mod_actions(class_hash, mod_hash)
+    puts <span class="hljs-string">"\n"</span>
+    <span class="hljs-keyword">if</span> messages.blank?
+      puts color_line(<span class="hljs-string">"User: <span class="hljs-subst">#{user.first_name}</span>"</span>, <span class="hljs-symbol">:cyan</span>, <span class="hljs-symbol">:bold</span>) + color_line(<span class="hljs-string">" abilities are the same!"</span>, <span class="hljs-symbol">:green</span>)
+    <span class="hljs-keyword">else</span>
+      puts color_line(<span class="hljs-string">"User: <span class="hljs-subst">#{user.first_name}</span>"</span>, <span class="hljs-symbol">:cyan</span>, <span class="hljs-symbol">:bold</span>)
+      puts messages.join(<span class="hljs-string">"\n"</span>)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_class_vs_mod_classes</span><span class="hljs-params">(class_hash, mod_hash)</span></span>
+    messages = <span class="hljs-constant">Array</span>.new
+    ckeys    = class_hash.keys.sort
+    mkeys    = mod_hash.keys.sort
+    cdiff    = ckeys - mkeys
+    mdiff    = mkeys - ckeys
+    <span class="hljs-keyword">if</span> cdiff.present?
+      messages.push color_line(<span class="hljs-string">"  Class classes not in mod classes="</span>, <span class="hljs-symbol">:red</span>) + <span class="hljs-string">"<span class="hljs-subst">#{cdiff}</span>"</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> mdiff.present?
+      messages.push color_line(<span class="hljs-string">"  Mod classes not in class classes="</span>, <span class="hljs-symbol">:red</span>) + <span class="hljs-string">"<span class="hljs-subst">#{mdiff}</span>"</span>
+    <span class="hljs-keyword">end</span>
+    messages
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_class_vs_mod_actions</span><span class="hljs-params">(class_hash, mod_hash)</span></span>
+    all_messages = <span class="hljs-constant">Array</span>.new
+    class_hash.keys.sort.each <span class="hljs-keyword">do</span> |key|
+      cactions = class_hash[key]
+      mactions = mod_hash[key]
+      messages = <span class="hljs-constant">Array</span>.new
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> cactions.present? &amp;&amp; mactions.present?
+        ca    = cactions.keys.sort
+        ma    = mactions.keys.sort
+        cdiff = ca - ma
+        mdiff = ma - ca
+        dm    = color_line(<span class="hljs-string">'mod'</span>.ljust(<span class="hljs-number">5</span>), <span class="hljs-symbol">:yellow</span>)
+        dc    = color_line(<span class="hljs-string">'class'</span>.ljust(<span class="hljs-number">5</span>), <span class="hljs-symbol">:yellow</span>)
+        messages.push color_line(<span class="hljs-string">"    Missing actions <span class="hljs-subst">#{dm}</span> = <span class="hljs-subst">#{cdiff}</span>"</span>, <span class="hljs-symbol">:red</span>) <span class="hljs-keyword">if</span> cdiff.present?
+        messages.push color_line(<span class="hljs-string">"    Missing actions <span class="hljs-subst">#{dc}</span> = <span class="hljs-subst">#{mdiff}</span>"</span>, <span class="hljs-symbol">:red</span>) <span class="hljs-keyword">if</span> mdiff.present?
+      <span class="hljs-keyword">when</span> cactions.present?
+      <span class="hljs-keyword">when</span> mactions.present?
+      <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">if</span> messages.present?
+        all_messages.push <span class="hljs-string">"  <span class="hljs-subst">#{key}</span>"</span>
+        all_messages += messages
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    all_messages
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'ability'</span>  <span class="hljs-keyword">do</span>
+    let (<span class="hljs-symbol">:owner</span>)    {get_user(<span class="hljs-symbol">:owner_1</span>)}
+    let (<span class="hljs-symbol">:updater</span>)  {get_user(<span class="hljs-symbol">:update_1</span>)}
+    let (<span class="hljs-symbol">:reader</span>)   {get_user(<span class="hljs-symbol">:read_1</span>)}
+
+    describe <span class="hljs-string">'rules'</span> <span class="hljs-keyword">do</span>
+      it <span class="hljs-string">"print class vs mod reader"</span> <span class="hljs-keyword">do</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>print_class_vs_mod(reader)</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">end</span>
+      it <span class="hljs-string">"print class vs mod updater"</span> <span class="hljs-keyword">do</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>print_class_vs_mod(updater)</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

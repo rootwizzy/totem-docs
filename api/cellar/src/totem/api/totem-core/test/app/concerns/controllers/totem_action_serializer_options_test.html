@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/test/app/concerns/controllers/totem_action_serializer_options_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/test/app/concerns/controllers/totem_action_serializer_options_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/app/concerns/controllers/totem_action_serializer_options_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/app/concerns/controllers/totem_action_serializer_options_test.rb">src/totem/api/totem-core/test/app/concerns/controllers/totem_action_serializer_options_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../../action_serializer_options_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_serializer_options_methods</span><span class="hljs-params">(keys, options, validate_mod=<span class="hljs-keyword">true</span>)</span></span>
+  methods = get_serializer_options_methods(options)
+  assert_kind_of <span class="hljs-constant">Hash</span>, methods, <span class="hljs-string">'serializer options methods is a hash'</span>
+  keys = [keys].flatten.sort
+  assert_equal keys, methods.keys.sort, <span class="hljs-string">'has the keys'</span>
+  keys.each <span class="hljs-keyword">do</span> |key|
+    hash = methods[key]
+    assert_kind_of <span class="hljs-constant">Hash</span>, hash, <span class="hljs-string">'each serializer options methods key has a has value'</span>
+    inst = hash[<span class="hljs-symbol">:instance</span>]
+    refute_nil inst, <span class="hljs-string">'should have an module instance'</span>
+    assert_serializer_options_module(inst, key)  <span class="hljs-keyword">if</span> validate_mod
+  <span class="hljs-keyword">end</span>
+  methods
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_serializer_options_module</span><span class="hljs-params">(inst, key)</span></span>
+  assert_equal key, inst.module_name, <span class="hljs-string">'is the correct module'</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_before_action</span><span class="hljs-params">(methods, key, value)</span></span>
+  hash = methods[key]
+  assert_equal value, hash[<span class="hljs-symbol">:before_action</span>], <span class="hljs-string">'before filter matches'</span>
+<span class="hljs-keyword">end</span>
+
+
+describe <span class="hljs-string">'totem serializer options'</span> <span class="hljs-keyword">do</span>
+
+  describe <span class="hljs-string">'controller values'</span>  <span class="hljs-keyword">do</span>
+
+    it <span class="hljs-string">'users defaults'</span> <span class="hljs-keyword">do</span>
+      options = {}
+      methods = assert_serializer_options_methods(<span class="hljs-symbol">:users</span>, options)
+      assert_before_action(methods, <span class="hljs-symbol">:users</span>, <span class="hljs-string">'[action]'</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users with name'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">name:</span> <span class="hljs-symbol">:myusers</span>}
+      methods = assert_serializer_options_methods(<span class="hljs-symbol">:myusers</span>, options, <span class="hljs-keyword">false</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:myusers</span>, <span class="hljs-string">'[action]'</span>)
+      assert_serializer_options_module(methods[<span class="hljs-symbol">:myusers</span>][<span class="hljs-symbol">:instance</span>], <span class="hljs-symbol">:users</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users with module name'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">module_name:</span> <span class="hljs-symbol">:another_one</span>}
+      methods = assert_serializer_options_methods(<span class="hljs-symbol">:users</span>, options, <span class="hljs-keyword">false</span>)
+      assert_serializer_options_module(methods[<span class="hljs-symbol">:users</span>][<span class="hljs-symbol">:instance</span>], <span class="hljs-symbol">:another_one</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users with module'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-class"><span class="hljs-keyword">module</span>: '<span class="hljs-title">Test::SerializerOptions::AnotherOne</span>'}</span>
+      methods = assert_serializer_options_methods(<span class="hljs-symbol">:users</span>, options, <span class="hljs-keyword">false</span>)
+      assert_serializer_options_module(methods[<span class="hljs-symbol">:users</span>][<span class="hljs-symbol">:instance</span>], <span class="hljs-symbol">:another_one</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users with before filter'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">before_action:</span> <span class="hljs-symbol">:test_method</span>}
+      methods = assert_serializer_options_methods(<span class="hljs-symbol">:users</span>, options)
+      assert_before_action(methods, <span class="hljs-symbol">:users</span>, <span class="hljs-string">'test_method'</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users with before filter replace resource'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">before_action:</span> <span class="hljs-string">'[resource]_test_method'</span>}
+      methods = assert_serializer_options_methods(<span class="hljs-symbol">:users</span>, options)
+      assert_before_action(methods, <span class="hljs-symbol">:users</span>, <span class="hljs-string">'users_test_method'</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users with module false'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-class"><span class="hljs-keyword">module</span>: <span class="hljs-title">false</span>}</span>
+      methods = get_serializer_options_methods(options)
+      assert_equal <span class="hljs-keyword">true</span>, methods.blank?, <span class="hljs-string">'does not add a module'</span>
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users with module false with other values'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">name:</span> <span class="hljs-symbol">:test</span>, <span class="hljs-symbol">module_name:</span> <span class="hljs-symbol">:another_one</span>, <span class="hljs-symbol">before_action:</span> <span class="hljs-symbol">:test_before_action</span>, <span class="hljs-class"><span class="hljs-keyword">module</span>: <span class="hljs-title">false</span>}</span>
+      methods = get_serializer_options_methods(options)
+      assert_equal <span class="hljs-keyword">true</span>, methods.blank?, <span class="hljs-string">'does not add a module'</span>
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'controller with add key'</span>  <span class="hljs-keyword">do</span>
+
+    it <span class="hljs-string">'users default and another one default'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span>[{<span class="hljs-symbol">name:</span> <span class="hljs-symbol">:another_one</span>}]}
+      methods = assert_serializer_options_methods([<span class="hljs-symbol">:another_one</span>, <span class="hljs-symbol">:users</span>], options)
+      assert_before_action(methods, <span class="hljs-symbol">:users</span>, <span class="hljs-string">'[action]'</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:another_one</span>, <span class="hljs-keyword">nil</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'add is array of string and symbol - set as name and module_name'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span>[<span class="hljs-string">'another_one'</span>, <span class="hljs-symbol">:another_two</span>]}
+      methods = assert_serializer_options_methods([<span class="hljs-symbol">:another_one</span>, <span class="hljs-symbol">:another_two</span>, <span class="hljs-symbol">:users</span>], options)
+      assert_before_action(methods, <span class="hljs-symbol">:users</span>, <span class="hljs-string">'[action]'</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:another_one</span>, <span class="hljs-keyword">nil</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:another_two</span>, <span class="hljs-keyword">nil</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'add is a symbol - set as name and module_name'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span> <span class="hljs-symbol">:another_one</span>}
+      methods = assert_serializer_options_methods([<span class="hljs-symbol">:another_one</span>, <span class="hljs-symbol">:users</span>], options)
+      assert_before_action(methods, <span class="hljs-symbol">:users</span>, <span class="hljs-string">'[action]'</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:another_one</span>, <span class="hljs-keyword">nil</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'add is a string - set as name and module_name'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span> <span class="hljs-symbol">:another_two</span>}
+      methods = assert_serializer_options_methods([<span class="hljs-symbol">:another_two</span>, <span class="hljs-symbol">:users</span>], options)
+      assert_before_action(methods, <span class="hljs-symbol">:users</span>, <span class="hljs-string">'[action]'</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:another_two</span>, <span class="hljs-keyword">nil</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users module false and another one default'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-class"><span class="hljs-keyword">module</span>: <span class="hljs-title">false</span>, <span class="hljs-title">add</span>:[{<span class="hljs-title">name</span>: :<span class="hljs-title">another_one</span>}]}</span>
+      methods = assert_serializer_options_methods([<span class="hljs-symbol">:another_one</span>], options)
+      assert_before_action(methods, <span class="hljs-symbol">:another_one</span>, <span class="hljs-keyword">nil</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users module false and another one before filter as hash'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-class"><span class="hljs-keyword">module</span>: <span class="hljs-title">false</span>, <span class="hljs-title">add</span>: {<span class="hljs-title">name</span>: :<span class="hljs-title">another_one</span>, <span class="hljs-title">before_action</span>: <span class="hljs-title">true</span>}}</span>
+      methods = assert_serializer_options_methods([<span class="hljs-symbol">:another_one</span>], options)
+      assert_before_action(methods, <span class="hljs-symbol">:another_one</span>, <span class="hljs-string">'[action]'</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users module false and another one before filter as array'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-class"><span class="hljs-keyword">module</span>: <span class="hljs-title">false</span>, <span class="hljs-title">add</span>:[{<span class="hljs-title">name</span>: :<span class="hljs-title">another_one</span>, <span class="hljs-title">before_action</span>: <span class="hljs-title">true</span>}]}</span>
+      methods = assert_serializer_options_methods([<span class="hljs-symbol">:another_one</span>], options)
+      assert_before_action(methods, <span class="hljs-symbol">:another_one</span>, <span class="hljs-string">'[action]'</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users, another one, another two default'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span>[{<span class="hljs-symbol">name:</span> <span class="hljs-symbol">:another_one</span>}, {<span class="hljs-symbol">name:</span> <span class="hljs-symbol">:another_two</span>}]}
+      methods = assert_serializer_options_methods([<span class="hljs-symbol">:another_one</span>, <span class="hljs-symbol">:another_two</span>, <span class="hljs-symbol">:users</span>], options)
+      assert_before_action(methods, <span class="hljs-symbol">:users</span>, <span class="hljs-string">'[action]'</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:another_one</span>, <span class="hljs-keyword">nil</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:another_two</span>, <span class="hljs-keyword">nil</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users, another one, another two with values'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span>[{<span class="hljs-symbol">name:</span> <span class="hljs-symbol">:another_one</span>, <span class="hljs-symbol">module_name:</span> <span class="hljs-symbol">:another_two</span>}, {<span class="hljs-symbol">name:</span> <span class="hljs-symbol">:another_two</span>}]}
+      methods = assert_serializer_options_methods([<span class="hljs-symbol">:another_one</span>, <span class="hljs-symbol">:another_two</span>, <span class="hljs-symbol">:users</span>], options, <span class="hljs-keyword">false</span>)
+      assert_serializer_options_module(methods[<span class="hljs-symbol">:users</span>][<span class="hljs-symbol">:instance</span>], <span class="hljs-symbol">:users</span>)
+      assert_serializer_options_module(methods[<span class="hljs-symbol">:another_one</span>][<span class="hljs-symbol">:instance</span>], <span class="hljs-symbol">:another_two</span>)
+      assert_serializer_options_module(methods[<span class="hljs-symbol">:another_two</span>][<span class="hljs-symbol">:instance</span>], <span class="hljs-symbol">:another_two</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:users</span>, <span class="hljs-string">'[action]'</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:another_one</span>, <span class="hljs-keyword">nil</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:another_two</span>, <span class="hljs-keyword">nil</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users, another one, another two module false'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span>[{<span class="hljs-symbol">name:</span> <span class="hljs-symbol">:another_one</span>}, {<span class="hljs-symbol">name:</span> <span class="hljs-symbol">:another_two</span>, <span class="hljs-class"><span class="hljs-keyword">module</span>: <span class="hljs-title">false</span>}]}</span>
+      methods = assert_serializer_options_methods([<span class="hljs-symbol">:another_one</span>, <span class="hljs-symbol">:users</span>], options)
+      assert_before_action(methods, <span class="hljs-symbol">:users</span>, <span class="hljs-string">'[action]'</span>)
+      assert_before_action(methods, <span class="hljs-symbol">:another_one</span>, <span class="hljs-keyword">nil</span>)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_before_action_args</span><span class="hljs-params">(action)</span></span>
+    controller = get_controller({<span class="hljs-symbol">action_name:</span> action}, <span class="hljs-constant">Test::SerializerOptions::ArgsController</span>)
+    methods    = controller.tso_method <span class="hljs-symbol">:serializer_options_methods</span>
+    rc         = controller.tso.before_action_process(controller)
+    refute_nil rc, <span class="hljs-string">'action method was run'</span>
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'instance arg arity'</span> <span class="hljs-keyword">do</span>
+
+    it <span class="hljs-string">'zero'</span> <span class="hljs-keyword">do</span>
+      assert_before_action_args <span class="hljs-symbol">:zero_args</span>
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'one'</span> <span class="hljs-keyword">do</span>
+      assert_before_action_args <span class="hljs-symbol">:one_args</span>
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'two'</span> <span class="hljs-keyword">do</span>
+      assert_before_action_args <span class="hljs-symbol">:two_args</span>
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'three not allowed'</span> <span class="hljs-keyword">do</span>
+      e = assert_raises(so_error) {assert_before_action_args <span class="hljs-symbol">:three_args</span>}
+      assert_match(<span class="hljs-regexp">/more than 2 arguments/i</span>, e.to_s)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assert_mock_module_method</span><span class="hljs-params">(options, key, action)</span></span>
+    controller = get_controller(options)
+    methods    = controller.tso_method <span class="hljs-symbol">:serializer_options_methods</span>
+    inst       = methods[key][<span class="hljs-symbol">:instance</span>]
+    refute_nil inst, <span class="hljs-string">"instance for key <span class="hljs-subst">#{key.inspect}</span>"</span>
+    mock = <span class="hljs-constant">MiniTest::Mock</span>.new
+    mock.expect(<span class="hljs-symbol">:call</span>, <span class="hljs-keyword">nil</span>, [so])
+    inst.stub(action.to_sym, mock) <span class="hljs-keyword">do</span>
+      inst.send action, so
+    <span class="hljs-keyword">end</span>
+    mock.verify
+  <span class="hljs-keyword">end</span>
+
+  describe <span class="hljs-string">'manually call'</span> <span class="hljs-keyword">do</span>
+
+    it <span class="hljs-string">'users'</span> <span class="hljs-keyword">do</span>
+      options = {}
+      assert_mock_module_method(options, <span class="hljs-symbol">:users</span>, <span class="hljs-symbol">:index</span>)
+    <span class="hljs-keyword">end</span>
+
+    it <span class="hljs-string">'users and another one'</span> <span class="hljs-keyword">do</span>
+      options = {<span class="hljs-symbol">add:</span>[{<span class="hljs-symbol">name:</span> <span class="hljs-symbol">:another_one</span>}]}
+      assert_mock_module_method(options, <span class="hljs-symbol">:another_one</span>, <span class="hljs-symbol">:index</span>)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-peer-assessment-pe/addon/components/assessment/type/base</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-peer-assessment-pe/addon/components/assessment/type/base"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-peer-assessment-pe/addon/components/assessment/type/base.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-peer-assessment-pe/addon/components/assessment/type/base.coffee">src/thinkspace/client/thinkspace-peer-assessment-pe/addon/components/assessment/type/base.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember          from <span class="hljs-string">'ember'</span>
+import ta             from <span class="hljs-string">'totem/ds/associations'</span>
+import base_component from <span class="hljs-string">'thinkspace-base/components/base'</span>
+
+export default base_component.extend</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="properties">Properties</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">manager</span>:          <span class="hljs-literal">null</span> <span class="hljs-comment"># managers/evaluation</span>
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="computed-properties">Computed properties</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">model</span>:       ember.computed.reads <span class="hljs-string">'manager.model'</span>
+  <span class="hljs-attribute">review</span>:      ember.computed.reads <span class="hljs-string">'manager.review'</span>
+  <span class="hljs-attribute">reviews</span>:     ember.computed.reads <span class="hljs-string">'manager.reviews'</span>
+  <span class="hljs-attribute">reviewable</span>:  ember.computed.reads <span class="hljs-string">'manager.reviewable'</span>
+  <span class="hljs-attribute">reviewables</span>: ember.computed.reads <span class="hljs-string">'manager.reviewables'</span>
+
+  <span class="hljs-attribute">points_total</span>:     ember.computed.reads <span class="hljs-string">'manager.points_total'</span>
+  <span class="hljs-attribute">points_expended</span>:  ember.computed.reads <span class="hljs-string">'manager.points_expended'</span>
+  <span class="hljs-attribute">points_remaining</span>: ember.computed.reads <span class="hljs-string">'manager.points_remaining'</span>
+
+  <span class="hljs-attribute">is_confirmation</span>: ember.computed.reads <span class="hljs-string">'manager.is_confirmation'</span>
+  <span class="hljs-attribute">is_balance</span>:      ember.computed.reads <span class="hljs-string">'manager.is_balance'</span>
+  <span class="hljs-attribute">is_read_only</span>:    ember.computed.reads <span class="hljs-string">'manager.is_read_only'</span>
+  <span class="hljs-attribute">is_disabled</span>:     ember.computed.reads <span class="hljs-string">'manager.is_disabled'</span>
+
+  <span class="hljs-attribute">has_errors</span>:                    ember.computed.reads <span class="hljs-string">'manager.has_errors'</span>
+  <span class="hljs-attribute">has_negative_points_remaining</span>: ember.computed.reads <span class="hljs-string">'manager.has_negative_points_remaining'</span>
+  <span class="hljs-attribute">has_qualitative_section</span>:       ember.computed.reads <span class="hljs-string">'manager.has_qualitative_section'</span>
+  <span class="hljs-attribute">has_points_different_rule</span>:     ember.computed.reads <span class="hljs-string">'manager.has_points_different_rule'</span>
+  <span class="hljs-attribute">has_points_remaining_rule</span>:     ember.computed.reads <span class="hljs-string">'manager.has_points_remaining_rule'</span>
+
+  <span class="hljs-attribute">errors</span>: ember.computed.reads <span class="hljs-string">'manager.errors'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="components">Components</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">c_item_quantitative</span>: ta.to_p <span class="hljs-string">'tbl:assessment'</span>, <span class="hljs-string">'item'</span>, <span class="hljs-string">'quantitative'</span>
+  <span class="hljs-attribute">c_item_qualitative</span>:  ta.to_p <span class="hljs-string">'tbl:assessment'</span>, <span class="hljs-string">'item'</span>, <span class="hljs-string">'qualitative'</span>
+  <span class="hljs-attribute">c_team</span>:              ta.to_p <span class="hljs-string">'tbl:assessment'</span>, <span class="hljs-string">'team'</span>
+  <span class="hljs-attribute">c_review_summary</span>:    ta.to_p <span class="hljs-string">'tbl:assessment'</span>, <span class="hljs-string">'review'</span>, <span class="hljs-string">'summary'</span>
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">next</span>:         <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).set_reviewable_from_offset(<span class="hljs-number">1</span>)
+    <span class="hljs-attribute">previous</span>:     <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).set_reviewable_from_offset(-<span class="hljs-number">1</span>)
+    <span class="hljs-attribute">confirmation</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).set_confirmation()
+    <span class="hljs-attribute">submit</span>:       <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'manager'</span>).submit()</div></div></div></div></body></html>

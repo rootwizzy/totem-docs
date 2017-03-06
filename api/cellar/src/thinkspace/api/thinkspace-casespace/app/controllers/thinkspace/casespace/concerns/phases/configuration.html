@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/app/controllers/thinkspace/casespace/concerns/phases/configuration</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/app/controllers/thinkspace/casespace/concerns/phases/configuration"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/app/controllers/thinkspace/casespace/concerns/phases/configuration.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/app/controllers/thinkspace/casespace/concerns/phases/configuration.rb">src/thinkspace/api/thinkspace-casespace/app/controllers/thinkspace/casespace/concerns/phases/configuration.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Casespace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Concerns</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Phases</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Configuration</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="phase-configuration-manager">Phase Configuration Manager</h3>
+<h2 id="">#</h2>
+<p>The general approach is to build a new settings hash from scratch on each update.</p>
+<p>Each portion can allow or disallow changes based on the <code>@builder_abilities</code> hash, dictated by the componentables.
+=&gt; If the <code>@builder_abilities</code> do not allow a change, the value will be pulled from the existing settings instead of params.
+=&gt; If the <code>@builder_abilities</code> does allow the change, it will be pulled from <code>@params_configuration</code> which are passed in from the UI.
+  =&gt; Intelligent defaults need to be used when setting UI values, so a common method (<code>get_params_configuration_value</code>) is used.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="configuration-helpers">Configuration helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_phase_configuration</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Load configuration hash from params.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> params.has_key?(<span class="hljs-symbol">:configuration</span>)
+    params_settings = get_configuration_settings_from_params
+    <span class="hljs-variable">@phase</span>.settings = params_settings
+    <span class="hljs-variable">@phase</span>.save
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_configuration_settings_from_params</span></span>
+    settings = <span class="hljs-constant">Hash</span>.new
+    add_validation(settings)
+    add_phase_score_validation(settings)
+    add_submit(settings)
+    add_actions_submit(settings)
+    settings.with_indifferent_access
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="input-validation">Input validation</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_validation</span><span class="hljs-params">(settings)</span></span>
+    validation = <span class="hljs-constant">Hash</span>.new
+    <span class="hljs-keyword">if</span> <span class="hljs-variable">@builder_abilities</span>[<span class="hljs-symbol">:configuration_validate</span>]
+      validation[<span class="hljs-symbol">:validate</span>] = get_params_configuration_value(<span class="hljs-symbol">:configuration_validate</span>)
+    <span class="hljs-keyword">else</span>
+      validation[<span class="hljs-symbol">:validate</span>] = get_configuration_settings_value(<span class="hljs-symbol">:validation</span>, <span class="hljs-symbol">:validate</span>)
+    <span class="hljs-keyword">end</span>
+    settings[<span class="hljs-symbol">:validation</span>] = validation
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="phase-score-validation">Phase score validation</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_phase_score_validation</span><span class="hljs-params">(settings)</span></span>
+    validation = <span class="hljs-constant">Hash</span>.new
+    <span class="hljs-keyword">if</span> <span class="hljs-variable">@builder_abilities</span>[<span class="hljs-symbol">:max_score</span>]
+      validation[<span class="hljs-symbol">:numericality</span>] = { <span class="hljs-symbol">less_than_or_equal_to:</span> get_params_configuration_value(<span class="hljs-symbol">:max_score</span>) }
+    <span class="hljs-keyword">else</span>
+      validation[<span class="hljs-symbol">:numericality</span>] = { <span class="hljs-symbol">less_than_or_equal_to:</span> get_configuration_settings_value(<span class="hljs-symbol">:phase_score_validation</span>, <span class="hljs-symbol">:numericality</span>, <span class="hljs-symbol">:less_than_or_equal_to</span>) }
+    <span class="hljs-keyword">end</span>
+    settings[<span class="hljs-symbol">:phase_score_validation</span>] = validation
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="submit-button">Submit button</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_submit</span><span class="hljs-params">(settings)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Refactor once the location of this setting is finalized.</p></div></div><div class="code"><div class="wrapper">    settings[<span class="hljs-symbol">:submit</span>] = { <span class="hljs-symbol">visible:</span> get_params_configuration_value(<span class="hljs-symbol">:submit_visible</span>), <span class="hljs-symbol">text:</span> get_params_configuration_value(<span class="hljs-symbol">:submit_text</span>) }
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="action-submit-server-configuration-helpers">Action submit server configuration helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_action_submit_server</span><span class="hljs-params">(settings)</span></span>
+    settings[<span class="hljs-symbol">:action_submit_server</span>] = <span class="hljs-constant">Array</span>.new
+    add_action_submit_server_events(settings)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_actions_submit</span><span class="hljs-params">(settings)</span></span>
+    submit_settings              = <span class="hljs-constant">Hash</span>.new
+    submit_settings[<span class="hljs-symbol">:unlock</span>]     = <span class="hljs-symbol">:next</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@builder_abilities</span>[<span class="hljs-symbol">:unlock_phase</span>] &amp;&amp; <span class="hljs-variable">@params_configuration</span>[<span class="hljs-symbol">:unlock_phase</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Leaving the <code>if</code> off, since we want all settings to include completion for now.</p></div></div><div class="code"><div class="wrapper">    submit_settings[<span class="hljs-symbol">:state</span>]      = <span class="hljs-symbol">:complete</span> <span class="hljs-comment"># if <span class="hljs-doctag">@builder</span>_abilities[:complete_phase] &amp;&amp; <span class="hljs-doctag">@params</span>_configuration[:complete_phase]</span>
+    submit_settings[<span class="hljs-symbol">:auto_score</span>] = <span class="hljs-variable">@params_configuration</span>[<span class="hljs-symbol">:auto_score</span>] <span class="hljs-keyword">if</span> <span class="hljs-variable">@builder_abilities</span>[<span class="hljs-symbol">:auto_score</span>]
+    settings[<span class="hljs-symbol">:actions</span>] ||= <span class="hljs-constant">Hash</span>.new
+    settings[<span class="hljs-symbol">:actions</span>][<span class="hljs-symbol">:submit</span>] = submit_settings
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="value-getter-helpers">Value getter helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_configuration_settings_event</span><span class="hljs-params">(event)</span></span>
+    settings = <span class="hljs-variable">@configuration</span>.settings.with_indifferent_access
+    events   = settings[<span class="hljs-symbol">:action_submit_server</span>]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> events.present? &amp;&amp; events.kind_of?(<span class="hljs-constant">Array</span>)
+    events.select { |e| e[<span class="hljs-symbol">:event</span>] == event}
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_configuration_settings_value</span><span class="hljs-params">(*dig_path)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get from the actual existing settings, usually used when the particular setting is locked by a componentable.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-variable">@configuration</span>.settings.with_indifferent_access.dig(dig_path)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_params_configuration_value</span><span class="hljs-params">(key)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get the value from the params with sane defaults.  Usually called when the settings is manipulatable via the UI and not locked.
+Used to correctly default in the &#39;false&#39; case (cannot do @params_configuration[key] || true, since false will not catch).</p></div></div><div class="code"><div class="wrapper">    value = <span class="hljs-variable">@params_configuration</span>[key]
+    <span class="hljs-keyword">case</span> key
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:configuration_validate</span>
+      value = <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> value == <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:submit_visible</span>
+      value = <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> value == <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:max_score</span>
+      value = <span class="hljs-number">0</span> <span class="hljs-keyword">unless</span> value.present?
+      value = value.to_i
+    <span class="hljs-keyword">when</span> <span class="hljs-symbol">:submit_text</span>
+      value = <span class="hljs-string">'Submit'</span> <span class="hljs-keyword">unless</span> value.present?
+    <span class="hljs-keyword">end</span>
+    value
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

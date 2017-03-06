@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-resource/db/associations</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-resource/db/associations"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-resource/db/associations.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-resource/db/associations.yml">src/thinkspace/api/thinkspace-resource/db/associations.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">- <span class="hljs-string">model:</span> thinkspace<span class="hljs-regexp">/resource/</span>file
+<span class="hljs-label">  associations:</span>
+    - <span class="hljs-string">belongs_to:</span> thinkspace<span class="hljs-regexp">/common/</span>user
+    - <span class="hljs-string">belongs_to:</span> resourceable
+<span class="hljs-label">      polymorphic:</span> <span class="hljs-literal">true</span>
+    - <span class="hljs-string">has_many:</span> thinkspace<span class="hljs-regexp">/resource/</span>file_tags
+<span class="hljs-label">      dependent:</span> :destroy
+    - <span class="hljs-string">has_many:</span> thinkspace<span class="hljs-regexp">/resource/</span>tags
+<span class="hljs-label">      through:</span>  thinkspace<span class="hljs-regexp">/resource/</span>file_tags
+<span class="hljs-label">  serializers:</span>
+    - <span class="hljs-string">attributes:</span> [id, url, title, content_type, size, file_updated_at, resourceable_type, resourceable_id]
+
+- <span class="hljs-string">model:</span> thinkspace<span class="hljs-regexp">/resource/</span>link
+<span class="hljs-label">  associations:</span>
+    - <span class="hljs-string">belongs_to:</span> thinkspace<span class="hljs-regexp">/common/</span>user
+    - <span class="hljs-string">belongs_to:</span> resourceable
+<span class="hljs-label">      polymorphic:</span> <span class="hljs-literal">true</span>
+    - <span class="hljs-string">has_many:</span> thinkspace<span class="hljs-regexp">/resource/</span>link_tags
+<span class="hljs-label">      dependent:</span> :destroy
+    - <span class="hljs-string">has_many:</span> thinkspace<span class="hljs-regexp">/resource/</span>tags
+<span class="hljs-label">      through:</span>  thinkspace<span class="hljs-regexp">/resource/</span>link_tags
+<span class="hljs-label">  serializers:</span>
+    - <span class="hljs-string">attributes:</span> [id, url, title, resourceable_type, resourceable_id]
+
+- <span class="hljs-string">model:</span> thinkspace<span class="hljs-regexp">/resource/</span>link_tag
+<span class="hljs-label">  associations:</span>
+    - <span class="hljs-string">belongs_to:</span> thinkspace<span class="hljs-regexp">/resource/</span>link
+    - <span class="hljs-string">belongs_to:</span> thinkspace<span class="hljs-regexp">/resource/</span>tag
+
+- <span class="hljs-string">model:</span> thinkspace<span class="hljs-regexp">/resource/</span>file_tag
+<span class="hljs-label">  associations:</span>
+    - <span class="hljs-string">belongs_to:</span> thinkspace<span class="hljs-regexp">/resource/</span>file
+    - <span class="hljs-string">belongs_to:</span> thinkspace<span class="hljs-regexp">/resource/</span>tag
+
+- <span class="hljs-string">model:</span> thinkspace<span class="hljs-regexp">/resource/</span>tag
+<span class="hljs-label">  associations:</span>
+    - <span class="hljs-string">has_many:</span>  thinkspace<span class="hljs-regexp">/resource/</span>link_tags
+<span class="hljs-label">      dependent:</span> :destroy
+    - <span class="hljs-string">has_many:</span>  thinkspace<span class="hljs-regexp">/resource/</span>links
+<span class="hljs-label">      through:</span>   thinkspace<span class="hljs-regexp">/resource/</span>link_tags
+    - <span class="hljs-string">has_many:</span>  thinkspace<span class="hljs-regexp">/resource/</span>file_tags
+<span class="hljs-label">      dependent:</span> :destroy
+    - <span class="hljs-string">has_many:</span>  thinkspace<span class="hljs-regexp">/resource/</span>files
+<span class="hljs-label">      through:</span>   thinkspace<span class="hljs-regexp">/resource/</span>file_tags
+    - <span class="hljs-string">belongs_to:</span> taggable
+<span class="hljs-label">      polymorphic:</span> <span class="hljs-literal">true</span>
+<span class="hljs-label">  serializers:</span>
+    - <span class="hljs-string">attributes:</span> [id, title, taggable_type, taggable_id]</div></div></div></div></body></html>

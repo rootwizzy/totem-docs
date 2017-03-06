@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-common/addon/mixins/phase_manager/ownerable</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-common/addon/mixins/phase_manager/ownerable"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-common/addon/mixins/phase_manager/ownerable.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-common/addon/mixins/phase_manager/ownerable.coffee">src/thinkspace/client/thinkspace-common/addon/mixins/phase_manager/ownerable.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">set_ownerable</span>: <span class="hljs-function"><span class="hljs-params">(ownerable)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">if</span> ownerable
+        <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> <span class="hljs-property">@get_ownerable</span>() == ownerable
+        <span class="hljs-property">@totem_scope</span>.ownerable(ownerable)
+        <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">unless</span> <span class="hljs-property">@phase_is_loaded</span>()
+        <span class="hljs-property">@set_all_phase_states</span>().<span class="hljs-keyword">then</span> =&gt; resolve()
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">if</span> <span class="hljs-property">@get_ownerable</span>() == <span class="hljs-property">@get_current_user</span>()
+        <span class="hljs-property">@totem_scope</span>.ownerable_to_current_user()
+        <span class="hljs-keyword">return</span> resolve() <span class="hljs-keyword">unless</span> <span class="hljs-property">@phase_is_loaded</span>()
+        <span class="hljs-property">@set_all_phase_states</span>().<span class="hljs-keyword">then</span> =&gt; resolve()
+
+  <span class="hljs-attribute">set_ownerable_from_phase_state</span>: <span class="hljs-function"><span class="hljs-params">(phase_state)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      phase_state.get(<span class="hljs-string">'ownerable'</span>).<span class="hljs-keyword">then</span> (ownerable) =&gt;
+        <span class="hljs-property">@set_ownerable</span>(ownerable).<span class="hljs-keyword">then</span> =&gt;
+          assignment = <span class="hljs-property">@get_assignment</span>()
+          phase      = <span class="hljs-property">@get_phase</span>()
+          <span class="hljs-property">@pmap</span>.set_selected(ownerable, phase, phase_state)
+          <span class="hljs-property">@pmap</span>.set_global(ownerable, assignment, phase_state)
+          resolve()
+      , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> reject(error)
+
+  <span class="hljs-attribute">get_ownerable</span>:    <span class="hljs-function">-&gt;</span> <span class="hljs-property">@totem_scope</span>.get_ownerable_record()
+  <span class="hljs-attribute">get_current_user</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@totem_scope</span>.get_current_user()
+
+  <span class="hljs-attribute">get_active_ownerable</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@has_active_addons</span>() <span class="hljs-keyword">and</span> <span class="hljs-property">@has_addon_ownerable</span>()
+      <span class="hljs-property">@get_active_addon_ownerable</span>()
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-property">@get_current_user</span>()</div></div></div></div></body></html>

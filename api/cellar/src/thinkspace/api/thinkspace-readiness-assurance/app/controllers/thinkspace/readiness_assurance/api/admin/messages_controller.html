@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/admin/messages_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/admin/messages_controller"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/admin/messages_controller.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/admin/messages_controller.rb">src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/admin/messages_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReadinessAssurance</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Admin</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MessagesController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">to_users</span></span>
+            validate_space
+            handler = handler_class.new(<span class="hljs-keyword">nil</span>, current_user, message_params)
+            handler.set_assignment(assignment)
+            handler.publish_messages_to_users
+            controller_render_no_content
+          <span class="hljs-keyword">end</span>
+
+          private
+
+          <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::ControllerHelpers::Base</span>
+          <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::ControllerHelpers::Admin</span>
+
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

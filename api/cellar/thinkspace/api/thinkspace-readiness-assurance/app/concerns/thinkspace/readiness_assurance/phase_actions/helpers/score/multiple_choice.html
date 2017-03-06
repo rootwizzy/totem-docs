@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/score/multiple_choice</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/score/multiple_choice"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/score/multiple_choice.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/score/multiple_choice.rb">src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/helpers/score/multiple_choice.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReadinessAssurance</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PhaseActions</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Helpers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Score</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">MultipleChoice</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">score_multiple_choice_question</span><span class="hljs-params">(qid)</span></span>
+    is_correct = base.correct?(qid)
+    score      = ifat_qid? ? score_ifat_multiple_choice(qid, is_correct) <span class="hljs-symbol">:</span> score_multiple_choice(qid, is_correct)
+    score      = <span class="hljs-number">0</span> <span class="hljs-keyword">if</span> score &lt; <span class="hljs-number">0</span>
+    is_correct ? add_correct(qid, score) <span class="hljs-symbol">:</span> add_incorrect(qid, score)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">score_ifat_multiple_choice</span><span class="hljs-params">(qid, is_correct)</span></span>
+    attempts = get_number_of_multiple_choice_attempts(qid)
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> is_correct &amp;&amp; attempts == <span class="hljs-number">1</span>  <span class="hljs-keyword">then</span> base.score_correct(qid)   <span class="hljs-comment"># first answer was correct get full credit</span>
+    <span class="hljs-keyword">when</span> !base.answered?(qid)         <span class="hljs-keyword">then</span> base.score_no_answer(qid) <span class="hljs-comment"># not answered</span>
+    <span class="hljs-keyword">when</span> !is_correct                  <span class="hljs-keyword">then</span> base.score_attempted(qid) <span class="hljs-comment"># answered but incorrect</span>
+    <span class="hljs-keyword">else</span>                                                             <span class="hljs-comment"># correct, but not the first try</span>
+      attempts         -= <span class="hljs-number">1</span> <span class="hljs-comment"># only use incorrect attempts</span>
+      incorrect_attempt = base.incorrect_attempt(qid)
+      incorrect_attempt = (incorrect_attempt * -<span class="hljs-number">1</span>) <span class="hljs-keyword">if</span> incorrect_attempt &gt;= <span class="hljs-number">0</span> <span class="hljs-comment"># incase settings value isn't negative</span>
+      score             = base.score_correct(qid) + (incorrect_attempt * attempts)
+      attempted_score   = base.score_attempted(qid)
+      attempted_score.present? &amp;&amp; attempted_score &gt; score ? attempted_score <span class="hljs-symbol">:</span> score
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">score_multiple_choice</span><span class="hljs-params">(qid, is_correct)</span></span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> is_correct          <span class="hljs-keyword">then</span> base.score_correct(qid)
+    <span class="hljs-keyword">when</span> base.answered?(qid) <span class="hljs-keyword">then</span> base.score_attempted(qid)
+    <span class="hljs-keyword">else</span>                          base.score_no_answer(qid)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_number_of_multiple_choice_attempts</span><span class="hljs-params">(qid)</span></span>
+    array = (current_data[<span class="hljs-symbol">:attempt_values</span>][qid] || <span class="hljs-constant">Array</span>.new).dup
+    array.push base.response_answer(qid)
+    array.uniq.length
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-authentication-session/app/controllers/totem/authentication/session/api/authentication_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-authentication-session/app/controllers/totem/authentication/session/api/authentication_controller"><meta name="groc-project-path" content="src/totem/api/totem-authentication-session/app/controllers/totem/authentication/session/api/authentication_controller.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-authentication-session/app/controllers/totem/authentication/session/api/authentication_controller.rb">src/totem/api/totem-authentication-session/app/controllers/totem/authentication/session/api/authentication_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authentication</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Session</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AuthenticationController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">totem</span>.<span class="hljs-title">application_controller</span></span>
+          respond_to <span class="hljs-symbol">:json</span>
+          before_action <span class="hljs-symbol">:set_to_json</span>
+          protect_from_forgery <span class="hljs-symbol">unless:</span> -&gt; { request.format.json? }
+          before_action <span class="hljs-symbol">:totem_authenticate_user_from_token!</span>, <span class="hljs-symbol">except:</span> [<span class="hljs-symbol">:sign_in</span>, <span class="hljs-symbol">:sign_out</span>]
+          before_action <span class="hljs-symbol">:set_paper_trail_whodunnit</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">defined</span>?(<span class="hljs-constant">::PaperTrail</span>)
+
+          private</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>For non-get requests (e.g. post, put, etc.), if the Rails server is configured as an API server
+(config/application.rb includes &#39;config.api_only = true&#39;) when calling &#39;protect_from_forgery&#39; 
+Rails raises the error (sets the flash to nil):
+  &#39;NoMethodError (undefined method `flash=&#39; for #&lt;ActionDispatch::Request:)&#39;.
+Removing &#39;protect_from_forgery&#39; will raise the error:
+  &#39;ArgumentError (Before process_action callback :verify_authenticity_token has not been defined)&#39;.
+The root cause seems to be when a non-get request is processed it is processed as &#39;HTML&#39; rather than &#39;JSON&#39;.
+Tried differect solutions:</p>
+<ul>
+<li>Changing the ajax header values (e.g. Accepts and Content-Type) but did not change to &#39;JSON&#39;.</li>
+<li>Adding data.format=&#39;json&#39; in the ajax request did work, but may not work in all cases.
+Implemented forcing the &#39;request.format&#39; to &#39;json&#39; in a before action and adding an &#39;unless&#39;
+clause to the &#39;protect_from_forgery&#39;.</li>
+</ul></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_to_json</span>;</span> request.format = <span class="hljs-symbol">:json</span>; <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">current_user</span>;</span> <span class="hljs-variable">@current_user</span>; <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_current_user</span><span class="hljs-params">(user)</span>;</span> <span class="hljs-variable">@current_user</span> = user; <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.totem.controller_model_class
+          <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.totem.controller_params
+          <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.totem.controller_api_render
+          <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.totem.controller_json_api</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="rescue-and-render-from-some-authentication-errors">Rescue and Render from Some Authentication Errors.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          rescue_from <span class="hljs-constant">SessionCredentialsError</span> <span class="hljs-keyword">do</span> |e|
+            set_current_user(<span class="hljs-keyword">nil</span>)
+            message = <span class="hljs-constant">Rails</span>.env.production? ? <span class="hljs-string">'Invalid credentials.'</span> <span class="hljs-symbol">:</span> e.message
+            render <span class="hljs-symbol">text:</span> message, <span class="hljs-symbol">status:</span> <span class="hljs-number">501</span>
+          <span class="hljs-keyword">end</span>
+
+          rescue_from <span class="hljs-constant">SessionTimeoutError</span> <span class="hljs-keyword">do</span> |e|
+            set_current_user(<span class="hljs-keyword">nil</span>)
+            path    = request.original_fullpath
+            message = e.message
+            render <span class="hljs-symbol">json:</span> { <span class="hljs-symbol">:path</span> =&gt; path, <span class="hljs-symbol">message:</span> message }, <span class="hljs-symbol">status:</span> <span class="hljs-number">511</span>
+          <span class="hljs-keyword">end</span>
+
+          rescue_from <span class="hljs-constant">SessionExpiredError</span> <span class="hljs-keyword">do</span> |e|
+            set_current_user(<span class="hljs-keyword">nil</span>)
+            path    = request.original_fullpath
+            message = e.message
+            render <span class="hljs-symbol">json:</span> { <span class="hljs-symbol">:path</span> =&gt; path, <span class="hljs-symbol">message:</span> message }, <span class="hljs-symbol">status:</span> <span class="hljs-number">511</span>
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="totem-authenticate-user-from-token">totem_authenticate_user_from_token!</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_authenticate_user_from_token!</span></span>
+            authenticate_with_http_token <span class="hljs-keyword">do</span> |auth_token, options|
+              authenticate_user_from_auth_token(auth_token, options[<span class="hljs-symbol">:email</span>])
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="totem-sign-in-user">totem_sign_in_user!</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_sign_in_user!</span></span>
+            identification = params[<span class="hljs-symbol">:identification</span>]
+            password       = params[<span class="hljs-symbol">:password</span>]
+            authenticate_session_sign_in(identification, password)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="totem-sign-out-user">totem_sign_out_user!</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_sign_out_user!</span></span>
+            authenticate_with_http_token <span class="hljs-keyword">do</span> |auth_token, options|
+              email = options[<span class="hljs-symbol">:email</span>]
+              <span class="hljs-keyword">case</span>
+              <span class="hljs-keyword">when</span> !<span class="hljs-constant">Rails</span>.env.production? &amp;&amp; session_api_session_model_class.count == <span class="hljs-number">0</span>
+              <span class="hljs-keyword">when</span> auth_token.present? &amp;&amp; email.present?
+                authenticate_user_from_auth_token(auth_token, email)
+                delete_api_session(current_user)
+              <span class="hljs-keyword">when</span> auth_token.blank? &amp;&amp; email.blank?
+              <span class="hljs-keyword">when</span> email.present?
+                raise <span class="hljs-constant">SessionCredentialsError</span>, <span class="hljs-string">"Cannot sign out with only email [email: <span class="hljs-subst">#{email.inspect}</span>]."</span>
+              <span class="hljs-keyword">else</span>
+                raise <span class="hljs-constant">SessionCredentialsError</span>, <span class="hljs-string">"Cannot sign out with only an auth token."</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="authenticate-a-user-from-the-token-verify-session-is-not-timeoutexpired">Authenticate a User from the Token (verify session is not timeout/expired).</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authenticate_user_from_auth_token</span><span class="hljs-params">(auth_token, email)</span></span>
+            raise <span class="hljs-constant">SessionMissingIdentification</span>, <span class="hljs-string">"Email for authorize token is blank."</span>  <span class="hljs-keyword">if</span> email.blank?
+            raise <span class="hljs-constant">SessionMissingAuthToken</span>, <span class="hljs-string">"Missing user auth token [email: <span class="hljs-subst">#{email.inspect}</span>]."</span>  <span class="hljs-keyword">if</span> auth_token.blank?
+
+            user = session_user_model_class.find_by(<span class="hljs-symbol">email:</span> email)
+            raise <span class="hljs-constant">SessionInvalidIdentification</span>, <span class="hljs-string">"User [email: user.email.inspect] not found."</span>  <span class="hljs-keyword">if</span> user.blank?
+
+            api_session = read_api_session(user)
+            <span class="hljs-keyword">unless</span> secure_compare(auth_token, api_session.authentication_token)
+              raise <span class="hljs-constant">SessionInvalidUser</span>, <span class="hljs-string">"User [user_id: <span class="hljs-subst">#{user.id}</span>] has invalid api session token."</span>
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-keyword">unless</span> session_sign_out?
+              check_api_session_timeout(api_session)
+              check_api_session_expired(api_session)
+              api_session.touch
+            <span class="hljs-keyword">end</span>
+
+            set_current_user(user)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_api_session_timeout</span><span class="hljs-params">(api_session)</span></span>
+            timeout_interval = <span class="hljs-constant">::Totem::Settings</span>.authentication.current_session_timeout(<span class="hljs-keyword">self</span>) || <span class="hljs-number">0</span>
+            timeout_at       = api_session.updated_at + timeout_interval
+            raise <span class="hljs-constant">SessionTimeoutError</span>, <span class="hljs-string">"Session timeout."</span>  <span class="hljs-keyword">unless</span> timeout_at &gt; session_time_now
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_api_session_expired</span><span class="hljs-params">(api_session)</span></span>
+            expire_interval = <span class="hljs-constant">::Totem::Settings</span>.authentication.current_session_expire_after(<span class="hljs-keyword">self</span>) || <span class="hljs-number">0</span>
+            expire_at       = api_session.created_at + expire_interval
+            raise <span class="hljs-constant">SessionExpiredError</span>, <span class="hljs-string">"Session expired."</span>  <span class="hljs-keyword">unless</span> expire_at &gt; session_time_now
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">session_sign_out?</span></span>
+            <span class="hljs-keyword">self</span>.action_name == <span class="hljs-string">'sign_out'</span>
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="authenticate-sign-in-credentials">Authenticate Sign In Credentials.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authenticate_session_sign_in</span><span class="hljs-params">(identification, password)</span></span>
+            raise <span class="hljs-constant">SessionCredentialsInvalidIdentification</span>, <span class="hljs-string">"Identification value is blank"</span>  <span class="hljs-keyword">if</span> identification.blank?
+            user = session_user_model_class.find_by(<span class="hljs-symbol">email:</span> identification)
+
+            <span class="hljs-keyword">if</span> user.present?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: This may need to sync the credentials.
+User model doesn&#39;t have password (it is in oauth), so send a S2S request to OAuth to verify the password.
+raise CredentialsInvalidPassword, &quot;Invalid password&quot; unless user.authenticate(password) # if user model had a password</p></div></div><div class="code"><div class="wrapper">              raise <span class="hljs-constant">SessionCredentialsInvalidPassword</span>, <span class="hljs-string">"Invalid password"</span> <span class="hljs-keyword">unless</span> is_password_valid?(identification, password)
+              set_current_user(user)
+              find_or_create_api_session(user)
+            <span class="hljs-keyword">else</span>
+              oauth_user = get_oauth_user(identification, password)
+              <span class="hljs-keyword">if</span> oauth_user[<span class="hljs-string">'valid'</span>]
+                create_user_from_oauth_user(identification, oauth_user)
+              <span class="hljs-keyword">else</span>
+                raise <span class="hljs-constant">SessionCredentialsInvalidIdentification</span>, <span class="hljs-string">'Invalid identification value.'</span> <span class="hljs-comment"># no OAuth user present</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_user_from_oauth_user</span><span class="hljs-params">(identification, oauth_data)</span></span>
+            user = session_user_model_class.new
+            user.sync_user_from_oauth_data(oauth_data)
+            user.callback_created_from_oauth <span class="hljs-keyword">if</span> user.respond_to?(<span class="hljs-symbol">:callback_created_from_oauth</span>)
+            set_current_user(user)
+            create_api_session(user)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_oauth_user</span><span class="hljs-params">(identification, password=<span class="hljs-keyword">nil</span>)</span></span>
+            raise <span class="hljs-constant">SessionCredentialsInvalidIdentification</span>, <span class="hljs-string">"Identification value is blank, cannot call [get_oauth_user]"</span>  <span class="hljs-keyword">if</span> identification.blank?
+            raise <span class="hljs-constant">SessionCredentialsInvalidIdentification</span>, <span class="hljs-string">"Password value is blank, cannot call [get_oauth_user]"</span>  <span class="hljs-keyword">if</span> password.blank?
+            <span class="hljs-constant">::Totem::Settings</span>.oauth.current_verify_password(<span class="hljs-keyword">self</span>, <span class="hljs-symbol">email:</span> identification, <span class="hljs-symbol">password:</span> password)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_password_valid?</span><span class="hljs-params">(identification, password)</span></span>
+            raise <span class="hljs-constant">SessionCredentialsInvalidIdentification</span>, <span class="hljs-string">"Identification value is blank"</span>  <span class="hljs-keyword">if</span> identification.blank?
+            raise <span class="hljs-constant">SessionCredentialsInvalidPassword</span>, <span class="hljs-string">"Password is blank"</span> <span class="hljs-keyword">if</span> password.blank?
+            <span class="hljs-constant">::Totem::Settings</span>.oauth.current_password_valid?(<span class="hljs-keyword">self</span>, <span class="hljs-symbol">email:</span> identification, <span class="hljs-symbol">password:</span> password)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="api-session-crud">Api Session CRUD.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If get duplicate auth tokens, change to a where() and match on email/identification (should never happens).</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_api_session</span><span class="hljs-params">(user)</span></span>
+            user_id     = get_session_user_id(user)
+            api_session = session_api_session_model_class.find_by(<span class="hljs-symbol">user_id:</span> user_id)
+            raise <span class="hljs-constant">SessionInvalidUserAuthToken</span>, <span class="hljs-string">"Api Session [user_id: <span class="hljs-subst">#{user_id}</span>] not found."</span>  <span class="hljs-keyword">if</span> api_session.blank?
+            api_session
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_api_session</span><span class="hljs-params">(user)</span></span>
+            delete_api_session(user)
+            api_session                      = session_api_session_model_class.new
+            api_session.user_id              = user.id
+            api_session.authentication_token = generate_authentication_token
+            raise <span class="hljs-constant">SessionSaveError</span>, <span class="hljs-string">"Could not save api session record for [user id: <span class="hljs-subst">#{user.id}</span>]."</span>  <span class="hljs-keyword">unless</span> api_session.save
+            user.callback_new_api_session <span class="hljs-keyword">if</span> user.respond_to?(<span class="hljs-symbol">:callback_new_api_session</span>)
+            api_session
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_api_session</span><span class="hljs-params">(user)</span></span>
+            user_id     = get_session_user_id(user)
+            api_session = session_api_session_model_class.find_by(<span class="hljs-symbol">user_id:</span> user_id)
+            <span class="hljs-keyword">if</span> api_session.present?
+              <span class="hljs-keyword">begin</span>
+                check_api_session_timeout(api_session)
+                check_api_session_expired(api_session)
+                api_session
+              <span class="hljs-keyword">rescue</span>
+                create_api_session(user)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">else</span>
+              create_api_session(user)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_api_session_alive</span><span class="hljs-params">(user)</span></span>
+            api_session = read_api_session(user)
+            api_session.touch
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">delete_api_session</span><span class="hljs-params">(user)</span></span>
+            user_id = get_session_user_id(user)
+            session_api_session_model_class.where(<span class="hljs-symbol">user_id:</span> user_id).delete_all
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_session_user_id</span><span class="hljs-params">(user)</span></span>
+            raise <span class="hljs-constant">SessionUserError</span>, <span class="hljs-string">"Session user is blank."</span>  <span class="hljs-keyword">if</span> user.blank?
+            raise <span class="hljs-constant">SessionUserError</span>, <span class="hljs-string">"Not a user instance."</span>    <span class="hljs-keyword">unless</span> user.instance_of?(session_user_model_class)
+            user_id = user.id
+            raise <span class="hljs-constant">SessionUserError</span>, <span class="hljs-string">"Session user_id is blank."</span>  <span class="hljs-keyword">if</span> user_id.blank?
+            user_id
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">session_time_now</span>;</span> <span class="hljs-variable">@_session_time_now</span> ||= <span class="hljs-constant">Time</span>.now.utc; <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">session_user_model_class</span></span>
+            <span class="hljs-variable">@_session_user_class</span> ||= <span class="hljs-constant">::Totem::Settings</span>.authentication.current_model_class(<span class="hljs-keyword">self</span>, <span class="hljs-symbol">:user_model</span>)
+            raise <span class="hljs-constant">SessionUserClass</span>, <span class="hljs-string">"Unknown platform user model class for <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name}</span>."</span>  <span class="hljs-keyword">if</span> <span class="hljs-variable">@_session_user_class</span>.blank?
+            <span class="hljs-variable">@_session_user_class</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">session_api_session_model_class</span></span>
+            <span class="hljs-variable">@_api_session_class</span> ||= <span class="hljs-constant">::Totem::Settings</span>.authentication.current_model_class(<span class="hljs-keyword">self</span>, <span class="hljs-symbol">:api_session_model</span>)
+            raise <span class="hljs-constant">SessionApiSessionClass</span>, <span class="hljs-string">"Unknown platform api session model class for <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name}</span>."</span>  <span class="hljs-keyword">if</span> <span class="hljs-variable">@_api_session_class</span>.blank?
+            <span class="hljs-variable">@_api_session_class</span>
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>From Devise.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>devise.rb method self.friendly_token</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate_authentication_token</span></span>
+            <span class="hljs-constant">SecureRandom</span>.urlsafe_base64(<span class="hljs-number">15</span>).tr(<span class="hljs-string">'lIO0'</span>, <span class="hljs-string">'sxyz'</span>)
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>constant-time comparison algorithm to prevent timing attacks</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">secure_compare</span><span class="hljs-params">(a, b)</span></span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> a.blank? || b.blank? || a.bytesize != b.bytesize
+            l = a.unpack <span class="hljs-string">"C<span class="hljs-subst">#{a.bytesize}</span>"</span>
+            res = <span class="hljs-number">0</span>
+            b.each_byte { |byte| res |= byte ^ l.shift }
+            res == <span class="hljs-number">0</span>
+          <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

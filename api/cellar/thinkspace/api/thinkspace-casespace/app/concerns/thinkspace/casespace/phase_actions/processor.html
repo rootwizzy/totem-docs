@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/processor</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/processor"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/processor.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/processor.rb">src/thinkspace/api/thinkspace-casespace/app/concerns/thinkspace/casespace/phase_actions/processor.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Casespace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PhaseActions</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Processor</span></span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:current_phase</span>, <span class="hljs-symbol">:current_user</span>, <span class="hljs-symbol">:can_update</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:action</span>, <span class="hljs-symbol">:action_options</span>, <span class="hljs-symbol">:action_settings</span>
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:action_class</span>, <span class="hljs-symbol">:score_class</span>, <span class="hljs-symbol">:lock_class</span>, <span class="hljs-symbol">:unlock_class</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(phase, current_user, options={})</span></span>
+    <span class="hljs-variable">@current_phase</span>   = phase
+    <span class="hljs-variable">@current_user</span>    = current_user
+    <span class="hljs-variable">@action</span>          = options[<span class="hljs-symbol">:action</span>]
+    <span class="hljs-variable">@can_update</span>      = options[<span class="hljs-symbol">:can_update</span>] || <span class="hljs-keyword">false</span>
+    <span class="hljs-variable">@debug</span>           = options[<span class="hljs-symbol">:debug</span>]      || <span class="hljs-keyword">false</span>
+    <span class="hljs-variable">@action_options</span>  = options
+    <span class="hljs-variable">@action_settings</span> = <span class="hljs-constant">Hash</span>.new
+    <span class="hljs-variable">@score_class</span>     = <span class="hljs-keyword">nil</span>
+    <span class="hljs-variable">@action_class</span>    = <span class="hljs-keyword">nil</span>
+    <span class="hljs-variable">@lock_class</span>      = <span class="hljs-keyword">nil</span>
+    <span class="hljs-variable">@unlock_class</span>    = <span class="hljs-keyword">nil</span>
+    validate_arguments
+    set_action_settings <span class="hljs-keyword">if</span> action.present?
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_arguments</span></span>
+    raise <span class="hljs-constant">ArgsError</span>, <span class="hljs-string">"Phase is blank."</span>  <span class="hljs-keyword">if</span> current_phase.blank?
+    raise <span class="hljs-constant">ArgsError</span>, <span class="hljs-string">"Phase must be a phase not '<span class="hljs-subst">#{current_phase.<span class="hljs-keyword">class</span>.name}</span>'."</span>  <span class="hljs-keyword">unless</span> current_phase.is_a?(phase_class)
+    raise <span class="hljs-constant">ArgsError</span>, <span class="hljs-string">"User is blank."</span>   <span class="hljs-keyword">if</span> current_user.blank?
+    raise <span class="hljs-constant">ArgsError</span>, <span class="hljs-string">"User must be a user not '<span class="hljs-subst">#{current_user.<span class="hljs-keyword">class</span>.name}</span>'."</span>  <span class="hljs-keyword">unless</span> current_user.is_a?(user_class)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="setup">Setup.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_action_class</span><span class="hljs-params">(klass)</span>;</span> validate_is_class(klass); <span class="hljs-variable">@action_class</span> = klass; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_score_class</span><span class="hljs-params">(klass)</span>;</span>  validate_is_class(klass); <span class="hljs-variable">@score_class</span>  = klass; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_lock_class</span><span class="hljs-params">(klass)</span>;</span>   validate_is_class(klass); <span class="hljs-variable">@lock_class</span>   = klass; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_unlock_class</span><span class="hljs-params">(klass)</span>;</span> validate_is_class(klass); <span class="hljs-variable">@unlock_class</span> = klass; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_action</span><span class="hljs-params">(new_action)</span></span>
+    <span class="hljs-variable">@action</span> = new_action
+    set_action_settings
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Processor::Actions</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Processor::Ownerable</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Processor::Records</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Processor::AutoScore</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Processor::Timetable</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Processor::Settings</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Processor::Debug</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_is_class</span><span class="hljs-params">(klass)</span></span>
+    raise <span class="hljs-constant">InvalidClassError</span>, <span class="hljs-string">"Is not a class: <span class="hljs-subst">#{klass}</span>."</span> <span class="hljs-keyword">unless</span> klass.is_a?(<span class="hljs-constant">Class</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_totem_settings_class</span><span class="hljs-params">(name)</span>;</span> <span class="hljs-constant">::Totem::Settings</span>.classes.thinkspace.get_class(name.to_sym);  <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_settings_class?</span><span class="hljs-params">(name)</span>;</span>    <span class="hljs-constant">::Totem::Settings</span>.classes.thinkspace.has_class?(name.to_sym); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ArgsError</span>         <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>;
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InvalidClassError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>;
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

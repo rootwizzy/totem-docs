@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/test/support/seeds/seeds_01_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/test/support/seeds/seeds_01_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/seeds/seeds_01_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/seeds/seeds_01_test.rb">src/totem/api/totem-core/test/support/seeds/seeds_01_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../seeds_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+describe <span class="hljs-string">'01: seeds.rb'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span> 
+    set_environment
+    clear_engine_instances
+    register_engine(<span class="hljs-symbol">path:</span> <span class="hljs-string">'test/framework/core'</span>)
+    register_engine
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'01_*'</span>, <span class="hljs-symbol">clear_engines:</span> <span class="hljs-keyword">false</span>)
+    register_framework_and_platform
+    <span class="hljs-variable">@seed</span> = <span class="hljs-variable">@env</span>.seed
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should be valid'</span> <span class="hljs-keyword">do</span> 
+    assert_kind_of <span class="hljs-constant">Array</span>, <span class="hljs-variable">@seed</span>.order_all
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'01: should be populated'</span> <span class="hljs-keyword">do</span> 
+    refute_empty <span class="hljs-variable">@seed</span>.order_all, <span class="hljs-string">'Seed order should be populated.'</span>
+    assert_equal [<span class="hljs-string">'test_framework_core'</span>, <span class="hljs-string">'test_platform_main'</span>], <span class="hljs-variable">@seed</span>.order_all
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

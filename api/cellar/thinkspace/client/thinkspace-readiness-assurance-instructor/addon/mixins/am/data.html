@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-readiness-assurance-instructor/addon/mixins/am/data</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-readiness-assurance-instructor/addon/mixins/am/data"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/mixins/am/data.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/mixins/am/data.coffee">src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/mixins/am/data.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import ns    from <span class="hljs-string">'totem/ns'</span>
+import ajax  from <span class="hljs-string">'totem/ajax'</span>
+import util  from <span class="hljs-string">'totem/util'</span>
+import response_manager from <span class="hljs-string">'thinkspace-readiness-assurance/managers/response'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">data_values</span>: <span class="hljs-literal">null</span>
+
+  <span class="hljs-attribute">reset_data</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">'data_values'</span>, {}
+
+  <span class="hljs-attribute">get_data_value</span>: <span class="hljs-function"><span class="hljs-params">(prop)</span>        -&gt;</span> <span class="hljs-property">@get</span> <span class="hljs-string">"data_values.<span class="hljs-subst">#{prop}</span>"</span>
+  <span class="hljs-attribute">set_data_value</span>: <span class="hljs-function"><span class="hljs-params">(prop, value)</span> -&gt;</span> <span class="hljs-property">@set</span> <span class="hljs-string">"data_values.<span class="hljs-subst">#{prop}</span>"</span>, value
+
+  <span class="hljs-attribute">get_model</span>:         <span class="hljs-function">-&gt;</span> <span class="hljs-property">@get_data_value</span> <span class="hljs-string">'model'</span>
+  <span class="hljs-attribute">set_model</span>: <span class="hljs-function"><span class="hljs-params">(model)</span> -&gt;</span>
+    <span class="hljs-property">@totem_scope</span>.authable(model)
+    <span class="hljs-property">@set_data_value</span> <span class="hljs-string">'model'</span>, model
+
+  <span class="hljs-attribute">sort_users</span>: <span class="hljs-function"><span class="hljs-params">(users)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> ember.isBlank(users)
+    user.name = <span class="hljs-property">@get_username</span>(user) <span class="hljs-keyword">for</span> user <span class="hljs-keyword">in</span> users
+    users.sortBy <span class="hljs-string">'name'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>convert team-users to user-teams
+returns: [ {user: {id:...}, teams:[{id:..}, {id:...}, ...}], ...]</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_trat_user_teams</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      users = <span class="hljs-property">@get_data_value</span>(<span class="hljs-string">'trat_user_teams'</span>)
+      <span class="hljs-keyword">return</span> resolve(users) <span class="hljs-keyword">if</span> ember.isPresent(users)
+      users = {}
+      <span class="hljs-property">@get_trat_team_users</span>().<span class="hljs-keyword">then</span> (team_users) =&gt;
+        <span class="hljs-keyword">for</span> team_hash <span class="hljs-keyword">in</span> (team_users <span class="hljs-keyword">or</span> [])
+          team = ember.merge {}, team_hash.team
+          <span class="hljs-keyword">for</span> team_user <span class="hljs-keyword">in</span> (team_hash.users <span class="hljs-keyword">or</span> [])
+            user_id = team_user.id
+            user    = users[user_id]
+            <span class="hljs-keyword">if</span> ember.isBlank(user)
+              user       = users[user_id] = {<span class="hljs-attribute">user</span>: ember.merge {}, team_user}
+              user.teams = []
+            user.teams.push(team)
+        user_teams = util.hash_values(users)
+        <span class="hljs-property">@set_data_value</span> <span class="hljs-string">'trat_user_teams'</span>, user_teams
+        resolve(user_teams)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>returns: [ {team: {id:...}, users:[{id:..}, {id:...}, ...]}, ...]</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_trat_team_users</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      team_users = <span class="hljs-property">@get_data_value</span>(<span class="hljs-string">'trat_team_users'</span>)
+      <span class="hljs-keyword">return</span> resolve(team_users) <span class="hljs-keyword">if</span> ember.isPresent(team_users)
+      query = <span class="hljs-property">@get_auth_query</span> <span class="hljs-property">@get_trat_url</span>(<span class="hljs-string">'team_users'</span>)
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        team_users = <span class="hljs-property">@sort_team_users</span>(payload.teams <span class="hljs-keyword">or</span> [])
+        <span class="hljs-property">@set_data_value</span> <span class="hljs-string">'trat_team_users'</span>, team_users
+        resolve(team_users)
+
+  <span class="hljs-attribute">sort_team_users</span>: <span class="hljs-function"><span class="hljs-params">(team_users)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> team_users <span class="hljs-keyword">if</span> ember.isBlank(team_users)
+    team_users.sortBy(<span class="hljs-string">'team.title'</span>)
+
+  <span class="hljs-attribute">get_trat_assessment</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      assessment = <span class="hljs-property">@get_data_value</span>(<span class="hljs-string">'trat_assessment'</span>)
+      <span class="hljs-keyword">return</span> resolve(assessment) <span class="hljs-keyword">if</span> ember.isPresent(assessment)
+      query = <span class="hljs-property">@get_auth_query</span> <span class="hljs-property">@get_trat_url</span>(<span class="hljs-string">'assessment'</span>)
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        data       = payload.data <span class="hljs-keyword">or</span> {}
+        id         = data.id
+        type       = data.type
+        <span class="hljs-property">@tc</span>.push_payload(payload)
+        assessment = <span class="hljs-property">@tc</span>.peek_record(type, id)
+        <span class="hljs-built_in">console</span>.warn assessment
+        <span class="hljs-property">@set_data_value</span> <span class="hljs-string">'trat_assessment'</span>, assessment
+        resolve(assessment)
+
+  <span class="hljs-attribute">get_irat_authable</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      authable = <span class="hljs-property">@get_data_value</span>(<span class="hljs-string">'irat_authable'</span>)
+      <span class="hljs-keyword">return</span> resolve(authable) <span class="hljs-keyword">if</span> ember.isPresent(authable)
+      <span class="hljs-property">@get_irat_assessment</span>().<span class="hljs-keyword">then</span> (assessment) =&gt;
+        assessment.get(<span class="hljs-string">'authable'</span>).<span class="hljs-keyword">then</span> (authable) =&gt;
+          <span class="hljs-property">@set_data_value</span> <span class="hljs-string">'irat_authable'</span>, authable
+          resolve(authable)
+
+  <span class="hljs-attribute">get_irat_assessment</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      assessment = <span class="hljs-property">@get_data_value</span>(<span class="hljs-string">'irat_assessment'</span>)
+      <span class="hljs-keyword">return</span> resolve(assessment) <span class="hljs-keyword">if</span> ember.isPresent(assessment)
+      query = <span class="hljs-property">@get_auth_query</span> <span class="hljs-property">@get_irat_url</span>(<span class="hljs-string">'assessment'</span>)
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        data       = payload.data <span class="hljs-keyword">or</span> {}
+        id         = data.id
+        type       = data.type
+        <span class="hljs-property">@tc</span>.push_payload(payload)
+        assessment = <span class="hljs-property">@tc</span>.peek_record(type, id)
+        <span class="hljs-built_in">console</span>.warn assessment
+        <span class="hljs-property">@set_data_value</span> <span class="hljs-string">'irat_assessment'</span>, assessment
+        resolve(assessment)
+
+  <span class="hljs-attribute">load_trat_responses</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      <span class="hljs-keyword">return</span> reolve() <span class="hljs-keyword">if</span> <span class="hljs-property">@get_data_value</span>(<span class="hljs-string">'responses_loaded'</span>) == <span class="hljs-literal">true</span>
+      query = <span class="hljs-property">@get_auth_query</span> <span class="hljs-property">@get_trat_url</span>(<span class="hljs-string">'responses'</span>)
+      ajax.object(query).<span class="hljs-keyword">then</span> (payload) =&gt;
+        <span class="hljs-property">@tc</span>.push_payload(payload)
+        <span class="hljs-property">@set_data_value</span> <span class="hljs-string">'responses_loaded'</span>, <span class="hljs-literal">true</span>
+        resolve()
+
+  <span class="hljs-attribute">get_trat_response_managers</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
+      rms = <span class="hljs-property">@get_data_value</span>(<span class="hljs-string">'trat_response_managers'</span>)
+      <span class="hljs-keyword">return</span> resolve(rms) <span class="hljs-keyword">if</span> ember.isPresent(rms)
+      <span class="hljs-property">@get_trat_assessment</span>().<span class="hljs-keyword">then</span> (assessment) =&gt;
+        <span class="hljs-property">@get_trat_team_users</span>().<span class="hljs-keyword">then</span> (team_users) =&gt;
+          <span class="hljs-property">@load_trat_responses</span>().<span class="hljs-keyword">then</span> =&gt;
+            promises = []
+            assessment.get(ns.to_p <span class="hljs-string">'ra:responses'</span>).<span class="hljs-keyword">then</span> (responses) =&gt;
+              responses.forEach (response) =&gt;
+                team_id = response.get(<span class="hljs-string">'ownerable_id'</span>)
+                data    = team_users.find (data) =&gt; data.team.id == team_id
+                <span class="hljs-property">@error</span> <span class="hljs-string">"Team [id: <span class="hljs-subst">#{team_id}</span>] not found in team data."</span>  <span class="hljs-keyword">unless</span> data
+                room       = data.team.room
+                title      = data.team.title
+                room_users = data.users
+                rm         = <span class="hljs-property">@get_response_manager</span>()
+                promises.push(
+                  rm.init_manager
+                    <span class="hljs-attribute">assessment</span>: assessment
+                    <span class="hljs-attribute">response</span>:   response
+                    <span class="hljs-attribute">room</span>:       room
+                    <span class="hljs-attribute">room_users</span>: room_users
+                    <span class="hljs-attribute">title</span>:      title
+                    <span class="hljs-attribute">readonly</span>:   <span class="hljs-literal">true</span>
+                    <span class="hljs-attribute">admin</span>:      <span class="hljs-literal">true</span>
+                    <span class="hljs-attribute">trat</span>:       <span class="hljs-literal">true</span>
+                )
+                ember.RSVP.all(promises).<span class="hljs-keyword">then</span> (rms) =&gt;
+                  sorted_rms = rms.sortBy <span class="hljs-string">'title'</span>
+                  <span class="hljs-property">@set_data_value</span> <span class="hljs-string">'trat_response_managers'</span>, sorted_rms
+                  resolve(sorted_rms)
+
+  <span class="hljs-attribute">get_response_manager</span>: <span class="hljs-function">-&gt;</span>
+    response_manager.create
+      <span class="hljs-attribute">store</span>:  <span class="hljs-property">@store</span>
+      <span class="hljs-attribute">tvo</span>:    <span class="hljs-property">@tvo</span>
+      <span class="hljs-attribute">ttz</span>:    <span class="hljs-property">@ttz</span>
+      <span class="hljs-attribute">pubsub</span>: <span class="hljs-property">@pubsub</span>
+      <span class="hljs-attribute">se</span>:     <span class="hljs-property">@se</span></div></div></div></div></body></html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/sio/lib/rooms/tracker_sio</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../"><meta name="groc-document-path" content="thinkspace/sio/lib/rooms/tracker_sio"><meta name="groc-project-path" content="src/thinkspace/sio/lib/rooms/tracker_sio.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../assets/style.css"><script type="text/javascript" src="../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/sio/lib/rooms/tracker_sio.coffee">src/thinkspace/sio/lib/rooms/tracker_sio.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThinkspaceTrackerSio</span></span>
+
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@platform</span>)</span> -&gt;</span>
+    <span class="hljs-property">@util</span>        = <span class="hljs-property">@platform</span>.util
+    <span class="hljs-property">@tracker</span>     = <span class="hljs-property">@platform</span>.tracker
+    <span class="hljs-property">@debug_color</span> = <span class="hljs-property">@tracker</span>.debug_color
+
+  <span class="hljs-attribute">on_connection</span>: <span class="hljs-function"><span class="hljs-params">(socket)</span> -&gt;</span>
+    socket.<span class="hljs-literal">on</span> <span class="hljs-property">@util</span>.client_event(<span class="hljs-string">'tracker_sio_join'</span>),  <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span> <span class="hljs-property">@join_rooms</span>(socket, data)
+    socket.<span class="hljs-literal">on</span> <span class="hljs-property">@util</span>.client_event(<span class="hljs-string">'tracker_sio_leave'</span>), <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span> <span class="hljs-property">@leave_rooms</span>(socket, data)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The room join/leave do not use the authentication/authorization process
+as this is not a &#39;room type&#39; and the events are handled here.
+Trackers must still be authorized by the Rails server.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">join_rooms</span>: <span class="hljs-function"><span class="hljs-params">(socket, data)</span> -&gt;</span>
+    rooms = <span class="hljs-property">@util</span>.data_rooms(data)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@util</span>.is_array_blank(rooms)
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@util</span>.debugging
+      <span class="hljs-property">@util</span>.debug <span class="hljs-property">@util</span>.bold_line(<span class="hljs-string">"TRACKER SIO JOIN ROOMS\n"</span>, <span class="hljs-property">@debug_color</span>), {rooms, data}
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> rooms
+      socket.join(room, <span class="hljs-function">=&gt;</span> <span class="hljs-property">@join_room_callback</span>(socket, room, data))
+
+  <span class="hljs-attribute">join_room_callback</span>: <span class="hljs-function"><span class="hljs-params">(socket, room, data)</span> -&gt;</span> <span class="hljs-property">@tracker</span>.join_room(socket, room, data)
+
+  <span class="hljs-attribute">leave_room</span>: <span class="hljs-function"><span class="hljs-params">(socket, data)</span> -&gt;</span>
+    rooms = <span class="hljs-property">@util</span>.data_rooms(data)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@util</span>.is_array_blank(rooms)
+    <span class="hljs-keyword">for</span> room <span class="hljs-keyword">in</span> <span class="hljs-property">@util</span>.make_array(rooms)
+      socket.leave(room, <span class="hljs-function">=&gt;</span> <span class="hljs-property">@leave_room_callback</span>(socket, rooms))
+
+  <span class="hljs-attribute">leave_room_callback</span>: <span class="hljs-function"><span class="hljs-params">(socket, room)</span> -&gt;</span> <span class="hljs-property">@tracker</span>.leave_room(socket, room, data)
+
+  <span class="hljs-attribute">to_string</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'ThinkspaceTrackerSio'</span>
+
+<span class="hljs-built_in">module</span>.exports = ThinkspaceTrackerSio</div></div></div></div></body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/responses_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/responses_controller"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/responses_controller.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/responses_controller.rb">src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/responses_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReadinessAssurance</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ResponsesController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+        totem_action_authorize!
+        totem_action_serializer_options
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">show</span></span>
+          controller_render(<span class="hljs-variable">@response</span>)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
+          validate_and_set_response_data
+          score_response
+          <span class="hljs-keyword">if</span> trat?
+            publish_trat_response
+            controller_render_no_content
+          <span class="hljs-keyword">else</span>
+            controller_render(<span class="hljs-variable">@response</span>)
+          <span class="hljs-keyword">end</span>
+          publish_progress_report
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::ControllerHelpers::Base</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_and_set_response_data</span></span>
+          <span class="hljs-variable">@assessment</span> = <span class="hljs-variable">@response</span>.thinkspace_readiness_assurance_assessment
+          access_denied <span class="hljs-string">"Response id <span class="hljs-subst">#{<span class="hljs-variable">@response</span>.id}</span> assessment is blank."</span>  <span class="hljs-keyword">if</span> <span class="hljs-variable">@assessment</span>.blank?
+          answers = params_root[<span class="hljs-symbol">:answers</span>]
+          access_denied <span class="hljs-string">"Response 'answers' is not a hash."</span>  <span class="hljs-keyword">unless</span> answers.is_a?(<span class="hljs-constant">Hash</span>)
+          justifications = params_root[<span class="hljs-symbol">:justifications</span>]
+          access_denied <span class="hljs-string">"Response 'justifications' is not a hash."</span>  <span class="hljs-keyword">unless</span> justifications.is_a?(<span class="hljs-constant">Hash</span>)
+          <span class="hljs-variable">@response</span>.answers        = answers
+          <span class="hljs-variable">@response</span>.justifications = justifications
+          access_denied <span class="hljs-string">"Unknown response type (not IRAT or TRAT) [id: @response.id]."</span> <span class="hljs-keyword">unless</span> (irat? || trat?)
+          access_denied <span class="hljs-string">"TRAT ownerable is not a team for response [id: @response.id] with ownerable [<span class="hljs-subst">#{ownerable.<span class="hljs-keyword">class</span>.name}</span> id:<span class="hljs-subst">#{ownerable.id}</span>]."</span> <span class="hljs-keyword">if</span> trat? &amp;&amp; !team?
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">score_response</span></span>
+          ownerable = totem_action_authorize.params_ownerable
+          authable  = totem_action_authorize.params_authable
+          options   = {<span class="hljs-symbol">assessment:</span> <span class="hljs-variable">@assessment</span>, <span class="hljs-symbol">ifat_only:</span> <span class="hljs-keyword">true</span>}  <span class="hljs-comment"># only score ifat questions on an update</span>
+          handler   = handler_class.new(authable, current_user, <span class="hljs-keyword">nil</span>, options)
+          handler.score_response(<span class="hljs-variable">@response</span>, ownerable)
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish_trat_response</span></span>
+          json = controller_json(<span class="hljs-variable">@response</span>, <span class="hljs-symbol">plural_root:</span> <span class="hljs-keyword">true</span>)
+          pubsub.data.
+            room(pubsub_room).
+            room_event(<span class="hljs-symbol">:response</span>).
+            value(json).
+            publish
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish_progress_report</span></span>
+          <span class="hljs-variable">@assessment</span>     = <span class="hljs-variable">@response</span>.thinkspace_readiness_assurance_assessment
+          assignment      = <span class="hljs-variable">@assessment</span>.authable.thinkspace_casespace_assignment
+          room            = pubsub.room_for(assignment, <span class="hljs-string">'admin'</span>)
+          progress_report = <span class="hljs-variable">@assessment</span>.progress_report
+          pubsub.data.
+            room(room).
+            room_event(<span class="hljs-symbol">:progress_report</span>).
+            value(progress_report).
+            publish
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

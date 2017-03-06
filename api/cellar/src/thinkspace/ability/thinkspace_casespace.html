@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/ability/thinkspace_casespace</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="src/thinkspace/ability/thinkspace_casespace"><meta name="groc-project-path" content="src/thinkspace/ability/thinkspace_casespace.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/ability/thinkspace_casespace.rb">src/thinkspace/ability/thinkspace_casespace.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authorization</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThinkspaceCasespace</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">authorization</span>.<span class="hljs-title">platforms</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">cancan</span>.<span class="hljs-title">classes</span>.<span class="hljs-title">ability_engine</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span>;</span> call_private_methods; <span class="hljs-keyword">end</span>
+
+  protected
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_assignment</span>;</span>  {<span class="hljs-symbol">space_id:</span> read_space_ids}.merge(read_states); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">admin_assignment</span>;</span> {<span class="hljs-symbol">space_id:</span> admin_space_ids}.merge(admin_states); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_phase</span>;</span>  {<span class="hljs-symbol">thinkspace_casespace_assignment:</span> read_assignment}.merge(read_states);  <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">admin_phase</span>;</span> {<span class="hljs-symbol">thinkspace_casespace_assignment:</span> admin_assignment}.merge(admin_states); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_phase_association</span>;</span>  {<span class="hljs-symbol">thinkspace_casespace_phase:</span> read_phase};  <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">admin_phase_association</span>;</span> {<span class="hljs-symbol">thinkspace_casespace_phase:</span> admin_phase}; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_phase_score</span>;</span>  {<span class="hljs-symbol">thinkspace_casespace_phase_state:</span> read_phase_association};  <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">admin_phase_score</span>;</span> {<span class="hljs-symbol">thinkspace_casespace_phase_state:</span> admin_phase_association}; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_states</span>;</span>  {<span class="hljs-symbol">state:</span> [<span class="hljs-string">'active'</span>]}; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">admin_states</span>;</span> {<span class="hljs-symbol">state:</span> [<span class="hljs-string">'active'</span>, <span class="hljs-string">'inactive'</span>, <span class="hljs-string">'archived'</span>]}; <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">domain</span></span>
+    can [<span class="hljs-symbol">:read</span>], <span class="hljs-constant">Thinkspace::Casespace::PhaseTemplate</span>
+    can [<span class="hljs-symbol">:read</span>], <span class="hljs-constant">Thinkspace::Casespace::PhaseComponent</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assignments</span></span>
+    assignment = <span class="hljs-constant">Thinkspace::Casespace::Assignment</span>
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:phase_states</span>], assignment, read_assignment
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> admin?
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:phase_states</span>], assignment, admin_assignment
+    can [<span class="hljs-symbol">:create</span>], assignment
+    can [<span class="hljs-symbol">:templates</span>, <span class="hljs-symbol">:clone</span>, <span class="hljs-symbol">:delete</span>, <span class="hljs-symbol">:load</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:view</span>, <span class="hljs-symbol">:roster</span>, <span class="hljs-symbol">:phase_order</span>, <span class="hljs-symbol">:phase_componentables</span>, <span class="hljs-symbol">:activate</span>, <span class="hljs-symbol">:inactivate</span>, <span class="hljs-symbol">:archive</span>], assignment, admin_assignment
+    can [<span class="hljs-symbol">:gradebook</span>, <span class="hljs-symbol">:manage_resources</span>, <span class="hljs-symbol">:report</span>], assignment, admin_assignment
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assignment_types</span></span>
+    assignment_type = <span class="hljs-constant">Thinkspace::Casespace::AssignmentType</span>
+    can [<span class="hljs-symbol">:read</span>], assignment_type
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phases</span></span>
+    phase       = <span class="hljs-constant">Thinkspace::Casespace::Phase</span>
+    phase_state = <span class="hljs-constant">Thinkspace::Casespace::PhaseState</span>
+    phase_score = <span class="hljs-constant">Thinkspace::Casespace::PhaseScore</span>
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:load</span>, <span class="hljs-symbol">:submit</span>], phase, read_phase
+    can [<span class="hljs-symbol">:read</span>], phase_state, read_phase_association
+    can [<span class="hljs-symbol">:read</span>], phase_score, read_phase_score
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> admin?
+    can [<span class="hljs-symbol">:read</span>, <span class="hljs-symbol">:load</span>, <span class="hljs-symbol">:submit</span>, <span class="hljs-symbol">:report</span>], phase, admin_phase
+    can [<span class="hljs-symbol">:templates</span>, <span class="hljs-symbol">:clone</span>, <span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:bulk_reset_date</span>, <span class="hljs-symbol">:destroy</span>, <span class="hljs-symbol">:componentables</span>, <span class="hljs-symbol">:activate</span>, <span class="hljs-symbol">:archive</span>, <span class="hljs-symbol">:inactivate</span>, <span class="hljs-symbol">:delete_ownerable_data</span>], phase, admin_phase
+    can [<span class="hljs-symbol">:create</span>], [phase_state, phase_score]
+    can [<span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:roster_update</span>, <span class="hljs-symbol">:gradebook</span>], phase_state, admin_phase_association
+    can [<span class="hljs-symbol">:update</span>, <span class="hljs-symbol">:gradebook</span>], phase_score, admin_phase_score
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="related-engines">Related Engines.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">resource</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ns_exists?(<span class="hljs-string">'Thinkspace::Resource'</span>)
+    can [<span class="hljs-symbol">:crud</span>], <span class="hljs-constant">Thinkspace::Resource::File</span>
+    can [<span class="hljs-symbol">:crud</span>], <span class="hljs-constant">Thinkspace::Resource::Link</span>
+    can [<span class="hljs-symbol">:crud</span>], <span class="hljs-constant">Thinkspace::Resource::Tag</span>
+    can [<span class="hljs-symbol">:read</span>], <span class="hljs-constant">Thinkspace::Resource::FileTag</span>
+    can [<span class="hljs-symbol">:read</span>], <span class="hljs-constant">Thinkspace::Resource::LinkTag</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

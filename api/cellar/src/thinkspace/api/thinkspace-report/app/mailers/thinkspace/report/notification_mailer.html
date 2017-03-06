@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-report/app/mailers/thinkspace/report/notification_mailer</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-report/app/mailers/thinkspace/report/notification_mailer"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-report/app/mailers/thinkspace/report/notification_mailer.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-report/app/mailers/thinkspace/report/notification_mailer.rb">src/thinkspace/api/thinkspace-report/app/mailers/thinkspace/report/notification_mailer.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Report</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NotificationMailer</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActionMailer::Base</span></span></span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Thinkspace::Common::BaseMailer</span>
+  default <span class="hljs-symbol">from:</span> <span class="hljs-string">'ThinkBot &lt;thinkbot@thinkspace.org&gt;'</span>
+  layout <span class="hljs-string">'thinkspace/common/layouts/invitation'</span>
+  
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">report_access_granted</span><span class="hljs-params">(report_token)</span></span>
+    <span class="hljs-variable">@report_token</span> = report_token
+    <span class="hljs-variable">@report</span>       = report_token.get_report
+    <span class="hljs-variable">@user</span>         = report_token.get_user
+    <span class="hljs-variable">@token</span>        = report_token.token
+
+    raise <span class="hljs-string">"Cannot send an notification without a report_token [<span class="hljs-subst">#{<span class="hljs-variable">@report_token</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@report_token</span>.present?
+    raise <span class="hljs-string">"Cannot send an notification without an user [<span class="hljs-subst">#{<span class="hljs-variable">@user</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@user</span>.present?
+    raise <span class="hljs-string">"Cannot send an notification without an email [<span class="hljs-subst">#{<span class="hljs-variable">@user</span>.email}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@user</span>.email.present?
+    raise <span class="hljs-string">"Cannot send an notification without a valid token [<span class="hljs-subst">#{<span class="hljs-variable">@token</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@token</span>.present?
+
+    url_suffix    = <span class="hljs-string">"/reports/<span class="hljs-subst">#{report_token.token}</span>"</span>
+    <span class="hljs-variable">@host</span>         = <span class="hljs-string">'http://localhost:4200'</span> <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.development?
+    <span class="hljs-variable">@host</span>         = <span class="hljs-constant">Rails</span>.application.secrets.smtp[<span class="hljs-string">'postmark'</span>][<span class="hljs-string">'domain'</span>] <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.production?
+    <span class="hljs-variable">@url</span>          = <span class="hljs-variable">@host</span> + url_suffix
+
+    subject = <span class="hljs-string">'Your report is ready to download!'</span>
+    mail(<span class="hljs-symbol">to:</span> <span class="hljs-variable">@user</span>.email, <span class="hljs-symbol">subject:</span> format_subject(subject))
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">report_generation_failed</span><span class="hljs-params">(report, error_code, message=<span class="hljs-string">'Your report failed to generate.'</span>)</span></span>
+    <span class="hljs-variable">@report</span>     = report
+    <span class="hljs-variable">@user</span>       = report.get_user
+    <span class="hljs-variable">@error_code</span> = error_code
+    <span class="hljs-variable">@message</span>    = message
+    subject     = <span class="hljs-string">'Your report creation has failed.'</span>
+    mail(<span class="hljs-symbol">to:</span> <span class="hljs-variable">@user</span>.email, <span class="hljs-symbol">subject:</span> format_subject(subject))
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

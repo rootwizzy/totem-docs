@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/test/support/routes/routes_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/test/support/routes/routes_helper"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/routes/routes_helper.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/routes/routes_helper.rb">src/totem/api/totem-core/test/support/routes/routes_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../../support_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">register_route_engines</span></span>
+  clear_engine_instances
+  file = <span class="hljs-keyword">nil</span>
+  <span class="hljs-variable">@engine_instances</span>                  = <span class="hljs-constant">Hash</span>.new
+  <span class="hljs-variable">@engine_instances</span>[<span class="hljs-symbol">:framework_core</span>] = register_engine(<span class="hljs-symbol">file:</span> file, <span class="hljs-symbol">path:</span> <span class="hljs-string">'test/framework/core'</span>, <span class="hljs-symbol">platform_path:</span> <span class="hljs-string">'test/framework'</span>)
+  <span class="hljs-variable">@engine_instances</span>[<span class="hljs-symbol">:framework_zero</span>] = register_engine(<span class="hljs-symbol">file:</span> file, <span class="hljs-symbol">path:</span> <span class="hljs-string">'test/framework/zero'</span>, <span class="hljs-symbol">platform_path:</span> <span class="hljs-string">'test/framework'</span>)
+  <span class="hljs-variable">@engine_instances</span>[<span class="hljs-symbol">:framework_one</span>]  = register_engine(<span class="hljs-symbol">file:</span> file, <span class="hljs-symbol">path:</span> <span class="hljs-string">'test/framework/one'</span>,  <span class="hljs-symbol">platform_path:</span> <span class="hljs-string">'test/framework'</span>)
+  <span class="hljs-variable">@engine_instances</span>[<span class="hljs-symbol">:framework_two</span>]  = register_engine(<span class="hljs-symbol">file:</span> file, <span class="hljs-symbol">path:</span> <span class="hljs-string">'test/framework/two'</span>,  <span class="hljs-symbol">platform_path:</span> <span class="hljs-string">'test/framework'</span>)
+  <span class="hljs-variable">@engine_instances</span>[<span class="hljs-symbol">:platform_main</span>]  = register_engine(<span class="hljs-symbol">file:</span> file)
+  <span class="hljs-variable">@engine_instances</span>[<span class="hljs-symbol">:platform_zero</span>]  = register_engine(<span class="hljs-symbol">file:</span> file, <span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/zero'</span>)
+  <span class="hljs-variable">@engine_instances</span>[<span class="hljs-symbol">:platform_one</span>]   = register_engine(<span class="hljs-symbol">file:</span> file, <span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/one'</span>)
+  <span class="hljs-variable">@engine_instances</span>[<span class="hljs-symbol">:platform_two</span>]   = register_engine(<span class="hljs-symbol">file:</span> file, <span class="hljs-symbol">path:</span> <span class="hljs-string">'test/platform/two'</span>)
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">mock_engine_routes</span><span class="hljs-params">(name)</span></span>
+  engine = <span class="hljs-variable">@engine_instances</span> &amp;&amp; <span class="hljs-variable">@engine_instances</span>[name]
+  raise <span class="hljs-string">"Engine instance with name <span class="hljs-subst">#{name.inspect}</span> does not exist."</span>  <span class="hljs-keyword">if</span> engine.blank?
+  engine.config.paths[<span class="hljs-string">'config/routes.rb'</span>] = [<span class="hljs-string">"<span class="hljs-subst">#{engine.root}</span>/config/routes.rb"</span>]
+  engine.define_singleton_method(<span class="hljs-symbol">:routes</span>) <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@routes</span> = <span class="hljs-constant">::ActionDispatch::Routing::RouteSet</span>.new
+    <span class="hljs-variable">@routes</span>
+  <span class="hljs-keyword">end</span>
+  engine
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_route_set</span></span>
+  <span class="hljs-variable">@rs</span> = <span class="hljs-constant">::ActionDispatch::Routing::RouteSet</span>.new
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_mock_mapper</span></span>
+  <span class="hljs-variable">@mock_mapper</span> = <span class="hljs-constant">MiniTest::Mock</span>.new
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_routes_engines</span></span>
+  <span class="hljs-variable">@routes</span> = <span class="hljs-constant">Totem::Core::Routes::Engines</span>.new
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_routes_invalid</span></span>
+  <span class="hljs-variable">@routes</span> = <span class="hljs-constant">Totem::Core::Routes::Invalid</span>.new
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<p>Another approach to testing the routes.  However, the downside is
+need to add &#39;controller: value&#39; and &#39;action: value&#39; to the route options config
+so the Rails mapper will not error (controller/action values can be anything valid).
+it &#39;example with route set&#39; do
+  set<em>environment
+  set<em>routes<em>engines
+  set_route_set
+  register_route_engines
+  load_platform_configs(file: __FILE</em></em>, file_ext: &#39;error/xx</em>*&#39;, clear_engines: false)
+  register_framework_and_platform
+  mock_engine_routes(:platform_one)
+  env    = @env
+  routes = @routes
+  e = assert_raises(RuntimeError) do
+    @rs.draw do
+      concern  :test_framework, routes
+      concerns :test_framework, env: env, platform_name: &#39;test_platform&#39;
+    end
+  end
+  assert_match(/error message/i, e.to_s)
+end</p></div></div></div></div></body></html>

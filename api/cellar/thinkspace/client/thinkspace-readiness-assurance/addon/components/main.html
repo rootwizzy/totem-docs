@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-readiness-assurance/addon/components/main</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-readiness-assurance/addon/components/main"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-readiness-assurance/addon/components/main.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-readiness-assurance/addon/components/main.coffee">src/thinkspace/client/thinkspace-readiness-assurance/addon/components/main.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
+import response_manager from <span class="hljs-string">'thinkspace-readiness-assurance/managers/response'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">tvo_titles</span>: <span class="hljs-string">'readiness-assurance'</span>
+
+  <span class="hljs-attribute">ttz</span>:           ember.inject.service()
+  <span class="hljs-attribute">server_events</span>: ember.inject.service()
+
+  <span class="hljs-attribute">is_irat</span>: ember.computed.reads <span class="hljs-string">'model.is_irat'</span>
+  <span class="hljs-attribute">is_trat</span>: ember.computed.reads <span class="hljs-string">'model.is_trat'</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@se</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'server_events'</span>)
+    <span class="hljs-property">@se</span>.set_filter_rooms <span class="hljs-property">@se</span>.assignment_current_user_room()
+    tvo         = <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo'</span>)
+    hash        = tvo.template.dup_value(<span class="hljs-property">@tvo_path</span>)
+    hash.title  = <span class="hljs-property">@get_ra_title</span>()
+    hash.values = <span class="hljs-property">@get_ra_values</span>()
+    <span class="hljs-property">@ra_path</span>    = tvo.value.set_value(hash)
+    <span class="hljs-property">@se</span>.load_messages()
+    <span class="hljs-property">@set_all_data_loaded</span>()
+
+  <span class="hljs-attribute">get_ra_title</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">switch</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_irat'</span>)  <span class="hljs-keyword">then</span> title = <span class="hljs-string">'irat'</span>
+      <span class="hljs-keyword">when</span> <span class="hljs-property">@get</span>(<span class="hljs-string">'is_trat'</span>)  <span class="hljs-keyword">then</span> title = <span class="hljs-string">'trat'</span>
+      <span class="hljs-keyword">else</span> title = <span class="hljs-string">''</span>
+    <span class="hljs-string">"readiness-assurance-<span class="hljs-subst">#{title}</span>"</span>
+
+  <span class="hljs-attribute">get_ra_values</span>: <span class="hljs-function">-&gt;</span>
+    hash    = {}
+    hash.rm = <span class="hljs-property">@get_response_manager</span>()
+    hash
+
+  <span class="hljs-attribute">get_response_manager</span>: <span class="hljs-function">-&gt;</span>
+    response_manager.create
+      <span class="hljs-attribute">store</span>:  <span class="hljs-property">@get</span>(<span class="hljs-string">'store'</span>)
+      <span class="hljs-attribute">tvo</span>:    <span class="hljs-property">@get</span>(<span class="hljs-string">'tvo'</span>)
+      <span class="hljs-attribute">ttz</span>:    <span class="hljs-property">@get</span>(<span class="hljs-string">'ttz'</span>)
+      <span class="hljs-attribute">se</span>:     <span class="hljs-property">@se</span>
+      <span class="hljs-attribute">pubsub</span>: <span class="hljs-property">@se</span>.pubsub</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="-testing-only">### TESTING ONLY</h1>
+<p>test_init: -&gt;
+  @messages = @get(&#39;server_events.messages&#39;)
+  @add_test_message(&quot;test message 1 &quot;, &#39;aaaa&#39;)
+  @add_test_message(&quot;test message 2 &quot;, &#39;bbbb&#39;)
+  @add_test_message(&quot;test message 3 &quot;, &#39;cccc&#39;)
+add_test_message: (msg, room=null) -&gt; @messages.add(message: &quot;#{new Date().toString()} - #{msg}&quot;, room: room)</p>
+<h1 id="-testing-only">### TESTING ONLY</h1></div></div></div></div></body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/app/lib/totem/core/support/registration</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/app/lib/totem/core/support/registration"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/support/registration.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/support/registration.rb">src/totem/api/totem-core/app/lib/totem/core/support/registration.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Support</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Registration</span></span>
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:totem_settings</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Should always use the public methods to access these instance variables.
+Listing the instance variables used to provide easily access if needed.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:registered_framework_name</span>
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:platform_names</span>
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:engine_names</span>
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:engine_configurations</span>
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:all_engine_glob_routes</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(env)</span></span>
+          <span class="hljs-variable">@totem_settings</span>         = env
+          <span class="hljs-variable">@platform_names</span>         = []
+          <span class="hljs-variable">@engine_names</span>           = []
+          <span class="hljs-variable">@engine_configurations</span>  = {}
+          <span class="hljs-variable">@all_engine_glob_routes</span> = []
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">register</span>;</span> <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>    <span class="hljs-comment"># define register</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">registered</span>;</span> <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>  <span class="hljs-comment"># define registered</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Registration</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>register engine name</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine</span><span class="hljs-params">(*args)</span></span>
+          options = args.extract_options!
+          reset   = options.delete(<span class="hljs-symbol">:reset</span>)
+          name    = args.shift
+          error <span class="hljs-string">"Engine name is blank"</span>  <span class="hljs-keyword">if</span> name.blank?
+          error <span class="hljs-string">"Engine name is not a string"</span>  <span class="hljs-keyword">unless</span> name.kind_of?(<span class="hljs-constant">String</span>)
+          error <span class="hljs-string">"Engine [<span class="hljs-subst">#{name}</span>] has already been registered"</span>  <span class="hljs-keyword">if</span> engine_names.<span class="hljs-keyword">include</span>?(name)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>debug &quot;Registering engine [#{name}]&quot;</p></div></div><div class="code"><div class="wrapper">          engine_names.push(name)
+          engine_configurations[name] = options.with_indifferent_access
+          <span class="hljs-keyword">unless</span> reset == <span class="hljs-keyword">false</span> <span class="hljs-comment"># reset support engine.rb to get current engine values</span>
+            totem_settings.engine.reset!
+            totem_settings.engine.engines_reset!
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>register the framework</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">framework</span><span class="hljs-params">(name=<span class="hljs-keyword">nil</span>, path=<span class="hljs-keyword">nil</span>)</span></span>
+          error <span class="hljs-string">"Framework name is blank"</span>  <span class="hljs-keyword">if</span> name.blank?
+          error <span class="hljs-string">"Framework path is blank"</span>  <span class="hljs-keyword">if</span> path.blank?
+          error <span class="hljs-string">"Framework name is not a string"</span>  <span class="hljs-keyword">unless</span> name.kind_of?(<span class="hljs-constant">String</span>)
+          error <span class="hljs-string">"Framework [<span class="hljs-subst">#{name}</span>] has already been registered"</span>  <span class="hljs-keyword">if</span> registered_framework_name.present?
+          <span class="hljs-variable">@registered_framework_name</span> = name
+          platform(name, path)
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>register a platform name</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platform</span><span class="hljs-params">(name=<span class="hljs-keyword">nil</span>, path=<span class="hljs-keyword">nil</span>)</span></span>
+          error <span class="hljs-string">"Platform name is blank"</span>  <span class="hljs-keyword">if</span> name.blank?
+          error <span class="hljs-string">"Platform path is blank"</span>  <span class="hljs-keyword">if</span> path.blank?
+          error <span class="hljs-string">"Platform name is not a string"</span>  <span class="hljs-keyword">unless</span> name.kind_of?(<span class="hljs-constant">String</span>)
+          debug <span class="hljs-string">"Registering platform name [<span class="hljs-subst">#{name}</span>] by engine path [<span class="hljs-subst">#{path}</span>]"</span>
+          error <span class="hljs-string">"Platform [<span class="hljs-subst">#{name}</span>] has already been registered"</span>  <span class="hljs-keyword">if</span> platform_names.<span class="hljs-keyword">include</span>?(name)
+          platform_names.push(name)
+          totem_settings.defaults.platform_settings(name)
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>array of registered string engine names: [&#39;totem&#39;, &#39;totem_core&#39;, ...]</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engines</span>;</span> engine_names; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>registered string framework name</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">framework_name</span>;</span> registered_framework_name; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>array of string platform names: [&#39;totem&#39;, &#39;platform&#39;, ...]</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">platforms</span>;</span> platform_names; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Engine Configuration</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>convience methods to get single engine config value </p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_platform_name</span><span class="hljs-params">(engine_name)</span>;</span>     engine_config_option(engine_name, <span class="hljs-symbol">:platform_name</span>); <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_platform_path</span><span class="hljs-params">(engine_name)</span>;</span>     engine_config_option(engine_name, <span class="hljs-symbol">:platform_path</span>); <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_platform_scope</span><span class="hljs-params">(engine_name)</span>;</span>    engine_config_option(engine_name, <span class="hljs-symbol">:platform_scope</span>); <span class="hljs-keyword">end</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_platform_sub_type</span><span class="hljs-params">(engine_name)</span>;</span> engine_config_option(engine_name, <span class="hljs-symbol">:platform_sub_type</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>hash of config key values with engine-class-name strings having this value: {key-value: [engine-class-name, ...]}</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">config_value_and_engine_class_names</span><span class="hljs-params">(platform_path, config_key)</span></span>
+          hash = <span class="hljs-constant">HashWithIndifferentAccess</span>.new
+          get_engine_configurations_for_platform_path(platform_path).each_pair <span class="hljs-keyword">do</span> |engine_name, config|
+            config_value = engine_config_option(engine_name, config_key.to_sym)
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> config_value.<span class="hljs-keyword">nil</span>?
+            hash[config_value] ||= []
+            hash[config_value].push get_engine_class_name_from_engine_name(engine_name)
+          <span class="hljs-keyword">end</span>
+          hash
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_glob_routes</span></span>
+          all_engine_glob_routes
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_engine_glob_route</span><span class="hljs-params">(route_options)</span></span>
+          all_engine_glob_routes.push(route_options)  <span class="hljs-keyword">unless</span> all_engine_glob_routes.<span class="hljs-keyword">include</span>?(route_options)
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">engine_config_option</span><span class="hljs-params">(engine_name, key)</span></span>
+          error <span class="hljs-string">"Engine config option engine name is blank"</span>  <span class="hljs-keyword">if</span> engine_name.blank?
+          error <span class="hljs-string">"Engine config option key for engine name [<span class="hljs-subst">#{engine_name}</span>] is blank"</span>  <span class="hljs-keyword">if</span> key.blank?
+          engine_configurations[engine_name] &amp;&amp; engine_configurations[engine_name][key]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_engine_configurations_for_platform_path</span><span class="hljs-params">(platform_path)</span></span>
+          configs = <span class="hljs-constant">Hash</span>.new
+          engine_configurations.each_pair <span class="hljs-keyword">do</span> |engine_name, config|
+            engine_path = engine_platform_path(engine_name)
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> engine_path.blank?
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> engine_path.to_s == platform_path.to_s
+            configs[engine_name] = config
+          <span class="hljs-keyword">end</span>
+          configs
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_engine_class_name_from_engine_name</span><span class="hljs-params">(engine_name)</span></span>
+          engine_name_and_class = totem_settings.engine.name_and_class
+          engine_class = engine_name_and_class[engine_name]
+          error <span class="hljs-string">"Engine name [<span class="hljs-subst">#{engine_name}</span>] was not found"</span>  <span class="hljs-keyword">if</span> engine_class.blank?
+          engine_class
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">Shared</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

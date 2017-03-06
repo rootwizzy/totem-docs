@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-common/addon/mixins/phase_manager/debug</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-common/addon/mixins/phase_manager/debug"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-common/addon/mixins/phase_manager/debug.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-common/addon/mixins/phase_manager/debug.coffee">src/thinkspace/client/thinkspace-common/addon/mixins/phase_manager/debug.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">debug_ownerable</span>: <span class="hljs-function"><span class="hljs-params">(text=<span class="hljs-string">''</span>)</span> -&gt;</span>
+    ownerable = <span class="hljs-property">@get_ownerable</span>()
+    <span class="hljs-keyword">unless</span> ownerable
+      <span class="hljs-built_in">console</span>.warn text + <span class="hljs-string">'ownerable is blank'</span>
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">if</span> ownerable <span class="hljs-keyword">and</span> <span class="hljs-property">@totem_scope</span>.ownerable_is_type_user()
+      <span class="hljs-built_in">console</span>.info <span class="hljs-string">"<span class="hljs-subst">#{text}</span>[user: <span class="hljs-subst">#{ownerable.get(<span class="hljs-string">'first_name'</span>)}</span>] ownerable:"</span>, ownerable.toString()
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-built_in">console</span>.info <span class="hljs-string">"<span class="hljs-subst">#{text}</span>[team: <span class="hljs-subst">#{ownerable.get(<span class="hljs-string">'title'</span>)}</span>] ownerable:"</span>, ownerable.toString()
+
+  <span class="hljs-attribute">debug_phase_states</span>: <span class="hljs-function">-&gt;</span>
+    assignment = <span class="hljs-property">@get_assignment</span>()
+    ownerable  = <span class="hljs-property">@get_ownerable</span>()
+    <span class="hljs-built_in">console</span>.warn <span class="hljs-string">'-------------------------------------------------'</span>
+    <span class="hljs-built_in">console</span>.info <span class="hljs-string">'ownerable:'</span>, ownerable
+    <span class="hljs-built_in">console</span>.info <span class="hljs-string">'assignment:'</span>, assignment
+    assignment.get(<span class="hljs-property">@ns</span>.to_p <span class="hljs-string">'phases'</span>).<span class="hljs-keyword">then</span> (phases) =&gt;
+      phases.forEach (phase) =&gt;
+        <span class="hljs-built_in">console</span>.info <span class="hljs-string">'......phase:'</span>, phase
+        <span class="hljs-built_in">console</span>.warn <span class="hljs-string">'phase_state:'</span>, phase.get(<span class="hljs-string">'phase_state'</span>)
+      <span class="hljs-built_in">console</span>.warn <span class="hljs-string">'-------------------------------------------------'</span></div></div></div></div></body></html>

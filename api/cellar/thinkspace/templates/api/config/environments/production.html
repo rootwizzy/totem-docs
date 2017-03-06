@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/templates/api/config/environments/production</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/templates/api/config/environments/production"><meta name="groc-project-path" content="src/thinkspace/templates/api/config/environments/production.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/templates/api/config/environments/production.rb">src/thinkspace/templates/api/config/environments/production.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>Rack CORS configuration</p></div></div><div class="code"><div class="wrapper">  config.middleware.insert_before <span class="hljs-number">0</span>, <span class="hljs-string">'Rack::Cors'</span> <span class="hljs-keyword">do</span>
+    allow <span class="hljs-keyword">do</span>
+      origins <span class="hljs-string">'*'</span>
+      resource <span class="hljs-string">'*.woff'</span>, <span class="hljs-symbol">headers:</span> <span class="hljs-symbol">:any</span>, <span class="hljs-symbol">methods:</span> <span class="hljs-symbol">:get</span>
+      resource <span class="hljs-string">'*.eot'</span>,  <span class="hljs-symbol">headers:</span> <span class="hljs-symbol">:any</span>, <span class="hljs-symbol">methods:</span> <span class="hljs-symbol">:get</span>
+      resource <span class="hljs-string">'*.svg'</span>,  <span class="hljs-symbol">headers:</span> <span class="hljs-symbol">:any</span>, <span class="hljs-symbol">methods:</span> <span class="hljs-symbol">:get</span>
+      resource <span class="hljs-string">'*.ttf'</span>,  <span class="hljs-symbol">headers:</span> <span class="hljs-symbol">:any</span>, <span class="hljs-symbol">methods:</span> <span class="hljs-symbol">:get</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Paperclip Storage</p></div></div><div class="code"><div class="wrapper">  config.paperclip_defaults = {
+     <span class="hljs-symbol">storage:</span> <span class="hljs-symbol">:s3</span>,
+       <span class="hljs-symbol">s3_credentials:</span> {
+         <span class="hljs-symbol">bucket:</span> <span class="hljs-constant">Rails</span>.application.secrets.aws[<span class="hljs-string">'s3'</span>][<span class="hljs-string">'paperclip'</span>][<span class="hljs-string">'bucket_name'</span>],
+         <span class="hljs-symbol">access_key_id:</span> <span class="hljs-constant">Rails</span>.application.secrets.aws[<span class="hljs-string">'s3'</span>][<span class="hljs-string">'paperclip'</span>][<span class="hljs-string">'access_key'</span>],
+         <span class="hljs-symbol">secret_access_key:</span> <span class="hljs-constant">Rails</span>.application.secrets.aws[<span class="hljs-string">'s3'</span>][<span class="hljs-string">'paperclip'</span>][<span class="hljs-string">'secret_access_key'</span>]
+       },
+   <span class="hljs-symbol">s3_protocol:</span> <span class="hljs-symbol">:https</span>
+  }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Postmark SMTP</p></div></div><div class="code"><div class="wrapper">  config.action_mailer.smtp_settings = {
+    <span class="hljs-symbol">address:</span>              <span class="hljs-string">'smtp.postmarkapp.com'</span>,
+    <span class="hljs-symbol">port:</span>                 <span class="hljs-number">587</span>,
+    <span class="hljs-symbol">enable_starttls_auto:</span> <span class="hljs-keyword">true</span>,
+    <span class="hljs-symbol">user_name:</span>            <span class="hljs-constant">Rails</span>.application.secrets.smtp[<span class="hljs-string">'postmark'</span>][<span class="hljs-string">'username'</span>],
+    <span class="hljs-symbol">password:</span>             <span class="hljs-constant">Rails</span>.application.secrets.smtp[<span class="hljs-string">'postmark'</span>][<span class="hljs-string">'password'</span>],
+    <span class="hljs-symbol">domain:</span>               <span class="hljs-constant">Rails</span>.application.secrets.smtp[<span class="hljs-string">'postmark'</span>][<span class="hljs-string">'domain'</span>],
+    <span class="hljs-symbol">authentication:</span>       <span class="hljs-symbol">:cram_md5</span>
+  }
+
+  <span class="hljs-constant">Slim::Engine</span>.options[<span class="hljs-symbol">:pretty</span>] = <span class="hljs-keyword">true</span>
+
+  config.cache_store = <span class="hljs-symbol">:dalli_store</span>,
+  (<span class="hljs-constant">ENV</span>[<span class="hljs-string">"MEMCACHIER_SERVERS"</span>] || <span class="hljs-string">""</span>).split(<span class="hljs-string">","</span>),
+    {<span class="hljs-symbol">:username</span> =&gt; <span class="hljs-constant">ENV</span>[<span class="hljs-string">"MEMCACHIER_USERNAME"</span>],
+    <span class="hljs-symbol">:password</span> =&gt; <span class="hljs-constant">ENV</span>[<span class="hljs-string">"MEMCACHIER_PASSWORD"</span>],
+    <span class="hljs-symbol">:failover</span> =&gt; <span class="hljs-keyword">true</span>,
+    <span class="hljs-symbol">:socket_timeout</span> =&gt; <span class="hljs-number">1.5</span>,
+    <span class="hljs-symbol">:socket_failure_delay</span> =&gt; <span class="hljs-number">0</span>.<span class="hljs-number">2</span>
+    }</div></div></div></div></body></html>

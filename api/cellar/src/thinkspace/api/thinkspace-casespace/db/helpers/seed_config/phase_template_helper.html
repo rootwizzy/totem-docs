@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/phase_template_helper</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/phase_template_helper"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/phase_template_helper.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/phase_template_helper.rb">src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/phase_template_helper.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'nokogiri'</span>
+
+<span class="hljs-comment">#########################################################################################</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="phase-templates">Phase Templates.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_seed_config_add_phase_templates</span><span class="hljs-params">(config)</span></span>
+  templates = [config[<span class="hljs-symbol">:phase_templates</span>]].flatten.compact
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> templates.blank?
+  casespace_seed_config_message(<span class="hljs-string">'++Adding seed config phase templates.'</span>, config)
+  templates.each <span class="hljs-keyword">do</span> |hash|
+    template = hash[<span class="hljs-symbol">:template</span>]
+    casespace_seed_config_error <span class="hljs-string">"Phase template does not have a template value [template: <span class="hljs-subst">#{hash.inspect}</span>]."</span>, config  <span class="hljs-keyword">if</span> template.blank?
+    template = template.gsub <span class="hljs-string">'<span class="hljs-subst">#{casespace_phase_header}</span>'</span>, casespace_phase_header
+    template = template.gsub <span class="hljs-string">'<span class="hljs-subst">#{casespace_phase_submit}</span>'</span>, casespace_phase_submit
+    create_casespace_phase_template(hash.merge(<span class="hljs-symbol">template:</span> template))
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check if any seed phase components should be built after other section components in the same phase template.
+For example, if a section&#39;s &#39;componentable&#39; depends on another section&#39;s &#39;componentable&#39; but is
+defined before the dependent section in the phase_template.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ordered_phase_template_section_hash</span><span class="hljs-params">(phase_template)</span></span>
+  do_last        = [<span class="hljs-string">'diagnostic-path-viewer'</span>]  <span class="hljs-comment"># hard coded list of known components to build last</span>
+  component_hash = <span class="hljs-constant">ActiveSupport::OrderedHash</span>.new
+  last_array     = <span class="hljs-constant">Array</span>.new
+  template_hash  = casespace_parse_phase_template(phase_template)
+  template_hash.each <span class="hljs-keyword">do</span> |section, attrs|
+    title = attrs[<span class="hljs-string">'title'</span>]
+    <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Phase template name <span class="hljs-subst">#{phase_template.name.inspect}</span> does not have a title."</span>  <span class="hljs-keyword">if</span> title.blank?
+    match_do_last = do_last.select {|t| title.start_with?(t)}
+    match_do_last.blank? ? component_hash[section] = attrs <span class="hljs-symbol">:</span> last_array.push([section, attrs])
+  <span class="hljs-keyword">end</span>
+  last_array.each <span class="hljs-keyword">do</span> |section_array|
+    component_hash[section_array.first] = section_array.last
+  <span class="hljs-keyword">end</span>
+  component_hash
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">casespace_parse_phase_template</span><span class="hljs-params">(template)</span></span>
+  hash       = <span class="hljs-constant">Hash</span>.new
+  html       = <span class="hljs-constant">Nokogiri::HTML</span>.fragment(template.template)
+  components = html.css(<span class="hljs-string">'component'</span>)
+  check_casespace_phase_template(template, components)
+  components.each <span class="hljs-keyword">do</span> |component|
+    comp    = <span class="hljs-constant">Hash</span>.from_xml(component.to_s)[<span class="hljs-string">'component'</span>] || <span class="hljs-constant">Hash</span>.new
+    section = comp.delete(<span class="hljs-string">'section'</span>) || comp[<span class="hljs-string">'title'</span>]  <span class="hljs-comment"># totem-template-manager will default the section to the title</span>
+    hash[section] = comp
+  <span class="hljs-keyword">end</span>
+  hash
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">check_casespace_phase_template</span><span class="hljs-params">(template, components)</span></span>
+  references = <span class="hljs-constant">Array</span>.new
+  sections   = <span class="hljs-constant">Array</span>.new
+  components.each <span class="hljs-keyword">do</span> |component|
+    section = component.attributes[<span class="hljs-string">'section'</span>] || component.attributes[<span class="hljs-string">'title'</span>] <span class="hljs-comment"># totem-template-manager will default the section to the title</span>
+    <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Phase template name <span class="hljs-subst">#{template.name.inspect}</span> component tag is missing a section attribute [<span class="hljs-subst">#{component.to_s}</span>]."</span>  <span class="hljs-keyword">if</span> section.blank?
+    section = section.to_s
+    <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Phase template name <span class="hljs-subst">#{template.name.inspect}</span> has a duplicate section value <span class="hljs-subst">#{section.inspect}</span> [<span class="hljs-subst">#{component.to_s}</span>]."</span>  <span class="hljs-keyword">if</span> sections.<span class="hljs-keyword">include</span>?(section)
+    sections.push(section)
+    attributes = component.attributes
+    attributes.each <span class="hljs-keyword">do</span> |key, value|
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> key == <span class="hljs-string">'title'</span>
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> key == <span class="hljs-string">'section'</span>
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> key.start_with?(<span class="hljs-string">'data-'</span>)
+      <span class="hljs-keyword">if</span> value.present?
+        value = value.to_s
+        <span class="hljs-keyword">next</span>  <span class="hljs-keyword">if</span> value == <span class="hljs-string">'true'</span> || value == <span class="hljs-string">'false'</span>  <span class="hljs-comment"># if a boolean, then is not a reference to another section</span>
+        values      = value.split(<span class="hljs-string">' '</span>).select {|v| v.present?}
+        references += values.map {|v| v.strip}
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+  references  = [references].flatten.compact.uniq
+  not_defined = references - sections
+  <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Phase template name <span class="hljs-subst">#{template.name.inspect}</span> has undefined references <span class="hljs-subst">#{not_defined}</span>."</span>  <span class="hljs-keyword">if</span> not_defined.present?
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

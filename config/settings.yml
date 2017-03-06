@@ -25,45 +25,22 @@ modules:
 
   api:      
     repositories:
-      - name: ethinkspace-client
-        url: 'https://github.com/sixthedge/ethinkspace-client'
-        branch: development
+      - name: cellar
+        url: 'https://github.com/sixthedge/cellar'
+        branch: master
         options:
-          out:     "-o ../../api/ethinkspace-client"
-          glob:    '"./**/*.coffee" "./**/**/*.scss" "README.md"'
-          project: "-p ethinkspace-client"
-          url:     "--repository-url 'https://github.com/sixthedge/ethinkspace-client'"
-          branch: "-b development"
-
-      - name: ethinkspace-api
-        url: 'https://github.com/sixthedge/ethinkspace-api'
-        branch: development
-        options:
-          out: "-o ../../api/ethinkspace-api"
-          glob: '"./**/*.rb" "README.md"'
-          project: "-p ethinkspace-api"
-          url:     "--repository-url 'https://github.com/sixthedge/ethinkspace-api'"
-          branch: "-b development"
-
-      - name: etotem-client
-        url: 'https://github.com/sixthedge/etotem-client'
-        branch: development
-        options:
-          out:     "-o ../../api/etotem-client"
-          glob:    '"./**/*.coffee" "README.md"'
-          project: "-p etotem-client"
-          url:     "--repository-url 'https://github.com/sixthedge/etotem-client'"
-          branch: "-b development"
-
-      - name: etotem-api
-        url: 'https://github.com/sixthedge/etotem-api'
-        branch: development
-        options:
-          out: "-o ../../api/etotem-api"
-          glob: "./**/**/*.rb README.md"
-          project: "-p etotem-api"
-          url:     "--repository-url 'https://github.com/sixthedge/etotem-api'"
-          branch: "-b development"
+          out: '-o ../../api/cellar'
+          glob: '"./src/**/*.rb" 
+          "./src/**/*.coffee" 
+          "./src/**/*.js" 
+          "./src/**/*.scss" 
+          "./src/**/*.yml" 
+          "README.md"'
+          except: '--except "./src/totem/api/vendor/**" 
+          --except "./src/thinkspace/client/thinkspace-*/node_modules/**" 
+          --except "./src/totem/client/totem-*/vendor/**"'
+          project: '-p cellar'
+          url: '--repository-url "https://github.com/sixthedge/cellar"'
 
       - name: totem-lodestar
         url: 'https://github.com/sixthedge/totem-lodestar'

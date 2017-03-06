@@ -1,0 +1,124 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/test/support/routes/routes_error_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/test/support/routes/routes_error_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/routes/routes_error_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/routes/routes_error_test.rb">src/totem/api/totem-core/test/support/routes/routes_error_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../routes_helper'</span>, __FILE_<span class="hljs-number">_</span>)
+
+describe <span class="hljs-string">'routes.rb errors'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span>
+    set_environment
+    set_mock_mapper
+    set_routes_engines
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'no platform name'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@routes</span>.call(<span class="hljs-variable">@mock_mapper</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/no platform.*for routes/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E01: mount options not blank or a hash'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>  <span class="hljs-comment"># raised by configuration.rb</span>
+      load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/01_*'</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/path.*not blank.*hash/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E02: match options not blank or a hash'</span> <span class="hljs-keyword">do</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>  <span class="hljs-comment"># raised by configuration.rb</span>
+      load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/02_*'</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/path.*not blank.*hash/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E03: no platform paths'</span> <span class="hljs-keyword">do</span>
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/03_*'</span>)
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@routes</span>.call(<span class="hljs-variable">@mock_mapper</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'test_platform'</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/no.*paths.*for platform/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E04: no engine with name'</span> <span class="hljs-keyword">do</span>
+    register_route_engines
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/04_*'</span>, <span class="hljs-symbol">clear_engines:</span> <span class="hljs-keyword">false</span>)
+    register_framework_and_platform
+    <span class="hljs-variable">@env</span>.engine.instance_variable_set(<span class="hljs-string">'@engine_name_and_engine'</span>, {})
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@routes</span>.call(<span class="hljs-variable">@mock_mapper</span>, <span class="hljs-symbol">env:</span> <span class="hljs-variable">@env</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'test_platform'</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/no engine.*with name.*_one/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E04: path mount options not a hash'</span> <span class="hljs-keyword">do</span>
+    register_route_engines
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/04_*'</span>, <span class="hljs-symbol">clear_engines:</span> <span class="hljs-keyword">false</span>)
+    register_framework_and_platform
+    mock_engine_routes(<span class="hljs-symbol">:platform_one</span>)
+    <span class="hljs-variable">@env</span>.config.paths(<span class="hljs-string">'test_platform'</span>).first.routes.mount = <span class="hljs-string">'not_a_hash'</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@routes</span>.call(<span class="hljs-variable">@mock_mapper</span>, <span class="hljs-symbol">env:</span> <span class="hljs-variable">@env</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'test_platform'</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/mount options.*hash/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E04: path match not a hash'</span> <span class="hljs-keyword">do</span>
+    register_route_engines
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/04_*'</span>, <span class="hljs-symbol">clear_engines:</span> <span class="hljs-keyword">false</span>)
+    register_framework_and_platform
+    mock_engine_routes(<span class="hljs-symbol">:platform_one</span>)
+    <span class="hljs-variable">@env</span>.config.paths(<span class="hljs-string">'test_platform'</span>).first.routes.match = <span class="hljs-string">'not_a_hash'</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@mock_mapper</span>.expect(<span class="hljs-symbol">:mount</span>, <span class="hljs-keyword">nil</span>, [<span class="hljs-constant">Class</span>, <span class="hljs-constant">Hash</span>])
+      <span class="hljs-variable">@routes</span>.call(<span class="hljs-variable">@mock_mapper</span>, <span class="hljs-symbol">env:</span> <span class="hljs-variable">@env</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'test_platform'</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/matches.*hash/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E04: path match match-options not a hash'</span> <span class="hljs-keyword">do</span>
+    register_route_engines
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/04_*'</span>, <span class="hljs-symbol">clear_engines:</span> <span class="hljs-keyword">false</span>)
+    register_framework_and_platform
+    mock_engine_routes(<span class="hljs-symbol">:platform_one</span>)
+    <span class="hljs-variable">@env</span>.config.paths(<span class="hljs-string">'test_platform'</span>).first.routes.match[<span class="hljs-symbol">:test_match</span>] = <span class="hljs-string">'not_a_hash'</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@mock_mapper</span>.expect(<span class="hljs-symbol">:mount</span>, <span class="hljs-keyword">nil</span>, [<span class="hljs-constant">Class</span>, <span class="hljs-constant">Hash</span>])
+      <span class="hljs-variable">@routes</span>.call(<span class="hljs-variable">@mock_mapper</span>, <span class="hljs-symbol">env:</span> <span class="hljs-variable">@env</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'test_platform'</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/test_match.*options.*hash/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E04: platform match not a hash'</span> <span class="hljs-keyword">do</span>
+    register_route_engines
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/04_*'</span>, <span class="hljs-symbol">clear_engines:</span> <span class="hljs-keyword">false</span>)
+    register_framework_and_platform
+    mock_engine_routes(<span class="hljs-symbol">:platform_one</span>)
+    <span class="hljs-variable">@env</span>.config.routes(<span class="hljs-string">'test_platform'</span>)[<span class="hljs-symbol">:match</span>] = <span class="hljs-string">'not_a_hash'</span>
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@mock_mapper</span>.expect(<span class="hljs-symbol">:mount</span>, <span class="hljs-keyword">nil</span>, [<span class="hljs-constant">Class</span>, <span class="hljs-constant">Hash</span>])
+      <span class="hljs-variable">@routes</span>.call(<span class="hljs-variable">@mock_mapper</span>, <span class="hljs-symbol">env:</span> <span class="hljs-variable">@env</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'test_platform'</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/routes: match:.*hash/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E05: no route constraints generated'</span> <span class="hljs-keyword">do</span>
+    register_route_engines
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/05_*'</span>, <span class="hljs-symbol">clear_engines:</span> <span class="hljs-keyword">false</span>)
+    register_framework_and_platform
+    mock_engine_routes(<span class="hljs-symbol">:platform_one</span>)
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@routes</span>.call(<span class="hljs-variable">@mock_mapper</span>, <span class="hljs-symbol">env:</span> <span class="hljs-variable">@env</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'test_platform'</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/not generate.*constraints/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'E06: bad constraint key'</span> <span class="hljs-keyword">do</span>
+    register_route_engines
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'error/06_*'</span>, <span class="hljs-symbol">clear_engines:</span> <span class="hljs-keyword">false</span>)
+    register_framework_and_platform
+    mock_engine_routes(<span class="hljs-symbol">:platform_one</span>)
+    e = assert_raises(<span class="hljs-constant">RuntimeError</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-variable">@routes</span>.call(<span class="hljs-variable">@mock_mapper</span>, <span class="hljs-symbol">env:</span> <span class="hljs-variable">@env</span>, <span class="hljs-symbol">platform_name:</span> <span class="hljs-string">'test_platform'</span>)
+    <span class="hljs-keyword">end</span>
+    assert_match(<span class="hljs-regexp">/unknown.*bad_key/i</span>, e.to_s)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

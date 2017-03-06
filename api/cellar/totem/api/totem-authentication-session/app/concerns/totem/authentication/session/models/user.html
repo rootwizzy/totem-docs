@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-authentication-session/app/concerns/totem/authentication/session/models/user</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="totem/api/totem-authentication-session/app/concerns/totem/authentication/session/models/user"><meta name="groc-project-path" content="src/totem/api/totem-authentication-session/app/concerns/totem/authentication/session/models/user.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-authentication-session/app/concerns/totem/authentication/session/models/user.rb">src/totem/api/totem-authentication-session/app/concerns/totem/authentication/session/models/user.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Authentication</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Session</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Models</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">User</span></span>
+
+          extend <span class="hljs-constant">ActiveSupport::Concern</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Fully qualified exceptions since may be mixed into another engine&#39;s user model.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ClassMethods</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Class method to find or create an user instance.
+Some possible additions to this method:</p>
+<ul>
+<li>populate user columns based on an options :column_names array</li>
+</ul></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_for_oauth_user</span><span class="hljs-params">(oauth_data)</span></span>
+              validate_required_oauth_columns
+              oauth_user_id = oauth_data.uid
+              raise <span class="hljs-constant">Totem::Authentication::Session::MissingSessionUserId</span>, <span class="hljs-string">"Blank oauth user id in oauth data. <span class="hljs-subst">#{oauth_data.inspect}</span>"</span>    <span class="hljs-keyword">if</span> oauth_user_id.blank?
+              user = <span class="hljs-keyword">self</span>.find_by(<span class="hljs-symbol">oauth_user_id:</span> oauth_user_id)
+              user = find_using_oauth_options_strategy(oauth_data, oauth_user_id) <span class="hljs-keyword">if</span> user.blank?
+              <span class="hljs-keyword">if</span> user.blank?
+                user               = <span class="hljs-keyword">self</span>.new
+                user.oauth_user_id = oauth_user_id
+              <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Anything in the info hash (currently email, first_name, last_name) get sent to user if they respond to the method.</p></div></div><div class="code"><div class="wrapper">              oauth_data.info.each <span class="hljs-keyword">do</span> |attribute, value|
+                method = <span class="hljs-string">"<span class="hljs-subst">#{attribute}</span>="</span>.to_sym
+                user.send method, value <span class="hljs-keyword">if</span> user.respond_to?(method)
+              <span class="hljs-keyword">end</span>
+              user
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_using_oauth_options_strategy</span><span class="hljs-params">(oauth_data, oauth_user_id)</span></span>
+              options = (<span class="hljs-keyword">self</span>.respond_to?(<span class="hljs-symbol">:user_oauth_options</span>) &amp;&amp; user_oauth_options) || {}
+              raise <span class="hljs-constant">Totem::Authentication::Session::InvalidUserOptions</span>, <span class="hljs-string">"User oauth options must be a hash."</span>  <span class="hljs-keyword">unless</span> options.kind_of?(<span class="hljs-constant">Hash</span>)
+              <span class="hljs-keyword">case</span>
+              <span class="hljs-keyword">when</span> options[<span class="hljs-symbol">:update_oauth_user_id_on_email_match</span>].present?
+                find_using_oauth_email(oauth_data, oauth_user_id)
+              <span class="hljs-keyword">else</span>
+                <span class="hljs-keyword">nil</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the platform allows creating users in its local user table, this
+will update the existing record matching the email value if
+the oauth_user_id is blank.</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_using_oauth_email</span><span class="hljs-params">(oauth_data, oauth_user_id)</span></span>
+              user = <span class="hljs-keyword">nil</span>
+              oauth_email = oauth_data.info.email
+              <span class="hljs-keyword">if</span> oauth_email.present?
+                user = <span class="hljs-keyword">self</span>.find_by(<span class="hljs-symbol">email:</span> oauth_email)
+                <span class="hljs-keyword">if</span> user.present? &amp;&amp; user.oauth_user_id.blank?
+                  user.oauth_user_id = oauth_user_id
+                <span class="hljs-keyword">else</span>
+                  user = <span class="hljs-keyword">nil</span>  <span class="hljs-comment"># don't update if has an oauth user id (will error on duplicate email validation)</span>
+                <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">end</span>
+              user
+            <span class="hljs-keyword">end</span>
+
+            <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_required_oauth_columns</span></span>
+              <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span>.column_names.<span class="hljs-keyword">include</span>?(<span class="hljs-string">'oauth_user_id'</span>)
+                raise <span class="hljs-constant">Totem::Authentication::Session::MissingRequiredSessionColumn</span>, <span class="hljs-string">"Missing [oauth_user_id] column in model <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.name}</span>."</span>
+              <span class="hljs-keyword">end</span>
+              <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span>.column_names.<span class="hljs-keyword">include</span>?(<span class="hljs-string">'oauth_access_token'</span>)
+                raise <span class="hljs-constant">Totem::Authentication::Session::MissingRequiredSessionColumn</span>, <span class="hljs-string">"Missing [oauth_access_token] column in model <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.name}</span>."</span>
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="instance-method-to-add-the-oauth-access-token-to-the-record">Instance method to add the oauth access token to the record.</h3>
+<p>Also calls the instance method &#39;populate_oauth_columns&#39; if it exists in the user model.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update_oauth_user_credentials</span><span class="hljs-params">(oauth_data)</span></span>
+            oauth_access_token = oauth_data.credentials.token
+            raise <span class="hljs-constant">Totem::Authentication::Session::MissingSessionUserAccessToken</span>, <span class="hljs-string">"Blank oauth access token in oauth data. <span class="hljs-subst">#{oauth_data.inspect}</span>"</span>    <span class="hljs-keyword">if</span> oauth_access_token.blank?
+            <span class="hljs-keyword">self</span>.oauth_access_token = oauth_data.credentials.token
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.respond_to?(<span class="hljs-symbol">:populate_user_oauth_extra_info</span>)
+              extra_values = oauth_data.extra.user_info || {}
+              <span class="hljs-keyword">self</span>.populate_user_oauth_extra_info(extra_values)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sync_user_from_oauth_data</span><span class="hljs-params">(oauth_data)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>oauth_data = { email: email, id: id, first_name: &#39;first&#39;, last_name: &#39;last&#39;, valid: true }</p></div></div><div class="code"><div class="wrapper">            oauth_data.each <span class="hljs-keyword">do</span> |attribute, value|
+              <span class="hljs-keyword">if</span> attribute == <span class="hljs-string">'id'</span>
+                <span class="hljs-keyword">self</span>.oauth_user_id = value
+              <span class="hljs-keyword">else</span>
+                method = <span class="hljs-string">"<span class="hljs-subst">#{attribute}</span>="</span>.to_sym
+                <span class="hljs-keyword">self</span>.send method, value <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.respond_to?(method)
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">self</span>.save
+            <span class="hljs-keyword">self</span>
+          <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/app/models/thinkspace/casespace/phase</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/app/models/thinkspace/casespace/phase"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/app/models/thinkspace/casespace/phase.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/app/models/thinkspace/casespace/phase.rb">src/thinkspace/api/thinkspace-casespace/app/models/thinkspace/casespace/phase.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Casespace</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Phase</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">active</span>;</span>         <span class="hljs-keyword">self</span>.active?; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_ownerable</span>;</span> <span class="hljs-keyword">self</span>.team_ownerable?; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_set_id</span>;</span>               get_team_set_id; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">due_at</span><span class="hljs-params">(ownerable=<span class="hljs-keyword">nil</span>)</span>;</span>     get_timetable_value(ownerable, <span class="hljs-symbol">:due_at</span>); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">release_at</span><span class="hljs-params">(ownerable=<span class="hljs-keyword">nil</span>)</span>;</span> get_timetable_value(ownerable, <span class="hljs-symbol">:release_at</span>); <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock_at</span><span class="hljs-params">(ownerable=<span class="hljs-keyword">nil</span>)</span>;</span>  get_timetable_value(ownerable, <span class="hljs-symbol">:unlock_at</span>); <span class="hljs-keyword">end</span>
+
+      totem_associations
+
+      <span class="hljs-comment">#validates :title, presence: true, uniqueness: {scope: [:thinkspace_casespace_assignment]}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>=&gt; Returns a timetable column value for a single record (e.g. not a scope).</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_timetable_value</span><span class="hljs-params">(ownerable=<span class="hljs-keyword">nil</span>, col)</span>;</span> <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.timetable_scope(ownerable).value(<span class="hljs-keyword">self</span>.id, col); <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_val</span>;</span> <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.timetable_scope(<span class="hljs-keyword">nil</span>).value(<span class="hljs-keyword">self</span>.id, <span class="hljs-symbol">:due_at</span>, <span class="hljs-symbol">:release_at</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="scopes">Scopes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_active</span>;</span> active; <span class="hljs-keyword">end</span>  <span class="hljs-comment"># acitve = aasm auto-generated scope</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_completed</span><span class="hljs-params">(ownerable)</span></span>
+        scope_phase_states_by_ownerable(ownerable).
+        where(<span class="hljs-symbol">thinkspace_casespace_phase_states:</span> {<span class="hljs-symbol">current_state:</span> <span class="hljs-string">'completed'</span>})
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_phase_states_by_ownerable</span><span class="hljs-params">(ownerable)</span></span>
+        joins(<span class="hljs-symbol">:thinkspace_casespace_phase_states</span>).
+        where(<span class="hljs-symbol">thinkspace_casespace_phase_states:</span> {<span class="hljs-symbol">ownerable_id:</span> ownerable.id}).
+        where(<span class="hljs-symbol">thinkspace_casespace_phase_states:</span> {<span class="hljs-symbol">ownerable_type:</span> ownerable.<span class="hljs-keyword">class</span>.name})
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_phase_scores_by_ownerable</span><span class="hljs-params">(ownerable)</span></span>
+        phase_state_ids = scope_phase_states_by_ownerable(ownerable).pluck(<span class="hljs-string">'thinkspace_casespace_phase_states.id'</span>)
+        <span class="hljs-constant">Thinkspace::Casespace::PhaseScore</span>.where(<span class="hljs-symbol">phase_state_id:</span> phase_state_ids)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">phase_timetables_maximum_updated_at</span><span class="hljs-params">(ownerables=<span class="hljs-keyword">nil</span>, options={})</span></span>
+        tts = timetable_scope(ownerables)
+        tts.with_scope.scope_open(ownerables, tts).maximum(tts.coalesce(<span class="hljs-symbol">:updated_at</span>))
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="timetable-scopes">Timetable Scopes.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">timetable_scope</span><span class="hljs-params">(ownerables=<span class="hljs-keyword">nil</span>)</span>;</span> <span class="hljs-constant">Thinkspace::Common::Timetable::Scope</span>.new(<span class="hljs-keyword">self</span>, ownerables, <span class="hljs-string">'Thinkspace::Casespace::Assignment'</span>); <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">next_due_at</span><span class="hljs-params">(ownerables=<span class="hljs-keyword">nil</span>)</span></span>
+        tts = timetable_scope(ownerables)
+        tts.with_scope.scope_open(ownerables,tts).minimum(tts.coalesce(<span class="hljs-symbol">:due_at</span>))
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_open</span><span class="hljs-params">(ownerables=<span class="hljs-keyword">nil</span>, tts=<span class="hljs-keyword">nil</span>)</span></span>
+        (tts || timetable_scope(ownerables)).
+        where_now(<span class="hljs-string">'&lt;='</span>, <span class="hljs-symbol">:release_at</span>).
+        with_scope.
+        scope_active
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="aasm">AASM</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">AASM</span>
+      aasm <span class="hljs-symbol">column:</span> <span class="hljs-symbol">:state</span> <span class="hljs-keyword">do</span>
+        state <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">initial:</span> <span class="hljs-keyword">true</span>
+        state <span class="hljs-symbol">:active</span>
+        state <span class="hljs-symbol">:inactive</span>
+        state <span class="hljs-symbol">:archived</span>
+        event <span class="hljs-symbol">:activate</span> <span class="hljs-keyword">do</span>;   transitions <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:active</span>; <span class="hljs-keyword">end</span>
+        event <span class="hljs-symbol">:inactivate</span> <span class="hljs-keyword">do</span>; transitions <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:inactive</span>; <span class="hljs-keyword">end</span>
+        event <span class="hljs-symbol">:archive</span> <span class="hljs-keyword">do</span>; transitions <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:archived</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authable</span>;</span> <span class="hljs-keyword">self</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_space</span>;</span> thinkspace_casespace_assignment.get_space; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_configuration</span>;</span> thinkspace_common_configuration || <span class="hljs-constant">Thinkspace::Common::Configuration</span>.create(<span class="hljs-symbol">configurable:</span> <span class="hljs-keyword">self</span>); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="componentable-helpers">Componentable helpers</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_builder_abilities</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Default abilities (can perform all, will be overriden by componentables if needed).</p></div></div><div class="code"><div class="wrapper">        abilities = {
+          <span class="hljs-symbol">default_state:</span>          <span class="hljs-keyword">true</span>,
+          <span class="hljs-symbol">max_score:</span>              <span class="hljs-keyword">true</span>,
+          <span class="hljs-symbol">auto_score:</span>             <span class="hljs-keyword">true</span>,
+          <span class="hljs-symbol">unlock_phase:</span>           <span class="hljs-keyword">true</span>,
+          <span class="hljs-symbol">complete_phase:</span>         <span class="hljs-keyword">true</span>,
+          <span class="hljs-symbol">configuration_validate:</span> <span class="hljs-keyword">true</span>,
+          <span class="hljs-symbol">team_based:</span>             <span class="hljs-keyword">true</span>,
+          <span class="hljs-symbol">team_category:</span>          <span class="hljs-keyword">true</span>,
+          <span class="hljs-symbol">team_set:</span>               <span class="hljs-keyword">true</span>
+        }
+        componentables = thinkspace_casespace_phase_components.map(&amp;<span class="hljs-symbol">:componentable</span>)
+        componentables.each <span class="hljs-keyword">do</span> |componentable|
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> componentable.respond_to?(<span class="hljs-symbol">:builder_abilities</span>)
+          abilities = componentable.builder_abilities(abilities)
+        <span class="hljs-keyword">end</span>
+        abilities
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="team-helpers">Team Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_team_set_id</span></span>
+        teamable = <span class="hljs-keyword">self</span>.thinkspace_team_team_set_teamables.reload.first
+        teamable.blank? ? <span class="hljs-keyword">nil</span> <span class="hljs-symbol">:</span> teamable.thinkspace_team_team_set.id
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_category</span>;</span>   <span class="hljs-keyword">self</span>.thinkspace_team_team_category; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_ownerable?</span>;</span> category = team_category; category.present? &amp;&amp; category.team_ownerable?; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">peer_review?</span>;</span>    category = team_category; category.present? &amp;&amp; category.peer_review?; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">collaboration?</span>;</span>  category = team_category; category.present? &amp;&amp; category.collaboration?; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_teams</span><span class="hljs-params">(ownerable=<span class="hljs-keyword">nil</span>)</span></span>
+        <span class="hljs-keyword">if</span> ownerable.blank?
+          teams = <span class="hljs-keyword">self</span>.thinkspace_team_teams
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">case</span>
+          <span class="hljs-keyword">when</span> ownerable.is_a?(user_class)
+            teams = <span class="hljs-keyword">self</span>.thinkspace_team_teams.scope_by_users(ownerable)
+          <span class="hljs-keyword">when</span> ownerable.is_a?(team_class)
+            teams = <span class="hljs-keyword">self</span>.thinkspace_team_teams.scope_by_teams(ownerable)
+          <span class="hljs-keyword">else</span>
+            raise <span class="hljs-constant">PhaseTeamError</span>, <span class="hljs-string">"Ownerable class must be a user or team not <span class="hljs-subst">#{ownerable.<span class="hljs-keyword">class</span>.name.inspect}</span>."</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+        teams + <span class="hljs-keyword">self</span>.thinkspace_casespace_assignment.get_teams(ownerable)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assign_team_set</span><span class="hljs-params">(team_set)</span></span>
+        raise <span class="hljs-constant">PhaseTeamError</span>, <span class="hljs-string">"Cannot assign a team set without a valid team set."</span> <span class="hljs-keyword">unless</span> team_set.present?
+        raise <span class="hljs-constant">PhaseTeamError</span>, <span class="hljs-string">"Phase's space and team set's space do not match."</span>   <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span>.get_space == team_set.get_space
+        team_set.assign_to_record(<span class="hljs-keyword">self</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unassign_team_set</span></span>
+        <span class="hljs-constant">Thinkspace::Team::TeamSet</span>.unassign_all_from_record(<span class="hljs-keyword">self</span>)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">user_class</span>;</span> <span class="hljs-constant">Thinkspace::Common::User</span>; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_class</span>;</span> <span class="hljs-constant">Thinkspace::Team::Team</span>; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PhaseTeamError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="phase-state">Phase State.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_phase_states</span><span class="hljs-params">(ownerable, user, options={})</span></span>
+        phase_states = <span class="hljs-constant">Array</span>.new
+        get_ownerables(ownerable, user, options).each <span class="hljs-keyword">do</span> |phase_ownerable|
+          phase_states.push find_or_create_state_for_ownerable(phase_ownerable, user)
+        <span class="hljs-keyword">end</span>
+        phase_states.flatten.compact.uniq
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ownerables</span><span class="hljs-params">(ownerable, user, options={})</span></span>
+        can_update = options[<span class="hljs-symbol">:can_update</span>] || <span class="hljs-keyword">false</span>
+        ownerables = get_base_ownerables(ownerable, user, options)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Only add a &#39;user&#39; ownerable phase_state if is an updater on a collaboration team phase
+and getting phase states for themselves.  The updater needs the team phase user phase state
+so can view the phase and view other users (e.g. gradebook).</p></div></div><div class="code"><div class="wrapper">        ownerables.push(ownerable) <span class="hljs-keyword">if</span> can_update &amp;&amp; <span class="hljs-keyword">self</span>.team_ownerable? &amp;&amp; ownerable == user
+        ownerables
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_base_ownerables</span><span class="hljs-params">(ownerable, user, options={})</span></span>
+        <span class="hljs-keyword">case</span>
+        <span class="hljs-keyword">when</span> <span class="hljs-keyword">self</span>.team_ownerable?        <span class="hljs-keyword">then</span> get_teams(ownerable)
+        <span class="hljs-keyword">when</span> ownerable.is_a?(user_class) <span class="hljs-keyword">then</span> <span class="hljs-constant">Array</span>.wrap(ownerable)
+        <span class="hljs-keyword">when</span> ownerable.is_a?(team_class) <span class="hljs-keyword">then</span> <span class="hljs-constant">Array</span>.new
+        <span class="hljs-keyword">else</span>
+          raise <span class="hljs-constant">PhaseOwnerableError</span>, <span class="hljs-string">"Ownerable class must be a user or team not <span class="hljs-subst">#{ownerable.<span class="hljs-keyword">class</span>.name.inspect}</span>."</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_state_for_ownerable</span><span class="hljs-params">(ownerable, user=<span class="hljs-keyword">nil</span>)</span></span>
+        state = thinkspace_casespace_phase_states.find_by(<span class="hljs-symbol">ownerable:</span> ownerable)
+        <span class="hljs-keyword">if</span> state.blank?
+          state = thinkspace_casespace_phase_states.create(
+            <span class="hljs-symbol">ownerable:</span>     ownerable,
+            <span class="hljs-symbol">user_id:</span>       user &amp;&amp; user.id,
+            <span class="hljs-symbol">current_state:</span> get_default_state
+          )
+          raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Could not find or create phase state for phase [errors: <span class="hljs-subst">#{state.errors.messages}</span>] [<span class="hljs-subst">#{<span class="hljs-keyword">self</span>.inspect}</span>] [ownerable: <span class="hljs-subst">#{ownerable.inspect}</span>]."</span>  <span class="hljs-keyword">if</span> state.errors.present?
+        <span class="hljs-keyword">end</span>
+        raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Could not find or create phase state for phase [phase: <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.inspect}</span>] [ownerable: <span class="hljs-subst">#{ownerable.inspect}</span>]."</span>  <span class="hljs-keyword">unless</span> state.present?
+        state
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_default_state</span></span>
+        has_unlock_at_and_is_unlocked? ? <span class="hljs-string">'unlocked'</span> <span class="hljs-symbol">:</span> <span class="hljs-keyword">self</span>.default_state
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock_valid_locked_ownerable_phase_states</span><span class="hljs-params">(tt_ids, tt=<span class="hljs-keyword">nil</span>, validate=<span class="hljs-keyword">true</span>)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Note: Has to be tt_ids instead of the ActiveRecord::Relation directly, since it is delayed/serialized.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> validate
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> tt_ids.empty?
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> unlock_at.present? &amp;&amp; unlock_at &lt;= <span class="hljs-constant">Time</span>.now
+        <span class="hljs-keyword">end</span>
+        tts               = <span class="hljs-constant">Thinkspace::Common::Timetable</span>.where(<span class="hljs-symbol">id:</span> tt_ids)
+        team_ids          = thinkspace_common_timetables.scope_by_teams.pluck(<span class="hljs-symbol">:ownerable_id</span>)
+        user_ids          = thinkspace_common_timetables.scope_by_users.pluck(<span class="hljs-symbol">:ownerable_id</span>)
+        team_phase_states = thinkspace_casespace_phase_states.scope_by_not_team_ownerable_ids(team_ids)
+        user_phase_states = thinkspace_casespace_phase_states.scope_by_not_user_ownerable_ids(user_ids)
+        unlock_phase_states(team_phase_states)
+        unlock_phase_states(user_phase_states)
+        tt.set_unlocked_at <span class="hljs-keyword">if</span> tt.present?
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock_for_ownerable</span><span class="hljs-params">(ownerable, tt, validate=<span class="hljs-keyword">true</span>)</span></span>
+        <span class="hljs-keyword">if</span> validate
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> ownerable.present? &amp;&amp; tt.present?
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> tt.unlock_at &lt;= <span class="hljs-constant">Time</span>.now
+        <span class="hljs-keyword">end</span>
+        time         = <span class="hljs-constant">Time</span>.now
+        phase_states = thinkspace_casespace_phase_states.scope_by_ownerables(ownerable, <span class="hljs-keyword">self</span>).scope_locked
+        unlock_phase_states(phase_states) <span class="hljs-keyword">if</span> phase_states.present?
+        tt.set_unlocked_at
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock_phase_states</span><span class="hljs-params">(phase_states)</span></span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> phase_states.present?
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> phase_states.respond_to?(<span class="hljs-symbol">:update_all</span>)
+        phase_states.update_all(<span class="hljs-symbol">current_state:</span> <span class="hljs-string">'unlocked'</span>, <span class="hljs-symbol">updated_at:</span> <span class="hljs-constant">Time</span>.now)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">has_unlock_at_and_is_unlocked?</span></span>
+        unlock_at.present? &amp;&amp; unlock_at &lt;= <span class="hljs-constant">Time</span>.now
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PhaseOwnerableError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="phase-score">Phase Score.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_score_for_ownerable</span><span class="hljs-params">(ownerable, user=<span class="hljs-keyword">nil</span>)</span></span>
+        phase_state = find_or_create_state_for_ownerable(ownerable, user)
+        score       = phase_state.thinkspace_casespace_phase_score
+        <span class="hljs-keyword">if</span> score.blank?
+          score = phase_state.create_thinkspace_casespace_phase_score(
+            <span class="hljs-symbol">user_id:</span> user &amp;&amp; user.id,
+            <span class="hljs-symbol">score:</span>   <span class="hljs-number">0</span>,
+          )
+        <span class="hljs-keyword">end</span>
+        raise <span class="hljs-constant">FindOrCreateError</span>, <span class="hljs-string">"Could not find or create phase score for phase state [phase_state: <span class="hljs-subst">#{phase_state.inspect}</span>] [ownerable: <span class="hljs-subst">#{ownerable.inspect}</span>]."</span>  <span class="hljs-keyword">unless</span> score.present?
+        score
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ScopeError</span>        <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FindOrCreateError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="clone-phase">Clone Phase.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.deep_clone_helper</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Clone options:
+  assignment:    assignment record to override the phase.assignment_id
+  ownerable:     set a cloned record&#39;s ownerable to this ownerable record (phase and nested records)
+  user|user_id:  set a cloned record&#39;s user_id to this record&#39;s id (phase and nested records)
+  dictionary:    hash of record hashes used in the deep_clone</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-comment">#:                 root hash keys are the model_class_name.underscore.pluralize</span>
+      <span class="hljs-comment">#:                 nested hash keys are the original records</span>
+      <span class="hljs-comment">#:                 nested hash values are the originial record's cloned record</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  boolean options (default true if not specified):
+    clone_phase_template: (will not clone a &#39;domain&#39; template)
+    clone_configuration:
+    clone_resources:
+    clone_teams:</p>
+<p>If want the dictionary values (or want to provide a populated dictionary), pass the dictionary option into the method.
+For example:
+  dictionary   = phase.get_clone_dictionary
+  cloned_phase = phase.cyclone(dictionary: dictionary)</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cyclone</span><span class="hljs-params">(options={})</span></span>
+        <span class="hljs-keyword">self</span>.transaction <span class="hljs-keyword">do</span>
+          assignment              = options[<span class="hljs-symbol">:assignment</span>] <span class="hljs-comment"># specific assignment override</span>
+          clone_associations      = get_clone_associations(options)
+          options[<span class="hljs-symbol">:authable</span>]      = <span class="hljs-keyword">self</span>
+          options[<span class="hljs-symbol">:dictionary</span>]    ||= get_clone_dictionary(options)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Clone the phase.</p></div></div><div class="code"><div class="wrapper">          cloned_phase               = clone_self(options, clone_associations)
+          cloned_phase.title         = get_clone_title(<span class="hljs-keyword">self</span>.title, options)
+          cloned_phase.assignment_id = assignment.id  <span class="hljs-keyword">if</span> assignment.present?
+          cloned_phase.position      = clone_position(cloned_phase, options)
+          cloned_phase.state         = <span class="hljs-keyword">self</span>.state
+          clone_save_record(cloned_phase)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Post clone phase: clone the cloned phase&#39;s phase_component componentables, phase template, teams, etc..</p></div></div><div class="code"><div class="wrapper">          clone_phase_template(cloned_phase, options)   <span class="hljs-keyword">if</span> clone_include?(<span class="hljs-symbol">:clone_phase_template</span>, options)
+          clone_phase_component_componentables(cloned_phase, options)
+          clone_phase_resources(options)                <span class="hljs-keyword">if</span> clone_include?(<span class="hljs-symbol">:clone_resources</span>, options)
+          clone_phase_teams(options)                    <span class="hljs-keyword">if</span> clone_include?(<span class="hljs-symbol">:clone_teams</span>, options)
+
+          cloned_phase
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      private
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_clone_associations</span><span class="hljs-params">(options={})</span></span>
+        clone_associations = [<span class="hljs-symbol">:thinkspace_casespace_phase_components</span>]
+        clone_associations.push(<span class="hljs-symbol">:thinkspace_common_configuration</span>)  <span class="hljs-keyword">if</span> clone_include?(<span class="hljs-symbol">:clone_configuration</span>, options)
+        clone_associations.push(<span class="hljs-symbol">:thinkspace_casespace_assignment</span>)  <span class="hljs-keyword">if</span> is_full_clone?(options)
+        clone_associations
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_position</span><span class="hljs-params">(phase, options={})</span></span>
+        position = options[<span class="hljs-symbol">:position</span>]
+        <span class="hljs-keyword">return</span> position  <span class="hljs-keyword">if</span> position.present?
+        assignment = phase.thinkspace_casespace_assignment
+        position   = assignment.thinkspace_casespace_phases.maximum(<span class="hljs-symbol">:position</span>)
+        position.blank? ? <span class="hljs-number">1</span> <span class="hljs-symbol">:</span> position + <span class="hljs-number">1</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_phase_template</span><span class="hljs-params">(cloned_phase, options={})</span></span>
+        dictionary = get_clone_dictionary(options)
+        template   = <span class="hljs-keyword">self</span>.thinkspace_casespace_phase_template
+        raise_clone_exception(<span class="hljs-string">"Clone phase phase_template not found [id: <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.id}</span>]."</span>) <span class="hljs-keyword">if</span> template.blank?
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> template.domain == <span class="hljs-keyword">true</span>
+        cloned_template       = template.deep_clone <span class="hljs-symbol">include:</span> [], <span class="hljs-symbol">dictionary:</span> dictionary
+        cloned_template.title = options[<span class="hljs-symbol">:template_title</span>] || cloned_phase.title + <span class="hljs-string">' - '</span> + cloned_template.title
+        cloned_template.name  = options[<span class="hljs-symbol">:template_name</span>]  || (cloned_phase.title.downcase + <span class="hljs-string">'_'</span> + cloned_template.name).gsub(<span class="hljs-regexp">/\s/</span>,<span class="hljs-string">'_'</span>).gsub(<span class="hljs-regexp">/\W/</span>, <span class="hljs-string">''</span>)
+        clone_save_record(cloned_template)
+        cloned_phase.phase_template_id = cloned_template.id
+        clone_save_record(cloned_phase)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_phase_component_componentables</span><span class="hljs-params">(cloned_phase, options={})</span></span>
+        method = <span class="hljs-symbol">:cyclone</span>
+        get_cloned_phase_components_in_order_of_clone(cloned_phase).each <span class="hljs-keyword">do</span> |cloned_phase_component|
+          componentable = cloned_phase_component.componentable
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> componentable.respond_to?(method, <span class="hljs-keyword">true</span>)
+          cloned_componentable = componentable.send(method, options)
+          <span class="hljs-keyword">if</span> cloned_componentable.present?
+            cloned_phase_component.componentable = cloned_componentable
+            clone_save_record(cloned_phase_component)
+          <span class="hljs-keyword">else</span>
+            raise_clone_exception(<span class="hljs-string">"Phase component componentable <span class="hljs-subst">#{componentable.<span class="hljs-keyword">class</span>.name.inspect}</span> did not return a clone."</span>)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_cloned_phase_components_in_order_of_clone</span><span class="hljs-params">(cloned_phase)</span></span>
+        do_last    = <span class="hljs-constant">Array</span>.new
+        components = <span class="hljs-constant">Array</span>.new
+        cloned_phase.thinkspace_casespace_phase_components.each <span class="hljs-keyword">do</span> |cloned_phase_component|
+          componentable = cloned_phase_component.componentable
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> componentable.blank?
+          <span class="hljs-keyword">if</span> componentable.is_a?(<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the componentable is the phase (e.g. header, submit) set the &#39;cloned_phase_component&#39;
+componentable to the cloned phase, save and skip to next (e.g. don&#39;t re-clone the phase).</p></div></div><div class="code"><div class="wrapper">            cloned_phase_component.componentable = cloned_phase
+            clone_save_record(cloned_phase_component)
+            <span class="hljs-keyword">next</span>
+          <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">if</span> componentable.respond_to?(<span class="hljs-symbol">:clone_last</span>) &amp;&amp; componentable.clone_last
+            do_last.push(cloned_phase_component)
+          <span class="hljs-keyword">else</span>
+            components.push(cloned_phase_component)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+        components + do_last
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">include</span> <span class="hljs-constant">Thinkspace::Resource::Concerns::Clone::Resources</span>
+      <span class="hljs-keyword">include</span> <span class="hljs-constant">Thinkspace::Team::Concerns::Clone::Teams</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_phase_resources</span><span class="hljs-params">(options={})</span>;</span> clone_record_resources(<span class="hljs-keyword">self</span>, get_clone_dictionary(options), options); <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">clone_phase_teams</span><span class="hljs-params">(options={})</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: This should clone the configuration options essentially for team_set and team_type</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">return</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="delete-ownerable-data">Delete Ownerable Data.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.thinkspace.delete_ownerable_data_helper
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ownerable_data_associations</span>;</span> [<span class="hljs-symbol">:thinkspace_casespace_phase_states</span>]; <span class="hljs-keyword">end</span>
+
+      public
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">delete_all_ownerable_data!</span></span>
+        <span class="hljs-keyword">self</span>.transaction <span class="hljs-keyword">do</span>
+          delete_ownerable_data_scope_all
+          method = <span class="hljs-symbol">:delete_all_ownerable_data!</span>
+          delete_componentables_ownerable_data(method)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">delete_ownerable_data</span><span class="hljs-params">(ownerables)</span></span>
+        <span class="hljs-keyword">self</span>.transaction <span class="hljs-keyword">do</span>
+          delete_ownerable_data_scope_by_ownerables(ownerables)
+          method = <span class="hljs-symbol">:delete_ownerable_data</span>
+          delete_componentables_ownerable_data(method, ownerables)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">delete_componentables_ownerable_data</span><span class="hljs-params">(method, ownerables=<span class="hljs-keyword">nil</span>)</span></span>
+        <span class="hljs-keyword">self</span>.thinkspace_casespace_phase_components.each <span class="hljs-keyword">do</span> |phase_component|
+          componentable = phase_component.componentable
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> componentable.blank?
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> componentable.is_a?(<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>)  <span class="hljs-comment"># don't call the phase again</span>
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> componentable.respond_to?(method, <span class="hljs-keyword">true</span>)
+          ownerables.present? ? componentable.send(method, ownerables) <span class="hljs-symbol">:</span> componentable.send(method)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="export-ownerable-data">Export Ownerable Data.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">export_all_ownerable_data</span><span class="hljs-params">(options={})</span></span>
+        processor = <span class="hljs-constant">Thinkspace::Casespace::Exporters::OwnerableData</span>.new(<span class="hljs-symbol">phases:</span> <span class="hljs-keyword">self</span>)
+        processor.process
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">export_ownerable_data</span><span class="hljs-params">(ownerables, options={})</span></span>
+        processor = <span class="hljs-constant">Thinkspace::Casespace::Exporters::OwnerableData</span>.new(<span class="hljs-symbol">phases:</span> <span class="hljs-keyword">self</span>, <span class="hljs-symbol">ownerables:</span> ownerables)
+        processor.process
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="submit-event-management">Submit Event Management.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">      protected</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Implement setting to check for &#39;allow completed changes&#39;, for now they can due to tickets.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">read_states</span>;</span>       [<span class="hljs-string">'unlocked'</span>, <span class="hljs-string">'completed'</span>]; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">modify_states</span>;</span>     [<span class="hljs-string">'unlocked'</span>, <span class="hljs-string">'completed'</span>]; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">admin_only_states</span>;</span> [<span class="hljs-string">'locked'</span>]; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_auto_score_event</span><span class="hljs-params">(options)</span></span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> options.has_key?(<span class="hljs-symbol">:phase_id</span>)
+        phase_id = options.delete(<span class="hljs-symbol">:phase_id</span>)
+        event    = {<span class="hljs-symbol">phase_id:</span> phase_id, <span class="hljs-symbol">event:</span> <span class="hljs-symbol">:auto_score</span>}
+        add_submit_event(event, options)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_complete_phase_event</span><span class="hljs-params">(options)</span></span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> options.has_key?(<span class="hljs-symbol">:phase_id</span>)
+        phase_id = options.delete(<span class="hljs-symbol">:phase_id</span>)
+        event    = {<span class="hljs-symbol">phase_id:</span> phase_id, <span class="hljs-symbol">event:</span> <span class="hljs-symbol">:complete_phase</span>}
+        add_submit_event(event, options)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_unlock_phase_event</span><span class="hljs-params">(options)</span></span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> options.has_key?(<span class="hljs-symbol">:phase_id</span>)
+        phase_id = options.delete(<span class="hljs-symbol">:phase_id</span>)
+        event    = {<span class="hljs-symbol">phase_id:</span> phase_id, <span class="hljs-symbol">event:</span> <span class="hljs-symbol">:unlock_phase</span>}
+        add_submit_event(event, options)
+      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_submit_settings</span></span>
+        settings = get_configuration.settings.with_indifferent_access
+        <span class="hljs-constant">Array</span>.wrap(settings[<span class="hljs-symbol">:action_submit_server</span>])
+      <span class="hljs-keyword">end</span>
+
+      private
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_submit_event</span><span class="hljs-params">(event, options = {})</span></span>
+        configuration   = get_configuration
+        submit_settings = get_submit_settings
+        <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:force_single</span>]
+          submit_settings.each { |setting| submit_settings.delete(setting) <span class="hljs-keyword">if</span> setting[<span class="hljs-symbol">:event</span>].to_sym == event[<span class="hljs-symbol">:event</span>].to_sym }
+        <span class="hljs-keyword">end</span>
+        submit_settings.push(event)
+        new_settings = configuration.settings.with_indifferent_access
+        new_settings[<span class="hljs-symbol">:action_submit_server</span>] = submit_settings
+        configuration.settings = new_settings
+        configuration.save
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

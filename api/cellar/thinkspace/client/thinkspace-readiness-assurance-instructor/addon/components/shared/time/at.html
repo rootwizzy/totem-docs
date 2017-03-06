@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/shared/time/at</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/shared/time/at"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/shared/time/at.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/shared/time/at.coffee">src/thinkspace/client/thinkspace-readiness-assurance-instructor/addon/components/shared/time/at.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+import base  from <span class="hljs-string">'thinkspace-readiness-assurance-instructor/components/base'</span>
+
+export default base.extend
+
+  <span class="hljs-attribute">can_clear</span>:   ember.computed <span class="hljs-string">'selected_at'</span>, <span class="hljs-function">-&gt;</span> <span class="hljs-property">@clearable</span> != <span class="hljs-literal">false</span> <span class="hljs-keyword">and</span> ember.isPresent(<span class="hljs-property">@get</span>(<span class="hljs-string">'selected_at'</span>))
+  <span class="hljs-attribute">show_select</span>: <span class="hljs-literal">true</span>
+
+  <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@set_time_options</span>()
+    <span class="hljs-property">@selected_at</span> = <span class="hljs-property">@rad</span>.get(<span class="hljs-property">@time</span>)
+    <span class="hljs-property">@validate</span>    = <span class="hljs-property">@rad</span>.validate
+
+  <span class="hljs-attribute">actions</span>:
+    <span class="hljs-attribute">clear</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@set_time</span>(<span class="hljs-literal">null</span>)
+
+    <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(time)</span> -&gt;</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> ember.isBlank(time)
+      at = <span class="hljs-property">@get_time_at</span>()
+      at = <span class="hljs-property">@am</span>.ttz.set_date_to_time(at, time)
+      <span class="hljs-property">@set_time</span>(at)
+
+  <span class="hljs-attribute">set_time</span>: <span class="hljs-function"><span class="hljs-params">(time)</span> -&gt;</span>
+    <span class="hljs-property">@set</span> <span class="hljs-string">'selected_at'</span>, time
+    <span class="hljs-property">@set_rad</span>(time)
+    <span class="hljs-property">@sendAction</span> <span class="hljs-string">'validate'</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@validate</span>
+
+  <span class="hljs-attribute">set_time_options</span>: <span class="hljs-function">-&gt;</span>
+    interval = parseInt(<span class="hljs-property">@get_rad</span>(<span class="hljs-string">'interval'</span>) <span class="hljs-keyword">or</span> <span class="hljs-number">1</span>)
+    min      = <span class="hljs-property">@get_min</span>(interval)
+    max      = <span class="hljs-property">@get_max</span>(interval)
+    clear    = <span class="hljs-property">@get_rad</span>(<span class="hljs-string">'clear'</span>) <span class="hljs-keyword">or</span> <span class="hljs-string">''</span>
+    <span class="hljs-property">@set</span> <span class="hljs-string">'time_options'</span>, {interval, min, max, clear}
+    <span class="hljs-property">@sendAction</span> <span class="hljs-string">'validate'</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@validate</span>
+
+  <span class="hljs-attribute">get_min</span>: <span class="hljs-function"><span class="hljs-params">(int)</span> -&gt;</span>
+    min = <span class="hljs-property">@get_rad</span>(<span class="hljs-string">'min'</span>) <span class="hljs-keyword">or</span> <span class="hljs-number">0</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@am</span>.is_date(min)
+      min_at = <span class="hljs-property">@am</span>.clone_date(min)
+    <span class="hljs-keyword">else</span>
+      min_at = <span class="hljs-property">@get_time_at</span>()
+      <span class="hljs-property">@am</span>.adjust_by_minutes(min_at, (min*int)+<span class="hljs-number">1</span>)
+      <span class="hljs-property">@am</span>.round_up_minutes(min_at, int)
+    min_at
+
+  <span class="hljs-attribute">get_max</span>: <span class="hljs-function"><span class="hljs-params">(int)</span> -&gt;</span>
+    max = <span class="hljs-property">@get_rad</span>(<span class="hljs-string">'max'</span>) <span class="hljs-keyword">or</span> <span class="hljs-number">0</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@am</span>.is_date(max)
+      max_at = <span class="hljs-property">@am</span>.clone_date(max)
+    <span class="hljs-keyword">else</span>
+      max_at = <span class="hljs-property">@get_time_at</span>()
+      <span class="hljs-property">@am</span>.adjust_by_minutes(max_at, (max*int)-<span class="hljs-number">1</span>)
+      <span class="hljs-property">@am</span>.round_down_minutes(max_at, int)
+    max_at
+
+  <span class="hljs-attribute">get_time_at</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-property">@am</span>.clone_date(<span class="hljs-property">@time_at</span> <span class="hljs-keyword">or</span> <span class="hljs-property">@rad</span>.time_at)
+
+  <span class="hljs-attribute">get_rad</span>: <span class="hljs-function"><span class="hljs-params">(key)</span> -&gt;</span> <span class="hljs-property">@rad</span>.get <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@time</span>}</span>_<span class="hljs-subst">#{key}</span>"</span>
+  <span class="hljs-attribute">set_rad</span>: <span class="hljs-function"><span class="hljs-params">(val)</span> -&gt;</span> <span class="hljs-property">@rad</span>.set <span class="hljs-property">@time</span>, val</div></div></div></div></body></html>

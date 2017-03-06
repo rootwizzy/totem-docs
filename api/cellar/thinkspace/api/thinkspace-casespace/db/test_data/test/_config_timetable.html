@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/db/test_data/test/_config_timetable</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/db/test_data/test/_config_timetable"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/test/_config_timetable.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/test/_config_timetable.yml">src/thinkspace/api/thinkspace-casespace/db/test_data/test/_config_timetable.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">variables:
+  -<span class="ruby"> &amp;<span class="hljs-constant">SPACE</span>         timetable_space
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">ASSIGNMENT_1</span>  timetable_assignment_1
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">ASSIGNMENT_2</span>  timetable_assignment_2
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">ASSIGNMENT_3</span>  timetable_assignment_3
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TEMPLATE</span>      timetable_template
+</span>
+spaces:
+  -<span class="ruby"> <span class="hljs-symbol">title:</span> *<span class="hljs-constant">SPACE</span>
+</span>
+space_users:
+  -<span class="ruby"> <span class="hljs-symbol">spaces:</span> *<span class="hljs-constant">SPACE</span>
+</span>    users: import[users]
+
+assignments:
+  -<span class="ruby"> {<span class="hljs-symbol">title:</span> *<span class="hljs-constant">ASSIGNMENT_1</span>,      <span class="hljs-symbol">space:</span> *<span class="hljs-constant">SPACE</span>}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">title:</span> *<span class="hljs-constant">ASSIGNMENT_2</span>,      <span class="hljs-symbol">space:</span> *<span class="hljs-constant">SPACE</span>}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">title:</span> *<span class="hljs-constant">ASSIGNMENT_3</span>,      <span class="hljs-symbol">space:</span> *<span class="hljs-constant">SPACE</span>}
+</span>
+phases:
+  -<span class="ruby"> {<span class="hljs-symbol">title:</span> timetable_phase_1_A, <span class="hljs-symbol">assignment:</span> *<span class="hljs-constant">ASSIGNMENT_1</span>, <span class="hljs-symbol">template_name:</span> *<span class="hljs-constant">TEMPLATE</span>}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">title:</span> timetable_phase_1_B, <span class="hljs-symbol">assignment:</span> *<span class="hljs-constant">ASSIGNMENT_1</span>, <span class="hljs-symbol">template_name:</span> *<span class="hljs-constant">TEMPLATE</span>}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">title:</span> timetable_phase_1_C, <span class="hljs-symbol">assignment:</span> *<span class="hljs-constant">ASSIGNMENT_1</span>, <span class="hljs-symbol">template_name:</span> *<span class="hljs-constant">TEMPLATE</span>}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">title:</span> timetable_phase_2_A, <span class="hljs-symbol">assignment:</span> *<span class="hljs-constant">ASSIGNMENT_2</span>, <span class="hljs-symbol">template_name:</span> *<span class="hljs-constant">TEMPLATE</span>}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">title:</span> timetable_phase_2_B, <span class="hljs-symbol">assignment:</span> *<span class="hljs-constant">ASSIGNMENT_2</span>, <span class="hljs-symbol">template_name:</span> *<span class="hljs-constant">TEMPLATE</span>}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">title:</span> timetable_phase_2_C, <span class="hljs-symbol">assignment:</span> *<span class="hljs-constant">ASSIGNMENT_2</span>, <span class="hljs-symbol">template_name:</span> *<span class="hljs-constant">TEMPLATE</span>}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">title:</span> timetable_phase_3_A, <span class="hljs-symbol">assignment:</span> *<span class="hljs-constant">ASSIGNMENT_3</span>, <span class="hljs-symbol">template_name:</span> *<span class="hljs-constant">TEMPLATE</span>}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">title:</span> timetable_phase_3_B, <span class="hljs-symbol">assignment:</span> *<span class="hljs-constant">ASSIGNMENT_3</span>, <span class="hljs-symbol">template_name:</span> *<span class="hljs-constant">TEMPLATE</span>}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">title:</span> timetable_phase_3_C, <span class="hljs-symbol">assignment:</span> *<span class="hljs-constant">ASSIGNMENT_3</span>, <span class="hljs-symbol">template_name:</span> *<span class="hljs-constant">TEMPLATE</span>}
+</span>
+phase_templates:
+  -<span class="ruby"> <span class="hljs-symbol">title:</span> *<span class="hljs-constant">TEMPLATE</span>
+</span>    name: *TEMPLATE
+    template: '&lt;row&gt;&lt;/row&gt;'</div></div></div></div></body></html>

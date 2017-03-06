@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-cli/lib/totem/cli/helpers_ember/templates</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_ember/templates"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers_ember/templates.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers_ember/templates.rb">src/totem/api/totem-cli/lib/totem/cli/helpers_ember/templates.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">HelpersEmber</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Templates</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">install_platform_template</span><span class="hljs-params">(filename, options={})</span></span>
+    variables = options.is_a?(<span class="hljs-constant">Hash</span>) ? options <span class="hljs-symbol">:</span> <span class="hljs-constant">Hash</span>.new
+    variables = variables.reverse_merge(ember_template_variables)
+    content = <span class="hljs-keyword">nil</span>
+    <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:as_is_if_exists</span>]
+      content = ember_platform_template_content(filename)
+      <span class="hljs-keyword">if</span> content.present?
+        content = erb_content(content, variables)
+        install_create_file(filename, content) <span class="hljs-keyword">unless</span> dry_run?
+        <span class="hljs-keyword">return</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    content = ember_platform_template(filename, variables)
+    <span class="hljs-keyword">if</span> content.blank?
+      install_template(filename) <span class="hljs-keyword">if</span> totem_ember_template?(filename) &amp;&amp; !dry_run?
+    <span class="hljs-keyword">else</span>
+      install_create_file(filename, content) <span class="hljs-keyword">unless</span> dry_run?
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">install_create_file</span><span class="hljs-params">(filename, content)</span></span>
+    message = <span class="hljs-string">"Installing <span class="hljs-subst">#{filename.inspect}</span>"</span>
+    say_message message, run_message_color
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      create_file filename, content, <span class="hljs-symbol">verbose:</span> verbose_copy? <span class="hljs-keyword">unless</span> dry_run?
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">install_template</span><span class="hljs-params">(filename)</span></span>
+    message = <span class="hljs-string">"Installing template <span class="hljs-subst">#{filename.inspect}</span>"</span>
+    say_message message, run_message_color
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      source_file = <span class="hljs-constant">File</span>.join(template_dir, filename).to_s
+      template source_file, filename, <span class="hljs-symbol">verbose:</span> verbose_copy? <span class="hljs-keyword">unless</span> dry_run?
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ember_platform_template</span><span class="hljs-params">(filename, variables)</span></span>
+    tt_content = totem_ember_template_content(filename)
+    content    = ember_platform_template_content(filename)
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> tt_content.blank?   &amp;&amp; content.present?  <span class="hljs-keyword">then</span> erb_content(content, variables)
+    <span class="hljs-keyword">when</span> tt_content.present? &amp;&amp; content.blank?    <span class="hljs-keyword">then</span> erb_content(tt_content, variables)
+    <span class="hljs-keyword">else</span>
+      content = erb_content(content, variables)
+      erb_content(tt_content, variables.merge(<span class="hljs-symbol">template_content:</span> content))
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_ember_template?</span><span class="hljs-params">(filename)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span> <span class="hljs-keyword">if</span> template_dir.blank? || filename.blank?
+    file = <span class="hljs-constant">File</span>.join(template_dir, filename + <span class="hljs-string">'.tt'</span>)
+    <span class="hljs-constant">File</span>.file?(file)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_ember_template_content</span><span class="hljs-params">(filename)</span></span>
+    file = <span class="hljs-constant">File</span>.join(template_dir, filename).to_s + <span class="hljs-string">'.tt'</span>
+    <span class="hljs-constant">File</span>.file?(file) ? <span class="hljs-constant">File</span>.read(file) <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ember_platform_template_content</span><span class="hljs-params">(filename)</span></span>
+    file = find_src_file(filename, <span class="hljs-symbol">src_paths:</span> template_paths)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> file.blank?
+    <span class="hljs-constant">File</span>.file?(file) ? <span class="hljs-constant">File</span>.read(file) <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ember_template_variables</span></span>
+    hash = current_package[<span class="hljs-symbol">:variables</span>] || <span class="hljs-constant">Hash</span>.new
+    hash[<span class="hljs-symbol">:module_prefix</span>] = <span class="hljs-variable">@app_name</span> <span class="hljs-keyword">unless</span> hash.has_key?(<span class="hljs-symbol">:module_prefix</span>)
+    hash
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">erb_content</span><span class="hljs-params">(content, variables)</span>;</span> new_erb.erb_text(content, variables); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_erb</span>;</span> <span class="hljs-constant">Helpers::PlatformErb</span>.new(<span class="hljs-keyword">self</span>); <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

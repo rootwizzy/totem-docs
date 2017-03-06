@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/artifacts</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/artifacts"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/artifacts.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/artifacts.rb">src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/artifacts.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../markup_comments'</span>, __FILE_<span class="hljs-number">_</span>)
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AutoInputArtifacts</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">AutoInputBase</span></span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Auto input example: 
+  artifacts:          </p>
+<pre><code>- only:           phase_a
+  users:          [read_1, read_2, read_3]
+  files:          file.pdf
+  rename:         true      #=&gt; prepend user&#39;s first name to file name (done only when paperclip storage is &#39;filesystem&#39;) e.g. read_1-file.pdf
+  comments:       2         #=&gt; number of markup comments to auto-generate
+  comment_values:           #=&gt; coordinates of comments; markup_comments will try to prevent overlaps (defaults to x=0, y=0, page=1)
+    - {x:         384, y: 144, page: 1}
+    - {x:         384, y: 244, page: 1}
+  # &#39;dir&#39; only needed if files are not in &#39;thinkspace-casespace/db/test_data/files&#39;
+  dir: &#39;../../../seed_files&#39;  #=&gt; file path relative to &#39;Rails.root&#39;
+  dir: staging                #=&gt; file path relative to &#39;thinkspace-casespace/db/test_data&#39;</code></pre></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(options)</span></span>
+    <span class="hljs-variable">@phases</span> = selected_phases
+    <span class="hljs-variable">@files</span>  = [options[<span class="hljs-symbol">:files</span>]].flatten.compact
+    <span class="hljs-variable">@dir</span>    = options[<span class="hljs-symbol">:dir</span>] || <span class="hljs-string">''</span>
+    <span class="hljs-variable">@rename</span> = options[<span class="hljs-symbol">:rename</span>] || <span class="hljs-keyword">false</span>
+    process_phases
+    add_markup_comments <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:comments</span>]
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_markup_comments</span></span>
+    <span class="hljs-variable">@phases</span>.each <span class="hljs-keyword">do</span> |phase|
+      users   = get_phase_users(phase)
+      files   = file_class.where(<span class="hljs-symbol">ownerable:</span> users)
+      values  = [{<span class="hljs-string">"position"</span>=&gt;{<span class="hljs-string">"x"</span>=&gt;<span class="hljs-number">384</span>, <span class="hljs-string">"y"</span>=&gt;<span class="hljs-number">144</span>, <span class="hljs-string">"page"</span>=&gt;<span class="hljs-number">1</span>}}]
+      options = <span class="hljs-variable">@options</span>.merge({<span class="hljs-symbol">only:</span> phase.title, <span class="hljs-symbol">discussionables:</span> files, <span class="hljs-symbol">values:</span> values})
+      <span class="hljs-constant">::AutoInputMarkupComments</span>.new(<span class="hljs-variable">@caller</span>, <span class="hljs-variable">@seed</span>, <span class="hljs-variable">@config_models</span>, <span class="hljs-variable">@config</span>, options)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_phases</span></span>
+    <span class="hljs-variable">@phases</span>.each <span class="hljs-keyword">do</span> |phase|
+      users = get_phase_users(phase)
+      process_phase_users(phase, users)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_phase_users</span><span class="hljs-params">(phase, users)</span></span>
+    users.each <span class="hljs-keyword">do</span> |user|
+      bucket = find_or_create_bucket(phase, user)
+      add_artifact_files(phase, user, bucket)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_artifact_files</span><span class="hljs-params">(phase, user, bucket)</span></span>
+    <span class="hljs-variable">@files</span>.each <span class="hljs-keyword">do</span> |file|
+      path          = get_attachment_path(file)
+      artifact_file = create_file(bucket, user, user, path)
+      <span class="hljs-keyword">if</span> rename?
+        new_file = <span class="hljs-string">"<span class="hljs-subst">#{user.first_name}</span>-<span class="hljs-subst">#{file}</span>"</span>
+        rename_file(artifact_file, new_file)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the &#39;dir&#39; value contains &#39;../&#39; will be relative to the Rails.root otherwise relative to &quot;db/test_data/#{dir}/files&quot;.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_attachment_path</span><span class="hljs-params">(file)</span>;</span> <span class="hljs-variable">@dir</span>.match(<span class="hljs-regexp">/^\.\.\//</span>) ? get_rails_attachment_path(file) <span class="hljs-symbol">:</span> get_seed_attachment_path(file); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_rails_attachment_path</span><span class="hljs-params">(file)</span></span>
+    path = <span class="hljs-constant">Rails</span>.root.join(<span class="hljs-variable">@dir</span>, file)
+    error <span class="hljs-string">"Artifact path <span class="hljs-subst">#{path.inspect}</span> is not a file."</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(path)
+    path
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_seed_attachment_path</span><span class="hljs-params">(file)</span></span>
+    ns_dir = <span class="hljs-variable">@seed</span>.db_data_dir(<span class="hljs-symbol">:casespace</span>)
+    path   = <span class="hljs-constant">File</span>.join(ns_dir, <span class="hljs-variable">@dir</span>, <span class="hljs-string">'files'</span>, file)
+    error <span class="hljs-string">"Artifact path <span class="hljs-subst">#{path.inspect}</span> is not a file."</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(path)
+    path
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_or_create_bucket</span><span class="hljs-params">(authable, user)</span></span>
+    options = {<span class="hljs-symbol">authable:</span> authable}
+    bucket  = bucket_class.find_by(options)
+    <span class="hljs-keyword">return</span> bucket <span class="hljs-keyword">if</span> bucket.present?
+    bucket = <span class="hljs-variable">@seed</span>.new_model(<span class="hljs-symbol">:artifact</span>, <span class="hljs-symbol">:bucket</span>, options.merge(<span class="hljs-symbol">user_id:</span> user.id))
+    <span class="hljs-variable">@seed</span>.create_error(bucket)  <span class="hljs-keyword">unless</span> bucket.save
+    bucket
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_file</span><span class="hljs-params">(bucket, user, ownerable, path)</span></span>
+    options         = {<span class="hljs-symbol">bucket:</span> bucket, <span class="hljs-symbol">user:</span> user, <span class="hljs-symbol">ownerable:</span> ownerable}
+    file            = <span class="hljs-variable">@seed</span>.new_model(<span class="hljs-symbol">:artifact</span>, <span class="hljs-symbol">:file</span>, options)
+    file.attachment = <span class="hljs-constant">File</span>.open(path)
+    <span class="hljs-variable">@seed</span>.create_error(file)  <span class="hljs-keyword">unless</span> file.save
+    file
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rename_file</span><span class="hljs-params">(artifact_file, new_file)</span></span>
+    <span class="hljs-keyword">unless</span> local_storage?
+      <span class="hljs-variable">@seed</span>.message <span class="hljs-string">"   !!Artifact 'rename' requires Paperclip using the 'filesystem'.  Renaming will not be done.\n\n"</span>, <span class="hljs-symbol">:warn</span>
+      <span class="hljs-variable">@rename</span> = <span class="hljs-keyword">false</span>
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">end</span>
+    path = artifact_file.attachment.path
+    file = <span class="hljs-constant">File</span>.basename(path)
+    dir  = <span class="hljs-constant">File</span>.dirname(path)
+    error <span class="hljs-string">"Artifact rename file file <span class="hljs-subst">#{path.inspect}</span> is not a file."</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.file?(path)
+    error <span class="hljs-string">"Artifact rename file directory <span class="hljs-subst">#{dir.inspect}</span> is not a directory."</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.directory?(dir)
+    <span class="hljs-constant">Dir</span>.chdir dir <span class="hljs-keyword">do</span>
+      <span class="hljs-constant">File</span>.rename(file, new_file)
+    <span class="hljs-keyword">end</span>
+    artifact_file.attachment_file_name = new_file
+    <span class="hljs-variable">@seed</span>.create_error(artifact_file)  <span class="hljs-keyword">unless</span> artifact_file.save
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rename?</span>;</span> <span class="hljs-variable">@rename</span> == <span class="hljs-keyword">true</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">local_storage?</span>;</span> <span class="hljs-constant">Paperclip::Attachment</span>.default_options[<span class="hljs-symbol">:storage</span>] == <span class="hljs-symbol">:filesystem</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bucket_class</span>;</span> <span class="hljs-variable">@_bucket_class</span> ||= <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:artifact</span>, <span class="hljs-symbol">:bucket</span>); <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">file_class</span>;</span>   <span class="hljs-variable">@_file_class</span>   ||= <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:artifact</span>, <span class="hljs-symbol">:file</span>); <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="en"><head><title>src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/path_items</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/path_items"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/path_items.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/path_items.rb">src/thinkspace/api/thinkspace-casespace/db/test_data/auto_input/path_items.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AutoInputPathItems</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">AutoInputBase</span></span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(options)</span></span>
+    count = options[<span class="hljs-symbol">:count</span>]
+    paths = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:diagnostic_path</span>, <span class="hljs-symbol">:path</span>).all.order(<span class="hljs-symbol">:id</span>)
+    paths.each <span class="hljs-keyword">do</span> |path|
+      phase = path.authable
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> include_model?(phase)
+      lists = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:observation_list</span>, <span class="hljs-symbol">:list</span>).where(<span class="hljs-symbol">authable:</span> phase).order(<span class="hljs-symbol">:id</span>)
+      <span class="hljs-keyword">if</span> lists.present? &amp;&amp; options[<span class="hljs-symbol">:list</span>] != <span class="hljs-keyword">false</span>
+        auto_populate_diagnostic_path_from_observation_lists(phase, path, lists, options, count)
+      <span class="hljs-keyword">else</span>
+        auto_populate_diagnostic_path_without_itemables(phase, path, options, count)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>debug_diagnostic_path_path_items</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auto_populate_diagnostic_path_without_itemables</span><span class="hljs-params">(phase, path, options, count)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> count.blank?
+    get_casespace_phase_ownerables(phase).each <span class="hljs-keyword">do</span> |ownerable|
+      auto_populate_diagnostic_path_path_items(path, ownerable, [], options, count)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auto_populate_diagnostic_path_from_observation_lists</span><span class="hljs-params">(phase, path, lists, options, count)</span></span>
+    ownerables         = get_phase_ownerables(phase)
+    list_ids_processed = <span class="hljs-constant">Array</span>.new  <span class="hljs-comment"># since lists have lists don't reprocess </span>
+    lists.each <span class="hljs-keyword">do</span> |list|
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> list_ids_processed.<span class="hljs-keyword">include</span>?(list.id)
+      list_lists          = <span class="hljs-variable">@seed</span>.get_association(list, <span class="hljs-symbol">:observation_list</span>, <span class="hljs-symbol">:lists</span>).order(<span class="hljs-symbol">:id</span>).select {|l| !list_ids_processed.<span class="hljs-keyword">include</span>?(l.id)}
+      list_ids            = list_lists.map(&amp;<span class="hljs-symbol">:id</span>)
+      list_ids_processed += list_ids
+      ownerables.each <span class="hljs-keyword">do</span> |ownerable|
+        observations = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:observation_list</span>, <span class="hljs-symbol">:observation</span>).where(<span class="hljs-symbol">ownerable:</span> ownerable, <span class="hljs-symbol">list_id:</span> list_ids).order(<span class="hljs-symbol">:id</span>).to_a
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> observations.blank?
+        item_count = count.present? ? count <span class="hljs-symbol">:</span> observations.length
+        auto_populate_diagnostic_path_path_items(path, ownerable, observations, options, item_count)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auto_populate_diagnostic_path_path_item</span><span class="hljs-params">(options, hash)</span></span>
+    path        = hash[<span class="hljs-symbol">:path</span>]
+    parent_id   = hash[<span class="hljs-symbol">:parent</span>].present? ? hash[<span class="hljs-symbol">:parent</span>].id <span class="hljs-symbol">:</span> <span class="hljs-string">'none'</span>
+    ownerable   = hash[<span class="hljs-symbol">:ownerable</span>]
+    itemable    = hash[<span class="hljs-symbol">:path_itemable</span>]
+    format_col  = path.authable.team_ownerable? ? <span class="hljs-symbol">:title</span> <span class="hljs-symbol">:</span> (options[<span class="hljs-symbol">:user_format_col</span>] || <span class="hljs-symbol">:first_name</span>)
+    description = <span class="hljs-string">'[item]'</span>
+    description += <span class="hljs-string">" <span class="hljs-subst">#{format_ownerable(ownerable, format_col)}</span>"</span>
+    description += <span class="hljs-string">" Parent(<span class="hljs-subst">#{parent_id}</span>)"</span>
+    <span class="hljs-keyword">if</span> itemable.present?
+      description += <span class="hljs-string">" Itemable(<span class="hljs-subst">#{itemable.<span class="hljs-keyword">class</span>.name.demodulize}</span>:<span class="hljs-subst">#{itemable.id}</span>)"</span>
+    <span class="hljs-keyword">end</span>
+    description += <span class="hljs-string">" Ownerable(<span class="hljs-subst">#{ownerable.<span class="hljs-keyword">class</span>.name.demodulize}</span>:<span class="hljs-subst">#{ownerable.id}</span>)"</span>
+    create_diagnostic_path_path_item(hash.merge(<span class="hljs-symbol">description:</span> description))
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auto_populate_diagnostic_path_path_item_children</span><span class="hljs-params">(pattern, parents, itemables, item_hash, options, count, running_count=<span class="hljs-number">0</span>)</span></span>
+    number_of = pattern.shift
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> number_of.blank? || parents.blank? || (count.present? &amp;&amp; running_count &gt;= count)
+    new_parents = <span class="hljs-constant">Array</span>.new
+    number_of.times <span class="hljs-keyword">do</span> |index|
+      parents.each <span class="hljs-keyword">do</span> |parent|
+        running_count += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> count.present? &amp;&amp; running_count &gt; count
+        hash = item_hash.merge(<span class="hljs-symbol">parent:</span> parent, <span class="hljs-symbol">position:</span> index, <span class="hljs-symbol">path_itemable:</span> itemables.shift)
+        new_parents.push auto_populate_diagnostic_path_path_item(options, hash)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    auto_populate_diagnostic_path_path_item_children(pattern, new_parents, itemables, item_hash, options, count, running_count)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">auto_populate_diagnostic_path_path_items</span><span class="hljs-params">(path, ownerable, itemables, options, item_count, start_position=<span class="hljs-number">0</span>)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> item_count.blank? || item_count &lt; <span class="hljs-number">1</span>
+    pattern           = get_paths_item_pattern(options)
+    user_id           = path.authable.team_ownerable? ? <span class="hljs-number">1</span> <span class="hljs-symbol">:</span> ownerable.id
+    items_per_pattern = get_total_paths_items_from_pattern(pattern)
+
+    top_level_count   = item_count / items_per_pattern
+    top_level_count   = <span class="hljs-number">1</span>  <span class="hljs-keyword">if</span> top_level_count &lt; <span class="hljs-number">1</span>
+    top_level_count  += <span class="hljs-number">1</span>  <span class="hljs-keyword">if</span> (top_level_count * items_per_pattern) &lt; item_count
+
+    total_count = top_level_count * items_per_pattern
+    add_count   = total_count &lt; item_count ? item_count - total_count <span class="hljs-symbol">:</span> <span class="hljs-number">0</span>
+
+    item_hash = {
+      <span class="hljs-symbol">path:</span>          path,
+      <span class="hljs-symbol">user_id:</span>       user_id,
+      <span class="hljs-symbol">ownerable:</span>     ownerable,
+      <span class="hljs-symbol">path_itemable:</span> <span class="hljs-keyword">nil</span>,
+      <span class="hljs-symbol">parent:</span>        <span class="hljs-keyword">nil</span>,
+      <span class="hljs-symbol">position:</span>      <span class="hljs-number">0</span>,
+    }
+
+    top_level_items = <span class="hljs-constant">Array</span>.new
+    top_level_count.times <span class="hljs-keyword">do</span> |index|
+      hash = item_hash.merge(<span class="hljs-symbol">position:</span> start_position + index, <span class="hljs-symbol">path_itemable:</span> itemables.shift)
+      top_level_items.push auto_populate_diagnostic_path_path_item(options, hash)
+    <span class="hljs-keyword">end</span>
+
+    child_count = item_count - top_level_count
+    auto_populate_diagnostic_path_path_item_children(pattern, top_level_items, itemables, item_hash, options, child_count)  <span class="hljs-keyword">if</span> child_count &gt; <span class="hljs-number">0</span>
+
+    <span class="hljs-keyword">if</span> add_count &gt; <span class="hljs-number">0</span>
+      auto_populate_diagnostic_path_path_items(path, ownerable, itemables, options, add_count, top_level_items.length)
+    <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_paths_item_pattern</span><span class="hljs-params">(options)</span></span>
+    [options[<span class="hljs-symbol">:pattern</span>] || <span class="hljs-number">0</span>].flatten.deep_dup <span class="hljs-comment"># [#children, #grand_children, ...] =&gt; defaults to no children</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_total_paths_items_from_pattern</span><span class="hljs-params">(pattern)</span></span>
+    items = []
+    pattern.each_with_index <span class="hljs-keyword">do</span> |count, index|
+      index == <span class="hljs-number">0</span> ? items.push(count) <span class="hljs-symbol">:</span> items.push(count * items[index-<span class="hljs-number">1</span>])
+    <span class="hljs-keyword">end</span>
+    items.sum + <span class="hljs-number">1</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="debug">Debug.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_diagnostic_path_path_items</span><span class="hljs-params">(ownerable_id=<span class="hljs-number">1</span>)</span></span>
+    puts <span class="hljs-string">"\n"</span>
+    klass = <span class="hljs-variable">@seed</span>.model_class(<span class="hljs-symbol">:diagnostic_path</span>, <span class="hljs-symbol">:path_item</span>)
+    total = klass.where(<span class="hljs-symbol">ownerable_id:</span> ownerable_id).count
+    puts <span class="hljs-string">"Total Path Items=<span class="hljs-subst">#{total}</span>\n"</span>
+    pad     = <span class="hljs-number">0</span>
+    parents = klass.all.where(<span class="hljs-symbol">parent_id:</span> <span class="hljs-keyword">nil</span>, <span class="hljs-symbol">ownerable_id:</span> ownerable_id).order(<span class="hljs-symbol">:position</span>)
+    parents.each <span class="hljs-keyword">do</span> |parent|
+      debug_diagnostic_path_path_item_line(parent, pad, line=<span class="hljs-string">'=parent '</span>)
+      debug_diagnostic_path_path_item_children(klass, ownerable_id, parent, pad)
+    <span class="hljs-keyword">end</span>
+    puts <span class="hljs-string">"\n"</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_diagnostic_path_path_item_children</span><span class="hljs-params">(klass, ownerable_id, parent, pad)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> parent.blank?
+    items = klass.where(<span class="hljs-symbol">ownerable_id:</span> ownerable_id, <span class="hljs-symbol">parent_id:</span> parent.id).order(<span class="hljs-symbol">:position</span>)
+    pad  += <span class="hljs-number">1</span>
+    items.each <span class="hljs-keyword">do</span> |item|
+      debug_diagnostic_path_path_item_line(item, pad)
+      debug_diagnostic_path_path_item_children(klass, ownerable_id, item, pad)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug_diagnostic_path_path_item_line</span><span class="hljs-params">(item, pad, line=<span class="hljs-string">''</span>)</span></span>
+    indent = <span class="hljs-string">'    '</span> * pad
+    puts line + indent + <span class="hljs-string">"<span class="hljs-subst">#{item.position}</span>: id=<span class="hljs-subst">#{item.id}</span>  itemable=<span class="hljs-subst">#{item.path_itemable_type}</span>.<span class="hljs-subst">#{item.path_itemable_id}</span>"</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span> <span class="hljs-comment"># AutoInputDiagnosticPaths</span></div></div></div></div></body></html>

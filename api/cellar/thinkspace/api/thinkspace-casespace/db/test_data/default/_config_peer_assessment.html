@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/db/test_data/default/_config_peer_assessment</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/db/test_data/default/_config_peer_assessment"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_peer_assessment.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_peer_assessment.yml">src/thinkspace/api/thinkspace-casespace/db/test_data/default/_config_peer_assessment.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>NEED TO UPDATE FOR NEW STRUCTURE</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="note-spaces-assignments-phase-templates-and-phases-are-at-bottom-of-this-file">NOTE: Spaces, Assignments, Phase Templates and Phases are at bottom of this file.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">variables:
+  -<span class="ruby"> &amp;<span class="hljs-constant">SPACE</span>         peer assessments
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">BUNDLE_TYPE</span>   assessment
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_CATEGORY</span> assessment
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_1_USERS</span>  [read_1, read_2, read_3, read_4, read_5]
+</span>  -<span class="ruby"> &amp;<span class="hljs-constant">TEAM_1</span>        <span class="hljs-string">'Team 1 : [read_1, read_2, read_3, read_4, read_5]'</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>#</p>
+<h1 id="at-bottom-of-the-file-so-can-reference-the-above-chart-definition-variables-in-the-phases-below">At bottom of the file so can reference the above chart definition variables in the phases below.</h1>
+<p>#</p></div></div><div class="code"><div class="wrapper">spaces:
+  - title: *SPACE
+
+space_users:
+  - spaces: *SPACE
+    users: import[users]
+
+assignments:
+  - title: &amp;ASSIGNMENT_PEER_ASSESSMENT_CATEGORIES categories
+    space: *SPACE
+    bundle_type: *BUNDLE_TYPE
+  - title: &amp;ASSIGNMENT_PEER_ASSESSMENT_BALANCE balance points
+    bundle_type: *BUNDLE_TYPE
+  - title: &amp;ASSIGNMENT_PEER_ASSESSMENT_CUSTOM custom
+    bundle_type: *BUNDLE_TYPE
+
+phases:
+  - assignment: *ASSIGNMENT_PEER_ASSESSMENT_CATEGORIES
+    team_category: *TEAM_CATEGORY
+    title:         &amp;TEAM_PHASE_CATEGORIES peer assessment categories
+    template_name: template_peer_assessment
+    sections:
+      assessment:
+        value:
+          qualitative:
+            - id: <span class="hljs-number">1</span>
+              label: Indicate specifically how this person contributes <span class="hljs-keyword">to</span> <span class="hljs-built_in">group</span> success.
+              <span class="hljs-built_in">type</span>: textarea
+              feedback_type: positive
+            - id: <span class="hljs-number">2</span>
+              label: Make constructive suggestions about how this person could better contribute <span class="hljs-keyword">to</span> <span class="hljs-built_in">group</span> success.
+              <span class="hljs-built_in">type</span>: textarea
+              feedback_type: constructive
+          quantitative:
+            - id: <span class="hljs-number">1</span>
+              label: Did their fair share of work
+              <span class="hljs-built_in">type</span>: range
+              settings:
+                comments:
+                  enabled: <span class="hljs-literal">true</span>
+                labels:
+                  scale:
+                    <span class="hljs-built_in">min</span>: Low
+                    <span class="hljs-built_in">max</span>: High
+                points:
+                  <span class="hljs-built_in">min</span>: <span class="hljs-number">1</span>
+                  <span class="hljs-built_in">max</span>: <span class="hljs-number">10</span>
+            - id: <span class="hljs-number">2</span>
+              label: Shared responsibility instead of taking charge of every activity
+              <span class="hljs-built_in">type</span>: range
+              settings:
+                comments:
+                  enabled: <span class="hljs-literal">true</span>
+                labels:
+                  scale:
+                    <span class="hljs-built_in">min</span>: Low
+                    <span class="hljs-built_in">max</span>: High
+                points:
+                  <span class="hljs-built_in">min</span>: <span class="hljs-number">1</span>
+                  <span class="hljs-built_in">max</span>: <span class="hljs-number">10</span>
+            - id: <span class="hljs-number">3</span>
+              label: Shared fairly when asked <span class="hljs-keyword">to</span> <span class="hljs-keyword">do</span> so
+              <span class="hljs-built_in">type</span>: range
+              settings:
+                comments:
+                  enabled: <span class="hljs-literal">true</span>
+                labels:
+                  scale:
+                    <span class="hljs-built_in">min</span>: Low
+                    <span class="hljs-built_in">max</span>: High
+                points:
+                  <span class="hljs-built_in">min</span>: <span class="hljs-number">1</span>
+                  <span class="hljs-built_in">max</span>: <span class="hljs-number">10</span>
+            - id: <span class="hljs-number">4</span>
+              label: Completed their assignments on schedule
+              <span class="hljs-built_in">type</span>: range
+              settings:
+                comments:
+                  enabled: <span class="hljs-literal">true</span>
+                labels:
+                  scale:
+                    <span class="hljs-built_in">min</span>: Low
+                    <span class="hljs-built_in">max</span>: High
+                points:
+                  <span class="hljs-built_in">min</span>: <span class="hljs-number">1</span>
+                  <span class="hljs-built_in">max</span>: <span class="hljs-number">10</span>
+            - id: <span class="hljs-number">5</span>
+              label: Was well prepared <span class="hljs-keyword">for</span> accomplishing the <span class="hljs-built_in">group</span> project
+              <span class="hljs-built_in">type</span>: range
+              settings:
+                comments:
+                  enabled: <span class="hljs-literal">true</span>
+                labels:
+                  scale:
+                    <span class="hljs-built_in">min</span>: Low
+                    <span class="hljs-built_in">max</span>: High
+                points:
+                  <span class="hljs-built_in">min</span>: <span class="hljs-number">1</span>
+                  <span class="hljs-built_in">max</span>: <span class="hljs-number">10</span>
+          options:
+            <span class="hljs-built_in">type</span>: <span class="hljs-string">'categories'</span>
+  - assignment: *ASSIGNMENT_PEER_ASSESSMENT_CATEGORIES
+    team_category: *TEAM_CATEGORY
+    title:         peer assessment categories OVERVIEW
+    template_name: template_peer_assessment_overview
+    default_state: <span class="hljs-built_in">locked</span>
+    sections:
+      overview:
+        assessment_id: <span class="hljs-number">1</span>
+
+  - assignment: *ASSIGNMENT_PEER_ASSESSMENT_BALANCE
+    team_category: *TEAM_CATEGORY
+    title:         &amp;TEAM_PHASE_BALANCE peer assessment balance
+    template_name: template_peer_assessment
+    sections:
+      assessment:
+        value:
+          qualitative:
+            - id: <span class="hljs-number">1</span>
+              label: Indicate specifically how this person contributes <span class="hljs-keyword">to</span> <span class="hljs-built_in">group</span> success.
+              <span class="hljs-built_in">type</span>: textarea
+              feedback_type: positive
+            - id: <span class="hljs-number">2</span>
+              label: Make constructive suggestions about how this person could better contribute <span class="hljs-keyword">to</span> <span class="hljs-built_in">group</span> success.
+              <span class="hljs-built_in">type</span>: textarea
+              feedback_type: constructive
+          quantitative:
+            - id: <span class="hljs-number">1</span>
+              label: <span class="hljs-built_in">Score</span>
+              <span class="hljs-built_in">type</span>: range
+              settings:
+                comments:
+                  enabled: <span class="hljs-literal">true</span>
+                labels:
+                  scale:
+                    <span class="hljs-built_in">min</span>: Low
+                    <span class="hljs-built_in">max</span>: High
+                points:
+                  <span class="hljs-built_in">min</span>: <span class="hljs-number">1</span>
+                  <span class="hljs-built_in">max</span>: <span class="hljs-number">10</span>
+          options:
+            <span class="hljs-built_in">type</span>: <span class="hljs-string">'balance'</span>
+            points:
+              per_member:  <span class="hljs-number">10</span>
+              different:   <span class="hljs-literal">true</span>
+  - assignment: *ASSIGNMENT_PEER_ASSESSMENT_BALANCE
+    team_category: *TEAM_CATEGORY
+    title:         peer assessment balance OVERVIEW
+    template_name: template_peer_assessment_overview
+    default_state: <span class="hljs-built_in">locked</span>
+    sections:
+      overview:
+        assessment_id: <span class="hljs-number">2</span>
+
+  - assignment: *ASSIGNMENT_PEER_ASSESSMENT_CUSTOM
+    team_category: *TEAM_CATEGORY
+    title:         &amp;TEAM_PHASE_CUSTOM peer assessment custom
+    template_name: template_peer_assessment
+    sections:      
+      assessment:
+        value:
+          qualitative:
+            - id: <span class="hljs-number">1</span>
+              label: Indicate specifically how this person contributes <span class="hljs-keyword">to</span> <span class="hljs-built_in">group</span> success.
+              <span class="hljs-built_in">type</span>: textarea
+              feedback_type: positive
+            - id: <span class="hljs-number">2</span>
+              label: Make constructive suggestions about how this person could better contribute <span class="hljs-keyword">to</span> <span class="hljs-built_in">group</span> success.
+              <span class="hljs-built_in">type</span>: textarea
+              feedback_type: constructive
+          quantitative:
+            - id: <span class="hljs-number">1</span>
+              label: Did their fair share of work
+              <span class="hljs-built_in">type</span>: range
+              settings:
+                comments:
+                  enabled: <span class="hljs-literal">true</span>
+                labels:
+                  scale:
+                    <span class="hljs-built_in">min</span>: Low
+                    <span class="hljs-built_in">max</span>: High
+                points:
+                  <span class="hljs-built_in">min</span>: <span class="hljs-number">1</span>
+                  <span class="hljs-built_in">max</span>: <span class="hljs-number">10</span>
+            - id: <span class="hljs-number">2</span>
+              label: Shared responsibility instead of taking charge of every activity
+              <span class="hljs-built_in">type</span>: range
+            - id: <span class="hljs-number">3</span>
+              label: Shared fairly when asked <span class="hljs-keyword">to</span> <span class="hljs-keyword">do</span> so
+              <span class="hljs-built_in">type</span>: range
+            - id: <span class="hljs-number">4</span>
+              label: Completed their assignments on schedule
+              <span class="hljs-built_in">type</span>: range
+            - id: <span class="hljs-number">5</span>
+              label: Was well prepared <span class="hljs-keyword">for</span> accomplishing the <span class="hljs-built_in">group</span> project
+              <span class="hljs-built_in">type</span>: range
+          options:
+            <span class="hljs-built_in">type</span>: <span class="hljs-string">'free'</span>
+            points:
+              <span class="hljs-built_in">min</span>: <span class="hljs-number">0</span>
+              <span class="hljs-built_in">max</span>: <span class="hljs-number">5</span>
+              per_member: <span class="hljs-number">10</span>
+
+  - assignment: *ASSIGNMENT_PEER_ASSESSMENT_CUSTOM
+    team_category: *TEAM_CATEGORY
+    title:         peer assessment custom OVERVIEW
+    template_name: template_peer_assessment_overview
+    default_state: <span class="hljs-built_in">locked</span>
+    sections:
+      overview:
+        assessment_id: <span class="hljs-number">3</span>
+
+phase_templates:
+  - title: Peer Asessment
+    <span class="hljs-built_in">name</span>: template_peer_assessment
+    template: |
+      <span class="hljs-preprocessor">#{casespace_phase_header}</span>
+      &lt;row&gt;
+        &lt;column&gt;
+          &lt;component section=<span class="hljs-string">'assessment'</span> title=<span class="hljs-string">'peer-assessment'</span>/&gt;
+        &lt;/column&gt;
+      &lt;/row&gt;
+  - title: Peer Asessment Overview
+    <span class="hljs-built_in">name</span>: template_peer_assessment_overview
+    template: |
+      <span class="hljs-preprocessor">#{casespace_phase_header}</span>
+      &lt;row&gt;
+        &lt;column&gt;
+          &lt;component section=<span class="hljs-string">'overview'</span> title=<span class="hljs-string">'peer-assessment-overview'</span>/&gt;
+        &lt;/column&gt;
+      &lt;/row&gt;
+
+<span class="hljs-built_in">teams</span>:
+  team_sets:
+    - {title: team_set_1, space: *SPACE}
+
+  team_set_teams:
+    - {title: *TEAM_1, users: *TEAM_1_USERS, team_set: team_set_1, space: *SPACE}
+
+  phase:
+    - {title: *TEAM_PHASE_CATEGORIES, assignment: *ASSIGNMENT_PEER_ASSESSMENT_CATEGORIES,  team_sets: team_set_1, space: *SPACE}
+    - {title: *TEAM_PHASE_BALANCE,    assignment: *ASSIGNMENT_PEER_ASSESSMENT_BALANCE,     team_sets: team_set_1}
+    - {title: *TEAM_PHASE_CUSTOM,     assignment: *ASSIGNMENT_PEER_ASSESSMENT_CUSTOM,      team_sets: team_set_1}
+
+auto_input:
+  peer_assessment_reviews:
+    <span class="hljs-built_in">teams</span>: *TEAM_1</div></div></div></div></body></html>

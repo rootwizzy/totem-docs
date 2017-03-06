@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/db/test_data/default/imports/users</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/db/test_data/default/imports/users"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/test_data/default/imports/users.yml"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/test_data/default/imports/users.yml">src/thinkspace/api/thinkspace-casespace/db/test_data/default/imports/users.yml</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">superusers: &amp;SUPERUSERS
+  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> superuser, <span class="hljs-symbol">superuser:</span> <span class="hljs-keyword">true</span>}
+</span>
+owners: &amp;OWNERS
+  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> owner_1,  <span class="hljs-symbol">role:</span> owner}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> owner_2,  <span class="hljs-symbol">role:</span> owner}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> owner_3,  <span class="hljs-symbol">role:</span> owner}
+</span>
+updaters: &amp;UPDATERS
+  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> update_1, <span class="hljs-symbol">role:</span> update}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> update_2, <span class="hljs-symbol">role:</span> update}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> update_3, <span class="hljs-symbol">role:</span> update}
+</span>
+readers: &amp;READERS
+  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_1
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_2
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_3
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_4
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_5
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_6
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_7
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_8
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_9
+</span>
+import:
+  -<span class="ruby"> *<span class="hljs-constant">SUPERUSERS</span>
+</span>  -<span class="ruby"> *<span class="hljs-constant">OWNERS</span>
+</span>  -<span class="ruby"> *<span class="hljs-constant">UPDATERS</span>
+</span>  -<span class="ruby"> *<span class="hljs-constant">READERS</span>
+</span>
+## space    | owner    | update    | read (* = only access one space)
+## --------- ---------- ----------- ---------
+## space_1  | owner_1* | update_1* | read_1 *
+##                                 | read_2 *
+## --------- ---------- ----------- ---------
+## space_2  | owner_2  | update_2  | read_3 *
+##          | owner_3  | update_3  | read_4
+##                                 | read_5
+## --------- ---------- ----------- ---------
+## space_3  | owner_2  | update_2  | read_4
+##            owner_3  | update_3  | read_5
+##            owner_4  | update_4  | read_6 *
+space_1: &amp;SPACE_1
+  -<span class="ruby"> *<span class="hljs-constant">SUPERUSERS</span>
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> owner_1,  <span class="hljs-symbol">role:</span> owner}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> update_1, <span class="hljs-symbol">role:</span> update}
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_1
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_2
+</span>
+space_2: &amp;SPACE_2
+  -<span class="ruby"> *<span class="hljs-constant">SUPERUSERS</span>
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> owner_2,  <span class="hljs-symbol">role:</span> owner}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> owner_3,  <span class="hljs-symbol">role:</span> owner}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> update_2, <span class="hljs-symbol">role:</span> update}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> update_3, <span class="hljs-symbol">role:</span> update}
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_3
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_4
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_5
+</span>
+space_3: &amp;SPACE_3
+  -<span class="ruby"> *<span class="hljs-constant">SUPERUSERS</span>
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> owner_2,  <span class="hljs-symbol">role:</span> owner}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> owner_3,  <span class="hljs-symbol">role:</span> owner}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> owner_4,  <span class="hljs-symbol">role:</span> owner}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> update_2, <span class="hljs-symbol">role:</span> update}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> update_3, <span class="hljs-symbol">role:</span> update}
+</span>  -<span class="ruby"> {<span class="hljs-symbol">first_name:</span> update_4, <span class="hljs-symbol">role:</span> update}
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_4
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_5
+</span>  -<span class="ruby"> <span class="hljs-symbol">first_name:</span> read_6
+</span>
+repeat_john_doe:
+  repeat:       20
+  first_name:   john
+  last_name:    doe
+
+repeat_jane_doe:
+  repeat:       20
+  first_name:   jane
+  last_name:    doe</div></div></div></div></body></html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/concerns/totem/core/controllers/json_api</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/concerns/totem/core/controllers/json_api"><meta name="groc-project-path" content="src/totem/api/totem-core/app/concerns/totem/core/controllers/json_api.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/concerns/totem/core/controllers/json_api.rb">src/totem/api/totem-core/app/concerns/totem/core/controllers/json_api.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controllers</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">JsonApi</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Common controller methods to access JSON API helpers</p></div></div><div class="code"><div class="wrapper">     </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>JSON API helpers</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">extract_included_records</span><span class="hljs-params">(options={})</span></span>
+          included = params_root[<span class="hljs-symbol">:included</span>]
+          <span class="hljs-keyword">unless</span> included.present?
+            <span class="hljs-keyword">if</span> options[<span class="hljs-symbol">:single</span>] <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+          records  = []
+          included.each <span class="hljs-keyword">do</span> |data|
+            data       = <span class="hljs-constant">ActiveSupport::HashWithIndifferentAccess</span>.new(data)
+            type       = data[<span class="hljs-symbol">:type</span>]
+            attributes = data[<span class="hljs-symbol">:attributes</span>]
+            klass      = type.singularize.classify.safe_constantize
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> klass.present?
+            record = klass.new
+            attributes.each <span class="hljs-keyword">do</span> |attribute, value|
+              column = get_column_from_attribute(record, attribute)
+              record.send <span class="hljs-string">"<span class="hljs-subst">#{column}</span>="</span>, value <span class="hljs-keyword">if</span> record.respond_to?(column) &amp;&amp; !record.send(column).present?
+            <span class="hljs-keyword">end</span>
+            records &lt;&lt; record
+          <span class="hljs-keyword">end</span>
+          options[<span class="hljs-symbol">:single</span>] ? records.first <span class="hljs-symbol">:</span> records
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_column_from_attribute</span><span class="hljs-params">(record, attribute)</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return the &#39;user_id&#39; as a column instead of the full namespaced path if it exists.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">if</span> attribute.<span class="hljs-keyword">include</span>?(<span class="hljs-string">'/'</span>) &amp;&amp; attribute.<span class="hljs-keyword">include</span>?(<span class="hljs-string">'_id'</span>)
+            klass     = attribute.gsub(<span class="hljs-string">'_id'</span>, <span class="hljs-string">''</span>)
+            <span class="hljs-keyword">if</span> klass.classify.safe_constantize.present?
+              column    = attribute.split(<span class="hljs-string">'/'</span>).pop
+              attribute = column <span class="hljs-keyword">if</span> record.respond_to?(column)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+          attribute
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

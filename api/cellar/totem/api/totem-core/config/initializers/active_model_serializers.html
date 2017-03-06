@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/api/totem-core/config/initializers/active_model_serializers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="totem/api/totem-core/config/initializers/active_model_serializers"><meta name="groc-project-path" content="src/totem/api/totem-core/config/initializers/active_model_serializers.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/config/initializers/active_model_serializers.rb">src/totem/api/totem-core/config/initializers/active_model_serializers.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-constant">ActiveModelSerializers::Adapter::JsonApi</span>.class_eval <span class="hljs-keyword">do</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Override this method to restrict which records to put in the json &#39;included&#39; section.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_relationships</span><span class="hljs-params">(serializer, include_directive)</span></span>
+    io    = serializer.send(<span class="hljs-symbol">:instance_options</span>) || <span class="hljs-constant">Hash</span>.new
+    scope = io[<span class="hljs-symbol">:scope</span>] || <span class="hljs-constant">Hash</span>.new
+    so    = scope[<span class="hljs-symbol">:serializer_options</span>]
+    serializer.associations(include_directive).each <span class="hljs-keyword">do</span> |association|
+      <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> so &amp;&amp; so.include_association?(serializer, association.name)
+      inc_dir = <span class="hljs-constant">JSONAPI::IncludeDirective</span>.new(<span class="hljs-string">'*'</span>, <span class="hljs-symbol">allow_wildcard:</span> <span class="hljs-keyword">true</span>) <span class="hljs-comment"># include all and let serializer_options exclude</span>
+      process_relationship(association.serializer, inc_dir)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Remove _id(s) from association.key.
+e.g. thinkspace/common/spaces vs thinkspace/common/space_ids
+ember-data expects the relationship keys to match the ember-data model association.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">relationships_for</span><span class="hljs-params">(serializer, requested_associations)</span></span>
+    include_directive = <span class="hljs-constant">JSONAPI::IncludeDirective</span>.new(
+      requested_associations,
+      <span class="hljs-symbol">allow_wildcard:</span> <span class="hljs-keyword">true</span>
+    )
+    serializer.associations(include_directive).each_with_object({}) <span class="hljs-keyword">do</span> |association, hash|
+      key       = association.key.to_s.sub(<span class="hljs-string">'_id'</span>,<span class="hljs-string">''</span>)  <span class="hljs-comment"># need to keep the slashed version of the key (e.g. not the name)</span>
+      hash[key] = <span class="hljs-constant">::ActiveModelSerializers::Adapter::JsonApi::Relationship</span>.new(serializer, instance_options, association).as_json
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

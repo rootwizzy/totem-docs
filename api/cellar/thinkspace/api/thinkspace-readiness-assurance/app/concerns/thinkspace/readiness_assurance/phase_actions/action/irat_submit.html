@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/action/irat_submit</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/action/irat_submit"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/action/irat_submit.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/action/irat_submit.rb">src/thinkspace/api/thinkspace-readiness-assurance/app/concerns/thinkspace/readiness_assurance/phase_actions/action/irat_submit.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReadinessAssurance</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PhaseActions</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Action</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IratSubmit</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">Thinkspace::Casespace</span></span>::<span class="hljs-title">PhaseActions::Action::Submit</span></span>
+
+  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:irat</span>, <span class="hljs-symbol">:trat</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span></span>
+    <span class="hljs-variable">@irat</span> = irat_handler_class.new(processor.current_phase, current_user, {}, processor)
+    <span class="hljs-keyword">if</span> transition_team_members?
+      completed_teams = get_ownerable_completed_teams
+      <span class="hljs-keyword">if</span> completed_teams.present?
+        team_ids = completed_teams.map(&amp;<span class="hljs-symbol">:id</span>)
+        <span class="hljs-variable">@trat</span>    = trat_handler_class.new(irat.next_trat_phase, current_user, {<span class="hljs-symbol">team_ids:</span> team_ids}, processor)
+        irat.to_trat(trat)
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">super</span> <span class="hljs-comment"># do normal submit (e.g. not all teams members have submitted the irat phase)</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">super</span> <span class="hljs-comment"># do normal submit (e.g. settings without transition team members)</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  private
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">transition_team_members?</span></span>
+    settings = (irat.assessment.settings || <span class="hljs-constant">Hash</span>.new).deep_symbolize_keys
+    settings.dig(<span class="hljs-symbol">:submit</span>, <span class="hljs-symbol">:transition_user_team_members_on_last_user_submit</span>) == <span class="hljs-keyword">true</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ownerable_completed_teams</span></span>
+    teams = processor.get_user_teams(ownerable, irat.next_trat_phase)
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> teams.blank?
+    completed_teams = <span class="hljs-constant">Array</span>.new
+    teams.each <span class="hljs-keyword">do</span> |team|
+      complete = <span class="hljs-keyword">true</span>
+      processor.get_team_users(team).each <span class="hljs-keyword">do</span> |user|
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> user == ownerable  <span class="hljs-comment"># skip since phase state hasn't been updated yet</span>
+        ps       = processor.get_existing_phase_state(user, irat.phase)
+        complete = <span class="hljs-keyword">false</span> <span class="hljs-keyword">unless</span> processor.phase_state_completed?(ps)
+      <span class="hljs-keyword">end</span>
+      completed_teams.push(team) <span class="hljs-keyword">if</span> complete
+    <span class="hljs-keyword">end</span>
+    completed_teams
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Helpers::Handler::Classes</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

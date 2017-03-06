@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-pub-sub/app/concerns/thinkspace/pub_sub/authorize_helpers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-pub-sub/app/concerns/thinkspace/pub_sub/authorize_helpers"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-pub-sub/app/concerns/thinkspace/pub_sub/authorize_helpers.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-pub-sub/app/concerns/thinkspace/pub_sub/authorize_helpers.rb">src/thinkspace/api/thinkspace-pub-sub/app/concerns/thinkspace/pub_sub/authorize_helpers.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PubSub</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">AuthorizeHelpers</span></span>
+
+  extend <span class="hljs-constant">::ActiveSupport::Concern</span>
+
+  included <span class="hljs-keyword">do</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_auth</span>;</span> params[<span class="hljs-symbol">:auth</span>] || <span class="hljs-constant">Hash</span>.new; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team?</span>;</span>           authable.is_a?(team_class); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">has_authable?</span>;</span>   get_auth[<span class="hljs-symbol">:authable_type</span>].present? || get_auth[<span class="hljs-symbol">:authable_id</span>].present?; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">space_class</span>;</span>      <span class="hljs-constant">Thinkspace::Common::Space</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">assignment_class</span>;</span> <span class="hljs-constant">Thinkspace::Casespace::Assignment</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">phase_class</span>;</span>      <span class="hljs-constant">Thinkspace::Casespace::Phase</span>; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">team_class</span>;</span>       <span class="hljs-constant">Thinkspace::Team::Team</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="validate-rooms">Validate Rooms.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_rooms</span><span class="hljs-params">(rooms, room_type=<span class="hljs-keyword">nil</span>, arecord=<span class="hljs-keyword">nil</span>, orecord=<span class="hljs-keyword">nil</span>)</span></span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> tracker_room?(rooms, room_type) <span class="hljs-comment"># allow tracker route room access since no model will be present</span>
+      arecord ||= authable
+      orecord ||= ownerable
+      can?(<span class="hljs-symbol">:update</span>, arecord) ? validate_updater_rooms(rooms, room_type, arecord, orecord) <span class="hljs-symbol">:</span> validate_reader_rooms(rooms, room_type, arecord, orecord)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tracker_room?</span><span class="hljs-params">(rooms, room_type)</span></span>
+      room_type == <span class="hljs-string">'tracker'</span> &amp;&amp; rooms == [<span class="hljs-string">'tracker_room'</span>]
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="validate-updater-rooms">Validate Updater Rooms.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Updater rooms are valid if the rooms &#39;start with&#39; a model path they can update.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_updater_rooms</span><span class="hljs-params">(rooms, room_type, arecord=authable, orecord=ownerable)</span></span>
+      models = get_valid_models_from_authable(arecord)
+      access_denied <span class="hljs-string">"Unauthorized 'updater' server event rooms. Not a space, assignment or phase but <span class="hljs-subst">#{arecord.<span class="hljs-keyword">class</span>.name.inspect}</span>."</span> <span class="hljs-keyword">if</span> models.blank?
+      valid_rooms = get_rooms_for_models(models)
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> invalid_start_with_rooms(rooms, valid_rooms).blank?  <span class="hljs-comment"># often will be the space or assignment room so check first</span>
+      assignment = get_assignment_from_valid_models(models)
+      access_denied <span class="hljs-string">"Unauthorized 'updater' server event rooms. Assignment is blank."</span> <span class="hljs-keyword">if</span> assignment.blank?
+      phases      = get_room_assignment_phases(assignment)
+      start_withs = phases.map {|p| pubsub.room_for(p)}
+      access_denied <span class="hljs-string">"Unauthorized 'updater' server event rooms as no valid start-with rooms."</span> <span class="hljs-keyword">if</span> start_withs.blank?
+      <span class="hljs-comment">#invalid_rooms = invalid_start_with_rooms(rooms, start_withs)</span>
+      <span class="hljs-comment">#access_denied "Unauthorized 'updater' server event rooms #{invalid_rooms}." if invalid_rooms.present?</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">invalid_start_with_rooms</span><span class="hljs-params">(rooms, start_withs)</span></span>
+      invalid_rooms = <span class="hljs-constant">Array</span>.new
+      <span class="hljs-constant">Array</span>.wrap(rooms).each <span class="hljs-keyword">do</span> |room|
+        valid = <span class="hljs-keyword">false</span>
+        <span class="hljs-constant">Array</span>.wrap(start_withs).each <span class="hljs-keyword">do</span> |sw|
+          valid = <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> room.start_with?(sw)
+          <span class="hljs-keyword">break</span> <span class="hljs-keyword">if</span> valid
+        <span class="hljs-keyword">end</span>
+        invalid_rooms.push(room) <span class="hljs-keyword">unless</span> valid
+      <span class="hljs-keyword">end</span>
+      invalid_rooms
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="validate-reader-rooms">Validate Reader Rooms.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Reader rooms must be a valid room.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_reader_rooms</span><span class="hljs-params">(rooms, room_type, arecord=authable, orecord=ownerable)</span></span>
+      models = get_valid_models_from_authable(arecord)
+      access_denied <span class="hljs-string">"Unauthorized 'reader' server event rooms. Not a space, assignment or phase but <span class="hljs-subst">#{arecord.<span class="hljs-keyword">class</span>.name.inspect}</span>."</span> <span class="hljs-keyword">if</span> models.blank?
+      <span class="hljs-keyword">if</span> room_type == <span class="hljs-string">'tracker'</span> <span class="hljs-comment"># tracker rooms do not include the user/ownerable (user info is in data)</span>
+        valid_rooms = get_rooms_for_models(models)
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> reader_rooms_valid?(valid_rooms, rooms)
+        access_denied <span class="hljs-string">"Unauthorized 'reader' tracker rooms."</span>
+      <span class="hljs-keyword">end</span>
+      assignment = get_assignment_from_valid_models(models)
+      access_denied <span class="hljs-string">"Unauthorized 'reader' server event rooms. Assignment is blank."</span> <span class="hljs-keyword">if</span> assignment.blank?
+      valid_rooms = <span class="hljs-constant">Array</span>.new
+      models.each <span class="hljs-keyword">do</span> |model|
+        valid_rooms += get_valid_reader_room_set(model, current_user)
+        valid_rooms += get_valid_reader_room_set(model, orecord) <span class="hljs-keyword">unless</span> orecord == current_user
+      <span class="hljs-keyword">end</span>
+      reader_rooms_valid?(valid_rooms, rooms)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reader_rooms_valid?</span><span class="hljs-params">(valid_rooms, rooms)</span></span>
+      <span class="hljs-constant">Array</span>.wrap(rooms).uniq.each <span class="hljs-keyword">do</span> |room|
+        access_denied <span class="hljs-string">"Unauthorized server event room <span class="hljs-subst">#{room.inspect}</span>."</span> <span class="hljs-keyword">unless</span> valid_rooms.<span class="hljs-keyword">include</span>?(room)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_valid_reader_room_set</span><span class="hljs-params">(arecord, orecord)</span></span>
+      access_denied <span class="hljs-string">"A valid room set required an authable."</span>   <span class="hljs-keyword">if</span> arecord.blank?
+      access_denied <span class="hljs-string">"A valid room set required an ownerable."</span>  <span class="hljs-keyword">if</span> orecord.blank?
+      access_denied <span class="hljs-string">"Not authorized to access rooms for <span class="hljs-subst">#{arecrod.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> can?(<span class="hljs-symbol">:read</span>, arecord)
+      access_denied <span class="hljs-string">"Not authorized to access rooms for <span class="hljs-subst">#{orecord.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> can?(<span class="hljs-symbol">:read</span>, orecord)
+      valid_rooms = [
+        pubsub.room_with_ownerable(arecord, orecord),
+        pubsub.room_with_ownerable(arecord, orecord, <span class="hljs-symbol">:server_event</span>),
+      ]
+      valid_rooms
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="validate-room-helpers">Validate Room Helpers.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_rooms_for_models</span><span class="hljs-params">(models)</span>;</span> <span class="hljs-constant">Array</span>.wrap(models).map {|r| pubsub.room_for(r)}; <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_valid_models_from_authable</span><span class="hljs-params">(arecord)</span></span>
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> arecord.is_a?(space_class)      <span class="hljs-keyword">then</span> ([arecord] + get_room_space_assignments(arecord)).compact
+      <span class="hljs-keyword">when</span> arecord.is_a?(assignment_class) <span class="hljs-keyword">then</span> [arecord.get_space, arecord].compact
+      <span class="hljs-keyword">when</span> arecord.is_a?(phase_class)      <span class="hljs-keyword">then</span> [arecord.get_space, arecord.thinkspace_casespace_assignment, arecord].compact
+      <span class="hljs-keyword">else</span> null
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assignment_from_valid_models</span><span class="hljs-params">(models)</span></span>
+      record = models.find {|r| r.is_a?(assignment_class) || r.is_a?(phase_class)}
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> record.blank?
+      record.is_a?(phase_class) ? record.thinkspace_casespace_assignment <span class="hljs-symbol">:</span> record
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_room_assignment_phases</span><span class="hljs-params">(assignment)</span>;</span> assignment.thinkspace_casespace_phases.accessible_by(current_ability); <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_room_space_assignments</span><span class="hljs-params">(space)</span>;</span>      space.thinkspace_casespace_assignments.accessible_by(current_ability); <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="authableownerable">Authable/Ownerable.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authable</span></span>
+      <span class="hljs-variable">@authable</span> ||= <span class="hljs-keyword">begin</span>
+        <span class="hljs-keyword">if</span> totem_action_authorize?
+          record = totem_action_authorize.record_authable
+        <span class="hljs-keyword">else</span>
+          record = current_ability.get_authable_from_params_auth(params)
+        <span class="hljs-keyword">end</span>
+        access_denied <span class="hljs-string">"Authable is blank."</span>  <span class="hljs-keyword">if</span> record.blank?
+        record
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ownerable</span></span>
+      <span class="hljs-variable">@ownerable</span> ||= <span class="hljs-keyword">begin</span>
+        <span class="hljs-keyword">if</span> totem_action_authorize?
+          record = totem_action_authorize.params_ownerable
+        <span class="hljs-keyword">else</span>
+          record = current_ability.get_ownerable_from_params_auth(params)
+        <span class="hljs-keyword">end</span>
+        access_denied <span class="hljs-string">"Ownerable is blank."</span>  <span class="hljs-keyword">if</span> record.blank?
+        record
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="totem-action-authorize">Totem Action Authorize.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_totem_action_authorize</span><span class="hljs-params">(options={})</span></span>
+      auth_mod = get_action_authorize_module
+      <span class="hljs-constant">::Totem::Core::Controllers::TotemActionAuthorize::Authorize</span>.new(<span class="hljs-keyword">self</span>, auth_mod, options)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_action_authorize_module</span></span>
+      access_denied <span class="hljs-string">"Authorize requires a params[:auth][:authable]."</span>  <span class="hljs-keyword">unless</span> authable.present?
+      key = team? ? <span class="hljs-symbol">:action_authorize_teams</span> <span class="hljs-symbol">:</span> <span class="hljs-symbol">:action_authorize</span>
+      mod = <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>.send(<span class="hljs-symbol">:thinkspace</span>).send(key)
+      access_denied <span class="hljs-string">"Authorization module <span class="hljs-subst">#{key.inspect}</span> not found."</span>  <span class="hljs-keyword">if</span> mod.blank?
+      mod
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">totem_action_authorize?</span>;</span> <span class="hljs-keyword">self</span>.send(<span class="hljs-symbol">:totem_action_authorize</span>).present?; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

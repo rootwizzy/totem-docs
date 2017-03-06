@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/lib/totem/core/support/shared</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/lib/totem/core/support/shared"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/support/shared.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/support/shared.rb">src/totem/api/totem-core/app/lib/totem/core/support/shared.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Support</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Shared</span></span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">shared_engine_path_to_engine_name</span><span class="hljs-params">(path)</span></span>
+          totem_settings.engine.to_engine_name(path)
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Expand engine paths with a wildcard (&#39;*&#39;) at the end to include matching engine names.
+Passed in &#39;paths&#39; must be an array of &#39;all&#39; paths (wildcard paths and non-wildcard paths).
+If a path matches a wildcard but is already in the paths it will not be
+duplicated in the returned expanded array.  New matching paths are added at
+the wildcard path location.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">shared_expand_wildcard_engine_paths</span><span class="hljs-params">(paths)</span></span>
+          expanded_paths = <span class="hljs-constant">Array</span>.new
+          paths.each <span class="hljs-keyword">do</span> |path|
+            <span class="hljs-keyword">if</span> path.ends_with?(<span class="hljs-string">'*'</span>)
+              shared_add_matching_engine_paths(path.chop, expanded_paths, paths)
+            <span class="hljs-keyword">else</span>
+              expanded_paths.push path
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+          expanded_paths
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">shared_add_matching_engine_paths</span><span class="hljs-params">(path, expanded_paths, paths)</span></span>
+          engine_name    = shared_engine_path_to_engine_name(path)
+          matching_names = totem_settings.engine.find_by_starts_with(engine_name) || []
+          warning <span class="hljs-string">"No engines match the wildcard path [<span class="hljs-subst">#{path}</span>*]"</span>  <span class="hljs-keyword">if</span> matching_names.blank?
+          engine_name_and_class = totem_settings.engine.name_and_class
+          matching_names.sort.each <span class="hljs-keyword">do</span> |match_name|
+            match_class = engine_name_and_class[match_name]
+            error <span class="hljs-string">"Engine name [<span class="hljs-subst">#{match_name}</span>] does not have an engine class"</span>  <span class="hljs-keyword">if</span> match_class.blank?
+            match_path = match_class.underscore
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> paths.<span class="hljs-keyword">include</span>?(match_path)
+            expanded_paths.push match_path
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">shared_configuration_files</span><span class="hljs-params">(search_dirs, file_ext, options={})</span></span>
+          filename    = options[<span class="hljs-symbol">:filename</span>] || <span class="hljs-string">'config_files'</span>
+          relative_to = options[<span class="hljs-symbol">:relative_to</span>]
+          file_search = <span class="hljs-constant">Array</span>.new
+          [search_dirs].flatten.each <span class="hljs-keyword">do</span> |search_dir|
+            file = <span class="hljs-constant">File</span>.join(search_dir, filename)
+            <span class="hljs-keyword">if</span> <span class="hljs-constant">File</span>.exist?(file)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If the search_dir/filename exists, use its content for the file paths.
+This allows using using a local repo&#39;s config file.</p></div></div><div class="code"><div class="wrapper">              content = <span class="hljs-constant">File</span>.read(file)
+              content.each_line <span class="hljs-keyword">do</span> |dir|
+                dir = dir.strip
+                <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> dir.blank? || dir.starts_with?(<span class="hljs-string">'#'</span>)
+                full_path = relative_to.present? ? <span class="hljs-constant">File</span>.join(relative_to, dir, file_ext) <span class="hljs-symbol">:</span> <span class="hljs-constant">File</span>.join(dir, file_ext)
+                file_search.push full_path
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">else</span>
+              file_search.push <span class="hljs-constant">File</span>.join(search_dir, file_ext)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+          file_search.blank? ? [] <span class="hljs-symbol">:</span> <span class="hljs-constant">Dir</span>[*file_search]
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Messages</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">startup_quiet?</span>;</span> <span class="hljs-constant">::Totem::Settings</span>.config.startup_quiet?; <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_message_on_console</span><span class="hljs-params">(message)</span></span>
+          puts message
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">message_class_name</span></span>
+          <span class="hljs-keyword">self</span>.kind_of?(<span class="hljs-constant">Class</span>) ? <span class="hljs-keyword">self</span>.name <span class="hljs-symbol">:</span> <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.name
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">info</span><span class="hljs-params">(message)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> startup_quiet?
+          message = <span class="hljs-string">"[info] <span class="hljs-subst">#{message}</span>"</span>
+          print_message_on_console message  <span class="hljs-keyword">unless</span> logger_broadcasts_to_console?
+          logger.info message
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">debug</span><span class="hljs-params">(message)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> startup_quiet?
+          message = <span class="hljs-string">"[debug] <span class="hljs-subst">#{message}</span>"</span>
+          print_message_on_console message  <span class="hljs-keyword">unless</span> logger_broadcasts_to_console?
+          logger.debug message
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">warning</span><span class="hljs-params">(message)</span></span>
+          message = <span class="hljs-string">"[WARNING] <span class="hljs-subst">#{message_class_name}</span>: <span class="hljs-subst">#{message}</span>"</span>
+          print_message_on_console message  <span class="hljs-keyword">unless</span> logger_broadcasts_to_console?
+          logger.warn message
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">error</span><span class="hljs-params">(message)</span></span>
+          message = <span class="hljs-string">"[ERROR] <span class="hljs-subst">#{message_class_name}</span>: <span class="hljs-subst">#{message}</span>"</span>
+          logger.error message
+          raise message
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">logger</span></span>
+          <span class="hljs-constant">Rails</span>.logger
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">logger_broadcasts_to_console?</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Goal: prevent double debug console messages.
+Hackish way to determine whether Rails has set the logger to broadcast to the console.</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-constant">::Rails</span>.constants.<span class="hljs-keyword">include</span>?(<span class="hljs-symbol">:BacktraceCleaner</span>) || <span class="hljs-constant">::Rails</span>.constants.<span class="hljs-keyword">include</span>?(<span class="hljs-symbol">:ConsoleMethods</span>)
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

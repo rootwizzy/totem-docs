@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render"><meta name="groc-project-path" content="src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render.rb">src/totem/api/totem-core/app/concerns/totem/core/controllers/api_render.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controllers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ApiRender</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="controller39s-render-or-head-method">Controller&#39;s render or head method.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_render_json</span><span class="hljs-params">(json, options={})</span></span>
+    options[<span class="hljs-symbol">:json</span>] ||= json
+    render options
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_render_no_content</span>;</span> head <span class="hljs-symbol">:no_content</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_render_error</span><span class="hljs-params">(record, options={})</span></span>
+    defaults = {
+      <span class="hljs-symbol">status:</span>     <span class="hljs-number">422</span>,
+      <span class="hljs-symbol">adapter:</span>    <span class="hljs-symbol">:json_api</span>,
+      <span class="hljs-symbol">serializer:</span> <span class="hljs-constant">::Totem::Settings</span>.classes.totem.error_serializer,
+      <span class="hljs-symbol">json:</span>       record,
+    }
+    render defaults.merge(options)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="api-controller-methods-for-saving-destroying-and-rendering">API controller methods for saving, destroying and rendering.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_save_record</span><span class="hljs-params">(record, options={})</span></span>
+    record.save ? controller_render(record, options) <span class="hljs-symbol">:</span> controller_render_error(record)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_destroy_record</span><span class="hljs-params">(record, options={})</span></span>
+    record.destroy ? controller_render_no_content <span class="hljs-symbol">:</span> controller_render_error(record)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Serialize a single record (can be an array) into an array with the pluralized root path.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_render_plural_root</span><span class="hljs-params">(records, options={})</span>;</span> controller_render(records, options.merge(<span class="hljs-symbol">plural_root:</span> <span class="hljs-keyword">true</span>)); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_render_view</span><span class="hljs-params">(record, options={})</span>;</span> controller_render(record, options.merge(<span class="hljs-symbol">view:</span> <span class="hljs-keyword">true</span>)); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_render</span><span class="hljs-params">(records, options={})</span></span>
+    json = controller_json(records, options)
+    controller_after_json(json, options)  <span class="hljs-keyword">if</span> controller_after_json?
+    controller_render_json(json, options)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="main-method-to-generate-the-json">Main method to generate the json.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_json</span><span class="hljs-params">(records, options={})</span></span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> controller_collect_data_only?  <span class="hljs-keyword">then</span> controller_collect_only_data_json(records, options)
+    <span class="hljs-keyword">when</span> controller_paginated?          <span class="hljs-keyword">then</span> controller_paginated_json(records, options)
+    <span class="hljs-keyword">when</span> controller_cache?              <span class="hljs-keyword">then</span> controller_cache_json(records, options)
+    <span class="hljs-keyword">else</span>                                controller_call_json_method(records, options)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_collect_data_only?</span>;</span> serializer_options_defined? &amp;&amp; serializer_options.collect_only?; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="return-the-records-json-hash">Return the record(s) json hash.</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_call_json_method</span><span class="hljs-params">(records, options)</span></span>
+    <span class="hljs-keyword">case</span>
+    <span class="hljs-keyword">when</span> (method = options[<span class="hljs-symbol">:json_method</span>]).present?
+      controller_raise_error <span class="hljs-string">"Controller does not respond to json method [<span class="hljs-subst">#{method}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span>.respond_to?(method, <span class="hljs-keyword">true</span>)
+      <span class="hljs-keyword">self</span>.send(method)
+    <span class="hljs-keyword">when</span> options[<span class="hljs-symbol">:view</span>] == <span class="hljs-keyword">true</span>
+      controller_view_json(records, options)
+    <span class="hljs-keyword">else</span>
+      controller_as_json(records, options)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Returns json hash.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_as_json</span><span class="hljs-params">(records, options={})</span></span>
+    serializer = controller_get_serializer_class(records, options)
+    serializer.totem_serialize_as_json records, controller_default_serializer_options(options)
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Returns json hash for a controller &#39;view&#39; action.
+Record data set to empty array.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_view_json</span><span class="hljs-params">(record, options={})</span></span>
+    delete_keys = [options[<span class="hljs-symbol">:delete</span>]].flatten.compact
+    json        = controller_as_json(record, options)
+    json[<span class="hljs-symbol">:data</span>] = <span class="hljs-constant">Array</span>.new  <span class="hljs-comment"># remove the base record value for a view</span>
+    <span class="hljs-keyword">return</span> json <span class="hljs-keyword">if</span> delete_keys.blank?
+    included = <span class="hljs-constant">Array</span>.new
+    (json[<span class="hljs-symbol">:included</span>] || <span class="hljs-constant">Array</span>.new).each <span class="hljs-keyword">do</span> |hash|
+      type = hash[<span class="hljs-symbol">:type</span>] || <span class="hljs-string">''</span>
+      included.push(hash) <span class="hljs-keyword">unless</span> delete_keys.find {|k| type.to_s.end_with?(k.to_s)}.present?
+    <span class="hljs-keyword">end</span>
+    json[<span class="hljs-symbol">:included</span>] = included
+    json
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="collect-data">Collect Data.</h3>
+<h2 id="">#</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Returns only the collect data in the json e.g. ability, metadata.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_collect_only_data_json</span><span class="hljs-params">(records, options={})</span></span>
+    controller_call_json_method(records, options)
+    serializer_options.collect_module_data
+    controller_add_collect_data_to_json(serializer_options.collect_keys, <span class="hljs-constant">Hash</span>.new)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_add_collect_data_to_json</span><span class="hljs-params">(keys, json)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> serializer_options.collect_data_exists?
+    keys.each <span class="hljs-keyword">do</span> |key|
+      method = <span class="hljs-string">"controller_<span class="hljs-subst">#{key}</span>_add_to_json"</span>.to_sym
+      <span class="hljs-keyword">self</span>.send(method, json) <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.respond_to?(method)
+    <span class="hljs-keyword">end</span>
+    json
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2>
+<h3 id="helpers">Helpers</h3>
+<h2 id="">#</h2></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_default_serializer_options</span><span class="hljs-params">(options)</span></span>
+    options[<span class="hljs-symbol">:scope</span>] = controller_serializer_scope(options)  <span class="hljs-keyword">unless</span> options.has_key?(<span class="hljs-symbol">:scope</span>)
+    options
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a serializer scope that does not depend on a view context.  A step to make an api only server.
+e.g. remove need for: options[:scope] = view_context</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_serializer_scope</span><span class="hljs-params">(options)</span></span>
+    scope                    = <span class="hljs-constant">ActiveSupport::OrderedOptions</span>.new
+    scope.current_user       = current_user
+    scope.current_ability    = current_ability
+    scope.serializer_options = serializer_options
+    scope
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_serializer_scope_add_totem_action_authorize_values</span><span class="hljs-params">(scope)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> <span class="hljs-keyword">self</span>.respond_to?(<span class="hljs-symbol">:totem_action_authorize</span>)
+    scope.record_authable  = totem_action_authorize.record_authable
+    scope.params_authable  = totem_action_authorize.params_authable
+    scope.record_ownerable = totem_action_authorize.record_ownerable
+    scope.params_ownerable = totem_action_authorize.params_ownerable
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_get_serializer_class</span><span class="hljs-params">(records, options)</span></span>
+    <span class="hljs-keyword">unless</span> (class_name = options[<span class="hljs-symbol">:serializer</span>]).present?
+      render_record = records.respond_to?(<span class="hljs-symbol">:to_ary</span>) ? records.first <span class="hljs-symbol">:</span> records
+      class_name    = render_record.present? ? render_record.<span class="hljs-keyword">class</span>.name <span class="hljs-symbol">:</span> controller_model_class_name
+      class_name   += <span class="hljs-string">'Serializer'</span>
+    <span class="hljs-keyword">end</span>
+    serializer = class_name.safe_constantize
+    controller_raise_error <span class="hljs-string">"Cannot constantize model serializer name [<span class="hljs-subst">#{class_name}</span>]"</span>  <span class="hljs-keyword">if</span> serializer.blank?
+    serializer
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_model_class_name</span></span>
+    <span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>.totem_controller_model_class
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_model_class</span></span>
+    class_name = controller_model_class_name
+    klass      = class_name.safe_constantize
+    controller_raise_error <span class="hljs-string">"Cannot constantize controller model class name [<span class="hljs-subst">#{class_name}</span>]"</span>  <span class="hljs-keyword">if</span> klass.blank?
+    klass
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_singular_path</span>;</span> controller_model_class_name.underscore; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_plural_path</span>;</span>   controller_singular_path.pluralize; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_debug_message</span><span class="hljs-params">(message=<span class="hljs-string">''</span>)</span>;</span> puts <span class="hljs-string">"[debug] <span class="hljs-subst">#{message}</span>"</span>; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">serializer_options_defined?</span>;</span> <span class="hljs-keyword">defined</span>?(serializer_options); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_ability_class_name</span>;</span> controller_ability_class.name; <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_ability_class</span></span>
+    <span class="hljs-variable">@_controller_ability_class</span> ||= <span class="hljs-keyword">begin</span>
+      ability_class = <span class="hljs-constant">::Totem::Settings</span>.authorization.current_ability_class(<span class="hljs-keyword">self</span>)
+      controller_raise_error <span class="hljs-string">"Ability class is blank."</span>  <span class="hljs-keyword">if</span> ability_class.blank?
+      ability_class
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="module-availability-check-will-be-overridden-by-module-if-included">Module availability check.  Will be overridden by module if included.</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_cache?</span>;</span>      <span class="hljs-keyword">false</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_paginated?</span>;</span>  <span class="hljs-keyword">false</span>; <span class="hljs-keyword">end</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_after_json?</span>;</span> <span class="hljs-keyword">false</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="">#</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-keyword">include</span> <span class="hljs-constant">ApiRender::Cache</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ApiRender::Paginate</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ApiRender::JsonApiIncluded</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ApiRender::Ability</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ApiRender::Metadata</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ApiRender::AfterJson</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ApiRender::Message</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">controller_raise_error</span><span class="hljs-params">(message)</span></span>
+    raise <span class="hljs-constant">ControllerRenderError</span>, message
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ControllerRenderError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

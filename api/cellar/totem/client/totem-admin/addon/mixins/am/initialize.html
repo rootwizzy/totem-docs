@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem-admin/addon/mixins/am/initialize</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem-admin/addon/mixins/am/initialize"><meta name="groc-project-path" content="src/totem/client/totem-admin/addon/mixins/am/initialize.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem-admin/addon/mixins/am/initialize.coffee">src/totem/client/totem-admin/addon/mixins/am/initialize.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember  from <span class="hljs-string">'ember'</span>
+import config from <span class="hljs-string">'totem-config/config'</span>
+import util   from <span class="hljs-string">'totem/util'</span>
+import tc     from <span class="hljs-string">'totem-config/configs'</span>
+import tr     from <span class="hljs-string">'totem-config/routes'</span>
+import te     from <span class="hljs-string">'totem-engines/engines'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">ttz</span>:    ember.inject.service()
+  <span class="hljs-attribute">pubsub</span>: ember.inject.service()
+  <span class="hljs-attribute">i18n</span>:   ember.inject.service()
+
+  <span class="hljs-attribute">init</span>: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-property">@_super</span>(arguments...)
+    <span class="hljs-property">@ttz</span>    = <span class="hljs-property">@get</span>(<span class="hljs-string">'ttz'</span>)
+    <span class="hljs-property">@pubsub</span> = <span class="hljs-property">@get</span>(<span class="hljs-string">'pubsub'</span>)
+    <span class="hljs-property">@i18n</span>   = <span class="hljs-property">@get</span>(<span class="hljs-string">'i18n'</span>)
+    <span class="hljs-property">@config</span> = config
+    <span class="hljs-property">@tc</span>     = tc
+    <span class="hljs-property">@tr</span>     = tr
+    <span class="hljs-property">@te</span>     = te
+
+  <span class="hljs-attribute">toString</span>: <span class="hljs-function">-&gt;</span> <span class="hljs-string">'TotemAdminService'</span></div></div></div></div></body></html>

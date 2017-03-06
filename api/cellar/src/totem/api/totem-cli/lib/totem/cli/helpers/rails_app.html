@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-cli/lib/totem/cli/helpers/rails_app</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers/rails_app"><meta name="groc-project-path" content="src/totem/api/totem-cli/lib/totem/cli/helpers/rails_app.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/helpers/rails_app.rb">src/totem/api/totem-cli/lib/totem/cli/helpers/rails_app.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Cli</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Helpers</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">RailsApp</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">included</span><span class="hljs-params">(base)</span></span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> base.ancestors.<span class="hljs-keyword">include</span>?(<span class="hljs-constant">Thor::Group</span>)
+    base.class_eval <span class="hljs-keyword">do</span>
+      argument <span class="hljs-symbol">:app_path</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:string</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">nil</span>, <span class="hljs-symbol">required:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">desc:</span> <span class="hljs-string">'rails application path'</span>
+
+      add_runtime_options!
+
+      class_option <span class="hljs-symbol">:new</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">''</span>,              <span class="hljs-symbol">desc:</span> <span class="hljs-string">'create a new rails application'</span>
+      class_option <span class="hljs-symbol">:deploy</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">''</span>,           <span class="hljs-symbol">desc:</span> <span class="hljs-string">'create a packaged vendor directory'</span>
+      class_option <span class="hljs-symbol">:package</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">''</span>,          <span class="hljs-symbol">desc:</span> <span class="hljs-string">'package the gems in the Rails app'</span>
+      class_option <span class="hljs-symbol">:skip_exist_check</span>, <span class="hljs-symbol">type:</span> <span class="hljs-symbol">:boolean</span>, <span class="hljs-symbol">default:</span> <span class="hljs-keyword">false</span>, <span class="hljs-symbol">aliases:</span> <span class="hljs-string">''</span>, <span class="hljs-symbol">desc:</span> <span class="hljs-string">'stop run if rails app already exists'</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rails_application_exists?</span></span>
+    <span class="hljs-constant">File</span>.exists? <span class="hljs-constant">File</span>.join(<span class="hljs-variable">@app_path</span>, <span class="hljs-string">'bin'</span>, <span class="hljs-string">'rails'</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rails_gem_installed?</span></span>
+    version = <span class="hljs-string">`rails --version`</span> <span class="hljs-keyword">rescue</span> version = <span class="hljs-keyword">nil</span>
+    version.present? ? version.sub(<span class="hljs-string">'Rails'</span>,<span class="hljs-string">''</span>).strip.chomp &gt;= rails_version <span class="hljs-symbol">:</span> <span class="hljs-keyword">false</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rails_version</span></span>
+    <span class="hljs-string">'5.0.0'</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rails_git?</span></span>
+    dir = <span class="hljs-constant">File</span>.join(<span class="hljs-variable">@app_path</span>, <span class="hljs-string">'.git'</span>)
+    <span class="hljs-constant">File</span>.directory?(dir)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">new_rails_app_validation</span></span>
+    <span class="hljs-keyword">unless</span> rails_gem_installed?
+      stop_run <span class="hljs-string">"Rails version <span class="hljs-subst">#{rails_version.inspect}</span> or greater must be installed to create a new Rails application."</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">unless</span> <span class="hljs-constant">File</span>.exist?(<span class="hljs-variable">@app_root</span>)
+      stop_run <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-variable">@app_root</span>.inspect}</span> directory does not exist.  Please create it and run again."</span>, <span class="hljs-symbol">:red</span>
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-constant">File</span>.exist?(<span class="hljs-variable">@app_path</span>) &amp;&amp; !run_options[<span class="hljs-symbol">:skip_exist_check</span>]
+      stop_run <span class="hljs-string">"Directory <span class="hljs-subst">#{<span class="hljs-variable">@app_path</span>.inspect}</span> already exists.  Please remove it to re-create -or- provide a different app path and run again."</span>, <span class="hljs-symbol">:red</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_rails_app</span></span>
+    stop_install <span class="hljs-keyword">unless</span> yes? <span class="hljs-string">"Create Rails application <span class="hljs-subst">#{<span class="hljs-variable">@app_path</span>.inspect}</span>? [yes,no]"</span>, <span class="hljs-symbol">:yellow</span>  <span class="hljs-keyword">if</span> !quiet? &amp;&amp; !verify?
+
+    cmd_options = [<span class="hljs-string">'--skip-keeps'</span>, <span class="hljs-string">'--skip-bundle'</span>, <span class="hljs-string">'--skip-listen'</span>, <span class="hljs-string">'--skip-sprockets'</span>, <span class="hljs-string">'--skip-javascript'</span>]
+    cmd_options.push run_options[<span class="hljs-symbol">:rails_api</span>] != <span class="hljs-keyword">false</span>   ? <span class="hljs-string">'--api'</span>                   <span class="hljs-symbol">:</span> <span class="hljs-string">'--no-api'</span>  <span class="hljs-comment"># default to true if not included</span>
+    cmd_options.push run_options[<span class="hljs-symbol">:rails_gemfile</span>]        ? <span class="hljs-string">'--no-skip-gemfile'</span>       <span class="hljs-symbol">:</span> <span class="hljs-string">'--skip-gemfile'</span>
+    cmd_options.push run_options[<span class="hljs-symbol">:rails_git</span>]            ? <span class="hljs-string">'--no-skip-git'</span>           <span class="hljs-symbol">:</span> <span class="hljs-string">'--skip-git'</span>
+    cmd_options.push run_options[<span class="hljs-symbol">:rails_spring</span>]         ? <span class="hljs-string">'--no-skip-spring'</span>        <span class="hljs-symbol">:</span> <span class="hljs-string">'--skip-spring'</span>
+    cmd_options.push run_options[<span class="hljs-symbol">:rails_cable</span>]          ? <span class="hljs-string">'--no-skip-action-cable'</span>  <span class="hljs-symbol">:</span> <span class="hljs-string">'--skip-action-cable'</span>
+    cmd_options.push run_options[<span class="hljs-symbol">:rails_cable</span>]          ? <span class="hljs-string">'--no-skip-puma'</span>          <span class="hljs-symbol">:</span> <span class="hljs-string">'--skip-puma'</span>
+    cmd_options.push run_options[<span class="hljs-symbol">:rails_turbolinks</span>]     ? <span class="hljs-string">'--no-skip-turbolinks'</span>    <span class="hljs-symbol">:</span> <span class="hljs-string">'--skip-turbolinks'</span>
+    cmd_options.push <span class="hljs-string">'--force'</span>   <span class="hljs-keyword">if</span> force?
+    cmd_options.push <span class="hljs-string">'--quiet'</span>   <span class="hljs-keyword">if</span> quiet?
+    cmd_options.push <span class="hljs-string">'--pretend'</span> <span class="hljs-keyword">if</span> pretend?
+    cmd_options.push <span class="hljs-string">'--skip'</span>    <span class="hljs-keyword">if</span> skip?
+
+    rails_cmd = <span class="hljs-string">"rails new <span class="hljs-subst">#{<span class="hljs-variable">@app_path</span>}</span> <span class="hljs-subst">#{cmd_options.join(<span class="hljs-string">' '</span>)}</span>"</span>
+    say_message <span class="hljs-string">"Running rails command:"</span>
+    say_message <span class="hljs-string">"  <span class="hljs-subst">#{rails_cmd}</span>"</span>, <span class="hljs-symbol">:cyan</span>, <span class="hljs-symbol">:bold</span>
+    run rails_cmd, <span class="hljs-symbol">capture:</span> !verbose_copy?, <span class="hljs-symbol">verbose:</span> verbose_copy?
+
+    inside <span class="hljs-variable">@app_path</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-constant">::FileUtils</span>.rm_rf(<span class="hljs-string">'app'</span>)
+      <span class="hljs-constant">::FileUtils</span>.rm_rf(<span class="hljs-string">'db'</span>)
+      <span class="hljs-constant">::FileUtils</span>.rm_rf(<span class="hljs-string">'lib'</span>)
+      <span class="hljs-constant">::FileUtils</span>.rm_rf(<span class="hljs-string">'test'</span>)
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

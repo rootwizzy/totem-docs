@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/mixins/scope/view_query_ids</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/mixins/scope/view_query_ids"><meta name="groc-project-path" content="src/totem/client/totem/addon/mixins/scope/view_query_ids.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/mixins/scope/view_query_ids.coffee">src/totem/client/totem/addon/mixins/scope/view_query_ids.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return a records&#39;s path by converting its type key to a path.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">record_has_viewed_id</span>: <span class="hljs-function"><span class="hljs-params">(record, id, options={})</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> record <span class="hljs-keyword">and</span> id
+    viewed_ids = <span class="hljs-property">@get_viewed_record_path_ids</span>(record, options)
+    viewed_ids.includes parseInt(id)
+
+  <span class="hljs-attribute">record_has_not_viewed_id</span>: <span class="hljs-function"><span class="hljs-params">(record, id, options={})</span> -&gt;</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@record_has_viewed_id</span>(record, id, options)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Helper methods to set viewed ids on a record.  This can be independent of the &#39;current<em>path&#39; view ids used to filter records
+and can be used to determine whether to send an ajax request to load data (or if the data is already loaded).
+The viewed ids are stored in &#39;record._path_ids</em>[id_prop] = [ids]&#39; to provide storing ids for different paths on the same record.
+Options:
+  viewed_current_user: [TRUE|false] true (default) means the current user id has been viewed (e.g. add to viewed_ids array)
+  id_prop:             [string] a specific property within the record&#39;s path ids to save the viewed ids (see &#39;get_record_path_ids_prop&#39; for default).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">set_viewed_record_path_ids</span>: <span class="hljs-function"><span class="hljs-params">(record, options={})</span> -&gt;</span>
+    viewed_ids   = <span class="hljs-property">@get_viewed_record_path_ids</span>(record, options)
+    unviewed_ids = <span class="hljs-property">@get_unviewed_record_path_ids</span>(record, options)
+    record.set <span class="hljs-property">@get_record_path_ids_prop</span>(record, options), <span class="hljs-property">@concat_id_arrays</span>(viewed_ids, unviewed_ids)  <span class="hljs-comment"># save all viewed ids on record</span>
+
+  <span class="hljs-attribute">get_viewed_record_path_ids</span>: <span class="hljs-function"><span class="hljs-params">(record, options={})</span> -&gt;</span>
+    viewed_ids = <span class="hljs-property">@make_ids_array</span>(record.get <span class="hljs-property">@get_record_path_ids_prop</span>(record, options))
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@is_user_ids_current_path</span>()
+      viewed_ids = <span class="hljs-property">@concat_id_arrays</span>(viewed_ids, <span class="hljs-property">@get_current_user_id</span>())  <span class="hljs-keyword">if</span> options.viewed_ownerable == <span class="hljs-literal">true</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-property">@is_blank</span>(viewed_ids)
+        viewed_ids = <span class="hljs-property">@concat_id_arrays</span>(viewed_ids, <span class="hljs-property">@get_ownerable_id</span>())   <span class="hljs-keyword">if</span> options.viewed_ownerable == <span class="hljs-literal">true</span>
+    viewed_ids
+
+  <span class="hljs-attribute">get_unviewed_record_path_ids</span>: <span class="hljs-function"><span class="hljs-params">(record, options={})</span> -&gt;</span>
+    viewed_ids  = <span class="hljs-property">@get_viewed_record_path_ids</span>(record, options)
+    current_ids = <span class="hljs-property">@get_current_ids</span>() <span class="hljs-keyword">or</span> []
+    current_ids.filter (id) -&gt; <span class="hljs-keyword">not</span> viewed_ids.includes(id)
+
+  <span class="hljs-attribute">unviewed_record_path_ids_blank</span>:   <span class="hljs-function"><span class="hljs-params">(record, options={})</span> -&gt;</span> <span class="hljs-property">@is_blank</span> <span class="hljs-property">@get_unviewed_record_path_ids</span>(record, options)
+  <span class="hljs-attribute">unviewed_record_path_ids_present</span>: <span class="hljs-function"><span class="hljs-params">(record, options={})</span> -&gt;</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@unviewed_record_path_ids_blank</span>(record, options)
+
+  <span class="hljs-attribute">get_record_path_ids_prop</span>: <span class="hljs-function"><span class="hljs-params">(record, options={})</span> -&gt;</span>
+    path_ids = <span class="hljs-string">'_ts_path_ids_'</span>  <span class="hljs-comment"># object property that the viewed ids are saved</span>
+    record.set(path_ids, {})  <span class="hljs-keyword">unless</span> record.get(path_ids)  <span class="hljs-comment"># first time, set as empty object</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The path is either:</p>
+<ol>
+<li>Property specified in: options.id_prop (manually specified id property)</li>
+<li>Property specified in: options.sub_action (manually specified id property)</li>
+<li>User data &#39;sub&#39; action</li>
+<li>Current path</li>
+<li>Users path (default)</li>
+</ol></div></div><div class="code"><div class="wrapper">    path = options.id_prop <span class="hljs-keyword">or</span> options.sub_action <span class="hljs-keyword">or</span> <span class="hljs-property">@get_current_path</span>() <span class="hljs-keyword">or</span> <span class="hljs-property">@get_user_ids_path</span>()
+    <span class="hljs-string">"<span class="hljs-subst">#{path_ids}</span>.<span class="hljs-subst">#{path}</span>"</span></div></div></div></div></body></html>

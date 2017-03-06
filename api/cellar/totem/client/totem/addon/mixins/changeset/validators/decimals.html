@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="en"><head><title>totem/client/totem/addon/mixins/changeset/validators/decimals</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="totem/client/totem/addon/mixins/changeset/validators/decimals"><meta name="groc-project-path" content="src/totem/client/totem/addon/mixins/changeset/validators/decimals.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/client/totem/addon/mixins/changeset/validators/decimals.coffee">src/totem/client/totem/addon/mixins/changeset/validators/decimals.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+
+export default ember.Mixin.create
+
+  <span class="hljs-attribute">vdecimals</span>: <span class="hljs-function"><span class="hljs-params">(max_decimals=<span class="hljs-number">0</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> (key, vnew, vold, changes) -&gt;
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">unless</span> vnew
+      not_allowed = <span class="hljs-string">'Decimals are not allowed'</span>
+      str = <span class="hljs-string">''</span> + vnew
+      <span class="hljs-keyword">return</span> not_allowed <span class="hljs-keyword">if</span> max_decimals &lt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> str.match(<span class="hljs-regexp">/\./</span>)
+      [v, digits]  = str.split(<span class="hljs-string">'.'</span>)
+      num_decimals = (digits <span class="hljs-keyword">and</span> digits.length) <span class="hljs-keyword">or</span> <span class="hljs-number">0</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">if</span> (num_decimals &lt;= max_decimals)
+      <span class="hljs-keyword">if</span> (max_decimals &lt;= <span class="hljs-number">0</span>) <span class="hljs-keyword">then</span> not_allowed <span class="hljs-keyword">else</span> <span class="hljs-string">"Decimals must be less than <span class="hljs-subst">#{max_decimals}</span>"</span></div></div></div></div></body></html>

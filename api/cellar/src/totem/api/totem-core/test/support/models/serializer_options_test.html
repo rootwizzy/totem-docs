@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/test/support/models/serializer_options_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/test/support/models/serializer_options_test"><meta name="groc-project-path" content="src/totem/api/totem-core/test/support/models/serializer_options_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/test/support/models/serializer_options_test.rb">src/totem/api/totem-core/test/support/models/serializer_options_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-constant">File</span>.expand_path(<span class="hljs-string">'../models_helper'</span>, __FILE_<span class="hljs-number">_</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Caution: Make sure models paths are unique in each &#39;it&#39; test. Othwerwise will bleed between tests.
+         Using: model-name_filename-num (plus _model-name-unique-num-when-needed)</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">so_user</span>;</span>     <span class="hljs-variable">@_so_user</span>     ||= path_to_class(<span class="hljs-string">'test/platform/sz/so_user'</span>); <span class="hljs-keyword">end</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">so_user_sz</span>;</span>  <span class="hljs-variable">@_so_user_sz</span>  ||= class_serializer(so_user).new({}); <span class="hljs-keyword">end</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">so_space</span>;</span>    <span class="hljs-variable">@_so_space</span>    ||= path_to_class(<span class="hljs-string">'test/platform/sz/so_space'</span>); <span class="hljs-keyword">end</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">so_space_sz</span>;</span> <span class="hljs-variable">@_so_space_sz</span> ||= class_serializer(so_space).new({}); <span class="hljs-keyword">end</span>
+
+describe <span class="hljs-string">'totem core serializer concerns options.rb'</span> <span class="hljs-keyword">do</span>
+
+  before <span class="hljs-keyword">do</span>
+    set_environment
+    load_platform_configs(<span class="hljs-symbol">file:</span> __FILE_<span class="hljs-number">_</span>, <span class="hljs-symbol">file_ext:</span> <span class="hljs-string">'01_*'</span>)
+    register_framework_and_platform
+    <span class="hljs-variable">@so</span> = <span class="hljs-variable">@env</span>.<span class="hljs-keyword">class</span>.test_framework.serializer_options.new
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'include association scope global'</span> <span class="hljs-keyword">do</span>
+    assoc = c_sym_plural(so_space)
+    <span class="hljs-variable">@so</span>.include_association(assoc)
+    assert_equal <span class="hljs-keyword">true</span>, <span class="hljs-variable">@so</span>.include_association?(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'include association scope root'</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@so</span>.set_root_serializer(so_user_sz)
+    assoc = c_sym_plural(so_space)
+    <span class="hljs-variable">@so</span>.include_association(assoc, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>)
+    assert_equal <span class="hljs-keyword">true</span>, <span class="hljs-variable">@so</span>.include_association?(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'include association scope association'</span> <span class="hljs-keyword">do</span>
+    assoc = c_sym_plural(so_space)
+    <span class="hljs-variable">@so</span>.include_association(assoc, <span class="hljs-symbol">scope:</span> c_sym(so_user))
+    assert_equal <span class="hljs-keyword">true</span>, <span class="hljs-variable">@so</span>.include_association?(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'blank association scope global'</span> <span class="hljs-keyword">do</span>
+    assoc = c_sym_plural(so_space)
+    <span class="hljs-variable">@so</span>.blank_association(assoc)
+    assert_equal <span class="hljs-keyword">true</span>, <span class="hljs-variable">@so</span>.blank_association?(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'blank association scope root'</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@so</span>.set_root_serializer(so_user_sz)
+    assoc = c_sym_plural(so_space)
+    <span class="hljs-variable">@so</span>.blank_association(assoc, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>)
+    assert_equal <span class="hljs-keyword">true</span>, <span class="hljs-variable">@so</span>.blank_association?(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'blank association scope association'</span> <span class="hljs-keyword">do</span>
+    assoc = c_sym_plural(so_space)
+    <span class="hljs-variable">@so</span>.blank_association(assoc, <span class="hljs-symbol">scope:</span> c_sym(so_user))
+    assert_equal <span class="hljs-keyword">true</span>, <span class="hljs-variable">@so</span>.blank_association?(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'remove association scope global'</span> <span class="hljs-keyword">do</span>
+    assoc = c_sym_plural(so_space)
+    <span class="hljs-variable">@so</span>.remove_association(assoc)
+    assert_equal <span class="hljs-keyword">true</span>, <span class="hljs-variable">@so</span>.remove_association?(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'remove association scope root'</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@so</span>.set_root_serializer(so_user_sz)
+    assoc = c_sym_plural(so_space)
+    <span class="hljs-variable">@so</span>.remove_association(assoc, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>)
+    assert_equal <span class="hljs-keyword">true</span>, <span class="hljs-variable">@so</span>.remove_association?(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'remove association scope association'</span> <span class="hljs-keyword">do</span>
+    assoc = c_sym_plural(so_space)
+    <span class="hljs-variable">@so</span>.remove_association(assoc, <span class="hljs-symbol">scope:</span> c_sym(so_user))
+    assert_equal <span class="hljs-keyword">true</span>, <span class="hljs-variable">@so</span>.remove_association?(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'scope association scope global'</span> <span class="hljs-keyword">do</span>
+    assoc = c_sym_plural(so_space)
+    scope = {<span class="hljs-symbol">where:</span> <span class="hljs-string">'id &gt; 1'</span>, <span class="hljs-symbol">order:</span> <span class="hljs-symbol">:id</span>}
+    <span class="hljs-variable">@so</span>.scope_association(assoc, scope)
+    assert_equal scope, <span class="hljs-variable">@so</span>.get_association_scope(so_user_sz, assoc).symbolize_keys
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'scope association scope root'</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@so</span>.set_root_serializer(so_user_sz)
+    assoc = c_sym_plural(so_space)
+    scope = {<span class="hljs-symbol">where:</span> <span class="hljs-string">'id &gt; 1'</span>, <span class="hljs-symbol">order:</span> <span class="hljs-symbol">:id</span>}
+    <span class="hljs-variable">@so</span>.scope_association(assoc, scope.merge(<span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>))
+    assert_equal scope, <span class="hljs-variable">@so</span>.get_association_scope(so_user_sz, assoc).symbolize_keys
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'scope association scope association'</span> <span class="hljs-keyword">do</span>
+    assoc = c_sym_plural(so_space)
+    scope = {<span class="hljs-symbol">where:</span> <span class="hljs-string">'id &gt; 1'</span>, <span class="hljs-symbol">order:</span> <span class="hljs-symbol">:id</span>}
+    <span class="hljs-variable">@so</span>.scope_association(assoc, scope.merge(<span class="hljs-symbol">scope:</span> c_sym(so_user)))
+    assert_equal scope, <span class="hljs-variable">@so</span>.get_association_scope(so_user_sz, assoc).symbolize_keys
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'authorize action scope global'</span> <span class="hljs-keyword">do</span>
+    assoc       = c_sym_plural(so_space)
+    auth_action = <span class="hljs-symbol">:update</span>
+    <span class="hljs-variable">@so</span>.authorize_action(auth_action, assoc)
+    assert_equal auth_action, <span class="hljs-variable">@so</span>.get_authorize_action(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'authorize action scope root'</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-variable">@so</span>.set_root_serializer(so_user_sz)
+    assoc       = c_sym_plural(so_space)
+    auth_action = <span class="hljs-symbol">:update</span>
+    <span class="hljs-variable">@so</span>.authorize_action(auth_action, assoc, <span class="hljs-symbol">scope:</span> <span class="hljs-symbol">:root</span>)
+    assert_equal auth_action, <span class="hljs-variable">@so</span>.get_authorize_action(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'authorize action scope association'</span> <span class="hljs-keyword">do</span>
+    assoc       = c_sym_plural(so_space)
+    auth_action = <span class="hljs-symbol">:update</span>
+    <span class="hljs-variable">@so</span>.authorize_action(auth_action, assoc, <span class="hljs-symbol">scope:</span> c_sym(so_user))
+    assert_equal auth_action, <span class="hljs-variable">@so</span>.get_authorize_action(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+  it <span class="hljs-string">'authorize action default'</span> <span class="hljs-keyword">do</span>
+    assoc       = c_sym_plural(so_space)
+    assert_equal <span class="hljs-symbol">:read</span>, <span class="hljs-variable">@so</span>.get_authorize_action(so_user_sz, assoc)
+  <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

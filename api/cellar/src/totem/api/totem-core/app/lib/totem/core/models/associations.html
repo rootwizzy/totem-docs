@@ -1,0 +1,320 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/lib/totem/core/models/associations</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/lib/totem/core/models/associations"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/models/associations.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/models/associations.rb">src/totem/api/totem-core/app/lib/totem/core/models/associations.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>CAUTION: The resolved_model_definitions are loaded &#39;once&#39;.  Any changes will require a server restart.</p>
+<p>IMPORTANT: All association names are fully qualified, even when in the same engine. For example:</p>
+<ul>
+<li>The &#39;user_responses&#39; association in Platform::Tools::HelperEmbeds::InputElement::Element is
+&#39;platform_tools_helpers_input_element_user_responses&#39; not &#39;user_responses&#39;</li>
+<li>This is for consistency and similar to the ember paths.  Foreign keys are added as needed.</li>
+</ul>
+<p>Dynamically add a model&#39;s associations and the model-serializer&#39;s associations as defined in a model definitions file.
+The file &#39;engines/totem-core/lib/totem/core/engine.rb&#39; adds a &#39;totem_associations&#39; method to ActiveRecord::Base.
+When this method is called in a model, it will add the associations defined via this implementation.</p>
+<p>totem_associations options:
+  model: [true|false]       #=&gt; [optional] any other value or not specified = true</p>
+<pre><code>                        #=&gt; true = add model associations; false = do not add model associations</code></pre>
+<p>  serializer: [true|false]  #=&gt; [optional] any other value or not specified = true</p>
+<pre><code>                        #=&gt; true = add serializer associations; false = do not add serializer associations</code></pre>
+<p>  serializer_class:         #=&gt; [optional] full class name as a string (defaults to model.name + &#39;Serializer&#39;)</p>
+<pre><code>                        #=&gt; e.g. &#39;Platform::Tools::HelperEmbeds::InputElement::SuperSerializer&#39;</code></pre>
+<p>Typical use:</p>
+<h1 id="-add-associations-to-model-and-serializer">. Add associations to model and serializer:</h1>
+<pre><code>class Element &lt; ActiveRecord::Base; totem_associations; end
+class ElementSerializer &lt; Totem::Settings.class.totem.base_serializer; end</code></pre>
+<h1 id="-add-associations-to-the-model39s-serializer-but-not-the-model-itself">. Add associations to the model&#39;s serializer but not the model itself:</h1>
+<pre><code>class Element &lt; ActiveRecord::Base; totem_associations model: false; end
+class ElementSerializer &lt; Totem::Settings.class.totem.base_serializer; end</code></pre>
+<h1 id="-add-associations-to-the-model-but-not-the-model39s-serializer">. Add associations to the model but not the model&#39;s serializer:</h1>
+<pre><code>class Element &lt; ActiveRecord::Base; totem_associations serializer: false; end</code></pre>
+<p>Unless there are custom methods in the model or serializer, the classes are empty except for
+the &#39;totem_associations&#39; method in the model.  If custom method alread exist, they will not be overriden.
+Serializer classes will be auto-created if they do not exist.</p>
+<p>To see the associations added, run:
+  rake TASKNAME=&#39;association:list&#39; totem:association:list</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Models</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Associations</span></span>
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:totem_settings</span>
+
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:warnings</span>
+        <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:resolved_model_definitions</span>
+
+        <span class="hljs-constant">ASSOCIATIONS_SERIALIZER_ONLY_OPTIONS</span>  = [<span class="hljs-symbol">:serialize</span>, <span class="hljs-symbol">:authorize</span>]
+        <span class="hljs-constant">SERIALIZER_METHODS_DELEGATED_TO_SCOPE</span> = [<span class="hljs-symbol">:current_user</span>, <span class="hljs-symbol">:current_ability</span>, <span class="hljs-symbol">:serializer_options</span>]
+        <span class="hljs-constant">ASSOCIATIONS_KEYS_WITH_SYMBOL_VALUES</span>  = [<span class="hljs-symbol">:dependent</span>]
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(env)</span></span>
+          <span class="hljs-variable">@totem_settings</span> = env
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reset!</span>  <span class="hljs-comment"># reload the associations.yml files on next request</span></span>
+          <span class="hljs-variable">@resolved_model_definitions</span> = <span class="hljs-keyword">nil</span>  <span class="hljs-keyword">if</span> <span class="hljs-constant">::Rails</span>.env.development?
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Entry Point
+Called in models using the &#39;totem_associations&#39; class method added by the totem_core
+engine to ActiveRecord::Base.
+Model is a &#39;class&#39;, so need to verify its &#39;ancestors&#39; include ActiveRecord::Base
+since do not want to create a new model instance just to call &#39;kind_of?&#39;.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">perform</span><span class="hljs-params">(model, options)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-constant">::Totem::Settings</span>.config.startup_no_associations?
+          error <span class="hljs-string">"Model class is blank"</span>  <span class="hljs-keyword">if</span> model.blank?
+          error <span class="hljs-string">"Model is not a subclass of ActiveRecord::Base or ActiveModel::Model [<span class="hljs-subst">#{model.inspect}</span>]"</span>  <span class="hljs-keyword">unless</span> model.ancestors.<span class="hljs-keyword">include</span>?(<span class="hljs-constant">ActiveRecord::Base</span>) <span class="hljs-keyword">or</span> model.ancestors.<span class="hljs-keyword">include</span>?(<span class="hljs-constant">ActiveModel::Model</span>)
+          setup
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> resolved_model_definitions.blank?
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> continue_perform?
+          log_model_separator(model)  <span class="hljs-keyword">if</span> log?
+          model_definition = find_model_definition(resolved_model_definitions, model.name)
+          error <span class="hljs-string">"Missing model association definition for model [<span class="hljs-subst">#{model.name}</span>]"</span>  <span class="hljs-keyword">unless</span> model_definition.present?
+          model_def = model_definition.deep_dup
+          add_model_associations(model, model_def, options)            <span class="hljs-keyword">unless</span> options[<span class="hljs-symbol">:model</span>] == <span class="hljs-keyword">false</span>
+          add_model_delegates(model, model_def, options)               <span class="hljs-keyword">unless</span> options[<span class="hljs-symbol">:model</span>] == <span class="hljs-keyword">false</span>
+          add_model_serializer_associations(model, model_def, options) <span class="hljs-keyword">unless</span> options[<span class="hljs-symbol">:serializer</span>] == <span class="hljs-keyword">false</span>
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">continue_perform?</span></span>
+          <span class="hljs-keyword">true</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Will run once to setup the resolved_model_definitions instance variable and
+set whether is initiated by a rake task.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> resolved_model_definitions.present?
+          <span class="hljs-variable">@is_rake_task</span>             = <span class="hljs-keyword">false</span>
+          <span class="hljs-variable">@is_rake_association_task</span> = <span class="hljs-keyword">false</span>
+          <span class="hljs-variable">@warnings</span>                 = <span class="hljs-keyword">nil</span>
+          <span class="hljs-variable">@log</span>                      = <span class="hljs-keyword">false</span>
+          <span class="hljs-variable">@log_clean</span>                = <span class="hljs-keyword">false</span>
+          check_rake_task
+          <span class="hljs-variable">@resolved_model_definitions</span> = resolve_model_definition_classes_and_values
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">Totem::Core::Support::Shared</span>
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">AssociationsLogger</span>
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">Definitions</span>
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">AssociationsModel</span>
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">AssociationsSerializer</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Main - Model Associations</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_model_associations</span><span class="hljs-params">(model, mdef, options)</span></span>
+          associations = mdef[<span class="hljs-symbol">:associations</span>] || []
+          associations.each <span class="hljs-keyword">do</span> |association|
+            association = association.except(*<span class="hljs-constant">ASSOCIATIONS_SERIALIZER_ONLY_OPTIONS</span>)
+            <span class="hljs-constant">ASSOCIATIONS_KEYS_WITH_SYMBOL_VALUES</span>.each <span class="hljs-keyword">do</span> |key|
+              <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> association.has_key?(key)
+              value            = association[key]
+              association[key] = value.to_sym <span class="hljs-keyword">if</span> value.present? &amp;&amp; value.is_a?(<span class="hljs-constant">String</span>)
+            <span class="hljs-keyword">end</span>
+            add_model_association(model, association, options)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Main - Model Delegates</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_model_delegates</span><span class="hljs-params">(model, mdef, options)</span></span>
+          delegates = mdef[<span class="hljs-symbol">:delegate</span>] || []
+          delegates.each <span class="hljs-keyword">do</span> |delegate|
+            methods = [delegate[<span class="hljs-symbol">:method</span>]].flatten.compact
+            error <span class="hljs-string">"Delegate :method is blank [<span class="hljs-subst">#{model.name}</span>]"</span>  <span class="hljs-keyword">if</span> methods.blank?
+            methods = methods.collect {|m| m.to_sym}
+            methods.each <span class="hljs-keyword">do</span> |method|
+              error <span class="hljs-string">"Delegate method [<span class="hljs-subst">#{method.inspect}</span>] already exists on [<span class="hljs-subst">#{model.name}</span>]"</span>  <span class="hljs-keyword">if</span> model.method_defined?(method)
+            <span class="hljs-keyword">end</span>
+            to = delegate[<span class="hljs-symbol">:to</span>]
+            error <span class="hljs-string">"Delegate method <span class="hljs-subst">#{methods}</span> to: is blank [<span class="hljs-subst">#{model.name}</span>]"</span>  <span class="hljs-keyword">if</span> to.blank?
+            error <span class="hljs-string">"Delegate method <span class="hljs-subst">#{methods}</span> to: must be a symbol or string not [<span class="hljs-subst">#{to.<span class="hljs-keyword">class</span>.name}</span>] [<span class="hljs-subst">#{model.name}</span>]"</span>  <span class="hljs-keyword">unless</span> to.instance_of?(<span class="hljs-constant">String</span>) || to.instance_of?(<span class="hljs-constant">Symbol</span>)
+            to = to.to_s.gsub(<span class="hljs-string">'/'</span>,<span class="hljs-string">'_'</span>).to_sym
+            error <span class="hljs-string">"Delegate :to [<span class="hljs-subst">#{to.inspect}</span>] does not exist on [<span class="hljs-subst">#{model.name}</span>]"</span>  <span class="hljs-keyword">unless</span> model.method_defined?(to)
+            options             = <span class="hljs-constant">Hash</span>.new
+            options[<span class="hljs-symbol">:to</span>]        = to
+            options[<span class="hljs-symbol">:allow_nil</span>] = delegate[<span class="hljs-symbol">:allow_nil</span>] != <span class="hljs-keyword">false</span>
+            options[<span class="hljs-symbol">:prefix</span>]    = delegate[<span class="hljs-symbol">:prefix</span>]  <span class="hljs-keyword">if</span> delegate.has_key?(<span class="hljs-symbol">:prefix</span>)
+            log_model_association(model, <span class="hljs-symbol">:delegate</span>, methods, options)  <span class="hljs-keyword">if</span> log?
+            model.send <span class="hljs-symbol">:delegate</span>, *methods, options
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Main - Serializer Associations</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_model_serializer_associations</span><span class="hljs-params">(model, mdef, options)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-constant">::Totem::Settings</span>.config.startup_no_serializers?
+          serializers = get_serializer_definitions_for_model(model, mdef, options)
+          serializers.each <span class="hljs-keyword">do</span> |hash|
+            serializer_class = hash.delete(<span class="hljs-symbol">:class</span>)
+            error <span class="hljs-string">"Serializer class is blank [<span class="hljs-subst">#{hash.inspect}</span>]"</span>  <span class="hljs-keyword">if</span> serializer_class.blank?
+            serializer = serializer_class.safe_constantize
+            error <span class="hljs-string">"Cannot constantize model serializer name [<span class="hljs-subst">#{serializer_class}</span>]"</span>  <span class="hljs-keyword">if</span> serializer.blank?
+            log_serializer_separator(model, serializer)  <span class="hljs-keyword">if</span> log?
+            root = model.name.underscore
+            serializer.type(root)   <span class="hljs-comment"># set the root as the serializer's model</span>
+            add_serializer_method_delgates(serializer)  <span class="hljs-comment"># delegate methods to :scope (e.g. current_user, current_ability, etc.)</span>
+            add_platform_serializer_modules(model, serializer)
+            hash[<span class="hljs-symbol">:values</span>].each <span class="hljs-keyword">do</span> |association|  <span class="hljs-comment"># association is a belongs_to, has_one, has_many or another hash like attributes</span>
+              add_serializer_association(model, serializer, association)
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_serializer_method_delgates</span><span class="hljs-params">(serializer)</span></span>
+          <span class="hljs-constant">SERIALIZER_METHODS_DELEGATED_TO_SCOPE</span>.each <span class="hljs-keyword">do</span> |method|
+            serializer.send <span class="hljs-symbol">:delegate</span>, method, <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:scope</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Currently, the only authorization related modules are defined.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_platform_serializer_modules</span><span class="hljs-params">(model, serializer)</span></span>
+          modules = totem_settings.authorization.current_serializer_include_modules(model) || []
+          modules.each <span class="hljs-keyword">do</span> |mod|
+            serializer.send(<span class="hljs-symbol">:include</span>, mod)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Serializer Class</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The model&#39;s serializers: primary key section consists of an array of hashes (e.g. like the associations: key).
+Common serializer values (e.g. a hash key: value) are added under the serailizers: primary key
+(these hashes must not contain a key of &#39;serailizer&#39;) and are inherited by all the model&#39;s serializers.</p>
+<p>Each of the primary key &#39;serializers:&#39; hashes with a &#39;serializer:&#39; key (e.g. singular) is
+a serializer configuration and if found, only these configurations are used.
+This hash configuration must contain all the serailizer&#39;s associations (e.g. has_one and has_many).
+Any keys that match a common key will override the common value.
+See &#39;get_serializer_class_name&#39; for information on defining the class name of this kind of serializer.
+Note: Defining multiple serializers in this way is rarely needed after the &#39;serializer options&#39;
+functionality was implemented that allows a single serializer to perform differently
+based on the serializer options.</p>
+<p>If none of the &#39;serializers:&#39; hashes has a &#39;serializer:&#39; key, the default serializer class of:
+&quot;model.name + Seriazlier&quot; is used.  If this class does not exist, a new class is created
+by extending the platform&#39;s :base_serializer class (defined by the platform&#39;s config.yml file).
+Then the model&#39;s associations (e.g. from the model&#39;s associations: primary key) are copied
+to become the serializer&#39;s associations.
+The model&#39;s associations are copied per below unless the association contains the key/value:
+&#39;serialize: false&#39; to skip the association.</p>
+<ol>
+<li>belongs_to polymorphics</li>
+<li>An association that references the model itself (e.g. association&#39;s model class matches
+the current model&#39;s class) such as:<ul>
+<li>parent-child</li>
+<li>aliased name</li>
+</ul>
+</li>
+<li>The association&#39;s model has a model definition that contains a serializer definition
+e.g. a lookup is done on the association&#39;s model and its model definition is checked for
+serializer definition.<ul>
+<li>This conditional will typically remove :through associations (unless they have a serializer defined).</li>
+</ul>
+</li>
+</ol>
+<p>Common usage:</p>
+<ul>
+<li>model: platform/common/user
+associations:<ul>
+<li>belongs_to ...</li>
+<li>has_one ...</li>
+<li>has_many ...
+serailizers:</li>
+<li>attributes: [id, title]
+result: Platform::Common::UserSerailizer class created or updated with belongs_to, has_one and has_many associations.</li>
+</ul>
+</li>
+</ul></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_serializer_definitions_for_model</span><span class="hljs-params">(model, mdef, options)</span></span>
+          common_serializer_values = get_common_serializer_values(mdef)
+          serializers              = get_model_definition_serializers(mdef)
+          <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> serializers.blank? &amp;&amp; common_serializer_values.blank?
+          <span class="hljs-keyword">if</span> serializers.blank?  <span class="hljs-comment"># no serializer defined so copy associations from model's associations</span>
+            serializers = get_default_serializer_associations(model, mdef, options)
+          <span class="hljs-keyword">end</span>
+          serializer_definitions = []
+          classes_processed      = []
+          common_serializer_keys = common_serializer_values.keys
+          serializers.each <span class="hljs-keyword">do</span> |serializer|  <span class="hljs-comment"># serializer is an array of hashes that define it</span>
+            serializer_class = get_serializer_class_name(model, serializer, options)
+            error <span class="hljs-string">"Serializer class [<span class="hljs-subst">#{serializer_class.inspect}</span>] is a duplicate"</span>  <span class="hljs-keyword">if</span> classes_processed.<span class="hljs-keyword">include</span>?(serializer_class)
+            classes_processed.push(serializer_class)
+            serializer_keys = serializer.collect {|a| a.keys}.flatten.compact.uniq
+            keys_to_add     = common_serializer_keys - serializer_keys
+            hashes_to_add   = []
+            keys_to_add.each <span class="hljs-keyword">do</span> |key|
+              hashes_to_add.push( {key.to_sym =&gt; common_serializer_values[key].deep_dup} )
+            <span class="hljs-keyword">end</span>
+            values = hashes_to_add + serializer  <span class="hljs-comment"># add array of common hash values to serializer array of hashes</span>
+            serializer_definitions.push( {<span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">serializer_class</span>, <span class="hljs-title">values</span>: <span class="hljs-title">values</span>} )</span>
+          <span class="hljs-keyword">end</span>
+          serializer_definitions
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>No serializer is defined in the &#39;serailizers&#39; section (e.g. no hash with a &#39;serializer&#39; key).
+If the serializer class (model.name + Serializer) does not exsit, create a new serializer class.
+Transfer the model&#39;s associations to become the serializer&#39;s associations.
+To skip adding an association to the serializer, set &#39;serialize: false&#39; in association&#39;s definition.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_default_serializer_associations</span><span class="hljs-params">(model, mdef, options)</span></span>
+          serializer_associations = []
+          serializer_class_name   = model.name + <span class="hljs-string">'Serializer'</span>
+          serializer              = serializer_class_name.safe_constantize</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a serializer class if it does not exist.</p></div></div><div class="code"><div class="wrapper">          create_default_serializer_class(model, serializer_class_name)  <span class="hljs-keyword">if</span> serializer.blank?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Transfer the model&#39;s associations to become the serailizer&#39;s associations.</p></div></div><div class="code"><div class="wrapper">          (mdef[<span class="hljs-symbol">:associations</span>] || []).each <span class="hljs-keyword">do</span> |association|
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> association[<span class="hljs-symbol">:serialize</span>] == <span class="hljs-keyword">false</span>
+            <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> association[<span class="hljs-symbol">:valid_class</span>]
+            <span class="hljs-keyword">unless</span> is_self_model_association?(model, association) <span class="hljs-comment"># if association for the current model itself e.g. polymorphic</span>
+              association_model_class = get_association_model_class(association)
+              model_definition        = find_model_definition(resolved_model_definitions, association_model_class)
+              error(<span class="hljs-string">"Missing model <span class="hljs-subst">#{model.name.inspect}</span> definition for association model class <span class="hljs-subst">#{association_model_class.inspect}</span>"</span>)  <span class="hljs-keyword">if</span> model_definition.blank?
+              <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> model_definition[<span class="hljs-symbol">:serializers</span>].present?  <span class="hljs-comment"># skip this association since not serialized</span>
+            <span class="hljs-keyword">end</span>
+            serializer_association             = association.deep_dup  <span class="hljs-comment"># first copy the model's association</span>
+            serializer_association[<span class="hljs-symbol">:authorize</span>] = association[<span class="hljs-symbol">:authorize</span>] == <span class="hljs-keyword">false</span> ? <span class="hljs-keyword">false</span> <span class="hljs-symbol">:</span> <span class="hljs-keyword">true</span>
+            <span class="hljs-keyword">if</span> (belongs_to = serializer_association.delete(<span class="hljs-symbol">:belongs_to</span>)).present?
+              serializer_association[<span class="hljs-symbol">:has_one</span>] = belongs_to <span class="hljs-comment"># ASM only uses has_one</span>
+            <span class="hljs-keyword">end</span>
+            serializer_associations.push serializer_association
+          <span class="hljs-keyword">end</span>
+
+          [serializer_associations]
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_common_serializer_values</span><span class="hljs-params">(mdef)</span></span>
+          common_serializer_values = <span class="hljs-constant">HashWithIndifferentAccess</span>.new
+          <span class="hljs-keyword">if</span> (mdef_serializers = mdef[<span class="hljs-symbol">:serializers</span>])
+            mdef_serializers.each <span class="hljs-keyword">do</span> |serializer|
+              <span class="hljs-keyword">next</span> <span class="hljs-keyword">if</span> serializer.has_key?(<span class="hljs-symbol">:serializer</span>)
+              serializer.each_pair <span class="hljs-keyword">do</span> |key, value|
+                common_serializer_values[key] = value
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+          common_serializer_values
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_serializer_class_name</span><span class="hljs-params">(model, serializer, options)</span></span>
+          suffix = serializer.collect {|a| a[<span class="hljs-symbol">:suffix</span>]}.compact.first
+          prefix = serializer.collect {|a| a[<span class="hljs-symbol">:prefix</span>]}.compact.first
+          klass  = serializer.collect {|a| a[<span class="hljs-symbol">:class</span>]}.compact.first
+          serializer.delete_if {|a| a[<span class="hljs-symbol">:suffix</span>]}  <span class="hljs-comment"># delete configuration hashes (e.g. not serializer options)</span>
+          serializer.delete_if {|a| a[<span class="hljs-symbol">:prefix</span>]}
+          serializer.delete_if {|a| a[<span class="hljs-symbol">:class</span>]}
+          serializer_class = klass || options[<span class="hljs-symbol">:serializer_class</span>] || model.name
+          <span class="hljs-keyword">if</span> prefix.present?
+            ns   = serializer_class.deconstantize
+            name = serializer_class.demodulize
+            serializer_class = ns + <span class="hljs-string">'::'</span> + prefix.classify + name
+          <span class="hljs-keyword">end</span>
+          serializer_class = serializer_class + suffix.classify  <span class="hljs-keyword">if</span> suffix.present?
+          serializer_class += <span class="hljs-string">'Serializer'</span>
+          serializer_class
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a new serailizer class (model.name + &#39;Serializer&#39;) by extending the platform&#39;s :base_serializer.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_default_serializer_class</span><span class="hljs-params">(model, serializer_class_name)</span></span>
+          platform_name = totem_settings.engine.current_platform_name(model)
+          error(<span class="hljs-string">"Platform name for model <span class="hljs-subst">#{model.inspect}</span> is blank."</span>)  <span class="hljs-keyword">if</span> platform_name.blank?
+          extend_class = totem_settings.<span class="hljs-keyword">class</span>[platform_name.to_sym].get_class(<span class="hljs-symbol">:base_serializer</span>)
+          error(<span class="hljs-string">"Unknown base serializer class for platform name <span class="hljs-subst">#{platform_name.inspect}</span>."</span>)  <span class="hljs-keyword">if</span> extend_class.blank?
+          klass          = <span class="hljs-constant">Class</span>.new(extend_class)
+          namespace_name = serializer_class_name.deconstantize
+          namespace      = namespace_name.safe_constantize
+          serializer     = namespace.const_set(serializer_class_name.demodulize, klass)
+          error(<span class="hljs-string">"Serializer class <span class="hljs-subst">#{serializer_class_name.inspect}</span> could not be constantized."</span>)  <span class="hljs-keyword">if</span> serializer.blank?
+          debug <span class="hljs-string">"Created serializer <span class="hljs-subst">#{serializer.name.inspect}</span>"</span>  <span class="hljs-keyword">unless</span> is_rake_task?
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_self_model_association?</span><span class="hljs-params">(model, association)</span></span>
+          belongs_to = association[<span class="hljs-symbol">:belongs_to</span>]
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> belongs_to.present? &amp;&amp; is_polymorphic?(association)
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span> <span class="hljs-keyword">if</span> get_association_model_class(association) == model.name
+          <span class="hljs-keyword">false</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_association_model_class</span><span class="hljs-params">(association)</span></span>
+          association[<span class="hljs-symbol">:belongs_to</span>] || association[<span class="hljs-symbol">:has_one</span>] || association[<span class="hljs-symbol">:has_many</span>]
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Common Errors and Warnings</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">warning</span><span class="hljs-params">(message)</span></span>
+          <span class="hljs-keyword">if</span> log_clean?
+            message = <span class="hljs-string">"[WARNING]: <span class="hljs-subst">#{message}</span>"</span>
+          <span class="hljs-keyword">else</span>
+            message = <span class="hljs-string">"[WARNING] <span class="hljs-subst">#{<span class="hljs-keyword">self</span>.<span class="hljs-keyword">class</span>}</span>: <span class="hljs-subst">#{message}</span>"</span>
+          <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">if</span> is_rake_association_task?
+            <span class="hljs-variable">@warnings</span>.push(message)
+          <span class="hljs-keyword">end</span>
+          puts message
+          <span class="hljs-constant">Rails</span>.logger.warn message
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

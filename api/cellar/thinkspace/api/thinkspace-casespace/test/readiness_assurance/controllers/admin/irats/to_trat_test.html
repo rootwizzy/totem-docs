@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/test/readiness_assurance/controllers/admin/irats/to_trat_test</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/test/readiness_assurance/controllers/admin/irats/to_trat_test"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/test/readiness_assurance/controllers/admin/irats/to_trat_test.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/test/readiness_assurance/controllers/admin/irats/to_trat_test.rb">src/thinkspace/api/thinkspace-casespace/test/readiness_assurance/controllers/admin/irats/to_trat_test.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'readiness_assurance_helper'</span>
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Test</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Controller</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReadinessAssuranceAdminIratsToTratTest</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActionController::TestCase</span></span></span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::Helpers::All</span>
+
+  add_test(<span class="hljs-constant">Proc</span>.new <span class="hljs-keyword">do</span> |route|
+    describe <span class="hljs-string">'to trat'</span> <span class="hljs-keyword">do</span>
+      before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@route</span> = route; <span class="hljs-keyword">end</span>
+      it <span class="hljs-string">'no timetable trat due at'</span> <span class="hljs-keyword">do</span>
+        assert_authorized(send_route_request)
+        assert_timeable_due_at(params_irat_due_at, irat_phase, read_1)
+        assert_no_timeable(trat_phase, read_1)
+        assert_no_timeable(trat_phase, team_1)
+        assert_phase_state(<span class="hljs-symbol">:completed</span>, irat_phase, read_1)
+        assert_phase_state(<span class="hljs-symbol">:completed</span>, irat_phase, read_2)
+        assert_phase_state(<span class="hljs-symbol">:unlocked</span>, trat_phase, team_1)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>) <span class="hljs-comment"># proc</span>
+
+  add_test(<span class="hljs-constant">Proc</span>.new <span class="hljs-keyword">do</span> |route|
+    describe <span class="hljs-string">'to trat'</span> <span class="hljs-keyword">do</span>
+      let(<span class="hljs-symbol">:trat_due_at</span>)  {time_now + <span class="hljs-number">10</span>.minutes}
+      before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@route</span> = route; <span class="hljs-keyword">end</span>
+      it <span class="hljs-string">'with timetable trat due at'</span> <span class="hljs-keyword">do</span>
+        assert_authorized(send_route_request)
+        assert_timeable_due_at(params_irat_due_at, irat_phase, read_1)
+        assert_no_timeable(trat_phase, read_1)
+        assert_timeable_due_at(params_trat_due_at, trat_phase, team_1)
+        assert_phase_state(<span class="hljs-symbol">:completed</span>, irat_phase, read_1)
+        assert_phase_state(<span class="hljs-symbol">:completed</span>, irat_phase, read_2)
+        assert_phase_state(<span class="hljs-symbol">:unlocked</span>, trat_phase, team_1)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>) <span class="hljs-comment"># proc</span>
+
+  add_test(<span class="hljs-constant">Proc</span>.new <span class="hljs-keyword">do</span> |route|
+    describe <span class="hljs-string">'to trat'</span> <span class="hljs-keyword">do</span>
+      let(<span class="hljs-symbol">:trat_due_at</span>)  {time_now + <span class="hljs-number">10</span>.minutes}
+      let(<span class="hljs-symbol">:response_ownerable</span>)   {read_1}
+      before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@route</span> = route; <span class="hljs-keyword">end</span>
+      it <span class="hljs-string">'user response scores'</span> <span class="hljs-keyword">do</span>
+        response1 = get_response
+        incorrect_answers_1(response1)
+        response2 = get_response(read_2)
+        correct_answers(response2)
+        assert_authorized(send_route_request)
+        assert_phase_score(<span class="hljs-number">7</span>, irat_phase, read_1)
+        assert_phase_score(<span class="hljs-number">9</span>, irat_phase, read_2)
+        assert_timeable_due_at(params_irat_due_at, irat_phase, read_1)
+        assert_no_timeable(trat_phase, read_1)
+        assert_timeable_due_at(params_trat_due_at, trat_phase, team_1)
+        assert_phase_state(<span class="hljs-symbol">:completed</span>, irat_phase, read_1)
+        assert_phase_state(<span class="hljs-symbol">:completed</span>, irat_phase, read_2)
+        assert_phase_state(<span class="hljs-symbol">:unlocked</span>, trat_phase, team_1)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>) <span class="hljs-comment"># proc</span>
+
+  add_test(<span class="hljs-constant">Proc</span>.new <span class="hljs-keyword">do</span> |route|
+    describe <span class="hljs-string">'to trat'</span> <span class="hljs-keyword">do</span>
+      let(<span class="hljs-symbol">:trat_due_at</span>)  {time_now + <span class="hljs-number">10</span>.minutes}
+      before <span class="hljs-keyword">do</span>; <span class="hljs-variable">@route</span> = route; <span class="hljs-keyword">end</span>
+      it <span class="hljs-string">'server events'</span> <span class="hljs-keyword">do</span>
+        assert_authorized(send_route_request)
+        assert_server_event_transition_to_phase_with_message
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>) <span class="hljs-comment"># proc</span>
+
+  <span class="hljs-variable">@co</span> = new_route_config_options(<span class="hljs-symbol">tests:</span> get_tests, <span class="hljs-symbol">test_action:</span> <span class="hljs-symbol">:to_trat</span>)
+  <span class="hljs-variable">@co</span>.only <span class="hljs-symbol">:readiness_assurance</span>, <span class="hljs-symbol">:irats</span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::Helpers::Route::Irats</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

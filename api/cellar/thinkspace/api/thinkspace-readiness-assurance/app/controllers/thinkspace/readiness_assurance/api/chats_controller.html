@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/chats_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/chats_controller"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/chats_controller.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/chats_controller.rb">src/thinkspace/api/thinkspace-readiness-assurance/app/controllers/thinkspace/readiness_assurance/api/chats_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">ReadinessAssurance</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChatsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+        totem_action_authorize!
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add</span></span>
+          value = validate_and_set_chat_data
+          <span class="hljs-keyword">if</span> team?
+            publish(value)
+          <span class="hljs-keyword">else</span>
+            access_denied <span class="hljs-string">"Chat messages are only for team based ownerables [ownerable: <span class="hljs-subst">#{ownerable.inspect}</span>]"</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        private
+
+        <span class="hljs-keyword">include</span> <span class="hljs-constant">ReadinessAssurance::ControllerHelpers::Base</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">validate_and_set_chat_data</span></span>
+          response = <span class="hljs-variable">@chat</span>.thinkspace_readiness_assurance_response
+          access_denied <span class="hljs-string">"Chat id <span class="hljs-subst">#{<span class="hljs-variable">@chat</span>.id}</span> response is blank."</span>  <span class="hljs-keyword">if</span> response.blank?
+          <span class="hljs-variable">@assessment</span> = response.thinkspace_readiness_assurance_assessment
+          message     = params[<span class="hljs-symbol">:message</span>]
+          access_denied <span class="hljs-string">"Chat message is blank."</span>  <span class="hljs-keyword">if</span> message.blank?
+          messages = <span class="hljs-variable">@chat</span>.messages
+          access_denied <span class="hljs-string">"Chat messages is not a Hash."</span>  <span class="hljs-keyword">unless</span> messages.is_a?(<span class="hljs-constant">Hash</span>)
+          question_messages = (messages[question_id] ||= <span class="hljs-constant">Array</span>.new)
+          access_denied <span class="hljs-string">"Chat question messages is not an array."</span>  <span class="hljs-keyword">unless</span> question_messages.is_a?(<span class="hljs-constant">Array</span>)
+          chat_message = {<span class="hljs-symbol">message:</span> message, <span class="hljs-symbol">time:</span> <span class="hljs-constant">Time</span>.now.utc}.merge(current_user_json)
+          question_messages.push(chat_message)
+          access_denied <span class="hljs-string">"Could not save chat.  Validation errors: <span class="hljs-subst">#{<span class="hljs-variable">@chat</span>.errors.messages}</span>."</span>  <span class="hljs-keyword">unless</span> <span class="hljs-variable">@chat</span>.save
+          {<span class="hljs-symbol">question_id:</span> question_id, <span class="hljs-symbol">message:</span> chat_message}
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">publish</span><span class="hljs-params">(value)</span></span>
+          pubsub.data.
+            room(pubsub_room).
+            room_event(<span class="hljs-symbol">:chat</span>).
+            value(value).
+            publish
+          controller_render_no_content
+        <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

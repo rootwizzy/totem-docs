@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-pub-sub/app/concerns/totem/pub_sub/connection</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-pub-sub/app/concerns/totem/pub_sub/connection"><meta name="groc-project-path" content="src/totem/api/totem-pub-sub/app/concerns/totem/pub_sub/connection.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-pub-sub/app/concerns/totem/pub_sub/connection.rb">src/totem/api/totem-pub-sub/app/concerns/totem/pub_sub/connection.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="comments "><div class="wrapper"><p>Be sure to restart your server when you modify this file.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-keyword">require</span> <span class="hljs-string">'singleton'</span>
+<span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PubSub</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Connection</span></span>
+  <span class="hljs-keyword">include</span> <span class="hljs-constant">Singleton</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Singleton class to connect to the pubsub server and hold a reference to the client.
+Note: When in console mode and perform a &#39;reload!&#39; will create another connection.  When exit the console, all console connections are removed.
+Change the &#39;pub_sub.rb&#39; initializer to establish the connection at initialization (see client documentation).</p></div></div><div class="code"><div class="wrapper">  extend <span class="hljs-constant">::Totem::Core::Support::Shared</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">client</span></span>
+    <span class="hljs-variable">@pubsub_client</span> ||= <span class="hljs-keyword">begin</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">defined</span>? <span class="hljs-constant">::Redis</span>
+        url = <span class="hljs-constant">::Rails</span>.application.secrets.dig(<span class="hljs-symbol">:pub_sub</span>, <span class="hljs-string">'url'</span>)
+        <span class="hljs-keyword">if</span> url.blank?
+          warning <span class="hljs-string">"The pub_sub [url: <span class="hljs-subst">#{url.inspect}</span>] is blank.  PubSub is INACTIVE."</span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span>
+        <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">begin</span>
+          id = <span class="hljs-string">'totem'</span>  <span class="hljs-comment"># name of the redis connection e.g. client list #=&gt; addr=...name=totem</span>
+          id += <span class="hljs-string">'-console'</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">defined</span>?(<span class="hljs-constant">::Rails::Console</span>)
+          rc = <span class="hljs-constant">::Redis</span>.new(<span class="hljs-symbol">url:</span> url, <span class="hljs-symbol">id:</span> id)
+          rc.ping
+        <span class="hljs-keyword">rescue</span> <span class="hljs-constant">::Redis::CannotConnectError</span>
+          warning <span class="hljs-string">"Redis connect failure for [host: <span class="hljs-subst">#{rc.client.host.inspect}</span>] [port: <span class="hljs-subst">#{rc.client.port.inspect}</span>]. Pubsub is INACTIVE."</span>
+          <span class="hljs-keyword">nil</span>
+        <span class="hljs-keyword">else</span>
+          info <span class="hljs-string">"Connected to Redis server [host: <span class="hljs-subst">#{rc.client.host.inspect}</span>] [port: <span class="hljs-subst">#{rc.client.port.inspect}</span>]."</span>
+          rc
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">else</span>
+        warning <span class="hljs-string">"Redis gem is not included. PubSub is INACTIVE."</span>
+        <span class="hljs-keyword">nil</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PubSubConnectionError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>

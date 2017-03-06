@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="en"><head><title>src/totem/api/totem-core/app/lib/totem/core/models/associations_model</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="src/totem/api/totem-core/app/lib/totem/core/models/associations_model"><meta name="groc-project-path" content="src/totem/api/totem-core/app/lib/totem/core/models/associations_model.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-core/app/lib/totem/core/models/associations_model.rb">src/totem/api/totem-core/app/lib/totem/core/models/associations_model.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Totem</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Core</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Models</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">AssociationsModel</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h6 id="">#</h6>
+<p>@!group Model Association Detail</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_model_association</span><span class="hljs-params">(model, association, options)</span></span>
+          association = association.symbolize_keys</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>remove non-Rails keys and keys that provide information or need special processing</p></div></div><div class="code"><div class="wrapper">          assoc_name      = association.delete(<span class="hljs-symbol">:name</span>)
+          nested_attr_for = association.delete(<span class="hljs-symbol">:accepts_nested_attributes_for</span>)
+          scope           = association.delete(<span class="hljs-symbol">:scope</span>)
+          readonly        = association.delete(<span class="hljs-symbol">:readonly</span>)
+
+          scope_string = get_scope_string(scope, readonly)
+          scope        = get_scope_lambda(scope_string)
+          assoc_class  = <span class="hljs-keyword">nil</span>
+
+          valid_class = association.delete(<span class="hljs-symbol">:valid_class</span>)
+          <span class="hljs-keyword">return</span> warning <span class="hljs-string">"Invalid class for model [<span class="hljs-subst">#{model}</span>] and association [<span class="hljs-subst">#{association.inspect}</span>], skipping so any reference will result in an error."</span> <span class="hljs-keyword">unless</span> valid_class</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Include any common platform modules in the model.</p></div></div><div class="code"><div class="wrapper">          include_model_modules(model, assoc_name, association)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Validate authable type/id are present.</p></div></div><div class="code"><div class="wrapper">          add_authable_after_save(model, assoc_name, association)
+
+          <span class="hljs-keyword">case</span>
+
+          <span class="hljs-keyword">when</span> assoc_class = association.delete(<span class="hljs-symbol">:belongs_to</span>)
+            association[<span class="hljs-symbol">:class_name</span>] = assoc_class  <span class="hljs-keyword">unless</span> is_polymorphic?(association)
+            set_foreign_key(model, association, <span class="hljs-symbol">:belongs_to</span>)
+            log_model_association_type(<span class="hljs-symbol">:belongs_to</span>, model, association, <span class="hljs-symbol">name:</span> assoc_name, <span class="hljs-symbol">scope:</span> scope_string)  <span class="hljs-keyword">if</span> log?
+            model.belongs_to(assoc_name, scope, association)
+
+          <span class="hljs-keyword">when</span> assoc_class = association.delete(<span class="hljs-symbol">:has_one</span>)
+            association[<span class="hljs-symbol">:class_name</span>] = assoc_class
+            set_foreign_key(model, association, <span class="hljs-symbol">:has_one</span>)
+            log_model_association_type(<span class="hljs-symbol">:has_one</span>, model, association, <span class="hljs-symbol">name:</span> assoc_name, <span class="hljs-symbol">scope:</span> scope_string)  <span class="hljs-keyword">if</span> log?
+            model.has_one(assoc_name, scope, association)
+
+          <span class="hljs-keyword">when</span> assoc_class = association.delete(<span class="hljs-symbol">:has_many</span>)
+            association[<span class="hljs-symbol">:class_name</span>] = assoc_class
+            set_foreign_key(model, association,<span class="hljs-symbol">:has_many</span>)
+            log_model_association_type(<span class="hljs-symbol">:has_many</span>, model, association, <span class="hljs-symbol">name:</span> assoc_name, <span class="hljs-symbol">scope:</span> scope_string)  <span class="hljs-keyword">if</span> log?
+            model.has_many(assoc_name, scope, association)
+
+          <span class="hljs-keyword">else</span>
+            error <span class="hljs-string">"Class [<span class="hljs-subst">#{model.name}</span>] has unknown association [<span class="hljs-subst">#{association.inspect}</span>]"</span>
+
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-keyword">if</span> nested_attr_for.present? &amp;&amp; assoc_class.present?
+            assoc_name      = plural_association_name(assoc_class)
+            nested_attr_for = nested_attr_for.symbolize_keys
+            model.accepts_nested_attributes_for(assoc_name, nested_attr_for)
+            log_model_association(model, <span class="hljs-string">'accepts_nested_attributes_for'</span>, assoc_name, nested_attr_for) <span class="hljs-keyword">if</span> log?
+          <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_scope_lambda</span><span class="hljs-params">(scope_string)</span></span>
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">nil</span> <span class="hljs-keyword">if</span> scope_string.blank?
+          eval <span class="hljs-string">"lambda { <span class="hljs-subst">#{scope_string}</span> }"</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_scope_string</span><span class="hljs-params">(scope, readonly)</span></span>
+          <span class="hljs-keyword">case</span> 
+          <span class="hljs-keyword">when</span> scope.present? &amp;&amp; readonly.present?
+            scope.strip + <span class="hljs-string">'.readonly'</span>
+          <span class="hljs-keyword">when</span> scope.blank? &amp;&amp; readonly.present?
+            <span class="hljs-string">'readonly'</span>
+          <span class="hljs-keyword">when</span> scope.present? &amp;&amp; readonly.blank?
+            scope.strip
+          <span class="hljs-keyword">else</span>
+            <span class="hljs-string">''</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_foreign_key</span><span class="hljs-params">(model, association, type)</span></span>
+          <span class="hljs-keyword">unless</span> as_polymorphic?(association) || is_polymorphic?(association)
+            <span class="hljs-keyword">unless</span> association[<span class="hljs-symbol">:foreign_key</span>]
+              <span class="hljs-keyword">case</span> type
+              <span class="hljs-keyword">when</span> <span class="hljs-symbol">:belongs_to</span>
+                assoc_class = association[<span class="hljs-symbol">:class_name</span>]
+                association[<span class="hljs-symbol">:foreign_key</span>] = assoc_class.foreign_key
+              <span class="hljs-keyword">when</span> <span class="hljs-symbol">:has_one</span>
+                association[<span class="hljs-symbol">:foreign_key</span>] = model.name.foreign_key
+              <span class="hljs-keyword">when</span> <span class="hljs-symbol">:has_many</span>
+                association[<span class="hljs-symbol">:foreign_key</span>] = model.name.foreign_key
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>For new nested records, the deep_cloneable gem adds associations with nil ids
+for the root record that are resolved when the root record is saved.
+However, a standard Rails model validation in the nested record for &#39;authable_id presence&#39;
+will fail since the authable_id is nil. This block will validate the authable is present after saving
+the record.  Nested records require the use of &#39;validates_associated&#39; so the root
+record will recieve the nested validation errors when saved.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_authable_after_save</span><span class="hljs-params">(model, assoc_name, association)</span></span>
+          <span class="hljs-keyword">case</span> 
+          <span class="hljs-keyword">when</span> assoc_name == <span class="hljs-symbol">:authable</span> &amp;&amp; is_polymorphic?(association)
+            model.after_save <span class="hljs-keyword">do</span>
+              (<span class="hljs-keyword">self</span>.authable_type.present? &amp;&amp; <span class="hljs-keyword">self</span>.authable_id.present?) ? <span class="hljs-keyword">true</span> <span class="hljs-symbol">:</span> <span class="hljs-keyword">false</span>
+            <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Include additional model modules based on the association.
+e.g. add scope_by_ownerables to models with :ownerable association.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">include_model_modules</span><span class="hljs-params">(model, assoc_name, association)</span></span>
+          <span class="hljs-keyword">case</span> 
+          <span class="hljs-keyword">when</span> assoc_name == <span class="hljs-symbol">:ownerable</span> &amp;&amp; is_polymorphic?(association)
+            include_model_module(model, <span class="hljs-symbol">:scope_by_ownerables</span>)
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">include_model_module</span><span class="hljs-params">(model, mod_name)</span></span>
+          platform_name = totem_settings.engine.current_platform_name(model)
+          mods          = <span class="hljs-constant">::Totem::Settings</span>.<span class="hljs-keyword">module</span>[platform_name]
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> mods.blank?
+          mod = mods.has_module?(mod_name) ? mods.get_module(mod_name) <span class="hljs-symbol">:</span> <span class="hljs-keyword">nil</span>
+          model.send(<span class="hljs-symbol">:include</span>, mod)
+        <span class="hljs-keyword">end</span>
+
+       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">log_model_association_type</span><span class="hljs-params">(type, model, association, log_options={})</span></span>
+          assoc_name  = log_options.delete(<span class="hljs-symbol">:name</span>)
+          log_options.delete(<span class="hljs-symbol">:scope</span>) <span class="hljs-keyword">if</span> log_options[<span class="hljs-symbol">:scope</span>].blank?
+          log_options = log_options.merge(association)
+          log_model_association(model, type, assoc_name, log_options)
+       <span class="hljs-keyword">end</span>
+
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

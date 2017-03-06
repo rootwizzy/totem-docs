@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-casespace/db/helpers/seed_config/classes/import</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-casespace/db/helpers/seed_config/classes/import"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/classes/import.rb"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/classes/import.rb">src/thinkspace/api/thinkspace-casespace/db/helpers/seed_config/classes/import.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">SeedConfigHelperClass</span>;</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Import</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A config hash can include &#39;config_key: import[filename]&#39; to replace the config_key&#39;s value with the import value(s).
+The import statement can be either:
+ config_key: import[filename]      #=&gt; import filename value hash[:import]
+ config_key: import[filename@key]  #=&gt; import filename value hash[key]  e.g. import[users@add_more]
+ config_key: import[filename1, filename2, ...]  #=&gt; can be in either form as per above; adds/merges compatible data structures in same order.
+If the filename includes a slash, will use as-is; otherwise prepends &#39;imports/&#39;
+A config hash can use the key &#39;merge_with&#39; to perform a &#39;reverse&#39; merge with the object hash with the file hash value
+(e.g. the reverse merge allows keeping any values in the config hash and inserting the new keys/values from file hash).</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">attr_reader</span> <span class="hljs-symbol">:import_files</span>, <span class="hljs-symbol">:namespace</span>, <span class="hljs-symbol">:regex</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">initialize</span><span class="hljs-params">(caller, seed, ns=<span class="hljs-keyword">nil</span>)</span></span>
+    <span class="hljs-variable">@caller</span>       = caller
+    <span class="hljs-variable">@seed</span>         = seed
+    <span class="hljs-variable">@namespace</span>    = ns || <span class="hljs-symbol">:casespace</span>
+    <span class="hljs-variable">@import_files</span> = <span class="hljs-constant">Hash</span>.new
+    <span class="hljs-variable">@regex</span>        = <span class="hljs-constant">Regexp</span>.new (<span class="hljs-regexp">/import\[/</span>)
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process</span><span class="hljs-params">(configs)</span></span>
+    configs.each <span class="hljs-keyword">do</span> |config|
+      <span class="hljs-keyword">if</span> config.to_s.match(regex)
+        <span class="hljs-variable">@seed</span>.message color_line(<span class="hljs-string">"--Processing imports (<span class="hljs-subst">#{config_name(config)}</span>)."</span>, <span class="hljs-symbol">:green</span>)
+        deep_replace_imports(config)
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deep_replace_imports</span><span class="hljs-params">(object)</span></span>
+    <span class="hljs-keyword">case</span>
+
+    <span class="hljs-keyword">when</span> object.is_a?(<span class="hljs-constant">Hash</span>)
+      keys = object.keys
+      keys.each <span class="hljs-keyword">do</span> |key|
+        value = object[key]
+        <span class="hljs-keyword">if</span> value.is_a?(<span class="hljs-constant">String</span>) &amp;&amp; value.match(regex)
+          replace_with_import_file_value(object, key, value)
+        <span class="hljs-keyword">else</span>
+          deep_replace_imports(value)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+
+    <span class="hljs-keyword">when</span> object.is_a?(<span class="hljs-constant">Array</span>)
+      object.each <span class="hljs-keyword">do</span> |value|
+        deep_replace_imports(value)
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If object array element is a hash that has &#39;merge_with&#39; key with an array value, replace the hash
+with the hash[:merge_with] elements.</p></div></div><div class="code"><div class="wrapper">      array = <span class="hljs-constant">Array</span>.new
+      object.each <span class="hljs-keyword">do</span> |value|
+        <span class="hljs-keyword">case</span>
+        <span class="hljs-keyword">when</span> value.is_a?(<span class="hljs-constant">Hash</span>) &amp;&amp; value.has_key?(<span class="hljs-symbol">:merge_with</span>) &amp;&amp; value[<span class="hljs-symbol">:merge_with</span>].is_a?(<span class="hljs-constant">Array</span>)
+          array += value[<span class="hljs-symbol">:merge_with</span>]
+        <span class="hljs-keyword">else</span>
+          array.push(value)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span>
+      object.clear
+      array.each {|v| object.push(v)}
+
+    <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">replace_with_import_file_value</span><span class="hljs-params">(object, okey, ovalue)</span></span>
+    imports      = ovalue.sub(<span class="hljs-string">'import['</span>, <span class="hljs-string">''</span>).sub(<span class="hljs-string">']'</span>,<span class="hljs-string">''</span>).split(<span class="hljs-string">','</span>).collect {|i| i.strip}
+    merge_with   = okey == <span class="hljs-symbol">:merge_with</span>
+    import_value = <span class="hljs-keyword">nil</span>
+    imports.each <span class="hljs-keyword">do</span> |import|
+      file_value = get_import_value(import)
+      <span class="hljs-keyword">case</span>
+      <span class="hljs-keyword">when</span> merge_with &amp;&amp; object.is_a?(<span class="hljs-constant">Hash</span>) &amp;&amp; file_value.is_a?(<span class="hljs-constant">Hash</span>)
+        object.delete(okey)  <span class="hljs-keyword">if</span> object.has_key?(okey)
+        object.reverse_merge!(file_value)
+        import_value = <span class="hljs-keyword">nil</span>
+      <span class="hljs-keyword">when</span> merge_with &amp;&amp; object.is_a?(<span class="hljs-constant">Hash</span>) &amp;&amp; file_value.is_a?(<span class="hljs-constant">Array</span>)  <span class="hljs-comment"># merge the object hash with each array hash</span>
+        import_value = <span class="hljs-constant">Array</span>.new
+        file_value.each <span class="hljs-keyword">do</span> |hash|
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> hash.is_a?(<span class="hljs-constant">Hash</span>)
+          merged_hash = hash.reverse_merge(object)
+          merged_hash.delete(okey)
+          import_value.push merged_hash
+        <span class="hljs-keyword">end</span>
+        import_value
+      <span class="hljs-keyword">when</span> import_value.<span class="hljs-keyword">nil</span>?
+        import_value = file_value
+      <span class="hljs-keyword">when</span> import_value.is_a?(<span class="hljs-constant">Hash</span>) &amp;&amp; file_value.is_a?(<span class="hljs-constant">Hash</span>)
+        import_value.merge!(file_value)
+      <span class="hljs-keyword">when</span> import_value.is_a?(<span class="hljs-constant">Array</span>) &amp;&amp; file_value.is_a?(<span class="hljs-constant">Array</span>)
+        import_value += file_value
+      <span class="hljs-keyword">when</span> import_value.is_a?(<span class="hljs-constant">Array</span>)
+        import_value.push(file_value)
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Import value [<span class="hljs-subst">#{file_value.inspect}</span>] is not compatiable with previous import [<span class="hljs-subst">#{import_value.inspect}</span>]."</span>
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>
+    object[okey] = import_value  <span class="hljs-keyword">if</span> import_value.present?
+    import_value
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_import_value</span><span class="hljs-params">(import)</span></span>
+    import        = import.sub(<span class="hljs-string">'import['</span>, <span class="hljs-string">''</span>).sub(<span class="hljs-string">']'</span>,<span class="hljs-string">''</span>)
+    filename, key = import.split(<span class="hljs-string">'@'</span>, <span class="hljs-number">2</span>)
+    filename      = filename.match(<span class="hljs-regexp">/\//</span>) ? filename <span class="hljs-symbol">:</span> <span class="hljs-string">"imports/<span class="hljs-subst">#{filename}</span>"</span>  <span class="hljs-comment"># if has slash assume contains folder</span>
+    config        = import_files[filename] || <span class="hljs-variable">@seed</span>.test_import_file(<span class="hljs-symbol">namespace:</span> namespace, <span class="hljs-symbol">import:</span> filename)
+    key           = key.present? ? key.to_sym <span class="hljs-symbol">:</span> <span class="hljs-symbol">:import</span>
+    import_files[filename] ||= config
+    <span class="hljs-variable">@seed</span>.error <span class="hljs-string">"Import file <span class="hljs-subst">#{filename.inspect}</span> does not have a key of <span class="hljs-subst">#{key.inspect}</span>."</span>  <span class="hljs-keyword">unless</span> config.has_key?(key)
+    config[key]
+  <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">config_name</span><span class="hljs-params">(config)</span>;</span> <span class="hljs-variable">@caller</span>.casespace_seed_config_name(config); <span class="hljs-keyword">end</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">color_line</span><span class="hljs-params">(*args)</span>;</span> <span class="hljs-variable">@caller</span>.color_line(*args); <span class="hljs-keyword">end</span>
+
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span></div></div></div></div></body></html>
