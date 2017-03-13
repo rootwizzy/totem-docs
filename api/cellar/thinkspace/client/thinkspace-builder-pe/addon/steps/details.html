@@ -1,7 +1,9 @@
 <!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-builder-pe/addon/steps/details</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-builder-pe/addon/steps/details"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-builder-pe/addon/steps/details.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-builder-pe/addon/steps/details.coffee">src/thinkspace/client/thinkspace-builder-pe/addon/steps/details.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember           from <span class="hljs-string">'ember'</span>
 import tc              from <span class="hljs-string">'totem/cache'</span>
+import ns              from <span class="hljs-string">'totem/ns'</span>
 import totem_changeset from <span class="hljs-string">'totem/changeset'</span>
-import step            from <span class="hljs-string">'./step'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="detailscoffee">details.coffee</h1>
+import step            from <span class="hljs-string">'./step'</span>
+import ta              from <span class="hljs-string">'totem/ds/associations'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="detailscoffee">details.coffee</h1>
 <ul>
 <li>Type: <strong>Step Object</strong></li>
 <li>Package: <strong>ethinkspace-builder-pe</strong></li>
@@ -50,27 +52,27 @@ import step            from <span class="hljs-string">'./step'</span></div></div
         <span class="hljs-attribute">id</span>: <span class="hljs-property">@get</span>(<span class="hljs-string">'model.id'</span>)
       options =
         <span class="hljs-attribute">action</span>: <span class="hljs-string">'load'</span>
-        <span class="hljs-attribute">model</span>:  ns.to_p(<span class="hljs-string">'assignment'</span>)
-      tc.query_action(ns.to_p(<span class="hljs-string">'assignment'</span>), params, options).<span class="hljs-keyword">then</span> (assignment) =&gt;
+        <span class="hljs-attribute">model</span>:  ta.to_p(<span class="hljs-string">'assignment'</span>)
+      tc.query_action(ta.to_p(<span class="hljs-string">'assignment'</span>), params, options).<span class="hljs-keyword">then</span> (assignment) =&gt;
         resolve assignment
 
   <span class="hljs-attribute">query_team_sets</span>: <span class="hljs-function">-&gt;</span>
     <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
-      <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>).get(ns.to_p(<span class="hljs-string">'space'</span>)).<span class="hljs-keyword">then</span> (space) =&gt;
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>).get(ta.to_p(<span class="hljs-string">'space'</span>)).<span class="hljs-keyword">then</span> (space) =&gt;
         space.get_team_sets().<span class="hljs-keyword">then</span> (team_sets) =&gt;
           <span class="hljs-property">@set</span> <span class="hljs-string">'team_sets'</span>, team_sets
           resolve()
 
   <span class="hljs-attribute">select_team_set</span>: <span class="hljs-function"><span class="hljs-params">(team_set)</span> -&gt;</span> 
     <span class="hljs-property">@set</span> <span class="hljs-string">'selected_team_set'</span>, team_set
-    <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>).get(ns.to_p(<span class="hljs-string">'phases'</span>)).<span class="hljs-keyword">then</span> (phases) =&gt;
+    <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>).get(ta.to_p(<span class="hljs-string">'phases'</span>)).<span class="hljs-keyword">then</span> (phases) =&gt;
       phase = phases.get(<span class="hljs-string">'firstObject'</span>)
       phase.set <span class="hljs-string">'team_set_id'</span>, team_set.get(<span class="hljs-string">'id'</span>)
       phase.save()
 
   <span class="hljs-attribute">initialize_team_set</span>: <span class="hljs-function">-&gt;</span>
     <span class="hljs-keyword">new</span> ember.RSVP.Promise (resolve, reject) =&gt;
-      <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>).get(ns.to_p(<span class="hljs-string">'phases'</span>)).<span class="hljs-keyword">then</span> (phases) =&gt;
+      <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>).get(ta.to_p(<span class="hljs-string">'phases'</span>)).<span class="hljs-keyword">then</span> (phases) =&gt;
         team_sets   = <span class="hljs-property">@get</span>(<span class="hljs-string">'team_sets'</span>)
         phase       = phases.get(<span class="hljs-string">'firstObject'</span>)
         <span class="hljs-keyword">if</span> ember.isPresent(phase.get(<span class="hljs-string">'team_set_id'</span>)) 

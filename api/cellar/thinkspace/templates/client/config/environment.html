@@ -11,13 +11,8 @@
 
   ENV.environment            = environment;
   ENV.EmberENV.PLATFORM_NAME = ENV.modulePrefix;
-
-  ENV.APP = {
-    <span class="hljs-string">"customEvents"</span>: {
-        <span class="hljs-string">"sortable_dragend"</span>: <span class="hljs-string">"sortable_dragend"</span>,
-        <span class="hljs-string">"sortable_consume"</span>: <span class="hljs-string">"sortable_consume"</span>
-    }
-  }
+  ENV.APP                    = {};
+  deploy_target              = process.env[<span class="hljs-string">'DEPLOY_TARGET'</span>]
 
   ENV.i18n = {
     <span class="hljs-string">"defaultLocale"</span>: <span class="hljs-string">"en"</span>
@@ -58,17 +53,13 @@
         <span class="hljs-string">"loading_template"</span>: <span class="hljs-string">"totem_message_outlet/loading"</span>,
         <span class="hljs-string">"i18n_path_prefix"</span>: <span class="hljs-string">"casespace.api.success."</span>
     },
-    <span class="hljs-string">"pdfjs"</span>: {
-        <span class="hljs-string">"worker_src"</span>: <span class="hljs-string">"/assets/pdfjs/pdf.worker.js"</span>
-    },
-    <span class="hljs-string">"stylized_platform_name"</span>: <span class="hljs-string">"ThinkSpace"</span>,
+    <span class="hljs-string">"stylized_platform_name"</span>: <span class="hljs-string">"OpenTBL"</span>,
     <span class="hljs-string">"grid"</span>: {
         <span class="hljs-string">"classes"</span>: {
             <span class="hljs-string">"columns"</span>: <span class="hljs-string">"ts-grid_columns"</span>,
             <span class="hljs-string">"sticky"</span>: <span class="hljs-string">"ts-grid_sticky"</span>
         }
     },
-    <span class="hljs-string">"pusher_app_key"</span>: <span class="hljs-string">"7fa6139809cd49331925"</span>,
     <span class="hljs-string">"pub_sub"</span>: {
         <span class="hljs-string">"namespace"</span>: <span class="hljs-string">"&lt;%=pubsub.namespace%&gt;"</span>
     },
@@ -106,6 +97,16 @@ ENV.APP.LOG_VIEW_LOOKUPS         = true;</p></div></div><div class="code"><div c
   }
 
   <span class="hljs-keyword">if</span> (environment === <span class="hljs-string">'production'</span>) {
-    ENV.totem.api_host         = <span class="hljs-string">'PRODUCTION-API-HOST'</span>;
-    ENV.totem.asset_path       = <span class="hljs-string">'PRODUCTION-ASSET-PATH'</span>;
+    <span class="hljs-keyword">if</span> (deploy_target === <span class="hljs-string">'production'</span>) {
+      ENV.totem.api_host                    = <span class="hljs-string">'PRODUCTION-API-HOST'</span>;
+      ENV.totem.asset_path                  = <span class="hljs-string">'PRODUCTION-ASSET-PATH'</span>;
+      ENV.totem.pub_sub.socketio_url        = <span class="hljs-string">'PRODUCTION-SIO-URL'</span>;
+      ENV.totem.pub_sub.socketio_client_cdn = <span class="hljs-string">'PRODUCTION-SIO-CDN'</span>;
+    }
+    <span class="hljs-keyword">if</span> (deploy_target === <span class="hljs-string">'staging'</span>) {
+      ENV.totem.api_host                    = <span class="hljs-string">'STAGING-API-HOST'</span>;
+      ENV.totem.asset_path                  = <span class="hljs-string">'STAGING-ASSET-PATH'</span>;
+      ENV.totem.pub_sub.socketio_url        = <span class="hljs-string">'STAGING-SIO-URL'</span>;
+      ENV.totem.pub_sub.socketio_client_cdn = <span class="hljs-string">'STAGING-SIO-CDN'</span>;
+    }
   }</div></div></div></div></body></html>

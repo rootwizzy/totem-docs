@@ -36,6 +36,12 @@
           <span class="hljs-keyword">end</span>
         <span class="hljs-keyword">end</span>
 
+        resources <span class="hljs-symbol">:assessments</span>, <span class="hljs-symbol">only:</span> [] <span class="hljs-keyword">do</span>
+          collection <span class="hljs-keyword">do</span>
+            post <span class="hljs-symbol">:progress_report</span>
+          <span class="hljs-keyword">end</span>
+        <span class="hljs-keyword">end</span>
+        
       <span class="hljs-keyword">end</span>
 
       resources <span class="hljs-symbol">:assessments</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:show</span>] <span class="hljs-keyword">do</span>

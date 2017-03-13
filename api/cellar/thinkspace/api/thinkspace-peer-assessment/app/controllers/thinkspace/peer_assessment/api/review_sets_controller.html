@@ -11,7 +11,12 @@
           <span class="hljs-variable">@review_set</span>.submit! <span class="hljs-keyword">if</span> <span class="hljs-variable">@review_set</span>.may_submit?
           phase_state = <span class="hljs-variable">@review_set</span>.complete_phase_for_ownerable
           json = controller_as_json(<span class="hljs-variable">@review_set</span>)
-          json[<span class="hljs-string">'thinkspace/casespace/phase_states'</span>] = [phase_state]
+          json[<span class="hljs-symbol">:included</span>] = []
+          json[<span class="hljs-symbol">:included</span>][<span class="hljs-number">0</span>] = {
+            <span class="hljs-symbol">attributes:</span> phase_state.attributes,
+            <span class="hljs-symbol">id:</span> phase_state.id,
+            <span class="hljs-symbol">type:</span> <span class="hljs-string">'thinkspace/casespace/phase_state'</span>
+          }
           controller_render_json(json)
         <span class="hljs-keyword">end</span> 
 
@@ -19,7 +24,7 @@
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_review_set</span></span>
           access_denied <span class="hljs-string">"Cannot submit a review set you do not own."</span> <span class="hljs-keyword">unless</span> current_user == <span class="hljs-variable">@review_set</span>.ownerable
-          access_denied <span class="hljs-string">"Cannot submit a review_set that is already in an approved-type state."</span>, <span class="hljs-symbol">user_message:</span> <span class="hljs-string">"You cannot submit assessments that have been already submitted or approved by an instructor."</span> <span class="hljs-keyword">if</span> <span class="hljs-variable">@review_set</span>.approved? <span class="hljs-keyword">or</span> <span class="hljs-variable">@review_set</span>.submitted?
+          access_denied <span class="hljs-string">"Cannot submit a review_set that is already in an approved-type state."</span>, <span class="hljs-symbol">user_message:</span> <span class="hljs-string">"You cannot submit assessments that have been already submitted or ignored by an instructor."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_submit?
         <span class="hljs-keyword">end</span>
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(message, options={})</span></span>

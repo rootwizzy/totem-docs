@@ -4,27 +4,26 @@
   - <span class="hljs-attribute">run</span>: foundation
   - <span class="hljs-attribute">run</span>: app_clean_up
   - <span class="hljs-attribute">run</span>: ember-deploy
+  - <span class="hljs-attribute">run</span>: pickadate
+  - <span class="hljs-attribute">run</span>: rangeslider
 
 <span class="hljs-attribute">variables</span>:
   <span class="hljs-attribute">rootURL</span>: <span class="hljs-string">'/'</span>
   <span class="hljs-attribute">pubsub</span>:
     <span class="hljs-attribute">namespace</span>: thinkspace
-  <span class="hljs-attribute">index_html_title</span>: OpenTBL Index
+  <span class="hljs-attribute">index_html_title</span>: OpenTBL - Online Team-Based Learning
   <span class="hljs-attribute">dev</span>:
     <span class="hljs-attribute">api_host</span>:     <span class="hljs-attribute">http</span>:<span class="hljs-comment">//localhost:3000</span>
     <span class="hljs-attribute">asset_path</span>:   <span class="hljs-attribute">http</span>:<span class="hljs-comment">//localhost:4200/assets</span>
     <span class="hljs-attribute">sio_url</span>:      <span class="hljs-attribute">http</span>:<span class="hljs-comment">//localhost:4444</span>
     <span class="hljs-attribute">sio_cdn</span>:      <span class="hljs-attribute">https</span>:<span class="hljs-comment">//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="ember-cli-build">Ember CLI Build</h2>
-<p>What to set in the <code>ember-cli-build.js</code> file.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-attribute">ember_cli_build</span>:
-
-  <span class="hljs-attribute">import_before</span>:
-    - <span class="hljs-attribute">pattern</span>: bower_components/ember/ember-template-compiler.js
-      <span class="hljs-attribute">comment</span>: compile runtime templates
-
-  <span class="hljs-attribute">import</span>:</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
-<li>tree: node_modules/thinkspace-assets/fonts
-options: {srcDir: &#39;icomoon&#39;, include: [&#39;<em>*/</em>.*&#39;], destDir: &#39;assets/fonts&#39;}
-comment: [&#39;&#39;, thinkspace-assets fonts]</li>
-</ul></div></div><div class="code"><div class="wrapper">    <span class="hljs-tag">-</span> <span class="hljs-tag">tree</span>: <span class="hljs-tag">node_modules</span>/<span class="hljs-tag">thinkspace-assets</span>/<span class="hljs-tag">images</span>
-      <span class="hljs-tag">options</span>: {<span class="hljs-attribute">srcDir</span>: <span class="hljs-string">'/'</span>, <span class="hljs-attribute">include</span>: [<span class="hljs-string">'**/*.*'</span>], <span class="hljs-attribute">destDir</span>: <span class="hljs-string">'assets/images'</span>}
-      <span class="hljs-attribute">comment</span>: thinkspace-assets images</div></div></div></div></body></html>
+<p>What to set in the <code>ember-cli-build.js</code> file.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-string">ember_cli_build:</span>
+<span class="hljs-label">
+  import_before:</span>
+    - <span class="hljs-string">pattern:</span> bower_components<span class="hljs-regexp">/ember/</span>ember-template-compiler.js
+<span class="hljs-label">      comment:</span> compile runtime templates
+<span class="hljs-label">
+  import:</span>
+    - <span class="hljs-string">tree:</span> node_modules<span class="hljs-regexp">/thinkspace-assets/</span>images
+<span class="hljs-label">      options:</span> {<span class="hljs-string">srcDir:</span> <span class="hljs-string">'/'</span>, <span class="hljs-string">include:</span> [<span class="hljs-string">'**/*.*'</span>], <span class="hljs-string">destDir:</span> <span class="hljs-string">'assets/images'</span>}
+<span class="hljs-label">      comment:</span> thinkspace-assets images</div></div></div></div></body></html>

@@ -4,7 +4,8 @@
       <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TeamsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
         load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
         totem_action_authorize! <span class="hljs-symbol">except:</span> [<span class="hljs-symbol">:teams_view</span>, <span class="hljs-symbol">:team_users_view</span>], <span class="hljs-class"><span class="hljs-keyword">module</span>: :<span class="hljs-title">action_authorize_teams</span>, <span class="hljs-title">params_ownerable</span>: <span class="hljs-title">false</span></span>
-        totem_action_authorize! <span class="hljs-symbol">only:</span>   [<span class="hljs-symbol">:teams_view</span>, <span class="hljs-symbol">:team_users_view</span>], <span class="hljs-symbol">read:</span> [<span class="hljs-symbol">:teams_view</span>, <span class="hljs-symbol">:team_users_view</span>]
+        totem_action_authorize! <span class="hljs-symbol">only:</span>   [<span class="hljs-symbol">:team_users_view</span>], <span class="hljs-symbol">read:</span> [<span class="hljs-symbol">:team_users_view</span>]
+        totem_action_authorize! <span class="hljs-symbol">only:</span>   [<span class="hljs-symbol">:teams_view</span>], <span class="hljs-symbol">read:</span> [<span class="hljs-symbol">:teams_view</span>], <span class="hljs-class"><span class="hljs-keyword">module</span>: :<span class="hljs-title">action_authorize_teams_bulk</span></span>
         totem_action_serializer_options
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">select</span></span>
@@ -16,10 +17,16 @@
         <span class="hljs-keyword">end</span>
 
         <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">teams_view</span></span>
-          teamable = totem_action_authorize.params_authable
-          raise_team_exception(<span class="hljs-string">"Teamable [id: <span class="hljs-subst">#{teamable.id}</span> class: <span class="hljs-subst">#{teamable.<span class="hljs-keyword">class</span>.name}</span>] does not have collboration teams."</span>)  <span class="hljs-keyword">unless</span> teamable.collaboration?
+          teamable   = totem_action_authorize.params_authable
           sub_action = totem_action_authorize.sub_action
           <span class="hljs-keyword">case</span> sub_action
+          <span class="hljs-keyword">when</span> <span class="hljs-symbol">:teams</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: This sub_action is temporary.  Figure out how to refactor.</p></div></div><div class="code"><div class="wrapper">            phases  = teamable.thinkspace_casespace_phases
+            p_teams = []
+            phases.each <span class="hljs-keyword">do</span> |phase|
+              p_teams.push(phase.get_teams(current_user))
+            <span class="hljs-keyword">end</span>
+            a_teams = teamable.get_teams(current_user)
+            teams   = (p_teams + a_teams).uniq.flatten
           <span class="hljs-keyword">when</span> <span class="hljs-symbol">:collaboration_teams</span>
             teams = can_update_teamable?(teamable) ? teamable.get_teams <span class="hljs-symbol">:</span> teamable.get_teams(current_user)
           <span class="hljs-keyword">when</span> <span class="hljs-symbol">:peer_review_teams</span>
