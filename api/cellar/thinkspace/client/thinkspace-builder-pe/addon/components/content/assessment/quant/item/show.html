@@ -11,13 +11,15 @@ import base  from <span class="hljs-string">'thinkspace-base/components/base'</s
     <span class="hljs-string">'green'</span>:  <span class="hljs-string">'#6dc05e'</span>
     <span class="hljs-string">'yellow'</span>: <span class="hljs-string">'#fcb725'</span>
     <span class="hljs-string">'red'</span>:    <span class="hljs-string">'#fb6b6b'</span>
-  <span class="hljs-attribute">slider_background_template</span>: <span class="hljs-string">"&lt;div class='ts-rangeslider_background' /&gt;"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="observers">Observers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">fill_color_change</span>: ember.observer <span class="hljs-string">'fill_color'</span>, <span class="hljs-function">-&gt;</span>
+  <span class="hljs-attribute">slider_background_template</span>: <span class="hljs-string">"&lt;div class='ts-rangeslider_background' /&gt;"</span>
+
+  <span class="hljs-attribute">is_balance</span>:     <span class="hljs-literal">null</span>
+  <span class="hljs-attribute">is_not_balance</span>: ember.computed.<span class="hljs-keyword">not</span> <span class="hljs-string">'is_balance'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="observers">Observers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">fill_color_change</span>: ember.observer <span class="hljs-string">'fill_color'</span>, <span class="hljs-function">-&gt;</span>
     fill_color     = <span class="hljs-property">@get</span> <span class="hljs-string">'fill_color'</span>
     fill_class     = <span class="hljs-property">@get</span> <span class="hljs-string">'fill_class'</span>
     fill_class_hex = <span class="hljs-property">@get</span> <span class="hljs-string">'fill_class_hex'</span>
     color          = fill_class_hex[fill_color]
     <span class="hljs-property">@$</span>(<span class="hljs-string">".<span class="hljs-subst">#{fill_class}</span>"</span>).css(<span class="hljs-string">'background-color'</span>, color)
-
 
   <span class="hljs-attribute">didInsertElement</span>: <span class="hljs-function">-&gt;</span>
     <span class="hljs-property">@$</span>(<span class="hljs-string">'input[type="range"]'</span>).rangeslider

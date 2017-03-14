@@ -17,7 +17,7 @@
     <span class="hljs-keyword">else</span>
       content += <span class="hljs-string">''</span>
       content += <span class="hljs-string">"\n<span class="hljs-subst">#{indent}</span>// **Trees**\n"</span>
-      content += <span class="hljs-string">"<span class="hljs-subst">#{indent}</span>var pick_files = require('broccoli-funnel');\n"</span>
+      content += <span class="hljs-string">"<span class="hljs-subst">#{indent}</span>var pick_files = require('ember-cli/node_modules/broccoli-funnel');\n"</span>
       trees.each {|t| content += <span class="hljs-string">"<span class="hljs-subst">#{indent}</span><span class="hljs-subst">#{t}</span>\n"</span>}
     <span class="hljs-keyword">end</span>
     content

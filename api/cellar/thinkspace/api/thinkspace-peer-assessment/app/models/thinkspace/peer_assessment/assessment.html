@@ -159,23 +159,8 @@
         <span class="hljs-keyword">end</span>
       <span class="hljs-keyword">end</span>
 
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_assessment</span></span>
-        phase = overview_phase
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> phase.present?
-        team_sets   = thinkspace_peer_assessment_team_sets.scope_approved
-        review_sets = <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>.scope_by_team_sets(team_sets).scope_approved</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: How can we use scopes here to improve this?</p></div></div><div class="code"><div class="wrapper">        ownerables  = review_sets.map(&amp;<span class="hljs-symbol">:ownerable</span>).uniq
-
-        ownerables.each <span class="hljs-keyword">do</span> |ownerable|
-          phase_state = phase.find_or_create_state_for_ownerable(ownerable)
-          <span class="hljs-keyword">if</span> phase_state.may_unlock_phase?
-            phase_state.unlock_phase!
-            notify_overview_unlocked_for_user(ownerable)
-          <span class="hljs-keyword">end</span>
-        <span class="hljs-keyword">end</span>
-
-        team_sets.each { |team_set| team_set.mark_as_sent! }
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_assessment</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Re-add notify</p></div></div><div class="code"><div class="wrapper">        thinkspace_peer_assessment_team_sets.scope_approved.each { |team_set| team_set.mark_as_sent! }
       <span class="hljs-keyword">end</span>
-      handle_asynchronously <span class="hljs-symbol">:process_assessment</span>
 
       <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">overview_phase</span></span>
         phase      = authable

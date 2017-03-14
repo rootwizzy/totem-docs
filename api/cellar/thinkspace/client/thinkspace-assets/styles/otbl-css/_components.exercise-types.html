@@ -8,10 +8,16 @@
 }
 
 <span class="hljs-class">.exercise-type__item</span> {
-	<span class="hljs-attribute">display</span><span class="hljs-value">: inline-block;</span>
-	<span class="hljs-attribute">width</span><span class="hljs-value">: <span class="hljs-number">35%</span>;</span>
-	<span class="hljs-attribute">max-width</span><span class="hljs-value">: <span class="hljs-number">300px</span>;</span>
+	<span class="hljs-attribute">display</span><span class="hljs-value">:      inline-block;</span>
+	<span class="hljs-attribute">width</span><span class="hljs-value">:        <span class="hljs-number">35%</span>;</span>
+	<span class="hljs-attribute">max-width</span><span class="hljs-value">:    <span class="hljs-number">300px</span>;</span>
 	<span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">2rem</span>;</span>
+
+	<span class="hljs-at_rule">@<span class="hljs-keyword">media</span><span class="hljs-preprocessor"> only</span><span class="hljs-preprocessor"> screen</span><span class="hljs-preprocessor"> and</span> (max-width:<span class="hljs-preprocessor"> 40rem</span>) {</span>
+		<span class="hljs-attribute">display</span><span class="hljs-value">:      block;</span>
+	  <span class="hljs-attribute">width</span><span class="hljs-value">:        <span class="hljs-number">100%</span>;</span>
+	  <span class="hljs-attribute">margin-right</span><span class="hljs-value">: <span class="hljs-number">0</span>;</span>
+	}
 
 	&gt;<span class="hljs-tag">h2</span> {
 		<span class="hljs-attribute">font-size</span><span class="hljs-value">: <span class="hljs-number">1rem</span>;</span>
@@ -21,4 +27,6 @@
 	&gt;<span class="hljs-tag">p</span> {
 		<span class="hljs-attribute">font-size</span><span class="hljs-value">: .<span class="hljs-number">875rem</span>;</span>
 	}
+
+
 }</div></div></div></div></body></html>

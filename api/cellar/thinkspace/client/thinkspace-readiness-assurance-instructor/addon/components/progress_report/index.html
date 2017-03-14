@@ -2,5 +2,9 @@
 import base  from <span class="hljs-string">'thinkspace-readiness-assurance-instructor/components/base'</span>
 
 export default base.extend
+  <span class="hljs-attribute">overview</span>: ember.computed.reads <span class="hljs-string">'am.data_values.progress_report_overview'</span>
+  
   <span class="hljs-attribute">init_base</span>: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-property">@am</span>.set_model <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)</div></div></div></div></body></html>
+    <span class="hljs-property">@am</span>.set_model <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
+    <span class="hljs-property">@am</span>.set_progress_report_overview().<span class="hljs-keyword">then</span> =&gt;
+      <span class="hljs-property">@set_ready_on</span>()</div></div></div></div></body></html>

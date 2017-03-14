@@ -105,6 +105,14 @@
 
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">activate</span></span>
             <span class="hljs-variable">@assignment</span>.activate
+            phase_ids         = <span class="hljs-variable">@assignment</span>.thinkspace_casespace_phases.pluck(<span class="hljs-symbol">:id</span>)
+            componentable_ids = <span class="hljs-variable">@phase_component_class</span>.accessible_by(current_ability).where(<span class="hljs-symbol">phase_id:</span> phase_ids).pluck(<span class="hljs-symbol">:componentable_id</span>)
+            componentables    = <span class="hljs-constant">Thinkspace::PeerAssessment::Assessment</span>.accessible_by(current_ability).where(<span class="hljs-symbol">id:</span> componentable_ids)
+            componentables.each <span class="hljs-keyword">do</span> |componentable|
+              <span class="hljs-keyword">if</span> componentable.respond_to? <span class="hljs-symbol">:activate</span>
+                componentable.activate!
+              <span class="hljs-keyword">end</span>
+            <span class="hljs-keyword">end</span>
             controller_save_record(<span class="hljs-variable">@assignment</span>)
           <span class="hljs-keyword">end</span>
 

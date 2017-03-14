@@ -23,6 +23,7 @@ import tm          from <span class="hljs-string">'totem-messages/messages'</spa
     new_reviewable  = reviewables.objectAt(new_index)
     <span class="hljs-property">@set_reviewable</span>(new_reviewable) <span class="hljs-keyword">if</span> ember.isPresent(new_reviewable)
     <span class="hljs-property">@set_confirmation</span>() <span class="hljs-keyword">if</span> !ember.isPresent(new_reviewable) <span class="hljs-keyword">and</span> offset == <span class="hljs-number">1</span>
+    ember.run.scheduleOnce <span class="hljs-string">'afterRender'</span>, <span class="hljs-function">=&gt;</span> $(<span class="hljs-string">'body'</span>).animate({<span class="hljs-attribute">scrollTop</span>: <span class="hljs-number">0</span>}, <span class="hljs-number">500</span>)
 
   <span class="hljs-attribute">set_confirmation</span>: <span class="hljs-function">-&gt;</span>
     <span class="hljs-property">@set_reviewable</span>(<span class="hljs-string">'confirmation'</span>)

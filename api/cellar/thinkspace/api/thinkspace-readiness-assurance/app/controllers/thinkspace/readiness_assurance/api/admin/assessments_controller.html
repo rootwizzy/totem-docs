@@ -4,10 +4,23 @@
       <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Admin</span></span>
         <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AssessmentsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
 
-
           <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">progress_report</span></span>
+            set_irat_assessment
+            irat_phase = <span class="hljs-variable">@assessment</span>.authable
             set_trat_assessment
-            controller_render_json(<span class="hljs-variable">@assessment</span>.progress_report)
+            trat_phase = <span class="hljs-variable">@assessment</span>.authable
+
+            irat_phase_states = irat_phase.thinkspace_casespace_phase_states.scope_by_ownerable_type(<span class="hljs-string">'Thinkspace::Common::User'</span>)
+            trat_phase_states = trat_phase.thinkspace_casespace_phase_states.scope_by_ownerable_type(<span class="hljs-string">'Thinkspace::Team::Team'</span>)
+            irat_completed    = irat_phase_states.scope_completed.count
+            trat_completed    = trat_phase_states.scope_completed.count
+            irat_total        = irat_phase_states.count
+            trat_total        = trat_phase_states.count
+
+            results           = <span class="hljs-constant">HashWithIndifferentAccess</span>.new(<span class="hljs-symbol">irat:</span> {}, <span class="hljs-symbol">trat:</span> {})
+            results[<span class="hljs-string">'irat'</span>]   = {<span class="hljs-symbol">total:</span> irat_total, <span class="hljs-symbol">completed:</span> irat_completed, <span class="hljs-symbol">state:</span> irat_phase.default_state, <span class="hljs-symbol">release_at:</span> irat_phase.release_at, <span class="hljs-symbol">due_at:</span> irat_phase.due_at}
+            results[<span class="hljs-string">'trat'</span>]   = {<span class="hljs-symbol">total:</span> trat_total, <span class="hljs-symbol">completed:</span> trat_completed, <span class="hljs-symbol">state:</span> trat_phase.default_state, <span class="hljs-symbol">release_at:</span> trat_phase.release_at, <span class="hljs-symbol">due_at:</span> trat_phase.due_at}
+            controller_render_json(results)
           <span class="hljs-keyword">end</span>
 
           private
