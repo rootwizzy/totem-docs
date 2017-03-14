@@ -11,10 +11,13 @@ Instructions and compability are based off of Debian 9 (codename Stretch) system
   - **rails:**      v5.0.0.1  (Rails 5 requires ruby v2.2.2+)
   - **node:**       v6.9.1    (stable v6 LTS release - Boron)
   - **ember-cli:**  v2.9.1    
-  - **ember:**      #lts-2.8  (lts = 'long term support')
+  - **ember:**      v2.8#lts  (lts = 'long term support')
   - **ember-data:** v2.8.1
   - **postgreSQL:** v9.5.5
-
+  - **git:**        v2.7.4
+  - **nvm:**        v0.32.1
+  - **rvm:**        v1.27.0
+  - **redis:**      v3.0.6
 ---
 
 # Fresh Install
@@ -81,6 +84,18 @@ The version of RVM used currently is `v1.27.0`
     - run `gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3`
   - After RVM is installed run `source /home/$USER/.rvm/scripts/rvm`
 
+### Gemset Setup
+Create isolated gemsets for Rails 5 development
+
+```
+  rvm use default
+  rvm gemset create rails5
+  rvm use ruby-2.3.1@rails5 --default
+  rvm gemset list #=> should include *=> rails5*
+```
+
+When opening new terminals or running any Rails scripts ensure you are using this new gemset via the `rvm gemset use rails5` command.
+
 ## Install Ruby
 The version of Ruby used currently is `v2.3.1`
 
@@ -104,24 +119,7 @@ The version of Node used currently is `v6.9.1 (LTS: Boron)`
 - `nvm ls `             #=> should see v6.9.1 installed locally and set as the default
 - `nvm use default`     #=> Now using node v6.9.1 (npm v2.15.9)
 
-## Gemset Setup
-Create isolated gemsets for Rails 5 development
 
-- `rvm use default`
-- `rvm gemset create rails5`
-- `rvm use ruby-2.3.1@rails5 --default`
-- `rvm gemset list`     #=> list all gemsets for ruby; should include *=> rails5*
-
-### Updated Scripts
-Update your *aliases* or scripts to Match the New Values *(if needed)*
-
-Example:
-
-```
-  #=> home/.bash_aliases
-  alias rvm23='rvm use ruby-2.3.1'
-  alias rvmc='rvm gemset use rails5'
-```
 
 ## Install Rails 5
 This portion is assuming you are using the `rails5` gemset (see [Gemset Setup](#gemset-setup))
@@ -156,126 +154,84 @@ This portion is assuming you are using the `rails5` gemset (see [Gemset Setup](#
     * monitor  #=> shows connections, published messages, etc. as they happen
     * exit     #=> exit redis-cli; to exit monitor: ctrl-C
 
-# Structure
-Before Install: (required)
+## Directory Structure
+Create a wrapper folder for the applications and code repositories, this will be the basis of the build scripts and beyond the root folder the structure of the directory is mandatory. 
+
+_We recommend using `~/Projects` (/home/$USER/Projects/)._
+
+- Create two folders, `apps-rails` and `apps-ember` inside the root folder. 
+- Clone [Cellar](https://github.com/sixthedge/cellar) repo into the root folder. 
+- You will also have to clone your Oauth server into the `apps-rails` directory as well, everything else will be generated.
+
+Before Install:
 
 ```
-  ~/Desktop
-    |- ember20
-      |- apps-ember
-      |- apps-node
-      |- apps-rails
-      |- repos
-      |- repos-sio
+  ~/Projects
+    |- apps-ember
+    |- apps-rails
+    |- cellar
 ```
 
 After Install:
 
 ```
-  ~/Desktop
-    |- ember20
-      |- apps-ember
-         |- orchid  #=> [generated (totem-ember-cli)] Ember 2.8LTS application with engines
-      |- apps-node
-         |- orchid  #=> need to manually create
-            |- nodel_modules [generated (manual copy & npm install)] via npm install
-               |- thinkspace-socketio-server #=> [generated] via npm install
-               |- totem-socketio-server      #=> [generated] via npm install
-               |- #=> many additional node modules
-                  #=> npm v3 flattens the dependencies
-                  #=> e.g. will not nest/duplicate in 'mod-name/node_modules' unless version conflicts
-            |- app.js         #=> [copy] manually copied from totem-socketio-server/node_files
-            |- node_env       #=> [copy] manually copied from totem-socketio-server/node_files
-            |- package.json   #=> [copy] manually copied from totem-socketio-server/node_files
-      |- apps-rails
-         |- orchid       #=> [generated (totem-ember-cli)] Rails 5 application
-         |- totem-oauth  #=> [clone] Rails 4 application
-      |- repos
-         |- thinkspace-api     #=> [clone] Ember engines version
-         |- thinkspace-client  #=> [clone] Ember engines version
-         |- totem-api          #=> [clone] Ember engines version; includes Active Model Serializers v10
-         |- totem-client       #=> [clone] Ember engines version
-      |- repos-sio
-         |- thinkspace-socketio-server #=> [clone]
-         |- totem-socketio-server      #=> [clone]
+  ~/Projects
+    |- apps-ember
+       |- orchid  #=> [generated (totem-ember-cli)] Ember 2.8LTS application with engines
+    |- apps-rails
+       |- orchid       #=> [generated (totem-app)] Rails 5 application
+       |- totem-oauth  #=> [cloned]
+    |- cellar #=> [cloned]
 ```
 
-## Clone Repos
-> Ensure all repos have the *development* branch checked out if applicable.
+### Build Rails App
+> Make sure the **rails5** gemset is in [active](http://totem-docs.herokuapp.com/1.0.1/setup/environment#gemset-setup).
 
-- In the ~/Desktop/ember20/repos folder, run:
-  - `git clone git@github.com:sixthedge/etotem-client.git`
-  - `git clone git@github.com:sixthedge/etotem-api.git`
-  - `git clone git@github.com:sixthedge/ethinkspace-client.git`
-  - `git clone git@github.com:sixthedge/ethinkspace-api.git`
- 
-- In the ~/Desktop/ember20/apps-rails folder, run:
-  - `git clone git@github.com:sixthedge/totem-oauth.git`
+Building the rails application is done via the [totem-app](https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/totem_app.rb) command. It will generate an `orchid` folder inside of your `apps-rails`, this is the instance of your Rails application.
 
-- In the ~/Desktop/ember20/repos-sio folder, run:
-  - `git clone git@github.com:sixthedge/totem-socketio-server.git`
-  - `git clone git@github.com:sixthedge/thinkspace-socketio-server.git`
+- Start by changing into the base of the `cellar` repo, there should be a `src` folder in this directory. From here you will un the `totem-app` command to start the build process.
+  - The `totem-app` binary exists in the `totem/api/totem-cli/bin` directory
+  - The required parameter is the destination & name of the application, this will be `../apps-rails/orchid`
+  - Additional build scripts option `-o` points to a build YAML at `./thinkspace/packages/otbl/api/run.yml`
+  - Add the options `--new -f` after the build YAML
 
-# Build Scripts
-> The scripts are only for convience. They can be run manually if wanted (e.g. not via a script).
-
-## New Rails App
-- Make sure the **rails5** gemset (installed above) is current in order to run the scripts.
-- Ensure the *scripts/env_variables* match your environment.
-
+Full `totem-app` command
 
 ```
-  cd ~/Desktop
-  ./ember20/repos/ethinkspace-api/migrate/scripts/new-rails-app.sh
+  ./src/totem/api/totem-cli/bin/totem-app ../apps-rails/orchid -o ./thinkspace/packages/otbl/client/run.yml --new -f
+```
+
+- Once the Rails application is built we complete it by bundling the gems and migrating the database
+  - Change into `~/Projects/apps-rails/orchid/` and run `bundle install`
+  - Ensure your *config/secrets.yml* totem_database name, username and password match your [environment](http://totem-docs.herokuapp.com/1.0.1/setup/environment#install-postgres-sql), iou may have to run `rails db:environment:set RAILS_ENV=development` before migrating your database.
+  - Migrate the database with `db:drop db:create totem:db:reset[ra] CONFIG=all AI=true`
+
+### Build Ember App
+Building the ember application is done via [totem-ember-cli](https://github.com/sixthedge/cellar/blob/master/src/totem/api/totem-cli/lib/totem/cli/totem_ember.rb) command. It will generate an `orchid` folder inside of your `apps-ember`, this is the instance of your Ember application.
+
+- Start by changing into the base of the `cellar` repo, there should be a `src` folder in this directory. From here you will un the `totem-ember-cli` command to start the build process.
+  - The `totem-ember-cli` binary exists in the `totem/api/totem-cli/bin` directory
+  - The required parameter is the destination & name of the application, this will be `../apps-ember/orchid`
+  - Additional build scripts option `-o` points to a build YAML at `./thinkspace/packages/otbl/client/run.yml`
+  - Add the options `--new -f -n` after the build YAML
+
+Full `totem-ember-cli` command
+
+```
+  ./src/totem/api/totem-cli/bin/totem-ember-cli ../apps-ember/orchid -o ./thinkspace/packages/otbl/client/run.yml --new -f -n
+```
+
+### Build Totem Oauth
+Using [Totem Oauth](https://github.com/sixthedge/totem-oauth) clone into the `apps-rails` directory and switch to the `rails5` branch.
+
+```
+  cd ~/Projects/apps-rails/totem-oauth
+  rvm use gemset rails5
+  bundle install
 
   ...
 
-  cd ~/Desktop/ember20/apps-rails/orchid
-  bundle install
-```
-
-## New Ember App
-- Ensure the *scripts/env_variables* match your environment.
-
-```
-  cd ~/Desktop
-  ./ember20/repos/ethinkspace-api/migrate/scripts/new-ember-app.sh
-```
-
-## Bundle Totem Oauth
-- **open new terminal**
-- switch to your ruby and gemset for **totem-oauth**
-
-```
-  cd ~/Desktop/ember20/apps-rails/totem-oauth
-  rvm use ruby-2.2.1
-  rvm use gemset totem-oauth
-  bundle install
-```
-
-# Seed Database
-
-## Rails App
-> Note: Rails 5 now uses **rails** not *rake*
-
-- Ensure your *config/secrets.yml* totem_database name, username and password match your environment.
-- You may have to run `rails db:environment:set RAILS_ENV=development` before migrating your database
-
-```
-  cd ~/Desktop/ember20/apps-rails/orchid
-  rails db:drop db:create totem:db:reset[staging] CONFIG=all AI=true
-```
-
-## Oauth App
-  * **open new terminal**
-  * switch to your ruby and gemset for **totem-oauth**
-
-```
-  #=> assumes using Rails 4.x and rake
-  cd ~/Desktop/ember20/apps-rails/totem-oauth
-  rvm use ruby-2.2.1
-  rvm gemset use rails4
-  rake db:drop db:create db:reset
+  rake db:drop db:create db:migrate db:seed
 ```
 
 ## Socketio Server

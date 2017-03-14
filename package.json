@@ -32,7 +32,7 @@
     "node": ">= 6.9.1"
   },
   "dependencies": {
-    "groc": "file:../../repos/groc"
+    "groc": "rootwizzy/groc"
   },
   "devDependencies": {},
 
