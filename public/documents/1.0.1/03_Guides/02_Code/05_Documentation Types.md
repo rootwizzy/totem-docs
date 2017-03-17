@@ -31,7 +31,6 @@
   c. Component/Partial Paths
   d. Internal Properties
   e. Computed Properties
-
 4. Events/Hooks
 5. Helpers
 6. Actions

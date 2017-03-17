@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-peer-assessment/addon/components/overview</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-peer-assessment/addon/components/overview"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-peer-assessment/addon/components/overview.coffee"><meta name="groc-branch-path" content="master"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/master/src/thinkspace/client/thinkspace-peer-assessment/addon/components/overview.coffee">src/thinkspace/client/thinkspace-peer-assessment/addon/components/overview.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/client/thinkspace-peer-assessment/addon/components/overview</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../"><meta name="groc-document-path" content="thinkspace/client/thinkspace-peer-assessment/addon/components/overview"><meta name="groc-project-path" content="src/thinkspace/client/thinkspace-peer-assessment/addon/components/overview.coffee"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../assets/style.css"><script type="text/javascript" src="../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/client/thinkspace-peer-assessment/addon/components/overview.coffee">src/thinkspace/client/thinkspace-peer-assessment/addon/components/overview.coffee</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper">import ember from <span class="hljs-string">'ember'</span>
 import ns    from <span class="hljs-string">'totem/ns'</span>
 import base  from <span class="hljs-string">'thinkspace-base/components/base'</span>
 import ta    from <span class="hljs-string">'totem/ds/associations'</span>
@@ -9,7 +9,10 @@ import tc    from <span class="hljs-string">'totem/cache'</span></div></div></di
 </ul></div></div><div class="code"><div class="wrapper">export default base.extend</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="properties">Properties</h2>
 <h3 id="services">Services</h3>
 <ul>
-<li>thinkspace-common: <a href="http://totem-docs.herokuapp.com/api/cellar/thinkspace/client/thinkspace-common/app/services/server_events.html">server_events</a></li>
+<li><strong>thinkspace-common</strong> <ul>
+<li><a href="http://totem-docs.herokuapp.com/api/cellar/thinkspace/client/thinkspace-common/app/services/server_events.html">server_events</a></li>
+</ul>
+</li>
 </ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">server_events</span>: ember.inject.service()
 
   <span class="hljs-comment">#} totem_data_config: ability: true, metadata: {ajax_source: true}  # require metadata so completed count will be updated after a submit</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="internal-properties">Internal Properties</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">all_phases_completed</span>: <span class="hljs-literal">null</span>
@@ -28,8 +31,7 @@ import tc    from <span class="hljs-string">'totem/cache'</span></div></div></di
               <span class="hljs-property">@init_pubsub</span>()
           <span class="hljs-keyword">else</span>
             <span class="hljs-property">@set_team</span>().<span class="hljs-keyword">then</span> =&gt;
-              <span class="hljs-property">@init_pubsub</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3>
-<h4 id="init-base-helpers">init_base helpers</h4></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">set_phase_progress</span>: <span class="hljs-function">-&gt;</span>
+              <span class="hljs-property">@init_pubsub</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">set_phase_progress</span>: <span class="hljs-function">-&gt;</span>
     assignment = <span class="hljs-property">@get</span>(<span class="hljs-string">'model'</span>)
     assignment.get(ns.to_p <span class="hljs-string">'phases'</span> ).<span class="hljs-keyword">then</span> (phases) =&gt;
       phase_promises = phases.getEach(ns.to_p(<span class="hljs-string">'phase_states'</span>))
@@ -109,7 +111,9 @@ import tc    from <span class="hljs-string">'totem/cache'</span></div></div></di
       , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> 
         <span class="hljs-property">@set</span> <span class="hljs-string">'has_team_members'</span>, <span class="hljs-literal">false</span>
         reject() <span class="hljs-comment"># Send back up to the assessment component so it can set it there, too.</span>
-    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h4 id="set-team-helpers">set_team helpers</h4></div></div></div><div class="segment"><div class="code"><div class="wrapper">  <span class="hljs-attribute">get_sub_action_query_params</span>: <span class="hljs-function"><span class="hljs-params">(sub_action)</span> -&gt;</span>
+    , <span class="hljs-function"><span class="hljs-params">(error)</span> =&gt;</span> <span class="hljs-property">@error</span>(error)
+
+  <span class="hljs-attribute">get_sub_action_query_params</span>: <span class="hljs-function"><span class="hljs-params">(sub_action)</span> -&gt;</span>
     model = <span class="hljs-property">@get</span>(<span class="hljs-string">'assessment'</span>)
     query = <span class="hljs-property">@totem_scope</span>.get_view_query(model, <span class="hljs-attribute">sub_action</span>: sub_action)[<span class="hljs-string">'data'</span>]
     query.id = query.id || model.get(<span class="hljs-string">'id'</span>)

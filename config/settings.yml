@@ -27,7 +27,7 @@ modules:
     repositories:
       - name: cellar
         url: 'https://github.com/sixthedge/cellar'
-        branch: master
+        branch: feature/pe-documentation
         options:
           out: '-o ../../api/cellar'
           glob: '"./src/**/*.rb" 
@@ -41,6 +41,7 @@ modules:
           --except "./src/totem/client/totem-*/vendor/**"'
           project: '-p cellar'
           url: '--repository-url "https://github.com/sixthedge/cellar"'
+          branch: '-b feature/pe-documentation'
 
       - name: totem-lodestar
         url: 'https://github.com/sixthedge/totem-lodestar'
