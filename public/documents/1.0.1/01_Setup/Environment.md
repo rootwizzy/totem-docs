@@ -7,17 +7,18 @@ Instructions and compability are based off of Debian 9 (codename Stretch) system
 [Troubleshoot](#troubleshooting) if you are encountering any issues with the process.
 
 # Versions
-  - **ruby:**       v2.3.1    (current stable release)
-  - **rails:**      v5.0.0.1  (Rails 5 requires ruby v2.2.2+)
-  - **node:**       v6.9.1    (stable v6 LTS release - Boron)
-  - **ember-cli:**  v2.9.1    
-  - **ember:**      v2.8#lts  (lts = 'long term support')
-  - **ember-data:** v2.8.1
-  - **postgreSQL:** v9.5.5
-  - **git:**        v2.7.4
-  - **nvm:**        v0.32.1
-  - **rvm:**        v1.27.0
-  - **redis:**      v3.0.6
+  - **ruby:**       `v2.3.1`    (current stable release)
+  - **rails:**      `v5.0.0.1`  (Rails 5 requires ruby v2.2.2+)
+  - **node:**       `v6.9.1`    (stable v6 LTS release - Boron)
+  - **ember-cli:**  `v2.9.1`   
+  - **ember:**      `v2.8#lts`  (lts = 'long term support')
+  - **ember-data:** `v2.8.1`
+  - **postgreSQL:** `v9.5.5`
+  - **git:**        `v2.7.4`
+  - **nvm:**        `v0.32.1`
+  - **rvm:**        `v1.27.0`
+  - **redis:**      `v3.0.6`
+
 ---
 
 # Fresh Install
@@ -34,20 +35,22 @@ Instructions and compability are based off of Debian 9 (codename Stretch) system
   sudo apt-get install git
 ```
 
-- **(optional):** Setup ssh-key for git
-  - `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`
-  - Once you have made your key go to github via account settings and add your `~/.ssh/id_rsa.pub`.
-  - See [Github Article](https://help.github.com/articles/generating-an-ssh-key/) for additional help.
+**(recommended):** Setup ssh-key for git
+
+```
+  ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+This will generate a key in `~/.ssh/id_rsa.pub`. Add this key to your Github account settings. See [Generating an ssh key](https://help.github.com/articles/generating-an-ssh-key/) for additional help.
 
 ## Install PostgreSQL
-Setup PostgreSQL for development databases
+- Setup PostgreSQL for development databases
 
 ```
   sudo apt-get install postgresql postgresql-contrib
   sudo apt-get install libpq-dev
 ```
 
-### Create Database Roles and Tables
+- Create Database Roles and Tables
 
 Run `psql -U postgres -h localhost -W` then create the following roles
 
