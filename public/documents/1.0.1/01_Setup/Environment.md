@@ -201,7 +201,7 @@ Building the rails application is done via the [totem-app](https://github.com/si
 Full `totem-app` command
 
 ```
-  ./src/totem/api/totem-cli/bin/totem-app ../apps-rails/orchid -o ./thinkspace/packages/otbl/client/run.yml --new -f
+  ./src/totem/api/totem-cli/bin/totem-app ../apps-rails/orchid -o ./src/thinkspace/packages/otbl/api/run.yml --new -f
 ```
 
 - Once the Rails application is built we complete it by bundling the gems and migrating the database
@@ -221,7 +221,7 @@ Building the ember application is done via [totem-ember-cli](https://github.com/
 Full `totem-ember-cli` command
 
 ```
-  ./src/totem/api/totem-cli/bin/totem-ember-cli ../apps-ember/orchid -o ./thinkspace/packages/otbl/client/run.yml --new -f -n
+  ./src/totem/api/totem-cli/bin/totem-ember ../apps-ember/orchid -o ./src/thinkspace/packages/otbl/client/run.yml --new -f -n
 ```
 
 ### Build Totem Oauth

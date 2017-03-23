@@ -28,9 +28,12 @@
 3. Properties
   a. View Properties
   b. Service Injections
-  c. Component/Partial Paths
   d. Internal Properties
+    i. Setup Properties
+    ii. Render Paths
+    iii. Custom Object Properties
   e. Computed Properties
+  f. Observers
 4. Events/Hooks
 5. Helpers
 6. Actions
@@ -97,7 +100,7 @@
   b. Hooks
   c. Includes
 
-5. Public Methods
+5. Endpoints
 6. Private Methods
 
 ### Models
