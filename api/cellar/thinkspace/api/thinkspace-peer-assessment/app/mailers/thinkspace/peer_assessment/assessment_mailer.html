@@ -1,44 +1,43 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/mailers/thinkspace/peer_assessment/assessment_mailer</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/mailers/thinkspace/peer_assessment/assessment_mailer"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/mailers/thinkspace/peer_assessment/assessment_mailer.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/mailers/thinkspace/peer_assessment/assessment_mailer.rb">src/thinkspace/api/thinkspace-peer-assessment/app/mailers/thinkspace/peer_assessment/assessment_mailer.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
-  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/mailers/thinkspace/peer_assessment/assessment_mailer</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/mailers/thinkspace/peer_assessment/assessment_mailer"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/mailers/thinkspace/peer_assessment/assessment_mailer.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/mailers/thinkspace/peer_assessment/assessment_mailer.rb">src/thinkspace/api/thinkspace-peer-assessment/app/mailers/thinkspace/peer_assessment/assessment_mailer.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="assessment">assessment</h1>
+<ul>
+<li>Type: <strong>Mailer</strong></li>
+<li>Engine: <strong>thinkspace-peer-assessment</strong></li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AssessmentMailer</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActionMailer::Base</span></span></span>
+    default <span class="hljs-symbol">from:</span> <span class="hljs-string">'ThinkBot &lt;thinkbot@thinkspace.org&gt;'</span>
 
-    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AssessmentMailer</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActionMailer::Base</span></span></span>
-      default <span class="hljs-symbol">from:</span> <span class="hljs-string">'ThinkBot &lt;thinkbot@thinkspace.org&gt;'</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">notify_overview_unlocked</span><span class="hljs-params">(assessment, user)</span></span>
+      <span class="hljs-variable">@user</span>            = user
+      <span class="hljs-variable">@to</span>              = user.email
+      <span class="hljs-variable">@phase</span>           = assessment.overview_phase
+      <span class="hljs-variable">@assignment</span>      = <span class="hljs-variable">@phase</span>.thinkspace_casespace_assignment
 
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">notify_overview_unlocked</span><span class="hljs-params">(assessment, user)</span></span>
-        <span class="hljs-variable">@user</span>            = user
-        <span class="hljs-variable">@to</span>              = user.email
-        <span class="hljs-variable">@phase</span>           = assessment.overview_phase
-        <span class="hljs-variable">@assignment</span>      = <span class="hljs-variable">@phase</span>.thinkspace_casespace_assignment
+      raise <span class="hljs-string">"Cannot send a notification without an email [<span class="hljs-subst">#{<span class="hljs-variable">@to</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@to</span>.present?
+      raise <span class="hljs-string">"Cannot send a notification without a phase [<span class="hljs-subst">#{<span class="hljs-variable">@phase</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@phase</span>.present?
+      raise <span class="hljs-string">"Cannot send a notification without an assignment [<span class="hljs-subst">#{<span class="hljs-variable">@assignment</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@assignment</span>.present?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Figure out a better way to determine host, maybe from config?</p></div></div><div class="code"><div class="wrapper">      url_suffix = <span class="hljs-string">"casespace/cases/<span class="hljs-subst">#{<span class="hljs-variable">@assignment</span>.id}</span>/phases/<span class="hljs-subst">#{<span class="hljs-variable">@phase</span>.id}</span>?query_id=none"</span>
+      <span class="hljs-variable">@url</span>       = <span class="hljs-string">'http://localhost:4200/'</span> + url_suffix <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.development?
+      <span class="hljs-variable">@url</span>       = <span class="hljs-string">'https://think.thinkspace.org/'</span> + url_suffix <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.production?
+      subject    = <span class="hljs-string">"[ThinkSpace] Peer Evaluation Unlocked for <span class="hljs-subst">#{<span class="hljs-variable">@assignment</span>.title}</span>"</span>
 
-        raise <span class="hljs-string">"Cannot send a notification without an email [<span class="hljs-subst">#{<span class="hljs-variable">@to</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@to</span>.present?
-        raise <span class="hljs-string">"Cannot send a notification without a phase [<span class="hljs-subst">#{<span class="hljs-variable">@phase</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@phase</span>.present?
-        raise <span class="hljs-string">"Cannot send a notification without an assignment [<span class="hljs-subst">#{<span class="hljs-variable">@assignment</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@assignment</span>.present?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Figure out a better way to determine host, maybe from config?</p></div></div><div class="code"><div class="wrapper">        url_suffix = <span class="hljs-string">"casespace/cases/<span class="hljs-subst">#{<span class="hljs-variable">@assignment</span>.id}</span>/phases/<span class="hljs-subst">#{<span class="hljs-variable">@phase</span>.id}</span>?query_id=none"</span>
-        <span class="hljs-variable">@url</span>       = <span class="hljs-string">'http://localhost:4200/'</span> + url_suffix <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.development?
-        <span class="hljs-variable">@url</span>       = <span class="hljs-string">'https://think.thinkspace.org/'</span> + url_suffix <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.production?
-        subject    = <span class="hljs-string">"[ThinkSpace] Peer Evaluation Unlocked for <span class="hljs-subst">#{<span class="hljs-variable">@assignment</span>.title}</span>"</span>
+      mail(<span class="hljs-symbol">to:</span> <span class="hljs-variable">@to</span>, <span class="hljs-symbol">subject:</span> subject)
+    <span class="hljs-keyword">end</span>
 
-        mail(<span class="hljs-symbol">to:</span> <span class="hljs-variable">@to</span>, <span class="hljs-symbol">subject:</span> subject)
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">notify_review_set_ownerable</span><span class="hljs-params">(review_set, message)</span></span>
-        <span class="hljs-variable">@message</span>  = message
-        <span class="hljs-variable">@ownerable</span> = review_set.ownerable
-        raise <span class="hljs-string">"Cannot send a notificatino without an ownerable [<span class="hljs-subst">#{review_set.id}</span>]"</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@ownerable</span>.present?
-        phase      = review_set.get_authable
-        raise <span class="hljs-string">"Cannot send a notification without a phase [<span class="hljs-subst">#{phase}</span>]"</span> <span class="hljs-keyword">unless</span> phase.present?
-        assignment = phase.thinkspace_casespace_assignment
-        raise <span class="hljs-string">"Cannot send a notification without an assignment [<span class="hljs-subst">#{assignment}</span>]"</span> <span class="hljs-keyword">unless</span> assignment.present?
-        
-        <span class="hljs-variable">@to</span> = <span class="hljs-variable">@ownerable</span>.email
-        raise <span class="hljs-string">"Cannot send a notification without an email [<span class="hljs-subst">#{<span class="hljs-variable">@to</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@to</span>.present?
-        url_suffix = <span class="hljs-string">"casespace/cases/<span class="hljs-subst">#{assignment.id}</span>/phases/<span class="hljs-subst">#{phase.id}</span>?query_id=none"</span>
-        <span class="hljs-variable">@url</span>       = <span class="hljs-string">'http://localhost:4200/'</span> + url_suffix <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.development?
-        <span class="hljs-variable">@url</span>       = <span class="hljs-string">'https://think.thinkspace.org/'</span> + url_suffix <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.production?
-        subject = <span class="hljs-string">"[ThinkSpace] Instructor Notification - Peer Evaluation"</span>
-        mail(<span class="hljs-symbol">to:</span> <span class="hljs-variable">@to</span>, <span class="hljs-symbol">subject:</span> subject)
-      <span class="hljs-keyword">end</span>
-
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">notify_review_set_ownerable</span><span class="hljs-params">(review_set, message)</span></span>
+      <span class="hljs-variable">@message</span>  = message
+      <span class="hljs-variable">@ownerable</span> = review_set.ownerable
+      raise <span class="hljs-string">"Cannot send a notificatino without an ownerable [<span class="hljs-subst">#{review_set.id}</span>]"</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@ownerable</span>.present?
+      phase      = review_set.get_authable
+      raise <span class="hljs-string">"Cannot send a notification without a phase [<span class="hljs-subst">#{phase}</span>]"</span> <span class="hljs-keyword">unless</span> phase.present?
+      assignment = phase.thinkspace_casespace_assignment
+      raise <span class="hljs-string">"Cannot send a notification without an assignment [<span class="hljs-subst">#{assignment}</span>]"</span> <span class="hljs-keyword">unless</span> assignment.present?
+      
+      <span class="hljs-variable">@to</span> = <span class="hljs-variable">@ownerable</span>.email
+      raise <span class="hljs-string">"Cannot send a notification without an email [<span class="hljs-subst">#{<span class="hljs-variable">@to</span>}</span>]."</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@to</span>.present?
+      url_suffix = <span class="hljs-string">"casespace/cases/<span class="hljs-subst">#{assignment.id}</span>/phases/<span class="hljs-subst">#{phase.id}</span>?query_id=none"</span>
+      <span class="hljs-variable">@url</span>       = <span class="hljs-string">'http://localhost:4200/'</span> + url_suffix <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.development?
+      <span class="hljs-variable">@url</span>       = <span class="hljs-string">'https://think.thinkspace.org/'</span> + url_suffix <span class="hljs-keyword">if</span> <span class="hljs-constant">Rails</span>.env.production?
+      subject = <span class="hljs-string">"[ThinkSpace] Instructor Notification - Peer Evaluation"</span>
+      mail(<span class="hljs-symbol">to:</span> <span class="hljs-variable">@to</span>, <span class="hljs-symbol">subject:</span> subject)
     <span class="hljs-keyword">end</span>
 
   <span class="hljs-keyword">end</span>
-<span class="hljs-keyword">end</span></div></div></div></div></body></html>
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>;</div></div></div></div></body></html>
