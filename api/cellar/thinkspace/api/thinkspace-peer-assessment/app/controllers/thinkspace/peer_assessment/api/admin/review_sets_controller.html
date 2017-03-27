@@ -1,53 +1,54 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/admin/review_sets_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/admin/review_sets_controller"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/admin/review_sets_controller.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/admin/review_sets_controller.rb">src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/admin/review_sets_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Admin</span>;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="adminreview-sets">admin/review_sets</h1>
-<ul>
-<li>Type: <strong>Controller</strong></li>
-<li>Engine: <strong>thinkspace-peer-assessment</strong></li>
-</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReviewSetsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
-    load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
-    totem_action_serializer_options
-    before_action <span class="hljs-symbol">:set_state_error_variables</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/admin/review_sets_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/admin/review_sets_controller"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/admin/review_sets_controller.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/admin/review_sets_controller.rb">src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/admin/review_sets_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
+      <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Admin</span></span>
+        <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReviewSetsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
+          load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+          totem_action_serializer_options
+          before_action <span class="hljs-symbol">:set_state_error_variables</span>
 
-    <span class="hljs-keyword">include</span> <span class="hljs-constant">Thinkspace::PeerAssessment::Concerns::StateErrors</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="endpoints">Endpoints</h2>
-<ul>
-<li><code>ignore</code></li>
-<li><code>unlock</code></li>
-<li><code>unignore</code></li>
-<li><code>notify</code></li>
-</ul></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ignore</span></span>
-      access_denied_state_error <span class="hljs-symbol">:ignore</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_ignore?
-      <span class="hljs-variable">@review_set</span>.ignore!
-      controller_render(<span class="hljs-variable">@review_set</span>)
-    <span class="hljs-keyword">end</span>
+          <span class="hljs-keyword">include</span> <span class="hljs-constant">Thinkspace::PeerAssessment::Concerns::StateErrors</span>
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock</span></span>
-      access_denied_state_error <span class="hljs-symbol">:unlock</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_unlock?
-      <span class="hljs-variable">@review_set</span>.unlock!
-      controller_render(<span class="hljs-variable">@review_set</span>)
-    <span class="hljs-keyword">end</span>
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ignore</span></span>
+            access_denied_state_error <span class="hljs-symbol">:ignore</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_ignore?
+            <span class="hljs-variable">@review_set</span>.ignore!
+            controller_render(<span class="hljs-variable">@review_set</span>)
+          <span class="hljs-keyword">end</span>
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unignore</span></span>
-      access_denied_state_error <span class="hljs-symbol">:unignore</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_unignore?
-      <span class="hljs-variable">@review_set</span>.transaction <span class="hljs-keyword">do</span>
-        <span class="hljs-variable">@review_set</span>.unignore!
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock</span></span>
+            access_denied_state_error <span class="hljs-symbol">:unlock</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_unlock?
+            <span class="hljs-variable">@review_set</span>.unlock!
+            controller_render(<span class="hljs-variable">@review_set</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unignore</span></span>
+            access_denied_state_error <span class="hljs-symbol">:unignore</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.may_unignore?
+            <span class="hljs-variable">@review_set</span>.transaction <span class="hljs-keyword">do</span>
+              <span class="hljs-variable">@review_set</span>.unignore!
+            <span class="hljs-keyword">end</span>
+            controller_render(<span class="hljs-variable">@review_set</span>)
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">notify</span></span>
+            message = params[<span class="hljs-symbol">:notification</span>]
+            <span class="hljs-constant">Thinkspace::PeerAssessment::AssessmentMailer</span>.notify_review_set_ownerable(<span class="hljs-variable">@review_set</span>, message).deliver_now
+            controller_render(<span class="hljs-variable">@review_set</span>)
+          <span class="hljs-keyword">end</span>
+
+          private
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_authable</span></span>
+            authorize! <span class="hljs-symbol">:update</span>, <span class="hljs-variable">@review_set</span>.authable
+          <span class="hljs-keyword">end</span>
+
+          <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_state_error_variables</span></span>
+            <span class="hljs-variable">@model</span>        = <span class="hljs-variable">@review_set</span>
+            <span class="hljs-variable">@model_name</span>   = <span class="hljs-string">'a review set'</span>
+            <span class="hljs-variable">@model_class</span>  = <span class="hljs-variable">@model</span>.<span class="hljs-keyword">class</span>.name
+          <span class="hljs-keyword">end</span>
+
+        <span class="hljs-keyword">end</span>
       <span class="hljs-keyword">end</span>
-      controller_render(<span class="hljs-variable">@review_set</span>)
     <span class="hljs-keyword">end</span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">notify</span></span>
-      message = params[<span class="hljs-symbol">:notification</span>]
-      <span class="hljs-constant">Thinkspace::PeerAssessment::AssessmentMailer</span>.notify_review_set_ownerable(<span class="hljs-variable">@review_set</span>, message).deliver_now
-      controller_render(<span class="hljs-variable">@review_set</span>)
-    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="private">Private</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">    private
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_authable</span></span>
-      authorize! <span class="hljs-symbol">:update</span>, <span class="hljs-variable">@review_set</span>.authable
-    <span class="hljs-keyword">end</span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_state_error_variables</span></span>
-      <span class="hljs-variable">@model</span>        = <span class="hljs-variable">@review_set</span>
-      <span class="hljs-variable">@model_name</span>   = <span class="hljs-string">'a review set'</span>
-      <span class="hljs-variable">@model_class</span>  = <span class="hljs-variable">@model</span>.<span class="hljs-keyword">class</span>.name
-    <span class="hljs-keyword">end</span>
-
   <span class="hljs-keyword">end</span>
-<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>;</div></div></div></div></body></html>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

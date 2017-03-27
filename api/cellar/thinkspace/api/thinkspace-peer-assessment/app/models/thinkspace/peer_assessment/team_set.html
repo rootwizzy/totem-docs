@@ -1,38 +1,41 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/team_set</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/team_set"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/team_set.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/team_set.rb">src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/team_set.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="team-set">team_set</h1>
-<ul>
-<li>Type: <strong>Model</strong></li>
-<li>Engine: <strong>thinkspace-peer-assessment</strong></li>
-</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TeamSet</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
-    totem_associations</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="states">States</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">    <span class="hljs-keyword">include</span> <span class="hljs-constant">AASM</span>
-   
-    aasm <span class="hljs-symbol">column:</span> <span class="hljs-symbol">:state</span> <span class="hljs-keyword">do</span>
-      state <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">initial:</span> <span class="hljs-keyword">true</span>
-      state <span class="hljs-symbol">:approved</span>
-      state <span class="hljs-symbol">:sent</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/team_set</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/team_set"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/team_set.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/team_set.rb">src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/team_set.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TeamSet</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
+      totem_associations</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="states">States</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">AASM</span>
+     
+      aasm <span class="hljs-symbol">column:</span> <span class="hljs-symbol">:state</span> <span class="hljs-keyword">do</span>
+        state <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">initial:</span> <span class="hljs-keyword">true</span>
+        state <span class="hljs-symbol">:approved</span>
+        state <span class="hljs-symbol">:sent</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>event :approve do
+  transitions from: [:neutral], to: :approved
+end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>event :unapprove do
+  transitions from: [:neutral, :approved], to: :neutral
+end</p></div></div><div class="code"><div class="wrapper">        event <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:approved</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:ignore_review_sets</span>
+        <span class="hljs-keyword">end</span>
 
-      event <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">do</span>
-        transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:approved</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:ignore_review_sets</span>
+        event <span class="hljs-symbol">:unapprove</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:approved</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:unignore_review_sets</span>
+        <span class="hljs-keyword">end</span>
+
+        event <span class="hljs-symbol">:mark_as_sent</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:approved</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:sent</span>
+        <span class="hljs-keyword">end</span>
       <span class="hljs-keyword">end</span>
 
-      event <span class="hljs-symbol">:unapprove</span> <span class="hljs-keyword">do</span>
-        transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:approved</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:unignore_review_sets</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ignore_review_sets</span></span>
+        thinkspace_peer_assessment_review_sets.scope_neutral.each { |review_set| review_set.ignore! <span class="hljs-keyword">if</span> review_set.may_ignore? }
       <span class="hljs-keyword">end</span>
 
-      event <span class="hljs-symbol">:mark_as_sent</span> <span class="hljs-keyword">do</span>
-        transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:approved</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:sent</span>
-      <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unignore_review_sets</span></span>
+        thinkspace_peer_assessment_review_sets.scope_ignored.each { |review_set| review_set.unignore! <span class="hljs-keyword">if</span> review_set.may_unignore? }
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def mark_as_sent_review_sets
+  thinkspace_peer_assessment_review_sets.scope_approved.each { |review_set| review_set.mark_as_sent! if review_set.may_mark_as_sent? }
+end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assessment</span>;</span> thinkspace_peer_assessment_assessment; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="scopes">Scopes</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_neutral</span>;</span> neutral; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_approved</span>;</span> approved; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ScopeError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
     <span class="hljs-keyword">end</span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ignore_review_sets</span></span>
-      thinkspace_peer_assessment_review_sets.scope_neutral.each { |review_set| review_set.ignore! <span class="hljs-keyword">if</span> review_set.may_ignore? }
-    <span class="hljs-keyword">end</span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unignore_review_sets</span></span>
-      thinkspace_peer_assessment_review_sets.scope_ignored.each { |review_set| review_set.unignore! <span class="hljs-keyword">if</span> review_set.may_unignore? }
-    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assessment</span>;</span> thinkspace_peer_assessment_assessment; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="scopes">Scopes</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_neutral</span>;</span> neutral; <span class="hljs-keyword">end</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_approved</span>;</span> approved; <span class="hljs-keyword">end</span>
-
-    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ScopeError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
-
   <span class="hljs-keyword">end</span>
-<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>;</div></div></div></div></body></html>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>

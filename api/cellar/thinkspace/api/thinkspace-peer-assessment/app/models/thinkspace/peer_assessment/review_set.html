@@ -1,86 +1,94 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review_set</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review_set"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review_set.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review_set.rb">src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review_set.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h1 id="review-set">review_set</h1>
-<ul>
-<li>Type: <strong>Model</strong></li>
-<li>Engine: <strong>thinkspace-peer-assessment</strong></li>
-</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReviewSet</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
-    totem_associations
-    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="states">States</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">    <span class="hljs-keyword">include</span> <span class="hljs-constant">AASM</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review_set</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review_set"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review_set.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review_set.rb">src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review_set.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReviewSet</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
+      totem_associations
+      </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="states">States</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">AASM</span>
 
-    aasm <span class="hljs-symbol">column:</span> <span class="hljs-symbol">:state</span> <span class="hljs-keyword">do</span>
-      state <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">initial:</span> <span class="hljs-keyword">true</span>
-      state <span class="hljs-symbol">:submitted</span>
-      state <span class="hljs-symbol">:ignored</span>
+      aasm <span class="hljs-symbol">column:</span> <span class="hljs-symbol">:state</span> <span class="hljs-keyword">do</span>
+        state <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">initial:</span> <span class="hljs-keyword">true</span>
+        state <span class="hljs-symbol">:submitted</span>
+        state <span class="hljs-symbol">:ignored</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>event :approve_all do
+  transitions from: [:neutral, :submitted], to: :approved, after: :approve_reviews
+end</p></div></div><div class="code"><div class="wrapper">        event <span class="hljs-symbol">:ignore</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:ignored</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>event :unapprove_all do
+  transitions from: [:neutral, :submitted, :approved], to: :neutral, after: :unapprove_reviews
+end</p></div></div><div class="code"><div class="wrapper">        event <span class="hljs-symbol">:unignore</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:ignored</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:unlock_phase_for_ownerable</span>
+        <span class="hljs-keyword">end</span>
 
-      event <span class="hljs-symbol">:ignore</span> <span class="hljs-keyword">do</span>
-        transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:ignored</span>
+        event <span class="hljs-symbol">:submit</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:submitted</span>
+        <span class="hljs-keyword">end</span>
+
+        event <span class="hljs-symbol">:unlock</span> <span class="hljs-keyword">do</span>
+          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:submitted</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:unlock_phase_for_ownerable</span>
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>event :mark_as_sent do
+  transitions from: [:approved], to: :sent, after: :mark_as_sent_reviews
+end</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">end</span>
+
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">status</span></span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'complete'</span> <span class="hljs-keyword">if</span> submitted?
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'ignored'</span> <span class="hljs-keyword">if</span> ignored?
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'in-progress'</span> <span class="hljs-keyword">if</span> in_progress?
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'not started'</span>
       <span class="hljs-keyword">end</span>
 
-      event <span class="hljs-symbol">:unignore</span> <span class="hljs-keyword">do</span>
-        transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:ignored</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:unlock_phase_for_ownerable</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">in_progress?</span>;</span> thinkspace_peer_assessment_reviews.where.<span class="hljs-keyword">not</span>(<span class="hljs-symbol">value:</span> <span class="hljs-keyword">nil</span>).count &gt; <span class="hljs-number">0</span>; <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def approve_reviews
+  thinkspace_peer_assessment_reviews.each { |review| review.approve! if review.may_approve? }
+end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def unapprove_reviews
+  self.transaction do
+    thinkspace_peer_assessment_reviews.each { |review| review.unapprove! if review.may_unapprove? }
+    unlock_phase_for_ownerable
+  end
+end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def mark_as_sent_reviews
+  thinkspace_peer_assessment_reviews.each { |review| review.mark_as_sent! if review.may_mark_as_sent? }
+end</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>def submit_reviews
+  thinkspace_peer_assessment_reviews.each { |review| review.submit! if review.may_submit? }
+end</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock_phase_for_ownerable</span></span>
+        ownerable = <span class="hljs-keyword">self</span>.ownerable
+        phase     = <span class="hljs-keyword">self</span>.get_authable
+        raise <span class="hljs-string">'Cannot unlock a phase without a valid phase.'</span> <span class="hljs-keyword">unless</span> phase.present?
+        raise <span class="hljs-string">'Cannot unlock a phase without a valid ownerable.'</span> <span class="hljs-keyword">unless</span> ownerable.present?
+        phase_state = <span class="hljs-constant">Thinkspace::Casespace::PhaseState</span>.find_or_create_by(<span class="hljs-symbol">ownerable:</span> ownerable, <span class="hljs-symbol">phase_id:</span> phase.id)
+        phase_state.unlock_phase!
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="review-helpers">Review Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_reviews</span></span>
+        team_set = thinkspace_peer_assessment_team_set
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> team_set.present?
+        team = team_set.thinkspace_team_team
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> team
+        users = team.thinkspace_common_users
+        users = users.to_a <span class="hljs-comment"># Important: Must `to_a` to not remove the relationship.</span>
+        users.delete(ownerable)
+        users.each <span class="hljs-keyword">do</span> |user|
+          review = <span class="hljs-constant">Thinkspace::PeerAssessment::Review</span>.find_or_create_by(<span class="hljs-symbol">review_set_id:</span> <span class="hljs-keyword">self</span>.id, <span class="hljs-symbol">reviewable:</span> user)
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_team_set</span>;</span> thinkspace_peer_assessment_team_set; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assessment</span>;</span> get_team_set.get_assessment; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authable</span>;</span> get_assessment.authable; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_authable</span>;</span> authable; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">complete_phase_for_ownerable</span></span>
+        phase       = authable
+        phase_state = phase.find_or_create_state_for_ownerable(ownerable)
+        phase_state.complete_phase!
+        phase_state
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="scopes">Scopes</h3>
+<p>Ownerable_type and ID needed because of: <a href="https://github.com/rails/rails/issues/16983">https://github.com/rails/rails/issues/16983</a></p></div></div><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_where_not_ownerable_ids</span><span class="hljs-params">(ownerables)</span></span>
+        ownerables = <span class="hljs-constant">Array</span>.wrap(ownerables)
+        raise <span class="hljs-constant">ScopeError</span> <span class="hljs-string">"Ownerables must be present"</span> <span class="hljs-keyword">if</span> ownerables.blank?
+        where.<span class="hljs-keyword">not</span>(<span class="hljs-symbol">ownerable_id:</span> ownerables.map(&amp;<span class="hljs-symbol">:id</span>))
       <span class="hljs-keyword">end</span>
 
-      event <span class="hljs-symbol">:submit</span> <span class="hljs-keyword">do</span>
-        transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:submitted</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_team_sets</span><span class="hljs-params">(team_sets)</span></span>
+        where(<span class="hljs-symbol">thinkspace_peer_assessment_team_set:</span> team_sets)
       <span class="hljs-keyword">end</span>
 
-      event <span class="hljs-symbol">:unlock</span> <span class="hljs-keyword">do</span>
-        transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:submitted</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:unlock_phase_for_ownerable</span>
-      <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_ignored</span>;</span> ignored; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_submitted</span>;</span> submitted; <span class="hljs-keyword">end</span>
+      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_neutral</span>;</span> neutral; <span class="hljs-keyword">end</span>
+
+      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ScopeError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
+
     <span class="hljs-keyword">end</span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">status</span></span>
-      <span class="hljs-keyword">return</span> <span class="hljs-string">'complete'</span> <span class="hljs-keyword">if</span> submitted?
-      <span class="hljs-keyword">return</span> <span class="hljs-string">'ignored'</span> <span class="hljs-keyword">if</span> ignored?
-      <span class="hljs-keyword">return</span> <span class="hljs-string">'in-progress'</span> <span class="hljs-keyword">if</span> in_progress?
-      <span class="hljs-keyword">return</span> <span class="hljs-string">'not started'</span>
-    <span class="hljs-keyword">end</span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">in_progress?</span>;</span> thinkspace_peer_assessment_reviews.where.<span class="hljs-keyword">not</span>(<span class="hljs-symbol">value:</span> <span class="hljs-keyword">nil</span>).count &gt; <span class="hljs-number">0</span>; <span class="hljs-keyword">end</span>
-
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock_phase_for_ownerable</span></span>
-      ownerable = <span class="hljs-keyword">self</span>.ownerable
-      phase     = <span class="hljs-keyword">self</span>.get_authable
-      raise <span class="hljs-string">'Cannot unlock a phase without a valid phase.'</span> <span class="hljs-keyword">unless</span> phase.present?
-      raise <span class="hljs-string">'Cannot unlock a phase without a valid ownerable.'</span> <span class="hljs-keyword">unless</span> ownerable.present?
-      phase_state = <span class="hljs-constant">Thinkspace::Casespace::PhaseState</span>.find_or_create_by(<span class="hljs-symbol">ownerable:</span> ownerable, <span class="hljs-symbol">phase_id:</span> phase.id)
-      phase_state.unlock_phase!
-    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="review-helpers">Review Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_reviews</span></span>
-      team_set = thinkspace_peer_assessment_team_set
-      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> team_set.present?
-      team = team_set.thinkspace_team_team
-      <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> team
-      users = team.thinkspace_common_users
-      users = users.to_a <span class="hljs-comment"># Important: Must `to_a` to not remove the relationship.</span>
-      users.delete(ownerable)
-      users.each <span class="hljs-keyword">do</span> |user|
-        review = <span class="hljs-constant">Thinkspace::PeerAssessment::Review</span>.find_or_create_by(<span class="hljs-symbol">review_set_id:</span> <span class="hljs-keyword">self</span>.id, <span class="hljs-symbol">reviewable:</span> user)
-      <span class="hljs-keyword">end</span>
-    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_team_set</span>;</span> thinkspace_peer_assessment_team_set; <span class="hljs-keyword">end</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assessment</span>;</span> get_team_set.get_assessment; <span class="hljs-keyword">end</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authable</span>;</span> get_assessment.authable; <span class="hljs-keyword">end</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_authable</span>;</span> authable; <span class="hljs-keyword">end</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">complete_phase_for_ownerable</span></span>
-      phase       = authable
-      phase_state = phase.find_or_create_state_for_ownerable(ownerable)
-      phase_state.complete_phase!
-      phase_state
-    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="scopes">Scopes</h3>
-<p>Ownerable_type and ID needed because of: <a href="https://github.com/rails/rails/issues/16983">https://github.com/rails/rails/issues/16983</a></p></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_where_not_ownerable_ids</span><span class="hljs-params">(ownerables)</span></span>
-      ownerables = <span class="hljs-constant">Array</span>.wrap(ownerables)
-      raise <span class="hljs-constant">ScopeError</span> <span class="hljs-string">"Ownerables must be present"</span> <span class="hljs-keyword">if</span> ownerables.blank?
-      where.<span class="hljs-keyword">not</span>(<span class="hljs-symbol">ownerable_id:</span> ownerables.map(&amp;<span class="hljs-symbol">:id</span>))
-    <span class="hljs-keyword">end</span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_by_team_sets</span><span class="hljs-params">(team_sets)</span></span>
-      where(<span class="hljs-symbol">thinkspace_peer_assessment_team_set:</span> team_sets)
-    <span class="hljs-keyword">end</span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_ignored</span>;</span> ignored; <span class="hljs-keyword">end</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_submitted</span>;</span> submitted; <span class="hljs-keyword">end</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">scope_neutral</span>;</span> neutral; <span class="hljs-keyword">end</span>
-
-    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ScopeError</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">StandardError</span></span>;</span> <span class="hljs-keyword">end</span>
-
   <span class="hljs-keyword">end</span>
-<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>;</div></div></div></div></body></html>
+<span class="hljs-keyword">end</span></div></div></div></div></body></html>
