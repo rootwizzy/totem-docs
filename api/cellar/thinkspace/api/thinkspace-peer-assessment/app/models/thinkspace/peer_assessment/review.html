@@ -1,116 +1,113 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review.rb">src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
-  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span>
-    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Review</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span>
-      totem_associations
-      validates <span class="hljs-symbol">:review_set_id</span>, <span class="hljs-symbol">uniqueness:</span> { <span class="hljs-symbol">scope:</span> [<span class="hljs-symbol">:reviewable_type</span>, <span class="hljs-symbol">:reviewable_id</span>] }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="states">States</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-keyword">include</span> <span class="hljs-constant">AASM</span>
-     
-      aasm <span class="hljs-symbol">column:</span> <span class="hljs-symbol">:state</span> <span class="hljs-keyword">do</span>
-        state <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">initial:</span> <span class="hljs-keyword">true</span>
-        state <span class="hljs-symbol">:approved</span>
-        state <span class="hljs-symbol">:sent</span>
-        state <span class="hljs-symbol">:submitted</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review.rb">src/thinkspace/api/thinkspace-peer-assessment/app/models/thinkspace/peer_assessment/review.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Review</span> <span class="hljs-inheritance">&lt; <span class="hljs-parent">ActiveRecord::Base</span></span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="thinkspacepeerassessmentreview">Thinkspace::PeerAssessment::Review</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">    totem_associations
+    validates <span class="hljs-symbol">:review_set_id</span>, <span class="hljs-symbol">uniqueness:</span> { <span class="hljs-symbol">scope:</span> [<span class="hljs-symbol">:reviewable_type</span>, <span class="hljs-symbol">:reviewable_id</span>] }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="states">States</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">    <span class="hljs-keyword">include</span> <span class="hljs-constant">AASM</span>
+   
+    aasm <span class="hljs-symbol">column:</span> <span class="hljs-symbol">:state</span> <span class="hljs-keyword">do</span>
+      state <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">initial:</span> <span class="hljs-keyword">true</span>
+      state <span class="hljs-symbol">:approved</span>
+      state <span class="hljs-symbol">:sent</span>
+      state <span class="hljs-symbol">:submitted</span>
 
-        event <span class="hljs-symbol">:submit</span> <span class="hljs-keyword">do</span>
-          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:submitted</span>
-        <span class="hljs-keyword">end</span>
-
-        event <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">do</span>
-          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">:submitted</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:approved</span>
-        <span class="hljs-keyword">end</span>
-
-        event <span class="hljs-symbol">:unapprove</span> <span class="hljs-keyword">do</span>
-          transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:submitted</span>, <span class="hljs-symbol">:approved</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:unlock_phase_for_ownerable</span>
-        <span class="hljs-keyword">end</span>
-
-        event <span class="hljs-symbol">:mark_as_sent</span> <span class="hljs-keyword">do</span>
-          transitions <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:sent</span>
-        <span class="hljs-keyword">end</span>
-      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock_phase_for_ownerable</span></span>
-        review_set = get_review_set
-        review_set.unlock_phase_for_ownerable
+      event <span class="hljs-symbol">:submit</span> <span class="hljs-keyword">do</span>
+        transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:submitted</span>
       <span class="hljs-keyword">end</span>
 
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">generate_anonymized_review_json</span><span class="hljs-params">(assessment, reviews)</span></span>
-        results             = {}
-        json                = {}
-        json[<span class="hljs-symbol">:options</span>]      = get_options(assessment, reviews)
-        json[<span class="hljs-symbol">:qualitative</span>]  = {}
-        json[<span class="hljs-symbol">:quantitative</span>] = {}
-
-        reviews.each <span class="hljs-keyword">do</span> |review|
-          values = review.qualitative_item_values
-          values.each <span class="hljs-keyword">do</span> |type, array|
-            json[<span class="hljs-symbol">:qualitative</span>][type] ||= []
-            json[<span class="hljs-symbol">:qualitative</span>][type] &lt;&lt; array
-            json[<span class="hljs-symbol">:qualitative</span>][type].flatten!
-          <span class="hljs-keyword">end</span>
-
-          values  = review.quantitative_items
-          values.each <span class="hljs-keyword">do</span> |id, attrs|
-            results[id] ||= []
-            value = attrs[<span class="hljs-string">'value'</span>]
-            <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> value.present?
-            results[id] &lt;&lt; value.to_f
-          <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Sort by category.</p></div></div><div class="code"><div class="wrapper">          items = assessment.quantitative_items
-          items.each <span class="hljs-keyword">do</span> |item|
-            id    = item[<span class="hljs-string">'id'</span>]
-            label = item[<span class="hljs-string">'label'</span>]
-            <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> id.present?
-            json[<span class="hljs-symbol">:quantitative</span>][id] ||= {}
-            json[<span class="hljs-symbol">:quantitative</span>][id][<span class="hljs-symbol">:label</span>] = label
-            json[<span class="hljs-symbol">:quantitative</span>][id][<span class="hljs-symbol">:value</span>] = results[id]
-          <span class="hljs-keyword">end</span>
-        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Average results</p></div></div><div class="code"><div class="wrapper">        results.each <span class="hljs-keyword">do</span> |id, array|
-          avg         = array.inject(<span class="hljs-number">0</span>.<span class="hljs-number">0</span>) { |sum, el| sum + el } / array.size
-          results[id] = avg.round(<span class="hljs-number">2</span>)
-        <span class="hljs-keyword">end</span>
-        json[<span class="hljs-symbol">:quantitative</span>] = results
-        json
+      event <span class="hljs-symbol">:approve</span> <span class="hljs-keyword">do</span>
+        transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">:submitted</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:approved</span>
       <span class="hljs-keyword">end</span>
 
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">get_options</span><span class="hljs-params">(assessment, reviews)</span></span>
-        options = assessment.options.with_indifferent_access
-        add_score_range_to_options(options, assessment, reviews)
-        options
+      event <span class="hljs-symbol">:unapprove</span> <span class="hljs-keyword">do</span>
+        transitions <span class="hljs-symbol">from:</span> [<span class="hljs-symbol">:submitted</span>, <span class="hljs-symbol">:approved</span>], <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:neutral</span>, <span class="hljs-symbol">after:</span> <span class="hljs-symbol">:unlock_phase_for_ownerable</span>
       <span class="hljs-keyword">end</span>
 
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">add_score_range_to_options</span><span class="hljs-params">(options, assessment, reviews)</span></span>
-        min, max = assessment.get_min_max_score_for_reviews(reviews.count)
-        options  = options.with_indifferent_access
-        options[<span class="hljs-symbol">:points</span>] ||= {}
-        options[<span class="hljs-symbol">:points</span>][<span class="hljs-symbol">:min</span>] = min
-        options[<span class="hljs-symbol">:points</span>][<span class="hljs-symbol">:max</span>] = max
-        options
+      event <span class="hljs-symbol">:mark_as_sent</span> <span class="hljs-keyword">do</span>
+        transitions <span class="hljs-symbol">to:</span> <span class="hljs-symbol">:sent</span>
       <span class="hljs-keyword">end</span>
-
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">qualitative_items</span></span>
-        <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">unless</span> value.present? &amp;&amp; value.has_key?(<span class="hljs-string">'qualitative'</span>)
-        value[<span class="hljs-string">'qualitative'</span>]
-      <span class="hljs-keyword">end</span>
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">quantitative_items</span></span>
-        <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">unless</span> value.present? &amp;&amp; value.has_key?(<span class="hljs-string">'quantitative'</span>)
-        value[<span class="hljs-string">'quantitative'</span>]
-      <span class="hljs-keyword">end</span>
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">qualitative_item_values</span></span>
-        values = <span class="hljs-constant">Hash</span>.new
-        qualitative_items.each <span class="hljs-keyword">do</span> |id, attrs|
-          feedback_type = attrs[<span class="hljs-string">'feedback_type'</span>]
-          value         = attrs[<span class="hljs-string">'value'</span>]
-          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> feedback_type.present? <span class="hljs-keyword">and</span> value.present?
-          values[feedback_type] ||= []
-          values[feedback_type] &lt;&lt; value
-        <span class="hljs-keyword">end</span>
-        values
-      <span class="hljs-keyword">end</span>
-
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_review_set</span>;</span> thinkspace_peer_assessment_review_set; <span class="hljs-keyword">end</span>
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assessment</span>;</span> get_review_set.get_assessment; <span class="hljs-keyword">end</span>
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_team_set</span>;</span>   get_review_set.get_team_set; <span class="hljs-keyword">end</span>
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ownerable</span>;</span>  get_review_set.ownerable; <span class="hljs-keyword">end</span>
-      <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_authable</span>;</span>   get_assessment.authable; <span class="hljs-keyword">end</span>
-
-
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="helpers">Helpers</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">unlock_phase_for_ownerable</span></span>
+      review_set = get_review_set
+      review_set.unlock_phase_for_ownerable
     <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">generate_anonymized_review_json</span><span class="hljs-params">(assessment, reviews)</span></span>
+      results             = {}
+      json                = {}
+      json[<span class="hljs-symbol">:options</span>]      = get_options(assessment, reviews)
+      json[<span class="hljs-symbol">:qualitative</span>]  = {}
+      json[<span class="hljs-symbol">:quantitative</span>] = {}
+
+      reviews.each <span class="hljs-keyword">do</span> |review|
+        values = review.qualitative_item_values
+        values.each <span class="hljs-keyword">do</span> |type, array|
+          json[<span class="hljs-symbol">:qualitative</span>][type] ||= []
+          json[<span class="hljs-symbol">:qualitative</span>][type] &lt;&lt; array
+          json[<span class="hljs-symbol">:qualitative</span>][type].flatten!
+        <span class="hljs-keyword">end</span>
+
+        values  = review.quantitative_items
+        values.each <span class="hljs-keyword">do</span> |id, attrs|
+          results[id] ||= []
+          value = attrs[<span class="hljs-string">'value'</span>]
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> value.present?
+          results[id] &lt;&lt; value.to_f
+        <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Sort by category.</p></div></div><div class="code"><div class="wrapper">        items = assessment.quantitative_items
+        items.each <span class="hljs-keyword">do</span> |item|
+          id    = item[<span class="hljs-string">'id'</span>]
+          label = item[<span class="hljs-string">'label'</span>]
+          <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> id.present?
+          json[<span class="hljs-symbol">:quantitative</span>][id] ||= {}
+          json[<span class="hljs-symbol">:quantitative</span>][id][<span class="hljs-symbol">:label</span>] = label
+          json[<span class="hljs-symbol">:quantitative</span>][id][<span class="hljs-symbol">:value</span>] = results[id]
+        <span class="hljs-keyword">end</span>
+      <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Average results</p></div></div><div class="code"><div class="wrapper">      results.each <span class="hljs-keyword">do</span> |id, array|
+        avg         = array.inject(<span class="hljs-number">0</span>.<span class="hljs-number">0</span>) { |sum, el| sum + el } / array.size
+        results[id] = avg.round(<span class="hljs-number">2</span>)
+      <span class="hljs-keyword">end</span>
+      json[<span class="hljs-symbol">:quantitative</span>] = results
+      json
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">get_options</span><span class="hljs-params">(assessment, reviews)</span></span>
+      options = assessment.options.with_indifferent_access
+      add_score_range_to_options(options, assessment, reviews)
+      options
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">self</span>.<span class="hljs-title">add_score_range_to_options</span><span class="hljs-params">(options, assessment, reviews)</span></span>
+      min, max = assessment.get_min_max_score_for_reviews(reviews.count)
+      options  = options.with_indifferent_access
+      options[<span class="hljs-symbol">:points</span>] ||= {}
+      options[<span class="hljs-symbol">:points</span>][<span class="hljs-symbol">:min</span>] = min
+      options[<span class="hljs-symbol">:points</span>][<span class="hljs-symbol">:max</span>] = max
+      options
+    <span class="hljs-keyword">end</span>
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">qualitative_items</span></span>
+      <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">unless</span> value.present? &amp;&amp; value.has_key?(<span class="hljs-string">'qualitative'</span>)
+      value[<span class="hljs-string">'qualitative'</span>]
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">quantitative_items</span></span>
+      <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">unless</span> value.present? &amp;&amp; value.has_key?(<span class="hljs-string">'quantitative'</span>)
+      value[<span class="hljs-string">'quantitative'</span>]
+    <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">qualitative_item_values</span></span>
+      values = <span class="hljs-constant">Hash</span>.new
+      qualitative_items.each <span class="hljs-keyword">do</span> |id, attrs|
+        feedback_type = attrs[<span class="hljs-string">'feedback_type'</span>]
+        value         = attrs[<span class="hljs-string">'value'</span>]
+        <span class="hljs-keyword">next</span> <span class="hljs-keyword">unless</span> feedback_type.present? <span class="hljs-keyword">and</span> value.present?
+        values[feedback_type] ||= []
+        values[feedback_type] &lt;&lt; value
+      <span class="hljs-keyword">end</span>
+      values
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_review_set</span>;</span> thinkspace_peer_assessment_review_set; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_assessment</span>;</span> get_review_set.get_assessment; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_team_set</span>;</span>   get_review_set.get_team_set; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_ownerable</span>;</span>  get_review_set.ownerable; <span class="hljs-keyword">end</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_authable</span>;</span>   get_assessment.authable; <span class="hljs-keyword">end</span>
+
+
   <span class="hljs-keyword">end</span>
-<span class="hljs-keyword">end</span></div></div></div></div></body></html>
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>;</div></div></div></div></body></html>

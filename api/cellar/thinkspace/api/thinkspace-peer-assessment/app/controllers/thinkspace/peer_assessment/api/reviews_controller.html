@@ -1,88 +1,83 @@
-<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/reviews_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/reviews_controller"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/reviews_controller.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/reviews_controller.rb">src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/reviews_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span></span>
-  <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span></span>
-    <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span></span>
-      <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReviewsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span>
-        load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
-        totem_action_authorize! <span class="hljs-symbol">allow_blank_associations:</span> { <span class="hljs-symbol">create:</span> [<span class="hljs-symbol">:review_set_id</span>] }
-        totem_action_serializer_options
-        before_action <span class="hljs-symbol">:find_review_set</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:update</span>]
-        <span class="hljs-comment">#before_action :authorize_ownerable, only: [:update]</span>
-
-        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span>
-          reviewable_type         = params_root[<span class="hljs-symbol">:reviewable_type</span>]
-          reviewable_id           = params_root[<span class="hljs-symbol">:reviewable_id</span>]
-          access_denied <span class="hljs-string">"Cannot create a review without a reviewable_type."</span> <span class="hljs-keyword">unless</span> reviewable_type.present?
-          access_denied <span class="hljs-string">"Cannot create a review without a reviewable_id."</span> <span class="hljs-keyword">unless</span> reviewable_id.present?
-          reviewable_type = reviewable_type.classify
-          authorize_reviewable(reviewable_type, reviewable_id)
-          <span class="hljs-variable">@review</span>.reviewable_type = reviewable_type
-          <span class="hljs-variable">@review</span>.reviewable_id   = reviewable_id
-          <span class="hljs-variable">@review</span>.value           = params_root[<span class="hljs-symbol">:value</span>]
-          <span class="hljs-variable">@review</span>.review_set_id   = <span class="hljs-variable">@review_set</span>.id
-          controller_save_record(<span class="hljs-variable">@review</span>)
-        <span class="hljs-keyword">end</span>
-
-        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
-          can_update_authable = current_ability.can? <span class="hljs-symbol">:update</span>, <span class="hljs-variable">@review</span>.authable
-          review_set          = <span class="hljs-variable">@review</span>.thinkspace_peer_assessment_review_set
-          <span class="hljs-keyword">case</span> 
-          <span class="hljs-keyword">when</span> <span class="hljs-variable">@review</span>.sent?
-            access_denied_state_invalid
-          <span class="hljs-keyword">when</span> (<span class="hljs-variable">@review</span>.submitted? &amp;&amp; review_set.submitted?) &amp;&amp; !can_update_authable
-            access_denied_state_invalid
-          <span class="hljs-keyword">when</span> <span class="hljs-variable">@review</span>.approved? &amp;&amp; !can_update_authable
-            access_denied_state_invalid
-          <span class="hljs-keyword">when</span> <span class="hljs-variable">@review</span>.approved? &amp;&amp; can_update_authable
-            process_updates
-          <span class="hljs-keyword">else</span>
-            process_updates
-          <span class="hljs-keyword">end</span>
-        <span class="hljs-keyword">end</span>
-
-        private
-
-        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_updates</span></span>
-          <span class="hljs-variable">@review</span>.value = params_root[<span class="hljs-symbol">:value</span>]
-          controller_save_record(<span class="hljs-variable">@review</span>)
-        <span class="hljs-keyword">end</span>
-
-        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied_state_invalid</span></span>
-          access_denied <span class="hljs-string">'Review is approved and cannot be updated.'</span>, <span class="hljs-symbol">user_message:</span> <span class="hljs-string">'You cannot update a submitted or approved assessment.'</span>
-        <span class="hljs-keyword">end</span>
-
-        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_review_set</span></span>
-          review_set_id = params_association_id(<span class="hljs-symbol">:review_set_id</span>)
-          <span class="hljs-variable">@review_set</span>   = <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>.find_by(<span class="hljs-symbol">id:</span> review_set_id)
-        <span class="hljs-keyword">end</span>
-
-        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_ownerable</span></span>
-          ownerable  = totem_action_authorize.params_ownerable
-          authable   = <span class="hljs-variable">@review</span>.authable <span class="hljs-comment"># Phase</span>
-          access_denied <span class="hljs-string">"Ownerable cannot update the review."</span> <span class="hljs-keyword">unless</span> current_ability.can?(<span class="hljs-symbol">:update</span>, authable) <span class="hljs-keyword">or</span> <span class="hljs-variable">@review</span>.ownerable == ownerable
-        <span class="hljs-keyword">end</span>
-
-        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_reviewable</span><span class="hljs-params">(type, id)</span></span>
-          klass = type.safe_constantize
-          access_denied <span class="hljs-string">"Cannot constantize reviewable_type [<span class="hljs-subst">#{type}</span>]"</span> <span class="hljs-keyword">unless</span> klass.present?
-          reviewable = klass.find(id)
-          access_denied <span class="hljs-string">"Cannot valdiate reviewable without a review set"</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.present?
-          ownerable  = totem_action_authorize.params_ownerable
-          access_denied <span class="hljs-string">"Ownerable is not the owner of review set [<span class="hljs-subst">#{<span class="hljs-variable">@review_set</span>.inspect}</span>]"</span> <span class="hljs-keyword">unless</span> ownerable == <span class="hljs-variable">@review_set</span>.ownerable
-          team_set   = <span class="hljs-variable">@review_set</span>.thinkspace_peer_assessment_team_set
-          access_denied <span class="hljs-string">"Cannot validate reviewable without a valid team set."</span> <span class="hljs-keyword">unless</span> team_set.present?
-          team       = team_set.thinkspace_team_team
-          access_denied <span class="hljs-string">"Cannot validate reviewable without a valid team."</span> <span class="hljs-keyword">unless</span> team.present?
-          assessment = team_set.thinkspace_peer_assessment_assessment
-          access_denied <span class="hljs-string">"Cannot validate reviewable without a valid assessment."</span> <span class="hljs-keyword">unless</span> assessment.present?
-          access_denied <span class="hljs-string">"Reviewable is not on current user's team."</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">Thinkspace::Team::Team</span>.users_on_teams?(assessment.authable, reviewable, team)
-        <span class="hljs-keyword">end</span>
-
-        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(message, options={})</span></span>
-          raise_access_denied_exception(message, totem_action_authorize.action, <span class="hljs-variable">@review</span>, options)
-        <span class="hljs-keyword">end</span>
-
-
-      <span class="hljs-keyword">end</span>
+<!DOCTYPE html><html lang="en"><head><title>thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/reviews_controller</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../../../../../../"><meta name="groc-document-path" content="thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/reviews_controller"><meta name="groc-project-path" content="src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/reviews_controller.rb"><meta name="groc-branch-path" content="feature/pe-documentation"><meta name="groc-github-url" content="https://github.com/sixthedge/cellar"><link rel="stylesheet" type="text/css" media="all" href="../../../../../../../../assets/style.css"><script type="text/javascript" src="../../../../../../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path"><a href="https://github.com/sixthedge/cellar/blob/feature/pe-documentation/src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/reviews_controller.rb">src/thinkspace/api/thinkspace-peer-assessment/app/controllers/thinkspace/peer_assessment/api/reviews_controller.rb</a></div></div><div id="document"><a href="/" class="lodestar-link">Back to Guides</a><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Thinkspace</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">PeerAssessment</span>;</span> <span class="hljs-class"><span class="hljs-keyword">module</span> <span class="hljs-title">Api</span>;</span>
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ReviewsController</span> <span class="hljs-inheritance">&lt; </span>::<span class="hljs-title">Totem::Settings</span>.<span class="hljs-title">class</span>.<span class="hljs-title">thinkspace</span>.<span class="hljs-title">authorization_api_controller</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="thinkspacepeerassessmentapireviewscontroller">Thinkspace::PeerAssessment::Api::ReviewsController</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">    load_and_authorize_resource <span class="hljs-class"><span class="hljs-keyword">class</span>: <span class="hljs-title">totem_controller_model_class</span></span>
+    totem_action_authorize! <span class="hljs-symbol">allow_blank_associations:</span> { <span class="hljs-symbol">create:</span> [<span class="hljs-symbol">:review_set_id</span>] }
+    totem_action_serializer_options
+    before_action <span class="hljs-symbol">:find_review_set</span>, <span class="hljs-symbol">only:</span> [<span class="hljs-symbol">:create</span>, <span class="hljs-symbol">:update</span>]
+    <span class="hljs-comment">#} before_action :authorize_ownerable, only: [:update]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="endpoints">Endpoints</h2>
+<ul>
+<li><code>create</code></li>
+<li><code>update</code></li>
+</ul></div></div><div class="code"><div class="wrapper">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span></span>
+      reviewable_type         = params_root[<span class="hljs-symbol">:reviewable_type</span>]
+      reviewable_id           = params_root[<span class="hljs-symbol">:reviewable_id</span>]
+      access_denied <span class="hljs-string">"Cannot create a review without a reviewable_type."</span> <span class="hljs-keyword">unless</span> reviewable_type.present?
+      access_denied <span class="hljs-string">"Cannot create a review without a reviewable_id."</span> <span class="hljs-keyword">unless</span> reviewable_id.present?
+      reviewable_type = reviewable_type.classify
+      authorize_reviewable(reviewable_type, reviewable_id)
+      <span class="hljs-variable">@review</span>.reviewable_type = reviewable_type
+      <span class="hljs-variable">@review</span>.reviewable_id   = reviewable_id
+      <span class="hljs-variable">@review</span>.value           = params_root[<span class="hljs-symbol">:value</span>]
+      <span class="hljs-variable">@review</span>.review_set_id   = <span class="hljs-variable">@review_set</span>.id
+      controller_save_record(<span class="hljs-variable">@review</span>)
     <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span></span>
+      can_update_authable = current_ability.can? <span class="hljs-symbol">:update</span>, <span class="hljs-variable">@review</span>.authable
+      review_set          = <span class="hljs-variable">@review</span>.thinkspace_peer_assessment_review_set
+      <span class="hljs-keyword">case</span> 
+      <span class="hljs-keyword">when</span> <span class="hljs-variable">@review</span>.sent?
+        access_denied_state_invalid
+      <span class="hljs-keyword">when</span> (<span class="hljs-variable">@review</span>.submitted? &amp;&amp; review_set.submitted?) &amp;&amp; !can_update_authable
+        access_denied_state_invalid
+      <span class="hljs-keyword">when</span> <span class="hljs-variable">@review</span>.approved? &amp;&amp; !can_update_authable
+        access_denied_state_invalid
+      <span class="hljs-keyword">when</span> <span class="hljs-variable">@review</span>.approved? &amp;&amp; can_update_authable
+        process_updates
+      <span class="hljs-keyword">else</span>
+        process_updates
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="private">Private</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">    private
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_updates</span></span>
+      <span class="hljs-variable">@review</span>.value = params_root[<span class="hljs-symbol">:value</span>]
+      controller_save_record(<span class="hljs-variable">@review</span>)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied_state_invalid</span></span>
+      access_denied <span class="hljs-string">'Review is approved and cannot be updated.'</span>, <span class="hljs-symbol">user_message:</span> <span class="hljs-string">'You cannot update a submitted or approved assessment.'</span>
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_review_set</span></span>
+      review_set_id = params_association_id(<span class="hljs-symbol">:review_set_id</span>)
+      <span class="hljs-variable">@review_set</span>   = <span class="hljs-constant">Thinkspace::PeerAssessment::ReviewSet</span>.find_by(<span class="hljs-symbol">id:</span> review_set_id)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_ownerable</span></span>
+      ownerable  = totem_action_authorize.params_ownerable
+      authable   = <span class="hljs-variable">@review</span>.authable <span class="hljs-comment"># Phase</span>
+      access_denied <span class="hljs-string">"Ownerable cannot update the review."</span> <span class="hljs-keyword">unless</span> current_ability.can?(<span class="hljs-symbol">:update</span>, authable) <span class="hljs-keyword">or</span> <span class="hljs-variable">@review</span>.ownerable == ownerable
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">authorize_reviewable</span><span class="hljs-params">(type, id)</span></span>
+      klass = type.safe_constantize
+      access_denied <span class="hljs-string">"Cannot constantize reviewable_type [<span class="hljs-subst">#{type}</span>]"</span> <span class="hljs-keyword">unless</span> klass.present?
+      reviewable = klass.find(id)
+      access_denied <span class="hljs-string">"Cannot valdiate reviewable without a review set"</span> <span class="hljs-keyword">unless</span> <span class="hljs-variable">@review_set</span>.present?
+      ownerable  = totem_action_authorize.params_ownerable
+      access_denied <span class="hljs-string">"Ownerable is not the owner of review set [<span class="hljs-subst">#{<span class="hljs-variable">@review_set</span>.inspect}</span>]"</span> <span class="hljs-keyword">unless</span> ownerable == <span class="hljs-variable">@review_set</span>.ownerable
+      team_set   = <span class="hljs-variable">@review_set</span>.thinkspace_peer_assessment_team_set
+      access_denied <span class="hljs-string">"Cannot validate reviewable without a valid team set."</span> <span class="hljs-keyword">unless</span> team_set.present?
+      team       = team_set.thinkspace_team_team
+      access_denied <span class="hljs-string">"Cannot validate reviewable without a valid team."</span> <span class="hljs-keyword">unless</span> team.present?
+      assessment = team_set.thinkspace_peer_assessment_assessment
+      access_denied <span class="hljs-string">"Cannot validate reviewable without a valid assessment."</span> <span class="hljs-keyword">unless</span> assessment.present?
+      access_denied <span class="hljs-string">"Reviewable is not on current user's team."</span> <span class="hljs-keyword">unless</span> <span class="hljs-constant">Thinkspace::Team::Team</span>.users_on_teams?(assessment.authable, reviewable, team)
+    <span class="hljs-keyword">end</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">access_denied</span><span class="hljs-params">(message, options={})</span></span>
+      raise_access_denied_exception(message, totem_action_authorize.action, <span class="hljs-variable">@review</span>, options)
+    <span class="hljs-keyword">end</span>
+
+
   <span class="hljs-keyword">end</span>
-<span class="hljs-keyword">end</span></div></div></div></div></body></html>
+<span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>; <span class="hljs-keyword">end</span>;</div></div></div></div></body></html>
