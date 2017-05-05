@@ -1,21 +1,56 @@
+# # Text properties
+# The text block is used to place in text placeholders into totem-lodestar's views.
+# - title: `String` The name displayed in the title bar
+# - logo: `Boolean` Displays an image places in the host app assests folder, must be named `logo.png`.
 text:
   title: Totem docs
   logo:  false
+
+# # Module Properties
+# Configuration options for totem-lodestar javascript modules, these modules initialize their configuration via the TotemLodestar.load() function.
 modules:
+
+  # ## Layout Module
+  # ### Full Width
+  # Used to make the layout take the full viewport width instead of a centered layout.
+  # - enabled: `Boolean` Enables the full_width module
+  # - default: `Boolean` When the site is first loaded determines if full_width layout is used.
   layout:
     full_width:
       enabled: true
       default: true
 
+  # ## Versions Module
+  # Versions handles use of multiple versions of documentations, this means having more than one directory named with `x.x.x` from the `app/public/documents/` directory.
+  # - index_redirect: `Boolean` Redirects the landing page from a versions index to the most recent (highest numbered) version index.
   versions:
     index_redirect: true
 
+  # ## Side Bar Module
+  # The side bar is the left hand navigation menu which displays the markdown guides in their nested folder structure.
+
+  # ### Collapse
+  # Collapse is the button to adjust the full_width layout toggle which appears above the navigation links
+  # - enabled: `Boolean` Enables the collapse module
+  # - expanded_icon: `String` Class added when the button is in the expanded state, should represent the collapse action.
+  # - collapsed_icon: `String` Class added when the ubtton is in the collapsed state, should represent the expand action.
   side_bar:
     collapse:
       enabled:        true
       expanded_icon:  'fa fa-minus right'
       collapsed_icon: 'fa fa-plus right'
 
+  # ## Table Of Contents Module
+  # Table of contents appears on the right hand side of the page and displays the current section within the markdown document and provides links to the headers of the file.
+
+  # ### Smooth Scroll
+  # Smooth scroll implements a scrolling animation when you click a table of contents link.
+  # - enabled: `Boolean` Enables the smooth_scroll module
+  # - speed: `Integer` Speed of the scroll animation in milliseconds
+
+  # ### Highlight
+  # Highlights the currently viewed section of the markdown document within the table of contents.
+  # - enabled: `Boolean` Enables the highlight module
   table_of_contents:
     smooth_scroll:
       enabled: true
@@ -23,6 +58,17 @@ modules:
     highlight: 
       enabled: true
 
+  # ## API module
+  # The api module handles the setup and options for GROC to build the API section as well as setup certain routing and display features. This within the API rake tasks and not part of the javascript modules.
+
+  # ### Repositories
+  # The main key to hold an array of repository options for each repository to be created and passed to Groc for building.
+
+  # #### Repository
+  # - name: `String` The name of the project, should match the repository name for ease.
+  # - url: `String` URL to the github repository
+  # - branch: `String` The branch used within the repository, should be an existing branch.
+  # - options: `Object` A hash of options that are passed through to the GROC CLI, for information about these options see [here](https://github.com/rootwizzy/groc/blob/master/lib/cli.coffee).
   api:      
     repositories:
       - name: cellar
